@@ -3232,7 +3232,7 @@ function ManualToolboxPanel({ request, onUse }) {
     setNotice("");
   }, [tool, previewIds, previewOptions]);
   const choose = (id) => setSelected((current) => current.includes(id) ? current.filter((value) => value !== id) : [...current, id]);
-  const importFile = async (file) => {
+  const importFile = async (file, purpose = "source") => {
     if (!file) return;
     if (file.size > 50 * 1024 * 1024) {
       setError("\u5355\u5F20\u56FE\u7247\u4E0D\u80FD\u8D85\u8FC7 50 MB\u3002");
@@ -3242,15 +3242,20 @@ function ManualToolboxPanel({ request, onUse }) {
       setError("\u53EA\u652F\u6301 PNG\u3001JPEG \u548C WebP\u3002");
       return;
     }
-    setBusy("import");
+    setBusy(purpose === "pattern" ? "import-pattern" : "import");
     setError("");
     setNotice("");
     try {
       const bytes = new Uint8Array(await file.arrayBuffer());
       const result = await request("local.importInput", { name: file.name, contentType: file.type, base64: toBase64(bytes) });
       await refresh();
-      setSelected([result.data.id]);
-      setNotice("\u56FE\u7247\u5DF2\u590D\u5236\u5230\u5F53\u524D\u4F1A\u8BDD\u7684\u53D7\u4FDD\u62A4\u672C\u5730\u7ED3\u679C\u533A\u3002");
+      if (purpose === "pattern") {
+        setOptions((current) => ({ ...current, outline: { ...current.outline, patternId: result.data.id } }));
+        setNotice("\u672C\u5730\u56FE\u6848\u5DF2\u590D\u5236\u5230\u5F53\u524D\u4F1A\u8BDD\u5E76\u9009\u7528\u3002");
+      } else {
+        setSelected([result.data.id]);
+        setNotice("\u56FE\u7247\u5DF2\u590D\u5236\u5230\u5F53\u524D\u4F1A\u8BDD\u7684\u53D7\u4FDD\u62A4\u672C\u5730\u7ED3\u679C\u533A\u3002");
+      }
     } catch (value) {
       setError(messageOf(value));
     } finally {
@@ -3335,7 +3340,7 @@ function ManualToolboxPanel({ request, onUse }) {
             accept: "image/png,image/jpeg,image/webp",
             disabled: !!busy,
             onChange: (event) => {
-              void importFile(event.currentTarget.files?.[0]);
+              void importFile(event.currentTarget.files?.[0], "source");
               event.currentTarget.value = "";
             }
           }
@@ -3385,6 +3390,8 @@ function ManualToolboxPanel({ request, onUse }) {
               values: options[tool],
               images,
               update,
+              importPattern: (file) => importFile(file, "pattern"),
+              patternBusy: busy === "import-pattern",
               outlineLongEdge: toolPreview?.outlineSource && toolPreview.outlineSource.id === sourceId ? toolPreview.outlineSource.longEdge : void 0
             }
           ) }),
@@ -3550,7 +3557,7 @@ function OutlineRangeField({ name, label, value, min, max, step, longEdge, onCha
     )
   ] });
 }
-function ToolFields({ tool, values, images, update, outlineLongEdge }) {
+function ToolFields({ tool, values, images, update, importPattern, patternBusy, outlineLongEdge }) {
   const number = (name, label, min, max, step) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
     label,
     /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
@@ -3663,6 +3670,20 @@ function ToolFields({ tool, values, images, update, outlineLongEdge }) {
       color("strokeColor", "\u63CF\u8FB9\u8272"),
       values.fill === "pattern" && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_jsx_runtime7.Fragment, { children: [
         select("patternId", "\u56FE\u6848\u56FE\u7247", [["", "\u8BF7\u9009\u62E9"], ...images.map((row) => [row.id, row.name])]),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: "ppd-toolbox__upload", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+            "input",
+            {
+              type: "file",
+              accept: "image/png,image/jpeg,image/webp",
+              onChange: (event) => {
+                void importPattern(event.currentTarget.files?.[0]);
+                event.currentTarget.value = "";
+              }
+            }
+          ),
+          patternBusy ? "\u6B63\u5728\u8BFB\u53D6\u56FE\u6848\u2026" : "\u4ECE\u672C\u5730\u9009\u62E9\u56FE\u6848"
+        ] }),
         range("patternScale", "\u56FE\u6848\u7F29\u653E %", 10, 300, 1),
         range("patternRotation", "\u56FE\u6848\u89D2\u5EA6", -180, 180, 1)
       ] }),
@@ -4166,8 +4187,9 @@ function PublicSkills({ request, onUse }) {
     ] })
   ] });
 }
-function ReferenceEditor({ ids, choices, disabled, onChange }) {
+function ReferenceEditor({ ids, choices, disabled, onChange, onUpload }) {
   const [manual, setManual] = (0, import_react6.useState)("");
+  const localInput = (0, import_react6.useRef)(null);
   function add(id) {
     if (ids.includes(id) || ids.length >= USER_SKILL_REFERENCE_LIMIT) return;
     onChange([...ids, id]);
@@ -4208,6 +4230,17 @@ function ReferenceEditor({ ids, choices, disabled, onChange }) {
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: "+" }),
       row.filename || (row.kind === "generated" ? "\u751F\u6210\u56FE" : "\u4E0A\u4F20\u56FE")
     ] }, row.id)) }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("button", { type: "button", className: "ppd-button", disabled: disabled || ids.length >= USER_SKILL_REFERENCE_LIMIT, onClick: () => localInput.current?.click(), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(Icon, { name: "upload" }),
+        "\u4ECE\u672C\u5730\u9009\u62E9\u56FE\u7247"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { ref: localInput, className: "ppd-file-input", type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", onChange: (event) => {
+        const files = Array.from(event.currentTarget.files ?? []);
+        event.currentTarget.value = "";
+        if (files.length) onUpload(files);
+      } })
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-inline-input", children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { "aria-label": "\u6309\u7D20\u6750 ID \u6DFB\u52A0", placeholder: "\u6216\u7C98\u8D34\u5DF2\u6709\u79C1\u6709\u7D20\u6750 ID", value: manual, disabled, onChange: (event) => setManual(event.target.value) }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || ids.length >= USER_SKILL_REFERENCE_LIMIT, onClick: () => {
@@ -4219,7 +4252,7 @@ function ReferenceEditor({ ids, choices, disabled, onChange }) {
     ] })
   ] });
 }
-function SkillEditor({ value, mode, choices, busy, error, conflict, onChange, onSave, onCancel, onReload }) {
+function SkillEditor({ value, mode, choices, busy, error, conflict, onChange, onSave, onCancel, onReload, onUpload }) {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("article", { className: "ppd-editor", children: [
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("header", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
@@ -4250,7 +4283,7 @@ function SkillEditor({ value, mode, choices, busy, error, conflict, onChange, on
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("textarea", { className: "ppd-prompt", value: value.prompt, maxLength: 5e3, rows: 9, placeholder: "\u5199\u4E0B\u53EF\u4EE5\u91CD\u590D\u4F7F\u7528\u7684\u521B\u4F5C\u8981\u6C42\u2026", onChange: (event) => onChange({ ...value, prompt: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ReferenceEditor, { ids: value.referenceAssetIds, choices, disabled: busy || conflict, onChange: (referenceAssetIds) => onChange({ ...value, referenceAssetIds }) })
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ReferenceEditor, { ids: value.referenceAssetIds, choices, disabled: busy || conflict, onChange: (referenceAssetIds) => onChange({ ...value, referenceAssetIds }), onUpload })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("footer", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: "\u63D0\u793A\u8BCD\u6216\u53C2\u8003\u7D20\u6750\u81F3\u5C11\u63D0\u4F9B\u4E00\u9879\u3002" }),
@@ -4298,6 +4331,50 @@ function MySkills({ request, onUse, onChanged }) {
       setChoices(Array.isArray(data?.items) ? data.items : []);
     } catch {
       setChoices([]);
+    }
+  }
+  async function uploadReferences(files) {
+    if (!editor || busy) return;
+    const remaining = USER_SKILL_REFERENCE_LIMIT - draft.referenceAssetIds.length;
+    const supported = files.filter((file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type)).slice(0, remaining);
+    if (!remaining) {
+      setError(`\u6BCF\u4E2A Skill \u6700\u591A\u4F7F\u7528 ${USER_SKILL_REFERENCE_LIMIT} \u5F20\u53C2\u8003\u7D20\u6750\u3002`);
+      return;
+    }
+    if (!supported.length) {
+      setError("\u8BF7\u9009\u62E9 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
+      return;
+    }
+    setBusy("reference-upload");
+    setError("");
+    const uploaded = [];
+    const failed = [];
+    try {
+      let cursor2 = 0;
+      const worker = async () => {
+        for (; ; ) {
+          const index = cursor2++, file = supported[index];
+          if (!file) return;
+          try {
+            const { data } = await request("assets.upload", { file });
+            if (typeof data?.id !== "string" || !data.id) throw new Error("\u4E0A\u4F20\u7ED3\u679C\u65E0\u6548");
+            uploaded.push({ index, asset: data });
+          } catch {
+            failed.push(file.name);
+          }
+        }
+      };
+      await Promise.all(Array.from({ length: Math.min(4, supported.length) }, worker));
+      if (uploaded.length) {
+        const ordered = uploaded.sort((left, right) => left.index - right.index).map((row) => row.asset);
+        setChoices((current) => [...new Map([...current, ...ordered].map((row) => [row.id, row])).values()]);
+        setDraft((current) => ({ ...current, referenceAssetIds: uniq([...current.referenceAssetIds, ...ordered.map((row) => row.id)]).slice(0, USER_SKILL_REFERENCE_LIMIT) }));
+        setNotice(`${uploaded.length} \u5F20\u672C\u5730\u56FE\u7247\u5DF2\u4E0A\u4F20\u5E76\u52A0\u5165\u5F53\u524D Skill\u3002`);
+        onChanged();
+      }
+      if (failed.length) setError(`${failed.length} \u5F20\u56FE\u7247\u4E0A\u4F20\u5931\u8D25${failed.length <= 3 ? `\uFF1A${failed.join("\u3001")}` : ""}\u3002`);
+    } finally {
+      setBusy("");
     }
   }
   async function open(id) {
@@ -4419,7 +4496,7 @@ function MySkills({ request, onUse, onChanged }) {
     }
   }
   const deleteDialog = confirmDelete ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6211\u7684 Skill\uFF1F", description: `\u201C${confirmDelete.name}\u201D\u5C06\u4ECE\u4F60\u7684 Skill \u5E93\u5220\u9664\u3002\u5DF2\u6709\u7D20\u6750\u4E0E\u5386\u53F2\u751F\u6210\u4E0D\u53D7\u5F71\u54CD\u3002`, confirmLabel: "\u786E\u8BA4\u5220\u9664", busy: busy === confirmDelete.id, error, onCancel: () => void cancelDelete(), onConfirm: () => void deleteConfirmed() }) : null;
-  if (editor) return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SkillEditor, { value: draft, mode: editor.mode, choices, busy: busy === "save", error, conflict, onChange: setDraft, onSave: () => void save(), onCancel: () => setEditor(void 0), onReload: editor.source ? () => void reloadSource() : void 0 });
+  if (editor) return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(SkillEditor, { value: draft, mode: editor.mode, choices, busy: busy === "save" || busy === "reference-upload", error, conflict, onChange: setDraft, onSave: () => void save(), onCancel: () => setEditor(void 0), onReload: editor.source ? () => void reloadSource() : void 0, onUpload: (files) => void uploadReferences(files) });
   if (detail) return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(DetailShell, { title: detail.name, eyebrow: "\u6211\u7684 Skill", onBack: () => setDetail(void 0), actions: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: "\u9009\u5165\u4F1A\u8BDD" }),

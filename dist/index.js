@@ -55733,16 +55733,17 @@ function jsonSchema(schema) {
 function processingSchema(options) {
   return jsonSchema(external_exports2.object({ operationId, ids: uniqueIds, options }).strict());
 }
+var localInputGuidance = "ids \u53EF\u76F4\u63A5\u4F7F\u7528\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u672C\u5730\u5904\u7406\u7ED3\u679C\u6216\u79C1\u6709\u4E91\u7D20\u6750\u7684\u4E0D\u900F\u660E\u7F16\u53F7\uFF1B\u672C\u673A\u56FE\u7247\u987B\u5148\u7528 DSH read_image \u6216\u539F\u751F\u9009\u56FE\u63A5\u5165\u5F53\u524D\u4F1A\u8BDD\uFF0C\u4E0D\u80FD\u4F20\u6587\u4EF6\u8DEF\u5F84\u3002";
 var definitions = Object.freeze([
-  { name: "podplo_selected_image_info", description: "\u68C0\u67E5\u5F53\u524D\u539F\u751F\u4F1A\u8BDD\u5DF2\u6388\u6743\u7684\u56FE\u7247\u6216\u672C\u5730\u7ED3\u679C\u3002\u771F\u5B9E\u8BFB\u53D6\u50CF\u7D20\uFF0C\u533A\u5206 Alpha \u901A\u9053\u4E0E\u5B9E\u9645\u900F\u660E\u50CF\u7D20\uFF1BPNG \u540E\u7F00\u6216\u753B\u9762\u4E2D\u7684\u68CB\u76D8\u683C\u4E0D\u4EE3\u8868\u900F\u660E\u3002\u4EA4\u4ED8\u900F\u660E\u56FE\u6216\u81EA\u52A8\u63CF\u8FB9\u524D\u5FC5\u987B\u6838\u9A8C hasTransparency\uFF0Cfalse \u65F6\u4E0D\u5F97\u79F0\u5DF2\u5B8C\u6210\u900F\u660E\u8F93\u51FA\u3002\u53EA\u80FD\u4F20\u4E0D\u900F\u660E ID\uFF0C\u4E0D\u80FD\u4F20\u8DEF\u5F84\u3002", inputSchema: jsonSchema(infoArgs) },
+  { name: "podplo_selected_image_info", description: `\u68C0\u67E5\u5F53\u524D\u539F\u751F\u4F1A\u8BDD\u5DF2\u6388\u6743\u7684\u56FE\u7247\u6216\u672C\u5730\u7ED3\u679C\u3002${localInputGuidance}\u771F\u5B9E\u8BFB\u53D6\u50CF\u7D20\uFF0C\u533A\u5206 Alpha \u901A\u9053\u4E0E\u5B9E\u9645\u900F\u660E\u50CF\u7D20\uFF1BPNG \u540E\u7F00\u6216\u753B\u9762\u4E2D\u7684\u68CB\u76D8\u683C\u4E0D\u4EE3\u8868\u900F\u660E\u3002\u4EA4\u4ED8\u900F\u660E\u56FE\u6216\u81EA\u52A8\u63CF\u8FB9\u524D\u5FC5\u987B\u6838\u9A8C hasTransparency\uFF0Cfalse \u65F6\u4E0D\u5F97\u79F0\u5DF2\u5B8C\u6210\u900F\u660E\u8F93\u51FA\u3002`, inputSchema: jsonSchema(infoArgs) },
   { name: "podplo_list_local_results", description: "\u5217\u51FA\u5F53\u524D\u8D26\u53F7\u3001\u5F53\u524D\u539F\u751F\u4F1A\u8BDD\u5DF2\u7ECF\u4EA7\u751F\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u7ED3\u679C\u3002\u53EA\u8FD4\u56DE\u7ED3\u679C ID \u548C\u6587\u4EF6\u5143\u6570\u636E\uFF0C\u4E0D\u8FD4\u56DE\u5BBF\u4E3B\u8DEF\u5F84\u3002", inputSchema: jsonSchema(listArgs) },
-  { name: "podplo_resize_images", description: "\u8C03\u6574\u50CF\u7D20\u6216\u5370\u5237\u5C3A\u5BF8\u3001PPI\u3001\u683C\u5F0F\u548C\u900F\u660E\u8FB9\uFF0C\u4FDD\u7559\u539F\u4EF6\u5E76\u8FD4\u56DE\u65B0\u7684\u7ED3\u679C ID\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(ResizeOptionsSchema) },
-  { name: "podplo_rotate_flip_images", description: "\u6309\u6700\u7EC8\u753B\u9762\u6267\u884C\u65CB\u8F6C\u3001\u6C34\u5E73\u955C\u50CF\u6216\u5782\u76F4\u7FFB\u8F6C\uFF0C\u4FDD\u7559\u539F\u4EF6\u5E76\u8FD4\u56DE\u900F\u660E PNG\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(RotateOptionsSchema) },
-  { name: "podplo_adjust_image_colors", description: "\u8C03\u6574\u4EAE\u5EA6\u3001\u5BF9\u6BD4\u5EA6\u3001\u9971\u548C\u5EA6\u548C\u51B7\u6696\uFF0C\u4FDD\u7559\u539F\u4EF6\u5E76\u8FD4\u56DE\u65B0\u7684 PNG\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(ColorOptionsSchema) },
-  { name: "podplo_export_images", description: "\u5BFC\u51FA PNG\u3001JPEG\u3001WebP \u6216\u6309 PPI \u5B9A\u5C3A\u5BF8\u7684\u771F\u5B9E PDF\u3002JPEG \u53EF\u6307\u5B9A\u900F\u660E\u533A\u5E95\u8272\uFF1B\u4E0D\u505A\u77E2\u91CF\u5316\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(ExportOptionsSchema) },
-  { name: "podplo_prepare_print_files", description: "\u751F\u6210\u542B\u51FA\u8840\u751F\u4EA7 PNG\u3001\u8FB9\u754C\u6821\u6837\u548C JSON \u5370\u524D\u62A5\u544A\u3002\u53EA\u68C0\u67E5\u8C03\u7528\u65B9\u660E\u786E\u63D0\u4F9B\u7684\u5173\u952E\u533A\u57DF\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(PrintOptionsSchema) },
-  { name: "podplo_package_delivery", description: "\u628A\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001PDF\u3001\u62A5\u544A\u6216 ZIP \u590D\u5236\u8FDB\u987A\u5E8F\u547D\u540D\u7684\u771F\u5B9E ZIP\uFF0C\u5E76\u751F\u6210 manifest.json\uFF1B\u4E0D\u4FEE\u6539\u539F\u6587\u4EF6\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(PackageOptionsSchema) },
-  { name: "podplo_outline_images", description: "\u4E3A\u771F\u5B9E\u900F\u660E\u80CC\u666F\u4E3B\u4F53\u751F\u6210\u5E73\u6ED1\u5916\u8F6E\u5ED3\u3002\u62D2\u7EDD RGB \u6216\u4E0D\u900F\u660E RGBA\uFF0C\u907F\u514D\u628A\u6574\u5F20\u753B\u5E03\u63CF\u6210\u77E9\u5F62\u3002fillHoles=true \u8868\u793A\u4E0D\u63CF\u4E3B\u4F53\u5185\u90E8\u5B54\u6D1E\uFF1Bfill=none \u8868\u793A\u8F6E\u5ED3\u95F4\u8DDD\u900F\u660E\u3002\u9ED8\u8BA4\u540C\u65F6\u8FD4\u56DE\u539F\u56FE\u65B9\u5411\u548C\u6574\u56FE\u6C34\u5E73\u955C\u50CF\u3002operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002", inputSchema: processingSchema(OutlineOptionsSchema) }
+  { name: "podplo_resize_images", description: `\u8C03\u6574\u50CF\u7D20\u6216\u5370\u5237\u5C3A\u5BF8\u3001PPI\u3001\u683C\u5F0F\u548C\u900F\u660E\u8FB9\uFF0C\u4FDD\u7559\u539F\u4EF6\u5E76\u8FD4\u56DE\u65B0\u7684\u7ED3\u679C ID\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(ResizeOptionsSchema) },
+  { name: "podplo_rotate_flip_images", description: `\u6309\u6700\u7EC8\u753B\u9762\u6267\u884C\u65CB\u8F6C\u3001\u6C34\u5E73\u955C\u50CF\u6216\u5782\u76F4\u7FFB\u8F6C\uFF0C\u4FDD\u7559\u539F\u4EF6\u5E76\u8FD4\u56DE\u900F\u660E PNG\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(RotateOptionsSchema) },
+  { name: "podplo_adjust_image_colors", description: `\u8C03\u6574\u4EAE\u5EA6\u3001\u5BF9\u6BD4\u5EA6\u3001\u9971\u548C\u5EA6\u548C\u51B7\u6696\uFF0C\u4FDD\u7559\u539F\u4EF6\u5E76\u8FD4\u56DE\u65B0\u7684 PNG\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(ColorOptionsSchema) },
+  { name: "podplo_export_images", description: `\u5BFC\u51FA PNG\u3001JPEG\u3001WebP \u6216\u6309 PPI \u5B9A\u5C3A\u5BF8\u7684\u771F\u5B9E PDF\u3002JPEG \u53EF\u6307\u5B9A\u900F\u660E\u533A\u5E95\u8272\uFF1B\u4E0D\u505A\u77E2\u91CF\u5316\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(ExportOptionsSchema) },
+  { name: "podplo_prepare_print_files", description: `\u751F\u6210\u542B\u51FA\u8840\u751F\u4EA7 PNG\u3001\u8FB9\u754C\u6821\u6837\u548C JSON \u5370\u524D\u62A5\u544A\u3002\u53EA\u68C0\u67E5\u8C03\u7528\u65B9\u660E\u786E\u63D0\u4F9B\u7684\u5173\u952E\u533A\u57DF\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(PrintOptionsSchema) },
+  { name: "podplo_package_delivery", description: `\u628A\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001PDF\u3001\u62A5\u544A\u6216 ZIP \u590D\u5236\u8FDB\u987A\u5E8F\u547D\u540D\u7684\u771F\u5B9E ZIP\uFF0C\u5E76\u751F\u6210 manifest.json\uFF1B\u4E0D\u4FEE\u6539\u539F\u6587\u4EF6\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(PackageOptionsSchema) },
+  { name: "podplo_outline_images", description: `\u4E3A\u771F\u5B9E\u900F\u660E\u80CC\u666F\u4E3B\u4F53\u751F\u6210\u5E73\u6ED1\u5916\u8F6E\u5ED3\u3002\u62D2\u7EDD RGB \u6216\u4E0D\u900F\u660E RGBA\uFF0C\u907F\u514D\u628A\u6574\u5F20\u753B\u5E03\u63CF\u6210\u77E9\u5F62\u3002fillHoles=true \u8868\u793A\u4E0D\u63CF\u4E3B\u4F53\u5185\u90E8\u5B54\u6D1E\uFF1Bfill=none \u8868\u793A\u8F6E\u5ED3\u95F4\u8DDD\u900F\u660E\u3002\u9ED8\u8BA4\u540C\u65F6\u8FD4\u56DE\u539F\u56FE\u65B9\u5411\u548C\u6574\u56FE\u6C34\u5E73\u955C\u50CF\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(OutlineOptionsSchema) }
 ]);
 function sha256(value) {
   return createHash4("sha256").update(value).digest("hex");
@@ -56558,6 +56559,19 @@ var objectSchema = (properties, required3 = [], additionalProperties = false) =>
   additionalProperties
 });
 var stringSchema = { type: "string" };
+var personalSkillInputSchema = {
+  type: "object",
+  additionalProperties: true,
+  properties: {
+    referenceAssetIds: {
+      type: "array",
+      maxItems: 12,
+      uniqueItems: true,
+      items: { type: "string", minLength: 1, maxLength: 240, pattern: "^[^/\\\\\\u0000\\r\\n]+$" },
+      description: "Ordered private cloud asset UUIDs or opaque image IDs from this native conversation. Current-conversation attachments and local processing results are imported before the Skill is saved."
+    }
+  }
+};
 var TOOL_DEFINITIONS = [
   { name: "podplo_set_processing_plan", description: "\u767B\u8BB0\u6216\u8865\u5168\u539F\u4EFB\u52A1\u660E\u786E\u8981\u6C42\u7684\u52A0\u5DE5\u6B65\u9AA4\uFF0C\u7528\u4E8E\u6570\u91CF\u6838\u5BF9\u548C\u7EE7\u7EED\u5904\u7406\u3002\u4EC5\u66F4\u65B0\u5F53\u524D\u4F1A\u8BDD\u5DF2\u6709\u4EFB\u52A1\u7684\u672C\u5730\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u62A5\u4EF7\u6216\u751F\u56FE\u3002\u6CA1\u6709\u52A0\u5DE5\u8981\u6C42\u7528\u7A7A\u6570\u7EC4\uFF1B\u4E0D\u8981\u6839\u636E\u672A\u77E5\u5386\u53F2\u731C\u6D4B\u3002", inputSchema: objectSchema({ operationId: stringSchema, processingPlan: processingPlanSchema }, ["operationId", "processingPlan"]) },
   { name: "podplo_snapshot", description: "Read the safe PodPlo account and connection state.", inputSchema: objectSchema({}) },
@@ -56576,12 +56590,12 @@ var TOOL_DEFINITIONS = [
   { name: "podplo_request_asset_deletion", description: "Prepare deletion of exact private asset ids. A UI confirmation is always required.", inputSchema: objectSchema({ ids: { type: "array", items: stringSchema, minItems: 1, maxItems: 200 } }, ["ids"]) },
   { name: "podplo_list_my_skills", description: "List the signed-in user's own Skills.", inputSchema: objectSchema({ query: stringSchema, cursor: stringSchema }) },
   { name: "podplo_get_my_skill", description: "Get one owned Skill by opaque id.", inputSchema: objectSchema({ id: stringSchema }, ["id"]) },
-  { name: "podplo_create_my_skill", description: "Create a reusable personal Skill.", inputSchema: objectSchema({ input: { type: "object", additionalProperties: true } }, ["input"]) },
-  { name: "podplo_update_my_skill", description: "Update an owned Skill using its expected updatedAt value.", inputSchema: objectSchema({ id: stringSchema, input: { type: "object", additionalProperties: true } }, ["id", "input"]) },
+  { name: "podplo_create_my_skill", description: "Create a reusable personal Skill. referenceAssetIds may contain current-conversation attachment IDs, current-session local image result IDs, or existing private cloud asset UUIDs. The Host imports local images before saving. Never pass a filesystem path; first use DSH read_image or the native file chooser to create a session-bound image ID.", inputSchema: objectSchema({ input: personalSkillInputSchema }, ["input"]) },
+  { name: "podplo_update_my_skill", description: "Update an owned Skill using its expected updatedAt value. referenceAssetIds accepts the same current-conversation local image IDs as podplo_create_my_skill and preserves their order after Host import. Never pass a filesystem path.", inputSchema: objectSchema({ id: stringSchema, input: personalSkillInputSchema }, ["id", "input"]) },
   { name: "podplo_request_my_skill_deletion", description: "Prepare deletion of an owned Skill. A UI confirmation is always required.", inputSchema: objectSchema({ id: stringSchema, expectedUpdatedAt: stringSchema }, ["id", "expectedUpdatedAt"]) },
   { name: "podplo_resolve_selection", description: "Resolve an exact Skill, gallery item or private asset for native conversation injection.", inputSchema: objectSchema({ kind: { type: "string", enum: ["skill", "gallery", "asset"] }, id: stringSchema }, ["kind", "id"]) },
   { name: "podplo_generation_capabilities", description: "Read the authoritative generation quote input JSON schema and complete current model list. Use a returned model id; never guess a UUID. Treat only exposed schema fields as controllable modes: For transparent images, check the selected model and schema for background=transparent and output_format=png or webp. These are provider parameters in each item.args, not prompt instructions. An absent parameter does not prove the underlying model never supports it, and prompt text must not impersonate a missing mode switch.", inputSchema: objectSchema({ refresh: { type: "boolean" } }) },
-  { name: "podplo_prepare_generation", description: `Quote every item in one generation batch without submitting it. For current-conversation images, put their opaque attachment/result IDs in each item.args.referenceAssetIds; the Host imports them into the signed-in user's private references before quoting. Existing private cloud asset UUIDs are reused without uploading. Pass provider parameters in each item.args: a transparent-background request requires background="transparent" and output_format="png" or "webp" (PNG by default), after checking podplo_generation_capabilities for schema and model support. Never rely only on wording in prompt for an alpha channel; JPEG cannot carry alpha. Missing server support must be reported, not replaced by prompt text. When status is quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears in the current conversation. End the turn and wait for that card; do not call ask_user_question or ask the user to report that they clicked it. The Agent is resumed with the verified operation status after the UI approval finishes.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, args: { type: "object", properties: { referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "items"]) },
+  { name: "podplo_prepare_generation", description: `Quote the complete user-requested generation batch without submitting it. Before calling, collect every image/item the user asked to execute and call this tool exactly once with expectedOutputCount equal to the full requested output total. Never split "\u5168\u90E8\u6267\u884C" into separate approval batches. The Host rejects missing, partial or oversized batches before showing a confirmation. For current-conversation images, put their opaque attachment/result IDs in each item.args.referenceAssetIds; the Host imports them into the signed-in user's private references before quoting. Existing private cloud asset UUIDs are reused without uploading. Pass provider parameters in each item.args: a transparent-background request requires background="transparent" and output_format="png" or "webp" (PNG by default), after checking podplo_generation_capabilities for schema and model support. Never rely only on wording in prompt for an alpha channel; JPEG cannot carry alpha. Missing server support must be reported, not replaced by prompt text. When status is quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears in the current conversation. End the turn and wait for that card; do not call ask_user_question or ask the user to report that they clicked it. The Agent is resumed with the verified operation status after the UI approval finishes.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, expectedOutputCount: { type: "integer", minimum: 1, maximum: 1e4, description: "The complete number of images the user asked to execute in this batch. Derive it from the whole request, never from a partial subset." }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, args: { type: "object", properties: { count: { type: "integer", minimum: 1, description: "Output count for this item; all item counts must cover expectedOutputCount." }, referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "expectedOutputCount", "items"]) },
   { name: "podplo_generation_status", description: "Read or refresh one existing generation operation. This never resubmits. completed only means remote generation finished; verify real pixels for transparency or later local processing with podplo_selected_image_info.", inputSchema: objectSchema({ operationId: stringSchema, refresh: { type: "boolean" } }, ["operationId"]) },
   { name: "podplo_list_generations", description: "List generation operations for the current account.", inputSchema: objectSchema({}) }
 ];
@@ -56834,6 +56848,9 @@ var PodploPluginService = class extends EventEmitter2 {
   async callTool(name, args, sessionId) {
     const action = MCP_ACTIONS[name];
     if (!action) throw new PodploPluginError("METHOD_NOT_FOUND", `\u672A\u77E5 PodPlo \u5DE5\u5177\uFF1A${name}`);
+    if (name === "podplo_prepare_generation" && (!args || typeof args !== "object" || Array.isArray(args) || !("expectedOutputCount" in args))) {
+      throw new PodploPluginError("INVALID_ARGUMENT", "expectedOutputCount \u5FC5\u987B\u662F\u7528\u6237\u672C\u8F6E\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684\u56FE\u7247\u603B\u6570\uFF081-10000\uFF09");
+    }
     return (await this.dispatch(action, args, { source: "agent", sessionId })).data;
   }
   /**
@@ -56914,10 +56931,10 @@ var PodploPluginService = class extends EventEmitter2 {
         data = await this.mySkillsGet(input);
         break;
       case "mySkills.create":
-        data = await this.mySkillCreate(input);
+        data = await this.mySkillCreate(input, caller);
         break;
       case "mySkills.update":
-        data = await this.mySkillUpdate(input);
+        data = await this.mySkillUpdate(input, caller);
         break;
       case "mySkills.delete":
         data = await this.mySkillDelete(input, caller);
@@ -57290,16 +57307,48 @@ var PodploPluginService = class extends EventEmitter2 {
     this.emit("change", this.snapshot());
     return result;
   }
-  async mySkillCreate(input) {
+  skillReferenceIds(value) {
+    if (value === void 0) return [];
+    if (!Array.isArray(value) || value.length > 12 || new Set(value).size !== value.length || value.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id))) {
+      throw new PodploPluginError("INVALID_REFERENCE_ID", "referenceAssetIds \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 12 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84");
+    }
+    return value;
+  }
+  async resolveMySkillInput(raw, caller, ownerId, schema) {
+    const ids2 = this.skillReferenceIds(raw.referenceAssetIds);
+    const placeholder = "00000000-0000-4000-8000-000000000000";
+    const validated = schema.parse({ ...raw, referenceAssetIds: ids2.length ? [placeholder] : [] });
+    if (!ids2.length) return schema.parse({ ...validated, referenceAssetIds: [] });
+    const cloudId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+    const sessionBound = caller.source === "agent" || caller.sessionId !== void 0;
+    let resolved = ids2;
+    if (this.options.resolveGenerationReferences && sessionBound) {
+      const nativeSessionId = this.nativeSessionFor(caller);
+      resolved = await this.options.resolveGenerationReferences({ ownerId, nativeSessionId, ids: ids2 });
+      await this.assertOwner(ownerId, true);
+    } else if (ids2.some((id) => !cloudId.test(id))) {
+      throw new PodploPluginError("NATIVE_REFERENCE_IMPORT_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u5BFC\u5165\u672C\u5730\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u7528 DSH \u5C06\u56FE\u7247\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\uFF0C\u6216\u5728\u754C\u9762\u9009\u62E9\u672C\u5730\u56FE\u7247");
+    }
+    if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id) => typeof id !== "string" || !cloudId.test(id))) {
+      throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u672C\u5730\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0CSkill \u672A\u4FDD\u5B58\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247");
+    }
+    return schema.parse({ ...validated, referenceAssetIds: resolved });
+  }
+  async mySkillCreate(input, caller) {
     const ownerId = await this.owner(true);
-    const skill = await this.online.createUserSkill(record3(input.input, "input"));
+    const prepared = await this.resolveMySkillInput(record3(input.input, "input"), caller, ownerId, UserSkillCreateSchema);
+    await this.assertOwner(ownerId, true);
+    const skill = await this.online.createUserSkill(prepared);
     await this.assertOwner(ownerId, true);
     this.personalSkillVersions.set(this.personalSkillKey(ownerId, skill.id), skill.updatedAt);
     return skill;
   }
-  async mySkillUpdate(input) {
+  async mySkillUpdate(input, caller) {
+    const id = text2(input.id, "id", 180);
     const ownerId = await this.owner(true);
-    const skill = await this.online.updateUserSkill(text2(input.id, "id", 180), record3(input.input, "input"));
+    const prepared = await this.resolveMySkillInput(record3(input.input, "input"), caller, ownerId, UserSkillUpdateSchema);
+    await this.assertOwner(ownerId, true);
+    const skill = await this.online.updateUserSkill(id, prepared);
     await this.assertOwner(ownerId, true);
     this.personalSkillVersions.set(this.personalSkillKey(ownerId, skill.id), skill.updatedAt);
     return skill;
@@ -57431,7 +57480,10 @@ var PodploPluginService = class extends EventEmitter2 {
     if (!Number.isInteger(planVersion) || planVersion < 1 || planVersion > 1e6) throw new PodploPluginError("INVALID_ARGUMENT", "planVersion \u65E0\u6548");
     const operationId2 = optionalText(input.operationId, "operationId", 180);
     const manualOrdinary = caller.source === "ui" && caller.sessionId === void 0 && nativeSessionId === PODPLO_MANUAL_SESSION_ID;
-    const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, this.preparedItems(input.items, manualOrdinary));
+    const preparedItems = this.preparedItems(input.items, manualOrdinary);
+    const expectedOutputCount = this.expectedOutputCount(input);
+    this.assertPlannedOutputCount(preparedItems, expectedOutputCount);
+    const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, preparedItems);
     let processingPlan;
     try {
       processingPlan = parseProcessingPlan(input.processingPlan);
@@ -57445,12 +57497,14 @@ var PodploPluginService = class extends EventEmitter2 {
       if (exact.intentId !== intentId || exact.planVersion !== planVersion) throw new PodploPluginError("OPERATION_MISMATCH", "\u65B0\u610F\u56FE\u6216\u65B9\u6848\u7248\u672C\u5FC5\u987B\u65B0\u5EFA\u64CD\u4F5C");
       if (!isDeepStrictEqual(comparableGenerationItems(exact.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(exact.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
+      this.assertQuotedOutputCount(exact.items, expectedOutputCount);
       return this.safeOperation(exact);
     }
     const previous = state.operations.find((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.intentId === intentId && row.planVersion === planVersion);
     if (previous) {
       if (!isDeepStrictEqual(comparableGenerationItems(previous.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(previous.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
+      this.assertQuotedOutputCount(previous.items, expectedOutputCount);
       return this.safeOperation(previous);
     }
     const key = `${ownerId}:${nativeSessionId}:${intentId}:${planVersion}`;
@@ -57458,12 +57512,21 @@ var PodploPluginService = class extends EventEmitter2 {
     if (active) {
       if (!isDeepStrictEqual(comparableGenerationItems(active.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(active.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u540C\u4E00\u65B9\u6848\u7684\u52A0\u5DE5\u8981\u6C42\u4E0D\u4E00\u81F4\u3002");
-      return active.promise;
+      if (active.expectedOutputCount !== void 0 && expectedOutputCount !== void 0 && active.expectedOutputCount !== expectedOutputCount) {
+        throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u540C\u4E00\u65B9\u6848\u6B63\u5728\u6309 ${active.expectedOutputCount} \u5F20\u62A5\u4EF7\uFF0C\u4E0D\u80FD\u6539\u4E3A ${expectedOutputCount} \u5F20\u590D\u7528\u3002\u8BF7\u6536\u9F50\u5B8C\u6574\u6279\u6B21\u5E76\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u3002`);
+      }
+      if (expectedOutputCount === void 0 || active.expectedOutputCount === expectedOutputCount) return active.promise;
+      return active.promise.then((operation2) => {
+        if (operation2.quote.outputCount !== expectedOutputCount) {
+          throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u5728\u9014\u62A5\u4EF7\u9884\u8BA1\u8F93\u51FA ${operation2.quote.outputCount} \u5F20\uFF0C\u4E0E\u7528\u6237\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684 ${expectedOutputCount} \u5F20\u4E0D\u4E00\u81F4\u3002\u672A\u590D\u7528\u8BE5\u79EF\u5206\u786E\u8BA4\u3002`);
+        }
+        return operation2;
+      });
     }
     const taskName = optionalText(input.taskName, "taskName", 100);
     const archiveProject = this.options.resolveArchiveProject?.(caller, input);
-    const operation = this.prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, taskName, archiveProject, processingPlan).finally(() => this.preparing.delete(key));
-    this.preparing.set(key, { items, processingPlan, promise: operation });
+    const operation = this.prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan).finally(() => this.preparing.delete(key));
+    this.preparing.set(key, { items, ...expectedOutputCount !== void 0 ? { expectedOutputCount } : {}, processingPlan, promise: operation });
     return operation;
   }
   preparedItems(value, allowOrdinary = false) {
@@ -57480,6 +57543,34 @@ var PodploPluginService = class extends EventEmitter2 {
       if (args.templateId !== void 0 && args.templateId !== skillId) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684 Skill \u4E0E\u62A5\u4EF7\u53C2\u6570\u4E0D\u4E00\u81F4`);
       return { skillId, args: { ...args, templateId: skillId } };
     });
+  }
+  expectedOutputCount(input) {
+    const value = input.expectedOutputCount;
+    if (value === void 0) return void 0;
+    if (!Number.isSafeInteger(value) || value < 1 || value > 1e4) {
+      throw new PodploPluginError("INVALID_ARGUMENT", "expectedOutputCount \u5FC5\u987B\u662F\u7528\u6237\u672C\u8F6E\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684\u56FE\u7247\u603B\u6570\uFF081-10000\uFF09");
+    }
+    return value;
+  }
+  assertPlannedOutputCount(items, expectedOutputCount) {
+    if (expectedOutputCount === void 0) return;
+    let planned = 0;
+    for (const item of items) {
+      const count = item.args.count;
+      if (count === void 0 || !Number.isSafeInteger(count) || count < 1) return;
+      planned += count;
+      if (!Number.isSafeInteger(planned)) return;
+    }
+    if (planned !== expectedOutputCount) {
+      throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u672C\u6279\u53C2\u6570\u53EA\u5305\u542B ${planned} \u5F20\uFF0C\u4F46\u7528\u6237\u8981\u6C42\u5B8C\u6574\u6267\u884C ${expectedOutputCount} \u5F20\u3002\u8BF7\u6536\u9F50\u5168\u90E8\u56FE\u7247\u548C\u751F\u6210\u9879\u540E\u4E00\u6B21\u62A5\u4EF7\u3002`);
+    }
+  }
+  assertQuotedOutputCount(items, expectedOutputCount) {
+    if (expectedOutputCount === void 0) return;
+    const quoted = items.reduce((sum, item) => sum + item.quote.outputCount, 0);
+    if (!Number.isSafeInteger(quoted) || quoted !== expectedOutputCount) {
+      throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u6743\u5A01\u62A5\u4EF7\u9884\u8BA1\u8F93\u51FA ${quoted} \u5F20\uFF0C\u4E0E\u7528\u6237\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684 ${expectedOutputCount} \u5F20\u4E0D\u4E00\u81F4\u3002\u672A\u521B\u5EFA\u79EF\u5206\u786E\u8BA4\uFF0C\u8BF7\u6536\u9F50\u5168\u90E8\u751F\u6210\u9879\u540E\u91CD\u65B0\u62A5\u4EF7\u3002`);
+    }
   }
   async resolvePreparedReferences(ownerId, nativeSessionId, items) {
     const output = [];
@@ -57518,7 +57609,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (resolvedByHost) await this.assertOwner(ownerId, true);
     return output;
   }
-  async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, taskName, archiveProject, processingPlan) {
+  async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan) {
     await this.gateway().capabilities(false);
     await this.assertOwner(ownerId, true);
     const savedItems = [];
@@ -57542,6 +57633,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (!Number.isSafeInteger(savedItems.reduce((sum, item) => sum + item.quote.totalCredits, 0)) || !Number.isSafeInteger(savedItems.reduce((sum, item) => sum + item.quote.outputCount, 0))) {
       throw new PodploPluginError("INVALID_QUOTE_RESPONSE", "\u4E3B\u7AD9\u6574\u6279\u62A5\u4EF7\u8D85\u51FA\u5B89\u5168\u8303\u56F4");
     }
+    this.assertQuotedOutputCount(savedItems, expectedOutputCount);
     const now = this.now().toISOString();
     const row = {
       operationId: this.createId(),
@@ -58145,7 +58237,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.46.reference-inputs",
+  version: "0.1.0-alpha.47.batch-local",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -59131,9 +59223,10 @@ async function nativeToolkitTransport(options) {
       return { ownerId, namespace: online.auth.namespace };
     },
     async resolveInput(ownerId, sessionId, id) {
-      if (id.startsWith("sha256:")) {
+      const attachmentId = id.startsWith("sha256:") ? id : bareAttachmentDigest.test(id) ? `sha256:${id}` : void 0;
+      if (attachmentId) {
         const agent = session(ctx, sessionId);
-        const receipt = imageReceipt(agent.session.snapshotEvents(), id);
+        const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
         if (!receipt) return fail2("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
         return { id, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data), kind: "image" };
@@ -59338,9 +59431,11 @@ Use the available PodPlo tools first for Skills, gallery, assets, generation and
 
 For every generation task, provide a short taskName based on the user's request and processingPlan in podplo_prepare_generation. Pass [] when the user requested no later processing; otherwise register the exact supported tool name, normalized options and a readable label for each requested step before approval. Use sourceStepId only for an earlier step's outputs. This is local completion bookkeeping, not a provider parameter. For an existing task with missing requirements, use podplo_set_processing_plan on its original operation after confirming the user's actual requested steps; never re-quote or re-generate to register a processing plan. Task Results reports generated/downloaded/processed counts; only report everything complete when its actual audit is complete. If requirements are missing, say that checking for missed processing is unavailable. Never infer a processing requirement from a filename.
 
+Images attached to the current conversation, opened through DSH read_image or the native image chooser, and current-session local image results are valid PodPlo inputs. Reuse their opaque session IDs directly for image-processing tools, personal Skill referenceAssetIds, and generation or design references; the Host imports them when a cloud reference is required. Do not require the user to upload the same image to My Assets first, and never replace an opaque image ID with a filesystem path.
+
 When generation should use an image already attached to the current conversation or a current-session local image result, pass that opaque ID in items[].args.referenceAssetIds; the Host imports it before quoting. You may call podplo_import_reference_images first when an explicit cloud reference ID is useful, then reuse its referenceAssetIds result. Existing private cloud asset UUIDs may be passed directly. Never place these IDs in an undocumented provider field and never pass a filesystem path. For a computer-local image, first use DSH read_image or the native file chooser so the Host creates a session-bound image ID. Wait for reference import to finish before calling podplo_prepare_generation; do not claim that generation started while an import is pending.
 
-Pass multiple images or generation items in one supported batch within the tool's limits. Parallelize only independent read-only lookups when supported. Keep dependent processing in order and retain returned result IDs for the next step. Reuse an operationId only for a retry of the same unchanged image operation; use a new one for changed inputs or options. Never repeat an accepted operation to check its progress or recreate a generation batch after an unknown submission result. Read podplo_generation_status for the existing operation instead. After a host completion notification, query that exact operation once and continue from its results; do not restart discovery, pricing or generation. While the host is tracking generation, wait for its notification instead of running shell sleep/poll loops; refresh status when the user asks or recovery requires it.
+Before podplo_prepare_generation, count the complete number of outputs requested across the user's whole instruction and pass it as expectedOutputCount. When the user says to execute all, collect every requested image and generation item first, then call podplo_prepare_generation exactly once so one card confirms the combined credits. Never create separate 1-image and 2-image approvals for one 3-image request, and never set expectedOutputCount from a partial subset. Pass multiple images or generation items in one supported batch within the tool's limits. Parallelize only independent read-only lookups when supported. Keep dependent processing in order and retain returned result IDs for the next step. Reuse an operationId only for a retry of the same unchanged image operation; use a new one for changed inputs or options. Never repeat an accepted operation to check its progress or recreate a generation batch after an unknown submission result. Read podplo_generation_status for the existing operation instead. After a host completion notification, query that exact operation once and continue from its results; do not restart discovery, pricing or generation. While the host is tracking generation, wait for its notification instead of running shell sleep/poll loops; refresh status when the user asks or recovery requires it.
 
 For image processing, use podplo_selected_image_info on the relevant IDs, then the matching built-in tool for resizing, rotation/mirroring, colors, export, print files, packaging or outlines. Inspect each unchanged input only as needed; batch inspections and reuse their pixel facts. podplo_outline_images can return both the original direction and a full horizontal mirror in one call. Use returned IDs directly and inspect only the final results needed to verify the requested output. If IDs were lost, use podplo_list_local_results. Deliver via the existing PodPlo Task Results UI. In an IM conversation, after generation completes call podplo_prepare_generation_delivery with the exact operationId, then call dsh_im_return_file once for every returned path. That tool only queues the file; say it is prepared or queued, never that it has already been sent or received. Do not scan private storage, extract credentials, or download and re-upload an image just to reach a tool that already accepts its ID. If the user explicitly requests a destination or attachment that these tools cannot produce, explain that limitation and use an authorized supported fallback.
 
