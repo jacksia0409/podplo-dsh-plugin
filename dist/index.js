@@ -56862,6 +56862,26 @@ var PodploPluginService = class extends EventEmitter2 {
   async approveGenerationFromNativeApproval(input, sessionId) {
     return this.generationApprove(input, { source: "agent", sessionId }, true);
   }
+  /** Host-only rejection paired with the exact native approval request. */
+  async cancelGenerationFromNativeApproval(input, sessionId) {
+    const operationId2 = text2(input.operationId, "operationId", 180);
+    const approvalId = text2(input.approvalId, "approvalId", 180);
+    const nativeSessionId = this.nativeSessionFor({ source: "agent", sessionId });
+    const found = this.store.snapshot().operations.find((row) => row.operationId === operationId2 && row.approvalId === approvalId && row.nativeSessionId === nativeSessionId);
+    if (!found) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u5BF9\u8BDD");
+    await this.store.transaction((saved) => {
+      const row = saved.operations.find((value) => value.ownerId === found.ownerId && value.operationId === operationId2 && value.approvalId === approvalId && value.nativeSessionId === nativeSessionId);
+      if (!row) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u5BF9\u8BDD");
+      if (row.status === "cancelled") return;
+      if (row.status !== "quoted") return;
+      for (const item of row.items) item.status = "cancelled";
+      row.status = "cancelled";
+      row.updatedAt = this.now().toISOString();
+    });
+    this.emit("change", this.snapshot());
+    const operation = this.store.snapshot().operations.find((row) => row.ownerId === found.ownerId && row.operationId === operationId2);
+    return this.safeOperation(operation);
+  }
   async dispatch(action, args, caller) {
     if (!this.initialized) throw new PodploPluginError("NOT_INITIALIZED", "\u670D\u52A1\u5C1A\u672A\u521D\u59CB\u5316");
     if (this.closed) throw new PodploPluginError("SERVICE_CLOSED", "\u670D\u52A1\u5DF2\u5173\u95ED");
@@ -58237,7 +58257,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.47.batch-local",
+  version: "0.1.0-alpha.50.ui-local",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -59442,7 +59462,7 @@ For image processing, use podplo_selected_image_info on the relevant IDs, then t
 A transparent-image or outline request requires actual transparent pixels. If hasTransparency is false, report the unmet requirement and the available next step. Do not silently substitute a fake checkerboard, a new paid generation, or repeated custom background-removal scripts. Use custom image processing when the user explicitly requests or approves that alternative and it is supported; report its limitations and verify the result.
 
 For a simple product or UI question, use available reliable context or the smallest relevant documentation/tool lookup, then answer once the evidence is sufficient. A missing lookup is not a reason to repeatedly scan directories or unpack application binaries. State the specific uncertainty if evidence is unavailable. Use general shell, file, web or coding tools when the task actually needs them, including explicit coding/custom-processing requests or a documented gap in the PodPlo tools. Do not reimplement an existing PodPlo tool. Correct an identified cause before retrying; unchanged failures should lead to a clear blocker or supported alternative, not an unbounded retry/search loop. Finish when the requested deliverables have been verified, with a concise result and any remaining limitation.`;
-var podploConversationGuidance = `podplo_prepare_generation requests one native, session-bound approval for the exact persisted quote. In an IM conversation the channel presents that approval; the existing trusted \u201C\u786E\u8BA4\u5E76\u751F\u6210\u201D card remains available in the native UI. Only nativeApproval.outcome="allowed-once" or "allowed-elsewhere" means submission was approved. A rejected, cancelled or unavailable outcome must not be retried or replaced by a text confirmation; report that the operation was not submitted unless the user explicitly asks for a new attempt. After an allowed approval in an IM conversation, immediately call podplo_wait_generation for that exact operation in the same turn. If it reaches a successful terminal state, call podplo_prepare_generation_delivery and then dsh_im_return_file once for each returned path before ending the turn. A wait timeout or interruption never cancels or resubmits an accepted cloud task; report that it continues in the background, and a later user message may query the same operation and prepare delivery in that new IM turn. Do not call ask_user_question and do not ask the user to say whether they approved. In a non-IM conversation, or when no active wait remains, use the verified PodPlo host completion notification and read podplo_generation_status for the exact operation.`;
+var podploConversationGuidance = `podplo_prepare_generation requests one native, session-bound approval for the exact persisted quote and is the required gate before paid generation or any dependent processing. In an IM conversation the channel presents that approval; the existing trusted \u201C\u786E\u8BA4\u5E76\u751F\u6210\u201D card remains available in the native UI. Only nativeApproval.outcome="allowed-once" or "allowed-elsewhere" means submission was approved. The Host ends the active turn immediately after a rejected, cancelled or unavailable outcome, cancels the quote and clears the unfinished task list; do not expect another model step, retry or text confirmation in that turn. After an allowed approval in an IM conversation, immediately call podplo_wait_generation for that exact operation in the same turn. If it reaches a successful terminal state, call podplo_prepare_generation_delivery and then dsh_im_return_file once for each returned path before ending the turn. A wait timeout or interruption never cancels or resubmits an accepted cloud task; report that it continues in the background, and a later user message may query the same operation and prepare delivery in that new IM turn. Do not call ask_user_question and do not ask the user to say whether they approved. In a non-IM conversation, or when no active wait remains, use the verified PodPlo host completion notification and read podplo_generation_status for the exact operation.`;
 function standardAgentPlugins() {
   return [
     { id: "persona", name: "@deepseek-ai/dsh-persona", config: { prefix: `You are the PodPlo assistant powered by the {{model}} model.
@@ -60449,13 +60469,34 @@ async function executeNativeGenerationApproval(options) {
   }
   let result = prepared;
   let publicOutcome = outcome;
-  if (external?.approved) {
-    result = external.value ?? prepared;
-    publicOutcome = "allowed-elsewhere";
-    options.onApproved?.(prepared.operationId);
+  if (external) {
+    if (external.approved) {
+      result = external.value ?? prepared;
+      publicOutcome = "allowed-elsewhere";
+      options.onApproved?.(prepared.operationId);
+    } else {
+      publicOutcome = outcome === "allowed-once" ? "cancelled" : outcome;
+      const resolved = await options.onDeclined?.({
+        operationId: prepared.operationId,
+        approvalId: prepared.approvalId,
+        outcome: publicOutcome
+      });
+      if (resolved?.approved) {
+        result = resolved.value ?? prepared;
+        publicOutcome = "allowed-elsewhere";
+        options.onApproved?.(prepared.operationId);
+      } else result = resolved?.value ?? external.value ?? prepared;
+    }
   } else if (outcome === "allowed-once") {
     result = await options.approve({ operationId: prepared.operationId, approvalId: prepared.approvalId });
     options.onApproved?.(prepared.operationId);
+  } else {
+    const resolved = await options.onDeclined?.({ operationId: prepared.operationId, approvalId: prepared.approvalId, outcome });
+    if (resolved?.approved) {
+      result = resolved.value ?? prepared;
+      publicOutcome = "allowed-elsewhere";
+      options.onApproved?.(prepared.operationId);
+    } else result = resolved?.value ?? prepared;
   }
   const value = result && typeof result === "object" ? result : {};
   return { content: [{ type: "text", text: JSON.stringify({
@@ -60778,7 +60819,21 @@ async function apply(ctx, config3 = {}) {
                 service.off("change", changed);
               };
             },
-            onApproved: (operationId2) => reserveNativeGenerationWait(agent.id, operationId2)
+            onApproved: (operationId2) => reserveNativeGenerationWait(agent.id, operationId2),
+            onDeclined: async (input) => {
+              const approvalAgent = execution.agent ?? agent;
+              const result = await service.cancelGenerationFromNativeApproval(input, agent.id);
+              const accepted = typeof result?.approvedAt === "string" || ["submitting", "submitted", "completed", "partial_unknown", "submission_unknown"].includes(String(result?.status ?? ""));
+              if (accepted) return { approved: true, value: result };
+              if (result?.status === "cancelled") {
+                try {
+                  approvalAgent.session?.append?.("todo/write", { todos: [] });
+                } finally {
+                  approvalAgent.cancel?.({ kind: "user" });
+                }
+              }
+              return { approved: false, value: result };
+            }
           });
         }
       });
