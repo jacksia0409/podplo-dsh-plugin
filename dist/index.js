@@ -22402,7 +22402,7 @@ var require_outline_core = __commonJS({
 import { createCipheriv, createDecipheriv, randomBytes as randomBytes3, randomUUID as randomUUID12 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { basename as basename9, isAbsolute as isAbsolute6, resolve } from "node:path";
+import { basename as basename10, isAbsolute as isAbsolute6, resolve } from "node:path";
 import { dshHomePath } from "@deepseek-ai/dsh-home-paths";
 import { credentialKey } from "@deepseek-ai/dsh-credentials";
 import * as NativeMcp from "@deepseek-ai/dsh-mcp-client";
@@ -37523,14 +37523,14 @@ var OAuthSession = class {
     };
     let settled = false;
     const promise3 = new Promise((resolve2, reject) => {
-      const fail2 = (error101) => {
+      const fail3 = (error101) => {
         if (settled) return;
         settled = true;
         abort.abort();
         reject(error101);
       };
-      cancel = () => fail2(new OnlineError("AUTHORIZATION_CANCELLED"));
-      timer = setTimeout(() => fail2(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs);
+      cancel = () => fail3(new OnlineError("AUTHORIZATION_CANCELLED"));
+      timer = setTimeout(() => fail3(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs);
       void (async () => {
         const resource = external_exports.object({ resource: external_exports.string(), authorization_servers: external_exports.array(external_exports.string()) }).parse(await this.http.json("/.well-known/oauth-protected-resource/api/mcp", { signal: abort.signal }));
         if (resource.resource !== `${this.http.origin}/api/mcp` || !resource.authorization_servers.includes(this.http.origin)) throw new OnlineError("RESOURCE_MISMATCH");
@@ -37574,7 +37574,7 @@ var OAuthSession = class {
           }
           if (url4.searchParams.has("error")) {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u53EF\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail2(new OnlineError("AUTHORIZATION_DENIED"));
+            fail3(new OnlineError("AUTHORIZATION_DENIED"));
             return;
           }
           const code = url4.searchParams.get("code");
@@ -37603,7 +37603,7 @@ var OAuthSession = class {
             resolve2(grant);
           }).catch((error101) => {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail2(error101);
+            fail3(error101);
           });
         });
         await new Promise((ready, rejectListen) => {
@@ -37640,7 +37640,7 @@ var OAuthSession = class {
         }).toString();
         if (settled) return;
         await openBrowser(url3.href);
-      })().catch(fail2);
+      })().catch(fail3);
     });
     this.attempt = { promise: promise3, cancel: () => cancel() };
     try {
@@ -56581,7 +56581,7 @@ var TOOL_DEFINITIONS = [
   { name: "podplo_request_my_skill_deletion", description: "Prepare deletion of an owned Skill. A UI confirmation is always required.", inputSchema: objectSchema({ id: stringSchema, expectedUpdatedAt: stringSchema }, ["id", "expectedUpdatedAt"]) },
   { name: "podplo_resolve_selection", description: "Resolve an exact Skill, gallery item or private asset for native conversation injection.", inputSchema: objectSchema({ kind: { type: "string", enum: ["skill", "gallery", "asset"] }, id: stringSchema }, ["kind", "id"]) },
   { name: "podplo_generation_capabilities", description: "Read the authoritative generation quote input JSON schema and complete current model list. Use a returned model id; never guess a UUID. Treat only exposed schema fields as controllable modes: For transparent images, check the selected model and schema for background=transparent and output_format=png or webp. These are provider parameters in each item.args, not prompt instructions. An absent parameter does not prove the underlying model never supports it, and prompt text must not impersonate a missing mode switch.", inputSchema: objectSchema({ refresh: { type: "boolean" } }) },
-  { name: "podplo_prepare_generation", description: 'Quote every item in one generation batch without submitting it. Pass provider parameters in each item.args: a transparent-background request requires background="transparent" and output_format="png" or "webp" (PNG by default), after checking podplo_generation_capabilities for schema and model support. Never rely only on wording in prompt for an alpha channel; JPEG cannot carry alpha. Missing server support must be reported, not replaced by prompt text. When status is quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears in the current conversation. End the turn and wait for that card; do not call ask_user_question or ask the user to report that they clicked it. The Agent is resumed with the verified operation status after the UI approval finishes.', inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, args: { type: "object", properties: { background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "items"]) },
+  { name: "podplo_prepare_generation", description: `Quote every item in one generation batch without submitting it. For current-conversation images, put their opaque attachment/result IDs in each item.args.referenceAssetIds; the Host imports them into the signed-in user's private references before quoting. Existing private cloud asset UUIDs are reused without uploading. Pass provider parameters in each item.args: a transparent-background request requires background="transparent" and output_format="png" or "webp" (PNG by default), after checking podplo_generation_capabilities for schema and model support. Never rely only on wording in prompt for an alpha channel; JPEG cannot carry alpha. Missing server support must be reported, not replaced by prompt text. When status is quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears in the current conversation. End the turn and wait for that card; do not call ask_user_question or ask the user to report that they clicked it. The Agent is resumed with the verified operation status after the UI approval finishes.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, args: { type: "object", properties: { referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "items"]) },
   { name: "podplo_generation_status", description: "Read or refresh one existing generation operation. This never resubmits. completed only means remote generation finished; verify real pixels for transparency or later local processing with podplo_selected_image_info.", inputSchema: objectSchema({ operationId: stringSchema, refresh: { type: "boolean" } }, ["operationId"]) },
   { name: "podplo_list_generations", description: "List generation operations for the current account.", inputSchema: objectSchema({}) }
 ];
@@ -57431,7 +57431,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (!Number.isInteger(planVersion) || planVersion < 1 || planVersion > 1e6) throw new PodploPluginError("INVALID_ARGUMENT", "planVersion \u65E0\u6548");
     const operationId2 = optionalText(input.operationId, "operationId", 180);
     const manualOrdinary = caller.source === "ui" && caller.sessionId === void 0 && nativeSessionId === PODPLO_MANUAL_SESSION_ID;
-    const items = this.preparedItems(input.items, manualOrdinary);
+    const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, this.preparedItems(input.items, manualOrdinary));
     let processingPlan;
     try {
       processingPlan = parseProcessingPlan(input.processingPlan);
@@ -57480,6 +57480,43 @@ var PodploPluginService = class extends EventEmitter2 {
       if (args.templateId !== void 0 && args.templateId !== skillId) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684 Skill \u4E0E\u62A5\u4EF7\u53C2\u6570\u4E0D\u4E00\u81F4`);
       return { skillId, args: { ...args, templateId: skillId } };
     });
+  }
+  async resolvePreparedReferences(ownerId, nativeSessionId, items) {
+    const output = [];
+    let resolvedByHost = false;
+    for (const item of items) {
+      const args = { ...item.args };
+      const primary = args.referenceAssetIds;
+      const compatibility = args.imageIds;
+      if (primary === void 0 && compatibility === void 0) {
+        output.push({ ...item, args });
+        continue;
+      }
+      const parse5 = (value, label) => {
+        if (value === void 0) return [];
+        if (!Array.isArray(value) || value.length > 14 || value.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id)))
+          throw new PodploPluginError("INVALID_REFERENCE_ID", `${label} \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID`);
+        return value;
+      };
+      const ids2 = [.../* @__PURE__ */ new Set([...parse5(primary, "referenceAssetIds"), ...parse5(compatibility, "imageIds")])];
+      if (ids2.length > 14) throw new PodploPluginError("INVALID_REFERENCE_ID", "\u6BCF\u9879\u6700\u591A\u4F7F\u7528 14 \u5F20\u53C2\u8003\u56FE");
+      let resolved = ids2;
+      if (ids2.length === 0) {
+        resolved = [];
+      } else if (this.options.resolveGenerationReferences) {
+        resolvedByHost = true;
+        resolved = await this.options.resolveGenerationReferences({ ownerId, nativeSessionId, ids: ids2 });
+      } else if (ids2.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id))) {
+        throw new PodploPluginError("NATIVE_REFERENCE_IMPORT_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u5BFC\u5165\u4F1A\u8BDD\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u4E0A\u4F20\u5230\u201C\u6211\u7684\u7D20\u6750\u201D\u3002");
+      }
+      if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id) => typeof id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id)))
+        throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247\u3002");
+      args.referenceAssetIds = [...new Set(resolved)];
+      delete args.imageIds;
+      output.push({ ...item, args });
+    }
+    if (resolvedByHost) await this.assertOwner(ownerId, true);
+    return output;
   }
   async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, taskName, archiveProject, processingPlan) {
     await this.gateway().capabilities(false);
@@ -58108,7 +58145,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.45.sanitized",
+  version: "0.1.0-alpha.46.reference-inputs",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -58601,14 +58638,197 @@ async function startPluginMcp(service) {
 }
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
+import sharp8 from "sharp";
+import { basename as basename7, extname as extname5 } from "node:path";
+
+// plugins/podplo-dsh/src/native-reference-bridge.ts
+import { createHash as createHash6 } from "node:crypto";
+import { basename as basename5, extname as extname3, join as join7 } from "node:path";
 import sharp7 from "sharp";
-import { basename as basename6, extname as extname4 } from "node:path";
+var MAX_INPUT_BYTES = 5e7;
+var MAX_OUTPUT_BYTES = 1e7;
+var MAX_INPUT_PIXELS = 4e7;
+var MAX_EDGE = 4096;
+var CLOUD_ID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+var OPAQUE_ID = /^[^/\\\x00\r\n]+$/u;
+var MappingSchema = external_exports2.object({
+  authorization: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  session: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  fingerprint: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  cloudAssetId: external_exports2.string().uuid().optional(),
+  status: external_exports2.enum(["uploading", "ready", "unknown"]),
+  updatedAt: external_exports2.string().datetime()
+}).strict();
+var hash3 = (value) => createHash6("sha256").update(value).digest("hex");
+var fail = (code, message) => {
+  throw new PodploPluginError(code, message);
+};
+var authorizationHash = (identity) => hash3(`${identity.ownerId}\0${identity.namespace ?? ""}`);
+function safeWebpName(value) {
+  const leaf = basename5(value.replace(/\\/gu, "/"));
+  const stem = basename5(leaf, extname3(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
+  return `${stem}.webp`;
+}
+async function normalizeNativeReference(input) {
+  const source = Buffer.from(input.bytes);
+  if (!source.length || source.length > MAX_INPUT_BYTES) fail("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
+  let metadata;
+  try {
+    metadata = await sharp7(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
+  } catch {
+    return fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
+  }
+  if (!metadata.width || !metadata.height || !["jpeg", "png", "webp"].includes(metadata.format ?? "") || metadata.width * metadata.height > MAX_INPUT_PIXELS || metadata.pages && metadata.pages > 1)
+    fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
+  const swaps = metadata.orientation !== void 0 && [5, 6, 7, 8].includes(metadata.orientation);
+  const orientedWidth = swaps ? metadata.height : metadata.width;
+  const orientedHeight = swaps ? metadata.width : metadata.height;
+  const edgeScale = Math.min(1, MAX_EDGE / Math.max(orientedWidth, orientedHeight));
+  const pixelScale = Math.min(1, Math.sqrt(MAX_INPUT_PIXELS / (orientedWidth * orientedHeight)));
+  let scale = Math.min(edgeScale, pixelScale);
+  const targetBytes = Math.min(MAX_OUTPUT_BYTES, Math.max(1024, Math.floor(source.length * 0.3)));
+  let quality = 78;
+  let output = Buffer.alloc(0);
+  for (let attempt = 0; attempt < 9; attempt++) {
+    const width = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
+    const height = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
+    output = await sharp7(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width, height, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
+    if (output.length <= targetBytes) break;
+    const ratio = Math.sqrt(targetBytes / output.length) * 0.92;
+    scale *= Math.max(0.42, Math.min(0.88, ratio));
+    quality = Math.max(38, quality - 7);
+  }
+  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
+  const verified = await sharp7(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
+  if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)
+    fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
+  return { name: safeWebpName(input.name), bytes: output, fingerprint: hash3(output) };
+}
+var NativeReferenceBridge = class {
+  constructor(directory, deps) {
+    this.deps = deps;
+    this.store = new AtomicStore(join7(directory, "native-reference-bridge.json"), () => ({ schemaVersion: 1, mappings: [] }), (value) => external_exports2.object({ schemaVersion: external_exports2.literal(1), mappings: external_exports2.array(MappingSchema).max(5e3) }).strict().parse(value));
+  }
+  deps;
+  store;
+  inFlight = /* @__PURE__ */ new Map();
+  async init() {
+    await this.store.load();
+    await this.store.transaction((state) => {
+      for (const mapping of state.mappings) if (mapping.status === "uploading") {
+        mapping.status = "unknown";
+        mapping.updatedAt = (/* @__PURE__ */ new Date()).toISOString();
+      }
+    });
+  }
+  async resolveReferences(expectedOwnerId, sessionId, rawIds) {
+    const ids2 = external_exports2.array(external_exports2.string().min(1).max(240).regex(OPAQUE_ID, "\u53C2\u8003\u56FE\u5FC5\u987B\u662F\u4F1A\u8BDD\u4E2D\u7684\u4E0D\u900F\u660E ID\uFF0C\u4E0D\u80FD\u662F\u6587\u4EF6\u8DEF\u5F84")).min(1).max(14).parse(rawIds);
+    const identity = await this.deps.authorize(true);
+    if (identity.ownerId !== expectedOwnerId) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    const expectedAuthorization = authorizationHash(identity);
+    const resolved = [];
+    for (const id of ids2) {
+      const local = await this.deps.resolveLocal(sessionId, id);
+      await this.assertIdentity(identity, true);
+      if (!local) {
+        if (!CLOUD_ID.test(id)) fail("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        resolved.push(id);
+        continue;
+      }
+      if (local.id !== id) fail("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
+      const normalized = await normalizeNativeReference(local);
+      await this.assertIdentity(identity, true);
+      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized));
+    }
+    await this.assertIdentity(identity, true);
+    return resolved;
+  }
+  async assertIdentity(expected, write) {
+    const current = await this.deps.authorize(write);
+    if (authorizationHash(current) !== authorizationHash(expected)) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+  }
+  mappingKey(authorization, sessionId, fingerprint2) {
+    return `${authorization}:${hash3(sessionId)}:${fingerprint2}`;
+  }
+  find(authorization, sessionId, fingerprint2) {
+    const session2 = hash3(sessionId);
+    return this.store.snapshot().mappings.find((row) => row.authorization === authorization && row.session === session2 && row.fingerprint === fingerprint2);
+  }
+  async resolveLocal(identity, authorization, sessionId, input) {
+    const key = this.mappingKey(authorization, sessionId, input.fingerprint);
+    const pending = this.inFlight.get(key);
+    if (pending) return pending;
+    const operation = this.resolveOrUpload(identity, authorization, sessionId, input);
+    this.inFlight.set(key, operation);
+    try {
+      return await operation;
+    } finally {
+      if (this.inFlight.get(key) === operation) this.inFlight.delete(key);
+    }
+  }
+  async resolveOrUpload(identity, authorization, sessionId, input) {
+    let mapping = this.find(authorization, sessionId, input.fingerprint);
+    if (mapping?.status === "ready" && mapping.cloudAssetId) return mapping.cloudAssetId;
+    if (mapping) {
+      if (mapping.cloudAssetId && this.deps.inspectReference) {
+        try {
+          const detail = await this.deps.inspectReference(mapping.cloudAssetId);
+          await this.assertIdentity(identity, true);
+          if (detail.id === mapping.cloudAssetId && detail.status === "ready") {
+            await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
+            return detail.id;
+          }
+        } catch (error101) {
+          if (error101 instanceof PodploPluginError && error101.code === "ACCOUNT_CHANGED") throw error101;
+        }
+      }
+      return fail("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+    }
+    await this.assertIdentity(identity, true);
+    await this.store.transaction((state) => {
+      if (state.mappings.length >= 5e3) throw new PodploPluginError("REFERENCE_MAPPING_FULL", "\u53C2\u8003\u56FE\u4E0A\u4F20\u6620\u5C04\u5DF2\u6EE1\uFF0C\u8BF7\u8054\u7CFB\u652F\u6301\u5904\u7406\u3002");
+      state.mappings.push(MappingSchema.parse({
+        authorization,
+        session: hash3(sessionId),
+        fingerprint: input.fingerprint,
+        status: "uploading",
+        updatedAt: (/* @__PURE__ */ new Date()).toISOString()
+      }));
+    });
+    mapping = this.find(authorization, sessionId, input.fingerprint);
+    try {
+      const detail = await this.deps.uploadReference({ filename: input.name, contentType: "image/webp", bytes: input.bytes }, identity.ownerId);
+      if (!CLOUD_ID.test(detail.id)) throw new Error("Invalid uploaded reference id");
+      if (detail.status !== "ready") {
+        await this.update(mapping, { status: "unknown", cloudAssetId: detail.id });
+        fail("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      }
+      await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
+      await this.assertIdentity(identity, true);
+      return detail.id;
+    } catch (error101) {
+      const latest = this.find(authorization, sessionId, input.fingerprint);
+      if (latest?.status === "uploading") await this.update(latest, { status: "unknown" });
+      if (error101 instanceof PodploPluginError) throw error101;
+      return fail("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+    }
+  }
+  async update(mapping, patch) {
+    await this.store.transaction((state) => {
+      const target = state.mappings.find((row) => row.authorization === mapping.authorization && row.session === mapping.session && row.fingerprint === mapping.fingerprint);
+      if (!target) throw new PodploPluginError("REFERENCE_MAPPING_CHANGED", "\u53C2\u8003\u56FE\u4E0A\u4F20\u6620\u5C04\u5DF2\u53D8\u5316\u3002");
+      target.status = patch.status;
+      if (patch.cloudAssetId) target.cloudAssetId = patch.cloudAssetId;
+      target.updatedAt = (/* @__PURE__ */ new Date()).toISOString();
+    });
+  }
+};
 
 // plugins/podplo-dsh/src/output-directory.ts
-import { createHash as createHash6, randomUUID as randomUUID10 } from "node:crypto";
+import { createHash as createHash7, randomUUID as randomUUID10 } from "node:crypto";
 import { constants as constants3 } from "node:fs";
 import { lstat as lstat3, mkdir as mkdir6, open as open4, realpath as realpath4, unlink as unlink2 } from "node:fs/promises";
-import { basename as basename5, dirname as dirname7, extname as extname3, isAbsolute as isAbsolute4, join as join7, relative as relative3 } from "node:path";
+import { basename as basename6, dirname as dirname7, extname as extname4, isAbsolute as isAbsolute4, join as join8, relative as relative3 } from "node:path";
 var hashPattern2 = /^[a-f0-9]{64}$/u;
 var opaqueSession = external_exports2.string().min(1).max(240).regex(/^[^/\\\0\r\n]+$/u);
 var directoryRowSchema = external_exports2.object({
@@ -58626,14 +58846,14 @@ function validateState2(value) {
   return state;
 }
 function sha2562(value) {
-  return createHash6("sha256").update(value).digest("hex");
+  return createHash7("sha256").update(value).digest("hex");
 }
 function fingerprint(stat) {
   return `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}`;
 }
 function safeName2(value) {
-  const extension = extname3(basename5(value)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
-  const rawStem = basename5(value, extname3(value)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
+  const extension = extname4(basename6(value)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
+  const rawStem = basename6(value, extname4(value)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
   const stem = Array.from(rawStem || "result").slice(0, 160).join("");
   return `${stem}${extension || ".bin"}`;
 }
@@ -58645,8 +58865,8 @@ var OutputDirectoryManager = class {
   constructor(options) {
     this.options = options;
     if (!isAbsolute4(options.directory)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5B58\u50A8\u4F4D\u7F6E\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
-    this.rootCandidate = join7(options.directory, "output-settings-v1");
-    this.store = new AtomicStore(join7(this.rootCandidate, "state.json"), () => ({ schemaVersion: 1, directories: [] }), validateState2);
+    this.rootCandidate = join8(options.directory, "output-settings-v1");
+    this.store = new AtomicStore(join8(this.rootCandidate, "state.json"), () => ({ schemaVersion: 1, directories: [] }), validateState2);
   }
   options;
   rootCandidate;
@@ -58716,12 +58936,12 @@ var OutputDirectoryManager = class {
     if (!row) throw new Error("\u8BF7\u5148\u5728\u624B\u52A8\u5DE5\u5177\u7BB1\u4E2D\u786E\u8BA4\u8F93\u51FA\u76EE\u5F55");
     const root = await this.verifyRoot(row.path), requested = safeName2(external_exports2.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
-    const extension = extname3(requested), stem = basename5(requested, extension);
+    const extension = extname4(requested), stem = basename6(requested, extension);
     let published, publishedName = "", publishedFingerprint = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
         const name = index === 1 ? requested : `${stem}-${index}${extension}`;
-        const candidate = join7(root, name);
+        const candidate = join8(root, name);
         let handle;
         try {
           handle = await open4(candidate, constants3.O_WRONLY | constants3.O_CREAT | constants3.O_EXCL | constants3.O_NOFOLLOW, 384);
@@ -58838,11 +59058,26 @@ var OutputDirectoryManager = class {
 };
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
-var fail = (code, message) => {
+var fail2 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
+var cloudAssetId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+var bareAttachmentDigest = /^[a-f0-9]{64}$/u;
+var importReferenceDefinition = {
+  name: "podplo_import_reference_images",
+  description: "Import image attachments or local image results from this exact native conversation into the signed-in user's private reference library. Pass opaque image IDs returned by DSH, never filesystem paths. Existing private cloud asset UUIDs are reused without uploading. This only imports references; it does not quote, approve or start generation.",
+  inputSchema: { type: "object", additionalProperties: false, required: ["imageIds"], properties: {
+    imageIds: {
+      type: "array",
+      minItems: 1,
+      maxItems: 14,
+      uniqueItems: true,
+      items: { type: "string", minLength: 1, maxLength: 240, pattern: "^[^/\\\\\\u0000\\r\\n]+$" }
+    }
+  } }
+};
 function session(ctx, id) {
-  return id && ctx.agents.get(id) || fail("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
+  return id && ctx.agents.get(id) || fail2("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
 }
 function imageReceipt(events, id) {
   if (!events || typeof events !== "object") return;
@@ -58854,16 +59089,16 @@ function imageReceipt(events, id) {
   }
 }
 async function downloadOriginal(value, assetId, fetcher = fetch) {
-  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
+  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail2("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
   const url3 = new URL(value);
   if (url3.protocol !== "https:" || !/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url3.hostname) || url3.port || url3.username || url3.password || url3.hash || !new RegExp(`^/podplo-assets/(?:upload|generated)/${assetId}/original\\.(?:png|jpg|jpeg|webp)$`, "u").test(url3.pathname))
-    fail("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
+    fail2("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
   const response = await fetcher(url3, { redirect: "error", credentials: "omit", signal: AbortSignal.timeout(6e4) });
   const limit = 1e8;
-  if (!response.ok || !response.body) fail("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+  if (!response.ok || !response.body) fail2("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
   if (Number(response.headers.get("content-length")) > limit) {
     await response.body.cancel();
-    fail("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+    fail2("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
   }
   const reader = response.body.getReader(), chunks = [];
   let length = 0;
@@ -58874,15 +59109,15 @@ async function downloadOriginal(value, assetId, fetcher = fetch) {
       length += part.value.length;
       if (length > limit) {
         await reader.cancel();
-        fail("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+        fail2("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
       }
       chunks.push(part.value);
     }
   } finally {
     reader.releaseLock();
   }
-  const bytes = Buffer.concat(chunks), meta5 = await sharp7(bytes, { limitInputPixels: 1e8 }).metadata();
-  if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+  const bytes = Buffer.concat(chunks), meta5 = await sharp8(bytes, { limitInputPixels: 1e8 }).metadata();
+  if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail2("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
   return bytes;
 }
 async function nativeToolkitTransport(options) {
@@ -58899,21 +59134,68 @@ async function nativeToolkitTransport(options) {
       if (id.startsWith("sha256:")) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), id);
-        if (!receipt) return fail("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail2("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
         return { id, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data), kind: "image" };
       }
       const namespace = online.auth.namespace;
-      if (await online.workspaceIdentity(false) !== ownerId) return fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+      if (await online.workspaceIdentity(false) !== ownerId) return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
       const detail = await online.reference(id);
-      if (!detail.downloadUrl || detail.status !== "ready") return fail("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+      if (!detail.downloadUrl || detail.status !== "ready") return fail2("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
       const bytes = await downloadOriginal(detail.downloadUrl, id, options.fetcher);
       if (namespace !== online.auth.namespace || await online.workspaceIdentity(false) !== ownerId)
-        return fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+        return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
       return { id, name: detail.filename ?? `\u7D20\u6750-${id}.png`, bytes, kind: "image" };
     }
   });
   await toolkit.init();
+  const localReferenceIndexes = /* @__PURE__ */ new Map();
+  const acquireLocalReferenceIndex = (sessionId) => {
+    let active = localReferenceIndexes.get(sessionId);
+    if (!active) {
+      active = { users: 0, promise: toolkit.archiveOperations().then((archives) => {
+        const current = /* @__PURE__ */ new Set(), other = /* @__PURE__ */ new Set();
+        for (const operation of archives.items) for (const result of operation.results)
+          (operation.sessionId === sessionId ? current : other).add(result.id);
+        return { current, other };
+      }) };
+      localReferenceIndexes.set(sessionId, active);
+    }
+    active.users++;
+    return active;
+  };
+  const referenceBridge = new NativeReferenceBridge(`${options.directory}/reference-import-v1`, {
+    async authorize(write) {
+      const ownerId = await online.workspaceIdentity(write);
+      return { ownerId, ...online.auth.namespace ? { namespace: online.auth.namespace } : {} };
+    },
+    async resolveLocal(sessionId, id) {
+      const attachmentId = id.startsWith("sha256:") ? id : bareAttachmentDigest.test(id) ? `sha256:${id}` : void 0;
+      if (attachmentId) {
+        const agent = session(ctx, sessionId);
+        const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
+        if (!receipt) return fail2("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        const stored = await ctx.attachments.readImage(receipt);
+        return { id, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data) };
+      }
+      if (!cloudAssetId.test(id)) return void 0;
+      const index = localReferenceIndexes.get(sessionId);
+      if (!index) throw new Error("Native reference lookup is not active");
+      const known = await index.promise;
+      if (known.other.has(id))
+        return fail2("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
+      if (!known.current.has(id)) return void 0;
+      const result = await toolkit.readResult(id, sessionId, "read");
+      if (result.kind !== "image") return fail2("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
+      return { id, name: result.name, bytes: result.bytes };
+    },
+    uploadReference: (input, expectedOwnerId) => online.uploadReference(input, expectedOwnerId),
+    inspectReference: (assetId) => online.reference(assetId)
+  });
+  await referenceBridge.init().catch(async (error101) => {
+    await toolkit.close();
+    throw error101;
+  });
   const outputs = new OutputDirectoryManager({
     directory: options.directory,
     async authorize(purpose) {
@@ -58928,23 +59210,42 @@ async function nativeToolkitTransport(options) {
     throw error101;
   });
   const localNames = new Set(toolkit.toolDefinitions().map((row) => row.name));
+  const resolveGenerationReferences = async (input) => {
+    const index = acquireLocalReferenceIndex(input.nativeSessionId);
+    try {
+      return await referenceBridge.resolveReferences(input.ownerId, input.nativeSessionId, input.ids);
+    } finally {
+      index.users--;
+      if (index.users === 0 && localReferenceIndexes.get(input.nativeSessionId) === index) localReferenceIndexes.delete(input.nativeSessionId);
+    }
+  };
   const transport = {
     async toolDefinitions() {
-      return [...await service.toolDefinitions(), ...toolkit.toolDefinitions()];
+      return [...await service.toolDefinitions(), importReferenceDefinition, ...toolkit.toolDefinitions()];
     },
     async callTool(name, args, sessionId) {
+      if (name === importReferenceDefinition.name) {
+        session(ctx, sessionId);
+        const input = args && typeof args === "object" && !Array.isArray(args) ? args : {};
+        if (Object.keys(input).some((key) => key !== "imageIds") || !Array.isArray(input.imageIds) || input.imageIds.length < 1 || input.imageIds.length > 14 || new Set(input.imageIds).size !== input.imageIds.length || input.imageIds.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id)))
+          return fail2("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
+        const ownerId = await online.workspaceIdentity(true);
+        const sourceIds = input.imageIds;
+        const referenceAssetIds = await resolveGenerationReferences({ ownerId, nativeSessionId: sessionId, ids: sourceIds });
+        return { referenceAssetIds, references: sourceIds.map((imageId, index) => ({ imageId, referenceAssetId: referenceAssetIds[index] })) };
+      }
       if (!localNames.has(name)) return service.callTool(name, args, sessionId);
       session(ctx, sessionId);
       try {
         return await toolkit.callTool(name, args, sessionId);
       } catch (error101) {
         if (error101 instanceof PodploPluginError) throw error101;
-        return fail("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
+        return fail2("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
       }
     },
     async dispatch(action, args, caller) {
       if (!action.startsWith("local.")) return service.dispatch(action, args, caller);
-      if (caller.source !== "ui") return fail("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
+      if (caller.source !== "ui") return fail2("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
       session(ctx, caller.sessionId);
       if (action === "local.list") return { ok: true, data: await toolkit.list(caller.sessionId) };
       if (action === "local.importInput") return { ok: true, data: await toolkit.importInput(args, caller.sessionId) };
@@ -58952,7 +59253,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail2("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.callTool(toolName, {
           operationId: input.operationId,
           ids: input.ids,
@@ -58963,7 +59264,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail2("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.toolPreview(toolName, {
           ids: input.ids,
           options: input.options
@@ -58986,18 +59287,18 @@ async function nativeToolkitTransport(options) {
         return { ok: true, data: { opened: true } };
       }
       const id = args?.id;
-      if (typeof id !== "string") return fail("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+      if (typeof id !== "string") return fail2("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
       if (action === "local.output.exportAsset") {
         const namespace = online.auth.namespace, owner = await online.workspaceIdentity(true);
         const detail = await online.reference(id);
-        if (!detail.downloadUrl || detail.status !== "ready") return fail("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+        if (!detail.downloadUrl || detail.status !== "ready") return fail2("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
         const bytes = await downloadOriginal(detail.downloadUrl, id, options.fetcher);
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
-        const format = (await sharp7(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
-        if (format !== "png" && format !== "jpeg" && format !== "webp") return fail("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+          return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
+        const format = (await sharp8(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
+        if (format !== "png" && format !== "jpeg" && format !== "webp") return fail2("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id}`;
-        const stem = basename6(originalName, extname4(originalName));
+        const stem = basename7(originalName, extname5(originalName));
         const trustedName = `${stem || `\u7D20\u6750-${id}`}.${format === "jpeg" ? "jpg" : format}`;
         return { ok: true, data: await outputs.export(bytes, trustedName, caller.sessionId) };
       }
@@ -59014,7 +59315,7 @@ async function nativeToolkitTransport(options) {
         const result = await toolkit.readResult(id, caller.sessionId, "export");
         const attachment = await ctx.attachments.saveFile({ data: result.bytes, name: result.name });
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
+          return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
         return { ok: true, data: {
           attachment,
           name: result.name,
@@ -59022,10 +59323,10 @@ async function nativeToolkitTransport(options) {
           dataUrl: `data:${result.contentType};base64,${result.bytes.toString("base64")}`
         } };
       }
-      return fail("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
+      return fail2("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
     }
   };
-  return { transport, toolkit, outputs };
+  return { transport, toolkit, outputs, resolveGenerationReferences };
 }
 
 // plugins/podplo-dsh/src/native-presets.ts
@@ -59036,6 +59337,8 @@ var podploTaskGuidance = `Complete the user's PodPlo task through the shortest s
 Use the available PodPlo tools first for Skills, gallery, assets, generation and image processing. Reuse exact IDs, selected inputs, parameters and tool results already established in this conversation. Query only missing facts: use targeted search or detail lookup instead of repeatedly listing every library or rediscovering tools. Stop searching when the requested item is found; follow all pages when the user asks for the complete collection. Reuse capability information within the same unchanged task; refresh when it is missing, stale, explicitly requested, or a capability/permission error requires it. Cached information never replaces the tools' current authorization or quote checks.
 
 For every generation task, provide a short taskName based on the user's request and processingPlan in podplo_prepare_generation. Pass [] when the user requested no later processing; otherwise register the exact supported tool name, normalized options and a readable label for each requested step before approval. Use sourceStepId only for an earlier step's outputs. This is local completion bookkeeping, not a provider parameter. For an existing task with missing requirements, use podplo_set_processing_plan on its original operation after confirming the user's actual requested steps; never re-quote or re-generate to register a processing plan. Task Results reports generated/downloaded/processed counts; only report everything complete when its actual audit is complete. If requirements are missing, say that checking for missed processing is unavailable. Never infer a processing requirement from a filename.
+
+When generation should use an image already attached to the current conversation or a current-session local image result, pass that opaque ID in items[].args.referenceAssetIds; the Host imports it before quoting. You may call podplo_import_reference_images first when an explicit cloud reference ID is useful, then reuse its referenceAssetIds result. Existing private cloud asset UUIDs may be passed directly. Never place these IDs in an undocumented provider field and never pass a filesystem path. For a computer-local image, first use DSH read_image or the native file chooser so the Host creates a session-bound image ID. Wait for reference import to finish before calling podplo_prepare_generation; do not claim that generation started while an import is pending.
 
 Pass multiple images or generation items in one supported batch within the tool's limits. Parallelize only independent read-only lookups when supported. Keep dependent processing in order and retain returned result IDs for the next step. Reuse an operationId only for a retry of the same unchanged image operation; use a new one for changed inputs or options. Never repeat an accepted operation to check its progress or recreate a generation batch after an unknown submission result. Read podplo_generation_status for the existing operation instead. After a host completion notification, query that exact operation once and continue from its results; do not restart discovery, pricing or generation. While the host is tracking generation, wait for its notification instead of running shell sleep/poll loops; refresh status when the user asks or recovery requires it.
 
@@ -59132,15 +59435,15 @@ async function registerPodploNativePresets(agentPresets) {
 }
 
 // plugins/podplo-dsh/src/task-archive-host.ts
-import { createHash as createHash8 } from "node:crypto";
-import { basename as basename8, join as join9 } from "node:path";
+import { createHash as createHash9 } from "node:crypto";
+import { basename as basename9, join as join10 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash7, randomUUID as randomUUID11 } from "node:crypto";
+import { createHash as createHash8, randomUUID as randomUUID11 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
 import { link, lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
-import { basename as basename7, extname as extname5, isAbsolute as isAbsolute5, join as join8 } from "node:path";
-import sharp8 from "sharp";
+import { basename as basename8, extname as extname6, isAbsolute as isAbsolute5, join as join9 } from "node:path";
+import sharp9 from "sharp";
 
 // plugins/podplo-dsh/src/task-result-audit.ts
 function canonical2(value) {
@@ -59206,7 +59509,7 @@ function auditLines(audit) {
 }
 
 // plugins/podplo-dsh/src/task-archive.ts
-var hash3 = (value) => createHash7("sha256").update(value).digest("hex");
+var hash4 = (value) => createHash8("sha256").update(value).digest("hex");
 var safeLabel = (value, fallback) => value.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim().slice(0, 48) || fallback;
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
 var timestamp = (value) => {
@@ -59264,12 +59567,12 @@ var stateSchema3 = external_exports2.object({ version: external_exports2.literal
 var TaskArchiveManager = class {
   constructor(options) {
     this.options = options;
-    this.store = new AtomicStore(join8(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [] }), (raw) => {
+    this.store = new AtomicStore(join9(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [] }), (raw) => {
       const state = stateSchema3.parse(raw);
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan);
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join8(project.directory, basename7(task.directory)) !== task.directory || task.files.some((file3) => file3.name && (basename7(file3.name) !== file3.name || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(file3.name))))
+        if (!project || join9(project.directory, basename8(task.directory)) !== task.directory || task.files.some((file3) => file3.name && (basename8(file3.name) !== file3.name || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(file3.name))))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
@@ -59299,7 +59602,7 @@ var TaskArchiveManager = class {
   }
   async identity() {
     const value = await this.options.authorize();
-    return { ...value, owner: hash3(value.ownerId), grant: hash3(`${value.ownerId}\0${value.namespace ?? ""}`) };
+    return { ...value, owner: hash4(value.ownerId), grant: hash4(`${value.ownerId}\0${value.namespace ?? ""}`) };
   }
   async same(expected) {
     if ((await this.identity()).grant !== expected.grant) throw new Error("\u5F53\u524D\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u67E5\u770B\u6210\u679C");
@@ -59317,7 +59620,7 @@ var TaskArchiveManager = class {
     return this.directory(path);
   }
   async project(identity, input) {
-    const id = hash3(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id);
+    const id = hash4(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id);
     if (existing) {
       await this.directory(existing.directory, existing.stamp);
       return existing;
@@ -59325,12 +59628,12 @@ var TaskArchiveManager = class {
     const chosen = await this.options.outputDirectory();
     const base = chosen ? await realpath5(chosen) : this.root;
     await this.directory(base);
-    const collection = join8(base, "PodPlo\u6210\u679C");
+    const collection = join9(base, "PodPlo\u6210\u679C");
     await this.createDirectory(collection);
-    const ownerDirectory = join8(collection, identity.owner.slice(0, 16));
+    const ownerDirectory = join9(collection, identity.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
     const name = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
-    const directory = join8(ownerDirectory, `${name}_${id.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
+    const directory = join9(ownerDirectory, `${name}_${id.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
     await this.same(identity);
     const project = { id, owner: identity.owner, name, directory, stamp: directoryStamp };
     await this.store.transaction((state) => {
@@ -59343,15 +59646,15 @@ var TaskArchiveManager = class {
       if (this.closed) return;
       const identity = await this.identity();
       if (identity.ownerId !== expectedOwner) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
-      const key = hash3(`${identity.owner}\0${input.sessionId}\0${input.key}`);
+      const key = hash4(`${identity.owner}\0${input.sessionId}\0${input.key}`);
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.key === key);
       if (!task) {
         const project = await this.project(identity, input.project), id = randomUUID11();
         const name = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
-        const directory = join8(project.directory, `${name}_${timestamp(input.createdAt)}_${id.slice(0, 8)}`);
+        const directory = join9(project.directory, `${name}_${timestamp(input.createdAt)}_${id.slice(0, 8)}`);
         const directoryStamp = await this.createDirectory(directory);
-        await this.createDirectory(join8(directory, "\u53C2\u8003\u56FE"));
-        await this.createDirectory(join8(directory, "\u7ED3\u679C\u56FE"));
+        await this.createDirectory(join9(directory, "\u53C2\u8003\u56FE"));
+        await this.createDirectory(join9(directory, "\u7ED3\u679C\u56FE"));
         await this.same(identity);
         task = {
           id,
@@ -59408,7 +59711,7 @@ var TaskArchiveManager = class {
     await this.directory(task.directory, task.stamp);
   }
   groupDirectory(task, file3) {
-    return join8(task.directory, file3.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
+    return join9(task.directory, file3.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
   }
   async savePending(id, identity) {
     const task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
@@ -59420,25 +59723,25 @@ var TaskArchiveManager = class {
         await this.taskDirectory(task);
         const source = await this.options.read(file3.source);
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname5(source.name).toLowerCase().slice(1);
+        let extension = extname6(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
-          const meta5 = await sharp8(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+          const meta5 = await sharp9(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta5.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta5.format === "jpeg" ? "jpg" : meta5.format;
         }
         const index = task.files.filter((row) => row.group === file3.group).findIndex((row) => row.id === file3.id) + 1;
-        const label = safeLabel(file3.label || basename7(source.name, extname5(source.name)), "\u56FE\u7247");
+        const label = safeLabel(file3.label || basename8(source.name, extname6(source.name)), "\u56FE\u7247");
         const name = `${String(index).padStart(3, "0")}_${label}_${file3.id.slice(0, 8)}.${extension}`;
         const directory = this.groupDirectory(task, file3);
         await this.directory(directory);
-        const path = join8(directory, name), digest = hash3(source.bytes);
+        const path = join9(directory, name), digest = hash4(source.bytes);
         await this.same(identity);
         if (await lstat4(path).catch(() => void 0)) {
           const bytes = await this.readPath(path);
-          if (hash3(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
+          if (hash4(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
-          const temporary = join8(directory, `.${file3.id}.${randomUUID11()}.part`);
+          const temporary = join9(directory, `.${file3.id}.${randomUUID11()}.part`);
           const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
           try {
             await handle.writeFile(source.bytes);
@@ -59518,10 +59821,10 @@ var TaskArchiveManager = class {
         "\u672C\u6587\u4EF6\u7531\u4EFB\u52A1\u6210\u679C\u81EA\u52A8\u66F4\u65B0\uFF1B\u5982\u679C\u4F60\u624B\u52A8\u4FEE\u6539\uFF0C\u672C\u7A0B\u5E8F\u4F1A\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002",
         ""
       ];
-      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash3(bytes), path = join8(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash4(bytes), path = join9(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
       const stat = await lstat4(path).catch(() => void 0);
       if (stat) {
-        const existing = await this.readPath(path), existingDigest = hash3(existing);
+        const existing = await this.readPath(path), existingDigest = hash4(existing);
         if (existingDigest === digest) {
           if (latest.summaryDigest !== digest) await this.store.transaction((state) => {
             state.tasks.find((row) => row.id === task.id).summaryDigest = digest;
@@ -59530,7 +59833,7 @@ var TaskArchiveManager = class {
         }
         if (!latest.summaryDigest || existingDigest !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
       }
-      const temporary = join8(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID11()}.tmp`);
+      const temporary = join9(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID11()}.tmp`);
       const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
       try {
         await handle.writeFile(bytes);
@@ -59539,7 +59842,7 @@ var TaskArchiveManager = class {
         await this.taskDirectory(task);
         await this.same(identity);
         if (stat) {
-          if (hash3(await this.readPath(path)) !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
+          if (hash4(await this.readPath(path)) !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
           await rename4(temporary, path);
         } else await link(temporary, path);
         await this.store.transaction((state) => {
@@ -59565,7 +59868,7 @@ var TaskArchiveManager = class {
   async openSummary(id) {
     const { identity, task } = await this.owned(id);
     await this.taskDirectory(task);
-    const path = join8(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+    const path = join9(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
     await this.readPath(path);
     await this.same(identity);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3");
@@ -59585,7 +59888,7 @@ var TaskArchiveManager = class {
       for (const file3 of task.files) {
         let status = file3.status;
         if (status === "saved") {
-          const path = join8(this.groupDirectory(task, file3), file3.name);
+          const path = join9(this.groupDirectory(task, file3), file3.name);
           const stat = available ? await lstat4(path).catch(() => void 0) : void 0;
           if (!stat?.isFile() || stat.isSymbolicLink() || stat.size !== file3.size || await realpath5(path).catch(() => "") !== path || file3.fingerprint && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.fingerprint) status = "missing";
         }
@@ -59661,7 +59964,7 @@ var TaskArchiveManager = class {
     await this.taskDirectory(task);
     const absent = /* @__PURE__ */ new Set();
     for (const file3 of task.files.filter((file4) => file4.status === "saved" && file4.name))
-      if (!await lstat4(join8(this.groupDirectory(task, file3), file3.name)).catch(() => void 0)) absent.add(file3.id);
+      if (!await lstat4(join9(this.groupDirectory(task, file3), file3.name)).catch(() => void 0)) absent.add(file3.id);
     await this.store.transaction((state) => {
       for (const file3 of state.tasks.find((row) => row.id === id).files)
         if (file3.status === "failed" || absent.has(file3.id)) file3.status = "pending";
@@ -59673,11 +59976,11 @@ var TaskArchiveManager = class {
     if (!file3?.name) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
     await this.taskDirectory(task);
     await this.directory(this.groupDirectory(task, file3));
-    const bytes = await this.readPath(join8(this.groupDirectory(task, file3), file3.name));
-    if (hash3(bytes) !== file3.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
-    const result = preview && file3.image ? await sharp8(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes;
+    const bytes = await this.readPath(join9(this.groupDirectory(task, file3), file3.name));
+    if (hash4(bytes) !== file3.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
+    const result = preview && file3.image ? await sharp9(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes;
     await this.same(identity);
-    return { bytes: result, name: file3.name, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname5(file3.name).slice(1)}` };
+    return { bytes: result, name: file3.name, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname6(file3.name).slice(1)}` };
   }
   async openTask(id) {
     const { identity, task } = await this.owned(id);
@@ -59702,7 +60005,7 @@ var TaskArchiveManager = class {
     await this.read(id, fileId);
     await this.same(identity);
     if (!this.options.revealPath || !file3?.name) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
-    await this.options.revealPath(join8(this.groupDirectory(task, file3), file3.name));
+    await this.options.revealPath(join9(this.groupDirectory(task, file3), file3.name));
   }
   async wait() {
     while (this.jobs.size) await Promise.allSettled(this.jobs.values());
@@ -59853,7 +60156,7 @@ async function taskArchiveHost(options) {
         if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(true)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
         for (let offset = 0; offset < pendingIds.length; offset += 100) {
           const ids2 = pendingIds.slice(offset, offset + 100);
-          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash8("sha256").update(canonical2({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
+          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash9("sha256").update(canonical2({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
           await toolkit.callTool(step.toolName, { operationId: operationId2, ids: ids2, options: step.options }, context.sessionId);
           await sync(context.sessionId);
         }
@@ -59891,8 +60194,8 @@ async function taskArchiveHost(options) {
           operationId: operationId2,
           status: operation.status ?? task.status,
           files: files.map((file3) => {
-            if (basename8(file3.name) !== file3.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            return { name: file3.name, path: join9(task.directory, "\u7ED3\u679C\u56FE", file3.name) };
+            if (basename9(file3.name) !== file3.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
+            return { name: file3.name, path: join10(task.directory, "\u7ED3\u679C\u56FE", file3.name) };
           })
         };
       }
@@ -59944,7 +60247,7 @@ async function taskArchiveHost(options) {
           await sync(caller.sessionId);
           return { ok: true, data: {
             ...await manager.list(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0),
-            currentProjectId: createHash8("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash9("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -60169,7 +60472,7 @@ async function apply(ctx, config3 = {}) {
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
   const projectForSession = (id) => {
     const cwd = id ? ctx.sessions?.get(id)?.header.cwd : void 0;
-    return cwd && isAbsolute6(cwd) ? { key: `cwd:${resolve(cwd)}`, name: basename9(resolve(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
+    return cwd && isAbsolute6(cwd) ? { key: `cwd:${resolve(cwd)}`, name: basename10(resolve(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
   const galleryFetch = fixtureOrigin ? (input, init) => {
@@ -60178,6 +60481,7 @@ async function apply(ctx, config3 = {}) {
       throw new Error("Unexpected fixture gallery image");
     return fetch(`${fixtureOrigin}/__image.png`, init);
   } : void 0;
+  let nativeReferenceResolver;
   const service = new PodploPluginService({
     directory,
     cipher,
@@ -60187,6 +60491,7 @@ async function apply(ctx, config3 = {}) {
     workbench,
     generation: new NativeGenerationGateway(online),
     galleryFetch,
+    resolveGenerationReferences: (input) => nativeReferenceResolver ? nativeReferenceResolver(input) : Promise.reject(new Error("Native reference importer is not initialized")),
     resolveArchiveProject: (caller, input) => projectForSession(caller.sessionId ?? (caller.source === "ui" && typeof input.archiveSessionId === "string" && ctx.agents.get(input.archiveSessionId) ? input.archiveSessionId : void 0)),
     resolveNativeSessionId: (caller) => {
       if (caller.source === "ui" && caller.sessionId === void 0) return PODPLO_MANUAL_SESSION_ID;
@@ -60202,7 +60507,7 @@ async function apply(ctx, config3 = {}) {
     if (!/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url3.hostname)) throw new Error("Unexpected fixture image host");
     return fetch(`${fixtureOrigin}/__image.png`, init);
   } : void 0;
-  const { transport: localTransport, toolkit, outputs } = await nativeToolkitTransport({
+  const { transport: localTransport, toolkit, outputs, resolveGenerationReferences } = await nativeToolkitTransport({
     ctx,
     directory: `${directory}/local-tools-v1`,
     online,
@@ -60215,6 +60520,7 @@ async function apply(ctx, config3 = {}) {
     await service.close();
     throw error101;
   });
+  nativeReferenceResolver = resolveGenerationReferences;
   const archives = await taskArchiveHost({
     directory: `${directory}/task-archives-v1`,
     online,

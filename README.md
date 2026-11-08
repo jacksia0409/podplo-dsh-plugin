@@ -1,5 +1,7 @@
 # PodPlo 原生 DSH 插件
 
+修复对话附件及通过 DSH 选择／读取的本机图片作为生图参考图；重复引用复用上传，已有云端素材继续使用，报价和积分确认流程保持。
+
 在 DeepSeek Harness 内使用 PodPlo 的生图、工具箱、图库、Skill 库和我的素材。
 本仓库专门分发 DSH 插件；能独立启动的桌面 App 在 [podplo-app](https://github.com/jacksia0409/podplo-app) 单独管理。
 
@@ -17,11 +19,11 @@ https://github.com/jacksia0409/podplo-dsh-plugin
 
 ## 下载本地安装包
 
-当前内测版本：`0.1.0-alpha.45.sanitized`，为 alpha.42 插件系列的后续版本。
+当前内测版本：`0.1.0-alpha.46.reference-inputs`，为 alpha.42 插件系列的后续版本。
 本地 CLI 安装前请完全退出 DSH。
 
-- **macOS**：[下载安装 ZIP](https://github.com/jacksia0409/podplo-dsh-plugin/releases/download/dsh-plugin-v0.1.0-alpha.45.sanitized/PodPlo-DSH-plugin-0.1.0-alpha.45.sanitized-mac.zip)，解压后双击「安装到原生DSH.command」。
-- **Windows / 通用 CLI**：[下载插件 TGZ](https://github.com/jacksia0409/podplo-dsh-plugin/releases/download/dsh-plugin-v0.1.0-alpha.45.sanitized/podplo-dsh-plugin-0.1.0-alpha.45.sanitized.tgz)，在 DSH 官方 CLI 可用的终端中执行：
+- **macOS**：[下载安装 ZIP](https://github.com/jacksia0409/podplo-dsh-plugin/releases/download/dsh-plugin-v0.1.0-alpha.46.reference-inputs/PodPlo-DSH-plugin-0.1.0-alpha.46.reference-inputs-mac.zip)，解压后双击「安装到原生DSH.command」。
+- **Windows / 通用 CLI**：[下载插件 TGZ](https://github.com/jacksia0409/podplo-dsh-plugin/releases/download/dsh-plugin-v0.1.0-alpha.46.reference-inputs/podplo-dsh-plugin-0.1.0-alpha.46.reference-inputs.tgz)，在 DSH 官方 CLI 可用的终端中执行：
 
 ```sh
 dsh plugin --profile desktop add "插件TGZ文件的绝对路径"
@@ -30,7 +32,7 @@ dsh plugin --profile desktop add "插件TGZ文件的绝对路径"
 重新打开 DSH，按提示加载插件。Windows 不运行 Mac 的 `.command`，也不需要安装独立 PodPlo App 的 EXE。
 Windows 已有平台代码适配，尚未完成 Windows 实机验收。
 
-安装说明、验收说明和 SHA256SUMS 见 [Release 附件](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.45.sanitized)。
+安装说明、验收说明和 SHA256SUMS 见 [Release 附件](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.46.reference-inputs)。
 Mac 后台原生安装和界面验收、130 项自动测试已通过；真实付费生图和 IM 平台绑定不属于本轮验收范围。
 
 本仓库只包含安装声明、预编译运行文件和说明，不上传开发源码、账号配置或凭据。

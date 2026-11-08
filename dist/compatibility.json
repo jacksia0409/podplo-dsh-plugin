@@ -1,6 +1,6 @@
 {
   "dsh": "0.2.2-rc.1",
   "buildCommit": "c59d10aff167ad7eefead4b3a9082fb57c8fbfe8",
-  "plugin": "0.1.0-alpha.45.sanitized",
+  "plugin": "0.1.0-alpha.46.reference-inputs",
   "coreModified": false
 }
