@@ -3002,6 +3002,8 @@ function ManualToolboxPanel({ request: hostRequest }) {
   }, []);
   const [enabled, setEnabled] = (0, import_react5.useState)({ resize: true, rotate: false, color: false, outline: false, print: false, export: false });
   const [trimTransparent, setTrimTransparent] = (0, import_react5.useState)(true);
+  const [trimThreshold, setTrimThreshold] = (0, import_react5.useState)(0);
+  const trimThresholdId = (0, import_react5.useId)();
   const resizeEdited = (0, import_react5.useRef)(false);
   const [options, setOptions] = (0, import_react5.useState)(() => structuredClone(initialOptions));
   const [images, setImages] = (0, import_react5.useState)([]);
@@ -3019,13 +3021,15 @@ function ManualToolboxPanel({ request: hostRequest }) {
   const selectedIds = (0, import_react5.useMemo)(() => selected.filter((id) => images.some((row) => row.id === id)), [selected, images]);
   const previewIds = JSON.stringify(selectedIds);
   const plan = { orderVersion: 2, steps: tools.flatMap((row) => [
-    ...row.key === "resize" && trimTransparent ? [{ tool: "trim" }] : [],
+    ...row.key === "resize" && trimTransparent ? [{ tool: "trim", ...trimThreshold ? { threshold: trimThreshold } : {} }] : [],
     ...enabled[row.key] ? [{ tool: row.key, options: processingOptions(row.key, options[row.key]) }] : []
   ]) };
   const hasProcessing = plan.steps.length > 0;
   const previewOptions = JSON.stringify(plan);
   const bleedFields = options.print.bleedSetup === "edges" ? ["bleedTop", "bleedRight", "bleedBottom", "bleedLeft"] : ["bleed"];
   const bleedError = enabled.print && bleedFields.some((field) => typeof options.print[field] !== "number" || !Number.isFinite(options.print[field]) || Number(options.print[field]) < 0 || Number(options.print[field]) > 1e3) ? "\u51FA\u8840\u8BF7\u586B\u5199 0\uFF5E1000 \u6BEB\u7C73\u7684\u6709\u6548\u6570\u5B57\uFF0C\u5141\u8BB8\u5355\u8FB9\u4E3A 0\u3002" : "";
+  const trimThresholdError = !Number.isInteger(trimThreshold) || trimThreshold < 0 || trimThreshold > 254 ? "\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u8BF7\u586B\u5199 0\uFF5E254 \u7684\u6574\u6570\u3002" : "";
+  const trimError = trimTransparent ? trimThresholdError : "";
   const sourceId = selectedIds[0], source = images.find((row) => row.id === sourceId);
   const upstreamSteps = plan.steps.filter((row) => !["resize", "print", "export"].includes(row.tool));
   const upstreamKey = JSON.stringify({ id: sourceId, steps: upstreamSteps });
@@ -3096,8 +3100,8 @@ function ManualToolboxPanel({ request: hostRequest }) {
     setPreviewError("");
     setToolPreview(void 0);
     setPreviewMode(0);
-    if (bleedError) {
-      setPreviewError(bleedError);
+    if (bleedError || trimError) {
+      setPreviewError(bleedError || trimError);
       setPreviewBusy(false);
       return;
     }
@@ -3122,7 +3126,7 @@ function ManualToolboxPanel({ request: hostRequest }) {
       alive = false;
       clearTimeout(timer);
     };
-  }, [previewIds, previewOptions, upstreamKey, bleedError, request]);
+  }, [previewIds, previewOptions, upstreamKey, bleedError, trimError, request]);
   (0, import_react5.useEffect)(() => {
     setLatest([]);
     setNotice("");
@@ -3194,8 +3198,8 @@ function ManualToolboxPanel({ request: hostRequest }) {
   };
   const exportPreset = () => {
     try {
-      if (bleedError) throw new Error(bleedError);
-      const parameters = structuredClone(options);
+      if (bleedError || trimThresholdError) throw new Error(bleedError || trimThresholdError);
+      const parameters = { ...structuredClone(options), trim: { threshold: trimThreshold } };
       delete parameters.outline.patternId;
       delete parameters.resize.trimTransparent;
       for (const values of Object.values(parameters)) for (const value of Object.values(values))
@@ -3251,12 +3255,45 @@ function ManualToolboxPanel({ request: hostRequest }) {
               } }),
               "\u88C1\u526A\u900F\u660E\u56FE\u6742\u8FB9"
             ] }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: "\u88C1\u53BB\u5F53\u524D\u7ED3\u679C\u5916\u56F4\u5168\u900F\u660E\u7A7A\u767D\uFF1B\u4F4D\u4E8E\u63CF\u8FB9\u4E4B\u540E\u3001\u6700\u7EC8\u5C3A\u5BF8\u4E4B\u524D\u3002\u53D6\u6D88\u65F6\u540C\u65F6\u53D6\u6D88\u5176\u4ED6\u5DE5\u5177\u52FE\u9009\u3002" })
+            trimTransparent && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("fieldset", { disabled: !!busy, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__fields", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__range-field", "data-trim-threshold-field": true, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { htmlFor: trimThresholdId, children: [
+                  "\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C",
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                    "input",
+                    {
+                      id: trimThresholdId,
+                      "aria-label": "\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C",
+                      type: "number",
+                      min: 0,
+                      max: 254,
+                      step: 1,
+                      value: Number.isFinite(trimThreshold) ? trimThreshold : "",
+                      onChange: (event) => setTrimThreshold(event.currentTarget.valueAsNumber)
+                    }
+                  )
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                  "input",
+                  {
+                    type: "range",
+                    "aria-label": "\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u6ED1\u5757",
+                    min: 0,
+                    max: 254,
+                    step: 1,
+                    value: trimThresholdError ? 0 : trimThreshold,
+                    onChange: (event) => setTrimThreshold(event.currentTarget.valueAsNumber)
+                  }
+                )
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-toolbox__pixel-basis", children: "\u9ED8\u8BA4 0\uFF0C\u4EC5\u88C1\u5168\u900F\u660E\u7A7A\u767D\uFF1BAlpha \u2264 \u9608\u503C\u7684\u50CF\u7D20\u4E0D\u53C2\u4E0E\u8FB9\u754C\u8BA1\u7B97\u3002\u6570\u503C\u8D8A\u5927\uFF0C\u8D8A\u53EF\u80FD\u88C1\u6389\u6DE1\u8272\u5185\u5BB9\uFF1B\u88C1\u5207\u77E9\u5F62\u5185\u90E8\u50CF\u7D20\u4FDD\u6301\u539F\u6837\u3002" })
+            ] }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: "\u4F4D\u4E8E\u63CF\u8FB9\u4E4B\u540E\u3001\u6700\u7EC8\u5C3A\u5BF8\u4E4B\u524D\u3002\u53D6\u6D88\u65F6\u540C\u65F6\u53D6\u6D88\u5176\u4ED6\u5DE5\u5177\u52FE\u9009\u3002" })
           ] })
         ] }, row.key)) }),
         /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__save-bar", children: [
           /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__actions", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { className: "ppd-toolbox__primary", type: "button", disabled: !!busy || previewBusy || !!previewError || !!bleedError || !selectedIds.length || !hasProcessing || enabled.outline && options.outline.fill === "pattern" && !options.outline.patternId, onClick: () => void save(), children: busy === "save" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { className: "ppd-toolbox__primary", type: "button", disabled: !!busy || previewBusy || !!previewError || !!bleedError || !!trimError || !selectedIds.length || !hasProcessing || enabled.outline && options.outline.fill === "pattern" && !options.outline.patternId, onClick: () => void save(), children: busy === "save" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" }),
             /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: !!busy || !latest.length, onClick: () => void openResult((latest.find((row) => row.kind === "image") ?? latest[0]).id), children: "\u6253\u5F00" }),
             /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: !!busy, onClick: exportPreset, children: "\u5BFC\u51FA\u9884\u8BBE" })
           ] }),
@@ -3305,7 +3342,10 @@ function ManualToolboxPanel({ request: hostRequest }) {
           " \u5F20\u3002"
         ] }),
         toolPreview?.pendingPattern && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-toolbox__preview-note", children: "\u8BF7\u9009\u62E9\u56FE\u6848\u56FE\u7247\uFF1B\u5F53\u524D\u9884\u89C8\u7684\u95F4\u8DDD\u4FDD\u6301\u900F\u660E\u3002" }),
-        toolPreview?.transparentCrop?.status === "review" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-toolbox__preview-note", role: "status", children: toolPreview.reviewPreview ? "\u8FD9\u5F20\u56FE\u7247\u9700\u8981\u590D\u6838\uFF1A\u5DF2\u4FDD\u7559\u6240\u6709\u975E\u900F\u660E\u50CF\u7D20\uFF0C\u53EF\u7EE7\u7EED\u8C03\u6574\u5E76\u9884\u89C8\u6548\u679C\u3002\u4FDD\u5B58\u65F6\u4EC5\u5C06\u88C1\u8FB9\u56FE\u7247\u548C\u539F\u56E0\u8BF4\u660E\u653E\u5165\u201C\u5F85\u590D\u6838\u201D\u6587\u4EF6\u5939\uFF0C\u540E\u7EED\u6548\u679C\u4E0D\u4F1A\u4FDD\u5B58\u3002" : "\u8FD9\u5F20\u56FE\u7247\u9700\u8981\u590D\u6838\uFF1A\u672A\u5220\u9664\u4EFB\u4F55\u975E\u900F\u660E\u50CF\u7D20\uFF0C\u540E\u7EED\u52A0\u5DE5\u5DF2\u6682\u505C\u3002\u4FDD\u5B58\u65F6\u56FE\u7247\u548C\u539F\u56E0\u8BF4\u660E\u4F1A\u5355\u72EC\u653E\u5165\u201C\u5F85\u590D\u6838\u201D\u6587\u4EF6\u5939\u3002" }),
+        toolPreview?.transparentCrop?.status === "review" && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-toolbox__preview-note", role: "status", children: [
+          toolPreview.reviewPreview ? "\u8FD9\u5F20\u56FE\u7247\u9700\u8981\u590D\u6838\uFF1A\u88C1\u5207\u77E9\u5F62\u5185\u90E8\u50CF\u7D20\u5DF2\u539F\u6837\u4FDD\u7559\uFF0C\u53EF\u7EE7\u7EED\u8C03\u6574\u5E76\u9884\u89C8\u6548\u679C\u3002\u4FDD\u5B58\u65F6\u4EC5\u5C06\u88C1\u8FB9\u56FE\u7247\u548C\u539F\u56E0\u8BF4\u660E\u653E\u5165\u201C\u5F85\u590D\u6838\u201D\u6587\u4EF6\u5939\uFF0C\u540E\u7EED\u6548\u679C\u4E0D\u4F1A\u4FDD\u5B58\u3002" : "\u8FD9\u5F20\u56FE\u7247\u9700\u8981\u590D\u6838\uFF1A\u540E\u7EED\u52A0\u5DE5\u5DF2\u6682\u505C\u3002\u4FDD\u5B58\u65F6\u56FE\u7247\u548C\u539F\u56E0\u8BF4\u660E\u4F1A\u5355\u72EC\u653E\u5165\u201C\u5F85\u590D\u6838\u201D\u6587\u4EF6\u5939\u3002",
+          toolPreview.transparentCrop.issues.includes("NO_PIXELS_ABOVE_THRESHOLD") && " \u5F53\u524D\u9608\u503C\u4E0B\u6CA1\u6709\u6709\u6548\u4E3B\u4F53\uFF0C\u672A\u88C1\u526A\uFF0C\u8BF7\u964D\u4F4E\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u3002"
+        ] }),
         !!toolPreview?.files.length && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("ul", { className: "ppd-toolbox__preview-files", children: toolPreview.files.map((file, index) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: file.name }, index)) }),
         previewError && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-toolbox__preview-error", role: "alert", children: previewError })
       ] }) })
@@ -3543,7 +3583,7 @@ var import_react6 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0",
+  version: "0.1.1",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",

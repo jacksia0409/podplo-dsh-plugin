@@ -54559,17 +54559,20 @@ var rectangle = external_exports.object({
   width: external_exports.number().int().positive(),
   height: external_exports.number().int().positive()
 }).strict();
+var CropAlphaThresholdSchema = external_exports.number().int().min(0).max(254);
 var TransparentCropReportSchema = external_exports.object({
   version: external_exports.literal(1),
   status: external_exports.enum(["passed", "review"]),
   source: external_exports.object({ width: external_exports.number().int().positive(), height: external_exports.number().int().positive() }).strict(),
   bounds: rectangle.nullable(),
-  issues: external_exports.array(external_exports.enum(["NO_TRANSPARENCY", "EMPTY_IMAGE", "FAINT_EXTENTS", "ISOLATED_EXTENTS"])).max(4),
+  issues: external_exports.array(external_exports.enum(["NO_TRANSPARENCY", "EMPTY_IMAGE", "NO_PIXELS_ABOVE_THRESHOLD", "FAINT_EXTENTS", "ISOLATED_EXTENTS"])).max(5),
+  threshold: CropAlphaThresholdSchema.optional(),
   verified: external_exports.boolean()
 }).strict();
 var cropIssueText = {
   NO_TRANSPARENCY: "\u6CA1\u6709\u771F\u5B9E\u900F\u660E\u80CC\u666F\uFF0C\u672A\u88C1\u526A",
   EMPTY_IMAGE: "\u6574\u5F20\u56FE\u7247\u5168\u900F\u660E\uFF0C\u672A\u88C1\u526A",
+  NO_PIXELS_ABOVE_THRESHOLD: "\u5F53\u524D\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u4E0B\u6CA1\u6709\u6709\u6548\u4E3B\u4F53\uFF0C\u672A\u88C1\u526A\uFF0C\u8BF7\u964D\u4F4E\u9608\u503C",
   FAINT_EXTENTS: "\u6781\u6DE1\u50CF\u7D20\u53EF\u80FD\u6491\u5927\u77E9\u5F62\u8FB9\u754C\uFF0C\u5DF2\u5B8C\u6574\u4FDD\u7559",
   ISOLATED_EXTENTS: "\u8FB9\u7F18\u6709\u7591\u4F3C\u5B64\u7ACB\u50CF\u7D20\uFF0C\u5DF2\u5B8C\u6574\u4FDD\u7559"
 };
@@ -54582,8 +54585,10 @@ async function pixelDigest(image, signal) {
   }
   return hash5.digest("hex");
 }
-async function cropTransparentImage(input, signal) {
+async function cropTransparentImage(input, signal, threshold = 0) {
+  if (!CropAlphaThresholdSchema.safeParse(threshold).success) throw new Error("\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u5FC5\u987B\u662F 0\uFF5E254 \u7684\u6574\u6570");
   signal?.throwIfAborted();
+  const thresholdReport = threshold ? { threshold } : {};
   const image = sharp3(input, { limitInputPixels, failOn: "error" }).autoOrient();
   const metadata = await image.metadata();
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
@@ -54593,14 +54598,15 @@ async function cropTransparentImage(input, signal) {
   const base = () => sharp3(normalized.data, { limitInputPixels, failOn: "error" });
   const alpha = await base().ensureAlpha().extractChannel("alpha").raw().toBuffer();
   const columns = new Uint32Array(width), rows = new Uint32Array(height);
-  let left = width, right = -1, top = height, bottom = -1, count = 0, transparent = false;
+  let left = width, right = -1, top = height, bottom = -1, count = 0, nonzeroCount = 0, transparent = false;
   let coreLeft = width, coreRight = -1, coreTop = height, coreBottom = -1;
   for (let y = 0; y < height; y++) {
     if (y % 128 === 0) signal?.throwIfAborted();
     for (let x = 0; x < width; x++) {
       const value = alpha[y * width + x];
       if (value < 255) transparent = true;
-      if (!value) continue;
+      if (value) nonzeroCount++;
+      if (value <= threshold) continue;
       count++;
       columns[x] = columns[x] + 1;
       rows[y] = rows[y] + 1;
@@ -54619,7 +54625,7 @@ async function cropTransparentImage(input, signal) {
   const issues = [];
   const bounds = count ? { left, top, width: right - left + 1, height: bottom - top + 1 } : null;
   if (!metadata.hasAlpha || !transparent) issues.push("NO_TRANSPARENCY");
-  if (!count) issues.push("EMPTY_IMAGE");
+  if (!count) issues.push(nonzeroCount ? "NO_PIXELS_ABOVE_THRESHOLD" : "EMPTY_IMAGE");
   const gap = Math.max(2, Math.ceil(Math.max(width, height) * 5e-3));
   if (count && (coreRight < 0 || Math.max(coreLeft - left, right - coreRight, coreTop - top, bottom - coreBottom) >= gap))
     issues.push("FAINT_EXTENTS");
@@ -54640,7 +54646,7 @@ async function cropTransparentImage(input, signal) {
     bytes: normalized.data,
     width,
     height,
-    report: { version: 1, status: "review", source: { width, height }, bounds, issues, verified: false }
+    report: { version: 1, status: "review", source: { width, height }, bounds, issues, verified: false, ...thresholdReport }
   };
   const bytes = await base().extract(bounds).withMetadata({ density: metadata.density ?? 300 }).png().toBuffer();
   const expected = await pixelDigest(base().extract(bounds), signal);
@@ -54652,7 +54658,8 @@ async function cropTransparentImage(input, signal) {
     source: { width, height },
     bounds,
     issues,
-    verified: true
+    verified: true,
+    ...thresholdReport
   } };
 }
 
@@ -54986,7 +54993,7 @@ function cropReviewOutputs(input, crop) {
       bytes: Buffer.from(JSON.stringify({
         ...crop.report,
         reasons: crop.report.issues.map((code) => cropIssueText[code]),
-        note: "\u539F\u56FE\u4FDD\u7559\uFF1B\u53EA\u88C1\u53BB\u5168\u900F\u660E\u5916\u56F4\uFF0C\u672A\u5220\u9664\u4EFB\u4F55\u975E\u900F\u660E\u50CF\u7D20\u3002\u88C1\u8FB9\u4E4B\u540E\u7684\u5904\u7406\u5DF2\u6682\u505C\uFF0C\u8BF7\u590D\u6838\u3002"
+        note: crop.report.threshold ? `\u539F\u56FE\u4FDD\u7559\uFF1B\u6309\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C ${crop.report.threshold} \u8BA1\u7B97\u77E9\u5F62\uFF0C\u77E9\u5F62\u5185\u90E8\u50CF\u7D20\u539F\u6837\u4FDD\u7559\u3002\u88C1\u8FB9\u4E4B\u540E\u7684\u5904\u7406\u5DF2\u6682\u505C\uFF0C\u8BF7\u590D\u6838\u3002` : "\u539F\u56FE\u4FDD\u7559\uFF1B\u53EA\u88C1\u53BB\u5168\u900F\u660E\u5916\u56F4\uFF0C\u672A\u5220\u9664\u4EFB\u4F55\u975E\u900F\u660E\u50CF\u7D20\u3002\u88C1\u8FB9\u4E4B\u540E\u7684\u5904\u7406\u5DF2\u6682\u505C\uFF0C\u8BF7\u590D\u6838\u3002"
       }, null, 2))
     }
   ];
@@ -55218,7 +55225,7 @@ var ToolboxPlanSchema = external_exports2.object({ orderVersion: external_export
   external_exports2.object({ tool: external_exports2.literal("rotate"), options: RotateOptionsSchema }).strict(),
   external_exports2.object({ tool: external_exports2.literal("color"), options: ColorOptionsSchema }).strict(),
   external_exports2.object({ tool: external_exports2.literal("outline"), options: OutlineSettingsSchema, trimTransparent: external_exports2.boolean().optional() }).strict(),
-  external_exports2.object({ tool: external_exports2.literal("trim") }).strict(),
+  external_exports2.object({ tool: external_exports2.literal("trim"), threshold: CropAlphaThresholdSchema.optional() }).strict(),
   external_exports2.object({ tool: external_exports2.literal("print"), options: print }).strict(),
   external_exports2.object({ tool: external_exports2.literal("export"), options: format }).strict()
 ])).max(7) }).strict().refine((plan) => {
@@ -55312,7 +55319,7 @@ async function renderToolbox(inputs, plan, options) {
             sourceId: original.id
           }];
         } else if (step.tool === "trim") {
-          const cropped = await cropTransparentImage(frame.bytes, options.signal);
+          const cropped = await cropTransparentImage(frame.bytes, options.signal, step.threshold ?? 0);
           if (cropped.report.status === "review" && !options.preview) {
             reviewOutputs.push(...cropReviewOutputs(frame, cropped));
             outputs = [];
@@ -58253,7 +58260,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0",
+  version: "0.1.1",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
