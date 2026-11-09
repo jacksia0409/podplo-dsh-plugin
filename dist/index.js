@@ -37509,7 +37509,7 @@ var OAuthSession = class {
       namespace: previous?.namespace ?? randomUUID3()
     };
   }
-  async authorize(openBrowser, timeoutMs = 18e4) {
+  async authorize(openBrowser, timeoutMs2 = 18e4) {
     if (this.attempt) throw new OnlineError("AUTHORIZATION_IN_PROGRESS");
     if (this.grant) throw new OnlineError("SIGN_OUT_BEFORE_SWITCHING_ACCOUNT");
     const revision = this.revision;
@@ -37530,7 +37530,7 @@ var OAuthSession = class {
         reject(error101);
       };
       cancel = () => fail4(new OnlineError("AUTHORIZATION_CANCELLED"));
-      timer = setTimeout(() => fail4(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs);
+      timer = setTimeout(() => fail4(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs2);
       void (async () => {
         const resource = external_exports.object({ resource: external_exports.string(), authorization_servers: external_exports.array(external_exports.string()) }).parse(await this.http.json("/.well-known/oauth-protected-resource/api/mcp", { signal: abort.signal }));
         if (resource.resource !== `${this.http.origin}/api/mcp` || !resource.authorization_servers.includes(this.http.origin)) throw new OnlineError("RESOURCE_MISMATCH");
@@ -55831,6 +55831,9 @@ var NativeLocalToolkit = class {
   toolDefinitions() {
     return definitions;
   }
+  isBusy() {
+    return this.inflight.size > 0;
+  }
   async callTool(name, raw, sessionId) {
     this.ready();
     const session2 = opaqueId.parse(sessionId);
@@ -58390,7 +58393,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.59.stream-processing",
+  version: "0.1.0-alpha.60.plugin-update",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -60868,6 +60871,9 @@ var TaskArchiveManager = class {
     while (this.jobs.size) await Promise.allSettled(this.jobs.values());
     await this.tail;
   }
+  isBusy() {
+    return this.jobs.size > 0;
+  }
 };
 
 // plugins/podplo-dsh/src/archive-processing-pipeline.ts
@@ -60903,6 +60909,9 @@ var ArchiveProcessingPipeline = class {
   closed = false;
   has(taskId) {
     return this.jobs.has(taskId);
+  }
+  isBusy() {
+    return this.jobs.size > 0;
   }
   schedule(taskId) {
     if (this.closed) return Promise.resolve();
@@ -61342,14 +61351,22 @@ async function taskArchiveHost(options) {
       }
     }
   };
-  return { transport, manager, sync, operationProgress, stopSession, async close() {
-    closed = true;
-    service.off("change", changed);
-    await pending;
-    await Promise.allSettled(processingJobs.values());
-    await pipeline.close();
-    await manager.close();
-  } };
+  return {
+    transport,
+    manager,
+    sync,
+    operationProgress,
+    stopSession,
+    isBusy: () => manager.isBusy() || pipeline.isBusy() || processingJobs.size > 0,
+    async close() {
+      closed = true;
+      service.off("change", changed);
+      await pending;
+      await Promise.allSettled(processingJobs.values());
+      await pipeline.close();
+      await manager.close();
+    }
+  };
 }
 
 // plugins/podplo-dsh/src/native-generation-approval.ts
@@ -61460,7 +61477,7 @@ var delay = (ms, signal) => new Promise((resolve3, reject) => {
 });
 async function waitForNativeGeneration(options) {
   if (!options.operationId || options.operationId.length > 180) throw new PodploPluginError("INVALID_OPERATION_ID", "\u751F\u56FE\u64CD\u4F5C\u7F16\u53F7\u65E0\u6548");
-  const timeoutMs = options.timeoutMs ?? 20 * 6e4, pollMs = options.pollMs ?? 3e3;
+  const timeoutMs2 = options.timeoutMs ?? 20 * 6e4, pollMs = options.pollMs ?? 3e3;
   const now = options.now ?? Date.now, sleep = options.sleep ?? delay, started = now();
   for (; ; ) {
     if (options.signal.aborted) throw options.signal.reason ?? new DOMException("Aborted", "AbortError");
@@ -61473,8 +61490,8 @@ async function waitForNativeGeneration(options) {
     if (operation.status === "cancelled" || operation.stoppedAt || !["quoted", "submitting", "submitted"].includes(operation.status) && processing?.pending !== true)
       return { ...operation, nativeWait: { outcome: "terminal", elapsedMs: Math.max(0, now() - started) } };
     const elapsed = Math.max(0, now() - started);
-    if (elapsed >= timeoutMs) return { ...operation, nativeWait: { outcome: "timeout", elapsedMs: elapsed } };
-    await sleep(Math.min(pollMs, timeoutMs - elapsed), options.signal);
+    if (elapsed >= timeoutMs2) return { ...operation, nativeWait: { outcome: "timeout", elapsedMs: elapsed } };
+    await sleep(Math.min(pollMs, timeoutMs2 - elapsed), options.signal);
   }
 }
 
@@ -61745,8 +61762,266 @@ async function prepareNativeSkillBatch(raw, deps) {
   };
 }
 
+// plugins/podplo-dsh/src/plugin-update.ts
+var PODPLO_PLUGIN_REPOSITORY = "https://github.com/jacksia0409/podplo-dsh-plugin";
+var PODPLO_PLUGIN_RELEASES_API = "https://api.github.com/repos/jacksia0409/podplo-dsh-plugin/releases?per_page=100";
+var PODPLO_PLUGIN_RELEASES_ATOM = `${PODPLO_PLUGIN_REPOSITORY}/releases.atom`;
+var tagPrefix = "dsh-plugin-v";
+var cacheMs = 5 * 6e4;
+var timeoutMs = 8e3;
+var apiLimit = 1024 * 1024;
+var atomLimit = 512 * 1024;
+function parseStrictSemver(raw) {
+  const match = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$/u.exec(raw);
+  if (!match) return;
+  const identifiers = [];
+  for (const value of match[4]?.split(".") ?? []) {
+    if (/^\d+$/u.test(value)) {
+      if (value.length > 1 && value.startsWith("0")) return;
+      const number7 = Number(value);
+      if (!Number.isSafeInteger(number7)) return;
+      identifiers.push(number7);
+    } else identifiers.push(value);
+  }
+  const core2 = [Number(match[1]), Number(match[2]), Number(match[3])];
+  if (core2.some((value) => !Number.isSafeInteger(value))) return;
+  return { raw, major: core2[0], minor: core2[1], patch: core2[2], prerelease: identifiers };
+}
+function compareSemver(leftRaw, rightRaw) {
+  const left = parseStrictSemver(leftRaw), right = parseStrictSemver(rightRaw);
+  if (!left || !right) throw new Error("Invalid SemVer");
+  for (const key of ["major", "minor", "patch"]) if (left[key] !== right[key]) return left[key] < right[key] ? -1 : 1;
+  if (!left.prerelease.length || !right.prerelease.length) return left.prerelease.length === right.prerelease.length ? 0 : left.prerelease.length ? -1 : 1;
+  for (let index = 0; index < Math.max(left.prerelease.length, right.prerelease.length); index++) {
+    const a = left.prerelease[index], b = right.prerelease[index];
+    if (a === void 0 || b === void 0) return a === b ? 0 : a === void 0 ? -1 : 1;
+    if (a === b) continue;
+    if (typeof a === "number" && typeof b === "string") return -1;
+    if (typeof a === "string" && typeof b === "number") return 1;
+    return a < b ? -1 : 1;
+  }
+  return 0;
+}
+function versionFromTag(tag) {
+  if (typeof tag !== "string" || !tag.startsWith(tagPrefix)) return;
+  const version3 = tag.slice(tagPrefix.length);
+  return parseStrictSemver(version3)?.raw;
+}
+function officialTagUrl(raw, tag) {
+  if (typeof raw !== "string") return false;
+  try {
+    const url3 = new URL(raw);
+    return url3.origin === "https://github.com" && !url3.username && !url3.password && !url3.port && decodeURIComponent(url3.pathname) === `/jacksia0409/podplo-dsh-plugin/releases/tag/${tag}` && !url3.search && !url3.hash;
+  } catch {
+    return false;
+  }
+}
+async function limitedText(response, maximum) {
+  if (!response.ok || !response.body) throw new Error(`HTTP_${response.status}`);
+  const declared = Number(response.headers.get("content-length"));
+  if (Number.isFinite(declared) && declared > maximum) {
+    await response.body.cancel();
+    throw new Error("RESPONSE_TOO_LARGE");
+  }
+  const reader = response.body.getReader(), chunks = [];
+  let total = 0;
+  try {
+    for (; ; ) {
+      const part = await reader.read();
+      if (part.done) break;
+      total += part.value.byteLength;
+      if (total > maximum) {
+        await reader.cancel();
+        throw new Error("RESPONSE_TOO_LARGE");
+      }
+      chunks.push(part.value);
+    }
+  } finally {
+    reader.releaseLock();
+  }
+  return Buffer.concat(chunks).toString("utf8");
+}
+function newest(versions) {
+  return [...new Set(versions)].sort((left, right) => compareSemver(right, left))[0];
+}
+async function apiVersions(fetcher) {
+  const response = await fetcher(PODPLO_PLUGIN_RELEASES_API, {
+    headers: { Accept: "application/vnd.github+json", "User-Agent": "PodPlo-DSH-Updater" },
+    redirect: "error",
+    credentials: "omit",
+    signal: AbortSignal.timeout(timeoutMs)
+  });
+  const value = JSON.parse(await limitedText(response, apiLimit));
+  if (!Array.isArray(value)) throw new Error("INVALID_RELEASES");
+  const versions = [];
+  for (const raw of value) {
+    if (!raw || typeof raw !== "object" || Array.isArray(raw)) continue;
+    const row = raw;
+    if (row.draft !== false) continue;
+    const version3 = versionFromTag(row.tag_name), tag = typeof row.tag_name === "string" ? row.tag_name : "";
+    if (version3 && officialTagUrl(row.html_url, tag)) versions.push(version3);
+  }
+  if (!versions.length) throw new Error("NO_TRUSTED_RELEASE");
+  return versions;
+}
+function decodeXmlAttribute(value) {
+  return value.replace(/&amp;/gu, "&").replace(/&quot;/gu, '"').replace(/&#39;|&apos;/gu, "'").replace(/&lt;/gu, "<").replace(/&gt;/gu, ">");
+}
+async function atomVersions(fetcher) {
+  const response = await fetcher(PODPLO_PLUGIN_RELEASES_ATOM, {
+    headers: { Accept: "application/atom+xml", "User-Agent": "PodPlo-DSH-Updater" },
+    redirect: "error",
+    credentials: "omit",
+    signal: AbortSignal.timeout(timeoutMs)
+  });
+  const xml = await limitedText(response, atomLimit), versions = [];
+  const feedWithoutEntries = xml.replace(/<entry\b[\s\S]*?<\/entry>/giu, "");
+  if (!/<id>\s*tag:github\.com,2008:https:\/\/github\.com\/jacksia0409\/podplo-dsh-plugin\/releases\s*<\/id>/iu.test(feedWithoutEntries))
+    throw new Error("UNTRUSTED_FEED");
+  for (const match of xml.matchAll(/<entry\b[\s\S]*?<\/entry>/giu)) {
+    const id = /<id>\s*tag:github\.com,2008:Repository\/1449998794\/([^<\s]+)\s*<\/id>/iu.exec(match[0]);
+    const tag = id ? decodeXmlAttribute(id[1]) : "", version3 = versionFromTag(tag);
+    if (!version3) continue;
+    const links = [...match[0].matchAll(/<link\b([^>]*)>/giu)];
+    for (const link2 of links) {
+      const attrs = link2[1] ?? "";
+      const attribute = (name) => new RegExp(`\\b${name}=(?:"([^"]+)"|'([^']+)')`, "iu").exec(attrs);
+      const hrefMatch = attribute("href"), rel = attribute("rel"), type = attribute("type");
+      const href = decodeXmlAttribute(hrefMatch?.[1] ?? hrefMatch?.[2] ?? "");
+      if ((rel?.[1] ?? rel?.[2]) !== "alternate" || (type?.[1] ?? type?.[2]) !== "text/html") continue;
+      try {
+        if (officialTagUrl(href, tag)) versions.push(version3);
+      } catch {
+      }
+    }
+  }
+  if (!versions.length) throw new Error("NO_TRUSTED_RELEASE");
+  return versions;
+}
+var PluginUpdateService = class {
+  constructor(options) {
+    this.options = options;
+    if (!parseStrictSemver(options.currentVersion)) throw new Error("Current plugin version is not strict SemVer");
+    this.state = { currentVersion: options.currentVersion, phase: "idle", updateAvailable: false };
+  }
+  options;
+  state;
+  cached;
+  checking;
+  installing;
+  closed = false;
+  status() {
+    return structuredClone(this.state);
+  }
+  set(phase, values = {}) {
+    this.state = { currentVersion: this.options.currentVersion, phase, updateAvailable: false, ...values };
+    return this.status();
+  }
+  async checkUpdate(force = false) {
+    if (this.closed) return this.set("failed", { error: "\u66F4\u65B0\u670D\u52A1\u5DF2\u505C\u6B62\u3002" });
+    if (this.installing) return this.status();
+    if (this.checking) return this.checking;
+    const now = (this.options.now?.() ?? /* @__PURE__ */ new Date()).getTime();
+    if (!force && this.cached && this.cached.expiresAt > now) return this.set("idle", {
+      latestVersion: this.cached.latestVersion,
+      updateAvailable: compareSemver(this.cached.latestVersion, this.options.currentVersion) > 0,
+      checkedAt: this.cached.checkedAt
+    });
+    this.set("checking");
+    const fetcher = this.options.fetcher ?? fetch;
+    this.checking = (async () => {
+      let versions;
+      try {
+        versions = await apiVersions(fetcher);
+      } catch {
+        try {
+          versions = await atomVersions(fetcher);
+        } catch {
+          return this.set("failed", { error: "\u65E0\u6CD5\u68C0\u67E5\u66F4\u65B0\uFF1AGitHub Release API \u548C\u516C\u5F00 Atom \u6E90\u5747\u4E0D\u53EF\u7528\u3002" });
+        }
+      }
+      const latestVersion = newest(versions);
+      if (!latestVersion) return this.set("failed", { error: "\u65E0\u6CD5\u68C0\u67E5\u66F4\u65B0\uFF1A\u672A\u627E\u5230\u53EF\u4FE1\u7684\u5B98\u65B9\u7248\u672C\u3002" });
+      const checkedAt = (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString();
+      this.cached = { latestVersion, checkedAt, expiresAt: (this.options.now?.() ?? /* @__PURE__ */ new Date()).getTime() + cacheMs };
+      return this.set("idle", {
+        latestVersion,
+        checkedAt,
+        updateAvailable: compareSemver(latestVersion, this.options.currentVersion) > 0
+      });
+    })().finally(() => {
+      this.checking = void 0;
+    });
+    return this.checking;
+  }
+  async installUpdate(version3) {
+    if (typeof version3 !== "string" || !parseStrictSemver(version3)) return this.set("failed", { error: "\u66F4\u65B0\u7248\u672C\u65E0\u6548\u3002" });
+    if (this.installing) return this.status();
+    if (["applied", "restart-required"].includes(this.state.phase) && this.state.latestVersion === version3) return this.status();
+    const checked = await this.checkUpdate(true);
+    if (this.closed) return this.set("failed", { error: "\u66F4\u65B0\u670D\u52A1\u5DF2\u505C\u6B62\u3002" });
+    if (this.installing) return this.status();
+    if (checked.phase === "failed") return checked;
+    if (checked.latestVersion !== version3) return this.set("failed", {
+      latestVersion: checked.latestVersion,
+      checkedAt: checked.checkedAt,
+      error: "\u5B98\u65B9\u6700\u65B0\u7248\u672C\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u68C0\u67E5\u540E\u518D\u5B89\u88C5\u3002"
+    });
+    if (compareSemver(version3, this.options.currentVersion) <= 0) return this.set("failed", {
+      latestVersion: checked.latestVersion,
+      checkedAt: checked.checkedAt,
+      error: "\u4E0D\u5141\u8BB8\u5B89\u88C5\u5F53\u524D\u7248\u672C\u6216\u964D\u7EA7\u3002"
+    });
+    if (this.options.busy()) return this.set("failed", {
+      latestVersion: version3,
+      checkedAt: checked.checkedAt,
+      updateAvailable: true,
+      error: "\u5F53\u524D\u4ECD\u6709\u751F\u56FE\u3001\u5BA1\u6279\u3001\u4E0B\u8F7D\u6216\u672C\u5730\u52A0\u5DE5\u672A\u5B8C\u6210\uFF0C\u6682\u4E0D\u80FD\u66F4\u65B0\u3002"
+    });
+    const tag = `${tagPrefix}${version3}`, spec = `${PODPLO_PLUGIN_REPOSITORY}#${tag}`;
+    this.set("installing", { latestVersion: version3, checkedAt: checked.checkedAt, updateAvailable: true });
+    const promise3 = Promise.resolve().then(async () => {
+      try {
+        const result = await this.options.manager.installBundle(spec, { enabled: true });
+        if (this.closed) return;
+        if (result.application === "applied" || result.application === "restart-required")
+          this.set(result.application, { latestVersion: version3, checkedAt: checked.checkedAt, updateAvailable: true });
+        else {
+          const code = typeof result.error?.code === "string" && /^[a-z0-9/_-]{1,80}$/iu.test(result.error.code) ? ` (${result.error.code})` : "";
+          this.set("failed", {
+            latestVersion: version3,
+            checkedAt: checked.checkedAt,
+            updateAvailable: true,
+            error: `\u66F4\u65B0\u5B89\u88C5\u672A\u5B8C\u6210${code}\u3002`
+          });
+        }
+      } catch {
+        if (!this.closed) this.set("failed", {
+          latestVersion: version3,
+          checkedAt: checked.checkedAt,
+          updateAvailable: true,
+          error: "\u66F4\u65B0\u5B89\u88C5\u672A\u5B8C\u6210\u3002"
+        });
+      } finally {
+        this.installing = void 0;
+      }
+    });
+    this.installing = { version: version3, promise: promise3 };
+    return this.status();
+  }
+  async dispatch(action, args, caller) {
+    if (!["plugin.status", "plugin.checkUpdate", "plugin.installUpdate"].includes(action)) return;
+    if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u63D2\u4EF6\u66F4\u65B0\u53EA\u80FD\u4ECE PodPlo \u63D2\u4EF6\u9875\u9762\u64CD\u4F5C\u3002");
+    const data = action === "plugin.status" ? this.status() : action === "plugin.checkUpdate" ? await this.checkUpdate(true) : await this.installUpdate(args && typeof args === "object" && !Array.isArray(args) ? args.version : void 0);
+    return { ok: true, data };
+  }
+  close() {
+    this.closed = true;
+  }
+};
+
 // plugins/podplo-dsh/src/index.ts
-var inject = ["connection", "credentials", "agents", "sessions", "tools", "attachments", "agentPresets", "approval"];
+var inject = ["connection", "credentials", "agents", "sessions", "tools", "attachments", "agentPresets", "approval", "pluginManager"];
 var Config = Schema.object({
   directory: Schema.string().description("\u53EF\u9009\u72EC\u7ACB\u6570\u636E\u76EE\u5F55\uFF1B\u9ED8\u8BA4\u4F7F\u7528 DSH home \u4E2D\u7684 PodPlo \u4E13\u7528\u76EE\u5F55\u3002"),
   jevBrokerUrl: Schema.string().description("\u53EF\u9009\uFF1B\u4EC5 PodPlo Agent \xB7 Jev \u6D4B\u8BD5 preset \u4F7F\u7528\u7684\u672C\u673A loopback broker URL\u3002"),
@@ -61894,6 +62169,21 @@ async function apply(ctx, config3 = {}) {
     await toolkit.close();
     await service.close();
     throw error101;
+  });
+  const updateFetcher = fixtureOrigin ? (input, init) => {
+    const url3 = new URL(input instanceof Request ? input.url : input.toString());
+    if (url3.href === PODPLO_PLUGIN_RELEASES_API) return fetch(`${fixtureOrigin}/__plugin_releases`, init);
+    if (url3.href === PODPLO_PLUGIN_RELEASES_ATOM) return fetch(`${fixtureOrigin}/__plugin_releases.atom`, init);
+    throw new Error("Unexpected fixture plugin update URL");
+  } : void 0;
+  const updates = new PluginUpdateService({
+    currentVersion: PLUGIN_VERSION,
+    manager: ctx.pluginManager,
+    ...updateFetcher ? { fetcher: updateFetcher } : {},
+    busy: () => {
+      const pending = service.snapshot().pending;
+      return pending.generations > 0 || pending.confirmations > 0 || toolkit.isBusy() || archives.isBusy();
+    }
   });
   const transport = {
     ...archives.transport,
@@ -62287,6 +62577,8 @@ async function apply(ctx, config3 = {}) {
   const uiTransport = {
     ...transport,
     async dispatch(action, args, caller) {
+      const update = await updates.dispatch(action, args, caller);
+      if (update) return update;
       const value = await transport.dispatch(action, args, caller);
       if (action === "generation.approve" && caller.source === "ui" && caller.sessionId && typeof value?.data?.operationId === "string") {
         resumeChatAfterApproval(caller.sessionId, value.data.operationId);
@@ -62311,6 +62603,7 @@ async function apply(ctx, config3 = {}) {
   let stopping;
   const stop = () => stopping ??= (async () => {
     closed = true;
+    updates.close();
     created();
     disposed();
     presetSelected();

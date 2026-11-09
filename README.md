@@ -1,41 +1,39 @@
-# PodPlo DSH 插件 alpha.59
+# PodPlo DSH 插件 alpha.60
 
-需要先安装 DeepSeek Harness 0.2.2-rc.1。这是插件，不是独立 App。
+需要 DeepSeek Harness 0.2.2-rc.1。这是插件，不是独立 App。
+
+## 本版新增
+
+PodPlo 页面顶部显示当前版本号、**检查更新**和**更新版本**按钮。没有可用新版时更新按钮置灰；由用户手动检查，包含公开 alpha 内测版。
+
+更新通过 DSH 官方插件管理器，只使用本仓库的公开版本。GitHub API 不可用时尝试公开发布源；失败会明确提示。任务运行时不更新，不降级，不自动重启。保留 alpha.59 的逐张下载、透明检查、描边和镜像，并发最多 2 个自动加工作业；整批积分确认保持原流程。
 
 ## 安装与升级
 
-新用户在 DSH 的「插件 → 添加插件」输入：
+新用户在 DSH「插件 → 添加插件」输入：
 
 ```text
 https://github.com/jacksia0409/podplo-dsh-plugin
 ```
 
-已安装旧版的用户，添加本版完整地址升级：
+alpha.59 及更早版本需要先在同一入口输入本版完整地址升级一次：
 
 ```text
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.0-alpha.59.stream-processing
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.0-alpha.60.plugin-update
 ```
 
-同一 GitHub 地址重复安装可能触发 DSH 的 ambiguous-install；升级请使用上方带版本标签的地址。
+此后可在 PodPlo 页面顶部检查、更新后续版本。同一 GitHub 地址重复安装可能触发 DSH 的 ambiguous-install，已有用户请使用带版本标签的升级地址。
 
-也可从 [本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.59.stream-processing) 下载 macOS ZIP 或通用 TGZ。macOS ZIP 内有安装命令；使用 CLI 安装前请正常退出 DSH。TGZ 可用于 Windows/macOS 的原生插件管理器。Windows 尚未进行实机验收。
-
-## 本版变化
-
-- 每张云端结果就绪后自动下载；已登记的描边步骤检查真实透明像素后生成描边和镜像。
-- 自动加工队列跨任务最多并发 2 个作业，不逐张调用 Flash。
-- 保留整批积分报价和原生确认。重复刷新、重启复用已完成收据；加工失败不自动收费重生成。
-- 兼容停止与继续处理；最终对话通知和 IM 等待包含下载、加工及文件保存状态。
-- 延续整批 Skill 准备、按需查询和中性范围选择。
-
-聚合打包和其他尚未自动支持的工具沿用原继续处理流程。透明背景参数不保证供应商一定返回透明像素；检查失败会明确报告。
+也可从 [本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.60.plugin-update) 下载 macOS ZIP 或通用 TGZ。macOS ZIP 内提供安装命令，CLI 安装前请正常退出 DSH；通用 TGZ 可用于原生插件管理器。Windows 尚未实机验收。
 
 ## 验证与分发
 
-106 项本地回归通过；最终修正后的 11 项相关检查通过。七图隔离流程验证首张先加工、最终 7 张原图和 14 张加工图；后台成果页和原生 DSH 包内检查通过。没有将此隔离测试宣称为真实付费供应商或 Windows 实机验收。
+类型检查、116 项本地回归、隐藏窗口界面与原生 DSH 包内检查通过。检查覆盖版本显示、按钮、更新目标绑定、防重复、忙碌拦截、失败与重启提示、无新版和禁止降级。真实公开源做过只读检查；未为验证发布虚构的未来版本，也未声称下一版自更新已经全链路验收。
 
-仓库仅分发预编译运行文件、安装声明和说明，不上传开发源码、用户配置或凭据。TGZ SHA-256：
+仓库只含预编译运行文件、安装声明和说明，不上传开发源码、用户配置或凭据。TGZ 与本机验收和安装包相同；包内说明保留构建阶段记录，当前发布状态以本页为准。
+
+TGZ SHA-256：
 
 ```text
-982a7b83db87437e70c106399e19b2fb4cba1e84da0fee113e13d137fdd78bf2
+ea03daf28bd605fd419420cb7b3da624a5b790f2a6c8130ecd283403b5e3bb12
 ```
