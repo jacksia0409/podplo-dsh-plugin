@@ -3543,7 +3543,7 @@ var import_react6 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.77.results",
+  version: "0.1.0-alpha.78.plugin-name",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -3552,12 +3552,14 @@ var package_default = {
   exports: {
     ".": "./dist/index.js",
     "./client": "./dist/client.js",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./locale/en.json": "./locale/en.json"
   },
   files: [
     "dist",
     "cordis.patch.yml",
-    "README.md"
+    "README.md",
+    "locale"
   ],
   dsh: {
     bundle: {
