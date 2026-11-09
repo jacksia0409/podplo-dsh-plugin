@@ -4,7 +4,9 @@
 
 ## 本版更新
 
-页面顶部显示 **PodPlo v0.1.3**。
+页面顶部显示 **PodPlo v0.1.4**。
+
+修复“创建／编辑我的 Skill”输入框点不进去：个人 Skill 参考图片按钮栏与生图缩略图浮层的样式类同名，产生透明遮挡。现已分开，名称、说明和提示词可正常点击输入；保存、账号及授权规则不变。
 
 选择固定边后，直接在“固定高”或“固定宽”输入框填写目标值，跟随边为只读自动计算。导出会校验全部模块（包括未勾选模块）的参数；空值、越界值等无效参数会阻止下载并指出对应模块，避免静默写成 0、null 或旧值。勾选状态、旋转翻转、调色、描边、裁边阈值、尺寸、出血及输出参数均保留；图案填充的图片不嵌入 JSON，预设会明确标记需另选图案。
 
@@ -35,12 +37,12 @@ https://github.com/jacksia0409/podplo-dsh-plugin
 已有用户可在相同入口使用本版完整标签地址升级：
 
 ```text
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.3
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.4
 ```
 
 同一 GitHub 地址重复安装可能触发 DSH 的 ambiguous-install，已有用户请使用带版本标签的升级地址。任务运行时不更新，不自动降级，不强制重启。此前收到的页面检查／更新按钮不可用反馈仍待排查，本版请使用上述完整标签地址升级。
 
-[本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.3) 提供 macOS ZIP 和通用 TGZ。macOS ZIP 内含安装命令；通过 CLI 安装前请正常退出 DSH，正在使用时可通过官方插件管理器导入 TGZ。Windows 尚未实机验收。
+[本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.4) 提供 macOS ZIP 和通用 TGZ。macOS ZIP 内含安装命令；通过 CLI 安装前请正常退出 DSH，正在使用时可通过官方插件管理器导入 TGZ。Windows 尚未实机验收。
 
 ## 分发与校验
 

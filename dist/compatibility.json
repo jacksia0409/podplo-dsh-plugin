@@ -1,6 +1,6 @@
 {
   "dsh": "0.2.2-rc.1",
   "buildCommit": "c59d10aff167ad7eefead4b3a9082fb57c8fbfe8",
-  "plugin": "0.1.3",
+  "plugin": "0.1.4",
   "coreModified": false
 }
