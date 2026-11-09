@@ -103,11 +103,11 @@ function __metadata(metadataKey, metadataValue) {
 }
 function __awaiter(thisArg, _arguments, P, generator) {
   function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve2) {
-      resolve2(value);
+    return value instanceof P ? value : new P(function(resolve3) {
+      resolve3(value);
     });
   }
-  return new (P || (P = Promise))(function(resolve2, reject) {
+  return new (P || (P = Promise))(function(resolve3, reject) {
     function fulfilled(value) {
       try {
         step(generator.next(value));
@@ -123,7 +123,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve2(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -301,14 +301,14 @@ function __asyncValues(o) {
   }, i2);
   function verb(n) {
     i2[n] = o[n] && function(v) {
-      return new Promise(function(resolve2, reject) {
-        v = o[n](v), settle(resolve2, reject, v.done, v.value);
+      return new Promise(function(resolve3, reject) {
+        v = o[n](v), settle(resolve3, reject, v.done, v.value);
       });
     };
   }
-  function settle(resolve2, reject, d, v) {
+  function settle(resolve3, reject, d, v) {
     Promise.resolve(v).then(function(v2) {
-      resolve2({ value: v2, done: d });
+      resolve3({ value: v2, done: d });
     }, reject);
   }
 }
@@ -485,40 +485,40 @@ var require_strings = __commonJS({
     exports.escapeRegExp = function(str) {
       return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     };
-    exports.cleanText = function(text3) {
-      return text3.replace(/\t|\u0085|\u2028|\u2029/g, "    ").replace(/[\b\v]/g, "");
+    exports.cleanText = function(text4) {
+      return text4.replace(/\t|\u0085|\u2028|\u2029/g, "    ").replace(/[\b\v]/g, "");
     };
     exports.escapedNewlineChars = ["\\n", "\\f", "\\r", "\\u000B"];
     exports.newlineChars = ["\n", "\f", "\r", "\v"];
-    exports.isNewlineChar = function(text3) {
-      return /^[\n\f\r\u000B]$/.test(text3);
+    exports.isNewlineChar = function(text4) {
+      return /^[\n\f\r\u000B]$/.test(text4);
     };
-    exports.lineSplit = function(text3) {
-      return text3.split(/[\n\f\r\u000B]/);
+    exports.lineSplit = function(text4) {
+      return text4.split(/[\n\f\r\u000B]/);
     };
-    exports.mergeLines = function(text3) {
-      return text3.replace(/[\n\f\r\u000B]/g, " ");
+    exports.mergeLines = function(text4) {
+      return text4.replace(/[\n\f\r\u000B]/g, " ");
     };
-    exports.charAtIndex = function(text3, index) {
-      var cuFirst = text3.charCodeAt(index);
+    exports.charAtIndex = function(text4, index) {
+      var cuFirst = text4.charCodeAt(index);
       var cuSecond;
       var nextIndex = index + 1;
       var length = 1;
       if (
         // Check if it's the start of a surrogate pair.
         cuFirst >= 55296 && cuFirst <= 56319 && // high surrogate
-        text3.length > nextIndex
+        text4.length > nextIndex
       ) {
-        cuSecond = text3.charCodeAt(nextIndex);
+        cuSecond = text4.charCodeAt(nextIndex);
         if (cuSecond >= 56320 && cuSecond <= 57343)
           length = 2;
       }
-      return [text3.slice(index, index + length), length];
+      return [text4.slice(index, index + length), length];
     };
-    exports.charSplit = function(text3) {
+    exports.charSplit = function(text4) {
       var chars = [];
-      for (var idx = 0, len = text3.length; idx < len; ) {
-        var _a6 = exports.charAtIndex(text3, idx), c = _a6[0], cLen = _a6[1];
+      for (var idx = 0, len = text4.length; idx < len; ) {
+        var _a6 = exports.charAtIndex(text4, idx), c = _a6[0], cLen = _a6[1];
         chars.push(c);
         idx += cLen;
       }
@@ -537,9 +537,9 @@ var require_strings = __commonJS({
       var breakRules = escapedRules.join("|");
       return new RegExp("(" + newlineCharUnion + ")|((.*?)(" + breakRules + "))", "gm");
     };
-    exports.breakTextIntoLines = function(text3, wordBreaks, maxWidth, computeWidthOfText) {
+    exports.breakTextIntoLines = function(text4, wordBreaks, maxWidth, computeWidthOfText) {
       var regex = buildWordBreakRegex(wordBreaks);
-      var words = exports.cleanText(text3).match(regex);
+      var words = exports.cleanText(text4).match(regex);
       var currLine = "";
       var currWidth = 0;
       var lines = [];
@@ -727,9 +727,9 @@ var require_async = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.waitForTick = void 0;
     exports.waitForTick = function() {
-      return new Promise(function(resolve2) {
+      return new Promise(function(resolve3) {
         setTimeout(function() {
-          return resolve2();
+          return resolve3();
         }, 0);
       });
     };
@@ -5148,9 +5148,9 @@ var require_pako = __commonJS({
     var assign = require_common().assign;
     var deflate = require_deflate2();
     var inflate = require_inflate2();
-    var constants5 = require_constants();
+    var constants6 = require_constants();
     var pako = {};
-    assign(pako, deflate, inflate, constants5);
+    assign(pako, deflate, inflate, constants6);
     module.exports = pako;
   }
 });
@@ -8821,10 +8821,10 @@ var require_PDFHexString = __commonJS({
           return utils_1.pdfDocEncodingDecode(bytes);
         };
         PDFHexString2.prototype.decodeDate = function() {
-          var text3 = this.decodeText();
-          var date9 = utils_1.parseDate(text3);
+          var text4 = this.decodeText();
+          var date9 = utils_1.parseDate(text4);
           if (!date9)
-            throw new errors_1.InvalidPDFDateStringError(text3);
+            throw new errors_1.InvalidPDFDateStringError(text4);
           return date9;
         };
         PDFHexString2.prototype.asString = function() {
@@ -8881,16 +8881,16 @@ var require_StandardFontEmbedder = __commonJS({
           this.fontName = this.font.FontName;
           this.customName = customName;
         }
-        StandardFontEmbedder2.prototype.encodeText = function(text3) {
-          var glyphs = this.encodeTextAsGlyphs(text3);
+        StandardFontEmbedder2.prototype.encodeText = function(text4) {
+          var glyphs = this.encodeTextAsGlyphs(text4);
           var hexCodes = new Array(glyphs.length);
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
             hexCodes[idx] = utils_1.toHexString(glyphs[idx].code);
           }
           return PDFHexString_1.default.of(hexCodes.join(""));
         };
-        StandardFontEmbedder2.prototype.widthOfTextAtSize = function(text3, size) {
-          var glyphs = this.encodeTextAsGlyphs(text3);
+        StandardFontEmbedder2.prototype.widthOfTextAtSize = function(text4, size) {
+          var glyphs = this.encodeTextAsGlyphs(text4);
           var totalWidth = 0;
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
             var left = glyphs[idx].name;
@@ -8937,8 +8937,8 @@ var require_StandardFontEmbedder = __commonJS({
         StandardFontEmbedder2.prototype.widthOfGlyph = function(glyphName) {
           return this.font.getWidthOfGlyph(glyphName) || 250;
         };
-        StandardFontEmbedder2.prototype.encodeTextAsGlyphs = function(text3) {
-          var codePoints = Array.from(text3);
+        StandardFontEmbedder2.prototype.encodeTextAsGlyphs = function(text4) {
+          var codePoints = Array.from(text4);
           var glyphs = new Array(codePoints.length);
           for (var idx = 0, len = codePoints.length; idx < len; idx++) {
             var codePoint = utils_1.toCodePoint(codePoints[idx]);
@@ -9128,10 +9128,10 @@ var require_PDFString = __commonJS({
           return utils_1.pdfDocEncodingDecode(bytes);
         };
         PDFString2.prototype.decodeDate = function() {
-          var text3 = this.decodeText();
-          var date9 = utils_1.parseDate(text3);
+          var text4 = this.decodeText();
+          var date9 = utils_1.parseDate(text4);
           if (!date9)
-            throw new errors_1.InvalidPDFDateStringError(text3);
+            throw new errors_1.InvalidPDFDateStringError(text4);
           return date9;
         };
         PDFString2.prototype.asString = function() {
@@ -9220,16 +9220,16 @@ var require_CustomFontEmbedder = __commonJS({
             });
           });
         };
-        CustomFontEmbedder2.prototype.encodeText = function(text3) {
-          var glyphs = this.font.layout(text3, this.fontFeatures).glyphs;
+        CustomFontEmbedder2.prototype.encodeText = function(text4) {
+          var glyphs = this.font.layout(text4, this.fontFeatures).glyphs;
           var hexCodes = new Array(glyphs.length);
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
             hexCodes[idx] = utils_1.toHexStringOfMinLength(glyphs[idx].id, 4);
           }
           return PDFHexString_1.default.of(hexCodes.join(""));
         };
-        CustomFontEmbedder2.prototype.widthOfTextAtSize = function(text3, size) {
-          var glyphs = this.font.layout(text3, this.fontFeatures).glyphs;
+        CustomFontEmbedder2.prototype.widthOfTextAtSize = function(text4, size) {
+          var glyphs = this.font.layout(text4, this.fontFeatures).glyphs;
           var totalWidth = 0;
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
             totalWidth += glyphs[idx].advanceWidth * this.scale;
@@ -9451,8 +9451,8 @@ var require_CustomFontSubsetEmbedder = __commonJS({
             });
           });
         };
-        CustomFontSubsetEmbedder2.prototype.encodeText = function(text3) {
-          var glyphs = this.font.layout(text3, this.fontFeatures).glyphs;
+        CustomFontSubsetEmbedder2.prototype.encodeText = function(text4) {
+          var glyphs = this.font.layout(text4, this.fontFeatures).glyphs;
           var hexCodes = new Array(glyphs.length);
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
             var glyph = glyphs[idx];
@@ -9472,12 +9472,12 @@ var require_CustomFontSubsetEmbedder = __commonJS({
         };
         CustomFontSubsetEmbedder2.prototype.serializeFont = function() {
           var _this = this;
-          return new Promise(function(resolve2, reject) {
+          return new Promise(function(resolve3, reject) {
             var parts = [];
             _this.subset.encodeStream().on("data", function(bytes) {
               return parts.push(bytes);
             }).on("end", function() {
-              return resolve2(utils_1.mergeUint8Arrays(parts));
+              return resolve3(utils_1.mergeUint8Arrays(parts));
             }).on("error", function(err2) {
               return reject(err2);
             });
@@ -9905,8 +9905,8 @@ var require_UPNG = __commonJS({
           if (out.tabs[type] == null) out.tabs[type] = {};
           var nz = bin.nextZero(data, offset);
           var keyw = bin.readASCII(data, offset, nz - offset);
-          var text3 = bin.readASCII(data, nz + 1, offset + len - nz - 1);
-          out.tabs[type][keyw] = text3;
+          var text4 = bin.readASCII(data, nz + 1, offset + len - nz - 1);
+          out.tabs[type][keyw] = text4;
         } else if (type == "iTXt") {
           if (out.tabs[type] == null) out.tabs[type] = {};
           var nz = 0, off = offset;
@@ -9921,8 +9921,8 @@ var require_UPNG = __commonJS({
           nz = bin.nextZero(data, off);
           var tkeyw = bin.readUTF8(data, off, nz - off);
           off = nz + 1;
-          var text3 = bin.readUTF8(data, off, len - (off - offset));
-          out.tabs[type][keyw] = text3;
+          var text4 = bin.readUTF8(data, off, len - (off - offset));
+          out.tabs[type][keyw] = text4;
         } else if (type == "PLTE") {
           out.tabs[type] = bin.readBytes(data, offset, len);
         } else if (type == "hIST") {
@@ -16487,8 +16487,8 @@ var require_operators = __commonJS({
     exports.moveText = function(x2, y) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.MoveText, [objects_1.asPDFNumber(x2), objects_1.asPDFNumber(y)]);
     };
-    exports.showText = function(text3) {
-      return core_1.PDFOperator.of(core_1.PDFOperatorNames.ShowText, [text3]);
+    exports.showText = function(text4) {
+      return core_1.PDFOperator.of(core_1.PDFOperatorNames.ShowText, [text4]);
     };
     exports.beginText = function() {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.BeginText);
@@ -16679,7 +16679,7 @@ var require_svgPath = __commonJS({
       ["Z", 0],
       ["z", 0]
     ]);
-    var parse5 = function(path) {
+    var parse6 = function(path) {
       var cmd;
       var ret = [];
       var args = [];
@@ -17001,7 +17001,7 @@ var require_svgPath = __commonJS({
       return result;
     };
     exports.svgPathToOperators = function(path) {
-      return apply2(parse5(path));
+      return apply2(parse6(path));
     };
   }
 });
@@ -17773,9 +17773,9 @@ var require_layout = __commonJS({
         remainder: void 0
       };
     };
-    exports.layoutMultilineText = function(text3, _a6) {
+    exports.layoutMultilineText = function(text4, _a6) {
       var alignment = _a6.alignment, fontSize = _a6.fontSize, font = _a6.font, bounds = _a6.bounds;
-      var lines = utils_1.lineSplit(utils_1.cleanText(text3));
+      var lines = utils_1.lineSplit(utils_1.cleanText(text4));
       if (fontSize === void 0 || fontSize === 0) {
         fontSize = computeFontSize(lines, font, bounds, true);
       }
@@ -17817,9 +17817,9 @@ var require_layout = __commonJS({
         }
       };
     };
-    exports.layoutCombedText = function(text3, _a6) {
+    exports.layoutCombedText = function(text4, _a6) {
       var fontSize = _a6.fontSize, font = _a6.font, bounds = _a6.bounds, cellCount = _a6.cellCount;
-      var line = utils_1.mergeLines(utils_1.cleanText(text3));
+      var line = utils_1.mergeLines(utils_1.cleanText(text4));
       if (line.length > cellCount) {
         throw new errors_1.CombedTextLayoutError(line.length, cellCount);
       }
@@ -17865,9 +17865,9 @@ var require_layout = __commonJS({
         }
       };
     };
-    exports.layoutSinglelineText = function(text3, _a6) {
+    exports.layoutSinglelineText = function(text4, _a6) {
       var alignment = _a6.alignment, fontSize = _a6.fontSize, font = _a6.font, bounds = _a6.bounds;
-      var line = utils_1.mergeLines(utils_1.cleanText(text3));
+      var line = utils_1.mergeLines(utils_1.cleanText(text4));
       if (fontSize === void 0 || fontSize === 0) {
         fontSize = computeFontSize([line], font, bounds);
       }
@@ -18093,7 +18093,7 @@ var require_appearances = __commonJS({
       var rectangle = widget.getRectangle();
       var ap = widget.getAppearanceCharacteristics();
       var bs = widget.getBorderStyle();
-      var text3 = (_a6 = textField.getText()) !== null && _a6 !== void 0 ? _a6 : "";
+      var text4 = (_a6 = textField.getText()) !== null && _a6 !== void 0 ? _a6 : "";
       var borderWidth = (_b2 = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _b2 !== void 0 ? _b2 : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
       var _e = rotations_1.adjustDimsForRotation(rectangle, rotation), width = _e.width, height = _e.height;
@@ -18111,7 +18111,7 @@ var require_appearances = __commonJS({
         height: height - (borderWidth + padding) * 2
       };
       if (textField.isMultiline()) {
-        var layout = layout_1.layoutMultilineText(text3, {
+        var layout = layout_1.layoutMultilineText(text4, {
           alignment: textField.getAlignment(),
           fontSize: widgetFontSize !== null && widgetFontSize !== void 0 ? widgetFontSize : fieldFontSize,
           font,
@@ -18120,7 +18120,7 @@ var require_appearances = __commonJS({
         textLines = layout.lines;
         fontSize = layout.fontSize;
       } else if (textField.isCombed()) {
-        var layout = layout_1.layoutCombedText(text3, {
+        var layout = layout_1.layoutCombedText(text4, {
           fontSize: widgetFontSize !== null && widgetFontSize !== void 0 ? widgetFontSize : fieldFontSize,
           font,
           bounds,
@@ -18129,7 +18129,7 @@ var require_appearances = __commonJS({
         textLines = layout.cells;
         fontSize = layout.fontSize;
       } else {
-        var layout = layout_1.layoutSinglelineText(text3, {
+        var layout = layout_1.layoutSinglelineText(text4, {
           alignment: textField.getAlignment(),
           fontSize: widgetFontSize !== null && widgetFontSize !== void 0 ? widgetFontSize : fieldFontSize,
           font,
@@ -18169,7 +18169,7 @@ var require_appearances = __commonJS({
       var rectangle = widget.getRectangle();
       var ap = widget.getAppearanceCharacteristics();
       var bs = widget.getBorderStyle();
-      var text3 = (_a6 = dropdown.getSelected()[0]) !== null && _a6 !== void 0 ? _a6 : "";
+      var text4 = (_a6 = dropdown.getSelected()[0]) !== null && _a6 !== void 0 ? _a6 : "";
       var borderWidth = (_b2 = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _b2 !== void 0 ? _b2 : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
       var _d = rotations_1.adjustDimsForRotation(rectangle, rotation), width = _d.width, height = _d.height;
@@ -18184,7 +18184,7 @@ var require_appearances = __commonJS({
         width: width - (borderWidth + padding) * 2,
         height: height - (borderWidth + padding) * 2
       };
-      var _e = layout_1.layoutSinglelineText(text3, {
+      var _e = layout_1.layoutSinglelineText(text4, {
         alignment: alignment_1.TextAlignment.Left,
         fontSize: widgetFontSize !== null && widgetFontSize !== void 0 ? widgetFontSize : fieldFontSize,
         font,
@@ -18232,11 +18232,11 @@ var require_appearances = __commonJS({
       var selected = optionList.getSelected();
       if (optionList.isSorted())
         options.sort();
-      var text3 = "";
+      var text4 = "";
       for (var idx = 0, len = options.length; idx < len; idx++) {
-        text3 += options[idx];
+        text4 += options[idx];
         if (idx < len - 1)
-          text3 += "\n";
+          text4 += "\n";
       }
       var padding = 1;
       var bounds = {
@@ -18245,7 +18245,7 @@ var require_appearances = __commonJS({
         width: width - (borderWidth + padding) * 2,
         height: height - (borderWidth + padding) * 2
       };
-      var _d = layout_1.layoutMultilineText(text3, {
+      var _d = layout_1.layoutMultilineText(text4, {
         alignment: alignment_1.TextAlignment.Left,
         fontSize: widgetFontSize !== null && widgetFontSize !== void 0 ? widgetFontSize : fieldFontSize,
         font,
@@ -18370,15 +18370,15 @@ var require_PDFFont = __commonJS({
           this.name = embedder.fontName;
           this.embedder = embedder;
         }
-        PDFFont2.prototype.encodeText = function(text3) {
-          utils_1.assertIs(text3, "text", ["string"]);
+        PDFFont2.prototype.encodeText = function(text4) {
+          utils_1.assertIs(text4, "text", ["string"]);
           this.modified = true;
-          return this.embedder.encodeText(text3);
+          return this.embedder.encodeText(text4);
         };
-        PDFFont2.prototype.widthOfTextAtSize = function(text3, size) {
-          utils_1.assertIs(text3, "text", ["string"]);
+        PDFFont2.prototype.widthOfTextAtSize = function(text4, size) {
+          utils_1.assertIs(text4, "text", ["string"]);
           utils_1.assertIs(size, "size", ["number"]);
-          return this.embedder.widthOfTextAtSize(text3, size);
+          return this.embedder.widthOfTextAtSize(text4, size);
         };
         PDFFont2.prototype.heightAtSize = function(size, options) {
           var _a6;
@@ -19523,16 +19523,16 @@ var require_PDFTextField = __commonJS({
           }
           return value === null || value === void 0 ? void 0 : value.decodeText();
         };
-        PDFTextField2.prototype.setText = function(text3) {
-          utils_1.assertOrUndefined(text3, "text", ["string"]);
+        PDFTextField2.prototype.setText = function(text4) {
+          utils_1.assertOrUndefined(text4, "text", ["string"]);
           var maxLength = this.getMaxLength();
-          if (maxLength !== void 0 && text3 && text3.length > maxLength) {
-            throw new errors_1.ExceededMaxLengthError(text3.length, maxLength, this.getName());
+          if (maxLength !== void 0 && text4 && text4.length > maxLength) {
+            throw new errors_1.ExceededMaxLengthError(text4.length, maxLength, this.getName());
           }
           this.markAsDirty();
           this.disableRichFormatting();
-          if (text3) {
-            this.acroField.setValue(core_1.PDFHexString.fromText(text3));
+          if (text4) {
+            this.acroField.setValue(core_1.PDFHexString.fromText(text4));
           } else {
             this.acroField.removeValue();
           }
@@ -19555,9 +19555,9 @@ var require_PDFTextField = __commonJS({
           if (maxLength === void 0) {
             this.acroField.removeMaxLength();
           } else {
-            var text3 = this.getText();
-            if (text3 && text3.length > maxLength) {
-              throw new errors_1.InvalidMaxLengthError(text3.length, maxLength, this.getName());
+            var text4 = this.getText();
+            if (text4 && text4.length > maxLength) {
+              throw new errors_1.InvalidMaxLengthError(text4.length, maxLength, this.getName());
             }
             this.acroField.setMaxLength(maxLength);
           }
@@ -19925,10 +19925,10 @@ var require_PDFForm = __commonJS({
           utils_1.assertIs(name, "name", ["string"]);
           var nameParts = splitFieldName(name);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
-          var text3 = core_1.PDFAcroText.create(this.doc.context);
-          text3.setPartialName(nameParts.terminal);
-          addFieldToParent(parent, [text3, text3.ref], nameParts.terminal);
-          return PDFTextField_1.default.of(text3, text3.ref, this.doc);
+          var text4 = core_1.PDFAcroText.create(this.doc.context);
+          text4.setPartialName(nameParts.terminal);
+          addFieldToParent(parent, [text4, text4.ref], nameParts.terminal);
+          return PDFTextField_1.default.of(text4, text4.ref, this.doc);
         };
         PDFForm2.prototype.flatten = function(options) {
           if (options === void 0) {
@@ -21372,12 +21372,12 @@ var require_PDFPage = __commonJS({
           var contentStream = this.getContentStream();
           contentStream.push.apply(contentStream, operator);
         };
-        PDFPage2.prototype.drawText = function(text3, options) {
+        PDFPage2.prototype.drawText = function(text4, options) {
           var _a6, _b2, _c, _d, _e, _f, _g;
           if (options === void 0) {
             options = {};
           }
-          utils_1.assertIs(text3, "text", ["string"]);
+          utils_1.assertIs(text4, "text", ["string"]);
           utils_1.assertOrUndefined(options.color, "options.color", [[Object, "Color"]]);
           utils_1.assertRangeOrUndefined(options.opacity, "opacity.opacity", 0, 1);
           utils_1.assertOrUndefined(options.font, "options.font", [[PDFFont_1.default, "PDFFont"]]);
@@ -21397,7 +21397,7 @@ var require_PDFPage = __commonJS({
           var textWidth = function(t) {
             return newFont.widthOfTextAtSize(t, fontSize);
           };
-          var lines = options.maxWidth === void 0 ? utils_1.lineSplit(utils_1.cleanText(text3)) : utils_1.breakTextIntoLines(text3, wordBreaks, options.maxWidth, textWidth);
+          var lines = options.maxWidth === void 0 ? utils_1.lineSplit(utils_1.cleanText(text4)) : utils_1.breakTextIntoLines(text4, wordBreaks, options.maxWidth, textWidth);
           var encodedLines = new Array(lines.length);
           for (var idx = 0, len = lines.length; idx < len; idx++) {
             encodedLines[idx] = newFont.encodeText(lines[idx]);
@@ -21833,9 +21833,9 @@ var require_PDFButton = __commonJS({
           this.acroField.setFontSize(fontSize);
           this.markAsDirty();
         };
-        PDFButton2.prototype.addToPage = function(text3, page, options) {
+        PDFButton2.prototype.addToPage = function(text4, page, options) {
           var _a6, _b2, _c, _d, _e, _f, _g, _h, _j, _k, _l;
-          utils_1.assertOrUndefined(text3, "text", ["string"]);
+          utils_1.assertOrUndefined(text4, "text", ["string"]);
           utils_1.assertOrUndefined(page, "page", [[PDFPage_1.default, "PDFPage"]]);
           PDFField_1.assertFieldAppearanceOptions(options);
           var widget = this.createWidget({
@@ -21848,7 +21848,7 @@ var require_PDFButton = __commonJS({
             borderColor: options === null || options === void 0 ? void 0 : options.borderColor,
             borderWidth: (_j = options === null || options === void 0 ? void 0 : options.borderWidth) !== null && _j !== void 0 ? _j : 0,
             rotate: (_k = options === null || options === void 0 ? void 0 : options.rotate) !== null && _k !== void 0 ? _k : rotations_1.degrees(0),
-            caption: text3,
+            caption: text4,
             hidden: options === null || options === void 0 ? void 0 : options.hidden,
             page: page.ref
           });
@@ -22023,9 +22023,9 @@ var require_cjs = __commonJS({
   }
 });
 
-// .local/skill-picker-install-20261108/source/packages/tools/outline/outline-curves.cjs
+// packages/tools/outline/outline-curves.cjs
 var require_outline_curves = __commonJS({
-  ".local/skill-picker-install-20261108/source/packages/tools/outline/outline-curves.cjs"(exports, module) {
+  "packages/tools/outline/outline-curves.cjs"(exports, module) {
     "use strict";
     (function(root, factory) {
       if (typeof module === "object" && module.exports) module.exports = factory();
@@ -22218,9 +22218,9 @@ var require_outline_curves = __commonJS({
   }
 });
 
-// .local/skill-picker-install-20261108/source/packages/tools/outline/outline-core.cjs
+// packages/tools/outline/outline-core.cjs
 var require_outline_core = __commonJS({
-  ".local/skill-picker-install-20261108/source/packages/tools/outline/outline-core.cjs"(exports, module) {
+  "packages/tools/outline/outline-core.cjs"(exports, module) {
     "use strict";
     (function(root, factory) {
       if (typeof module === "object" && module.exports) module.exports = factory(require_outline_curves());
@@ -22398,17 +22398,17 @@ var require_outline_core = __commonJS({
   }
 });
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/index.ts
-import { createCipheriv, createDecipheriv, randomBytes as randomBytes3, randomUUID as randomUUID12 } from "node:crypto";
+// plugins/podplo-dsh/src/index.ts
+import { createCipheriv, createDecipheriv, randomBytes as randomBytes3, randomUUID as randomUUID14 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
-import { basename as basename10, isAbsolute as isAbsolute6, resolve } from "node:path";
+import { basename as basename11, isAbsolute as isAbsolute7, resolve as resolve2 } from "node:path";
 import { dshHomePath } from "@deepseek-ai/dsh-home-paths";
 import { credentialKey } from "@deepseek-ai/dsh-credentials";
 import * as NativeMcp from "@deepseek-ai/dsh-mcp-client";
 import Schema from "@deepseek-ai/schemastery";
 
-// .local/skill-picker-install-20261108/source/packages/online/service.ts
+// packages/online/service.ts
 import { EventEmitter } from "node:events";
 
 // node_modules/zod/v4/classic/external.js
@@ -30049,8 +30049,8 @@ function ko_default() {
 }
 
 // node_modules/zod/v4/locales/lt.js
-var capitalizeFirstCharacter = (text3) => {
-  return text3.charAt(0).toUpperCase() + text3.slice(1);
+var capitalizeFirstCharacter = (text4) => {
+  return text4.charAt(0).toUpperCase() + text4.slice(1);
 };
 function getUnitTypeFromNumber(number7) {
   const abs = Math.abs(number7);
@@ -36925,7 +36925,7 @@ function date4(params) {
 // node_modules/zod/v4/classic/external.js
 config(en_default());
 
-// .local/skill-picker-install-20261108/source/packages/online/user-skills.ts
+// packages/online/user-skills.ts
 var USER_SKILL_REFERENCE_LIMIT = 12;
 var ids = external_exports.array(external_exports.string().uuid()).max(USER_SKILL_REFERENCE_LIMIT).refine((value) => new Set(value).size === value.length, "\u53C2\u8003\u56FE\u4E0D\u80FD\u91CD\u590D");
 var UserSkillFieldsSchema = external_exports.object({
@@ -36943,7 +36943,7 @@ function combinedReferenceIds(preset, additional) {
   return [.../* @__PURE__ */ new Set([...preset, ...additional])];
 }
 
-// .local/skill-picker-install-20261108/source/packages/online/contracts.ts
+// packages/online/contracts.ts
 var PODPLO_ORIGIN = "https://podplo.app";
 var MCP_RESOURCE = `${PODPLO_ORIGIN}/api/mcp`;
 var ECO_REFERENCE_IMAGE_LIMIT = 4;
@@ -37176,12 +37176,12 @@ var OnlineCallSchema = external_exports.discriminatedUnion("method", [
   external_exports.object({ method: external_exports.literal("onlineSimulate"), quoteId: external_exports.string().uuid(), confirmed: external_exports.literal(true) })
 ]);
 
-// .local/skill-picker-install-20261108/source/packages/online/service.ts
+// packages/online/service.ts
 import { join } from "node:path";
 import { randomUUID as randomUUID6 } from "node:crypto";
 import { performance } from "node:perf_hooks";
 
-// .local/skill-picker-install-20261108/source/packages/storage/index.ts
+// packages/storage/index.ts
 import { mkdir, readFile, rename, writeFile, open, rm } from "node:fs/promises";
 import { dirname } from "node:path";
 import { randomUUID } from "node:crypto";
@@ -37244,7 +37244,7 @@ var AtomicStore = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/vault.ts
+// packages/online/vault.ts
 import { readFile as readFile2, mkdir as mkdir2, writeFile as writeFile2, rename as rename2, rm as rm2 } from "node:fs/promises";
 import { dirname as dirname2 } from "node:path";
 import { randomUUID as randomUUID2 } from "node:crypto";
@@ -37328,11 +37328,11 @@ var TextConfigVault = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/oauth.ts
+// packages/online/oauth.ts
 import { createServer } from "node:http";
 import { createHash, randomBytes, randomUUID as randomUUID3, timingSafeEqual } from "node:crypto";
 
-// .local/skill-picker-install-20261108/source/packages/online/http.ts
+// packages/online/http.ts
 var OnlineError = class extends Error {
   constructor(code, status = 0) {
     const labels2 = {
@@ -37406,7 +37406,7 @@ var PodploHttp = class {
       throw new OnlineError(init.signal?.aborted ? "CANCELLED" : "NETWORK_UNAVAILABLE");
     }
     const reader = response.body?.getReader();
-    let text3 = "";
+    let text4 = "";
     let bytes = 0;
     if (reader) {
       const decoder = new TextDecoder();
@@ -37419,9 +37419,9 @@ var PodploHttp = class {
             await reader.cancel();
             throw new OnlineError("RESPONSE_TOO_LARGE");
           }
-          text3 += decoder.decode(chunk.value, { stream: true });
+          text4 += decoder.decode(chunk.value, { stream: true });
         }
-        text3 += decoder.decode();
+        text4 += decoder.decode();
       } finally {
         reader.releaseLock();
       }
@@ -37429,13 +37429,13 @@ var PodploHttp = class {
     let body;
     try {
       if (response.headers.get("content-type")?.includes("text/event-stream")) {
-        const messages = text3.split(/\r?\n\r?\n/).flatMap((event) => {
+        const messages = text4.split(/\r?\n\r?\n/).flatMap((event) => {
           const data = event.split(/\r?\n/).filter((line) => line.startsWith("data:")).map((line) => line.slice(5).trimStart()).join("\n");
           if (!data || data === "[DONE]") return [];
           return [JSON.parse(data)];
         });
         body = messages.find((message) => message && typeof message === "object" && "id" in message);
-      } else body = text3 ? JSON.parse(text3) : null;
+      } else body = text4 ? JSON.parse(text4) : null;
     } catch {
       throw new OnlineError("INVALID_RESPONSE", response.status);
     }
@@ -37451,7 +37451,7 @@ var PodploHttp = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/oauth.ts
+// packages/online/oauth.ts
 var TokensSchema = external_exports.object({
   access_token: external_exports.string().min(1),
   refresh_token: external_exports.string().min(1),
@@ -37522,15 +37522,15 @@ var OAuthSession = class {
     let cancel = () => {
     };
     let settled = false;
-    const promise3 = new Promise((resolve2, reject) => {
-      const fail3 = (error101) => {
+    const promise3 = new Promise((resolve3, reject) => {
+      const fail4 = (error101) => {
         if (settled) return;
         settled = true;
         abort.abort();
         reject(error101);
       };
-      cancel = () => fail3(new OnlineError("AUTHORIZATION_CANCELLED"));
-      timer = setTimeout(() => fail3(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs);
+      cancel = () => fail4(new OnlineError("AUTHORIZATION_CANCELLED"));
+      timer = setTimeout(() => fail4(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs);
       void (async () => {
         const resource = external_exports.object({ resource: external_exports.string(), authorization_servers: external_exports.array(external_exports.string()) }).parse(await this.http.json("/.well-known/oauth-protected-resource/api/mcp", { signal: abort.signal }));
         if (resource.resource !== `${this.http.origin}/api/mcp` || !resource.authorization_servers.includes(this.http.origin)) throw new OnlineError("RESOURCE_MISMATCH");
@@ -37574,7 +37574,7 @@ var OAuthSession = class {
           }
           if (url4.searchParams.has("error")) {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u53EF\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail3(new OnlineError("AUTHORIZATION_DENIED"));
+            fail4(new OnlineError("AUTHORIZATION_DENIED"));
             return;
           }
           const code = url4.searchParams.get("code");
@@ -37600,10 +37600,10 @@ var OAuthSession = class {
             this.grant = grant;
             settled = true;
             response.end("\u6388\u6743\u6210\u529F\u3002\u8BF7\u8FD4\u56DE PodPlo \u684C\u9762\u5BA2\u6237\u7AEF\u3002");
-            resolve2(grant);
+            resolve3(grant);
           }).catch((error101) => {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail3(error101);
+            fail4(error101);
           });
         });
         await new Promise((ready, rejectListen) => {
@@ -37640,7 +37640,7 @@ var OAuthSession = class {
         }).toString();
         if (settled) return;
         await openBrowser(url3.href);
-      })().catch(fail3);
+      })().catch(fail4);
     });
     this.attempt = { promise: promise3, cancel: () => cancel() };
     try {
@@ -37710,7 +37710,7 @@ var OAuthSession = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/mcp.ts
+// packages/online/mcp.ts
 import { createHash as createHash2 } from "node:crypto";
 var readTools = /* @__PURE__ */ new Set(["get_credit_balance", "get_desktop_context", "search_skills", "get_user_skill", "get_models", "quote_skill_generation", "list_reference_assets", "get_reference_asset", "get_generation"]);
 var uploadTools = /* @__PURE__ */ new Set(["prepare_reference_upload", "complete_reference_upload"]);
@@ -37802,10 +37802,10 @@ var PodploMcp = class {
       content: external_exports.array(external_exports.object({ type: external_exports.string(), text: external_exports.string().optional() })).optional()
     }).parse(await this.rpc("tools/call", { name, arguments: args }, true, guard));
     if (result.isError) {
-      const text3 = result.content?.filter((c) => c.type === "text").map((c) => c.text ?? "").join("") ?? "";
+      const text4 = result.content?.filter((c) => c.type === "text").map((c) => c.text ?? "").join("") ?? "";
       let code = "MCP_TOOL_REJECTED";
       try {
-        const error101 = JSON.parse(text3);
+        const error101 = JSON.parse(text4);
         const candidate = error101.error?.code ?? error101.code;
         if (typeof candidate === "string" && /^[A-Z_]{1,80}$/.test(candidate)) code = candidate;
       } catch {
@@ -37979,7 +37979,7 @@ var PodploMcp = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/tools/toolkit-contracts.ts
+// packages/tools/toolkit-contracts.ts
 var color = external_exports.string().regex(/^#[0-9a-f]{6}$/i);
 var RotateOptionsSchema = external_exports.object({
   angle: external_exports.number().min(-360).max(360).default(0),
@@ -38057,7 +38057,7 @@ var IMAGE_TOOLKIT_CATALOG = [
 ];
 var TOOLKIT_CATALOG = IMAGE_TOOLKIT_CATALOG.map((row) => row.id === "package" ? { id: "rename", name: "\u6587\u4EF6\u6279\u91CF\u91CD\u547D\u540D", slug: "batch-file-rename", agent: "podplo_batch_rename_files", description: "\u9009\u62E9\u6587\u4EF6\u5939\uFF0C\u9884\u89C8\u5E76\u6279\u91CF\u4FEE\u6539\u6587\u4EF6\u540D\uFF0C\u652F\u6301\u89C4\u5219\u7EC4\u5408\u4E0E\u64A4\u9500" } : row);
 
-// .local/skill-picker-install-20261108/source/packages/online/public-skill-directory.ts
+// packages/online/public-skill-directory.ts
 import { mkdir as mkdir3, readFile as readFile3, rename as rename3, rm as rm3, writeFile as writeFile3 } from "node:fs/promises";
 import { dirname as dirname3 } from "node:path";
 import { randomUUID as randomUUID5 } from "node:crypto";
@@ -38213,7 +38213,7 @@ var PublicSkillDirectory = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/cloud-favorites.ts
+// packages/online/cloud-favorites.ts
 var CloudFavoriteTypeSchema = external_exports.enum(["skill", "gallery"]);
 var favoriteId = external_exports.string().trim().min(1).max(180).regex(/^[^/\\\0\r\n]+$/u, "\u6536\u85CF\u7F16\u53F7\u5FC5\u987B\u662F\u4E0D\u900F\u660E\u6807\u8BC6");
 var CloudFavoriteIdentitySchema = external_exports.object({ type: CloudFavoriteTypeSchema, id: favoriteId }).strict();
@@ -38302,7 +38302,7 @@ var CloudFavorites = class {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/service.ts
+// packages/online/service.ts
 function taskSkillDetails(skill) {
   const { slug: slug2, title, summary, description, inputs, keeps, changes, output, tags } = skill;
   return { slug: slug2, title, summary, description, inputs, keeps, changes, output, tags };
@@ -39063,7 +39063,7 @@ var OnlineService = class extends EventEmitter {
     let detail = completed?.status === "ready" && completed.reference?.id === prepared.assetId && completed.reference.status === "ready" ? completed.reference : await this.mcp.reference(prepared.assetId, assertSession);
     assertSession();
     for (let attempt = 1; detail.status === "processing" && attempt < this.uploadPollAttempts; attempt++) {
-      await new Promise((resolve2) => setTimeout(resolve2, this.uploadPollIntervalMs));
+      await new Promise((resolve3) => setTimeout(resolve3, this.uploadPollIntervalMs));
       assertSession();
       detail = await this.mcp.reference(prepared.assetId, assertSession);
       assertSession();
@@ -39082,13 +39082,13 @@ var OnlineService = class extends EventEmitter {
   }
 };
 
-// .local/skill-picker-install-20261108/source/packages/online/workbench.ts
+// packages/online/workbench.ts
 import { createHash as createHash3, randomUUID as randomUUID7 } from "node:crypto";
 import { join as join3, dirname as dirname5, isAbsolute as isAbsolute2, basename as basename2 } from "node:path";
 import { realpath as realpath2, writeFile as writeFile4, readFile as readFile4 } from "node:fs/promises";
 import sharp2 from "sharp";
 
-// .local/skill-picker-install-20261108/source/packages/storage/assets.ts
+// packages/storage/assets.ts
 import { constants, lstatSync, realpathSync } from "node:fs";
 import { lstat, mkdir as mkdir4, open as open2, realpath } from "node:fs/promises";
 import { basename, dirname as dirname4, isAbsolute, join as join2, relative } from "node:path";
@@ -39136,7 +39136,7 @@ function localResult(root, directory, id, file3) {
   return { id, name: basename(file3), status: resultExists(root, directory, file3) ? "available" : "missing" };
 }
 
-// .local/skill-picker-install-20261108/source/packages/tasks/contracts.ts
+// packages/tasks/contracts.ts
 var boundedText = external_exports.string().max(64e3);
 var TaskInputImageSchema = external_exports.object({
   id: external_exports.string().uuid(),
@@ -39336,7 +39336,7 @@ var DesktopTaskStateSchema = external_exports.object({
   error: external_exports.string().max(1e3).optional()
 }).strict();
 
-// .local/skill-picker-install-20261108/source/packages/online/workbench-contracts.ts
+// packages/online/workbench-contracts.ts
 var DesktopAssetSchema = external_exports.object({
   type: external_exports.enum(["skill", "tool", "gallery", "upload"]),
   id: external_exports.string().trim().min(1).max(180),
@@ -39364,7 +39364,7 @@ var TaskRecordSchema = external_exports.object({
   artifacts: external_exports.array(TaskImageArtifactSchema).max(200).optional()
 }).strict();
 
-// .local/skill-picker-install-20261108/source/packages/online/workbench.ts
+// packages/online/workbench.ts
 function reservedTaskImages(plan) {
   if (!plan.parentTaskSessionId || !plan.generation || !plan.quote) return 0;
   if (plan.status === "completed") return plan.quote.outputCount;
@@ -39495,14 +39495,14 @@ var DesktopWorkbench = class {
       signal.throwIfAborted();
       const plan = this.get(id, planId);
       if (plan.status !== "running") return plan;
-      await new Promise((resolve2, reject) => {
+      await new Promise((resolve3, reject) => {
         const abort = () => {
           clearTimeout(timer);
           reject(new Error("\u5DF2\u505C\u6B62\u7B49\u5F85\uFF1B\u5DF2\u63A5\u7EB3\u7684\u4EFB\u52A1\u4FDD\u7559\uFF0C\u53EF\u7EE7\u7EED\u67E5\u8BE2\u5DF2\u6709\u4EFB\u52A1"));
         };
         const timer = setTimeout(() => {
           signal.removeEventListener("abort", abort);
-          resolve2();
+          resolve3();
         }, 100);
         signal.addEventListener("abort", abort, { once: true });
         if (signal.aborted) abort();
@@ -39514,14 +39514,14 @@ var DesktopWorkbench = class {
       signal.throwIfAborted();
       const plan = this.get(id, planId);
       if (plan.generation?.taskId || plan.status !== "running") return plan;
-      await new Promise((resolve2, reject) => {
+      await new Promise((resolve3, reject) => {
         const abort = () => {
           clearTimeout(timer);
           reject(new Error("\u5DF2\u505C\u6B62\u7B49\u5F85\u63A5\u7EB3\u7ED3\u679C\uFF1B\u539F\u8BF7\u6C42\u4FDD\u7559\uFF0C\u4E0D\u80FD\u91CD\u590D\u63D0\u4EA4"));
         };
         const timer = setTimeout(() => {
           signal.removeEventListener("abort", abort);
-          resolve2();
+          resolve3();
         }, 25);
         signal.addEventListener("abort", abort, { once: true });
         if (signal.aborted) abort();
@@ -39704,7 +39704,7 @@ var DesktopWorkbench = class {
         });
         return;
       }
-      await new Promise((resolve2) => setTimeout(resolve2, transport.intervalMs ?? 3e3));
+      await new Promise((resolve3) => setTimeout(resolve3, transport.intervalMs ?? 3e3));
     }
     throw new Error("\u4EFB\u52A1\u67E5\u8BE2\u5DF2\u6682\u505C");
   }
@@ -39859,13 +39859,13 @@ var DesktopWorkbench = class {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/service.ts
+// plugins/podplo-dsh/src/service.ts
 import { EventEmitter as EventEmitter2 } from "node:events";
 import { randomUUID as randomUUID9 } from "node:crypto";
 import { join as join6 } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/local-toolkit.ts
+// plugins/podplo-dsh/src/local-toolkit.ts
 import { createHash as createHash4, randomUUID as randomUUID8 } from "node:crypto";
 import { constants as constants2 } from "node:fs";
 import { lstat as lstat2, mkdir as mkdir5, open as open3, realpath as realpath3, unlink } from "node:fs/promises";
@@ -47510,8 +47510,8 @@ function ko_default2() {
 }
 
 // plugins/podplo-dsh/node_modules/zod/v4/locales/lt.js
-var capitalizeFirstCharacter2 = (text3) => {
-  return text3.charAt(0).toUpperCase() + text3.slice(1);
+var capitalizeFirstCharacter2 = (text4) => {
+  return text4.charAt(0).toUpperCase() + text4.slice(1);
 };
 function getUnitTypeFromNumber2(number7) {
   const abs = Math.abs(number7);
@@ -54386,7 +54386,7 @@ function date8(params) {
 // plugins/podplo-dsh/node_modules/zod/v4/classic/external.js
 config2(en_default2());
 
-// .local/skill-picker-install-20261108/source/packages/tools/rename-contracts.ts
+// packages/tools/rename-contracts.ts
 var text = external_exports.string().max(180).default("");
 var BatchRenameOptionsSchema = external_exports.object({
   baseName: text,
@@ -54415,7 +54415,7 @@ var RenameSelectionOptionsSchema = external_exports.object({
   extensions: external_exports.array(external_exports.string().trim().toLowerCase().regex(/^[a-z0-9]+$/u)).max(100).default([])
 }).strict();
 
-// .local/skill-picker-install-20261108/source/packages/contracts/index.ts
+// packages/contracts/index.ts
 var ResizeOptionsSchema = external_exports.object({
   width: external_exports.number().positive().max(3e4),
   height: external_exports.number().positive().max(3e4),
@@ -54521,7 +54521,7 @@ var CallSchema = external_exports.discriminatedUnion("method", [
   external_exports.object({ method: external_exports.literal("simulateExpiry"), expired: external_exports.boolean() })
 ]);
 
-// .local/skill-picker-install-20261108/source/packages/tools/images.ts
+// packages/tools/images.ts
 import sharp3 from "sharp";
 function targetPixels(options) {
   const input = ResizeOptionsSchema.parse(options);
@@ -54532,7 +54532,7 @@ function targetPixels(options) {
   return { width, height };
 }
 
-// .local/skill-picker-install-20261108/source/packages/tools/toolkit.ts
+// packages/tools/toolkit.ts
 var import_pdf_lib = __toESM(require_cjs(), 1);
 import sharp5 from "sharp";
 import { Worker as Worker3 } from "node:worker_threads";
@@ -55253,7 +55253,7 @@ function zipSync(data, opts) {
   return out;
 }
 
-// .local/skill-picker-install-20261108/source/packages/tools/outline.ts
+// packages/tools/outline.ts
 var import_outline_core = __toESM(require_outline_core(), 1);
 var import_outline_curves = __toESM(require_outline_curves(), 1);
 import sharp4 from "sharp";
@@ -55265,7 +55265,7 @@ try { const r = core.build(workerData.input, workerData.options); parentPort.pos
 catch (e) { parentPort.postMessage({ error: e.message }); }`;
 function analyze(input, options, signal) {
   signal?.throwIfAborted();
-  return new Promise((resolve2, reject) => {
+  return new Promise((resolve3, reject) => {
     const worker = new Worker2(workerCode, { eval: true, execArgv: [], workerData: { input, options }, resourceLimits: { maxOldGenerationSizeMb: 256 } });
     let done = false;
     const abort = () => finish(new Error("\u4EFB\u52A1\u5DF2\u505C\u6B62"));
@@ -55277,7 +55277,7 @@ function analyze(input, options, signal) {
       signal?.removeEventListener("abort", abort);
       void worker.terminate();
       if (error101) reject(error101);
-      else resolve2(value);
+      else resolve3(value);
     };
     worker.once("message", (value) => value.error ? finish(new Error(value.error)) : finish(void 0, value));
     worker.once("error", (error101) => finish(error101));
@@ -55434,7 +55434,7 @@ async function previewOutline(input, raw, pattern, signal) {
   };
 }
 
-// .local/skill-picker-install-20261108/source/packages/tools/files.ts
+// packages/tools/files.ts
 function safeName(value, maxBytes = 180) {
   let name = value.normalize("NFKC").replace(/[\x00-\x1f\x7f/\\:*?"<>|]/g, "-").replace(/\.{2,}/g, "-").replace(/^[.\s-]+|[.\s-]+$/g, "");
   const characters = Array.from(name);
@@ -55443,7 +55443,7 @@ function safeName(value, maxBytes = 180) {
   return !name ? "file" : /^(?:con|prn|aux|nul|com[1-9]|lpt[1-9])(?:\.|$)/i.test(name) ? `_${name}` : name;
 }
 
-// .local/skill-picker-install-20261108/source/packages/tools/tool-worker.ts
+// packages/tools/tool-worker.ts
 import { parentPort } from "node:worker_threads";
 function adjustPixels(data, options) {
   const contrast = (1 + options.contrast / 100) ** 2;
@@ -55469,7 +55469,7 @@ if (parentPort) parentPort.once("message", (message) => {
   }
 });
 
-// .local/skill-picker-install-20261108/source/packages/tools/toolkit.ts
+// packages/tools/toolkit.ts
 var limitInputPixels = 1e8;
 function colorWorkerPath() {
   const here = dirname6(fileURLToPath(import.meta.url));
@@ -55483,7 +55483,7 @@ function adjustColors(data, options, signal) {
   const worker = path ? new Worker3(path, { execArgv: [], resourceLimits: { maxOldGenerationSizeMb: 256 } }) : new Worker3(`const { parentPort } = require('node:worker_threads'); const adjustPixels = (${adjustPixels.toString()});
 parentPort.once('message', message => { try { const data = adjustPixels(message.data, message.options); parentPort.postMessage({ data }, [data.buffer]); }
 catch (error) { parentPort.postMessage({ error: error instanceof Error ? error.message : '\u8C03\u8272\u5904\u7406\u5931\u8D25' }); } });`, { eval: true, execArgv: [], resourceLimits: { maxOldGenerationSizeMb: 256 } });
-  return new Promise((resolve2, reject) => {
+  return new Promise((resolve3, reject) => {
     let settled = false;
     const finish = (error101, value) => {
       if (settled) return;
@@ -55492,7 +55492,7 @@ catch (error) { parentPort.postMessage({ error: error instanceof Error ? error.m
       signal?.removeEventListener("abort", abort);
       void worker.terminate();
       if (error101) reject(error101);
-      else resolve2(Buffer.from(value));
+      else resolve3(Buffer.from(value));
     };
     const abort = () => finish(new Error("\u4EFB\u52A1\u5DF2\u505C\u6B62"));
     const timer = setTimeout(() => finish(new Error("\u8C03\u8272\u5904\u7406\u8D85\u65F6\uFF0C\u8BF7\u7F29\u5C0F\u56FE\u7247\u540E\u91CD\u8BD5")), 6e4);
@@ -55638,7 +55638,7 @@ async function processToolkit(inputs, raw, pattern, signal) {
   return results;
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/local-toolkit.ts
+// plugins/podplo-dsh/src/local-toolkit.ts
 var hashPattern = /^[a-f0-9]{64}$/u;
 var resultFilePattern = /^results\/[a-f0-9]{64}\/[a-f0-9]{64}\/[0-9a-f-]{36}\.(?:png|jpe?g|webp|pdf|zip|json)$/u;
 var storedResultSchema = external_exports2.object({
@@ -55944,6 +55944,24 @@ var NativeLocalToolkit = class {
     await this.assertIdentity(identity, purpose);
     return { ...publicResult(row), contentType: mediaType(row.format), bytes };
   }
+  /** Host-only processing seam for bytes already saved and verified by TaskArchiveManager. */
+  async processArchived(name, raw, sessionId, trustedInputs) {
+    this.ready();
+    if (!processingToolNames.includes(name)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
+    const session2 = opaqueId.parse(sessionId);
+    const args = name === "podplo_resize_images" ? resizeArgs.parse(raw) : operationArgs.parse(raw);
+    const options = normalizedProcessingOptions(name, args.options);
+    if (trustedInputs.length !== args.ids.length) throw new Error("\u5F52\u6863\u52A0\u5DE5\u8F93\u5165\u6570\u91CF\u4E0D\u4E00\u81F4");
+    let total = 0;
+    const inputs = trustedInputs.map((input, index) => {
+      if (input.id !== args.ids[index] || !Buffer.isBuffer(input.bytes) || !input.bytes.length || input.bytes.length > 50 * 1024 * 1024)
+        throw new Error("\u5F52\u6863\u52A0\u5DE5\u8F93\u5165\u65E0\u6548");
+      total += input.bytes.length;
+      if (total > 250 * 1024 * 1024) throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
+      return { id: input.id, name: basename4(input.name), bytes: Buffer.from(input.bytes), kind: input.kind };
+    });
+    return this.idempotentResolved(name, { operationId: args.operationId, ids: args.ids, options }, session2, inputs);
+  }
   /** Host-only recovery receipts; ordinary MCP listing remains session-scoped. */
   async archiveOperations(sessionId) {
     const identity = await this.identity("read"), state = this.store.snapshot();
@@ -56245,7 +56263,24 @@ var NativeLocalToolkit = class {
       this.inflight.delete(key);
     }
   }
-  async execute(name, args, sessionId, sessionHash, identity, digest) {
+  async idempotentResolved(name, args, session2, inputs) {
+    const identity = await this.identity("process", name), sessionHash = sha256(session2);
+    const digest = sha256(canonical({ name, ids: args.ids, options: args.options }));
+    const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
+    const pending = this.inflight.get(key);
+    if (pending) {
+      if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      return pending.promise;
+    }
+    const promise3 = this.execute(name, args, session2, sessionHash, identity, digest, inputs);
+    this.inflight.set(key, { digest, promise: promise3 });
+    try {
+      return await promise3;
+    } finally {
+      this.inflight.delete(key);
+    }
+  }
+  async execute(name, args, sessionId, sessionHash, identity, digest, archivedInputs) {
     const existing = this.store.snapshot().operations.find((row) => row.principal === identity.principal && row.session === sessionHash && row.operationId === args.operationId);
     if (existing) {
       if (existing.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
@@ -56254,7 +56289,7 @@ var NativeLocalToolkit = class {
       await this.assertIdentity(identity, "process", name);
       return this.processingReply(args.operationId, rows, true);
     }
-    const inputs = await this.resolveInputs(args.ids, identity, sessionId, sessionHash, "process", name);
+    const inputs = archivedInputs ?? await this.resolveInputs(args.ids, identity, sessionId, sessionHash, "process", name);
     await this.assertIdentity(identity, "process", name);
     const tool = processingTools[name];
     let outputs;
@@ -56501,7 +56536,7 @@ var NativeLocalToolkit = class {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/processing-plan.ts
+// plugins/podplo-dsh/src/processing-plan.ts
 var processingPlanSchema = { type: "array", maxItems: 10, description: "\u672C\u4EFB\u52A1\u9700\u8981\u7684\u672C\u5730\u52A0\u5DE5\u6B65\u9AA4\u3002\u65E0\u52A0\u5DE5\u8981\u6C42\u4F20 []\uFF1B\u9057\u6F0F\u8868\u793A\u8981\u6C42\u672A\u77E5\u3002\u4EC5\u767B\u8BB0\u6838\u5BF9\u4E0E\u7EE7\u7EED\u5904\u7406\u6240\u9700\u53C2\u6570\uFF0C\u4E0D\u4F1A\u63D0\u4EA4\u751F\u56FE\u3002", items: {
   type: "object",
   additionalProperties: false,
@@ -56534,7 +56569,7 @@ function parseProcessingPlan(value) {
   });
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/contracts.ts
+// plugins/podplo-dsh/src/contracts.ts
 var PODPLO_MANUAL_SESSION_ID = "podplo-manual";
 var PodploPluginError = class extends Error {
   constructor(code, message, details) {
@@ -56547,7 +56582,7 @@ var PodploPluginError = class extends Error {
   details;
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/service.ts
+// plugins/podplo-dsh/src/service.ts
 var comparableGenerationItems = (items) => items.map((item) => ({
   ...item.skillId ? { skillId: item.skillId } : {},
   args: item.args
@@ -56773,6 +56808,8 @@ var PodploPluginService = class extends EventEmitter2 {
       name: row.taskName || "\u751F\u56FE\u4EFB\u52A1",
       createdAt: row.createdAt,
       status: this.operationStatus(row),
+      ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
+      ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
       generationAudit: this.generationAudit(row),
       ...row.processingPlan !== void 0 ? { processingPlan: row.processingPlan } : {},
       referenceIds: [...new Set(row.items.flatMap((item) => {
@@ -57543,11 +57580,11 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     const ownerId = expectedOwner ?? await this.owner(false);
     await this.assertOwner(ownerId, false);
-    const capabilities = await this.generationCapabilities({ refresh: false });
+    const capabilities2 = await this.generationCapabilities({ refresh: false });
     await this.assertOwner(ownerId, false);
     const current = this.snapshot();
     if (current.account.userId !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
-    return { account: current.account, connection: current.connection, capabilities };
+    return { account: current.account, connection: current.connection, capabilities: capabilities2 };
   }
   async generationCapabilities(input) {
     if (!this.options.generation) return { available: false };
@@ -57677,13 +57714,13 @@ var PodploPluginService = class extends EventEmitter2 {
         output.push({ ...item, args });
         continue;
       }
-      const parse5 = (value, label) => {
+      const parse6 = (value, label) => {
         if (value === void 0) return [];
         if (!Array.isArray(value) || value.length > 14 || value.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id)))
           throw new PodploPluginError("INVALID_REFERENCE_ID", `${label} \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID`);
         return value;
       };
-      const ids2 = [.../* @__PURE__ */ new Set([...parse5(primary, "referenceAssetIds"), ...parse5(compatibility, "imageIds")])];
+      const ids2 = [.../* @__PURE__ */ new Set([...parse6(primary, "referenceAssetIds"), ...parse6(compatibility, "imageIds")])];
       if (ids2.length > 14) throw new PodploPluginError("INVALID_REFERENCE_ID", "\u6BCF\u9879\u6700\u591A\u4F7F\u7528 14 \u5F20\u53C2\u8003\u56FE");
       let resolved = ids2;
       if (ids2.length === 0) {
@@ -58315,10 +58352,32 @@ var PodploPluginService = class extends EventEmitter2 {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/generation-gateway.ts
+// plugins/podplo-dsh/src/generation-gateway.ts
 import { createHash as createHash5 } from "node:crypto";
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/generation-background.ts
+// plugins/podplo-dsh/src/generation-background.ts
+var allows = (schema, value) => schema?.type === "string" && (!schema.enum || schema.enum.includes(value));
+function transparentControl(properties, model) {
+  const parameters = model?.parameterSchema?.properties ?? {};
+  const declared = model?.supportsTransparentMode === true || Array.isArray(model?.backgroundModes) && model.backgroundModes.includes("transparent");
+  if (model?.supportsTransparentMode === false) return void 0;
+  if (allows(properties.background, "transparent") && (declared || allows(parameters.background, "transparent"))) {
+    const format = ["png", "webp"].find((value) => allows(properties.output_format, value) && (!parameters.output_format || allows(parameters.output_format, value)));
+    return format ? { key: "background", format } : void 0;
+  }
+  const key = Object.keys(properties).find((key2) => /transparent/i.test(key2) && properties[key2]?.type === "boolean");
+  return key && (declared || parameters[key]?.type === "boolean") ? { key } : void 0;
+}
+function backgroundArgs(properties, model, transparent) {
+  const control = transparentControl(properties, model);
+  if (!control) {
+    if (transparent) throw new Error("\u5F53\u524D\u6A21\u578B\u6216\u670D\u52A1\u7AEF\u5C1A\u672A\u5F00\u653E\u900F\u660E\u80CC\u666F\u53CA PNG/WebP \u53C2\u6570\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u6216\u66F4\u6362\u6A21\u578B\u3002");
+    return {};
+  }
+  if (control.key !== "background") return { [control.key]: transparent };
+  if (transparent) return { background: "transparent", output_format: control.format };
+  return allows(properties.background, "opaque") ? { background: "opaque" } : {};
+}
 function normalizeBackground(input) {
   if (input.background === void 0) return input;
   if (input.background !== "transparent" && input.background !== "opaque") throw new Error("INVALID_BACKGROUND");
@@ -58328,10 +58387,10 @@ function normalizeBackground(input) {
   return { ...input, output_format: format };
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/package.json
+// plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.51.flash-efficiency",
+  version: "0.1.0-alpha.59.stream-processing",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -58370,6 +58429,7 @@ var package_default = {
     "@deepseek-ai/cordis": "~4.1.0",
     "@deepseek-ai/dsh-mcp-client": "0.2.2-rc.1",
     "@deepseek-ai/dsh-home-paths": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
     "@deepseek-ai/dsh-credentials": "0.2.2-rc.1",
     "@deepseek-ai/schemastery": "~3.19.0"
   },
@@ -58378,10 +58438,10 @@ var package_default = {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/version.ts
+// plugins/podplo-dsh/src/version.ts
 var PLUGIN_VERSION = package_default.version;
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/generation-gateway.ts
+// plugins/podplo-dsh/src/generation-gateway.ts
 var object4 = (value) => !!value && typeof value === "object" && !Array.isArray(value);
 var SAFE_ERROR_CODE = /^[A-Z_]{1,80}$/u;
 var ORDINARY_KEYS = /* @__PURE__ */ new Set(["prompt", "modelId", "referenceAssetIds", "ratio", "quality", "resolution", "thinkingLevel", "webSearch", "imageSearch", "ecoMode", "count", "background", "output_format"]);
@@ -58461,10 +58521,10 @@ var NativeGenerationGateway = class {
     if (result.isError) throw new OnlineError(mcpToolErrorCode(result) ?? "MCP_TOOL_REJECTED");
     let output = result.structuredContent;
     if (output === void 0 && Array.isArray(result.content)) {
-      const text3 = result.content.find((value) => object4(value) && value.type === "text" && typeof value.text === "string");
-      if (object4(text3)) {
+      const text4 = result.content.find((value) => object4(value) && value.type === "text" && typeof value.text === "string");
+      if (object4(text4)) {
         try {
-          output = JSON.parse(text3.text);
+          output = JSON.parse(text4.text);
         } catch {
         }
       }
@@ -58591,9 +58651,10 @@ var NativeGenerationGateway = class {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/transport.ts
+// plugins/podplo-dsh/src/transport.ts
 import { createServer as createServer2 } from "node:http";
 import { randomBytes as randomBytes2, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
+var mcpServerInstructions = "\u672C\u5730\u6587\u4EF6\u5939\u6574\u6279 Skill \u4EFB\u52A1\u4F8B\u5916\uFF1A\u968F\u673A\u8303\u56F4\u4E0D\u660E\u786E\u65F6\u5148\u4E2D\u6027\u6F84\u6E05\u4E00\u6B21\uFF1B\u660E\u786E\u540E\u76F4\u63A5\u8C03\u7528 podplo_prepare_skill_batch\uFF0C\u4E0D\u5148\u67E5\u76EE\u5F55\u3001\u65CF\u8BE6\u60C5\u3001\u6A21\u578B\u80FD\u529B\uFF0C\u4E0D\u9010\u56FE\u8BFB\u53D6\u6216\u8FD0\u884C shell\u3002\u8BE5\u9AD8\u5C42\u5DE5\u5177\u4F1A\u5728\u5BBF\u4E3B\u5185\u6838\u9A8C\u771F\u5B9E\u76EE\u5F55\u3001\u7ED1\u5B9A\u548C\u80FD\u529B\u5E76\u4E00\u6B21\u6574\u6279\u62A5\u4EF7\u3002\u5176\u4ED6\u4EFB\u52A1\u6309\u9700\u67E5\u8BE2\u6700\u5C0F\u8303\u56F4\u7684\u771F\u5B9E\u80FD\u529B\u4E0E\u8BE6\u60C5\u3002\u6536\u8D39\u53EA\u8BA4\u5F53\u524D\u5BF9\u8BDD\u7684\u53EF\u4FE1\u300C\u786E\u8BA4\u5E76\u751F\u6210\u300D\u539F\u751F\u5BA1\u6279\uFF1B\u62A5\u4EF7\u540E\u4E0D\u5F97\u8BE2\u95EE\u662F\u5426\u5DF2\u70B9\u51FB\uFF0C\u62D2\u7EDD\u5373\u505C\u6B62\uFF0C\u5DF2\u6709\u64CD\u4F5C\u4E0D\u91CD\u590D\u62A5\u4EF7\u3002\u900F\u660E\u80CC\u666F\u5FC5\u987B\u4F7F\u7528 provider \u53C2\u6570\u3002\u5DF2\u767B\u8BB0\u7684\u9010\u56FE\u8BA1\u5212\u7531\u5BBF\u4E3B\u8FB9\u4E0B\u8F7D\u8FB9\u6838\u9A8C\u771F\u5B9E alpha \u5E76\u52A0\u5DE5\uFF0C\u5E76\u53D1\u6700\u591A\u4E24\u5F20\uFF0C\u4E0D\u9700\u6A21\u578B\u9010\u5F20\u8C03\u7528\uFF1B\u6700\u7EC8\u8BFB\u53D6\u72B6\u6001\u4E2D\u7684 localProcessing \u5BA1\u8BA1\uFF0C\u52FF\u91CD\u590D\u5DF2\u5B8C\u6210\u6B65\u9AA4\u3002\u53EA\u6709\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u8981\u6C42\u7684\u52A0\u5DE5\u5747\u5B8C\u6210\u624D\u80FD\u62A5\u544A\u6574\u4F53\u6210\u529F\u3002";
 var MAX_UI_BODY = 72 * 1024 * 1024;
 var MAX_MCP_BODY = 32 * 1024 * 1024;
 var record4 = (value) => !!value && typeof value === "object" && !Array.isArray(value);
@@ -58763,7 +58824,7 @@ async function startPluginMcp(service) {
               protocolVersion: "2025-06-18",
               capabilities: { tools: {} },
               serverInfo: { name: "podplo-native", version: PLUGIN_VERSION },
-              instructions: "PodPlo \u63D0\u4F9B\u56FE\u5E93\u3001Skill\u3001\u672C\u4EBA\u7D20\u6750\u53CA\u751F\u56FE\u64CD\u4F5C\u3002\u5148\u67E5\u8BE2\u5B9E\u9645\u80FD\u529B\u548C\u8BE6\u60C5\u3002\u6536\u8D39\u62A5\u4EF7\u4F1A\u5728\u5F53\u524D\u5BF9\u8BDD\u663E\u793A\u53EF\u4FE1\u7684\u300C\u786E\u8BA4\u5E76\u751F\u6210\u300D\u5361\u7247\uFF1B\u6A21\u578B\u4E0D\u5F97\u53E6\u7528 ask_user_question \u8BE2\u95EE\u662F\u5426\u5DF2\u70B9\u51FB\uFF0C\u62A5\u4EF7\u540E\u5E94\u7ED3\u675F\u672C\u8F6E\u5E76\u7B49\u5F85\u5BBF\u4E3B\u56DE\u4F20\u5DF2\u6838\u9A8C\u7684\u64CD\u4F5C\u72B6\u6001\u3002\u6062\u590D\u5DF2\u6709\u64CD\u4F5C\u4E0D\u518D\u6B21\u62A5\u4EF7\uFF0C\u7528\u6237\u660E\u786E\u8981\u6C42\u65B0\u65B9\u6848\u65F6\u521B\u5EFA\u65B0\u7684\u64CD\u4F5C\u3002\u751F\u6210\u72B6\u6001 completed \u53EA\u4EE3\u8868\u8FDC\u7AEF\u751F\u56FE\u7ED3\u675F\uFF1B\u8981\u6C42\u900F\u660E\u6216\u7EE7\u7EED\u63CF\u8FB9\u65F6\uFF0C\u5FC5\u987B\u5148\u7528 podplo_selected_image_info \u68C0\u67E5\u771F\u5B9E\u900F\u660E\u50CF\u7D20\u3002PNG \u540E\u7F00\u548C\u68CB\u76D8\u683C\u753B\u9762\u90FD\u4E0D\u8BC1\u660E\u900F\u660E\uFF0C\u4E0D\u80FD\u628A\u540E\u7EED\u6B65\u9AA4\u672A\u5B8C\u6210\u7684\u4EFB\u52A1\u62A5\u544A\u4E3A\u6574\u4F53\u6210\u529F\u3002"
+              instructions: mcpServerInstructions
             };
             break;
           case "ping":
@@ -58800,9 +58861,9 @@ async function startPluginMcp(service) {
       if (!response.writableEnded) response.writeHead(500).end("{}");
     });
   });
-  await new Promise((resolve2, reject) => {
+  await new Promise((resolve3, reject) => {
     server.once("error", reject);
-    server.listen(0, "127.0.0.1", resolve2);
+    server.listen(0, "127.0.0.1", resolve3);
   });
   const address = server.address();
   if (!address || typeof address === "string") throw new Error("MCP loopback unavailable");
@@ -58818,16 +58879,16 @@ async function startPluginMcp(service) {
     async close() {
       sessions.clear();
       server.closeAllConnections();
-      await new Promise((resolve2) => server.close(() => resolve2()));
+      await new Promise((resolve3) => server.close(() => resolve3()));
     }
   };
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/native-toolkit-adapter.ts
+// plugins/podplo-dsh/src/native-toolkit-adapter.ts
 import sharp8 from "sharp";
 import { basename as basename7, extname as extname5 } from "node:path";
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/native-reference-bridge.ts
+// plugins/podplo-dsh/src/native-reference-bridge.ts
 import { createHash as createHash6 } from "node:crypto";
 import { basename as basename5, extname as extname3, join as join7 } from "node:path";
 import sharp7 from "sharp";
@@ -58929,6 +58990,27 @@ var NativeReferenceBridge = class {
     await this.assertIdentity(identity, true);
     return resolved;
   }
+  /** Import bytes read by a trusted Host path without exposing paths or pixels to the model. */
+  async resolveTrustedInputs(expectedOwnerId, sessionId, inputs) {
+    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
+    const identity = await this.deps.authorize(true);
+    if (identity.ownerId !== expectedOwnerId) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    const expectedAuthorization = authorizationHash(identity);
+    const normalizedInputs = [];
+    for (const [index, input] of inputs.entries()) {
+      if (!input || typeof input.id !== "string" || !input.id || input.id.length > 240 || typeof input.name !== "string" || !input.name || input.name.length > 255 || !(input.bytes instanceof Uint8Array))
+        fail("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
+      normalizedInputs.push(await normalizeNativeReference(input));
+      await this.assertIdentity(identity, true);
+    }
+    const resolved = [];
+    for (const normalized of normalizedInputs) {
+      await this.assertIdentity(identity, true);
+      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized));
+    }
+    await this.assertIdentity(identity, true);
+    return resolved;
+  }
   async assertIdentity(expected, write) {
     const current = await this.deps.authorize(write);
     if (authorizationHash(current) !== authorizationHash(expected)) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
@@ -59010,7 +59092,7 @@ var NativeReferenceBridge = class {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/output-directory.ts
+// plugins/podplo-dsh/src/output-directory.ts
 import { createHash as createHash7, randomUUID as randomUUID10 } from "node:crypto";
 import { constants as constants3 } from "node:fs";
 import { lstat as lstat3, mkdir as mkdir6, open as open4, realpath as realpath4, unlink as unlink2 } from "node:fs/promises";
@@ -59172,14 +59254,14 @@ var OutputDirectoryManager = class {
   }
   async open(exportId, sessionId) {
     if (!this.options.openPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6");
-    const { identity, record: record5 } = await this.ownedExport(exportId, sessionId);
-    await this.options.openPath(record5.path);
+    const { identity, record: record6 } = await this.ownedExport(exportId, sessionId);
+    await this.options.openPath(record6.path);
     await this.assertIdentity(identity, "export");
   }
   async reveal(exportId, sessionId) {
     if (!this.options.revealPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6\u6240\u5728\u4F4D\u7F6E");
-    const { identity, record: record5 } = await this.ownedExport(exportId, sessionId);
-    await this.options.revealPath(record5.path);
+    const { identity, record: record6 } = await this.ownedExport(exportId, sessionId);
+    await this.options.revealPath(record6.path);
     await this.assertIdentity(identity, "export");
   }
   async openDirectory() {
@@ -59221,29 +59303,29 @@ var OutputDirectoryManager = class {
   async ownedExport(exportIdValue, sessionId) {
     this.ready();
     const exportId = external_exports2.string().uuid().parse(exportIdValue), session2 = sha2562(opaqueSession.parse(sessionId));
-    const identity = await this.identity("export"), record5 = this.sessionExports.get(exportId);
-    if (!record5 || record5.owner !== identity.principal || record5.session !== session2 || record5.authorization !== identity.authorization)
+    const identity = await this.identity("export"), record6 = this.sessionExports.get(exportId);
+    if (!record6 || record6.owner !== identity.principal || record6.session !== session2 || record6.authorization !== identity.authorization)
       throw new Error("\u8BE5\u5BFC\u51FA\u8BB0\u5F55\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
-    assertAllowedFileName(record5.name);
+    assertAllowedFileName(record6.name);
     const rootRow = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
     if (!rootRow) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5DF2\u6E05\u9664");
-    const root = await this.verifyRoot(rootRow.path), stat = await lstat3(record5.path).catch(() => void 0);
-    if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record5.fingerprint)
+    const root = await this.verifyRoot(rootRow.path), stat = await lstat3(record6.path).catch(() => void 0);
+    if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record6.fingerprint)
       throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u6539\u53D8");
-    const actual = await realpath4(record5.path);
+    const actual = await realpath4(record6.path);
     const boundary = relative3(root, actual);
     if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute4(boundary)) throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u4E0D\u518D\u53EF\u4FE1");
-    return { identity, record: { ...record5, path: actual } };
+    return { identity, record: { ...record6, path: actual } };
   }
   dropOwnerExports(principal) {
-    for (const [id, record5] of this.sessionExports) if (record5.owner === principal) this.sessionExports.delete(id);
+    for (const [id, record6] of this.sessionExports) if (record6.owner === principal) this.sessionExports.delete(id);
   }
   timestamp() {
     return (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString();
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/native-toolkit-adapter.ts
+// plugins/podplo-dsh/src/native-toolkit-adapter.ts
 var fail2 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
@@ -59406,6 +59488,7 @@ async function nativeToolkitTransport(options) {
       if (index.users === 0 && localReferenceIndexes.get(input.nativeSessionId) === index) localReferenceIndexes.delete(input.nativeSessionId);
     }
   };
+  const importTrustedReferences = (input) => referenceBridge.resolveTrustedInputs(input.ownerId, input.nativeSessionId, input.inputs);
   const transport = {
     async toolDefinitions() {
       return [...await service.toolDefinitions(), importReferenceDefinition, ...toolkit.toolDefinitions()];
@@ -59513,37 +59596,31 @@ async function nativeToolkitTransport(options) {
       return fail2("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
     }
   };
-  return { transport, toolkit, outputs, resolveGenerationReferences };
+  return { transport, toolkit, outputs, resolveGenerationReferences, importTrustedReferences };
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/native-presets.ts
+// plugins/podplo-dsh/src/native-presets.ts
 var PODPLO_TASK_PRESET_ID = "podplo-task";
+var PODPLO_JEV_TEST_PRESET_ID = "podplo-jev-test";
 var expression = (value) => ({ __jsExpr: value });
-var podploTaskGuidance = `Complete the user's PodPlo task through the shortest supported path, while preserving required authorization, validation and confirmation.
+var podploTaskGuidance = `Complete PodPlo tasks through the shortest supported path. Reuse established IDs and results; never bypass authorization, validation, quotes or native approval.
 
-Use the available PodPlo tools first for Skills, gallery, assets, generation and image processing. Reuse exact IDs, selected inputs, parameters and tool results already established in this conversation. For Skill discovery, call podplo_list_skills with a targeted query and choose from its compact candidates. After choosing, call podplo_get_skill or podplo_get_skill_family once with includeGenerationContext=true when generation is intended; reuse the returned binding, input requirements, safe account summary and generationContext.capabilities instead of separately calling podplo_snapshot and podplo_generation_capabilities. Request independent read-only tools in the same assistant turn when supported, and use the existing batch tools for multiple items. Query only missing facts: use targeted search or detail lookup instead of repeatedly listing every library or rediscovering tools. Stop searching when the requested item is found; follow all pages when the user asks for the complete collection. Reuse capability information within the same unchanged task; refresh when it is missing, stale, explicitly requested, the account changes, or a capability/permission error requires it. Cached information never replaces the tools' current authorization or quote checks, and never bypasses podplo_prepare_generation or its native approval gate.
+LOCAL-FOLDER BATCH FIRST: when the user supplies a folder and requests one Skill or a Skill family across its direct images, do not call podplo_list_skills, podplo_get_skill_family, podplo_generation_capabilities, read_image, bash or shell randomization first. If single vs random-shared vs random-per-image is unclear, ask one neutral clarification before any PodPlo call. Once clear, call podplo_prepare_skill_batch exactly once with the user path, query, scope, model parameters, generation-only instructions and complete processingPlan. Omit expectedImageCount unless the user stated it. The Host enumerates/imports images, resolves current catalog/bindings/capabilities, builds the full batch and requests approval. Put outline/mirror/resize only in processingPlan; use background="transparent" for transparency. Never construct item UUIDs or call podplo_prepare_generation again.
 
-For every generation task, provide a short taskName based on the user's request and processingPlan in podplo_prepare_generation. Pass [] when the user requested no later processing; otherwise register the exact supported tool name, normalized options and a readable label for each requested step before approval. Use sourceStepId only for an earlier step's outputs. This is local completion bookkeeping, not a provider parameter. For an existing task with missing requirements, use podplo_set_processing_plan on its original operation after confirming the user's actual requested steps; never re-quote or re-generate to register a processing plan. Task Results reports generated/downloaded/processed counts; only report everything complete when its actual audit is complete. If requirements are missing, say that checking for missed processing is unavailable. Never infer a processing requirement from a filename.
+For non-folder work, use targeted list/detail tools, read a selected Skill once with includeGenerationContext=true, reuse returned capabilities, and batch all requested outputs into one podplo_prepare_generation with exact expectedOutputCount and processingPlan. Current-session opaque image IDs are valid inputs; never replace them with paths or scan private storage. Reuse unchanged operation IDs; after uncertain/accepted submission read status instead of re-quoting.
 
-Images attached to the current conversation, opened through DSH read_image or the native image chooser, and current-session local image results are valid PodPlo inputs. Reuse their opaque session IDs directly for image-processing tools, personal Skill referenceAssetIds, and generation or design references; the Host imports them when a cloud reference is required. Do not require the user to upload the same image to My Assets first, and never replace an opaque image ID with a filesystem path.
+Choices must be neutral: no Recommended/\u63A8\u8350/best/\u6700\u4F73/default preference unless the user explicitly asks for a factual recommendation. Random-per-image means eligible members without an invented favorite.
 
-When generation should use an image already attached to the current conversation or a current-session local image result, pass that opaque ID in items[].args.referenceAssetIds; the Host imports it before quoting. You may call podplo_import_reference_images first when an explicit cloud reference ID is useful, then reuse its referenceAssetIds result. Existing private cloud asset UUIDs may be passed directly. Never place these IDs in an undocumented provider field and never pass a filesystem path. For a computer-local image, first use DSH read_image or the native file chooser so the Host creates a session-bound image ID. Wait for reference import to finish before calling podplo_prepare_generation; do not claim that generation started while an import is pending.
+Transparent/outline work requires actual alpha. Provider transparency is a parameter, not prompt wording. The Host downloads each ready output, checks real alpha for outline and executes registered outline/mirror steps locally, at most two jobs concurrently, without a model call per image. Do not repeat completed processing or inspect each image yourself; read localProcessing in podplo_generation_status after the final Host notification. For separate manual work verify pixels with podplo_selected_image_info; PNG names or checkerboards prove nothing. If alpha is missing, report the unmet requirement; do not add a paid regeneration or custom background-removal script without explicit user approval. Report complete only when Task Results audit confirms generation, download and requested processing.
 
-Before podplo_prepare_generation, count the complete number of outputs requested across the user's whole instruction and pass it as expectedOutputCount. When the user says to execute all, collect every requested image and generation item first, then call podplo_prepare_generation exactly once so one card confirms the combined credits. Never create separate 1-image and 2-image approvals for one 3-image request, and never set expectedOutputCount from a partial subset. Pass multiple images or generation items in one supported batch within the tool's limits. Parallelize only independent read-only lookups when supported. Keep dependent processing in order and retain returned result IDs for the next step. Reuse an operationId only for a retry of the same unchanged image operation; use a new one for changed inputs or options. Never repeat an accepted operation to check its progress or recreate a generation batch after an unknown submission result. Read podplo_generation_status for the existing operation instead. After a host completion notification, query that exact operation once and continue from its results; do not restart discovery, pricing or generation. While the host is tracking generation, wait for its notification instead of running shell sleep/poll loops; refresh status when the user asks or recovery requires it.
+Paid generation always uses the exact persisted quote and trusted \u201C\u786E\u8BA4\u5E76\u751F\u6210\u201D native gate. Only nativeApproval allowed-once/allowed-elsewhere is approval. Rejected, cancelled or unavailable ends the turn with no retry. Do not call ask_user_question or ask whether approval was clicked after a quote. In IM, after approval call podplo_wait_generation; once generation and required localProcessing have succeeded, call podplo_prepare_generation_delivery and dsh_im_return_file for every returned path. Report stopped, failed or blocked processing rather than repeating it. dsh_im_return_file only queues a file; never claim it was already sent or received. A timeout never resubmits. Otherwise wait for the verified Host notification and read that operation.
 
-For image processing, use podplo_selected_image_info on the relevant IDs, then the matching built-in tool for resizing, rotation/mirroring, colors, export, print files, packaging or outlines. Inspect each unchanged input only as needed; batch inspections and reuse their pixel facts. podplo_outline_images can return both the original direction and a full horizontal mirror in one call. Use returned IDs directly and inspect only the final results needed to verify the requested output. If IDs were lost, use podplo_list_local_results. Deliver via the existing PodPlo Task Results UI. In an IM conversation, after generation completes call podplo_prepare_generation_delivery with the exact operationId, then call dsh_im_return_file once for every returned path. That tool only queues the file; say it is prepared or queued, never that it has already been sent or received. Do not scan private storage, extract credentials, or download and re-upload an image just to reach a tool that already accepts its ID. If the user explicitly requests a destination or attachment that these tools cannot produce, explain that limitation and use an authorized supported fallback.
-
-A transparent-image or outline request requires actual transparent pixels. If hasTransparency is false, report the unmet requirement and the available next step. Do not silently substitute a fake checkerboard, a new paid generation, or repeated custom background-removal scripts. Use custom image processing when the user explicitly requests or approves that alternative and it is supported; report its limitations and verify the result.
-
-For a simple product or UI question, use available reliable context or the smallest relevant documentation/tool lookup, then answer once the evidence is sufficient. A missing lookup is not a reason to repeatedly scan directories or unpack application binaries. State the specific uncertainty if evidence is unavailable. Use general shell, file, web or coding tools when the task actually needs them, including explicit coding/custom-processing requests or a documented gap in the PodPlo tools. Do not reimplement an existing PodPlo tool. Correct an identified cause before retrying; unchanged failures should lead to a clear blocker or supported alternative, not an unbounded retry/search loop. Finish when the requested deliverables have been verified, with a concise result and any remaining limitation.`;
-var podploConversationGuidance = `podplo_prepare_generation requests one native, session-bound approval for the exact persisted quote and is the required gate before paid generation or any dependent processing. In an IM conversation the channel presents that approval; the existing trusted \u201C\u786E\u8BA4\u5E76\u751F\u6210\u201D card remains available in the native UI. Only nativeApproval.outcome="allowed-once" or "allowed-elsewhere" means submission was approved. The Host ends the active turn immediately after a rejected, cancelled or unavailable outcome, cancels the quote and clears the unfinished task list; do not expect another model step, retry or text confirmation in that turn. After an allowed approval in an IM conversation, immediately call podplo_wait_generation for that exact operation in the same turn. If it reaches a successful terminal state, call podplo_prepare_generation_delivery and then dsh_im_return_file once for each returned path before ending the turn. A wait timeout or interruption never cancels or resubmits an accepted cloud task; report that it continues in the background, and a later user message may query the same operation and prepare delivery in that new IM turn. Do not call ask_user_question and do not ask the user to say whether they approved. In a non-IM conversation, or when no active wait remains, use the verified PodPlo host completion notification and read podplo_generation_status for the exact operation.`;
+Use the smallest supported lookup for other PodPlo/UI questions. General tools are for real gaps or explicit custom work, not reimplementing PodPlo. Stop after repeated unchanged failure and state the blocker.`;
 function standardAgentPlugins() {
   return [
     { id: "persona", name: "@deepseek-ai/dsh-persona", config: { prefix: `You are the PodPlo assistant powered by the {{model}} model.
 
-${podploTaskGuidance}
-
-${podploConversationGuidance}` } },
+${podploTaskGuidance}` } },
     { id: "agent-instructions", name: "@deepseek-ai/dsh-agent-instructions", config: { maxBytes: 65536 } },
     { id: "time-context", name: "@deepseek-ai/dsh-time-context" },
     { id: "tool-bash", name: "@deepseek-ai/dsh-tool-bash", disabled: expression("process.platform === 'win32'") },
@@ -59607,40 +59684,488 @@ When ready, call exit_plan_mode with the complete plan markdown, starting with a
     { id: "tool-plugin-market", name: "@deepseek-ai/dsh-plugin-market/tools", disabled: true }
   ];
 }
-async function registerPodploNativePresets(agentPresets) {
-  const unregister = await agentPresets.register({
+async function registerPodploNativePresets(agentPresets, options = {}) {
+  const unregister = [await agentPresets.register({
     id: PODPLO_TASK_PRESET_ID,
     name: "PodPlo Agent",
     description: "\u5728\u539F\u751F\u5BF9\u8BDD\u4E2D\u89C4\u5212\u4EFB\u52A1\uFF0C\u5E76\u8C03\u7528 PodPlo \u7D20\u6750\u3001Skill \u4E0E\u5DE5\u5177\u3002",
     order: 20,
     plugins: standardAgentPlugins()
-  });
+  })];
+  if (options.enableJevTestPreset) unregister.push(await agentPresets.register({
+    id: PODPLO_JEV_TEST_PRESET_ID,
+    name: "PodPlo Agent \xB7 Jev \u6D4B\u8BD5",
+    description: "\u4EC5\u5728\u672C\u4F1A\u8BDD\u4E2D\u5148\u7528\u672C\u673A Jev broker \u5224\u65AD\u4E0B\u4E00\u9636\u6BB5\uFF0CFlash \u7EE7\u7EED\u6267\u884C\u5B8C\u6574 PodPlo \u5DE5\u5177\u94FE\u3002",
+    order: 21,
+    plugins: standardAgentPlugins()
+  }));
   let disposed = false;
   return async () => {
     if (disposed) return;
     disposed = true;
-    await unregister();
+    for (const dispose of unregister.reverse()) await dispose();
   };
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/task-archive-host.ts
-import { createHash as createHash9 } from "node:crypto";
+// plugins/podplo-dsh/src/jev-routing.ts
+import { createHash as createHash8, randomUUID as randomUUID11 } from "node:crypto";
+var stages = ["discover_skill", "read_inputs", "prepare_generation", "wait_generation", "process_outputs", "deliver", "complete"];
+var groups = ["skill_discovery", "skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status", "image_processing", "delivery"];
+var workflows = ["podplo_generation", "image_processing", "other"];
+function reconcileJevPresetSelection(input) {
+  if (input.selected) input.activeSessionIds.add(input.sessionId);
+  else input.activeSessionIds.delete(input.sessionId);
+  if (!input.binding?.fiber) return;
+  if (!input.selected) {
+    input.binding.disposeJevRouting?.();
+    input.binding.disposeJevRouting = void 0;
+  } else if (!input.binding.disposeJevRouting && input.start) input.binding.disposeJevRouting = input.start();
+}
+var safeCount = (value) => Number.isSafeInteger(value) && Number(value) >= 0;
+var probability = (value) => Number.isFinite(value) && Number(value) >= 0 && Number(value) <= 1;
+function parseJevBrokerUrl(value) {
+  let url3;
+  try {
+    url3 = new URL(value);
+  } catch {
+    return void 0;
+  }
+  if (url3.protocol !== "http:" || !["127.0.0.1", "::1", "localhost"].includes(url3.hostname) || url3.username || url3.password || url3.hash) return void 0;
+  return url3;
+}
+function parseTypedAnswer(value) {
+  if (!value || typeof value !== "object") return void 0;
+  const row = value;
+  if (row.type === "noul" && probability(row.noul)) return { type: "noul", noul: row.noul };
+  if (row.type !== "choice" || typeof row.choice !== "string" || !probability(row.confidence) || !row.probabilities || typeof row.probabilities !== "object") return void 0;
+  const entries = Object.entries(row.probabilities);
+  if (entries.length < 1 || entries.some(([key, score]) => !key || !probability(score))) return void 0;
+  return { type: "choice", choice: row.choice, confidence: row.confidence, probabilities: Object.fromEntries(entries) };
+}
+function parseJevRoute(value) {
+  if (!value || typeof value !== "object") return void 0;
+  const row = value;
+  if (row.schemaVersion !== 2 || !row.answers || typeof row.answers !== "object" || typeof row.model !== "string" || row.model.length < 1 || row.model.length > 100 || !safeCount(row.latencyMs) || !row.usage || !safeCount(row.usage.inputTokens) || !safeCount(row.usage.outputTokens) || row.usage.cacheReadTokens !== void 0 && !safeCount(row.usage.cacheReadTokens) || row.usage.cacheWriteTokens !== void 0 && !safeCount(row.usage.cacheWriteTokens)) return void 0;
+  const parsed = Object.fromEntries(Object.entries(row.answers).map(([id, answer]) => [id, parseTypedAnswer(answer)]));
+  if (Object.values(parsed).some((answer) => !answer)) return void 0;
+  const workflow = parsed.workflow, phase = parsed.phase;
+  if (workflow?.type !== "choice" || !workflows.includes(workflow.choice) || phase?.type !== "choice" || !stages.includes(phase.choice)) return void 0;
+  const groupScores = {};
+  for (const group of groups) {
+    const answer = parsed[`group_${group}`];
+    if (answer?.type !== "noul") return void 0;
+    groupScores[group] = answer.noul;
+  }
+  return {
+    schemaVersion: 2,
+    answers: parsed,
+    workflow: workflow.choice,
+    phase: phase.choice,
+    groupScores,
+    model: row.model,
+    latencyMs: row.latencyMs,
+    usage: {
+      inputTokens: row.usage.inputTokens,
+      outputTokens: row.usage.outputTokens,
+      ...row.usage.cacheReadTokens === void 0 ? {} : { cacheReadTokens: row.usage.cacheReadTokens },
+      ...row.usage.cacheWriteTokens === void 0 ? {} : { cacheWriteTokens: row.usage.cacheWriteTokens }
+    }
+  };
+}
+function messageSummary(messages) {
+  const text4 = [];
+  let attachmentCount = 0;
+  for (const message of messages) {
+    if (message.source.kind !== "user") continue;
+    for (const block of message.content) {
+      if (block.type === "text" && typeof block.text === "string") text4.push(block.text);
+      else if (block.type === "image" || block.type === "file") attachmentCount++;
+    }
+  }
+  return { text: text4.join("\n").slice(0, 12e3), attachmentCount };
+}
+var phaseGroups = {
+  discover_skill: ["skill_discovery", "skill_detail"],
+  read_inputs: ["skill_detail", "input_inspection", "reference_import"],
+  prepare_generation: ["skill_detail", "reference_import", "generation_quote"],
+  wait_generation: ["generation_status"],
+  process_outputs: ["input_inspection", "image_processing"],
+  deliver: ["delivery"],
+  complete: []
+};
+function neededGroups(route) {
+  const selected = new Set(groups.filter((group) => route.groupScores[group] >= 0.7));
+  if (route.answers.phase.confidence >= 0.55) for (const group of phaseGroups[route.phase]) selected.add(group);
+  else if (route.workflow === "podplo_generation") for (const group of ["skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status"]) selected.add(group);
+  else for (const group of ["input_inspection", "image_processing", "delivery"]) selected.add(group);
+  return selected;
+}
+function groupForGlobalTool(name) {
+  const normalized = name.toLowerCase();
+  if (/ask_user|todo|goal|present|(^|_)(bash|pwsh|glob|working_directory|job_(?:list|output|kill))($|_)/u.test(normalized)) return "safe";
+  if (/read_image|selected_image|image_info/u.test(normalized)) return "input_inspection";
+  if (/return_file|deliver|attachment/u.test(normalized)) return "delivery";
+  if (/outline|resize|rotate|mirror|convert_image|export_image/u.test(normalized)) return "image_processing";
+  if (/skill/u.test(normalized)) return "skill_discovery";
+  return void 0;
+}
+function allowedRestrictableTools(route, restrictableNames2) {
+  const selected = neededGroups(route);
+  return restrictableNames2.filter((name) => {
+    const group = groupForGlobalTool(name);
+    return group === "safe" || group !== void 0 && selected.has(group);
+  }).sort();
+}
+function routeGuidance(route, application) {
+  return `Jev routed subsequent PodPlo steps: workflow=${route.workflow}; phase=${route.phase}; next-step groups=${[...neededGroups(route)].join(", ") || "none"}; inherited tools allowed=${application.allowedRestrictableTools.join(", ") || "none"}. Reuse established tool results and exact IDs. Routing never replaces capability checks, the trusted quote, or native approval.`;
+}
+function guidanceMessage(text4) {
+  return Object.freeze({
+    id: randomUUID11(),
+    role: "user",
+    content: Object.freeze([{ type: "text", text: text4 }]),
+    source: Object.freeze({ kind: "user" })
+  });
+}
+function logMetric(logger, level, value) {
+  logger[level](`PODPLO_JEV_METRIC ${JSON.stringify(value)}`);
+}
+function flashUsage(usage) {
+  return {
+    inputTokens: usage.inputTokens,
+    outputTokens: usage.outputTokens,
+    cacheReadTokens: usage.cacheReadTokens ?? 0,
+    cacheWriteTokens: usage.cacheWriteTokens ?? 0,
+    totalTokens: usage.totalTokens ?? usage.inputTokens + usage.outputTokens + (usage.cacheReadTokens ?? 0) + (usage.cacheWriteTokens ?? 0),
+    reasoningTokens: usage.reasoningTokens ?? 0
+  };
+}
+function restrictableNames(agent) {
+  const view = agent.ctx.tools.view?.(agent);
+  return view?.restrictableNames instanceof Set ? [...view.restrictableNames].filter((name) => typeof name === "string" && name !== "run_code").sort() : [];
+}
+var fullApplication = (revision, reason) => ({
+  revision,
+  applied: false,
+  workflow: "full",
+  decisionReason: reason,
+  allowedRestrictableTools: []
+});
+function installJevRouting(options) {
+  const endpoint = parseJevBrokerUrl(options.brokerUrl);
+  if (!endpoint) {
+    logMetric(options.logger, "warn", { source: "jev", outcome: "disabled", fallback: true, reason: "invalid_loopback_url" });
+    return () => void 0;
+  }
+  const fetchImpl = options.fetchImpl ?? fetch, eventsEndpoint = new URL("/events", endpoint.origin);
+  const postEvent = async (value) => {
+    try {
+      await fetchImpl(eventsEndpoint, {
+        method: "POST",
+        redirect: "error",
+        signal: AbortSignal.timeout(1e3),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schemaVersion: 2, sessionId: options.agent.id, ...value })
+      });
+    } catch {
+    }
+  };
+  let disposeRestriction;
+  let routeRevision = 0, factRevision = 0, lastRoutedFactRevision = -1;
+  let currentUser = { text: "", attachmentCount: 0 };
+  const completedTools = [];
+  options.routingStates.set(options.agent.id, { current: fullApplication(0, "baseline") });
+  const clearRestriction = (reason) => {
+    disposeRestriction?.();
+    disposeRestriction = void 0;
+    const state = options.routingStates.get(options.agent.id);
+    if (state) state.pending = fullApplication(++routeRevision, reason);
+  };
+  const disposeToolsResult = options.agent.ctx.on("tools/result", (execution, result) => {
+    if (typeof execution.name !== "string") return;
+    completedTools.push({ name: execution.name, status: result.isError ? "error" : "ok" });
+    if (completedTools.length > 40) completedTools.splice(0, completedTools.length - 40);
+    factRevision++;
+  });
+  const disposeRoute = options.agent.ctx.on("agent/pre-step", async ({ messages, signal, turn, step }, next) => {
+    const decision = await next();
+    if (decision.kind === "reject" || signal.aborted) return decision;
+    const incoming = messageSummary(messages);
+    if (incoming.text) {
+      currentUser = incoming;
+      factRevision++;
+    }
+    if (!currentUser.text || lastRoutedFactRevision === factRevision) return decision;
+    lastRoutedFactRevision = factRevision;
+    const requestId = randomUUID11(), actualRestrictableNames = restrictableNames(options.agent);
+    const account = options.snapshot().account;
+    const accountMatch = account.status === "connected" && account.userId === options.expectedUserId;
+    void postEvent({ kind: "account_check", requestId, accountStatus: account.status, accountMatch });
+    if (!accountMatch) {
+      logMetric(options.logger, "warn", {
+        source: "jev",
+        outcome: "blocked",
+        fallback: false,
+        reason: "account_mismatch",
+        accountStatus: account.status,
+        accountMatch: false
+      });
+      return { kind: "reject" };
+    }
+    try {
+      const response = await fetchImpl(endpoint, {
+        method: "POST",
+        redirect: "error",
+        signal: AbortSignal.any([signal, AbortSignal.timeout(Math.max(250, Math.min(3e4, options.timeoutMs ?? 25e3)))]),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          schemaVersion: 2,
+          sessionId: options.agent.id,
+          agentId: options.agent.id,
+          requestId,
+          account: { status: "connected", match: true },
+          serviceOrigin: "https://podplo.app",
+          stage: { turn, step, kind: step === 1 ? "initial" : "continuation" },
+          user: currentUser,
+          facts: { revision: factRevision, completedTools: completedTools.slice(-20) },
+          restrictableToolNames: actualRestrictableNames,
+          publicToolGroups: {
+            skill_discovery: ["podplo_list_skills"],
+            skill_detail: ["podplo_get_skill", "podplo_get_skill_family"],
+            input_inspection: ["read_image", "podplo_selected_image_info"],
+            reference_import: ["podplo_import_reference_images"],
+            generation_quote: ["podplo_prepare_generation"],
+            generation_status: ["podplo_wait_generation", "podplo_generation_status"],
+            image_processing: ["podplo_outline_images"],
+            delivery: ["podplo_prepare_generation_delivery"]
+          }
+        })
+      });
+      if (!response.ok) throw new Error(`http_${response.status}`);
+      const raw = await response.text();
+      if (Buffer.byteLength(raw) > 65536) throw new Error("response_too_large");
+      const route = parseJevRoute(JSON.parse(raw));
+      if (!route) throw new Error("invalid_schema");
+      const workflowConfidence = route.answers.workflow.confidence, phaseConfidence = route.answers.phase.confidence;
+      void postEvent({
+        kind: "jev_usage",
+        requestId,
+        purpose: "route",
+        usage: route.usage,
+        model: route.model,
+        latencyMs: route.latencyMs,
+        answers: route.answers,
+        workflowConfidence,
+        phaseConfidence
+      });
+      if (route.workflow === "other") {
+        clearRestriction("workflow_other");
+        void postEvent({
+          kind: "routing_applied",
+          requestId,
+          applied: false,
+          workflow: route.workflow,
+          phase: route.phase,
+          decisionReason: "workflow_other",
+          effectiveFromNextStep: true
+        });
+        return decision;
+      }
+      if (workflowConfidence < 0.65) {
+        clearRestriction("decision_low_confidence");
+        void postEvent({ kind: "fallback", requestId, reason: "decision_low_confidence", workflowConfidence, phaseConfidence });
+        return decision;
+      }
+      disposeRestriction?.();
+      disposeRestriction = void 0;
+      const allow = allowedRestrictableTools(route, actualRestrictableNames);
+      disposeRestriction = options.agent.ctx.tools.restrict({ allow });
+      const decisionReason = phaseConfidence < 0.55 ? "phase_uncertain_conservative" : "workflow_and_phase_confident";
+      const application = {
+        revision: ++routeRevision,
+        applied: true,
+        workflow: route.workflow,
+        phase: route.phase,
+        decisionReason,
+        allowedRestrictableTools: allow
+      };
+      const state = options.routingStates.get(options.agent.id);
+      if (state) state.pending = application;
+      logMetric(options.logger, "info", {
+        source: "jev",
+        outcome: "routed",
+        fallback: false,
+        model: route.model,
+        workflow: route.workflow,
+        workflowConfidence,
+        phase: route.phase,
+        phaseConfidence,
+        decisionReason,
+        restrictableBefore: actualRestrictableNames.length,
+        restrictableAfter: allow.length,
+        ...route.usage
+      });
+      void postEvent({
+        kind: "routing_applied",
+        requestId,
+        applied: true,
+        workflow: route.workflow,
+        workflowConfidence,
+        phase: route.phase,
+        phaseConfidence,
+        groupScores: route.groupScores,
+        decisionReason,
+        restrictableBefore: actualRestrictableNames,
+        restrictableAfter: allow,
+        effectiveFromNextStep: true
+      });
+      return { ...decision, messages: [...decision.messages, guidanceMessage(routeGuidance(route, application))] };
+    } catch (error101) {
+      clearRestriction("broker_error");
+      const reason = error101 instanceof Error && /^[a-z0-9_]+$/u.test(error101.message) ? error101.message : "route_failed";
+      logMetric(options.logger, "warn", { source: "jev", outcome: "error", fallback: true, reason });
+      void postEvent({ kind: "fallback", requestId, reason: "broker_error", detail: reason });
+      return decision;
+    }
+  }, { prepend: true });
+  return () => {
+    disposeRoute();
+    disposeToolsResult();
+    disposeRestriction?.();
+    options.routingStates.delete(options.agent.id);
+  };
+}
+function installJevUsageObserver(options) {
+  const endpoint = parseJevBrokerUrl(options.brokerUrl);
+  if (!endpoint) return () => void 0;
+  const fetchImpl = options.fetchImpl ?? fetch, eventsEndpoint = new URL("/events", endpoint.origin);
+  const postEvent = async (value) => {
+    try {
+      await fetchImpl(eventsEndpoint, {
+        method: "POST",
+        redirect: "error",
+        signal: AbortSignal.timeout(1e3),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ schemaVersion: 2, ...value })
+      });
+    } catch {
+    }
+  };
+  return options.ctx.on("llm/stream", (request, next) => {
+    const sessionId = request.sessionId === void 0 ? "" : String(request.sessionId);
+    if (!options.activeSessionIds.has(sessionId)) return next();
+    const requestId = randomUUID11(), purpose = request.purpose ?? "conversation";
+    const schema = JSON.stringify(request.tools ?? []), toolNames = (request.tools ?? []).map((tool) => tool.name ?? "").filter(Boolean).sort();
+    const tools = {
+      names: toolNames,
+      count: toolNames.length,
+      schemaBytes: Buffer.byteLength(schema),
+      schemaHash: createHash8("sha256").update(schema).digest("hex")
+    };
+    const routingState = options.routingStates.get(sessionId);
+    const applied = routingState?.current ?? fullApplication(0, "baseline");
+    void postEvent({
+      kind: "flash_request",
+      sessionId,
+      requestId,
+      purpose,
+      requestClass: request.purpose ? "aux" : "main",
+      provider: request.provider,
+      model: request.model,
+      toolNames: tools.names,
+      toolCount: tools.count,
+      toolSchemaBytes: tools.schemaBytes,
+      toolSchemaHash: tools.schemaHash,
+      routingApplied: applied.applied,
+      routingRevision: applied.revision,
+      workflow: applied.workflow,
+      phase: applied.phase,
+      decisionReason: applied.decisionReason,
+      allowedRestrictableTools: applied.allowedRestrictableTools
+    });
+    const observed = async function* () {
+      let lastUsage, failure;
+      try {
+        for await (const chunk of next()) {
+          if (chunk.type === "usage") lastUsage = chunk.usage;
+          yield chunk;
+        }
+      } catch (error101) {
+        failure = error101 instanceof Error ? error101.name : "unknown";
+        throw error101;
+      } finally {
+        if (lastUsage) {
+          const usage = flashUsage(lastUsage);
+          logMetric(options.logger, "info", {
+            source: "flash",
+            outcome: "usage",
+            fallback: false,
+            requestClass: request.purpose ? "aux" : "main",
+            purpose,
+            provider: request.provider,
+            model: request.model,
+            ...usage
+          });
+          await postEvent({
+            kind: "flash_usage",
+            sessionId,
+            requestId,
+            purpose,
+            usage,
+            requestClass: request.purpose ? "aux" : "main",
+            provider: request.provider,
+            model: request.model
+          });
+        }
+        if (failure) {
+          logMetric(options.logger, "warn", {
+            source: "flash",
+            outcome: "error",
+            fallback: false,
+            requestClass: request.purpose ? "aux" : "main",
+            purpose,
+            reason: failure
+          });
+          await postEvent({
+            kind: "flash_error",
+            sessionId,
+            requestId,
+            purpose,
+            reason: failure,
+            requestClass: request.purpose ? "aux" : "main"
+          });
+        }
+        if (!request.purpose && routingState?.pending) {
+          routingState.current = routingState.pending;
+          routingState.pending = void 0;
+        }
+      }
+    };
+    return observed();
+  });
+}
+
+// plugins/podplo-dsh/src/task-archive-host.ts
+import { createHash as createHash11 } from "node:crypto";
 import { basename as basename9, join as join10 } from "node:path";
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash8, randomUUID as randomUUID11 } from "node:crypto";
+// plugins/podplo-dsh/src/task-archive.ts
+import { createHash as createHash9, randomUUID as randomUUID12 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
 import { link, lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
 import { basename as basename8, extname as extname6, isAbsolute as isAbsolute5, join as join9 } from "node:path";
 import sharp9 from "sharp";
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/task-result-audit.ts
+// plugins/podplo-dsh/src/task-result-audit.ts
 function canonical2(value) {
   if (Array.isArray(value)) return `[${value.map(canonical2).join(",")}]`;
   if (value && typeof value === "object") return `{${Object.entries(value).filter(([, item]) => item !== void 0).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical2(item)}`).join(",")}}`;
   return JSON.stringify(value) ?? "null";
 }
-function auditTask(files, generation, plan, receipts = []) {
+function processingStepDigest(step) {
+  return canonical2({ toolName: step.toolName, options: step.options, sourceStepId: step.sourceStepId });
+}
+function auditTask(files, generation, plan, receipts = [], failures = []) {
   const results = files.filter((file3) => file3.group === "result");
   const originals = results.filter((file3) => file3.variant === "generated" || file3.assetId);
   const actualGeneration = generation ?? { planned: null, succeeded: originals.length, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
@@ -59652,8 +60177,19 @@ function auditTask(files, generation, plan, receipts = []) {
     const inputs = [...new Set(ids2)];
     const runs = receipts.filter((run) => run.toolName === step.toolName && run.options !== void 0 && canonical2(run.options) === canonical2(step.options) && run.resultIds.length > 0);
     const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id) => inputs.includes(id)));
+    const planDigest = processingStepDigest(step);
+    const matchedFailures = failures.filter((failure) => failure.stepId === step.id && failure.planDigest === planDigest && inputs.includes(failure.inputId) && !completed.has(failure.inputId));
+    const failedIds = [...new Set(matchedFailures.map((failure) => failure.inputId))];
     outputsByStep.set(step.id, [...new Set(runs.filter((run) => run.inputIds.some((id) => inputs.includes(id))).flatMap((run) => run.resultIds))]);
-    steps.push({ id: step.id, label: step.label, required: inputs.length, completed: completed.size, missingIds: inputs.filter((id) => !completed.has(id)) });
+    steps.push({
+      id: step.id,
+      label: step.label,
+      required: inputs.length,
+      completed: completed.size,
+      missingIds: inputs.filter((id) => !completed.has(id)),
+      failedIds,
+      failures: failedIds.map((inputId) => ({ inputId, code: matchedFailures.find((row) => row.inputId === inputId).code }))
+    });
   }
   const required3 = plan === void 0 ? null : steps.reduce((sum, step) => sum + step.required, 0);
   const processed = steps.reduce((sum, step) => sum + step.completed, 0);
@@ -59675,6 +60211,7 @@ function auditTask(files, generation, plan, receipts = []) {
       required: required3,
       completed: processed,
       remaining: required3 === null ? null : required3 - processed,
+      failed: steps.reduce((sum, step) => sum + step.failedIds.length, 0),
       outputs: results.filter((file3) => file3.variant === "processed").length,
       steps
     },
@@ -59691,14 +60228,17 @@ function auditLines(audit) {
   ];
   if (!p.registered) lines.push(`\u5904\u7406\uFF1A\u539F\u4EFB\u52A1\u7684\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\uFF0C\u65E0\u6CD5\u5224\u65AD\u662F\u5426\u6F0F\u5904\u7406\uFF1B\u5DF2\u6709 ${p.outputs} \u4E2A\u52A0\u5DE5\u4EA7\u7269\u3002`);
   else if (!p.steps.length) lines.push("\u5904\u7406\uFF1A\u672C\u4EFB\u52A1\u4E0D\u8981\u6C42\u540E\u7EED\u52A0\u5DE5\u3002");
-  else for (const step of p.steps) lines.push(`\u5904\u7406\u300C${step.label}\u300D\uFF1A\u9700\u8981\u5904\u7406 ${step.required} \u5F20\uFF0C\u5DF2\u5904\u7406 ${step.completed} \u5F20\uFF0C\u8FD8\u6709 ${step.missingIds.length} \u5F20\u672A\u5904\u7406\u3002`);
+  else for (const step of p.steps) {
+    const transparencyFailures = step.failures.filter((row) => row.code === "TRANSPARENCY_REQUIRED").length;
+    lines.push(`\u5904\u7406\u300C${step.label}\u300D\uFF1A\u9700\u8981\u5904\u7406 ${step.required} \u5F20\uFF0C\u5DF2\u5904\u7406 ${step.completed} \u5F20\uFF0C\u8FD8\u6709 ${step.missingIds.length} \u5F20\u672A\u5904\u7406${step.failedIds.length ? `\uFF08\u5931\u8D25 ${step.failedIds.length} \u5F20${transparencyFailures ? `\uFF0C\u5176\u4E2D\u771F\u5B9E\u900F\u660E\u50CF\u7D20\u68C0\u67E5\u672A\u901A\u8FC7 ${transparencyFailures} \u5F20` : ""}\uFF09` : ""}\u3002`);
+  }
   if (p.outputs) lines.push(`\u52A0\u5DE5\u4EA7\u7269\uFF1A${p.outputs} \u4E2A\uFF08\u539F\u56FE\u65B9\u5411\u3001\u955C\u50CF\u53CA\u5176\u4ED6\u7248\u672C\u5206\u522B\u8BA1\u4EA7\u7269\uFF0C\u4E0D\u91CD\u590D\u8BA1\u5904\u7406\u5F20\u6570\uFF09\u3002`);
   lines.push(audit.complete ? "\u6838\u5BF9\u7ED3\u679C\uFF1A\u5DF2\u9F50\u5168\u3002" : "\u6838\u5BF9\u7ED3\u679C\uFF1A\u4ECD\u6709\u672A\u5B8C\u6210\u6216\u9700\u6838\u5BF9\u7684\u9879\u76EE\u3002");
   return lines;
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/task-archive.ts
-var hash4 = (value) => createHash8("sha256").update(value).digest("hex");
+// plugins/podplo-dsh/src/task-archive.ts
+var hash4 = (value) => createHash9("sha256").update(value).digest("hex");
 var safeLabel = (value, fallback) => value.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim().slice(0, 48) || fallback;
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
 var timestamp = (value) => {
@@ -59736,6 +60276,9 @@ var taskSchema = external_exports2.object({
   createdAt: external_exports2.string().datetime(),
   status: external_exports2.string(),
   operationIds: external_exports2.array(external_exports2.string()),
+  approvedAt: external_exports2.string().datetime().optional(),
+  stoppedAt: external_exports2.string().datetime().optional(),
+  processingResumedAt: external_exports2.string().datetime().optional(),
   directory: external_exports2.string().refine(isAbsolute5),
   stamp: external_exports2.string(),
   files: external_exports2.array(fileSchema),
@@ -59749,14 +60292,49 @@ var taskSchema = external_exports2.object({
   }).optional(),
   processingPlan: external_exports2.array(external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.record(external_exports2.string(), external_exports2.unknown()), sourceStepId: external_exports2.string().optional() })).optional(),
   processingRuns: external_exports2.array(external_exports2.object({ operationId: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.unknown().optional(), inputIds: external_exports2.array(external_exports2.string()), resultIds: external_exports2.array(external_exports2.string()) })).default([]),
+  processingFailures: external_exports2.array(external_exports2.object({
+    stepId: external_exports2.string(),
+    inputId: external_exports2.string(),
+    toolName: external_exports2.string(),
+    code: external_exports2.string().regex(/^[A-Z_]{1,80}$/u),
+    failedAt: external_exports2.string().datetime(),
+    planDigest: external_exports2.string().max(16384).optional()
+  })).default([]),
   summaryDigest: external_exports2.string().optional(),
   summaryName: external_exports2.string().optional()
 });
-var stateSchema3 = external_exports2.object({ version: external_exports2.literal(1), projects: external_exports2.array(projectSchema), tasks: external_exports2.array(taskSchema) });
+var stateSchema3 = external_exports2.object({
+  version: external_exports2.literal(1),
+  projects: external_exports2.array(projectSchema),
+  tasks: external_exports2.array(taskSchema),
+  sessionStops: external_exports2.array(external_exports2.object({ owner: external_exports2.string().regex(/^[a-f0-9]{64}$/u), sessionId: external_exports2.string(), stoppedAt: external_exports2.string().datetime() })).default([])
+});
+function storedTaskAudit(task) {
+  const files = task.files.map((file3) => ({
+    id: file3.id,
+    name: file3.name ?? file3.label,
+    group: file3.group,
+    status: file3.status,
+    image: file3.image,
+    originId: file3.source.id,
+    ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
+    ...file3.group === "result" ? { variant: file3.source.kind === "asset" ? "generated" : "processed" } : {},
+    ...file3.sourceId ? { sourceId: file3.sourceId } : {}
+  }));
+  return auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+}
+function storedTaskFinished(task) {
+  const audit = storedTaskAudit(task);
+  return audit.complete || !audit.processing.registered && audit.generation.planned !== null && audit.generation.succeeded === audit.generation.planned && !audit.generation.failed && !audit.generation.pending && !audit.generation.cancelled && !audit.generation.unknown && !audit.download.remaining && !audit.download.failed && !audit.download.missing;
+}
+function sessionStopApplies(task, stoppedAt) {
+  const beganAt = task.approvedAt ?? task.createdAt;
+  return Date.parse(beganAt) <= Date.parse(stoppedAt) && (!task.processingResumedAt || Date.parse(task.processingResumedAt) < Date.parse(stoppedAt)) && !storedTaskFinished(task);
+}
 var TaskArchiveManager = class {
   constructor(options) {
     this.options = options;
-    this.store = new AtomicStore(join9(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [] }), (raw) => {
+    this.store = new AtomicStore(join9(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], sessionStops: [] }), (raw) => {
       const state = stateSchema3.parse(raw);
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan);
@@ -59838,7 +60416,7 @@ var TaskArchiveManager = class {
       const key = hash4(`${identity.owner}\0${input.sessionId}\0${input.key}`);
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.key === key);
       if (!task) {
-        const project = await this.project(identity, input.project), id = randomUUID11();
+        const project = await this.project(identity, input.project), id = randomUUID12();
         const name = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
         const directory = join9(project.directory, `${name}_${timestamp(input.createdAt)}_${id.slice(0, 8)}`);
         const directoryStamp = await this.createDirectory(directory);
@@ -59858,7 +60436,8 @@ var TaskArchiveManager = class {
           status: input.status,
           operationIds: [],
           files: [],
-          processingRuns: []
+          processingRuns: [],
+          processingFailures: []
         };
         await this.store.transaction((state) => {
           state.tasks.unshift(task);
@@ -59868,6 +60447,7 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const row = state.tasks.find((row2) => row2.id === task.id);
         row.status = input.status;
+        if (input.approvedAt) row.approvedAt = input.approvedAt;
         row.summaryName = safeLabel(input.name, "\u4EFB\u52A1\u6210\u679C");
         if (input.generationAudit) row.generationAudit = input.generationAudit;
         if (input.processingPlan !== void 0) row.processingPlan = input.processingPlan;
@@ -59875,8 +60455,12 @@ var TaskArchiveManager = class {
         row.operationIds = [.../* @__PURE__ */ new Set([...row.operationIds, ...input.operationIds])];
         for (const value of input.files) {
           if (row.files.some((file3) => file3.source.kind === value.source.kind && file3.source.id === value.source.id && file3.group === value.group)) continue;
-          row.files.push({ ...value, id: randomUUID11(), status: "pending", image: true });
+          row.files.push({ ...value, id: randomUUID12(), status: "pending", image: true });
         }
+        const operationStopped = input.stoppedAt && (!row.processingResumedAt || Date.parse(input.stoppedAt) > Date.parse(row.processingResumedAt)) && !storedTaskFinished(row);
+        if (operationStopped) row.stoppedAt = input.stoppedAt;
+        const sessionStop = state.sessionStops.find((stop) => stop.owner === identity.owner && stop.sessionId === input.sessionId);
+        if (sessionStop && sessionStopApplies(row, sessionStop.stoppedAt)) row.stoppedAt = sessionStop.stoppedAt;
       });
       this.schedule(task.id, identity);
       return task.id;
@@ -59891,6 +60475,7 @@ var TaskArchiveManager = class {
       this.jobs.delete(id);
       if (!this.closed && this.store.snapshot().tasks.find((row) => row.id === id)?.files.some((file3) => file3.status === "pending"))
         void this.same(identity).then(() => this.schedule(id, identity)).catch(() => void 0);
+      this.options.changed?.(id);
     });
     this.jobs.set(id, job);
   }
@@ -59930,7 +60515,7 @@ var TaskArchiveManager = class {
           const bytes = await this.readPath(path);
           if (hash4(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
-          const temporary = join9(directory, `.${file3.id}.${randomUUID11()}.part`);
+          const temporary = join9(directory, `.${file3.id}.${randomUUID12()}.part`);
           const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
           try {
             await handle.writeFile(source.bytes);
@@ -60022,7 +60607,7 @@ var TaskArchiveManager = class {
         }
         if (!latest.summaryDigest || existingDigest !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
       }
-      const temporary = join9(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID11()}.tmp`);
+      const temporary = join9(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID12()}.tmp`);
       const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
       try {
         await handle.writeFile(bytes);
@@ -60052,7 +60637,90 @@ var TaskArchiveManager = class {
   async processingContext(id) {
     const { identity, task } = await this.owned(id);
     await this.same(identity);
-    return { sessionId: task.sessionId, plan: task.processingPlan, files: task.files, runs: task.processingRuns };
+    return {
+      sessionId: task.sessionId,
+      plan: task.processingPlan,
+      files: task.files,
+      runs: task.processingRuns,
+      failures: task.processingFailures,
+      generationAudit: task.generationAudit,
+      status: task.status,
+      approvedAt: task.approvedAt,
+      stoppedAt: task.stoppedAt
+    };
+  }
+  /** Read only already-published archive bytes for Host-side processing. */
+  async processingInputs(id, ids2) {
+    const { identity, task } = await this.owned(id);
+    if (!ids2.length || new Set(ids2).size !== ids2.length) throw new Error("\u52A0\u5DE5\u8F93\u5165\u65E0\u6548");
+    const values = [];
+    await this.taskDirectory(task);
+    for (const sourceId of ids2) {
+      const file3 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.name);
+      if (!file3?.name || !file3.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
+      await this.directory(this.groupDirectory(task, file3));
+      const bytes = await this.readPath(join9(this.groupDirectory(task, file3), file3.name));
+      if (hash4(bytes) !== file3.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
+      values.push({ id: sourceId, name: file3.name, bytes, kind: "image" });
+    }
+    await this.same(identity);
+    return values;
+  }
+  async recordProcessingFailure(id, failure) {
+    const { identity } = await this.owned(id);
+    await this.serial(async () => {
+      await this.same(identity);
+      await this.store.transaction((state) => {
+        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        task.processingFailures = task.processingFailures.filter((row) => !(row.stepId === failure.stepId && row.inputId === failure.inputId));
+        task.processingFailures.push(failure);
+      });
+    });
+  }
+  async clearProcessingFailures(id, stepId, inputIds) {
+    const { identity } = await this.owned(id);
+    await this.serial(async () => {
+      await this.same(identity);
+      await this.store.transaction((state) => {
+        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        task.processingFailures = task.processingFailures.filter((row) => stepId !== void 0 && row.stepId !== stepId || inputIds !== void 0 && !inputIds.includes(row.inputId));
+      });
+    });
+  }
+  async operationView(operationId2, sessionId) {
+    const task = (await this.list(sessionId)).items.find((row) => row.operationIds.includes(operationId2));
+    if (!task) return;
+    const context = await this.processingContext(task.id);
+    return { task, context };
+  }
+  async stopSession(sessionId) {
+    const identity = await this.identity(), stoppedAt = (/* @__PURE__ */ new Date()).toISOString();
+    await this.serial(async () => {
+      await this.same(identity);
+      await this.store.transaction((state) => {
+        const existing = state.sessionStops.find((row) => row.owner === identity.owner && row.sessionId === sessionId);
+        if (existing) existing.stoppedAt = stoppedAt;
+        else state.sessionStops.push({ owner: identity.owner, sessionId, stoppedAt });
+        for (const task of state.tasks) if (task.owner === identity.owner && task.sessionId === sessionId && !storedTaskFinished(task)) {
+          task.stoppedAt = stoppedAt;
+          delete task.processingResumedAt;
+        }
+      });
+    });
+    for (const task of this.store.snapshot().tasks.filter((row) => row.owner === identity.owner && row.sessionId === sessionId)) this.options.changed?.(task.id);
+  }
+  /** Explicit UI continue resumes only this local archive task, never cloud submission. */
+  async resumeProcessing(id) {
+    const { identity } = await this.owned(id);
+    await this.serial(async () => {
+      await this.same(identity);
+      await this.store.transaction((state) => {
+        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        delete task.stoppedAt;
+        task.processingResumedAt = (/* @__PURE__ */ new Date()).toISOString();
+      });
+    });
+    this.options.changed?.(id);
   }
   async openSummary(id) {
     const { identity, task } = await this.owned(id);
@@ -60094,7 +60762,7 @@ var TaskArchiveManager = class {
         });
       }
       const saveStatus = !available || files.some((file3) => file3.status === "missing") ? "missing" : files.some((file3) => file3.status === "failed") ? "failed" : files.some((file3) => file3.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
-      const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns);
+      const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
       let summaryStatus = "saved", summaryError;
       try {
         await this.summary(task, files, audit, identity);
@@ -60140,7 +60808,7 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
         for (const value of files) if (!task.files.some((file3) => file3.source.kind === value.source.kind && file3.source.id === value.source.id))
-          task.files.push({ ...value, id: randomUUID11(), status: "pending", image: true });
+          task.files.push({ ...value, id: randomUUID12(), status: "pending", image: true });
         task.operationIds = [.../* @__PURE__ */ new Set([...task.operationIds, operationId2])];
         if (receipt && !task.processingRuns.some((run) => run.operationId === receipt.operationId))
           task.processingRuns.push({ ...receipt, resultIds: files.map((file3) => file3.source.id) });
@@ -60202,7 +60870,127 @@ var TaskArchiveManager = class {
   }
 };
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/task-archive-host.ts
+// plugins/podplo-dsh/src/archive-processing-pipeline.ts
+import { createHash as createHash10 } from "node:crypto";
+import sharp10 from "sharp";
+var automaticProcessingTools = /* @__PURE__ */ new Set(["podplo_outline_images", "podplo_rotate_flip_images"]);
+var GlobalPool = class {
+  constructor(maximum) {
+    this.maximum = maximum;
+  }
+  maximum;
+  active = 0;
+  waiting = [];
+  async run(work) {
+    if (this.active >= this.maximum) await new Promise((resolve3) => this.waiting.push(resolve3));
+    else this.active++;
+    try {
+      return await work();
+    } finally {
+      const next = this.waiting.shift();
+      if (next) next();
+      else this.active--;
+    }
+  }
+};
+var ArchiveProcessingPipeline = class {
+  constructor(deps) {
+    this.deps = deps;
+  }
+  deps;
+  pool = new GlobalPool(2);
+  jobs = /* @__PURE__ */ new Map();
+  closed = false;
+  has(taskId) {
+    return this.jobs.has(taskId);
+  }
+  schedule(taskId) {
+    if (this.closed) return Promise.resolve();
+    const existing = this.jobs.get(taskId);
+    if (existing) {
+      existing.rerun = true;
+      return existing.promise;
+    }
+    const entry = { rerun: false, promise: Promise.resolve() };
+    entry.promise = (async () => {
+      do {
+        entry.rerun = false;
+        await this.runOnce(taskId);
+      } while (entry.rerun && !this.closed);
+    })().finally(() => {
+      if (this.jobs.get(taskId) === entry) this.jobs.delete(taskId);
+    });
+    this.jobs.set(taskId, entry);
+    return entry.promise;
+  }
+  async runOnce(taskId) {
+    const context = await this.deps.context(taskId);
+    if (!context.approvedAt || !context.plan?.length || context.stoppedAt) return;
+    const audit = await this.deps.audit(taskId, context.sessionId);
+    if (!audit) return;
+    const saved = new Set(context.files.filter((file3) => file3.group === "result" && file3.status === "saved" && file3.image).map((file3) => file3.source.id));
+    const work = [];
+    for (const step of context.plan) {
+      if (!automaticProcessingTools.has(step.toolName)) continue;
+      const planDigest = processingStepDigest(step);
+      const state = audit.processing.steps.find((row) => row.id === step.id);
+      for (const inputId of state?.missingIds ?? []) {
+        const failed = context.failures.some((row) => row.stepId === step.id && row.inputId === inputId && row.planDigest === planDigest);
+        if (!saved.has(inputId) || failed) continue;
+        work.push(this.pool.run(() => this.processOne(taskId, context.sessionId, step, inputId)));
+      }
+    }
+    await Promise.all(work);
+  }
+  async processOne(taskId, sessionId, step, inputId) {
+    if (this.closed) return;
+    const planDigest = processingStepDigest(step);
+    try {
+      const current = await this.deps.context(taskId);
+      const currentStep = current.plan?.find((row) => row.id === step.id);
+      if (current.sessionId !== sessionId || !current.approvedAt || current.stoppedAt || !currentStep || processingStepDigest(currentStep) !== planDigest || current.failures.some((row) => row.stepId === step.id && row.inputId === inputId && row.planDigest === planDigest)) return;
+      const inputs = await this.deps.inputs(taskId, [inputId]);
+      const input = inputs[0];
+      if (!input || step.toolName === "podplo_outline_images" && !await hasRealTransparency(input))
+        throw Object.assign(new Error("\u771F\u5B9E\u900F\u660E\u50CF\u7D20\u68C0\u67E5\u672A\u901A\u8FC7"), { code: "TRANSPARENCY_REQUIRED" });
+      const beforeProcess = await this.deps.context(taskId);
+      const latestStep = beforeProcess.plan?.find((row) => row.id === step.id);
+      if (this.closed || beforeProcess.sessionId !== sessionId || !beforeProcess.approvedAt || beforeProcess.stoppedAt || !latestStep || processingStepDigest(latestStep) !== planDigest) return;
+      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash10("sha256").update(canonical2({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
+      await this.deps.process(
+        step.toolName,
+        { operationId: operationId2, ids: [inputId], options: step.options },
+        sessionId,
+        inputs
+      );
+      await this.deps.sync(sessionId);
+      await this.deps.clearFailures(taskId, step.id, [inputId]);
+    } catch (error101) {
+      const code = error101 && typeof error101 === "object" && "code" in error101 && /^[A-Z_]{1,80}$/u.test(String(error101.code)) ? String(error101.code) : "LOCAL_PROCESSING_FAILED";
+      await this.deps.recordFailure(taskId, {
+        stepId: step.id,
+        inputId,
+        toolName: step.toolName,
+        code,
+        failedAt: (this.deps.now?.() ?? /* @__PURE__ */ new Date()).toISOString(),
+        planDigest
+      }).catch(() => void 0);
+    }
+  }
+  async close() {
+    this.closed = true;
+    await Promise.allSettled([...this.jobs.values()].map((row) => row.promise));
+  }
+};
+async function hasRealTransparency(input) {
+  if (input.kind === "file") return false;
+  const image = sharp10(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).autoOrient();
+  const metadata = await image.metadata();
+  if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1 || metadata.hasAlpha !== true) return false;
+  return !(await image.stats()).isOpaque;
+}
+
+// plugins/podplo-dsh/src/task-archive-host.ts
 var standalone = { key: "podplo:standalone", name: "\u72EC\u7ACB\u4EFB\u52A1" };
 var labels = {
   podplo_resize_images: "\u8C03\u6574\u5C3A\u5BF8",
@@ -60220,6 +61008,8 @@ var deliveryTool = {
 };
 async function taskArchiveHost(options) {
   const { online, service, toolkit } = options;
+  let scheduleProcessing = (_taskId) => {
+  };
   const manager = new TaskArchiveManager({
     directory: options.directory,
     async authorize() {
@@ -60238,6 +61028,7 @@ async function taskArchiveHost(options) {
       if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(false)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
       return { bytes, name: detail.filename || "\u56FE\u7247.png" };
     },
+    changed: (taskId) => scheduleProcessing(taskId),
     openPath: options.openPath,
     revealPath: options.revealPath
   });
@@ -60267,6 +61058,8 @@ async function taskArchiveHost(options) {
             createdAt: row.createdAt,
             status: row.status,
             operationIds: [row.operationId],
+            ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
+            ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
             generationAudit: row.generationAudit,
             processingPlan: row.processingPlan,
             files: [
@@ -60274,7 +61067,8 @@ async function taskArchiveHost(options) {
               ...row.resultIds.map((id) => ({ source: { kind: "asset", id, sessionId: row.sessionId }, group: "result", label: "\u539F\u59CB\u751F\u6210" }))
             ]
           };
-          await manager.upsert(input, generations.ownerId);
+          const taskId = await manager.upsert(input, generations.ownerId);
+          if (taskId) scheduleProcessing(taskId);
           signatures.set(key, signature);
         }
         const local = await toolkit.archiveOperations(sessionId);
@@ -60283,18 +61077,18 @@ async function taskArchiveHost(options) {
           if (signatures.has(key)) continue;
           const label = labels[row.toolName] ?? "\u672C\u5730\u5904\u7406";
           const matches = await manager.findSource(row.sessionId, row.inputIds);
-          const groups = /* @__PURE__ */ new Map();
+          const groups2 = /* @__PURE__ */ new Map();
           for (const result of row.results) {
             const sourceMatches = result.sourceId ? await manager.findSource(row.sessionId, [result.sourceId]) : matches;
             const target = sourceMatches.length === 1 ? sourceMatches[0].id : "";
-            groups.set(target, [...groups.get(target) ?? [], {
+            groups2.set(target, [...groups2.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
               group: "result",
               label: `${label}_${result.name}`,
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
-          for (const [id, files] of groups) {
+          for (const [id, files] of groups2) {
             const receipt = { operationId: row.operationId, toolName: row.toolName, options: row.options, inputIds: row.inputIds, resultIds: files.map((file3) => file3.source.id) };
             if (id) await manager.append(id, files, row.operationId, receipt);
             else await manager.upsert({
@@ -60325,6 +61119,20 @@ async function taskArchiveHost(options) {
     });
     return pending;
   };
+  const pipeline = new ArchiveProcessingPipeline({
+    context: (taskId) => manager.processingContext(taskId),
+    async audit(taskId, sessionId) {
+      return (await manager.list(sessionId)).items.find((row) => row.id === taskId)?.audit;
+    },
+    inputs: (taskId, ids2) => manager.processingInputs(taskId, ids2),
+    process: (toolName, input, sessionId, inputs) => toolkit.processArchived(toolName, input, sessionId, inputs),
+    sync,
+    recordFailure: (taskId, failure) => manager.recordProcessingFailure(taskId, failure),
+    clearFailures: (taskId, stepId, inputIds) => manager.clearProcessingFailures(taskId, stepId, inputIds)
+  });
+  scheduleProcessing = (taskId) => {
+    void pipeline.schedule(taskId).catch(() => void 0);
+  };
   const changed = () => {
     void sync();
   };
@@ -60336,26 +61144,55 @@ async function taskArchiveHost(options) {
     if (existing) return existing;
     const job = (async () => {
       await sync();
-      const context = await manager.processingContext(taskId);
+      let context = await manager.processingContext(taskId);
       if (!context.plan) throw new PodploPluginError("PROCESSING_PLAN_REQUIRED", "\u539F\u4EFB\u52A1\u6CA1\u6709\u767B\u8BB0\u5904\u7406\u8981\u6C42\uFF0C\u8BF7\u5728\u539F\u5BF9\u8BDD\u8865\u5145\u8981\u6C42\u540E\u518D\u7EE7\u7EED\u3002");
-      for (const step of context.plan) {
-        const view = (await manager.list(context.sessionId)).items.find((row) => row.id === taskId);
-        const pendingIds = view.audit?.processing.steps.find((row) => row.id === step.id)?.missingIds ?? [];
+      await manager.resumeProcessing(taskId);
+      await manager.clearProcessingFailures(taskId);
+      await pipeline.schedule(taskId);
+      context = await manager.processingContext(taskId);
+      for (const step of context.plan ?? []) {
+        if (automaticProcessingTools.has(step.toolName)) continue;
+        const view2 = (await manager.list(context.sessionId)).items.find((row) => row.id === taskId);
+        const pendingIds = view2.audit?.processing.steps.find((row) => row.id === step.id)?.missingIds ?? [];
         if (!pendingIds.length) continue;
         if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(true)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
         for (let offset = 0; offset < pendingIds.length; offset += 100) {
           const ids2 = pendingIds.slice(offset, offset + 100);
-          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash9("sha256").update(canonical2({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
+          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash11("sha256").update(canonical2({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
           await toolkit.callTool(step.toolName, { operationId: operationId2, ids: ids2, options: step.options }, context.sessionId);
           await sync(context.sessionId);
         }
       }
-      return { processed: true };
+      const view = (await manager.list(context.sessionId)).items.find((row) => row.id === taskId);
+      return { processed: view.audit?.processing.remaining === 0, audit: view.audit };
     })().finally(() => {
       processingJobs.delete(key);
     });
     processingJobs.set(key, job);
     return job;
+  };
+  const operationProgress = async (operationId2, sessionId) => {
+    await sync(sessionId);
+    const found = await manager.operationView(operationId2, sessionId);
+    if (!found) return { pending: true, status: "pending" };
+    const { task, context } = found, audit = task.audit;
+    if (!audit) return { pending: true, status: "pending" };
+    if (context.stoppedAt || audit.generation.cancelled) return { pending: false, status: "stopped", audit };
+    if (task.saveStatus === "saving" || audit.generation.pending || pipeline.has(task.id))
+      return { pending: true, status: "pending", audit };
+    if (task.saveStatus === "failed" || task.saveStatus === "missing" || audit.download.failed || audit.download.missing || audit.generation.failed) return { pending: false, status: "failed", audit };
+    if (!audit.processing.registered) return { pending: false, status: "unregistered", audit };
+    if (audit.processing.failed) return { pending: false, status: "failed", audit };
+    const saved = new Set(context.files.filter((file3) => file3.group === "result" && file3.status === "saved" && file3.image).map((file3) => file3.source.id));
+    const hasRunnableAutomaticWork = context.plan?.some((step) => automaticProcessingTools.has(step.toolName) && audit.processing.steps.some((row) => row.id === step.id && row.missingIds.some((id) => saved.has(id) && !row.failedIds.includes(id)))) ?? false;
+    if (hasRunnableAutomaticWork) scheduleProcessing(task.id);
+    if (hasRunnableAutomaticWork) return { pending: true, status: "pending", audit };
+    if (audit.generation.unknown || audit.processing.remaining) return { pending: false, status: "blocked", audit };
+    return { pending: false, status: audit.complete ? "completed" : "blocked", audit };
+  };
+  const stopSession = async (sessionId) => {
+    await sync(sessionId).catch(() => void 0);
+    await manager.stopSession(sessionId);
   };
   const transport = {
     async toolDefinitions() {
@@ -60369,6 +61206,12 @@ async function taskArchiveHost(options) {
         const operation = await options.transport.callTool("podplo_generation_status", { operationId: operationId2, refresh: true }, sessionId);
         await sync(sessionId);
         await manager.wait();
+        const localProcessing = await operationProgress(operationId2, sessionId);
+        if (localProcessing.pending) throw new PodploPluginError("GENERATION_NOT_READY", "\u7ED3\u679C\u6B63\u5728\u4E0B\u8F7D\u6216\u672C\u5730\u52A0\u5DE5\uFF0C\u8BF7\u7B49\u5F85\u5B8C\u6210\u901A\u77E5\u540E\u518D\u51C6\u5907\u56DE\u4F20\u3002");
+        if (!["completed", "unregistered"].includes(localProcessing.status)) throw new PodploPluginError(
+          "GENERATION_RESULTS_UNAVAILABLE",
+          "\u672C\u5730\u52A0\u5DE5\u672A\u9F50\u5168\u6216\u5DF2\u505C\u6B62\uFF0C\u5DF2\u62D2\u7EDD\u628A\u672A\u5B8C\u6210\u7684\u539F\u56FE\u5F53\u4F5C\u6700\u7EC8\u4EA4\u4ED8\u3002"
+        );
         const tasks = await manager.list(sessionId);
         const task = tasks.items.find((row) => row.operationIds.includes(operationId2));
         const files = task?.files.filter((file3) => file3.group === "result" && file3.image && file3.status === "saved") ?? [];
@@ -60394,7 +61237,14 @@ async function taskArchiveHost(options) {
     },
     async dispatch(action, raw, caller) {
       if (!action.startsWith("archive.")) {
-        const result = await options.transport.dispatch(action, raw, caller);
+        let result;
+        try {
+          result = await options.transport.dispatch(action, raw, caller);
+        } catch (cause) {
+          if (action === "generation.stopRemaining" && caller.sessionId) await stopSession(caller.sessionId).catch(() => void 0);
+          throw cause;
+        }
+        if (action === "generation.stopRemaining" && caller.sessionId) await stopSession(caller.sessionId);
         if (action === "local.run") void sync(caller.sessionId);
         return result;
       }
@@ -60436,7 +61286,7 @@ async function taskArchiveHost(options) {
           await sync(caller.sessionId);
           return { ok: true, data: {
             ...await manager.list(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0),
-            currentProjectId: createHash9("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash11("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -60492,16 +61342,17 @@ async function taskArchiveHost(options) {
       }
     }
   };
-  return { transport, manager, sync, async close() {
+  return { transport, manager, sync, operationProgress, stopSession, async close() {
     closed = true;
     service.off("change", changed);
     await pending;
     await Promise.allSettled(processingJobs.values());
+    await pipeline.close();
     await manager.close();
   } };
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/native-generation-approval.ts
+// plugins/podplo-dsh/src/native-generation-approval.ts
 var nativeGenerationPrepareToolName = "mcp__podplo__podplo_prepare_generation";
 async function executeNativeGenerationApproval(options) {
   const prepared = await options.prepare(options.args);
@@ -60532,7 +61383,7 @@ async function executeNativeGenerationApproval(options) {
   try {
     outcome = await options.approval.request({
       agent: options.execution.agent,
-      toolName: nativeGenerationPrepareToolName,
+      toolName: options.toolName ?? nativeGenerationPrepareToolName,
       callId: options.execution.callId,
       reason: `Approve this exact PodPlo generation quote once: ${confirmation}.`,
       displayReason: { en: `Confirm this PodPlo generation: ${confirmation}.`, zh: `\u786E\u8BA4\u672C\u6B21 PodPlo \u751F\u56FE\uFF1A${confirmation}\u3002` },
@@ -60579,13 +61430,13 @@ async function executeNativeGenerationApproval(options) {
   }) }] };
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/native-generation-wait.ts
+// plugins/podplo-dsh/src/native-generation-wait.ts
 var nativeGenerationWaitToolName = "mcp__podplo__podplo_wait_generation";
 var nativeGenerationWaitRawName = "podplo_wait_generation";
 var nativeGenerationWaitTool = {
   name: nativeGenerationWaitToolName,
   rawName: nativeGenerationWaitRawName,
-  description: "Wait in the current conversation for one already-approved PodPlo generation operation to finish. This only observes status; it never approves, submits, retries, or cancels generation.",
+  description: "Wait in the current conversation for one already-approved PodPlo generation operation and its Host-managed downloads and processing to settle. Completed processing must not be repeated. This never approves, submits, retries, or cancels generation.",
   inputSchema: {
     type: "object",
     additionalProperties: false,
@@ -60593,7 +61444,7 @@ var nativeGenerationWaitTool = {
     required: ["operationId"]
   }
 };
-var delay = (ms, signal) => new Promise((resolve2, reject) => {
+var delay = (ms, signal) => new Promise((resolve3, reject) => {
   if (signal.aborted) return reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
   const timer = setTimeout(done, ms);
   const aborted3 = () => {
@@ -60603,7 +61454,7 @@ var delay = (ms, signal) => new Promise((resolve2, reject) => {
   };
   function done() {
     signal.removeEventListener("abort", aborted3);
-    resolve2();
+    resolve3();
   }
   signal.addEventListener("abort", aborted3, { once: true });
 });
@@ -60618,7 +61469,8 @@ async function waitForNativeGeneration(options) {
       throw new PodploPluginError("INVALID_GENERATION_STATUS", "\u751F\u56FE\u72B6\u6001\u54CD\u5E94\u65E0\u6548");
     if (operation.status === "quoted" && typeof operation.approvedAt !== "string")
       throw new PodploPluginError("GENERATION_NOT_APPROVED", "\u751F\u56FE\u64CD\u4F5C\u5C1A\u672A\u83B7\u5F97\u53EF\u4FE1\u786E\u8BA4");
-    if (!["quoted", "submitting", "submitted"].includes(operation.status))
+    const processing = operation.localProcessing;
+    if (operation.status === "cancelled" || operation.stoppedAt || !["quoted", "submitting", "submitted"].includes(operation.status) && processing?.pending !== true)
       return { ...operation, nativeWait: { outcome: "terminal", elapsedMs: Math.max(0, now() - started) } };
     const elapsed = Math.max(0, now() - started);
     if (elapsed >= timeoutMs) return { ...operation, nativeWait: { outcome: "timeout", elapsedMs: elapsed } };
@@ -60626,9 +61478,281 @@ async function waitForNativeGeneration(options) {
   }
 }
 
-// .local/flash-efficiency-20261108/source/plugins/podplo-dsh/src/index.ts
+// plugins/podplo-dsh/src/native-skill-batch.ts
+import { constants as constants5, open as open6, readdir, realpath as realpath6, lstat as lstat5 } from "node:fs/promises";
+import { randomInt, randomUUID as randomUUID13 } from "node:crypto";
+import { homedir } from "node:os";
+import { basename as basename10, extname as extname7, isAbsolute as isAbsolute6, parse as parse5, relative as relative4, resolve, sep } from "node:path";
+var nativeSkillBatchToolName = "mcp__podplo__podplo_prepare_skill_batch";
+var nativeSkillBatchRawName = "podplo_prepare_skill_batch";
+var nativeSkillBatchTool = {
+  name: nativeSkillBatchToolName,
+  description: "Prepare one complete PodPlo Skill batch from a user-specified local image folder. The Host\u2014not the model\u2014enumerates and safely reads direct image files, imports references, resolves current bindings and model capabilities, builds every item, quotes the whole batch once and requests the normal native approval. Do not list the folder, read individual images, invent UUIDs, or call podplo_prepare_generation separately. If random scope is ambiguous, ask neutrally before calling.",
+  inputSchema: {
+    type: "object",
+    additionalProperties: false,
+    required: ["folderPath", "skillQuery", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"],
+    properties: {
+      folderPath: { type: "string", minLength: 1, maxLength: 4096, description: "Exact folder path explicitly supplied by the user in this conversation. Only direct JPEG, PNG and WebP files are used; subfolders and symbolic links are never followed." },
+      expectedImageCount: { type: "integer", minimum: 1, maximum: 100, description: "Optional consistency check only when the user explicitly stated a count. Omit otherwise; the Host counts all direct images." },
+      skillQuery: { type: "string", minLength: 1, maxLength: 160, description: "Exact public Skill/family slug or title. Ambiguous partial matches are rejected." },
+      skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-shared"], description: "single requires one executable Skill. Random strategies require a Skill family. random-per-image samples without replacement and fails if there are too few members." },
+      model: { type: "string", minLength: 1, maxLength: 160, description: "Exact current model name or ID." },
+      ratio: { type: "string", minLength: 3, maxLength: 8 },
+      quality: { type: "string", minLength: 1, maxLength: 32 },
+      ecoMode: { type: "boolean" },
+      background: { type: "string", enum: ["opaque", "transparent"] },
+      processingPlan: processingPlanSchema,
+      instructions: { type: "string", minLength: 1, maxLength: 3e3, description: "Generation-only user requirements, such as subject preservation or clothing intent. Put outline, mirror, resize and other later processing only in processingPlan. Background transparency is carried by the provider parameter. The Host adds public Skill metadata; hidden templates are never exposed." }
+    }
+  }
+};
+var fail3 = (code, message) => {
+  throw new PodploPluginError(code, message);
+};
+var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
+var record5 = (value) => value && typeof value === "object" && !Array.isArray(value) ? value : {};
+var text3 = (value, name, max) => {
+  if (typeof value !== "string" || !value.trim() || value.length > max || /\x00/u.test(value)) fail3("INVALID_ARGUMENT", `${name} \u65E0\u6548\u3002`);
+  return value.trim();
+};
+function parseInput(value) {
+  const allowed = /* @__PURE__ */ new Set(["folderPath", "expectedImageCount", "skillQuery", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
+  if (Object.keys(value).some((key) => !allowed.has(key))) fail3("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+  const count = value.expectedImageCount;
+  if (count !== void 0 && (!Number.isInteger(count) || Number(count) < 1 || Number(count) > 100)) fail3("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
+  if (!["single", "random-per-image", "random-shared"].includes(String(value.skillStrategy))) fail3("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
+  if (typeof value.ecoMode !== "boolean") fail3("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
+  if (value.background !== "opaque" && value.background !== "transparent") fail3("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
+  return {
+    folderPath: text3(value.folderPath, "folderPath", 4096),
+    ...count === void 0 ? {} : { expectedImageCount: Number(count) },
+    skillQuery: text3(value.skillQuery, "skillQuery", 160),
+    skillStrategy: value.skillStrategy,
+    model: text3(value.model, "model", 160),
+    ratio: text3(value.ratio, "ratio", 8),
+    quality: text3(value.quality, "quality", 32),
+    ecoMode: value.ecoMode,
+    background: value.background,
+    processingPlan: value.processingPlan,
+    instructions: text3(value.instructions, "instructions", 3e3)
+  };
+}
+function isInside(parent, child) {
+  const value = relative4(parent, child);
+  return value === "" || value !== ".." && !value.startsWith(`..${sep}`) && !isAbsolute6(value);
+}
+async function readTrustedImageFolder(input) {
+  input.signal?.throwIfAborted();
+  let trustedRoot;
+  if (!isAbsolute6(input.folderPath)) {
+    if (!input.cwd || !isAbsolute6(input.cwd)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
+    trustedRoot = await realpath6(input.cwd).catch(() => fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
+  }
+  const requested = isAbsolute6(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
+  const before = await lstat5(requested).catch(() => fail3("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
+  if (before.isSymbolicLink() || !before.isDirectory()) fail3("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
+  const directory = await realpath6(requested);
+  if (trustedRoot && !isInside(trustedRoot, directory)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
+  const root = parse5(directory).root, home = await realpath6(homedir()).catch(() => homedir());
+  const pathParts = relative4(root, directory).split(sep);
+  if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
+    fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
+  const entries = await readdir(directory, { withFileTypes: true });
+  const imageEntries = entries.filter((entry) => imageExtensions.has(extname7(entry.name).toLocaleLowerCase()));
+  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail3("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
+  imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
+  if (!imageEntries.length) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
+  if (imageEntries.length > 100) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
+  if (input.expectedImageCount !== void 0 && imageEntries.length !== input.expectedImageCount)
+    fail3("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
+  const images = [];
+  for (const [index, entry] of imageEntries.entries()) {
+    input.signal?.throwIfAborted();
+    const handle = await open6(resolve(directory, entry.name), constants5.O_RDONLY | (constants5.O_NOFOLLOW ?? 0)).catch(() => fail3("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
+    try {
+      const first = await handle.stat();
+      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail3("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
+      const bytes = await handle.readFile();
+      const second = await handle.stat();
+      if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
+        fail3("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
+      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename10(entry.name), bytes });
+    } finally {
+      await handle.close();
+    }
+  }
+  return images;
+}
+function catalogMatch(input, catalog) {
+  if (!catalog) return fail3("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+  const query = input.skillQuery.toLocaleLowerCase();
+  const rows = input.skillStrategy === "single" ? catalog.skills.filter((row) => row.executable) : catalog.families;
+  const exact = rows.filter((row) => row.slug.toLocaleLowerCase() === query || row.title.toLocaleLowerCase() === query);
+  if (exact.length === 1) return exact[0];
+  const partial3 = rows.filter((row) => `${row.slug} ${row.title}`.toLocaleLowerCase().includes(query));
+  if (exact.length > 1 || partial3.length > 1) fail3("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
+  if (partial3.length === 1) return partial3[0];
+  return fail3("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
+}
+function boundSkill(value) {
+  const row = record5(value), details = record5(row.details);
+  if (typeof row.id !== "string" || typeof row.name !== "string" || typeof row.availableForCurrentPlan !== "boolean" || !Number.isInteger(row.minimumReferenceImages) || typeof details.slug !== "string" || typeof details.title !== "string" || !Array.isArray(details.inputs) || !Array.isArray(details.keeps) || !Array.isArray(details.changes) || typeof details.output !== "string")
+    fail3("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
+  return row;
+}
+function capabilities(value) {
+  const row = record5(value), schema = record5(row.quoteInputSchema);
+  if (row.available !== true || !Array.isArray(row.models) || !schema.properties) fail3("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
+  return row;
+}
+function modelMatch(value, query) {
+  const normalized = (text4) => text4.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
+  const target = normalized(query);
+  const exact = value.models.filter((model2) => normalized(model2.id) === target || normalized(model2.name) === target);
+  if (exact.length > 1) fail3("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
+  const partial3 = exact.length ? exact : value.models.filter((model2) => normalized(model2.name).includes(target));
+  if (partial3.length !== 1) fail3(partial3.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial3.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
+  const model = partial3[0];
+  if (!model.availableForCurrentPlan) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  return model;
+}
+function publicPrompt(skill, instructions) {
+  const details = skill.details;
+  const value = [
+    `Apply the public PodPlo Skill "${details.title}" to the provided reference image.`,
+    details.keeps.length ? `Preserve: ${details.keeps.join("; ")}.` : "",
+    details.changes.length ? `Change: ${details.changes.join("; ")}.` : "",
+    details.output ? `Output: ${details.output}.` : "",
+    `User instructions: ${instructions}`
+  ].filter(Boolean).join(" ");
+  if (value.length > 4e3) fail3("PROMPT_TOO_LONG", "\u516C\u5F00 Skill \u4FE1\u606F\u4E0E\u7528\u6237\u8981\u6C42\u5408\u5E76\u540E\u8D85\u8FC7\u63D0\u793A\u8BCD\u957F\u5EA6\u9650\u5236\u3002");
+  return value;
+}
+async function assertOwner(deps, ownerId, namespace) {
+  deps.signal?.throwIfAborted();
+  if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
+    fail3("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+}
+function shuffledWithoutReplacement(values, count, choose) {
+  if (count > values.length) fail3("SKILL_FAMILY_TOO_SMALL", `\u8BE5 Skill \u65CF\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+  const pool = [...values], selected = [];
+  while (selected.length < count) {
+    const index = choose(pool.length);
+    if (!Number.isInteger(index) || index < 0 || index >= pool.length) throw new Error("Invalid random index");
+    selected.push(pool.splice(index, 1)[0]);
+  }
+  return selected;
+}
+async function prepareNativeSkillBatch(raw, deps) {
+  const input = parseInput(raw);
+  if (!deps.isFolderAuthorized(input.folderPath)) fail3("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
+  deps.signal?.throwIfAborted();
+  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
+  await deps.online.refreshPublicSkills();
+  await assertOwner(deps, ownerId, namespace);
+  const catalog = deps.online.snapshot().publicDirectory?.catalog;
+  const match = catalogMatch(input, catalog);
+  let title, members;
+  if (input.skillStrategy === "single") {
+    const skill = boundSkill(await deps.online.skillDetails(match.slug));
+    if (!skill.availableForCurrentPlan || skill.minimumReferenceImages > 1)
+      fail3("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
+    title = skill.details.title;
+    members = [skill];
+  } else {
+    const family = match;
+    title = family.title;
+    members = [];
+    for (const slug2 of family.memberSlugs) {
+      const rows = (await deps.online.skills(slug2)).filter((row) => row.slug === slug2);
+      if (rows.length !== 1) continue;
+      const publicRow = catalog.skills.find((row) => row.slug === slug2 && row.executable);
+      if (!publicRow) continue;
+      const member = boundSkill({ ...rows[0], details: {
+        slug: publicRow.slug,
+        title: publicRow.title,
+        summary: publicRow.summary,
+        description: publicRow.description,
+        inputs: publicRow.inputs,
+        keeps: publicRow.keeps,
+        changes: publicRow.changes,
+        output: publicRow.output
+      } });
+      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
+    }
+    if (!members.length) fail3("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879\u6210\u5458\u3002");
+  }
+  if (deps.online.snapshot().publicDirectory?.catalog?.contentVersion !== catalog.contentVersion)
+    fail3("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+  await assertOwner(deps, ownerId, namespace);
+  const currentCapabilities = capabilities(await deps.generationCapabilities());
+  const model = modelMatch(currentCapabilities, input.model);
+  if (!model.ratios.includes(input.ratio)) fail3("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
+  if (!model.qualities.includes(input.quality)) fail3("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
+  const referenceLimit = input.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
+  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail3("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
+  const background = backgroundArgs(
+    currentCapabilities.quoteInputSchema.properties ?? {},
+    model,
+    input.background === "transparent"
+  );
+  const processingPlan = parseProcessingPlan(input.processingPlan) ?? [];
+  const images = await readTrustedImageFolder({ folderPath: input.folderPath, cwd: deps.cwd, expectedImageCount: input.expectedImageCount, signal: deps.signal });
+  const choose = deps.randomIndex ?? randomInt;
+  let assignments;
+  if (input.skillStrategy === "random-per-image") assignments = shuffledWithoutReplacement(members, images.length, choose);
+  else if (input.skillStrategy === "random-shared") {
+    const selected = members[choose(members.length)];
+    assignments = Array.from({ length: images.length }, () => selected);
+  } else assignments = Array.from({ length: images.length }, () => members[0]);
+  const prompts = assignments.map((skill) => publicPrompt(skill, input.instructions));
+  const verified = /* @__PURE__ */ new Set();
+  for (const skill of assignments) {
+    if (verified.has(skill.id)) continue;
+    await deps.verifySelectedSkill(skill.details.slug, skill.id);
+    verified.add(skill.id);
+  }
+  await assertOwner(deps, ownerId, namespace);
+  const referenceAssetIds = await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images });
+  if (referenceAssetIds.length !== images.length || referenceAssetIds.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id)))
+    fail3("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
+  await assertOwner(deps, ownerId, namespace);
+  const items = referenceAssetIds.map((referenceAssetId, index) => {
+    const skill = assignments[index];
+    return { skillId: skill.id, args: {
+      prompt: prompts[index],
+      modelId: model.id,
+      templateId: skill.id,
+      referenceAssetIds: [referenceAssetId],
+      ratio: input.ratio,
+      quality: input.quality,
+      webSearch: false,
+      imageSearch: false,
+      ecoMode: input.ecoMode,
+      count: 1,
+      ...background
+    } };
+  });
+  deps.signal?.throwIfAborted();
+  return {
+    intentId: (deps.createId ?? randomUUID13)(),
+    planVersion: 1,
+    taskName: `${title} \xB7 ${items.length} \u5F20`,
+    expectedOutputCount: items.length,
+    processingPlan,
+    items
+  };
+}
+
+// plugins/podplo-dsh/src/index.ts
 var inject = ["connection", "credentials", "agents", "sessions", "tools", "attachments", "agentPresets", "approval"];
-var Config = Schema.object({ directory: Schema.string().description("\u53EF\u9009\u72EC\u7ACB\u6570\u636E\u76EE\u5F55\uFF1B\u9ED8\u8BA4\u4F7F\u7528 DSH home \u4E2D\u7684 PodPlo \u4E13\u7528\u76EE\u5F55\u3002") });
+var Config = Schema.object({
+  directory: Schema.string().description("\u53EF\u9009\u72EC\u7ACB\u6570\u636E\u76EE\u5F55\uFF1B\u9ED8\u8BA4\u4F7F\u7528 DSH home \u4E2D\u7684 PodPlo \u4E13\u7528\u76EE\u5F55\u3002"),
+  jevBrokerUrl: Schema.string().description("\u53EF\u9009\uFF1B\u4EC5 PodPlo Agent \xB7 Jev \u6D4B\u8BD5 preset \u4F7F\u7528\u7684\u672C\u673A loopback broker URL\u3002"),
+  jevExpectedUserId: Schema.string().description("\u53EF\u9009\uFF1BJev \u771F\u5B9E\u6D4B\u8BD5\u5FC5\u987B\u5339\u914D\u7684 PodPlo userId\uFF0C\u4EC5\u7528\u4E8E\u672C\u673A\u8FD0\u884C\u65F6\u6838\u5BF9\uFF0C\u4E0D\u53D1\u7ED9 broker\u3002"),
+  usageAudit: Schema.boolean().description("\u53EF\u9009\u4E14\u9ED8\u8BA4\u5173\u95ED\uFF1B\u4EC5\u6D4B\u8BD5\u65F6\u8BA9\u666E\u901A PodPlo preset \u5411\u5DF2\u914D\u7F6E\u7684\u672C\u673A /events \u7AEF\u70B9\u62A5\u544A\u8131\u654F token \u7528\u91CF\u3002")
+});
 async function nativeCipher(ctx) {
   let key;
   await ctx.credentials.modifyRecord(credentialKey("podplo", "storage-v1"), async (existing) => {
@@ -60643,9 +61767,9 @@ async function nativeCipher(ctx) {
   if (!key) throw new Error("PodPlo credential storage unavailable");
   return {
     available: () => true,
-    encrypt(text3) {
+    encrypt(text4) {
       const iv = randomBytes3(12), cipher = createCipheriv("aes-256-gcm", key, iv);
-      const data = Buffer.concat([cipher.update(text3, "utf8"), cipher.final()]);
+      const data = Buffer.concat([cipher.update(text4, "utf8"), cipher.final()]);
       return Buffer.concat([Buffer.from("PPD1"), iv, cipher.getAuthTag(), data]);
     },
     decrypt(value) {
@@ -60662,15 +61786,38 @@ async function openAuthorization(url3) {
   const command = process.platform === "darwin" ? "/usr/bin/open" : process.platform === "win32" ? "rundll32.exe" : "xdg-open";
   await promisify(execFile)(command, process.platform === "win32" ? ["url.dll,FileProtocolHandler", url3] : [url3]);
 }
+function userAuthorizedFolder(events, folderPath) {
+  if (!Array.isArray(events)) return false;
+  const boundary = (value, index) => {
+    const before = index === 0 ? "" : value[index - 1];
+    const after = value[index + folderPath.length] ?? "";
+    return (!before || !/[A-Za-z0-9_./\\-]/u.test(before)) && (!after || /[\s"'“”‘’，。；：、！？）)\]}]/u.test(after));
+  };
+  const containsExactPath = (value) => {
+    for (let index = value.indexOf(folderPath); index >= 0; index = value.indexOf(folderPath, index + 1)) if (boundary(value, index)) return true;
+    return false;
+  };
+  for (const raw of events) {
+    if (!raw || typeof raw !== "object") continue;
+    const event = raw;
+    if (event.type !== "user/message" || !event.data || typeof event.data !== "object") continue;
+    const data = event.data;
+    const source = data.source && typeof data.source === "object" ? data.source : void 0;
+    if (source?.kind !== "user") continue;
+    if (typeof data.text === "string" && containsExactPath(data.text)) return true;
+    if (Array.isArray(data.content) && data.content.some((block) => block && typeof block === "object" && block.type === "text" && typeof block.text === "string" && containsExactPath(block.text))) return true;
+  }
+  return false;
+}
 async function openLocalOutput(path, reveal = false) {
-  if (!isAbsolute6(path) || path.includes("\0")) throw new Error("Invalid local output path");
+  if (!isAbsolute7(path) || path.includes("\0")) throw new Error("Invalid local output path");
   if (process.platform === "darwin") await promisify(execFile)("/usr/bin/open", reveal ? ["-R", path] : [path]);
   else if (process.platform === "win32") await promisify(execFile)("explorer.exe", reveal ? [`/select,${path}`] : [path]);
   else await promisify(execFile)("xdg-open", [reveal ? (await import("node:path")).dirname(path) : path]);
 }
 async function apply(ctx, config3 = {}) {
   const directory = config3.directory ?? dshHomePath("podplo-native", "v1");
-  if (!isAbsolute6(directory)) throw new Error("PodPlo storage directory must be absolute");
+  if (!isAbsolute7(directory)) throw new Error("PodPlo storage directory must be absolute");
   const fixtureOrigin = process.env.PODPLO_NATIVE_TEST === "1" ? process.env.PODPLO_NATIVE_FIXTURE_ORIGIN : void 0;
   const http = new PodploHttp(fixtureOrigin);
   const cipher = await nativeCipher(ctx);
@@ -60682,7 +61829,7 @@ async function apply(ctx, config3 = {}) {
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
   const projectForSession = (id) => {
     const cwd = id ? ctx.sessions?.get(id)?.header.cwd : void 0;
-    return cwd && isAbsolute6(cwd) ? { key: `cwd:${resolve(cwd)}`, name: basename10(resolve(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
+    return cwd && isAbsolute7(cwd) ? { key: `cwd:${resolve2(cwd)}`, name: basename11(resolve2(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
   const galleryFetch = fixtureOrigin ? (input, init) => {
@@ -60717,7 +61864,7 @@ async function apply(ctx, config3 = {}) {
     if (!/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url3.hostname)) throw new Error("Unexpected fixture image host");
     return fetch(`${fixtureOrigin}/__image.png`, init);
   } : void 0;
-  const { transport: localTransport, toolkit, outputs, resolveGenerationReferences } = await nativeToolkitTransport({
+  const { transport: localTransport, toolkit, outputs, resolveGenerationReferences, importTrustedReferences } = await nativeToolkitTransport({
     ctx,
     directory: `${directory}/local-tools-v1`,
     online,
@@ -60748,7 +61895,18 @@ async function apply(ctx, config3 = {}) {
     await service.close();
     throw error101;
   });
-  const transport = archives.transport;
+  const transport = {
+    ...archives.transport,
+    async callTool(name, args, sessionId) {
+      const result = await archives.transport.callTool(name, args, sessionId);
+      if (name !== "podplo_generation_status" || !sessionId) return result;
+      const operation = result;
+      return operation?.operationId ? {
+        ...operation,
+        localProcessing: await archives.operationProgress(operation.operationId, sessionId)
+      } : result;
+    }
+  };
   const generationPrepareDefinition = (await transport.toolDefinitions()).find((row) => row.name === "podplo_prepare_generation");
   if (!generationPrepareDefinition?.inputSchema) {
     await archives.close();
@@ -60768,11 +61926,25 @@ async function apply(ctx, config3 = {}) {
     await Promise.allSettled([outputs.close(), toolkit.close(), service.close()]);
     throw error101;
   });
-  const unregisterPresets = await registerPodploNativePresets(ctx.agentPresets).catch(async (error101) => {
+  const jevBrokerUrl = typeof config3.jevBrokerUrl === "string" && parseJevBrokerUrl(config3.jevBrokerUrl) ? config3.jevBrokerUrl : "";
+  const jevExpectedOwnerId = typeof config3.jevExpectedUserId === "string" && /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/iu.test(config3.jevExpectedUserId) ? config3.jevExpectedUserId : "";
+  const enableJevTestPreset = !!jevBrokerUrl && !!jevExpectedOwnerId;
+  const enableUsageAudit = enableJevTestPreset && config3.usageAudit === true;
+  const unregisterPresets = await registerPodploNativePresets(ctx.agentPresets, { enableJevTestPreset }).catch(async (error101) => {
     await archives.close();
     await Promise.allSettled([mcp.close(), outputs.close(), toolkit.close(), service.close()]);
     throw error101;
   });
+  const jevActiveSessionIds = /* @__PURE__ */ new Set();
+  const observedPodploSessionIds = /* @__PURE__ */ new Set();
+  const jevRoutingStates = /* @__PURE__ */ new Map();
+  const disposeJevUsageObserver = enableJevTestPreset ? installJevUsageObserver({
+    ctx,
+    brokerUrl: jevBrokerUrl,
+    activeSessionIds: observedPodploSessionIds,
+    routingStates: jevRoutingStates,
+    logger: ctx.logger
+  }) : () => void 0;
   const bindings = /* @__PURE__ */ new Map();
   let closed = false;
   const nativeGenerationWaits = /* @__PURE__ */ new Set();
@@ -60788,15 +61960,26 @@ async function apply(ctx, config3 = {}) {
       if (closed || chatGenerationResumes.get(operationId2) !== pending) return;
       const operation = result?.data;
       if (!operation || ["quoted", "submitting", "submitted"].includes(operation.status)) return;
-      chatGenerationResumes.delete(operationId2);
-      chatGenerationNotified.add(operationId2);
-      if (operation.stoppedAt || operation.status === "cancelled") return;
+      if (operation.stoppedAt || operation.status === "cancelled") {
+        chatGenerationResumes.delete(operationId2);
+        chatGenerationNotified.add(operationId2);
+        return;
+      }
+      const localProcessing = await archives.operationProgress(operationId2, pending.sessionId);
+      if (closed || chatGenerationResumes.get(operationId2) !== pending || nativeGenerationWaits.has(operationId2) || localProcessing.pending) return;
+      if (localProcessing.status === "stopped") {
+        chatGenerationResumes.delete(operationId2);
+        chatGenerationNotified.add(operationId2);
+        return;
+      }
       const agent = ctx.agents.get(pending.sessionId);
       if (!agent) return;
-      agent.followup({ id: randomUUID12(), role: "user", source: { kind: "user" }, content: [{
+      agent.followup({ id: randomUUID14(), role: "user", source: { kind: "user" }, content: [{
         type: "text",
-        text: `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${operationId2} \u5F53\u524D\u72B6\u6001\u4E3A ${operation.status}\u3002\u8BF7\u5148\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u8FD9\u9879\u5DF2\u6838\u9A8C\u64CD\u4F5C\u7684\u6743\u5A01\u7ED3\u679C\uFF1B\u6210\u529F\u65F6\u7EE7\u7EED\u7528\u6237\u539F\u4EFB\u52A1\u7684\u5269\u4F59\u6B65\u9AA4\uFF0C\u5931\u8D25\u6216\u72B6\u6001\u4E0D\u660E\u65F6\u5982\u5B9E\u8BF4\u660E\u3002\u4E0D\u8981\u518D\u6B21\u62A5\u4EF7\uFF0C\u4E5F\u4E0D\u8981\u8BE2\u95EE\u7528\u6237\u662F\u5426\u5DF2\u786E\u8BA4\u3002`
+        text: `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${operationId2} \u751F\u56FE\u72B6\u6001\u4E3A ${operation.status}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${localProcessing.status}\u3002\u8BF7\u5148\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u542B localProcessing \u5BA1\u8BA1\u7684\u6743\u5A01\u7ED3\u679C\u3002\u4E3B\u673A\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u7684\u9010\u56FE\u52A0\u5DE5\uFF0C\u5DF2\u5B8C\u6210\u6B65\u9AA4\u4E0D\u8981\u91CD\u590D\u6267\u884C\uFF1B\u6C47\u603B\u6210\u679C\uFF0C\u672A\u5B8C\u6210\u6216\u5931\u8D25\u9879\u5982\u5B9E\u8BF4\u660E\u3002\u82E5\u6709\u4E3B\u673A\u4E0D\u652F\u6301\u7684\u5269\u4F59\u6B65\u9AA4\uFF0C\u6309\u539F\u4EFB\u52A1\u7EE7\u7EED\u3002\u4E0D\u8981\u518D\u6B21\u62A5\u4EF7\uFF0C\u4E0D\u8981\u64C5\u81EA\u6536\u8D39\u91CD\u751F\u6210\uFF0C\u4E5F\u4E0D\u8981\u8BE2\u95EE\u7528\u6237\u662F\u5426\u5DF2\u786E\u8BA4\u3002`
       }] });
+      chatGenerationResumes.delete(operationId2);
+      chatGenerationNotified.add(operationId2);
     } catch (error101) {
       const code = error101 && typeof error101 === "object" && "code" in error101 ? String(error101.code ?? "") : "";
       if (["OPERATION_NOT_FOUND", "SESSION_CHANGED"].includes(code)) chatGenerationResumes.delete(operationId2);
@@ -60832,6 +62015,7 @@ async function apply(ctx, config3 = {}) {
           }
         }
         await archives.sync();
+        for (const operationId2 of chatGenerationResumes.keys()) void checkChatGeneration(operationId2);
       } catch {
       } finally {
         refreshing = void 0;
@@ -60840,8 +62024,42 @@ async function apply(ctx, config3 = {}) {
   };
   const timer = setInterval(() => void refreshProgress(), 3e3);
   timer.unref();
+  const presetForAgent = (agent) => {
+    const session2 = ctx.sessions?.get(agent.id);
+    return ctx.agentPresets.composedPreset(agent.ctx) ?? (session2 ? ctx.agentPresets.presetForSession(session2) : null);
+  };
+  const startJevRouting = (agent) => installJevRouting({
+    agent,
+    brokerUrl: jevBrokerUrl,
+    expectedUserId: jevExpectedOwnerId,
+    snapshot: () => service.snapshot(),
+    routingStates: jevRoutingStates,
+    logger: ctx.logger
+  });
+  const applySelectedPreset = (sessionId, presetId) => {
+    const selected = presetId === PODPLO_JEV_TEST_PRESET_ID;
+    if (selected || enableUsageAudit && presetId === PODPLO_TASK_PRESET_ID) observedPodploSessionIds.add(sessionId);
+    else observedPodploSessionIds.delete(sessionId);
+    const binding = bindings.get(sessionId);
+    reconcileJevPresetSelection({
+      sessionId,
+      selected,
+      activeSessionIds: jevActiveSessionIds,
+      binding,
+      start: () => {
+        const agent = ctx.agents.get(sessionId);
+        return agent ? startJevRouting(agent) : () => void 0;
+      }
+    });
+  };
   async function attach(agent) {
     if (closed || bindings.has(agent.id)) return;
+    const initialPreset = presetForAgent(agent);
+    const jevTestSession = initialPreset === PODPLO_JEV_TEST_PRESET_ID;
+    if (jevTestSession) {
+      jevActiveSessionIds.add(agent.id);
+      observedPodploSessionIds.add(agent.id);
+    } else if (enableUsageAudit && initialPreset === PODPLO_TASK_PRESET_ID) observedPodploSessionIds.add(agent.id);
     const session2 = mcp.bind(agent.id);
     bindings.set(agent.id, session2);
     try {
@@ -60856,63 +62074,97 @@ async function apply(ctx, config3 = {}) {
       bindings.set(agent.id, { dispose: session2.dispose, fiber });
       await fiber.await();
       if (fiber.state !== 2) throw new Error("PodPlo MCP did not activate in native session scope");
+      const approveGeneration = (toolName, args, execution, prepare) => executeNativeGenerationApproval({
+        toolName,
+        args,
+        execution: { agent: execution.agent ?? agent, callId: execution.callId, signal: execution.signal },
+        approval: ctx.approval,
+        prepare,
+        approve: (input) => service.approveGenerationFromNativeApproval(input, agent.id),
+        watch: (input, settle) => {
+          let disposed2 = false, checking = false;
+          const inspect = async () => {
+            if (disposed2 || checking) return;
+            checking = true;
+            try {
+              const operation = await service.callTool("podplo_generation_status", { operationId: input.operationId }, agent.id);
+              if (operation.approvedAt) settle({ approved: true, value: operation });
+              else if (operation.status !== "quoted") settle({ approved: false, value: operation });
+            } catch {
+              settle({ approved: false });
+            } finally {
+              checking = false;
+            }
+          };
+          const changed = () => {
+            void inspect();
+          };
+          service.on("change", changed);
+          void inspect();
+          return () => {
+            disposed2 = true;
+            service.off("change", changed);
+          };
+        },
+        onApproved: (operationId2) => reserveNativeGenerationWait(agent.id, operationId2),
+        onDeclined: async (input) => {
+          const approvalAgent = execution.agent ?? agent;
+          const result = await service.cancelGenerationFromNativeApproval(input, agent.id);
+          const accepted = typeof result?.approvedAt === "string" || ["submitting", "submitted", "completed", "partial_unknown", "submission_unknown"].includes(String(result?.status ?? ""));
+          if (accepted) return { approved: true, value: result };
+          if (result?.status === "cancelled") {
+            try {
+              approvalAgent.session?.append?.("todo/write", { todos: [] });
+            } finally {
+              approvalAgent.cancel?.({ kind: "user" });
+            }
+          }
+          return { approved: false, value: result };
+        }
+      });
       const prepareTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
         name: nativeGenerationPrepareToolName,
         rawName: "podplo_prepare_generation",
         description: generationPrepareToolDescription,
         inputSchema: generationPrepareToolSchema,
         async call(args, execution) {
-          return executeNativeGenerationApproval({
+          return approveGeneration(
+            nativeGenerationPrepareToolName,
             args,
-            execution: { agent: execution.agent ?? agent, callId: execution.callId, signal: execution.signal },
-            approval: ctx.approval,
-            prepare: (input) => transport.callTool("podplo_prepare_generation", input, agent.id),
-            approve: (input) => service.approveGenerationFromNativeApproval(input, agent.id),
-            watch: (input, settle) => {
-              let disposed2 = false, checking = false;
-              const inspect = async () => {
-                if (disposed2 || checking) return;
-                checking = true;
-                try {
-                  const operation = await service.callTool("podplo_generation_status", { operationId: input.operationId }, agent.id);
-                  if (operation.approvedAt) settle({ approved: true, value: operation });
-                  else if (operation.status !== "quoted") settle({ approved: false, value: operation });
-                } catch {
-                  settle({ approved: false });
-                } finally {
-                  checking = false;
-                }
-              };
-              const changed = () => {
-                void inspect();
-              };
-              service.on("change", changed);
-              void inspect();
-              return () => {
-                disposed2 = true;
-                service.off("change", changed);
-              };
-            },
-            onApproved: (operationId2) => reserveNativeGenerationWait(agent.id, operationId2),
-            onDeclined: async (input) => {
-              const approvalAgent = execution.agent ?? agent;
-              const result = await service.cancelGenerationFromNativeApproval(input, agent.id);
-              const accepted = typeof result?.approvedAt === "string" || ["submitting", "submitted", "completed", "partial_unknown", "submission_unknown"].includes(String(result?.status ?? ""));
-              if (accepted) return { approved: true, value: result };
-              if (result?.status === "cancelled") {
-                try {
-                  approvalAgent.session?.append?.("todo/write", { todos: [] });
-                } finally {
-                  approvalAgent.cancel?.({ kind: "user" });
-                }
-              }
-              return { approved: false, value: result };
-            }
-          });
+            execution,
+            (input) => transport.callTool("podplo_prepare_generation", input, agent.id)
+          );
         }
       });
       const disposePrepareTool = agent.ctx.tools.register(prepareTool);
       bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool });
+      const batchTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
+        ...nativeSkillBatchTool,
+        rawName: nativeSkillBatchRawName,
+        async call(args, execution) {
+          return approveGeneration(nativeSkillBatchToolName, args, execution, async (input) => {
+            const prepared = await prepareNativeSkillBatch(input, {
+              online,
+              cwd: ctx.sessions?.get(agent.id)?.header.cwd,
+              nativeSessionId: agent.id,
+              signal: execution.signal,
+              isFolderAuthorized: (folderPath) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), folderPath),
+              generationCapabilities: () => service.callTool("podplo_generation_capabilities", { refresh: false }, agent.id),
+              verifySelectedSkill: async (slug2, id) => {
+                const detail = await service.callTool("podplo_get_skill", { slug: slug2 }, agent.id);
+                const binding = detail?.binding && typeof detail.binding === "object" && !Array.isArray(detail.binding) ? detail.binding : void 0;
+                if (detail?.slug !== slug2 || binding?.id !== id)
+                  throw new PodploPluginError("SKILL_BINDING_CHANGED", `Skill ${slug2} \u7684\u6267\u884C\u7ED1\u5B9A\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u51C6\u5907\u6574\u6279\u3002`);
+              },
+              importReferences: importTrustedReferences
+            });
+            execution.signal?.throwIfAborted?.();
+            return transport.callTool("podplo_prepare_generation", prepared, agent.id);
+          });
+        }
+      });
+      const disposeBatchTool = agent.ctx.tools.register(batchTool);
+      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool, disposeBatchTool });
       const waitTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
         ...nativeGenerationWaitTool,
         async call(args, execution) {
@@ -60923,7 +62175,7 @@ async function apply(ctx, config3 = {}) {
             const result = await waitForNativeGeneration({
               operationId: operationId2,
               signal: execution.signal,
-              read: (id) => service.callTool("podplo_generation_status", { operationId: id, refresh: true }, agent.id)
+              read: (id) => transport.callTool("podplo_generation_status", { operationId: id, refresh: true }, agent.id)
             });
             if (result.nativeWait.outcome === "terminal") {
               chatGenerationResumes.delete(operationId2);
@@ -60937,22 +62189,31 @@ async function apply(ctx, config3 = {}) {
         }
       });
       const disposeWaitTool = agent.ctx.tools.register(waitTool);
-      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool, disposeWaitTool });
+      const disposeJevRouting = enableJevTestPreset && jevActiveSessionIds.has(agent.id) ? startJevRouting(agent) : void 0;
+      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool, disposeBatchTool, disposeWaitTool, disposeJevRouting });
     } catch (error101) {
       const current = bindings.get(agent.id);
+      current?.disposeJevRouting?.();
       current?.disposePrepareTool?.();
+      current?.disposeBatchTool?.();
       current?.disposeWaitTool?.();
       await current?.fiber?.dispose?.();
       session2.dispose();
       bindings.delete(agent.id);
+      jevActiveSessionIds.delete(agent.id);
+      observedPodploSessionIds.delete(agent.id);
       throw error101;
     }
   }
   const remove = async (agent) => {
+    jevActiveSessionIds.delete(agent.id);
+    observedPodploSessionIds.delete(agent.id);
     const binding = bindings.get(agent.id);
     if (!binding) return;
     bindings.delete(agent.id);
+    binding.disposeJevRouting?.();
     binding.disposePrepareTool?.();
+    binding.disposeBatchTool?.();
     binding.disposeWaitTool?.();
     binding.dispose();
     await binding.fiber?.dispose?.();
@@ -60963,9 +62224,18 @@ async function apply(ctx, config3 = {}) {
   const disposed = ctx.on("agent/disposed", async ({ agent }) => {
     await remove(agent);
   });
+  const presetSelected = ctx.on("agent-preset/selected", (sessionId, presetId) => {
+    if (enableJevTestPreset) applySelectedPreset(sessionId, presetId);
+  });
   const stopRemaining = async (sessionId) => {
-    if (closed || !ctx.agents.get(sessionId) || service.snapshot().account.status !== "connected") return;
+    if (closed || !ctx.agents.get(sessionId)) return;
     service.markSessionStopped(sessionId);
+    try {
+      await archives.stopSession(sessionId);
+    } catch {
+      ctx.logger.warn("PodPlo could not record the local processing stop; check Task Results before continuing.");
+    }
+    if (service.snapshot().account.status !== "connected") return;
     try {
       await service.dispatch("generation.stopRemaining", {}, { source: "ui", sessionId });
     } catch {
@@ -61043,11 +62313,13 @@ async function apply(ctx, config3 = {}) {
     closed = true;
     created();
     disposed();
+    presetSelected();
     preStep();
     sessionStop();
     turnEnd();
     unregister();
     unregisterUpload();
+    disposeJevUsageObserver();
     service.off("change", generationChanged);
     chatGenerationResumes.clear();
     chatGenerationNotified.clear();
@@ -61056,6 +62328,9 @@ async function apply(ctx, config3 = {}) {
     for (const current of signals.values()) current.signal.removeEventListener("abort", current.listener);
     signals.clear();
     stoppedTurns.clear();
+    jevActiveSessionIds.clear();
+    observedPodploSessionIds.clear();
+    jevRoutingStates.clear();
     clearInterval(timer);
     await refreshing;
     for (const id of [...bindings.keys()]) await remove({ id });
@@ -61074,7 +62349,8 @@ async function apply(ctx, config3 = {}) {
 export {
   Config,
   apply,
-  inject
+  inject,
+  userAuthorizedFolder
 };
 /*! Bundled license information:
 
