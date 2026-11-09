@@ -58253,7 +58253,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.76.final-only",
+  version: "0.1.0-alpha.77.results",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -60041,7 +60041,7 @@ import { basename as basename10, join as join10 } from "node:path";
 // plugins/podplo-dsh/src/task-archive.ts
 import { createHash as createHash10, randomUUID as randomUUID12 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
-import { link, lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
+import { link, lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, rm as rm4, unlink as unlink3 } from "node:fs/promises";
 import { basename as basename9, extname as extname7, isAbsolute as isAbsolute5, join as join9 } from "node:path";
 import sharp12 from "sharp";
 
@@ -60197,6 +60197,15 @@ var stateSchema3 = external_exports2.object({
   version: external_exports2.literal(1),
   projects: external_exports2.array(projectSchema),
   tasks: external_exports2.array(taskSchema),
+  deleted: external_exports2.array(external_exports2.object({
+    id: external_exports2.string().uuid(),
+    owner: external_exports2.string(),
+    key: external_exports2.string(),
+    sessionId: external_exports2.string(),
+    operationIds: external_exports2.array(external_exports2.string()),
+    assetIds: external_exports2.array(external_exports2.string()),
+    deletedAt: external_exports2.string().datetime()
+  })).default([]),
   sessionStops: external_exports2.array(external_exports2.object({ owner: external_exports2.string().regex(/^[a-f0-9]{64}$/u), sessionId: external_exports2.string(), stoppedAt: external_exports2.string().datetime() })).default([])
 });
 function storedTaskAudit(task) {
@@ -60226,7 +60235,7 @@ function sessionStopApplies(task, stoppedAt) {
 var TaskArchiveManager = class {
   constructor(options) {
     this.options = options;
-    this.store = new AtomicStore(join9(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], sessionStops: [] }), (raw) => {
+    this.store = new AtomicStore(join9(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
       const state = stateSchema3.parse(raw);
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true });
@@ -60306,6 +60315,15 @@ var TaskArchiveManager = class {
       const identity = await this.identity();
       if (identity.ownerId !== expectedOwner) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
       const key = hash4(`${identity.owner}\0${input.sessionId}\0${input.key}`);
+      if (this.store.snapshot().deleted.some((row) => row.owner === identity.owner && row.key === key)) {
+        await this.same(identity);
+        await this.store.transaction((state) => {
+          const deleted = state.deleted.find((row) => row.owner === identity.owner && row.key === key);
+          deleted.operationIds = [.../* @__PURE__ */ new Set([...deleted.operationIds, ...input.operationIds])];
+          deleted.assetIds = [.../* @__PURE__ */ new Set([...deleted.assetIds, ...input.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id)])];
+        });
+        return;
+      }
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.key === key);
       if (!task) {
         const project = await this.project(identity, input.project), id = randomUUID12();
@@ -60521,11 +60539,63 @@ var TaskArchiveManager = class {
       }
     });
   }
-  async knownAssets() {
+  async knownAssets(includeDeleted = false) {
     const identity = await this.identity();
     const ids2 = this.store.snapshot().tasks.filter((row) => row.owner === identity.owner).flatMap((task) => task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id));
+    const deleted = includeDeleted ? this.store.snapshot().deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds) : [];
     await this.same(identity);
-    return new Set(ids2);
+    return /* @__PURE__ */ new Set([...ids2, ...deleted]);
+  }
+  async deletedOperation(sessionId, operationId2) {
+    const identity = await this.identity();
+    const deleted = this.store.snapshot().deleted.some((row) => row.owner === identity.owner && row.sessionId === sessionId && (row.operationIds.includes(operationId2) || operationId2.startsWith(`archive-auto:${row.id}:`)));
+    await this.same(identity);
+    return deleted;
+  }
+  /** Remove one verified local task folder, never an arbitrary client-supplied path. */
+  async deleteTask(id, confirmed) {
+    if (confirmed !== true) throw new Error("\u5220\u9664\u6279\u6B21\u53CA\u672C\u5730\u6587\u4EF6\u9700\u8981\u786E\u8BA4");
+    return this.serial(async () => {
+      const { identity, task } = await this.owned(id);
+      if (this.jobs.has(id) || ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status))
+        throw new Error("\u4EFB\u52A1\u4ECD\u5728\u751F\u6210\u6216\u4FDD\u5B58\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F");
+      const project = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === task.projectId);
+      await this.directory(project.directory, project.stamp);
+      const existing = await lstat4(task.directory).catch((error101) => {
+        if (error101.code !== "ENOENT") throw error101;
+        return void 0;
+      });
+      if (existing) {
+        await this.taskDirectory(task);
+        await this.same(identity);
+        const staged = join9(project.directory, `.delete-${task.id}-${randomUUID12()}`);
+        await rename4(task.directory, staged);
+        try {
+          await this.directory(project.directory, project.stamp);
+          await this.directory(staged, task.stamp);
+          await this.same(identity);
+          await rm4(staged, { recursive: true });
+        } catch (error101) {
+          await rename4(staged, task.directory).catch(() => void 0);
+          throw error101;
+        }
+      }
+      await this.same(identity);
+      const assetIds = task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id);
+      await this.store.transaction((state) => {
+        state.deleted.push({
+          id: task.id,
+          owner: task.owner,
+          key: task.key,
+          sessionId: task.sessionId,
+          operationIds: task.operationIds,
+          assetIds,
+          deletedAt: (/* @__PURE__ */ new Date()).toISOString()
+        });
+        state.tasks = state.tasks.filter((row) => row.id !== task.id);
+      });
+      return { deleted: true, taskId: id, assetIds };
+    });
   }
   async processingContext(id) {
     const { identity, task } = await this.owned(id);
@@ -60686,7 +60756,8 @@ var TaskArchiveManager = class {
     }
     await this.same(identity);
     items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-    return { items };
+    const deletedAssetIds = this.store.snapshot().deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds);
+    return { items, deletedAssetIds };
   }
   async findSource(sessionId, ids2) {
     const identity = await this.identity();
@@ -60976,11 +61047,16 @@ async function taskArchiveHost(options) {
         for (const row of local.items) {
           const key = `${grant}:local:${row.sessionId}:${row.operationId}`;
           if (signatures.has(key)) continue;
+          if (await manager.deletedOperation(row.sessionId, row.operationId)) {
+            signatures.set(key, row.operationId);
+            continue;
+          }
           const label = labels[row.toolName] ?? "\u672C\u5730\u5904\u7406";
-          const matches = await manager.findSource(row.sessionId, row.inputIds);
+          const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && row.toolName === TOOLBOX_PIPELINE_NAME;
+          const matches = independentBatch ? [] : await manager.findSource(row.sessionId, row.inputIds);
           const groups2 = /* @__PURE__ */ new Map();
           for (const result of row.results) {
-            const sourceMatches = result.sourceId ? await manager.findSource(row.sessionId, [result.sourceId]) : matches;
+            const sourceMatches = independentBatch ? [] : result.sourceId ? await manager.findSource(row.sessionId, [result.sourceId]) : matches;
             const target = sourceMatches.length === 1 ? sourceMatches[0].id : "";
             groups2.set(target, [...groups2.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
@@ -61176,7 +61252,7 @@ async function taskArchiveHost(options) {
             limit: 50,
             ...typeof input.cursor === "string" ? { cursor: input.cursor } : {}
           }, caller);
-          const known = await manager.knownAssets();
+          const known = await manager.knownAssets(true);
           if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(false)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
           return { ok: true, data: { ...page.data, items: (page.data.items ?? []).filter((row) => !known.has(row.id)) } };
         }
@@ -61198,6 +61274,7 @@ async function taskArchiveHost(options) {
             generationAudit: { planned: null, succeeded: 1, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
             files: [{ source: { kind: "asset", id: assetId, sessionId: "podplo-cloud-history" }, group: "result", label: "\u539F\u59CB\u751F\u6210" }]
           }, ownerId);
+          if (!taskId2) throw new PodploPluginError("ARCHIVE_TASK_DELETED", "\u8BE5\u5386\u53F2\u6279\u6B21\u5DF2\u5220\u9664\uFF0C\u8BF7\u4ECE\u7D20\u6750\u5E93\u53E6\u5B58\u6240\u9700\u56FE\u7247\u3002");
           return { ok: true, data: { taskId: taskId2 } };
         }
         if (action === "archive.list") {
@@ -61213,6 +61290,14 @@ async function taskArchiveHost(options) {
           return { ok: true, data: { opened: true } };
         }
         const taskId = typeof input.taskId === "string" ? input.taskId : "";
+        if (action === "archive.delete") {
+          if (input.confirmed !== true) throw new PodploPluginError("ARCHIVE_DELETE_CONFIRM_REQUIRED", "\u8BF7\u786E\u8BA4\u5220\u9664\u6279\u6B21\u8BB0\u5F55\u53CA\u5BF9\u5E94\u672C\u5730\u6587\u4EF6\u3002");
+          if (Object.keys(input).some((key) => !["taskId", "confirmed"].includes(key)))
+            throw new PodploPluginError("INVALID_ARCHIVE_DELETE", "\u5220\u9664\u64CD\u4F5C\u53EA\u63A5\u53D7\u5F53\u524D\u6279\u6B21\u7F16\u53F7\u3002");
+          if (pipeline.has(taskId) || [...processingJobs.keys()].some((key) => key.endsWith(`:${taskId}`)))
+            throw new PodploPluginError("ARCHIVE_TASK_BUSY", "\u8BE5\u4EFB\u52A1\u4ECD\u5728\u52A0\u5DE5\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F\u3002");
+          return { ok: true, data: await manager.deleteTask(taskId, true) };
+        }
         if (action === "archive.processPending") return { ok: true, data: await continueProcessing(taskId) };
         if (action === "archive.openSummary") {
           await manager.openSummary(taskId);

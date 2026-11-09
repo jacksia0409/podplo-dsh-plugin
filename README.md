@@ -1,10 +1,14 @@
-# PodPlo DSH 插件 alpha.76
+# PodPlo DSH 插件 alpha.77
 
 需要 DeepSeek Harness 0.2.2-rc.1。这是插件，需要先安装 DSH。
 
 ## 本版更新
 
-基于 alpha.75，图像工具箱保存时只输出最终成品图或选择的 PDF，不再额外保存出血校样图和印前 JSON 报告。校样仍可在界面预览，原图和已有历史成果保留；需要复核的图片及原因说明仍单独放入“待复核”。
+基于 alpha.76，处理结果新增列表／卡片切换和时间筛选（今天、近 7 天、近 30 天、自定义日期），可组合项目和搜索；每次独立工具箱保存一个批次，同一次保存重试不会重复建批，已有批次保持原样。
+
+卡片、列表和详情支持“删除批次”。确认后永久删除该批次记录及整个本地任务文件夹，包括成果、参考副本、任务总结和自行放入的其他文件；云端素材、源素材和其他批次保留。正在生成、保存或加工的批次不可删除。删除后刷新或重启不会重建该批次。
+
+工具箱继续只保存最终成品图或选择的 PDF，不额外保存校样图和印前 JSON。校样仍可预览，原图与待复核规则保留。
 
 保留“输出设置”中的左右／上下镜像拼接：左右为左原图＋右水平镜像，上下为上原图＋下垂直镜像，分别宽度或高度翻倍，DPI 保留。每张输入独立处理，预览和保存使用拼接后的成品；额外镜像默认关闭，可按需另存最终成品的水平镜像。
 
@@ -21,12 +25,12 @@ https://github.com/jacksia0409/podplo-dsh-plugin
 已有用户可在相同入口使用本版完整标签地址升级：
 
 ```text
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.0-alpha.76.final-only
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.0-alpha.77.results
 ```
 
-同一 GitHub 地址重复安装可能触发 DSH 的 ambiguous-install，已有用户请使用带版本标签的升级地址。也可在 PodPlo 顶部手动检查更新；任务运行时不更新，不自动降级，不强制重启。
+同一 GitHub 地址重复安装可能触发 DSH 的 ambiguous-install，已有用户请使用带版本标签的升级地址。任务运行时不更新，不自动降级，不强制重启。此前收到的页面检查／更新按钮不可用反馈仍待排查，本版请使用上述完整标签地址升级。
 
-[本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.76.final-only) 提供 macOS ZIP 和通用 TGZ。macOS ZIP 内含安装命令；通过 CLI 安装前请正常退出 DSH，正在使用时可通过官方插件管理器导入 TGZ。Windows 尚未实机验收。
+[本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.77.results) 提供 macOS ZIP 和通用 TGZ。macOS ZIP 内含安装命令；通过 CLI 安装前请正常退出 DSH，正在使用时可通过官方插件管理器导入 TGZ。Windows 尚未实机验收。
 
 ## 分发与校验
 

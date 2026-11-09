@@ -134,7 +134,7 @@ function ChatGenerationProgress({ item, busy, onAction }) {
 var import_react = require("react");
 
 // plugins/podplo-dsh/src/task-archive.css
-var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n";
+var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin:6px 0 18px}.ppd-archive-browser-heading h2{font-size:22px;margin:0 0 6px}.ppd-archive-browser-heading p{font-size:13px;color:var(--muted-foreground,#6c6c63);margin:0;line-height:1.6}\n.ppd-archive-view-switch{display:flex;border:1px solid var(--border,#deded7);border-radius:7px;padding:3px;gap:3px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:6px 15px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-archive-date-toolbar{display:flex;align-items:end;flex-wrap:wrap;gap:10px;margin:14px 0}.ppd-archive-date-toolbar label{display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--muted-foreground,#6c6c63)}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:32px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-date-toolbar>span{align-self:center;padding-top:16px}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n";
 
 // plugins/podplo-dsh/src/task-result-audit.ts
 function canonical(value) {
@@ -217,6 +217,43 @@ function auditLines(audit) {
   return lines;
 }
 
+// plugins/podplo-dsh/src/archive-filters.ts
+function localDate(value) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return;
+  const [year, month, day] = value.split("-").map(Number);
+  const date = new Date(year, month - 1, day);
+  if (date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day) return date;
+}
+function archiveDateError({ period, from, to }) {
+  if (period !== "custom") return "";
+  if (from && !localDate(from) || to && !localDate(to)) return "\u8BF7\u586B\u5199\u6709\u6548\u7684\u65E5\u671F\u3002";
+  if (from && to && from > to) return "\u5F00\u59CB\u65E5\u671F\u4E0D\u80FD\u665A\u4E8E\u7ED3\u675F\u65E5\u671F\u3002";
+  return "";
+}
+function filterArchiveTasks(tasks, filters, now = /* @__PURE__ */ new Date()) {
+  if (archiveDateError(filters)) return [];
+  let start, end;
+  if (filters.period === "custom") {
+    start = localDate(filters.from);
+    end = localDate(filters.to);
+    if (end) end.setDate(end.getDate() + 1);
+  } else if (filters.period !== "all") {
+    start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    start.setDate(start.getDate() - (filters.period === "7days" ? 6 : filters.period === "30days" ? 29 : 0));
+  }
+  const query = filters.query.trim().toLocaleLowerCase();
+  const timestamp = (task) => {
+    const value = Date.parse(task.createdAt);
+    return Number.isFinite(value) ? value : -Infinity;
+  };
+  return tasks.filter((task) => {
+    if (filters.project && task.projectId !== filters.project || !`${task.name} ${task.projectName}`.toLocaleLowerCase().includes(query)) return false;
+    const time = timestamp(task);
+    return !start && !end || Number.isFinite(time) && (!start || time >= start.getTime()) && (!end || time < end.getTime());
+  }).sort((a, b) => timestamp(a) === timestamp(b) ? 0 : timestamp(b) - timestamp(a));
+}
+
 // plugins/podplo-dsh/src/task-archive-ui.tsx
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var target;
@@ -273,7 +310,7 @@ function ArchiveImage({ task, file, request }) {
   }, [request, task.id, file.id, file.status, file.image, file.assetId]);
   return image ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("img", { src: image, alt: file.name, loading: "lazy" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "ppd-archive-placeholder", children: error || (file.image ? "\u56FE\u7247" : "\u6587\u4EF6") });
 }
-function TaskFolderCard({ task, request, onView, library = false }) {
+function TaskFolderCard({ task, request, onView, library = false, view, onDelete }) {
   const [error, setError] = (0, import_react.useState)("");
   const [busy, setBusy] = (0, import_react.useState)(false);
   const act = async (action) => {
@@ -288,49 +325,71 @@ function TaskFolderCard({ task, request, onView, library = false }) {
       setBusy(false);
     }
   };
-  const images = task.files.filter((file) => file.group === "result" && file.image && (file.status === "saved" || file.assetId)).slice(-3);
+  const images = task.files.filter((file) => file.group === "result" && file.image && (file.status === "saved" || file.assetId)).slice(view === "list" ? -1 : -3);
   const running2 = ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-card", "data-task-folder": task.id, children: [
+  const createdTime = Date.parse(task.createdAt);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-card", "data-task-folder": task.id, "data-batch-view": view, children: [
+    view && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-batch-kind", children: task.saveStatus === "cloud" ? "\u5355\u5F20\u4E91\u7AEF\u5386\u53F2" : "\u4EFB\u52A1\u6279\u6B21" }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-title", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { "aria-hidden": "true", children: "\u{1F4C1}" }),
+      !view && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { "aria-hidden": "true", children: "\u{1F4C1}" }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: task.name }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("small", { children: [
         running2 ? "\u4EFB\u52A1\u8FDB\u884C\u4E2D \xB7 " : "",
         saveLabels[task.saveStatus]
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-meta", children: [
+    view ? /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-meta ppd-archive-batch-meta", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: task.projectName }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("time", { dateTime: Number.isFinite(createdTime) ? task.createdAt : void 0, children: Number.isFinite(createdTime) ? new Date(createdTime).toLocaleString(void 0, { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "\u65F6\u95F4\u672A\u63D0\u4F9B" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
+        task.resultCount,
+        " \u4E2A\u7ED3\u679C \xB7 ",
+        task.referenceCount,
+        " \u5F20\u53C2\u8003\u56FE"
+      ] })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-meta", children: [
       task.projectName,
       " \xB7 ",
-      task.createdAt ? new Date(task.createdAt).toLocaleString() : "\u65F6\u95F4\u672A\u63D0\u4F9B",
+      Number.isFinite(createdTime) ? new Date(createdTime).toLocaleString() : "\u65F6\u95F4\u672A\u63D0\u4F9B",
       " \xB7 ",
       task.resultCount,
       " \u4E2A\u7ED3\u679C \xB7 ",
       task.referenceCount,
       " \u5F20\u53C2\u8003\u56FE"
     ] }),
-    task.audit && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-task-audit", role: "status", "data-task-audit": true, children: [
+    task.audit && (view ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-batch-audit", "data-task-audit": true, children: task.audit.complete ? "\u6570\u91CF\u6838\u5BF9\u5DF2\u9F50\u5168" : "\u6709\u672A\u5B8C\u6210\u6216\u5F85\u6838\u5BF9\u9879\uFF0C\u67E5\u770B\u7ED3\u679C\u4E86\u89E3\u8BE6\u60C5" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-task-audit", role: "status", "data-task-audit": true, children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("strong", { children: [
         "\u4EFB\u52A1\u6570\u91CF\u6838\u5BF9 \xB7 ",
         task.audit.complete ? "\u5DF2\u9F50\u5168" : "\u8FD8\u6709\u672A\u5B8C\u6210\u6216\u5F85\u6838\u5BF9\u9879"
       ] }),
       auditLines(task.audit).slice(0, -1).map((line, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: line }, index))
-    ] }),
+    ] })),
     images.length > 0 && onView && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-thumbnails", "aria-label": `\u67E5\u770B ${task.name} \u7684\u7ED3\u679C`, onClick: onView, children: images.map((file) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file, request }, file.id)) }),
-    task.directory && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("code", { className: "ppd-archive-path", title: task.directory, children: task.directory }),
+    !view && task.directory && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("code", { className: "ppd-archive-path", title: task.directory, children: task.directory }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
       onView && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: onView, children: "\u67E5\u770B\u7ED3\u679C" }),
       task.directory ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy || task.saveStatus === "missing", onClick: () => void act("archive.openTask"), children: "\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy || task.status !== "completed", onClick: () => void act("archive.saveCloud"), children: "\u4FDD\u5B58\u5230\u7535\u8111" }),
       task.summaryStatus === "saved" && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.openSummary"), children: "\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3" }),
       library && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.navigate"), children: "\u5728\u5904\u7406\u7ED3\u679C\u4E2D\u67E5\u770B" }),
       task.directory && (task.saveStatus === "failed" || task.audit && task.audit.download.remaining > 0) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.retry"), children: "\u8865\u4E0B\u8F7D" }),
-      !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.processPending"), children: busy ? "\u5904\u7406\u4E2D\u2026" : "\u7EE7\u7EED\u5904\u7406" })
+      !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.processPending"), children: busy ? "\u5904\u7406\u4E2D\u2026" : "\u7EE7\u7EED\u5904\u7406" }),
+      task.directory && onDelete && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
+        "button",
+        {
+          type: "button",
+          className: "ppd-archive-delete",
+          disabled: busy || running2 || task.saveStatus === "saving",
+          title: running2 || task.saveStatus === "saving" ? "\u4EFB\u52A1\u8FDB\u884C\u4E2D\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u4FDD\u5B58\u7ED3\u675F" : "\u5220\u9664\u6279\u6B21\u8BB0\u5F55\u53CA\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939",
+          onClick: () => onDelete(task),
+          children: "\u5220\u9664\u6279\u6B21"
+        }
+      )
     ] }),
     (error || task.error) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-error", role: "alert", children: error || task.error }),
     task.summaryError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-error", role: "alert", children: task.summaryError })
   ] });
 }
-function ArchiveDetail({ task, request, onBack, onUse }) {
+function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
   const [error, setError] = (0, import_react.useState)(""), [busy, setBusy] = (0, import_react.useState)("");
   const [selected, setSelected] = (0, import_react.useState)();
   const act = async (action, file) => {
@@ -349,7 +408,7 @@ function ArchiveDetail({ task, request, onBack, onUse }) {
   const full = task.files.find((file) => file.id === selected);
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "ppd-archive-detail", "data-archive-detail": task.id, children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE\u4EFB\u52A1\u6587\u4EF6\u5939" }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request, onDelete }),
     error && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error }),
     !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u5C1A\u672A\u5904\u7406\u7684\u56FE\u7247" }),
@@ -380,6 +439,54 @@ function ArchiveDetail({ task, request, onBack, onUse }) {
     ] })
   ] });
 }
+function DeleteBatchDialog({ task, busy, error, onCancel, onConfirm }) {
+  const cancel = (0, import_react.useRef)(null);
+  (0, import_react.useEffect)(() => {
+    const previous = document.activeElement;
+    cancel.current?.focus();
+    return () => {
+      if (previous?.isConnected) previous.focus();
+    };
+  }, []);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-delete-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
+    "section",
+    {
+      className: "ppd-archive-delete-dialog",
+      role: "alertdialog",
+      "aria-modal": "true",
+      "aria-label": "\u5220\u9664\u6279\u6B21\u53CA\u672C\u5730\u6587\u4EF6",
+      onKeyDown: (event) => {
+        if (event.key === "Escape" && !busy) onCancel();
+        if (event.key === "Tab") {
+          const buttons = [...event.currentTarget.querySelectorAll("button:not(:disabled)")];
+          if (buttons.length) {
+            event.preventDefault();
+            const index = buttons.indexOf(document.activeElement);
+            buttons[(index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus();
+          }
+        }
+      },
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u5220\u9664\u8FD9\u4E2A\u6279\u6B21\uFF1F" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: task.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+          "\u5C06\u5220\u9664\u8BE5\u6279\u6B21\u8BB0\u5F55\u548C\u6574\u4E2A\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\uFF0C\u5305\u62EC ",
+          task.resultCount,
+          " \u4E2A\u6210\u679C\u3001",
+          task.referenceCount,
+          " \u5F20\u53C2\u8003\u56FE\u3001\u4EFB\u52A1\u603B\u7ED3\u53CA\u4F60\u653E\u5165\u7684\u5176\u4ED6\u6587\u4EF6\u3002"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("code", { className: "ppd-archive-path", children: task.directory }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u4E91\u7AEF\u7D20\u6750\u3001\u6E90\u7D20\u6750\u548C\u5176\u4ED6\u6279\u6B21\u4E0D\u53D7\u5F71\u54CD\u3002\u6B64\u64CD\u4F5C\u65E0\u6CD5\u64A4\u9500\u3002" }),
+        error && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { ref: cancel, type: "button", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-delete-confirm", disabled: busy, onClick: onConfirm, children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : "\u5220\u9664\u8BB0\u5F55\u548C\u672C\u5730\u6587\u4EF6" })
+        ] })
+      ]
+    }
+  ) });
+}
 function cloudTask(row) {
   const file = { id: row.id, originId: row.id, assetId: row.id, name: row.filename || "\u4E91\u7AEF\u751F\u6210\u56FE", group: "result", variant: "generated", status: "pending", image: true };
   const generation = { planned: null, succeeded: row.status === "ready" ? 1 : 0, failed: 0, pending: row.status === "ready" ? 0 : 1, cancelled: 0, unknown: 0 };
@@ -404,7 +511,11 @@ function ArchiveBrowser({ request, onUse, targetId, navigation }) {
   const [cloud, setCloud] = (0, import_react.useState)([]), [cursor, setCursor] = (0, import_react.useState)(null), [cloudError, setCloudError] = (0, import_react.useState)("");
   const [cloudLoading, setCloudLoading] = (0, import_react.useState)(false), [paginationSupported, setPaginationSupported] = (0, import_react.useState)();
   const [loading, setLoading] = (0, import_react.useState)(true), [project, setProject] = (0, import_react.useState)(""), [query, setQuery] = (0, import_react.useState)("");
+  const [view, setView] = (0, import_react.useState)("cards");
+  const [period, setPeriod] = (0, import_react.useState)("all"), [from, setFrom] = (0, import_react.useState)(""), [to, setTo] = (0, import_react.useState)("");
   const [detail, setDetail] = (0, import_react.useState)(targetId), [page, setPage] = (0, import_react.useState)(1), [revision, setRevision] = (0, import_react.useState)(0);
+  const [deleteTarget, setDeleteTarget] = (0, import_react.useState)(), [deleteBusy, setDeleteBusy] = (0, import_react.useState)(false), [deleteError, setDeleteError] = (0, import_react.useState)("");
+  const [suppressed, setSuppressed] = (0, import_react.useState)([]);
   const alive = (0, import_react.useRef)(false), cloudReading = (0, import_react.useRef)(false), appended = (0, import_react.useRef)(false), cloudSequence = (0, import_react.useRef)(0);
   (0, import_react.useEffect)(() => {
     alive.current = true;
@@ -447,6 +558,7 @@ function ArchiveBrowser({ request, onUse, targetId, navigation }) {
         const { data } = await request("archive.list", {});
         if (active) {
           setItems(data.items ?? []);
+          setSuppressed(data.deletedAssetIds ?? []);
           setError(data.error ?? "");
         }
       } catch (cause) {
@@ -469,17 +581,63 @@ function ArchiveBrowser({ request, onUse, targetId, navigation }) {
       clearInterval(cloudTimer);
     };
   }, [request, revision]);
-  const known = new Set(items.flatMap((row) => row.files.flatMap((file) => file.group === "result" && file.assetId ? [file.assetId] : [])));
+  const confirmDelete = async () => {
+    if (!deleteTarget || deleteBusy) return;
+    setDeleteBusy(true);
+    setDeleteError("");
+    try {
+      const { data } = await request("archive.delete", { taskId: deleteTarget.id, confirmed: true });
+      if (!alive.current) return;
+      setItems((old) => old.filter((task) => task.id !== deleteTarget.id));
+      setSuppressed((old) => [.../* @__PURE__ */ new Set([...old, ...data.assetIds ?? []])]);
+      setDetail(void 0);
+      setDeleteTarget(void 0);
+      setRevision((value) => value + 1);
+    } catch (cause) {
+      if (alive.current) setDeleteError(cause instanceof Error ? cause.message : "\u5220\u9664\u672A\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+    } finally {
+      if (alive.current) setDeleteBusy(false);
+    }
+  };
+  const askDelete = (task) => {
+    setDeleteError("");
+    setDeleteTarget(task);
+  };
+  const deleteDialog = deleteTarget && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(DeleteBatchDialog, { task: deleteTarget, busy: deleteBusy, error: deleteError, onCancel: () => setDeleteTarget(void 0), onConfirm: () => void confirmDelete() });
+  const known = /* @__PURE__ */ new Set([...suppressed, ...items.flatMap((row) => row.files.flatMap((file) => file.group === "result" && file.assetId ? [file.assetId] : []))]);
   const all = [...items, ...cloud.filter((row) => !known.has(row.id)).map(cloudTask)].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const current = all.find((row) => row.id === detail);
   if (current) return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveStyles, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveDetail, { task: current, request, onBack: () => setDetail(void 0), onUse })
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveDetail, { task: current, request, onBack: () => setDetail(void 0), onUse, onDelete: askDelete }),
+    deleteDialog
   ] });
   const projects = [...new Map(all.map((row) => [row.projectId, row.projectName])).entries()];
-  const filtered = all.filter((row) => (!project || row.projectId === project) && `${row.name} ${row.projectName}`.toLocaleLowerCase().includes(query.trim().toLocaleLowerCase()));
+  const filters = { project, query, period, from, to }, dateError = archiveDateError(filters);
+  const filtered = filterArchiveTasks(all, filters);
+  const pageCount = Math.max(1, Math.ceil(filtered.length / 20)), visiblePage = Math.min(page, pageCount);
+  const cloudCount = filtered.filter((row) => row.saveStatus === "cloud").length;
+  const hasFilters = !!(project || query || period !== "all");
+  const clearFilters = () => {
+    setProject("");
+    setQuery("");
+    setPeriod("all");
+    setFrom("");
+    setTo("");
+    setPage(1);
+  };
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-task-archive-browser": true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveStyles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("header", { className: "ppd-archive-browser-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "\u5904\u7406\u7ED3\u679C" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u6BCF\u6B21\u4EFB\u52A1\u4E00\u4E2A\u6279\u6B21\uFF0C\u67E5\u770B\u6210\u54C1\u6216\u6253\u5F00\u5BF9\u5E94\u6587\u4EF6\u5939\u3002" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-view-switch", role: "group", "aria-label": "\u5904\u7406\u7ED3\u679C\u89C6\u56FE", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", "aria-pressed": view === "list", onClick: () => setView("list"), children: "\u5217\u8868" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", "aria-pressed": view === "cards", onClick: () => setView("cards"), children: "\u5361\u7247" })
+      ] })
+    ] }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-library-toolbar", children: [
       navigation,
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-toolbar", children: [
@@ -505,19 +663,60 @@ function ArchiveBrowser({ request, onUse, targetId, navigation }) {
         }, children: "\u5237\u65B0\u6210\u679C" })
       ] })
     ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-date-toolbar", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
+        "\u65F6\u95F4\u8303\u56F4",
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u4EFB\u52A1\u521B\u5EFA\u65F6\u95F4\u7B5B\u9009", value: period, onChange: (event) => {
+          setPeriod(event.target.value);
+          setPage(1);
+        }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "all", children: "\u5168\u90E8\u65F6\u95F4" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "today", children: "\u4ECA\u5929" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "7days", children: "\u8FD1 7 \u5929" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "30days", children: "\u8FD1 30 \u5929" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "custom", children: "\u81EA\u5B9A\u4E49\u65E5\u671F" })
+        ] })
+      ] }),
+      period === "custom" && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
+          "\u5F00\u59CB\u65E5\u671F",
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { type: "date", value: from, "aria-label": "\u5F00\u59CB\u65E5\u671F", onChange: (event) => {
+            setFrom(event.target.value);
+            setPage(1);
+          } })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { "aria-hidden": "true", children: "\u2014" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
+          "\u7ED3\u675F\u65E5\u671F",
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { type: "date", value: to, "aria-label": "\u7ED3\u675F\u65E5\u671F", onChange: (event) => {
+            setTo(event.target.value);
+            setPage(1);
+          } })
+        ] })
+      ] }),
+      hasFilters && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: clearFilters, children: "\u6E05\u9664\u7B5B\u9009" })
+    ] }),
+    !dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { className: "ppd-archive-count", role: "status", children: [
+      filtered.length - cloudCount,
+      " \u4E2A\u4EFB\u52A1\u6279\u6B21",
+      cloudCount ? ` \xB7 ${cloudCount} \u6761\u672A\u5F52\u6863\u4E91\u7AEF\u5386\u53F2` : "",
+      " \xB7 \u6309\u4EFB\u52A1\u521B\u5EFA\u65F6\u95F4\u4ECE\u65B0\u5230\u65E7\u6392\u5217"
+    ] }),
+    dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: dateError }),
     (error || cloudError) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error || cloudError }),
     paginationSupported === false && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u5F53\u524D\u670D\u52A1\u53EA\u63D0\u4F9B\u90E8\u5206\u4E91\u7AEF\u5386\u53F2\uFF0C\u5C1A\u4E0D\u80FD\u786E\u8BA4\u5168\u90E8\u4E91\u7AEF\u56FE\u7247\u5DF2\u5217\u51FA\uFF1B\u5DF2\u5F52\u6863\u4EFB\u52A1\u4E0D\u53D7\u5F71\u54CD\u3002" }),
-    loading && !all.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u7ED3\u679C\u2026" }) : !filtered.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-empty", children: "\u6682\u65E0\u5904\u7406\u7ED3\u679C" }) : filtered.slice((page - 1) * 20, page * 20).map((task) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request, onView: () => setDetail(task.id) }, task.id)),
+    loading && !all.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u7ED3\u679C\u2026" }) : !filtered.length ? !dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u6279\u6B21" : "\u6682\u65E0\u5904\u7406\u7ED3\u679C" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-batches", "data-batch-layout": view, children: filtered.slice((visiblePage - 1) * 20, visiblePage * 20).map((task) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, view, request, onView: () => setDetail(task.id), onDelete: askDelete }, task.id)) }),
     filtered.length > 20 && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: page === 1, onClick: () => setPage((value) => value - 1), children: "\u4E0A\u4E00\u9875" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage === 1, onClick: () => setPage(visiblePage - 1), children: "\u4E0A\u4E00\u9875" }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
-        page,
+        visiblePage,
         " / ",
-        Math.ceil(filtered.length / 20)
+        pageCount
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: page * 20 >= filtered.length, onClick: () => setPage((value) => value + 1), children: "\u4E0B\u4E00\u9875" })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage * 20 >= filtered.length, onClick: () => setPage(visiblePage + 1), children: "\u4E0B\u4E00\u9875" })
     ] }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-actions", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: cloudLoading, onClick: () => void loadCloud(true, cursor), children: cloudLoading ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A\u4E91\u7AEF\u6210\u679C" }) })
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-actions", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: cloudLoading, onClick: () => void loadCloud(true, cursor), children: cloudLoading ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A\u4E91\u7AEF\u6210\u679C" }) }),
+    deleteDialog
   ] });
 }
 
@@ -3344,7 +3543,7 @@ var import_react6 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.76.final-only",
+  version: "0.1.0-alpha.77.results",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
