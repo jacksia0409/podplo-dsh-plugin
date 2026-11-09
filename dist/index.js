@@ -554,11 +554,11 @@ var require_strings = __commonJS({
         if (exports.isNewlineChar(word)) {
           pushCurrLine();
         } else {
-          var width = computeWidthOfText(word);
-          if (currWidth + width > maxWidth)
+          var width2 = computeWidthOfText(word);
+          if (currWidth + width2 > maxWidth)
             pushCurrLine();
           currLine += word;
-          currWidth += width;
+          currWidth += width2;
         }
       }
       pushCurrLine();
@@ -1150,7 +1150,7 @@ var require_trees = __commonJS({
       var stree = desc.stat_desc.static_tree;
       var has_stree = desc.stat_desc.has_stree;
       var extra = desc.stat_desc.extra_bits;
-      var base = desc.stat_desc.extra_base;
+      var base2 = desc.stat_desc.extra_base;
       var max_length = desc.stat_desc.max_length;
       var h;
       var n, m;
@@ -1175,8 +1175,8 @@ var require_trees = __commonJS({
         }
         s.bl_count[bits]++;
         xbits = 0;
-        if (n >= base) {
-          xbits = extra[n - base];
+        if (n >= base2) {
+          xbits = extra[n - base2];
         }
         f = tree[n * 2];
         s.opt_len += f * (bits + xbits);
@@ -3510,7 +3510,7 @@ var require_inftrees = __commonJS({
       var low;
       var mask;
       var next;
-      var base = null;
+      var base2 = null;
       var base_index = 0;
       var end;
       var count = new utils.Buf16(MAXBITS + 1);
@@ -3568,16 +3568,16 @@ var require_inftrees = __commonJS({
         }
       }
       if (type === CODES) {
-        base = extra = work;
+        base2 = extra = work;
         end = 19;
       } else if (type === LENS) {
-        base = lbase;
+        base2 = lbase;
         base_index -= 257;
         extra = lext;
         extra_index -= 257;
         end = 256;
       } else {
-        base = dbase;
+        base2 = dbase;
         extra = dext;
         end = -1;
       }
@@ -3600,7 +3600,7 @@ var require_inftrees = __commonJS({
           here_val = work[sym];
         } else if (work[sym] > end) {
           here_op = extra[extra_index + work[sym]];
-          here_val = base[base_index + work[sym]];
+          here_val = base2[base_index + work[sym]];
         } else {
           here_op = 32 + 64;
           here_val = 0;
@@ -5395,10 +5395,10 @@ var require_Font = __commonJS({
             return acc;
           }, {});
           font.KernPairXAmounts = font.KernPairs.reduce(function(acc, _a5) {
-            var name1 = _a5[0], name2 = _a5[1], width = _a5[2];
+            var name1 = _a5[0], name2 = _a5[1], width2 = _a5[2];
             if (!acc[name1])
               acc[name1] = {};
-            acc[name1][name2] = width;
+            acc[name1][name2] = width2;
             return acc;
           }, {});
           fontCache[fontName] = font;
@@ -6481,9 +6481,9 @@ var require_PDFArray = __commonJS({
           var upperRightY = this.lookup(3, PDFNumber_1.default).asNumber();
           var x = lowerLeftX;
           var y = lowerLeftY;
-          var width = upperRightX - lowerLeftX;
-          var height = upperRightY - lowerLeftY;
-          return { x, y, width, height };
+          var width2 = upperRightX - lowerLeftX;
+          var height2 = upperRightY - lowerLeftY;
+          return { x, y, width: width2, height: height2 };
         };
         PDFArray2.prototype.asArray = function() {
           return this.array.slice();
@@ -8909,16 +8909,16 @@ var require_StandardFontEmbedder = __commonJS({
           var _b = this.font, Ascender = _b.Ascender, Descender = _b.Descender, FontBBox = _b.FontBBox;
           var yTop = Ascender || FontBBox[3];
           var yBottom = Descender || FontBBox[1];
-          var height = yTop - yBottom;
+          var height2 = yTop - yBottom;
           if (!descender)
-            height += Descender || 0;
-          return height / 1e3 * size;
+            height2 += Descender || 0;
+          return height2 / 1e3 * size;
         };
-        StandardFontEmbedder2.prototype.sizeOfFontAtHeight = function(height) {
+        StandardFontEmbedder2.prototype.sizeOfFontAtHeight = function(height2) {
           var _a5 = this.font, Ascender = _a5.Ascender, Descender = _a5.Descender, FontBBox = _a5.FontBBox;
           var yTop = Ascender || FontBBox[3];
           var yBottom = Descender || FontBBox[1];
-          return 1e3 * height / (yTop - yBottom);
+          return 1e3 * height2 / (yTop - yBottom);
         };
         StandardFontEmbedder2.prototype.embedIntoContext = function(context, ref) {
           var fontDict = context.obj({
@@ -9245,16 +9245,16 @@ var require_CustomFontEmbedder = __commonJS({
           var _b = this.font, ascent = _b.ascent, descent = _b.descent, bbox = _b.bbox;
           var yTop = (ascent || bbox.maxY) * this.scale;
           var yBottom = (descent || bbox.minY) * this.scale;
-          var height = yTop - yBottom;
+          var height2 = yTop - yBottom;
           if (!descender)
-            height -= Math.abs(descent) || 0;
-          return height / 1e3 * size;
+            height2 -= Math.abs(descent) || 0;
+          return height2 / 1e3 * size;
         };
-        CustomFontEmbedder2.prototype.sizeOfFontAtHeight = function(height) {
+        CustomFontEmbedder2.prototype.sizeOfFontAtHeight = function(height2) {
           var _a5 = this.font, ascent = _a5.ascent, descent = _a5.descent, bbox = _a5.bbox;
           var yTop = (ascent || bbox.maxY) * this.scale;
           var yBottom = (descent || bbox.minY) * this.scale;
-          return 1e3 * height / (yTop - yBottom);
+          return 1e3 * height2 / (yTop - yBottom);
         };
         CustomFontEmbedder2.prototype.embedIntoContext = function(context, ref) {
           this.baseFontName = this.customName || context.addRandomSuffix(this.fontName);
@@ -9607,16 +9607,16 @@ var require_JpegEmbedder = __commonJS({
     var JpegEmbedder = (
       /** @class */
       (function() {
-        function JpegEmbedder2(imageData, bitsPerComponent, width, height, colorSpace) {
+        function JpegEmbedder2(imageData, bitsPerComponent, width2, height2, colorSpace) {
           this.imageData = imageData;
           this.bitsPerComponent = bitsPerComponent;
-          this.width = width;
-          this.height = height;
+          this.width = width2;
+          this.height = height2;
           this.colorSpace = colorSpace;
         }
         JpegEmbedder2.for = function(imageData) {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var dataView, soi, pos, marker, bitsPerComponent, height, width, channelByte, channelName, colorSpace;
+            var dataView, soi, pos, marker, bitsPerComponent, height2, width2, channelByte, channelName, colorSpace;
             return tslib_1.__generator(this, function(_a5) {
               dataView = new DataView(imageData.buffer);
               soi = dataView.getUint16(0);
@@ -9634,16 +9634,16 @@ var require_JpegEmbedder = __commonJS({
                 throw new Error("Invalid JPEG");
               pos += 2;
               bitsPerComponent = dataView.getUint8(pos++);
-              height = dataView.getUint16(pos);
+              height2 = dataView.getUint16(pos);
               pos += 2;
-              width = dataView.getUint16(pos);
+              width2 = dataView.getUint16(pos);
               pos += 2;
               channelByte = dataView.getUint8(pos++);
               channelName = ChannelToColorSpace[channelByte];
               if (!channelName)
                 throw new Error("Unknown JPEG channel.");
               colorSpace = channelName;
-              return [2, new JpegEmbedder2(imageData, bitsPerComponent, width, height, colorSpace)];
+              return [2, new JpegEmbedder2(imageData, bitsPerComponent, width2, height2, colorSpace)];
             });
           });
         };
@@ -12856,9 +12856,9 @@ var require_PDFPageEmbedder = __commonJS({
     var utils_1 = require_utils2();
     var fullPageBoundingBox = function(page) {
       var mediaBox = page.MediaBox();
-      var width = mediaBox.lookup(2, PDFNumber_1.default).asNumber() - mediaBox.lookup(0, PDFNumber_1.default).asNumber();
-      var height = mediaBox.lookup(3, PDFNumber_1.default).asNumber() - mediaBox.lookup(1, PDFNumber_1.default).asNumber();
-      return { left: 0, bottom: 0, right: width, top: height };
+      var width2 = mediaBox.lookup(2, PDFNumber_1.default).asNumber() - mediaBox.lookup(0, PDFNumber_1.default).asNumber();
+      var height2 = mediaBox.lookup(3, PDFNumber_1.default).asNumber() - mediaBox.lookup(1, PDFNumber_1.default).asNumber();
+      return { left: 0, bottom: 0, right: width2, top: height2 };
     };
     var boundingBoxAdjustedMatrix = function(bb) {
       return [1, 0, 0, 1, -bb.left, -bb.bottom];
@@ -13353,8 +13353,8 @@ var require_BorderStyle = __commonJS({
           var _a5, _b;
           return (_b = (_a5 = this.W()) === null || _a5 === void 0 ? void 0 : _a5.asNumber()) !== null && _b !== void 0 ? _b : 1;
         };
-        BorderStyle2.prototype.setWidth = function(width) {
-          var W = this.dict.context.obj(width);
+        BorderStyle2.prototype.setWidth = function(width2) {
+          var W = this.dict.context.obj(width2);
           this.dict.set(PDFName_1.default.of("W"), W);
         };
         BorderStyle2.fromDict = function(dict) {
@@ -13401,8 +13401,8 @@ var require_PDFAnnotation = __commonJS({
           return (_a5 = Rect === null || Rect === void 0 ? void 0 : Rect.asRectangle()) !== null && _a5 !== void 0 ? _a5 : { x: 0, y: 0, width: 0, height: 0 };
         };
         PDFAnnotation2.prototype.setRectangle = function(rect) {
-          var x = rect.x, y = rect.y, width = rect.width, height = rect.height;
-          var Rect = this.dict.context.obj([x, y, x + width, y + height]);
+          var x = rect.x, y = rect.y, width2 = rect.width, height2 = rect.height;
+          var Rect = this.dict.context.obj([x, y, x + width2, y + height2]);
           this.dict.set(PDFName_1.default.of("Rect"), Rect);
         };
         PDFAnnotation2.prototype.getAppearanceState = function() {
@@ -16428,8 +16428,8 @@ var require_operators = __commonJS({
     exports.popGraphicsState = function() {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.PopGraphicsState);
     };
-    exports.setLineWidth = function(width) {
-      return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetLineWidth, [objects_1.asPDFNumber(width)]);
+    exports.setLineWidth = function(width2) {
+      return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetLineWidth, [objects_1.asPDFNumber(width2)]);
     };
     exports.appendBezierCurve = function(x1, y1, x2, y2, x3, y3) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.AppendBezierCurve, [
@@ -16458,12 +16458,12 @@ var require_operators = __commonJS({
     exports.lineTo = function(xPos, yPos) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.LineTo, [objects_1.asPDFNumber(xPos), objects_1.asPDFNumber(yPos)]);
     };
-    exports.rectangle = function(xPos, yPos, width, height) {
+    exports.rectangle = function(xPos, yPos, width2, height2) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.AppendRectangle, [
         objects_1.asPDFNumber(xPos),
         objects_1.asPDFNumber(yPos),
-        objects_1.asPDFNumber(width),
-        objects_1.asPDFNumber(height)
+        objects_1.asPDFNumber(width2),
+        objects_1.asPDFNumber(height2)
       ]);
     };
     exports.square = function(xPos, yPos, size) {
@@ -17254,12 +17254,12 @@ var require_operations = __commonJS({
       });
       if (!options.filled)
         return outline;
-      var width = objects_1.asNumber(options.width);
-      var height = objects_1.asNumber(options.height);
-      var checkMarkSize = Math.min(width, height) / 2;
+      var width2 = objects_1.asNumber(options.width);
+      var height2 = objects_1.asNumber(options.height);
+      var checkMarkSize = Math.min(width2, height2) / 2;
       var checkMark = exports.drawCheckMark({
-        x: width / 2,
-        y: height / 2,
+        x: width2 / 2,
+        y: height2 / 2,
         size: checkMarkSize,
         thickness: options.thickness,
         color: options.markColor
@@ -17267,9 +17267,9 @@ var require_operations = __commonJS({
       return tslib_1.__spreadArrays([operators_1.pushGraphicsState()], outline, checkMark, [operators_1.popGraphicsState()]);
     };
     exports.drawRadioButton = function(options) {
-      var width = objects_1.asNumber(options.width);
-      var height = objects_1.asNumber(options.height);
-      var outlineScale = Math.min(width, height) / 2;
+      var width2 = objects_1.asNumber(options.width);
+      var height2 = objects_1.asNumber(options.height);
+      var outlineScale = Math.min(width2, height2) / 2;
       var outline = exports.drawEllipse({
         x: options.x,
         y: options.y,
@@ -17295,13 +17295,13 @@ var require_operations = __commonJS({
     exports.drawButton = function(options) {
       var x = objects_1.asNumber(options.x);
       var y = objects_1.asNumber(options.y);
-      var width = objects_1.asNumber(options.width);
-      var height = objects_1.asNumber(options.height);
+      var width2 = objects_1.asNumber(options.width);
+      var height2 = objects_1.asNumber(options.height);
       var background = exports.drawRectangle({
         x,
         y,
-        width,
-        height,
+        width: width2,
+        height: height2,
         borderWidth: options.borderWidth,
         color: options.color,
         borderColor: options.borderColor,
@@ -17335,14 +17335,14 @@ var require_operations = __commonJS({
     exports.drawTextField = function(options) {
       var x = objects_1.asNumber(options.x);
       var y = objects_1.asNumber(options.y);
-      var width = objects_1.asNumber(options.width);
-      var height = objects_1.asNumber(options.height);
+      var width2 = objects_1.asNumber(options.width);
+      var height2 = objects_1.asNumber(options.height);
       var borderWidth = objects_1.asNumber(options.borderWidth);
       var padding = objects_1.asNumber(options.padding);
       var clipX = x + borderWidth / 2 + padding;
       var clipY = y + borderWidth / 2 + padding;
-      var clipWidth = width - (borderWidth / 2 + padding) * 2;
-      var clipHeight = height - (borderWidth / 2 + padding) * 2;
+      var clipWidth = width2 - (borderWidth / 2 + padding) * 2;
+      var clipHeight = height2 - (borderWidth / 2 + padding) * 2;
       var clippingArea = [
         operators_1.moveTo(clipX, clipY),
         operators_1.lineTo(clipX, clipY + clipHeight),
@@ -17355,8 +17355,8 @@ var require_operations = __commonJS({
       var background = exports.drawRectangle({
         x,
         y,
-        width,
-        height,
+        width: width2,
+        height: height2,
         borderWidth: options.borderWidth,
         color: options.color,
         borderColor: options.borderColor,
@@ -17388,15 +17388,15 @@ var require_operations = __commonJS({
     exports.drawOptionList = function(options) {
       var x = objects_1.asNumber(options.x);
       var y = objects_1.asNumber(options.y);
-      var width = objects_1.asNumber(options.width);
-      var height = objects_1.asNumber(options.height);
+      var width2 = objects_1.asNumber(options.width);
+      var height2 = objects_1.asNumber(options.height);
       var lineHeight = objects_1.asNumber(options.lineHeight);
       var borderWidth = objects_1.asNumber(options.borderWidth);
       var padding = objects_1.asNumber(options.padding);
       var clipX = x + borderWidth / 2 + padding;
       var clipY = y + borderWidth / 2 + padding;
-      var clipWidth = width - (borderWidth / 2 + padding) * 2;
-      var clipHeight = height - (borderWidth / 2 + padding) * 2;
+      var clipWidth = width2 - (borderWidth / 2 + padding) * 2;
+      var clipHeight = height2 - (borderWidth / 2 + padding) * 2;
       var clippingArea = [
         operators_1.moveTo(clipX, clipY),
         operators_1.lineTo(clipX, clipY + clipHeight),
@@ -17409,8 +17409,8 @@ var require_operations = __commonJS({
       var background = exports.drawRectangle({
         x,
         y,
-        width,
-        height,
+        width: width2,
+        height: height2,
         borderWidth: options.borderWidth,
         color: options.color,
         borderColor: options.borderColor,
@@ -17424,7 +17424,7 @@ var require_operations = __commonJS({
         highlights.push.apply(highlights, exports.drawRectangle({
           x: line.x - padding,
           y: line.y - (lineHeight - line.height) / 2,
-          width: width - borderWidth,
+          width: width2 - borderWidth,
           height: line.height + (lineHeight - line.height) / 2,
           borderWidth: 0,
           color: options.selectedColor,
@@ -17718,8 +17718,8 @@ var require_layout = __commonJS({
         }
         if (!multiline && linesUsed > lines.length)
           return fontSize - 1;
-        var height = font.heightAtSize(fontSize);
-        var lineHeight = height + height * 0.2;
+        var height2 = font.heightAtSize(fontSize);
+        var lineHeight = height2 + height2 * 0.2;
         var totalHeight = lineHeight * linesUsed;
         if (totalHeight > Math.abs(bounds.height))
           return fontSize - 1;
@@ -17739,8 +17739,8 @@ var require_layout = __commonJS({
           if (tooLong)
             return fontSize - 1;
         }
-        var height = font.heightAtSize(fontSize, { descender: false });
-        if (height > cellHeight)
+        var height2 = font.heightAtSize(fontSize, { descender: false });
+        if (height2 > cellHeight)
           return fontSize - 1;
         fontSize += 1;
       }
@@ -17759,10 +17759,10 @@ var require_layout = __commonJS({
       while (lastWhitespaceIdx > 0) {
         var line = input.substring(0, lastWhitespaceIdx);
         var encoded = font.encodeText(line);
-        var width = font.widthOfTextAtSize(line, fontSize);
-        if (width < maxWidth) {
+        var width2 = font.widthOfTextAtSize(line, fontSize);
+        if (width2 < maxWidth) {
           var remainder = input.substring(lastWhitespaceIdx) || void 0;
-          return { line, encoded, width, remainder };
+          return { line, encoded, width: width2, remainder };
         }
         lastWhitespaceIdx = (_a5 = lastIndexOfWhitespace(line)) !== null && _a5 !== void 0 ? _a5 : 0;
       }
@@ -17779,8 +17779,8 @@ var require_layout = __commonJS({
       if (fontSize === void 0 || fontSize === 0) {
         fontSize = computeFontSize(lines, font, bounds, true);
       }
-      var height = font.heightAtSize(fontSize);
-      var lineHeight = height + height * 0.2;
+      var height2 = font.heightAtSize(fontSize);
+      var lineHeight = height2 + height2 * 0.2;
       var textLines = [];
       var minX = bounds.x;
       var minY = bounds.y;
@@ -17790,18 +17790,18 @@ var require_layout = __commonJS({
       for (var idx = 0, len = lines.length; idx < len; idx++) {
         var prevRemainder = lines[idx];
         while (prevRemainder !== void 0) {
-          var _b = splitOutLines(prevRemainder, bounds.width, font, fontSize), line = _b.line, encoded = _b.encoded, width = _b.width, remainder = _b.remainder;
-          var x = alignment === alignment_1.TextAlignment.Left ? bounds.x : alignment === alignment_1.TextAlignment.Center ? bounds.x + bounds.width / 2 - width / 2 : alignment === alignment_1.TextAlignment.Right ? bounds.x + bounds.width - width : bounds.x;
+          var _b = splitOutLines(prevRemainder, bounds.width, font, fontSize), line = _b.line, encoded = _b.encoded, width2 = _b.width, remainder = _b.remainder;
+          var x = alignment === alignment_1.TextAlignment.Left ? bounds.x : alignment === alignment_1.TextAlignment.Center ? bounds.x + bounds.width / 2 - width2 / 2 : alignment === alignment_1.TextAlignment.Right ? bounds.x + bounds.width - width2 : bounds.x;
           y -= lineHeight;
           if (x < minX)
             minX = x;
           if (y < minY)
             minY = y;
-          if (x + width > maxX)
-            maxX = x + width;
-          if (y + height > maxY)
-            maxY = y + height;
-          textLines.push({ text: line, encoded, width, height, x, y });
+          if (x + width2 > maxX)
+            maxX = x + width2;
+          if (y + height2 > maxY)
+            maxY = y + height2;
+          textLines.push({ text: line, encoded, width: width2, height: height2, x, y });
           prevRemainder = remainder === null || remainder === void 0 ? void 0 : remainder.trim();
         }
       }
@@ -17827,8 +17827,8 @@ var require_layout = __commonJS({
         fontSize = computeCombedFontSize(line, font, bounds, cellCount);
       }
       var cellWidth = bounds.width / cellCount;
-      var height = font.heightAtSize(fontSize, { descender: false });
-      var y = bounds.y + (bounds.height / 2 - height / 2);
+      var height2 = font.heightAtSize(fontSize, { descender: false });
+      var y = bounds.y + (bounds.height / 2 - height2 / 2);
       var cells = [];
       var minX = bounds.x;
       var minY = bounds.y;
@@ -17839,18 +17839,18 @@ var require_layout = __commonJS({
       while (cellOffset < cellCount) {
         var _b = utils_1.charAtIndex(line, charOffset), char = _b[0], charLength = _b[1];
         var encoded = font.encodeText(char);
-        var width = font.widthOfTextAtSize(char, fontSize);
+        var width2 = font.widthOfTextAtSize(char, fontSize);
         var cellCenter = bounds.x + (cellWidth * cellOffset + cellWidth / 2);
-        var x = cellCenter - width / 2;
+        var x = cellCenter - width2 / 2;
         if (x < minX)
           minX = x;
         if (y < minY)
           minY = y;
-        if (x + width > maxX)
-          maxX = x + width;
-        if (y + height > maxY)
-          maxY = y + height;
-        cells.push({ text: line, encoded, width, height, x, y });
+        if (x + width2 > maxX)
+          maxX = x + width2;
+        if (y + height2 > maxY)
+          maxY = y + height2;
+        cells.push({ text: line, encoded, width: width2, height: height2, x, y });
         cellOffset += 1;
         charOffset += charLength;
       }
@@ -17872,14 +17872,14 @@ var require_layout = __commonJS({
         fontSize = computeFontSize([line], font, bounds);
       }
       var encoded = font.encodeText(line);
-      var width = font.widthOfTextAtSize(line, fontSize);
-      var height = font.heightAtSize(fontSize, { descender: false });
-      var x = alignment === alignment_1.TextAlignment.Left ? bounds.x : alignment === alignment_1.TextAlignment.Center ? bounds.x + bounds.width / 2 - width / 2 : alignment === alignment_1.TextAlignment.Right ? bounds.x + bounds.width - width : bounds.x;
-      var y = bounds.y + (bounds.height / 2 - height / 2);
+      var width2 = font.widthOfTextAtSize(line, fontSize);
+      var height2 = font.heightAtSize(fontSize, { descender: false });
+      var x = alignment === alignment_1.TextAlignment.Left ? bounds.x : alignment === alignment_1.TextAlignment.Center ? bounds.x + bounds.width / 2 - width2 / 2 : alignment === alignment_1.TextAlignment.Right ? bounds.x + bounds.width - width2 : bounds.x;
+      var y = bounds.y + (bounds.height / 2 - height2 / 2);
       return {
         fontSize,
-        line: { text: line, encoded, width, height, x, y },
-        bounds: { x, y, width, height }
+        line: { text: line, encoded, width: width2, height: height2, x, y },
+        bounds: { x, y, width: width2, height: height2 }
       };
     };
   }
@@ -17949,7 +17949,7 @@ var require_appearances = __commonJS({
       var bs = widget.getBorderStyle();
       var borderWidth = (_a5 = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _a5 !== void 0 ? _a5 : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
-      var _d = rotations_1.adjustDimsForRotation(rectangle2, rotation), width = _d.width, height = _d.height;
+      var _d = rotations_1.adjustDimsForRotation(rectangle2, rotation), width2 = _d.width, height2 = _d.height;
       var rotate = operations_1.rotateInPlace(tslib_1.__assign(tslib_1.__assign({}, rectangle2), { rotation }));
       var black = colors_1.rgb(0, 0, 0);
       var borderColor = (_b = colors_1.componentsToColor(ap === null || ap === void 0 ? void 0 : ap.getBorderColor())) !== null && _b !== void 0 ? _b : black;
@@ -17964,8 +17964,8 @@ var require_appearances = __commonJS({
       var options = {
         x: 0 + borderWidth / 2,
         y: 0 + borderWidth / 2,
-        width: width - borderWidth,
-        height: height - borderWidth,
+        width: width2 - borderWidth,
+        height: height2 - borderWidth,
         thickness: 1.5,
         borderWidth,
         borderColor,
@@ -17991,7 +17991,7 @@ var require_appearances = __commonJS({
       var bs = widget.getBorderStyle();
       var borderWidth = (_a5 = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _a5 !== void 0 ? _a5 : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
-      var _d = rotations_1.adjustDimsForRotation(rectangle2, rotation), width = _d.width, height = _d.height;
+      var _d = rotations_1.adjustDimsForRotation(rectangle2, rotation), width2 = _d.width, height2 = _d.height;
       var rotate = operations_1.rotateInPlace(tslib_1.__assign(tslib_1.__assign({}, rectangle2), { rotation }));
       var black = colors_1.rgb(0, 0, 0);
       var borderColor = (_b = colors_1.componentsToColor(ap === null || ap === void 0 ? void 0 : ap.getBorderColor())) !== null && _b !== void 0 ? _b : black;
@@ -18004,10 +18004,10 @@ var require_appearances = __commonJS({
         updateDefaultAppearance(radioGroup.acroField, textColor);
       }
       var options = {
-        x: width / 2,
-        y: height / 2,
-        width: width - borderWidth,
-        height: height - borderWidth,
+        x: width2 / 2,
+        y: height2 / 2,
+        width: width2 - borderWidth,
+        height: height2 - borderWidth,
         borderWidth,
         borderColor,
         dotColor: textColor
@@ -18037,7 +18037,7 @@ var require_appearances = __commonJS({
       var downText = (_c = (_b = captions === null || captions === void 0 ? void 0 : captions.down) !== null && _b !== void 0 ? _b : normalText) !== null && _c !== void 0 ? _c : "";
       var borderWidth = (_d = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _d !== void 0 ? _d : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
-      var _f = rotations_1.adjustDimsForRotation(rectangle2, rotation), width = _f.width, height = _f.height;
+      var _f = rotations_1.adjustDimsForRotation(rectangle2, rotation), width2 = _f.width, height2 = _f.height;
       var rotate = operations_1.rotateInPlace(tslib_1.__assign(tslib_1.__assign({}, rectangle2), { rotation }));
       var black = colors_1.rgb(0, 0, 0);
       var borderColor = colors_1.componentsToColor(ap === null || ap === void 0 ? void 0 : ap.getBorderColor());
@@ -18046,8 +18046,8 @@ var require_appearances = __commonJS({
       var bounds = {
         x: borderWidth,
         y: borderWidth,
-        width: width - borderWidth * 2,
-        height: height - borderWidth * 2
+        width: width2 - borderWidth * 2,
+        height: height2 - borderWidth * 2
       };
       var normalLayout = layout_1.layoutSinglelineText(normalText, {
         alignment: alignment_1.TextAlignment.Center,
@@ -18071,8 +18071,8 @@ var require_appearances = __commonJS({
       var options = {
         x: 0 + borderWidth / 2,
         y: 0 + borderWidth / 2,
-        width: width - borderWidth,
-        height: height - borderWidth,
+        width: width2 - borderWidth,
+        height: height2 - borderWidth,
         borderWidth,
         borderColor,
         textColor,
@@ -18096,7 +18096,7 @@ var require_appearances = __commonJS({
       var text4 = (_a5 = textField.getText()) !== null && _a5 !== void 0 ? _a5 : "";
       var borderWidth = (_b = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _b !== void 0 ? _b : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
-      var _e = rotations_1.adjustDimsForRotation(rectangle2, rotation), width = _e.width, height = _e.height;
+      var _e = rotations_1.adjustDimsForRotation(rectangle2, rotation), width2 = _e.width, height2 = _e.height;
       var rotate = operations_1.rotateInPlace(tslib_1.__assign(tslib_1.__assign({}, rectangle2), { rotation }));
       var black = colors_1.rgb(0, 0, 0);
       var borderColor = colors_1.componentsToColor(ap === null || ap === void 0 ? void 0 : ap.getBorderColor());
@@ -18107,8 +18107,8 @@ var require_appearances = __commonJS({
       var bounds = {
         x: borderWidth + padding,
         y: borderWidth + padding,
-        width: width - (borderWidth + padding) * 2,
-        height: height - (borderWidth + padding) * 2
+        width: width2 - (borderWidth + padding) * 2,
+        height: height2 - (borderWidth + padding) * 2
       };
       if (textField.isMultiline()) {
         var layout = layout_1.layoutMultilineText(text4, {
@@ -18147,8 +18147,8 @@ var require_appearances = __commonJS({
       var options = {
         x: 0 + borderWidth / 2,
         y: 0 + borderWidth / 2,
-        width: width - borderWidth,
-        height: height - borderWidth,
+        width: width2 - borderWidth,
+        height: height2 - borderWidth,
         borderWidth: borderWidth !== null && borderWidth !== void 0 ? borderWidth : 0,
         borderColor,
         textColor,
@@ -18172,7 +18172,7 @@ var require_appearances = __commonJS({
       var text4 = (_a5 = dropdown.getSelected()[0]) !== null && _a5 !== void 0 ? _a5 : "";
       var borderWidth = (_b = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _b !== void 0 ? _b : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
-      var _d = rotations_1.adjustDimsForRotation(rectangle2, rotation), width = _d.width, height = _d.height;
+      var _d = rotations_1.adjustDimsForRotation(rectangle2, rotation), width2 = _d.width, height2 = _d.height;
       var rotate = operations_1.rotateInPlace(tslib_1.__assign(tslib_1.__assign({}, rectangle2), { rotation }));
       var black = colors_1.rgb(0, 0, 0);
       var borderColor = colors_1.componentsToColor(ap === null || ap === void 0 ? void 0 : ap.getBorderColor());
@@ -18181,8 +18181,8 @@ var require_appearances = __commonJS({
       var bounds = {
         x: borderWidth + padding,
         y: borderWidth + padding,
-        width: width - (borderWidth + padding) * 2,
-        height: height - (borderWidth + padding) * 2
+        width: width2 - (borderWidth + padding) * 2,
+        height: height2 - (borderWidth + padding) * 2
       };
       var _e = layout_1.layoutSinglelineText(text4, {
         alignment: alignment_1.TextAlignment.Left,
@@ -18199,8 +18199,8 @@ var require_appearances = __commonJS({
       var options = {
         x: 0 + borderWidth / 2,
         y: 0 + borderWidth / 2,
-        width: width - borderWidth,
-        height: height - borderWidth,
+        width: width2 - borderWidth,
+        height: height2 - borderWidth,
         borderWidth: borderWidth !== null && borderWidth !== void 0 ? borderWidth : 0,
         borderColor,
         textColor,
@@ -18223,7 +18223,7 @@ var require_appearances = __commonJS({
       var bs = widget.getBorderStyle();
       var borderWidth = (_a5 = bs === null || bs === void 0 ? void 0 : bs.getWidth()) !== null && _a5 !== void 0 ? _a5 : 0;
       var rotation = rotations_1.reduceRotation(ap === null || ap === void 0 ? void 0 : ap.getRotation());
-      var _c = rotations_1.adjustDimsForRotation(rectangle2, rotation), width = _c.width, height = _c.height;
+      var _c = rotations_1.adjustDimsForRotation(rectangle2, rotation), width2 = _c.width, height2 = _c.height;
       var rotate = operations_1.rotateInPlace(tslib_1.__assign(tslib_1.__assign({}, rectangle2), { rotation }));
       var black = colors_1.rgb(0, 0, 0);
       var borderColor = colors_1.componentsToColor(ap === null || ap === void 0 ? void 0 : ap.getBorderColor());
@@ -18242,8 +18242,8 @@ var require_appearances = __commonJS({
       var bounds = {
         x: borderWidth + padding,
         y: borderWidth + padding,
-        width: width - (borderWidth + padding) * 2,
-        height: height - (borderWidth + padding) * 2
+        width: width2 - (borderWidth + padding) * 2,
+        height: height2 - (borderWidth + padding) * 2
       };
       var _d = layout_1.layoutMultilineText(text4, {
         alignment: alignment_1.TextAlignment.Left,
@@ -18267,8 +18267,8 @@ var require_appearances = __commonJS({
       return tslib_1.__spreadArrays(rotate, operations_1.drawOptionList({
         x: 0 + borderWidth / 2,
         y: 0 + borderWidth / 2,
-        width: width - borderWidth,
-        height: height - borderWidth,
+        width: width2 - borderWidth,
+        height: height2 - borderWidth,
         borderWidth: borderWidth !== null && borderWidth !== void 0 ? borderWidth : 0,
         borderColor,
         textColor,
@@ -18388,9 +18388,9 @@ var require_PDFFont = __commonJS({
             descender: (_a5 = options === null || options === void 0 ? void 0 : options.descender) !== null && _a5 !== void 0 ? _a5 : true
           });
         };
-        PDFFont2.prototype.sizeAtHeight = function(height) {
-          utils_1.assertIs(height, "height", ["number"]);
-          return this.embedder.sizeOfFontAtHeight(height);
+        PDFFont2.prototype.sizeAtHeight = function(height2) {
+          utils_1.assertIs(height2, "height", ["number"]);
+          return this.embedder.sizeOfFontAtHeight(height2);
         };
         PDFFont2.prototype.getCharacterSet = function() {
           if (this.embedder instanceof core_1.StandardFontEmbedder) {
@@ -18458,11 +18458,11 @@ var require_PDFImage = __commonJS({
           utils_1.assertIs(factor, "factor", ["number"]);
           return { width: this.width * factor, height: this.height * factor };
         };
-        PDFImage2.prototype.scaleToFit = function(width, height) {
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
-          var imgWidthScale = width / this.width;
-          var imgHeightScale = height / this.height;
+        PDFImage2.prototype.scaleToFit = function(width2, height2) {
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
+          var imgWidthScale = width2 / this.width;
+          var imgHeightScale = height2 / this.height;
           var scale = Math.min(imgWidthScale, imgHeightScale);
           return this.scale(scale);
         };
@@ -18629,13 +18629,13 @@ var require_PDFField = __commonJS({
           var caption = options.caption;
           var x = options.x;
           var y = options.y;
-          var width = options.width + borderWidth;
-          var height = options.height + borderWidth;
+          var width2 = options.width + borderWidth;
+          var height2 = options.height + borderWidth;
           var hidden = Boolean(options.hidden);
           var pageRef = options.page;
           utils_1.assertMultiple(degreesAngle, "degreesAngle", 90);
           var widget = core_1.PDFWidgetAnnotation.create(this.doc.context, this.ref);
-          var rect = rotations_1.rotateRectangle({ x, y, width, height }, borderWidth, degreesAngle);
+          var rect = rotations_1.rotateRectangle({ x, y, width: width2, height: height2 }, borderWidth, degreesAngle);
           widget.setRectangle(rect);
           if (pageRef)
             widget.setP(pageRef);
@@ -18694,11 +18694,11 @@ var require_PDFField = __commonJS({
         PDFField2.prototype.createAppearanceStream = function(widget, appearance, font) {
           var _a5;
           var context = this.acroField.dict.context;
-          var _b = widget.getRectangle(), width = _b.width, height = _b.height;
+          var _b = widget.getRectangle(), width2 = _b.width, height2 = _b.height;
           var Resources = font && { Font: (_a5 = {}, _a5[font.name] = font.ref, _a5) };
           var stream = context.formXObject(appearance, {
             Resources,
-            BBox: context.obj([0, 0, width, height]),
+            BBox: context.obj([0, 0, width2, height2]),
             Matrix: context.obj([1, 0, 0, 1, 0, 0])
           });
           var streamRef = context.register(stream);
@@ -21161,11 +21161,11 @@ var require_PDFPage = __commonJS({
           var Rotate = this.node.Rotate();
           return rotations_1.degrees(Rotate ? Rotate.asNumber() : 0);
         };
-        PDFPage2.prototype.setSize = function(width, height) {
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
+        PDFPage2.prototype.setSize = function(width2, height2) {
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
           var mediaBox = this.getMediaBox();
-          this.setMediaBox(mediaBox.x, mediaBox.y, width, height);
+          this.setMediaBox(mediaBox.x, mediaBox.y, width2, height2);
           var cropBox = this.getCropBox();
           var bleedBox = this.getBleedBox();
           var trimBox = this.getTrimBox();
@@ -21175,69 +21175,69 @@ var require_PDFPage = __commonJS({
           var hasTrimBox = this.node.TrimBox();
           var hasArtBox = this.node.ArtBox();
           if (hasCropBox && utils_1.rectanglesAreEqual(cropBox, mediaBox)) {
-            this.setCropBox(mediaBox.x, mediaBox.y, width, height);
+            this.setCropBox(mediaBox.x, mediaBox.y, width2, height2);
           }
           if (hasBleedBox && utils_1.rectanglesAreEqual(bleedBox, mediaBox)) {
-            this.setBleedBox(mediaBox.x, mediaBox.y, width, height);
+            this.setBleedBox(mediaBox.x, mediaBox.y, width2, height2);
           }
           if (hasTrimBox && utils_1.rectanglesAreEqual(trimBox, mediaBox)) {
-            this.setTrimBox(mediaBox.x, mediaBox.y, width, height);
+            this.setTrimBox(mediaBox.x, mediaBox.y, width2, height2);
           }
           if (hasArtBox && utils_1.rectanglesAreEqual(artBox, mediaBox)) {
-            this.setArtBox(mediaBox.x, mediaBox.y, width, height);
+            this.setArtBox(mediaBox.x, mediaBox.y, width2, height2);
           }
         };
-        PDFPage2.prototype.setWidth = function(width) {
-          utils_1.assertIs(width, "width", ["number"]);
-          this.setSize(width, this.getSize().height);
+        PDFPage2.prototype.setWidth = function(width2) {
+          utils_1.assertIs(width2, "width", ["number"]);
+          this.setSize(width2, this.getSize().height);
         };
-        PDFPage2.prototype.setHeight = function(height) {
-          utils_1.assertIs(height, "height", ["number"]);
-          this.setSize(this.getSize().width, height);
+        PDFPage2.prototype.setHeight = function(height2) {
+          utils_1.assertIs(height2, "height", ["number"]);
+          this.setSize(this.getSize().width, height2);
         };
-        PDFPage2.prototype.setMediaBox = function(x, y, width, height) {
+        PDFPage2.prototype.setMediaBox = function(x, y, width2, height2) {
           utils_1.assertIs(x, "x", ["number"]);
           utils_1.assertIs(y, "y", ["number"]);
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
-          var mediaBox = this.doc.context.obj([x, y, x + width, y + height]);
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
+          var mediaBox = this.doc.context.obj([x, y, x + width2, y + height2]);
           this.node.set(core_1.PDFName.MediaBox, mediaBox);
         };
-        PDFPage2.prototype.setCropBox = function(x, y, width, height) {
+        PDFPage2.prototype.setCropBox = function(x, y, width2, height2) {
           utils_1.assertIs(x, "x", ["number"]);
           utils_1.assertIs(y, "y", ["number"]);
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
-          var cropBox = this.doc.context.obj([x, y, x + width, y + height]);
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
+          var cropBox = this.doc.context.obj([x, y, x + width2, y + height2]);
           this.node.set(core_1.PDFName.CropBox, cropBox);
         };
-        PDFPage2.prototype.setBleedBox = function(x, y, width, height) {
+        PDFPage2.prototype.setBleedBox = function(x, y, width2, height2) {
           utils_1.assertIs(x, "x", ["number"]);
           utils_1.assertIs(y, "y", ["number"]);
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
-          var bleedBox = this.doc.context.obj([x, y, x + width, y + height]);
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
+          var bleedBox = this.doc.context.obj([x, y, x + width2, y + height2]);
           this.node.set(core_1.PDFName.BleedBox, bleedBox);
         };
-        PDFPage2.prototype.setTrimBox = function(x, y, width, height) {
+        PDFPage2.prototype.setTrimBox = function(x, y, width2, height2) {
           utils_1.assertIs(x, "x", ["number"]);
           utils_1.assertIs(y, "y", ["number"]);
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
-          var trimBox = this.doc.context.obj([x, y, x + width, y + height]);
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
+          var trimBox = this.doc.context.obj([x, y, x + width2, y + height2]);
           this.node.set(core_1.PDFName.TrimBox, trimBox);
         };
-        PDFPage2.prototype.setArtBox = function(x, y, width, height) {
+        PDFPage2.prototype.setArtBox = function(x, y, width2, height2) {
           utils_1.assertIs(x, "x", ["number"]);
           utils_1.assertIs(y, "y", ["number"]);
-          utils_1.assertIs(width, "width", ["number"]);
-          utils_1.assertIs(height, "height", ["number"]);
-          var artBox = this.doc.context.obj([x, y, x + width, y + height]);
+          utils_1.assertIs(width2, "width", ["number"]);
+          utils_1.assertIs(height2, "height", ["number"]);
+          var artBox = this.doc.context.obj([x, y, x + width2, y + height2]);
           this.node.set(core_1.PDFName.ArtBox, artBox);
         };
         PDFPage2.prototype.getSize = function() {
-          var _a5 = this.getMediaBox(), width = _a5.width, height = _a5.height;
-          return { width, height };
+          var _a5 = this.getMediaBox(), width2 = _a5.width, height2 = _a5.height;
+          return { width: width2, height: height2 };
         };
         PDFPage2.prototype.getWidth = function() {
           return this.getSize().width;
@@ -22050,7 +22050,7 @@ var require_outline_curves = __commonJS({
         [[3, 0]],
         []
       ];
-      function trace(field, width, height, level) {
+      function trace(field, width2, height2, level) {
         const nodes = /* @__PURE__ */ new Map(), limit = (level + 0.5) ** 2;
         function vertex(x, y, edge) {
           let vertical = false;
@@ -22059,18 +22059,18 @@ var require_outline_curves = __commonJS({
             vertical = true;
           } else if (edge === 2) y++;
           else if (edge === 3) vertical = true;
-          const id = 2 * (y * width + x) + (vertical ? 1 : 0);
+          const id = 2 * (y * width2 + x) + (vertical ? 1 : 0);
           if (nodes.has(id)) return id;
           if (nodes.size > 25e4) throw new Error("\u8F6E\u5ED3\u788E\u7247\u8FC7\u591A\uFF0C\u8BF7\u63D0\u9AD8\u900F\u660E\u5EA6\u9608\u503C\u540E\u91CD\u8BD5\u3002");
-          const a = Math.sqrt(field[y * width + x]) - 0.5;
-          const b = Math.sqrt(field[(y + (vertical ? 1 : 0)) * width + x + (vertical ? 0 : 1)]) - 0.5;
+          const a = Math.sqrt(field[y * width2 + x]) - 0.5;
+          const b = Math.sqrt(field[(y + (vertical ? 1 : 0)) * width2 + x + (vertical ? 0 : 1)]) - 0.5;
           const t = Math.max(0, Math.min(1, (level - a) / (b - a)));
           nodes.set(id, { x: x + 0.5 + (vertical ? 0 : t), y: y + 0.5 + (vertical ? t : 0), links: [] });
           return id;
         }
-        for (let y = 0; y < height - 1; y++) for (let x = 0; x < width - 1; x++) {
-          const i = y * width + x;
-          const code = (field[i] <= limit ? 1 : 0) | (field[i + 1] <= limit ? 2 : 0) | (field[i + width + 1] <= limit ? 4 : 0) | (field[i + width] <= limit ? 8 : 0);
+        for (let y = 0; y < height2 - 1; y++) for (let x = 0; x < width2 - 1; x++) {
+          const i = y * width2 + x;
+          const code = (field[i] <= limit ? 1 : 0) | (field[i + 1] <= limit ? 2 : 0) | (field[i + width2 + 1] <= limit ? 4 : 0) | (field[i + width2] <= limit ? 8 : 0);
           for (const [a, b] of pairs[code]) {
             const u = vertex(x, y, a), v = vertex(x, y, b);
             nodes.get(u).links.push(v);
@@ -22164,22 +22164,22 @@ var require_outline_curves = __commonJS({
         }
         return fitted;
       }
-      function distanceAt(field, width, height, x, y) {
-        const xx = Math.max(0, Math.min(width - 1.001, x - 0.5));
-        const yy = Math.max(0, Math.min(height - 1.001, y - 0.5));
+      function distanceAt(field, width2, height2, x, y) {
+        const xx = Math.max(0, Math.min(width2 - 1.001, x - 0.5));
+        const yy = Math.max(0, Math.min(height2 - 1.001, y - 0.5));
         const ix = Math.floor(xx), iy = Math.floor(yy), fx = xx - ix, fy = yy - iy;
-        const i = iy * width + ix;
+        const i = iy * width2 + ix;
         const value = (index) => Math.sqrt(field[index]) - 0.5;
-        return (1 - fy) * ((1 - fx) * value(i) + fx * value(i + 1)) + fy * ((1 - fx) * value(i + width) + fx * value(i + width + 1));
+        return (1 - fy) * ((1 - fx) * value(i) + fx * value(i + 1)) + fy * ((1 - fx) * value(i + width2) + fx * value(i + width2 + 1));
       }
-      function build(field, width, height, options) {
+      function build(field, width2, height2, options) {
         const { margin, stroke, longEdge, guard, origin } = options;
         const target = margin + stroke / 2;
         let spacing = Math.max(1, Math.min(72, longEdge * 0.05, 8 + margin * 0.6 + stroke * 0.2));
         let correction = 0, appliedCorrection = 0, paths = [], minimum = target;
         let loopCount = -1;
         for (let attempt = 0; attempt < 10; attempt++) {
-          const loops = trace(field, width, height, target + correction);
+          const loops = trace(field, width2, height2, target + correction);
           if (loopCount < 0) loopCount = loops.length;
           else if (loops.length !== loopCount) {
             spacing = Math.max(0.75, spacing * 0.6);
@@ -22190,7 +22190,7 @@ var require_outline_curves = __commonJS({
           appliedCorrection = correction;
           minimum = Infinity;
           for (const path of paths) for (const [x, y] of sampled(path, 8))
-            minimum = Math.min(minimum, distanceAt(field, width, height, x, y));
+            minimum = Math.min(minimum, distanceAt(field, width2, height2, x, y));
           if (minimum >= target - 0.2 || !paths.length) break;
           if (attempt < 9) {
             const next = Math.min(guard - 0.5, correction + target - minimum + 0.35);
@@ -22228,10 +22228,10 @@ var require_outline_core = __commonJS({
     })(globalThis, function createOutlineCore(curves2) {
       "use strict";
       const INF = 1e12;
-      function distances(mask, width, height, target = 1) {
-        const size = width * height;
+      function distances(mask, width2, height2, target = 1) {
+        const size = width2 * height2;
         const field = new Float32Array(size);
-        const length = Math.max(width, height);
+        const length = Math.max(width2, height2);
         const f = new Float64Array(length);
         const out = new Float64Array(length);
         const vertices = new Int32Array(length);
@@ -22261,20 +22261,20 @@ var require_outline_core = __commonJS({
             out[q] = dx * dx + f[vertices[k]];
           }
         }
-        for (let y = 0; y < height; y++) {
-          const row = y * width;
-          for (let x = 0; x < width; x++) f[x] = mask[row + x] === target ? 0 : INF;
-          line(width);
-          for (let x = 0; x < width; x++) field[row + x] = out[x];
+        for (let y = 0; y < height2; y++) {
+          const row = y * width2;
+          for (let x = 0; x < width2; x++) f[x] = mask[row + x] === target ? 0 : INF;
+          line(width2);
+          for (let x = 0; x < width2; x++) field[row + x] = out[x];
         }
-        for (let x = 0; x < width; x++) {
-          for (let y = 0; y < height; y++) f[y] = field[y * width + x];
-          line(height);
-          for (let y = 0; y < height; y++) field[y * width + x] = out[y];
+        for (let x = 0; x < width2; x++) {
+          for (let y = 0; y < height2; y++) f[y] = field[y * width2 + x];
+          line(height2);
+          for (let y = 0; y < height2; y++) field[y * width2 + x] = out[y];
         }
         return field;
       }
-      function fillHoles(mask, width, height) {
+      function fillHoles(mask, width2, height2) {
         const seen = new Uint8Array(mask.length);
         const queue = new Int32Array(mask.length);
         let head = 0, tail = 0;
@@ -22284,31 +22284,31 @@ var require_outline_core = __commonJS({
             queue[tail++] = i;
           }
         }
-        for (let x = 0; x < width; x++) {
+        for (let x = 0; x < width2; x++) {
           add(x);
-          add((height - 1) * width + x);
+          add((height2 - 1) * width2 + x);
         }
-        for (let y = 1; y < height - 1; y++) {
-          add(y * width);
-          add(y * width + width - 1);
+        for (let y = 1; y < height2 - 1; y++) {
+          add(y * width2);
+          add(y * width2 + width2 - 1);
         }
         while (head < tail) {
-          const i = queue[head++], x = i % width;
+          const i = queue[head++], x = i % width2;
           if (x > 0) add(i - 1);
-          if (x < width - 1) add(i + 1);
-          if (i >= width) add(i - width);
-          if (i + width < mask.length) add(i + width);
+          if (x < width2 - 1) add(i + 1);
+          if (i >= width2) add(i - width2);
+          if (i + width2 < mask.length) add(i + width2);
         }
         for (let i = 0; i < mask.length; i++) if (!seen[i]) mask[i] = 1;
         return mask;
       }
-      function closing(mask, width, height, radius) {
+      function closing(mask, width2, height2, radius) {
         if (radius < 0.5) return mask;
         const r2 = radius * radius;
-        let d = distances(mask, width, height, 1);
+        let d = distances(mask, width2, height2, 1);
         const expanded = new Uint8Array(mask.length);
         for (let i = 0; i < mask.length; i++) expanded[i] = d[i] <= r2 ? 1 : 0;
-        d = distances(expanded, width, height, 0);
+        d = distances(expanded, width2, height2, 0);
         const result = new Uint8Array(mask.length);
         for (let i = 0; i < mask.length; i++) result[i] = d[i] > r2 ? 1 : 0;
         return result;
@@ -22327,8 +22327,8 @@ var require_outline_core = __commonJS({
         return { padding: Math.ceil(margin + stroke + 3) + guard, guard };
       }
       function build(input, options = {}) {
-        const { width, height, alpha } = input;
-        if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || !alpha || alpha.length !== width * height) throw new Error("\u56FE\u7247\u8499\u7248\u65E0\u6548\u3002");
+        const { width: width2, height: height2, alpha } = input;
+        if (!Number.isInteger(width2) || !Number.isInteger(height2) || width2 < 1 || height2 < 1 || !alpha || alpha.length !== width2 * height2) throw new Error("\u56FE\u7247\u8499\u7248\u65E0\u6548\u3002");
         const margin = number7(options.margin, 60, 0, 3e3);
         const stroke = number7(options.stroke, 4, 0, 300);
         const fillEnabled = options.fillEnabled === void 0 ? margin > 0 : options.fillEnabled === true;
@@ -22337,15 +22337,15 @@ var require_outline_core = __commonJS({
         const threshold = number7(options.threshold, 16, 1, 254);
         const fill = color2(options.fillColor || "#ffffff");
         const ink = color2(options.strokeColor || "#111111");
-        const longEdge = Math.max(width, height);
+        const longEdge = Math.max(width2, height2);
         const { padding, guard } = paddingFor(longEdge, margin, stroke, fillEnabled);
         const workPad = padding + Math.ceil(rounding) + 2;
-        const w = width + 2 * workPad, h = height + 2 * workPad;
+        const w = width2 + 2 * workPad, h = height2 + 2 * workPad;
         if (w * h > 14e6) throw new Error("\u8F6E\u5ED3\u5206\u6790\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u964D\u4F4E\u53C2\u6570\u6216\u56FE\u7247\u5C3A\u5BF8\u3002");
         let mask = new Uint8Array(w * h);
         let count = 0;
-        for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
-          const present = alpha[y * width + x] >= threshold ? 1 : 0;
+        for (let y = 0; y < height2; y++) for (let x = 0; x < width2; x++) {
+          const present = alpha[y * width2 + x] >= threshold ? 1 : 0;
           mask[(y + workPad) * w + x + workPad] = present;
           count += present;
         }
@@ -22354,7 +22354,7 @@ var require_outline_core = __commonJS({
         mask = closing(mask, w, h, rounding);
         if (options.fillHoles !== false) fillHoles(mask, w, h);
         const d = distances(mask, w, h, 1);
-        const ow = width + 2 * padding, oh = height + 2 * padding;
+        const ow = width2 + 2 * padding, oh = height2 + 2 * padding;
         const rgba = new Uint8ClampedArray(ow * oh * 4);
         const fillAlpha = options.separateFill === true && fillEnabled ? new Uint8ClampedArray(ow * oh) : null;
         const skip = workPad - padding;
@@ -54594,16 +54594,16 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
     throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
   const normalized = await image.withMetadata({ density: metadata.density ?? 300 }).png().toBuffer({ resolveWithObject: true });
-  const { width, height } = normalized.info;
-  const base = () => sharp3(normalized.data, { limitInputPixels, failOn: "error" });
-  const alpha = await base().ensureAlpha().extractChannel("alpha").raw().toBuffer();
-  const columns = new Uint32Array(width), rows = new Uint32Array(height);
-  let left = width, right = -1, top = height, bottom = -1, count = 0, nonzeroCount = 0, transparent = false;
-  let coreLeft = width, coreRight = -1, coreTop = height, coreBottom = -1;
-  for (let y = 0; y < height; y++) {
+  const { width: width2, height: height2 } = normalized.info;
+  const base2 = () => sharp3(normalized.data, { limitInputPixels, failOn: "error" });
+  const alpha = await base2().ensureAlpha().extractChannel("alpha").raw().toBuffer();
+  const columns = new Uint32Array(width2), rows = new Uint32Array(height2);
+  let left = width2, right = -1, top = height2, bottom = -1, count = 0, nonzeroCount = 0, transparent = false;
+  let coreLeft = width2, coreRight = -1, coreTop = height2, coreBottom = -1;
+  for (let y = 0; y < height2; y++) {
     if (y % 128 === 0) signal?.throwIfAborted();
-    for (let x = 0; x < width; x++) {
-      const value = alpha[y * width + x];
+    for (let x = 0; x < width2; x++) {
+      const value = alpha[y * width2 + x];
       if (value < 255) transparent = true;
       if (value) nonzeroCount++;
       if (value <= threshold) continue;
@@ -54626,7 +54626,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   const bounds = count ? { left, top, width: right - left + 1, height: bottom - top + 1 } : null;
   if (!metadata.hasAlpha || !transparent) issues.push("NO_TRANSPARENCY");
   if (!count) issues.push(nonzeroCount ? "NO_PIXELS_ABOVE_THRESHOLD" : "EMPTY_IMAGE");
-  const gap = Math.max(2, Math.ceil(Math.max(width, height) * 5e-3));
+  const gap = Math.max(2, Math.ceil(Math.max(width2, height2) * 5e-3));
   if (count && (coreRight < 0 || Math.max(coreLeft - left, right - coreRight, coreTop - top, bottom - coreBottom) >= gap))
     issues.push("FAINT_EXTENTS");
   const isolatedBand = (projection, start, end, direction) => {
@@ -54644,18 +54644,18 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   if (count && (isolatedBand(columns, left, right, 1) || isolatedBand(columns, right, left, -1) || isolatedBand(rows, top, bottom, 1) || isolatedBand(rows, bottom, top, -1))) issues.push("ISOLATED_EXTENTS");
   if (!bounds || issues.includes("NO_TRANSPARENCY")) return {
     bytes: normalized.data,
-    width,
-    height,
-    report: { version: 1, status: "review", source: { width, height }, bounds, issues, verified: false, ...thresholdReport }
+    width: width2,
+    height: height2,
+    report: { version: 1, status: "review", source: { width: width2, height: height2 }, bounds, issues, verified: false, ...thresholdReport }
   };
-  const bytes = await base().extract(bounds).withMetadata({ density: metadata.density ?? 300 }).png().toBuffer();
-  const expected = await pixelDigest(base().extract(bounds), signal);
+  const bytes = await base2().extract(bounds).withMetadata({ density: metadata.density ?? 300 }).png().toBuffer();
+  const expected = await pixelDigest(base2().extract(bounds), signal);
   const actual = await pixelDigest(sharp3(bytes, { limitInputPixels }), signal);
   if (expected !== actual) throw new Error("\u900F\u660E\u88C1\u8FB9\u50CF\u7D20\u6821\u9A8C\u5931\u8D25\uFF0C\u5DF2\u505C\u6B62\u4FDD\u5B58\uFF0C\u539F\u56FE\u4FDD\u6301\u4E0D\u53D8");
   return { bytes, width: bounds.width, height: bounds.height, report: {
     version: 1,
     status: issues.length ? "review" : "passed",
-    source: { width, height },
+    source: { width: width2, height: height2 },
     bounds,
     issues,
     verified: true,
@@ -54667,16 +54667,16 @@ async function cropTransparentImage(input, signal, threshold = 0) {
 function targetPixels(options, source) {
   const input = ResizeOptionsSchema.parse(options);
   const factors = { px: 1, mm: input.ppi / 25.4, cm: input.ppi / 2.54, in: input.ppi, ft: input.ppi * 12 };
-  let width = Math.round(input.width * factors[input.unit]);
-  let height = Math.round(input.height * factors[input.unit]);
+  let width2 = Math.round(input.width * factors[input.unit]);
+  let height2 = Math.round(input.height * factors[input.unit]);
   if (input.sizing && input.sizing !== "fixed") {
     if (!source || !Number.isFinite(source.width) || !Number.isFinite(source.height) || source.width <= 0 || source.height <= 0)
       throw new Error("\u7B49\u6BD4\u7F29\u653E\u9700\u8981\u6709\u6548\u7684\u539F\u56FE\u5BBD\u9AD8");
-    if (input.sizing === "width" || input.sizing === "orientation" && source.width >= source.height) height = Math.max(1, Math.round(source.height * width / source.width));
-    else width = Math.max(1, Math.round(source.width * height / source.height));
+    if (input.sizing === "width" || input.sizing === "orientation" && source.width >= source.height) height2 = Math.max(1, Math.round(source.height * width2 / source.width));
+    else width2 = Math.max(1, Math.round(source.width * height2 / source.height));
   }
-  if (width < 1 || height < 1 || width > 3e4 || height > 3e4 || width * height > 1e8) throw new Error("\u76EE\u6807\u5C3A\u5BF8\u8FC7\u5927\u6216\u4E0D\u8DB3 1 \u50CF\u7D20\uFF0C\u8BF7\u8C03\u6574\u5C3A\u5BF8");
-  return { width, height };
+  if (width2 < 1 || height2 < 1 || width2 > 3e4 || height2 > 3e4 || width2 * height2 > 1e8) throw new Error("\u76EE\u6807\u5C3A\u5BF8\u8FC7\u5927\u6216\u4E0D\u8DB3 1 \u50CF\u7D20\uFF0C\u8BF7\u8C03\u6574\u5C3A\u5BF8");
+  return { width: width2, height: height2 };
 }
 async function prepareResizeImage(source, raw) {
   const options = ResizeOptionsSchema.parse(raw);
@@ -54723,30 +54723,30 @@ import sharp5 from "sharp";
 import { Worker } from "node:worker_threads";
 
 // packages/tools/outline-mask.ts
-function outlineAnalysisPixels(rgba, width, height) {
+function outlineAnalysisPixels(rgba, width2, height2) {
   let hasVisibleSubject = false;
   for (let i = 3; i < rgba.length; i += 4) if (rgba[i] >= 16) {
     hasVisibleSubject = true;
     break;
   }
   if (!hasVisibleSubject) return rgba;
-  const seen = new Uint8Array(width * height);
+  const seen = new Uint8Array(width2 * height2);
   let output;
   for (let p = 0; p < seen.length; p++) {
     if (seen[p] || rgba[p * 4 + 3] !== 1) continue;
     const component = [p];
     seen[p] = 1;
-    let retain = false, minX = width, minY = height, maxX = 0, maxY = 0;
+    let retain = false, minX = width2, minY = height2, maxX = 0, maxY = 0;
     search: for (let k = 0; k < component.length; k++) {
-      const point = component[k], x = point % width, y = Math.floor(point / width);
+      const point = component[k], x = point % width2, y = Math.floor(point / width2);
       minX = Math.min(minX, x);
       maxX = Math.max(maxX, x);
       minY = Math.min(minY, y);
       maxY = Math.max(maxY, y);
       for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
         const xx = x + dx, yy = y + dy;
-        if (xx < 0 || xx >= width || yy < 0 || yy >= height) continue;
-        const next = yy * width + xx, alpha = rgba[next * 4 + 3];
+        if (xx < 0 || xx >= width2 || yy < 0 || yy >= height2) continue;
+        const next = yy * width2 + xx, alpha = rgba[next * 4 + 3];
         if (alpha > 1 || alpha === 1 && seen[next] === 2) {
           retain = true;
           break search;
@@ -54833,7 +54833,7 @@ function svgPath(contour, origin, sx, sy) {
   const ty = (y) => (origin + (y - contour.padding) * sy).toFixed(4);
   return contour.paths.map((row) => `M${tx(row.start[0])} ${ty(row.start[1])} ${row.segments.map((segment) => `C${tx(segment[0])} ${ty(segment[1])} ${tx(segment[2])} ${ty(segment[3])} ${tx(segment[4])} ${ty(segment[5])}`).join(" ")} Z`).join(" ");
 }
-async function patternLayer(pattern, path, width, height, scalePercent, rotation, signal) {
+async function patternLayer(pattern, path, width2, height2, scalePercent, rotation, signal) {
   signal?.throwIfAborted();
   const normalized = await sharp5(pattern, { limitInputPixels: 16e6, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
   signal?.throwIfAborted();
@@ -54842,8 +54842,8 @@ async function patternLayer(pattern, path, width, height, scalePercent, rotation
   const radians = rotation * Math.PI / 180;
   const cosine = Math.abs(Math.cos(radians)), sine = Math.abs(Math.sin(radians));
   const imageScale = Math.max(
-    (width * cosine + height * sine) / normalized.info.width,
-    (width * sine + height * cosine) / normalized.info.height
+    (width2 * cosine + height2 * sine) / normalized.info.width,
+    (width2 * sine + height2 * cosine) / normalized.info.height
   ) * scalePercent / 100;
   const imageWidth = Math.max(1, Math.round(normalized.info.width * imageScale));
   const imageHeight = Math.max(1, Math.round(normalized.info.height * imageScale));
@@ -54853,7 +54853,7 @@ async function patternLayer(pattern, path, width, height, scalePercent, rotation
     throw new Error("\u56FE\u6848\u7F29\u653E\u540E\u7684\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u964D\u4F4E\u56FE\u6848\u5927\u5C0F");
   const rotated = await sharp5(normalized.data).resize(imageWidth, imageHeight, { fit: "fill" }).rotate(rotation, { background: "#00000000" }).png().toBuffer({ resolveWithObject: true });
   signal?.throwIfAborted();
-  const cropWidth = Math.min(width, rotated.info.width), cropHeight = Math.min(height, rotated.info.height);
+  const cropWidth = Math.min(width2, rotated.info.width), cropHeight = Math.min(height2, rotated.info.height);
   const centered = await sharp5(rotated.data).extract({
     left: Math.floor((rotated.info.width - cropWidth) / 2),
     top: Math.floor((rotated.info.height - cropHeight) / 2),
@@ -54861,13 +54861,13 @@ async function patternLayer(pattern, path, width, height, scalePercent, rotation
     height: cropHeight
   }).png().toBuffer();
   signal?.throwIfAborted();
-  const plane = await sharp5({ create: { width, height, channels: 4, background: "#00000000" } }).composite([{
+  const plane = await sharp5({ create: { width: width2, height: height2, channels: 4, background: "#00000000" } }).composite([{
     input: centered,
-    left: Math.floor((width - cropWidth) / 2),
-    top: Math.floor((height - cropHeight) / 2)
+    left: Math.floor((width2 - cropWidth) / 2),
+    top: Math.floor((height2 - cropHeight) / 2)
   }]).png().toBuffer();
   signal?.throwIfAborted();
-  const mask = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><path d="${path}" fill="white" fill-rule="evenodd"/></svg>`);
+  const mask = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width2}" height="${height2}"><path d="${path}" fill="white" fill-rule="evenodd"/></svg>`);
   return sharp5(plane).composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
 }
 async function renderOutline(input, options, pattern, fullSize, signal) {
@@ -54909,23 +54909,23 @@ async function renderOutline(input, options, pattern, fullSize, signal) {
     separateFill: patternMode
   }, signal);
   signal?.throwIfAborted();
-  const width = fullSize ? exportWidth : contour.padding * 2 + analysisWidth;
-  const height = fullSize ? exportHeight : contour.padding * 2 + analysisHeight;
+  const width2 = fullSize ? exportWidth : contour.padding * 2 + analysisWidth;
+  const height2 = fullSize ? exportHeight : contour.padding * 2 + analysisHeight;
   const origin = fullSize ? nativePadding : contour.padding;
   const sx = fullSize ? subject.box.width / analysisWidth : 1;
   const sy = fullSize ? subject.box.height / analysisHeight : 1;
   const path = svgPath(contour, origin, sx, sy);
-  const svg = (content) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">${content}</svg>`);
+  const svg = (content) => Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width2}" height="${height2}">${content}</svg>`);
   const layers = [];
-  if (patternMode) layers.push({ input: await patternLayer(pattern, path, width, height, options.patternScale, options.patternRotation, signal) });
+  if (patternMode) layers.push({ input: await patternLayer(pattern, path, width2, height2, options.patternScale, options.patternRotation, signal) });
   const strokeWidth = (fullSize ? subject.longEdge : analysisLongEdge) * options.strokePercent / 100;
   const line = `<path d="${path}" fill="${options.fill === "solid" ? options.fillColor : "none"}" fill-rule="evenodd"` + (strokeWidth > 0 ? ` stroke="${options.strokeColor}" stroke-width="${strokeWidth}" stroke-linejoin="round" stroke-linecap="round"` : "") + "/>";
   layers.push({ input: svg(line) });
   const renderedSubject = fullSize ? subject.data : await sharp5(subject.data).resize(analysisWidth, analysisHeight, { fit: "fill" }).png().toBuffer();
   layers.push({ input: renderedSubject, left: origin, top: origin });
-  const png = await sharp5({ create: { width, height, channels: 4, background: "#00000000" } }).composite(layers).withMetadata({ density: subject.density }).png().toBuffer();
+  const png = await sharp5({ create: { width: width2, height: height2, channels: 4, background: "#00000000" } }).composite(layers).withMetadata({ density: subject.density }).png().toBuffer();
   signal?.throwIfAborted();
-  return { png, width, height, exportWidth, exportHeight, pendingPattern, subjectLongEdge: subject.longEdge };
+  return { png, width: width2, height: height2, exportWidth, exportHeight, pendingPattern, subjectLongEdge: subject.longEdge };
 }
 async function outlineImage(input, raw, pattern, signal) {
   const options = OutlineOptionsSchema.parse(raw);
@@ -55038,13 +55038,13 @@ var pngResult = async (stem, bytes, sourceId) => {
   const m = await sharp6(bytes, { limitInputPixels: limitInputPixels2 }).metadata();
   return { stem, bytes, extension: "png", width: m.width, height: m.height, density: m.density, format: "png", kind: "image", sourceId };
 };
-function sizeLimit(width, height) {
-  if (width < 1 || height < 1) throw new PrintSizeError("PRINT_SIZE_TOO_SMALL");
-  if (width > 3e4 || height > 3e4 || width * height > 4e7) throw new PrintSizeError("PRINT_SIZE_TOO_LARGE");
+function sizeLimit(width2, height2) {
+  if (width2 < 1 || height2 < 1) throw new PrintSizeError("PRINT_SIZE_TOO_SMALL");
+  if (width2 > 3e4 || height2 > 3e4 || width2 * height2 > 4e7) throw new PrintSizeError("PRINT_SIZE_TOO_LARGE");
 }
 function printGeometry(options) {
   const factor = { px: 1, mm: options.ppi / 25.4, cm: options.ppi / 2.54, in: options.ppi, ft: options.ppi * 12 }[options.unit];
-  const width = Math.round(options.width * factor), height = Math.round(options.height * factor);
+  const width2 = Math.round(options.width * factor), height2 = Math.round(options.height * factor);
   const bleed = Math.round(options.bleed * factor);
   const edges = (uniform, separate) => ({
     top: Math.round((separate?.top ?? uniform) * factor),
@@ -55053,17 +55053,17 @@ function printGeometry(options) {
     left: Math.round((separate?.left ?? uniform) * factor)
   });
   const bleedEdges = edges(options.bleed, options.bleedEdges);
-  if (width < 1 || height < 1) throw new PrintSizeError("PRINT_SIZE_TOO_SMALL");
-  const outputWidth = width + bleedEdges.left + bleedEdges.right, outputHeight = height + bleedEdges.top + bleedEdges.bottom;
+  if (width2 < 1 || height2 < 1) throw new PrintSizeError("PRINT_SIZE_TOO_SMALL");
+  const outputWidth = width2 + bleedEdges.left + bleedEdges.right, outputHeight = height2 + bleedEdges.top + bleedEdges.bottom;
   sizeLimit(outputWidth, outputHeight);
   return {
-    width,
-    height,
+    width: width2,
+    height: height2,
     bleed,
     bleedEdges,
     outputWidth,
     outputHeight,
-    trimBox: { x: bleedEdges.left, y: bleedEdges.top, width, height }
+    trimBox: { x: bleedEdges.left, y: bleedEdges.top, width: width2, height: height2 }
   };
 }
 async function processToolkit(inputs, raw, pattern, signal, preview) {
@@ -55125,9 +55125,9 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
       }
     } else if (operation.tool === "print-bleed") {
       const options = operation.options, geometry = printGeometry(options);
-      const { width, height, bleedEdges, outputWidth, outputHeight } = geometry;
+      const { width: width2, height: height2, bleedEdges, outputWidth, outputHeight } = geometry;
       const renderScale = preview ? Math.min(1, preview.printMaxEdge / Math.max(outputWidth, outputHeight)) : 1;
-      const renderWidth = Math.max(1, Math.round(width * renderScale)), renderHeight = Math.max(1, Math.round(height * renderScale));
+      const renderWidth = Math.max(1, Math.round(width2 * renderScale)), renderHeight = Math.max(1, Math.round(height2 * renderScale));
       const renderBleed = {
         top: Math.round(bleedEdges.top * renderScale),
         right: Math.round(bleedEdges.right * renderScale),
@@ -55173,14 +55173,23 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
 import sharp8 from "sharp";
 import { basename as basename4, extname as extname2 } from "node:path";
 
+// plugins/podplo-dsh/src/toolbox-resize.ts
+var base = ResizeOptionsSchema.omit({ width: true, height: true, sizing: true, format: true, fit: true }).extend({ trimTransparent: external_exports2.boolean().default(false) });
+var { width, height } = ResizeOptionsSchema.shape;
+var ToolboxResizeOptionsSchema = external_exports2.discriminatedUnion("sizing", [
+  base.extend({ sizing: external_exports2.literal("fixed"), width, height }).strict(),
+  base.extend({ sizing: external_exports2.literal("width"), width, height: height.optional() }).strict(),
+  base.extend({ sizing: external_exports2.literal("height"), width: width.optional(), height }).strict()
+]).transform((options) => ({ ...options, width: options.width ?? 1, height: options.height ?? 1 }));
+
 // packages/tools/mirror-join.ts
 import sharp7 from "sharp";
-function mirrorJoinSize(width, height, direction, format2) {
+function mirrorJoinSize(width2, height2, direction, format2) {
   const size = {
-    width: direction === "horizontal" ? width * 2 : width,
-    height: direction === "vertical" ? height * 2 : height
+    width: direction === "horizontal" ? width2 * 2 : width2,
+    height: direction === "vertical" ? height2 * 2 : height2
   };
-  if (![width, height].every((value) => Number.isSafeInteger(value) && value > 0) || size.width > 3e4 || size.height > 3e4 || size.width * size.height > 1e8)
+  if (![width2, height2].every((value) => Number.isSafeInteger(value) && value > 0) || size.width > 3e4 || size.height > 3e4 || size.width * size.height > 1e8)
     throw new Error("\u955C\u50CF\u62FC\u63A5\u540E\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u51CF\u5C0F\u5355\u56FE\u5C3A\u5BF8\uFF08\u5355\u8FB9\u6700\u591A 30000 \u50CF\u7D20\uFF0C\u603B\u8BA1\u6700\u591A 1 \u4EBF\u50CF\u7D20\uFF09\u3002");
   if (format2 === "webp" && Math.max(size.width, size.height) > 16383)
     throw new Error("\u955C\u50CF\u62FC\u63A5\u540E\u7684 WebP \u5355\u8FB9\u4E0D\u80FD\u8D85\u8FC7 16383 \u50CF\u7D20\uFF0C\u8BF7\u51CF\u5C0F\u5C3A\u5BF8\u6216\u6539\u7528 PNG\u3002");
@@ -55211,7 +55220,7 @@ async function joinMirror(bytes, direction, ppi, format2, signal) {
 var TOOLBOX_PIPELINE_NAME = "podplo_toolbox_pipeline";
 var TOOLBOX_ORDER = ["rotate", "color", "outline", "trim", "resize", "print", "export"];
 var legacyOrder = ["resize", "rotate", "color", "outline", "trim", "print", "export"];
-var resize = ResizeOptionsSchema.omit({ format: true, fit: true }).extend({ sizing: external_exports2.enum(["fixed", "width", "height"]) }).strict();
+var resize = ToolboxResizeOptionsSchema;
 var print = external_exports2.preprocess(
   withoutPrintSafetyOptions,
   PrintOptionsSchema.omit({ width: true, height: true, unit: true, ppi: true, fit: true }).strict()
@@ -55297,8 +55306,8 @@ async function renderToolbox(inputs, plan, options) {
         options.signal?.throwIfAborted();
         let outputs;
         if (step.tool === "resize") {
-          let base = sharp8(frame.bytes, { limitInputPixels: limitInputPixels3 });
-          const size = await base.png().toBuffer({ resolveWithObject: true });
+          let base2 = sharp8(frame.bytes, { limitInputPixels: limitInputPixels3 });
+          const size = await base2.png().toBuffer({ resolveWithObject: true });
           result.resizeSource ??= {
             id: original.id,
             width: size.info.width,
@@ -56088,7 +56097,7 @@ var NativeLocalToolkit = class {
       height: Math.max(1, Math.min(target.height, Math.round(source.height * scale)))
     };
   }
-  async previewImage(key, name, source, width, height, format2, density, signal) {
+  async previewImage(key, name, source, width2, height2, format2, density, signal) {
     signal.throwIfAborted();
     const bytes = await sharp9(source, { limitInputPixels: 1e8, failOn: "error" }).resize(700, 700, { fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
     signal.throwIfAborted();
@@ -56096,8 +56105,8 @@ var NativeLocalToolkit = class {
       key,
       name,
       dataUrl: `data:image/webp;base64,${bytes.toString("base64")}`,
-      width,
-      height,
+      width: width2,
+      height: height2,
       format: format2,
       ...density ? { density } : {}
     };
@@ -58260,7 +58269,7 @@ function normalizeBackground(input) {
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.1",
+  version: "0.1.2",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -58810,9 +58819,9 @@ async function normalizeNativeReference(input) {
   let quality = 78;
   let output = Buffer.alloc(0);
   for (let attempt = 0; attempt < 9; attempt++) {
-    const width = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
-    const height = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
-    output = await sharp10(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width, height, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
+    const width2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
+    const height2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
+    output = await sharp10(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
     if (output.length <= targetBytes) break;
     const ratio = Math.sqrt(targetBytes / output.length) * 0.92;
     scale *= Math.max(0.42, Math.min(0.88, ratio));
@@ -59075,7 +59084,7 @@ var OutputDirectoryManager = class {
     const session2 = opaqueSession.parse(sessionId), identity = await this.identity("export");
     const row = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
     if (!row) throw new Error("\u8BF7\u5148\u5728\u624B\u52A8\u5DE5\u5177\u7BB1\u4E2D\u786E\u8BA4\u8F93\u51FA\u76EE\u5F55");
-    const base = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base, true) : base;
+    const base2 = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base2, true) : base2;
     const requested = safeName(external_exports2.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
     const extension = extname5(requested), stem = basename7(requested, extension);
@@ -59193,7 +59202,7 @@ var OutputDirectoryManager = class {
     assertAllowedFileName(record6.name);
     const rootRow = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
     if (!rootRow) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5DF2\u6E05\u9664");
-    const base = await this.verifyRoot(rootRow.path), root = record6.reviewRequired ? await this.reviewDirectory(base) : base;
+    const base2 = await this.verifyRoot(rootRow.path), root = record6.reviewRequired ? await this.reviewDirectory(base2) : base2;
     const stat = await lstat3(record6.path).catch(() => void 0);
     if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record6.fingerprint)
       throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u6539\u53D8");
@@ -60303,9 +60312,9 @@ var TaskArchiveManager = class {
       return existing;
     }
     const chosen = await this.options.outputDirectory();
-    const base = chosen ? await realpath5(chosen) : this.root;
-    await this.directory(base);
-    const collection = join9(base, "PodPlo\u6210\u679C");
+    const base2 = chosen ? await realpath5(chosen) : this.root;
+    await this.directory(base2);
+    const collection = join9(base2, "PodPlo\u6210\u679C");
     await this.createDirectory(collection);
     const ownerDirectory = join9(collection, identity.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
