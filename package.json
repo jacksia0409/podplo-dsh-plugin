@@ -1,6 +1,6 @@
 {
   "name": "@podplo/dsh-plugin",
-  "version": "0.1.0-alpha.60.plugin-update",
+  "version": "0.1.0-alpha.76.final-only",
   "private": true,
   "license": "UNLICENSED",
   "description": "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
