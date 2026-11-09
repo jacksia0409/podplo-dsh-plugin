@@ -4,7 +4,9 @@
 
 ## 本版更新
 
-本版修正 DSH 插件列表的显示名称为 **PodPlo Plugin**，内部包标识保持 `@podplo/dsh-plugin`。
+页面顶部统一显示 **PodPlo v0.1.0**，不展示内部预发布或功能后缀。此版版本号正式统一为 0.1.0；检查更新仍按完整内部版本比较。
+
+DSH 插件列表名称为 PodPlo Plugin，内部包标识保持 @podplo/dsh-plugin。
 
 保留 alpha.77 的处理结果功能：列表／卡片切换和时间筛选（今天、近 7 天、近 30 天、自定义日期），可组合项目和搜索；每次独立工具箱保存一个批次，同一次保存重试不会重复建批，已有批次保持原样。
 
@@ -27,12 +29,12 @@ https://github.com/jacksia0409/podplo-dsh-plugin
 已有用户可在相同入口使用本版完整标签地址升级：
 
 ```text
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.0-alpha.78.plugin-name
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.0
 ```
 
 同一 GitHub 地址重复安装可能触发 DSH 的 ambiguous-install，已有用户请使用带版本标签的升级地址。任务运行时不更新，不自动降级，不强制重启。此前收到的页面检查／更新按钮不可用反馈仍待排查，本版请使用上述完整标签地址升级。
 
-[本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0-alpha.78.plugin-name) 提供 macOS ZIP 和通用 TGZ。macOS ZIP 内含安装命令；通过 CLI 安装前请正常退出 DSH，正在使用时可通过官方插件管理器导入 TGZ。Windows 尚未实机验收。
+[本版 Release](https://github.com/jacksia0409/podplo-dsh-plugin/releases/tag/dsh-plugin-v0.1.0) 提供 macOS ZIP 和通用 TGZ。macOS ZIP 内含安装命令；通过 CLI 安装前请正常退出 DSH，正在使用时可通过官方插件管理器导入 TGZ。Windows 尚未实机验收。
 
 ## 分发与校验
 

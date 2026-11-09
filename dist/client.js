@@ -3543,7 +3543,7 @@ var import_react6 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.0-alpha.78.plugin-name",
+  version: "0.1.0",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -3672,7 +3672,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-plugin-update", "data-podplo-plugin-update": true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
       "PodPlo v",
-      status.currentVersion
+      status.currentVersion.replace(/[-+].*$/u, "")
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
     status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { className: "ppd-plugin-version", children: [
