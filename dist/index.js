@@ -958,14 +958,14 @@ var require_common = __commonJS({
       }
       return obj;
     };
-    exports.shrinkBuf = function(buf, size) {
-      if (buf.length === size) {
+    exports.shrinkBuf = function(buf, size2) {
+      if (buf.length === size2) {
         return buf;
       }
       if (buf.subarray) {
-        return buf.subarray(0, size);
+        return buf.subarray(0, size2);
       }
-      buf.length = size;
+      buf.length = size2;
       return buf;
     };
     var fnTyped = {
@@ -1457,7 +1457,7 @@ var require_trees = __commonJS({
       var prevlen = -1;
       var curlen;
       var nextlen = tree[0 * 2 + 1];
-      var count = 0;
+      var count2 = 0;
       var max_count = 7;
       var min_count = 4;
       if (nextlen === 0) {
@@ -1468,21 +1468,21 @@ var require_trees = __commonJS({
       for (n = 0; n <= max_code; n++) {
         curlen = nextlen;
         nextlen = tree[(n + 1) * 2 + 1];
-        if (++count < max_count && curlen === nextlen) {
+        if (++count2 < max_count && curlen === nextlen) {
           continue;
-        } else if (count < min_count) {
-          s.bl_tree[curlen * 2] += count;
+        } else if (count2 < min_count) {
+          s.bl_tree[curlen * 2] += count2;
         } else if (curlen !== 0) {
           if (curlen !== prevlen) {
             s.bl_tree[curlen * 2]++;
           }
           s.bl_tree[REP_3_6 * 2]++;
-        } else if (count <= 10) {
+        } else if (count2 <= 10) {
           s.bl_tree[REPZ_3_10 * 2]++;
         } else {
           s.bl_tree[REPZ_11_138 * 2]++;
         }
-        count = 0;
+        count2 = 0;
         prevlen = curlen;
         if (nextlen === 0) {
           max_count = 138;
@@ -1501,7 +1501,7 @@ var require_trees = __commonJS({
       var prevlen = -1;
       var curlen;
       var nextlen = tree[0 * 2 + 1];
-      var count = 0;
+      var count2 = 0;
       var max_count = 7;
       var min_count = 4;
       if (nextlen === 0) {
@@ -1511,27 +1511,27 @@ var require_trees = __commonJS({
       for (n = 0; n <= max_code; n++) {
         curlen = nextlen;
         nextlen = tree[(n + 1) * 2 + 1];
-        if (++count < max_count && curlen === nextlen) {
+        if (++count2 < max_count && curlen === nextlen) {
           continue;
-        } else if (count < min_count) {
+        } else if (count2 < min_count) {
           do {
             send_code(s, curlen, s.bl_tree);
-          } while (--count !== 0);
+          } while (--count2 !== 0);
         } else if (curlen !== 0) {
           if (curlen !== prevlen) {
             send_code(s, curlen, s.bl_tree);
-            count--;
+            count2--;
           }
           send_code(s, REP_3_6, s.bl_tree);
-          send_bits(s, count - 3, 2);
-        } else if (count <= 10) {
+          send_bits(s, count2 - 3, 2);
+        } else if (count2 <= 10) {
           send_code(s, REPZ_3_10, s.bl_tree);
-          send_bits(s, count - 3, 3);
+          send_bits(s, count2 - 3, 3);
         } else {
           send_code(s, REPZ_11_138, s.bl_tree);
-          send_bits(s, count - 11, 7);
+          send_bits(s, count2 - 11, 7);
         }
-        count = 0;
+        count2 = 0;
         prevlen = curlen;
         if (nextlen === 0) {
           max_count = 138;
@@ -1839,10 +1839,10 @@ var require_deflate = __commonJS({
       s.pending_buf[s.pending++] = b >>> 8 & 255;
       s.pending_buf[s.pending++] = b & 255;
     }
-    function read_buf(strm, buf, start, size) {
+    function read_buf(strm, buf, start, size2) {
       var len = strm.avail_in;
-      if (len > size) {
-        len = size;
+      if (len > size2) {
+        len = size2;
       }
       if (len === 0) {
         return 0;
@@ -3513,20 +3513,20 @@ var require_inftrees = __commonJS({
       var base2 = null;
       var base_index = 0;
       var end;
-      var count = new utils.Buf16(MAXBITS + 1);
+      var count2 = new utils.Buf16(MAXBITS + 1);
       var offs = new utils.Buf16(MAXBITS + 1);
       var extra = null;
       var extra_index = 0;
       var here_bits, here_op, here_val;
       for (len = 0; len <= MAXBITS; len++) {
-        count[len] = 0;
+        count2[len] = 0;
       }
       for (sym = 0; sym < codes; sym++) {
-        count[lens[lens_index + sym]]++;
+        count2[lens[lens_index + sym]]++;
       }
       root = bits;
       for (max = MAXBITS; max >= 1; max--) {
-        if (count[max] !== 0) {
+        if (count2[max] !== 0) {
           break;
         }
       }
@@ -3540,7 +3540,7 @@ var require_inftrees = __commonJS({
         return 0;
       }
       for (min = 1; min < max; min++) {
-        if (count[min] !== 0) {
+        if (count2[min] !== 0) {
           break;
         }
       }
@@ -3550,7 +3550,7 @@ var require_inftrees = __commonJS({
       left = 1;
       for (len = 1; len <= MAXBITS; len++) {
         left <<= 1;
-        left -= count[len];
+        left -= count2[len];
         if (left < 0) {
           return -1;
         }
@@ -3560,7 +3560,7 @@ var require_inftrees = __commonJS({
       }
       offs[1] = 0;
       for (len = 1; len < MAXBITS; len++) {
-        offs[len + 1] = offs[len] + count[len];
+        offs[len + 1] = offs[len] + count2[len];
       }
       for (sym = 0; sym < codes; sym++) {
         if (lens[lens_index + sym] !== 0) {
@@ -3623,7 +3623,7 @@ var require_inftrees = __commonJS({
           huff = 0;
         }
         sym++;
-        if (--count[len] === 0) {
+        if (--count2[len] === 0) {
           if (len === max) {
             break;
           }
@@ -3637,7 +3637,7 @@ var require_inftrees = __commonJS({
           curr = len - drop;
           left = 1 << curr;
           while (curr + drop < max) {
-            left -= count[curr + drop];
+            left -= count2[curr + drop];
             if (left <= 0) {
               break;
             }
@@ -3873,7 +3873,7 @@ var require_inflate = __commonJS({
       state.distcode = distfix;
       state.distbits = 5;
     }
-    function updatewindow(strm, src, end, copy) {
+    function updatewindow(strm, src, end, copy2) {
       var dist;
       var state = strm.state;
       if (state.window === null) {
@@ -3882,20 +3882,20 @@ var require_inflate = __commonJS({
         state.whave = 0;
         state.window = new utils.Buf8(state.wsize);
       }
-      if (copy >= state.wsize) {
+      if (copy2 >= state.wsize) {
         utils.arraySet(state.window, src, end - state.wsize, state.wsize, 0);
         state.wnext = 0;
         state.whave = state.wsize;
       } else {
         dist = state.wsize - state.wnext;
-        if (dist > copy) {
-          dist = copy;
+        if (dist > copy2) {
+          dist = copy2;
         }
-        utils.arraySet(state.window, src, end - copy, dist, state.wnext);
-        copy -= dist;
-        if (copy) {
-          utils.arraySet(state.window, src, end - copy, copy, 0);
-          state.wnext = copy;
+        utils.arraySet(state.window, src, end - copy2, dist, state.wnext);
+        copy2 -= dist;
+        if (copy2) {
+          utils.arraySet(state.window, src, end - copy2, copy2, 0);
+          state.wnext = copy2;
           state.whave = state.wsize;
         } else {
           state.wnext += dist;
@@ -3918,7 +3918,7 @@ var require_inflate = __commonJS({
       var hold;
       var bits;
       var _in, _out;
-      var copy;
+      var copy2;
       var from;
       var from_source;
       var here = 0;
@@ -4113,11 +4113,11 @@ var require_inflate = __commonJS({
             /* falls through */
             case EXTRA:
               if (state.flags & 1024) {
-                copy = state.length;
-                if (copy > have) {
-                  copy = have;
+                copy2 = state.length;
+                if (copy2 > have) {
+                  copy2 = have;
                 }
-                if (copy) {
+                if (copy2) {
                   if (state.head) {
                     len = state.head.extra_len - state.length;
                     if (!state.head.extra) {
@@ -4129,17 +4129,17 @@ var require_inflate = __commonJS({
                       next,
                       // extra field is limited to 65536 bytes
                       // - no need for additional size check
-                      copy,
+                      copy2,
                       /*len + copy > state.head.extra_max - len ? state.head.extra_max : copy,*/
                       len
                     );
                   }
                   if (state.flags & 512) {
-                    state.check = crc32(state.check, input, copy, next);
+                    state.check = crc32(state.check, input, copy2, next);
                   }
-                  have -= copy;
-                  next += copy;
-                  state.length -= copy;
+                  have -= copy2;
+                  next += copy2;
+                  state.length -= copy2;
                 }
                 if (state.length) {
                   break inf_leave;
@@ -4153,18 +4153,18 @@ var require_inflate = __commonJS({
                 if (have === 0) {
                   break inf_leave;
                 }
-                copy = 0;
+                copy2 = 0;
                 do {
-                  len = input[next + copy++];
+                  len = input[next + copy2++];
                   if (state.head && len && state.length < 65536) {
                     state.head.name += String.fromCharCode(len);
                   }
-                } while (len && copy < have);
+                } while (len && copy2 < have);
                 if (state.flags & 512) {
-                  state.check = crc32(state.check, input, copy, next);
+                  state.check = crc32(state.check, input, copy2, next);
                 }
-                have -= copy;
-                next += copy;
+                have -= copy2;
+                next += copy2;
                 if (len) {
                   break inf_leave;
                 }
@@ -4179,18 +4179,18 @@ var require_inflate = __commonJS({
                 if (have === 0) {
                   break inf_leave;
                 }
-                copy = 0;
+                copy2 = 0;
                 do {
-                  len = input[next + copy++];
+                  len = input[next + copy2++];
                   if (state.head && len && state.length < 65536) {
                     state.head.comment += String.fromCharCode(len);
                   }
-                } while (len && copy < have);
+                } while (len && copy2 < have);
                 if (state.flags & 512) {
-                  state.check = crc32(state.check, input, copy, next);
+                  state.check = crc32(state.check, input, copy2, next);
                 }
-                have -= copy;
-                next += copy;
+                have -= copy2;
+                next += copy2;
                 if (len) {
                   break inf_leave;
                 }
@@ -4325,23 +4325,23 @@ var require_inflate = __commonJS({
               state.mode = COPY;
             /* falls through */
             case COPY:
-              copy = state.length;
-              if (copy) {
-                if (copy > have) {
-                  copy = have;
+              copy2 = state.length;
+              if (copy2) {
+                if (copy2 > have) {
+                  copy2 = have;
                 }
-                if (copy > left) {
-                  copy = left;
+                if (copy2 > left) {
+                  copy2 = left;
                 }
-                if (copy === 0) {
+                if (copy2 === 0) {
                   break inf_leave;
                 }
-                utils.arraySet(output, input, next, copy, put);
-                have -= copy;
-                next += copy;
-                left -= copy;
-                put += copy;
-                state.length -= copy;
+                utils.arraySet(output, input, next, copy2, put);
+                have -= copy2;
+                next += copy2;
+                left -= copy2;
+                put += copy2;
+                state.length -= copy2;
                 break;
               }
               state.mode = TYPE;
@@ -4442,7 +4442,7 @@ var require_inflate = __commonJS({
                       break;
                     }
                     len = state.lens[state.have - 1];
-                    copy = 3 + (hold & 3);
+                    copy2 = 3 + (hold & 3);
                     hold >>>= 2;
                     bits -= 2;
                   } else if (here_val === 17) {
@@ -4458,7 +4458,7 @@ var require_inflate = __commonJS({
                     hold >>>= here_bits;
                     bits -= here_bits;
                     len = 0;
-                    copy = 3 + (hold & 7);
+                    copy2 = 3 + (hold & 7);
                     hold >>>= 3;
                     bits -= 3;
                   } else {
@@ -4474,16 +4474,16 @@ var require_inflate = __commonJS({
                     hold >>>= here_bits;
                     bits -= here_bits;
                     len = 0;
-                    copy = 11 + (hold & 127);
+                    copy2 = 11 + (hold & 127);
                     hold >>>= 7;
                     bits -= 7;
                   }
-                  if (state.have + copy > state.nlen + state.ndist) {
+                  if (state.have + copy2 > state.nlen + state.ndist) {
                     strm.msg = "invalid bit length repeat";
                     state.mode = BAD;
                     break;
                   }
-                  while (copy--) {
+                  while (copy2--) {
                     state.lens[state.have++] = len;
                   }
                 }
@@ -4702,39 +4702,39 @@ var require_inflate = __commonJS({
               if (left === 0) {
                 break inf_leave;
               }
-              copy = _out - left;
-              if (state.offset > copy) {
-                copy = state.offset - copy;
-                if (copy > state.whave) {
+              copy2 = _out - left;
+              if (state.offset > copy2) {
+                copy2 = state.offset - copy2;
+                if (copy2 > state.whave) {
                   if (state.sane) {
                     strm.msg = "invalid distance too far back";
                     state.mode = BAD;
                     break;
                   }
                 }
-                if (copy > state.wnext) {
-                  copy -= state.wnext;
-                  from = state.wsize - copy;
+                if (copy2 > state.wnext) {
+                  copy2 -= state.wnext;
+                  from = state.wsize - copy2;
                 } else {
-                  from = state.wnext - copy;
+                  from = state.wnext - copy2;
                 }
-                if (copy > state.length) {
-                  copy = state.length;
+                if (copy2 > state.length) {
+                  copy2 = state.length;
                 }
                 from_source = state.window;
               } else {
                 from_source = output;
                 from = put - state.offset;
-                copy = state.length;
+                copy2 = state.length;
               }
-              if (copy > left) {
-                copy = left;
+              if (copy2 > left) {
+                copy2 = left;
               }
-              left -= copy;
-              state.length -= copy;
+              left -= copy2;
+              state.length -= copy2;
               do {
                 output[put++] = from_source[from++];
-              } while (--copy);
+              } while (--copy2);
               if (state.length === 0) {
                 state.mode = LEN;
               }
@@ -5148,9 +5148,9 @@ var require_pako = __commonJS({
     var assign = require_common().assign;
     var deflate = require_deflate2();
     var inflate = require_inflate2();
-    var constants6 = require_constants();
+    var constants7 = require_constants();
     var pako = {};
-    assign(pako, deflate, inflate, constants6);
+    assign(pako, deflate, inflate, constants7);
     module.exports = pako;
   }
 });
@@ -5952,9 +5952,9 @@ var require_errors2 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(PDFArrayIsNotRectangleError2, _super);
-        function PDFArrayIsNotRectangleError2(size) {
+        function PDFArrayIsNotRectangleError2(size2) {
           var _this = this;
-          var msg = "Attempted to convert PDFArray with " + size + " elements to rectangle, but must have exactly 4 elements.";
+          var msg = "Attempted to convert PDFArray with " + size2 + " elements to rectangle, but must have exactly 4 elements.";
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -6505,11 +6505,11 @@ var require_PDFArray = __commonJS({
           return arrayString;
         };
         PDFArray2.prototype.sizeInBytes = function() {
-          var size = 3;
+          var size2 = 3;
           for (var idx = 0, len = this.size(); idx < len; idx++) {
-            size += this.get(idx).sizeInBytes() + 1;
+            size2 += this.get(idx).sizeInBytes() + 1;
           }
-          return size;
+          return size2;
         };
         PDFArray2.prototype.copyBytesInto = function(buffer, offset) {
           var initialOffset = offset;
@@ -6942,13 +6942,13 @@ var require_PDFDict = __commonJS({
           return dictString;
         };
         PDFDict2.prototype.sizeInBytes = function() {
-          var size = 5;
+          var size2 = 5;
           var entries = this.entries();
           for (var idx = 0, len = entries.length; idx < len; idx++) {
             var _a3 = entries[idx], key = _a3[0], value2 = _a3[1];
-            size += key.sizeInBytes() + value2.sizeInBytes() + 2;
+            size2 += key.sizeInBytes() + value2.sizeInBytes() + 2;
           }
-          return size;
+          return size2;
         };
         PDFDict2.prototype.copyBytesInto = function(buffer, offset) {
           var initialOffset = offset;
@@ -7195,13 +7195,13 @@ var require_PDFOperator = __commonJS({
           return value2;
         };
         PDFOperator2.prototype.sizeInBytes = function() {
-          var size = 0;
+          var size2 = 0;
           for (var idx = 0, len = this.args.length; idx < len; idx++) {
             var arg = this.args[idx];
-            size += (arg instanceof PDFObject_1.default ? arg.sizeInBytes() : arg.length) + 1;
+            size2 += (arg instanceof PDFObject_1.default ? arg.sizeInBytes() : arg.length) + 1;
           }
-          size += this.name.length;
-          return size;
+          size2 += this.name.length;
+          return size2;
         };
         PDFOperator2.prototype.copyBytesInto = function(buffer, offset) {
           var initialOffset = offset;
@@ -7408,11 +7408,11 @@ var require_PDFContentStream = __commonJS({
           return buffer;
         };
         PDFContentStream2.prototype.getUnencodedContentsSize = function() {
-          var size = 0;
+          var size2 = 0;
           for (var idx = 0, len = this.operators.length; idx < len; idx++) {
-            size += this.operators[idx].sizeInBytes() + 1;
+            size2 += this.operators[idx].sizeInBytes() + 1;
           }
-          return size;
+          return size2;
         };
         PDFContentStream2.of = function(dict, operators, encode3) {
           if (encode3 === void 0) {
@@ -8004,17 +8004,17 @@ var require_PDFCrossRefSection = __commonJS({
           return section;
         };
         PDFCrossRefSection2.prototype.sizeInBytes = function() {
-          var size = 5;
+          var size2 = 5;
           for (var idx = 0, len = this.subsections.length; idx < len; idx++) {
             var subsection = this.subsections[idx];
             var subsectionLength = subsection.length;
             var firstEntry = subsection[0];
-            size += 2;
-            size += String(firstEntry.ref.objectNumber).length;
-            size += String(subsectionLength).length;
-            size += 20 * subsectionLength;
+            size2 += 2;
+            size2 += String(firstEntry.ref.objectNumber).length;
+            size2 += String(subsectionLength).length;
+            size2 += 20 * subsectionLength;
           }
-          return size;
+          return size2;
         };
         PDFCrossRefSection2.prototype.copyBytesInto = function(buffer, offset) {
           var initialOffset = offset;
@@ -8299,15 +8299,15 @@ var require_PDFWriter = __commonJS({
         }
         PDFWriter2.prototype.serializeToBuffer = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var _a3, size, header, indirectObjects, xref, trailerDict, trailer, offset, buffer, idx, len, _b, ref, object4, objectNumber, generationNumber, n;
+            var _a3, size2, header, indirectObjects, xref, trailerDict, trailer, offset, buffer, idx, len, _b, ref, object4, objectNumber, generationNumber, n;
             return tslib_1.__generator(this, function(_c) {
               switch (_c.label) {
                 case 0:
                   return [4, this.computeBufferSize()];
                 case 1:
-                  _a3 = _c.sent(), size = _a3.size, header = _a3.header, indirectObjects = _a3.indirectObjects, xref = _a3.xref, trailerDict = _a3.trailerDict, trailer = _a3.trailer;
+                  _a3 = _c.sent(), size2 = _a3.size, header = _a3.header, indirectObjects = _a3.indirectObjects, xref = _a3.xref, trailerDict = _a3.trailerDict, trailer = _a3.trailer;
                   offset = 0;
-                  buffer = new Uint8Array(size);
+                  buffer = new Uint8Array(size2);
                   offset += header.copyBytesInto(buffer, offset);
                   buffer[offset++] = CharCodes_1.default.Newline;
                   buffer[offset++] = CharCodes_1.default.Newline;
@@ -8378,12 +8378,12 @@ var require_PDFWriter = __commonJS({
         };
         PDFWriter2.prototype.computeBufferSize = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var header, size, xref, indirectObjects, idx, len, indirectObject, ref, xrefOffset, trailerDict, trailer;
+            var header, size2, xref, indirectObjects, idx, len, indirectObject, ref, xrefOffset, trailerDict, trailer;
             return tslib_1.__generator(this, function(_a3) {
               switch (_a3.label) {
                 case 0:
                   header = PDFHeader_1.default.forVersion(1, 7);
-                  size = header.sizeInBytes() + 2;
+                  size2 = header.sizeInBytes() + 2;
                   xref = PDFCrossRefSection_1.default.create();
                   indirectObjects = this.context.enumerateIndirectObjects();
                   idx = 0, len = indirectObjects.length;
@@ -8392,8 +8392,8 @@ var require_PDFWriter = __commonJS({
                   if (!(idx < len)) return [3, 4];
                   indirectObject = indirectObjects[idx];
                   ref = indirectObject[0];
-                  xref.addEntry(ref, size);
-                  size += this.computeIndirectObjectSize(indirectObject);
+                  xref.addEntry(ref, size2);
+                  size2 += this.computeIndirectObjectSize(indirectObject);
                   if (!this.shouldWaitForTick(1)) return [3, 3];
                   return [4, utils_1.waitForTick()];
                 case 2:
@@ -8403,13 +8403,13 @@ var require_PDFWriter = __commonJS({
                   idx++;
                   return [3, 1];
                 case 4:
-                  xrefOffset = size;
-                  size += xref.sizeInBytes() + 1;
+                  xrefOffset = size2;
+                  size2 += xref.sizeInBytes() + 1;
                   trailerDict = PDFTrailerDict_1.default.of(this.createTrailerDict());
-                  size += trailerDict.sizeInBytes() + 2;
+                  size2 += trailerDict.sizeInBytes() + 2;
                   trailer = PDFTrailer_1.default.forLastCrossRefSectionOffset(xrefOffset);
-                  size += trailer.sizeInBytes();
-                  return [2, { size, header, indirectObjects, xref, trailerDict, trailer }];
+                  size2 += trailer.sizeInBytes();
+                  return [2, { size: size2, header, indirectObjects, xref, trailerDict, trailer }];
               }
             });
           });
@@ -8687,13 +8687,13 @@ var require_PDFStreamWriter = __commonJS({
         }
         PDFStreamWriter2.prototype.computeBufferSize = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var objectNumber, header, size, xrefStream, uncompressedObjects, compressedObjects, objectStreamRefs, indirectObjects, idx, len, indirectObject, ref, object4, shouldNotCompress, chunk, objectStreamRef, idx, len, chunk, ref, objectStream, xrefStreamRef, xrefOffset, trailer;
+            var objectNumber, header, size2, xrefStream, uncompressedObjects, compressedObjects, objectStreamRefs, indirectObjects, idx, len, indirectObject, ref, object4, shouldNotCompress, chunk, objectStreamRef, idx, len, chunk, ref, objectStream, xrefStreamRef, xrefOffset, trailer;
             return tslib_1.__generator(this, function(_a3) {
               switch (_a3.label) {
                 case 0:
                   objectNumber = this.context.largestObjectNumber + 1;
                   header = PDFHeader_1.default.forVersion(1, 7);
-                  size = header.sizeInBytes() + 2;
+                  size2 = header.sizeInBytes() + 2;
                   xrefStream = PDFCrossRefStream_1.default.create(this.createTrailerDict(), this.encodeStreams);
                   uncompressedObjects = [];
                   compressedObjects = [];
@@ -8708,8 +8708,8 @@ var require_PDFStreamWriter = __commonJS({
                   shouldNotCompress = ref === this.context.trailerInfo.Encrypt || object4 instanceof PDFStream_1.default || object4 instanceof PDFInvalidObject_1.default || ref.generationNumber !== 0;
                   if (!shouldNotCompress) return [3, 4];
                   uncompressedObjects.push(indirectObject);
-                  xrefStream.addUncompressedEntry(ref, size);
-                  size += this.computeIndirectObjectSize(indirectObject);
+                  xrefStream.addUncompressedEntry(ref, size2);
+                  size2 += this.computeIndirectObjectSize(indirectObject);
                   if (!this.shouldWaitForTick(1)) return [3, 3];
                   return [4, utils_1.waitForTick()];
                 case 2:
@@ -8740,8 +8740,8 @@ var require_PDFStreamWriter = __commonJS({
                   chunk = compressedObjects[idx];
                   ref = objectStreamRefs[idx];
                   objectStream = PDFObjectStream_1.default.withContextAndObjects(this.context, chunk, this.encodeStreams);
-                  xrefStream.addUncompressedEntry(ref, size);
-                  size += this.computeIndirectObjectSize([ref, objectStream]);
+                  xrefStream.addUncompressedEntry(ref, size2);
+                  size2 += this.computeIndirectObjectSize([ref, objectStream]);
                   uncompressedObjects.push([ref, objectStream]);
                   if (!this.shouldWaitForTick(chunk.length)) return [3, 9];
                   return [4, utils_1.waitForTick()];
@@ -8754,13 +8754,13 @@ var require_PDFStreamWriter = __commonJS({
                 case 10:
                   xrefStreamRef = PDFRef_1.default.of(objectNumber++);
                   xrefStream.dict.set(PDFName_1.default.of("Size"), PDFNumber_1.default.of(objectNumber));
-                  xrefStream.addUncompressedEntry(xrefStreamRef, size);
-                  xrefOffset = size;
-                  size += this.computeIndirectObjectSize([xrefStreamRef, xrefStream]);
+                  xrefStream.addUncompressedEntry(xrefStreamRef, size2);
+                  xrefOffset = size2;
+                  size2 += this.computeIndirectObjectSize([xrefStreamRef, xrefStream]);
                   uncompressedObjects.push([xrefStreamRef, xrefStream]);
                   trailer = PDFTrailer_1.default.forLastCrossRefSectionOffset(xrefOffset);
-                  size += trailer.sizeInBytes();
-                  return [2, { size, header, indirectObjects: uncompressedObjects, trailer }];
+                  size2 += trailer.sizeInBytes();
+                  return [2, { size: size2, header, indirectObjects: uncompressedObjects, trailer }];
               }
             });
           });
@@ -8889,7 +8889,7 @@ var require_StandardFontEmbedder = __commonJS({
           }
           return PDFHexString_1.default.of(hexCodes.join(""));
         };
-        StandardFontEmbedder2.prototype.widthOfTextAtSize = function(text4, size) {
+        StandardFontEmbedder2.prototype.widthOfTextAtSize = function(text4, size2) {
           var glyphs = this.encodeTextAsGlyphs(text4);
           var totalWidth = 0;
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
@@ -8898,10 +8898,10 @@ var require_StandardFontEmbedder = __commonJS({
             var kernAmount = this.font.getXAxisKerningForPair(left, right) || 0;
             totalWidth += this.widthOfGlyph(left) + kernAmount;
           }
-          var scale = size / 1e3;
+          var scale = size2 / 1e3;
           return totalWidth * scale;
         };
-        StandardFontEmbedder2.prototype.heightOfFontAtSize = function(size, options) {
+        StandardFontEmbedder2.prototype.heightOfFontAtSize = function(size2, options) {
           if (options === void 0) {
             options = {};
           }
@@ -8912,7 +8912,7 @@ var require_StandardFontEmbedder = __commonJS({
           var height2 = yTop - yBottom;
           if (!descender)
             height2 += Descender || 0;
-          return height2 / 1e3 * size;
+          return height2 / 1e3 * size2;
         };
         StandardFontEmbedder2.prototype.sizeOfFontAtHeight = function(height2) {
           var _a3 = this.font, Ascender = _a3.Ascender, Descender = _a3.Descender, FontBBox = _a3.FontBBox;
@@ -9228,16 +9228,16 @@ var require_CustomFontEmbedder = __commonJS({
           }
           return PDFHexString_1.default.of(hexCodes.join(""));
         };
-        CustomFontEmbedder2.prototype.widthOfTextAtSize = function(text4, size) {
+        CustomFontEmbedder2.prototype.widthOfTextAtSize = function(text4, size2) {
           var glyphs = this.font.layout(text4, this.fontFeatures).glyphs;
           var totalWidth = 0;
           for (var idx = 0, len = glyphs.length; idx < len; idx++) {
             totalWidth += glyphs[idx].advanceWidth * this.scale;
           }
-          var scale = size / 1e3;
+          var scale = size2 / 1e3;
           return totalWidth * scale;
         };
-        CustomFontEmbedder2.prototype.heightOfFontAtSize = function(size, options) {
+        CustomFontEmbedder2.prototype.heightOfFontAtSize = function(size2, options) {
           if (options === void 0) {
             options = {};
           }
@@ -9248,7 +9248,7 @@ var require_CustomFontEmbedder = __commonJS({
           var height2 = yTop - yBottom;
           if (!descender)
             height2 -= Math.abs(descent) || 0;
-          return height2 / 1e3 * size;
+          return height2 / 1e3 * size2;
         };
         CustomFontEmbedder2.prototype.sizeOfFontAtHeight = function(height2) {
           var _a3 = this.font, ascent = _a3.ascent, descent = _a3.descent, bbox = _a3.bbox;
@@ -11547,11 +11547,11 @@ var require_DecodeStream = __commonJS({
           if (requested <= buffer.byteLength) {
             return buffer;
           }
-          var size = this.minBufferLength;
-          while (size < requested) {
-            size *= 2;
+          var size2 = this.minBufferLength;
+          while (size2 < requested) {
+            size2 *= 2;
           }
-          var buffer2 = new Uint8Array(size);
+          var buffer2 = new Uint8Array(size2);
           buffer2.set(buffer);
           return this.buffer = buffer2;
         };
@@ -12570,8 +12570,8 @@ var require_FlateStream = __commonJS({
               maxLen = lengths[i];
             }
           }
-          var size = 1 << maxLen;
-          var codes = new Int32Array(size);
+          var size2 = 1 << maxLen;
+          var codes = new Int32Array(size2);
           for (var len = 1, code = 0, skip = 2; len <= maxLen; ++len, code <<= 1, skip <<= 1) {
             for (var val = 0; val < n; ++val) {
               if (lengths[val] === len) {
@@ -12581,7 +12581,7 @@ var require_FlateStream = __commonJS({
                   code2 = code2 << 1 | t & 1;
                   t >>= 1;
                 }
-                for (i = code2; i < size; i += skip) {
+                for (i = code2; i < size2; i += skip) {
                   codes[i] = len << 16 | val;
                 }
                 ++code;
@@ -16466,8 +16466,8 @@ var require_operators = __commonJS({
         objects_1.asPDFNumber(height2)
       ]);
     };
-    exports.square = function(xPos, yPos, size) {
-      return exports.rectangle(xPos, yPos, size, size);
+    exports.square = function(xPos, yPos, size2) {
+      return exports.rectangle(xPos, yPos, size2, size2);
     };
     exports.stroke = function() {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.StrokePath);
@@ -16496,8 +16496,8 @@ var require_operators = __commonJS({
     exports.endText = function() {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.EndText);
     };
-    exports.setFontAndSize = function(name, size) {
-      return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetFontAndSize, [objects_1.asPDFName(name), objects_1.asPDFNumber(size)]);
+    exports.setFontAndSize = function(name, size2) {
+      return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetFontAndSize, [objects_1.asPDFName(name), objects_1.asPDFNumber(size2)]);
     };
     exports.setCharacterSpacing = function(spacing) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetCharacterSpacing, [objects_1.asPDFNumber(spacing)]);
@@ -17205,7 +17205,7 @@ var require_operations = __commonJS({
       ]).filter(Boolean);
     };
     exports.drawCheckMark = function(options) {
-      var size = objects_1.asNumber(options.size);
+      var size2 = objects_1.asNumber(options.size);
       var p2x = -1 + 0.75;
       var p2y = -1 + 0.51;
       var p3y = 1 - 0.525;
@@ -17217,9 +17217,9 @@ var require_operations = __commonJS({
         options.color && colors_1.setStrokingColor(options.color),
         operators_1.setLineWidth(options.thickness),
         operators_1.translate(options.x, options.y),
-        operators_1.moveTo(p1x * size, p1y * size),
-        operators_1.lineTo(p2x * size, p2y * size),
-        operators_1.lineTo(p3x * size, p3y * size),
+        operators_1.moveTo(p1x * size2, p1y * size2),
+        operators_1.lineTo(p2x * size2, p2y * size2),
+        operators_1.lineTo(p3x * size2, p3y * size2),
         operators_1.stroke(),
         operators_1.popGraphicsState()
       ].filter(Boolean);
@@ -18375,16 +18375,16 @@ var require_PDFFont = __commonJS({
           this.modified = true;
           return this.embedder.encodeText(text4);
         };
-        PDFFont2.prototype.widthOfTextAtSize = function(text4, size) {
+        PDFFont2.prototype.widthOfTextAtSize = function(text4, size2) {
           utils_1.assertIs(text4, "text", ["string"]);
-          utils_1.assertIs(size, "size", ["number"]);
-          return this.embedder.widthOfTextAtSize(text4, size);
+          utils_1.assertIs(size2, "size", ["number"]);
+          return this.embedder.widthOfTextAtSize(text4, size2);
         };
-        PDFFont2.prototype.heightAtSize = function(size, options) {
+        PDFFont2.prototype.heightAtSize = function(size2, options) {
           var _a3;
-          utils_1.assertIs(size, "size", ["number"]);
+          utils_1.assertIs(size2, "size", ["number"]);
           utils_1.assertOrUndefined(options === null || options === void 0 ? void 0 : options.descender, "options.descender", ["boolean"]);
-          return this.embedder.heightOfFontAtSize(size, {
+          return this.embedder.heightOfFontAtSize(size2, {
             descender: (_a3 = options === null || options === void 0 ? void 0 : options.descender) !== null && _a3 !== void 0 ? _a3 : true
           });
         };
@@ -21639,9 +21639,9 @@ var require_PDFPage = __commonJS({
           if (options === void 0) {
             options = {};
           }
-          var size = options.size;
-          utils_1.assertOrUndefined(size, "size", ["number"]);
-          this.drawRectangle(tslib_1.__assign(tslib_1.__assign({}, options), { width: size, height: size }));
+          var size2 = options.size;
+          utils_1.assertOrUndefined(size2, "size", ["number"]);
+          this.drawRectangle(tslib_1.__assign(tslib_1.__assign({}, options), { width: size2, height: size2 }));
         };
         PDFPage2.prototype.drawEllipse = function(options) {
           var _a3, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l;
@@ -21696,9 +21696,9 @@ var require_PDFPage = __commonJS({
           if (options === void 0) {
             options = {};
           }
-          var _a3 = options.size, size = _a3 === void 0 ? 100 : _a3;
-          utils_1.assertOrUndefined(size, "size", ["number"]);
-          this.drawEllipse(tslib_1.__assign(tslib_1.__assign({}, options), { xScale: size, yScale: size }));
+          var _a3 = options.size, size2 = _a3 === void 0 ? 100 : _a3;
+          utils_1.assertOrUndefined(size2, "size", ["number"]);
+          this.drawEllipse(tslib_1.__assign(tslib_1.__assign({}, options), { xScale: size2, yScale: size2 }));
         };
         PDFPage2.prototype.setOrEmbedFont = function(font) {
           var oldFont = this.font;
@@ -22109,11 +22109,11 @@ var require_outline_curves = __commonJS({
           return Math.hypot(p[0] - q[0], p[1] - q[1]);
         });
         const total = lengths.reduce((a, b) => a + b, 0);
-        const count = Math.max(16, Math.min(4096, Math.ceil(total / spacing)));
+        const count2 = Math.max(16, Math.min(4096, Math.ceil(total / spacing)));
         const result = [];
         let edge2 = 0, traveled = 0;
-        for (let i = 0; i < count; i++) {
-          const position = total * i / count;
+        for (let i = 0; i < count2; i++) {
+          const position = total * i / count2;
           while (edge2 < lengths.length - 1 && traveled + lengths[edge2] < position) traveled += lengths[edge2++];
           const a = points[edge2], b = points[(edge2 + 1) % points.length];
           const t = lengths[edge2] > 0 ? (position - traveled) / lengths[edge2] : 0;
@@ -22229,8 +22229,8 @@ var require_outline_core = __commonJS({
       "use strict";
       const INF = 1e12;
       function distances(mask, width2, height2, target = 1) {
-        const size = width2 * height2;
-        const field = new Float32Array(size);
+        const size2 = width2 * height2;
+        const field = new Float32Array(size2);
         const length = Math.max(width2, height2);
         const f = new Float64Array(length);
         const out = new Float64Array(length);
@@ -22343,13 +22343,13 @@ var require_outline_core = __commonJS({
         const w = width2 + 2 * workPad, h = height2 + 2 * workPad;
         if (w * h > 14e6) throw new Error("\u8F6E\u5ED3\u5206\u6790\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u964D\u4F4E\u53C2\u6570\u6216\u56FE\u7247\u5C3A\u5BF8\u3002");
         let mask = new Uint8Array(w * h);
-        let count = 0;
+        let count2 = 0;
         for (let y = 0; y < height2; y++) for (let x = 0; x < width2; x++) {
           const present = alpha[y * width2 + x] >= threshold ? 1 : 0;
           mask[(y + workPad) * w + x + workPad] = present;
-          count += present;
+          count2 += present;
         }
-        if (!count) throw new Error("\u6CA1\u6709\u627E\u5230\u53EF\u63CF\u8FB9\u7684\u4E3B\u4F53\uFF0C\u8BF7\u964D\u4F4E\u900F\u660E\u5EA6\u9608\u503C\u3002");
+        if (!count2) throw new Error("\u6CA1\u6709\u627E\u5230\u53EF\u63CF\u8FB9\u7684\u4E3B\u4F53\uFF0C\u8BF7\u964D\u4F4E\u900F\u660E\u5EA6\u9608\u503C\u3002");
         if (options.fillHoles !== false) fillHoles(mask, w, h);
         mask = closing(mask, w, h, rounding);
         if (options.fillHoles !== false) fillHoles(mask, w, h);
@@ -22399,11 +22399,11 @@ var require_outline_core = __commonJS({
 });
 
 // plugins/podplo-dsh/src/index.ts
-import { createCipheriv, createDecipheriv, createHash as createHash13, randomBytes as randomBytes3, randomUUID as randomUUID14 } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHash as createHash16, randomBytes as randomBytes3, randomUUID as randomUUID15 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir2 } from "node:os";
-import { basename as basename12, isAbsolute as isAbsolute7, resolve as resolve2 } from "node:path";
+import { basename as basename13, isAbsolute as isAbsolute8, resolve as resolve2 } from "node:path";
 import { dshHomePath } from "@deepseek-ai/dsh-home-paths";
 import { credentialKey } from "@deepseek-ai/dsh-credentials";
 import * as NativeMcp from "@deepseek-ai/dsh-mcp-client";
@@ -24311,8 +24311,8 @@ var $ZodCheckMaxSize = /* @__PURE__ */ $constructor("$ZodCheckMaxSize", (inst, d
   });
   inst._zod.check = (payload) => {
     const input = payload.value;
-    const size = input.size;
-    if (size <= def.maximum)
+    const size2 = input.size;
+    if (size2 <= def.maximum)
       return;
     payload.issues.push({
       origin: getSizableOrigin(input),
@@ -24339,8 +24339,8 @@ var $ZodCheckMinSize = /* @__PURE__ */ $constructor("$ZodCheckMinSize", (inst, d
   });
   inst._zod.check = (payload) => {
     const input = payload.value;
-    const size = input.size;
-    if (size >= def.minimum)
+    const size2 = input.size;
+    if (size2 >= def.minimum)
       return;
     payload.issues.push({
       origin: getSizableOrigin(input),
@@ -24368,10 +24368,10 @@ var $ZodCheckSizeEquals = /* @__PURE__ */ $constructor("$ZodCheckSizeEquals", (i
   });
   inst._zod.check = (payload) => {
     const input = payload.value;
-    const size = input.size;
-    if (size === def.size)
+    const size2 = input.size;
+    if (size2 === def.size)
       return;
-    const tooBig = size > def.size;
+    const tooBig = size2 > def.size;
     payload.issues.push({
       origin: getSizableOrigin(input),
       ...tooBig ? { code: "too_big", maximum: def.size } : { code: "too_small", minimum: def.size },
@@ -27048,8 +27048,8 @@ function az_default() {
 }
 
 // ../../../node_modules/zod/v4/locales/be.js
-function getBelarusianPlural(count, one, few, many) {
-  const absCount = Math.abs(count);
+function getBelarusianPlural(count2, one, few, many) {
+  const absCount = Math.abs(count2);
   const lastDigit = absCount % 10;
   const lastTwoDigits = absCount % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
@@ -29127,8 +29127,8 @@ function hu_default() {
 }
 
 // ../../../node_modules/zod/v4/locales/hy.js
-function getArmenianPlural(count, one, many) {
-  return Math.abs(count) === 1 ? one : many;
+function getArmenianPlural(count2, one, many) {
+  return Math.abs(count2) === 1 ? one : many;
 }
 function withDefiniteArticle(word) {
   if (!word)
@@ -31256,8 +31256,8 @@ function ro_default() {
 }
 
 // ../../../node_modules/zod/v4/locales/ru.js
-function getRussianPlural(count, one, few, many) {
-  const absCount = Math.abs(count);
+function getRussianPlural(count2, one, few, many) {
+  const absCount = Math.abs(count2);
   const lastDigit = absCount % 10;
   const lastTwoDigits = absCount % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
@@ -33341,11 +33341,11 @@ function _minSize(minimum, params) {
   });
 }
 // @__NO_SIDE_EFFECTS__
-function _size(size, params) {
+function _size(size2, params) {
   return new $ZodCheckSizeEquals({
     check: "size_equals",
     ...normalizeParams(params),
-    size
+    size: size2
   });
 }
 // @__NO_SIDE_EFFECTS__
@@ -36061,8 +36061,8 @@ var ZodFile = /* @__PURE__ */ $constructor("ZodFile", (inst, def) => {
   $ZodFile.init(inst, def);
   ZodType.init(inst, def);
   inst._zod.processJSONSchema = (ctx, json2, params) => fileProcessor(inst, ctx, json2, params);
-  inst.min = (size, params) => inst.check(_minSize(size, params));
-  inst.max = (size, params) => inst.check(_maxSize(size, params));
+  inst.min = (size2, params) => inst.check(_minSize(size2, params));
+  inst.max = (size2, params) => inst.check(_maxSize(size2, params));
   inst.mime = (types, params) => inst.check(_mime(Array.isArray(types) ? types : [types], params));
 });
 function file(params) {
@@ -37179,7 +37179,7 @@ var OnlineCallSchema = external_exports.discriminatedUnion("method", [
 
 // packages/online/service.ts
 import { join } from "node:path";
-import { randomUUID as randomUUID6 } from "node:crypto";
+import { createHash as createHash3, randomUUID as randomUUID6 } from "node:crypto";
 import { performance } from "node:perf_hooks";
 
 // packages/storage/index.ts
@@ -38410,6 +38410,14 @@ var OnlineService = class extends EventEmitter {
       this.state.error = "\u5DF2\u4FDD\u5B58\u7684\u6388\u6743\u65E0\u6CD5\u8BFB\u53D6\uFF0C\u8BF7\u91CD\u65B0\u767B\u5F55";
     }
   }
+  /** Opaque renderer cache boundary; never expose the authorization namespace itself. */
+  uiAuthorizationScope() {
+    return createHash3("sha256").update(JSON.stringify([
+      this.state.status,
+      this.state.identity?.userId ?? null,
+      this.auth.namespace ?? null
+    ])).digest("hex");
+  }
   snapshot() {
     this.expireContextIfNeeded();
     const namespace = this.auth.namespace;
@@ -39111,7 +39119,7 @@ var OnlineService = class extends EventEmitter {
 };
 
 // packages/online/workbench.ts
-import { createHash as createHash3, randomUUID as randomUUID7 } from "node:crypto";
+import { createHash as createHash4, randomUUID as randomUUID7 } from "node:crypto";
 import { join as join3, dirname as dirname5, isAbsolute as isAbsolute2, basename as basename2 } from "node:path";
 import { realpath as realpath2, writeFile as writeFile4, readFile as readFile4 } from "node:fs/promises";
 import sharp2 from "sharp";
@@ -39774,7 +39782,7 @@ var DesktopWorkbench = class {
     const operation = transaction ? external_exports.object({ id: external_exports.string().min(1).max(240), rollback: external_exports.boolean() }).strict().parse(transaction) : void 0;
     const pairs = moves.map((move) => ({ from: external_exports.string().min(1).parse(move.from), to: external_exports.string().min(1).parse(move.to) }));
     if (new Set(pairs.map((move) => move.from)).size !== pairs.length || new Set(pairs.map((move) => move.to)).size !== pairs.length) throw new Error("\u6587\u4EF6\u6539\u540D\u6620\u5C04\u4E0D\u53EF\u91CD\u590D");
-    const digest = (rows) => createHash3("sha256").update(JSON.stringify(rows)).digest("hex");
+    const digest = (rows) => createHash4("sha256").update(JSON.stringify(rows)).digest("hex");
     const receipt = digest(pairs), reverseReceipt = digest(pairs.map((move) => ({ from: move.to, to: move.from })));
     const paths = new Map(pairs.map((move) => [move.from, move.to]));
     const affected = (plan) => plan.steps.some((step) => !!step.output && paths.has(step.output)) || !!plan.task?.artifacts?.some((artifact) => paths.has(artifact.path));
@@ -39889,16 +39897,264 @@ var DesktopWorkbench = class {
 
 // plugins/podplo-dsh/src/service.ts
 import { EventEmitter as EventEmitter2 } from "node:events";
+
+// plugins/podplo-dsh/package.json
+var package_default = {
+  name: "@podplo/dsh-plugin",
+  version: "0.1.8",
+  private: true,
+  license: "UNLICENSED",
+  description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
+  type: "module",
+  main: "dist/index.js",
+  exports: {
+    ".": "./dist/index.js",
+    "./client": "./dist/client.js",
+    "./package.json": "./package.json",
+    "./locale/en.json": "./locale/en.json"
+  },
+  files: [
+    "dist",
+    "cordis.patch.yml",
+    "README.md",
+    "locale"
+  ],
+  dsh: {
+    bundle: {
+      patch: "./cordis.patch.yml"
+    },
+    client: {
+      platform: "web",
+      immediately: true,
+      inject: [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-session"
+      ]
+    }
+  },
+  dependencies: {
+    sharp: "0.35.5"
+  },
+  peerDependencies: {
+    "@deepseek-ai/cordis": "~4.1.0",
+    "@deepseek-ai/dsh-mcp-client": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-home-paths": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-credentials": "0.2.2-rc.1",
+    "@deepseek-ai/schemastery": "~3.19.0"
+  },
+  engines: {
+    node: ">=24.9.0"
+  }
+};
+
+// plugins/podplo-dsh/src/version.ts
+var PLUGIN_VERSION = package_default.version;
+
+// plugins/podplo-dsh/src/task-diagnostics.ts
+var advice = {
+  AUTH_REQUIRED: ["\u9700\u8981\u91CD\u65B0\u8FDE\u63A5\u8D26\u53F7", "\u767B\u5F55\u540E\u5237\u65B0\u72B6\u6001\uFF0C\u4E0D\u8981\u91CD\u65B0\u63D0\u4EA4\u751F\u56FE\u3002"],
+  SESSION_CHANGED: ["\u8D26\u53F7\u6216\u767B\u5F55\u6388\u6743\u5DF2\u53D8\u5316", "\u786E\u8BA4\u5F53\u524D\u8D26\u53F7\u540E\u91CD\u65B0\u67E5\u770B\u539F\u4EFB\u52A1\u3002"],
+  PERMISSION_DENIED: ["\u5F53\u524D\u6743\u9650\u4E0D\u8DB3", "\u6838\u5BF9\u8D26\u53F7\u6743\u76CA\u6216\u76EE\u5F55\u8BBF\u95EE\u6743\u9650\u3002"],
+  INSUFFICIENT_CREDITS: ["\u79EF\u5206\u4E0D\u8DB3", "\u6838\u5BF9\u539F\u4EFB\u52A1\u62A5\u4EF7\u53CA\u79EF\u5206\u72B6\u6001\uFF0C\u4E0D\u81EA\u52A8\u91CD\u505A\u3002"],
+  SOURCE_UNAVAILABLE: ["\u6765\u6E90\u6587\u4EF6\u4E0D\u53EF\u7528", "\u786E\u8BA4\u6E90\u6587\u4EF6\u4ECD\u5B58\u5728\u4E14\u53EF\u8BFB\u53D6\u3002"],
+  LOCAL_FILE_CHANGED: ["\u672C\u5730\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8", "\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u6838\u5BF9\u6587\u4EF6\uFF0C\u4FDD\u7559\u7528\u6237\u4FEE\u6539\u3002"],
+  LOCAL_FILE_UNAVAILABLE: ["\u672C\u5730\u6210\u679C\u6682\u4E0D\u53EF\u7528", "\u6838\u5BF9\u4EFB\u52A1\u6587\u4EF6\u5939\u548C\u6587\u4EF6\u72B6\u6001\uFF0C\u518D\u5237\u65B0\u539F\u4EFB\u52A1\uFF1B\u4FDD\u7559\u624B\u52A8\u4FEE\u6539\u7684\u6587\u4EF6\u3002"],
+  DISK_FULL: ["\u78C1\u76D8\u7A7A\u95F4\u4E0D\u8DB3", "\u91CA\u653E\u7A7A\u95F4\u540E\u624B\u52A8\u91CD\u8BD5\u672C\u5730\u4FDD\u5B58\u3002"],
+  TRANSPARENCY_REQUIRED: ["\u56FE\u7247\u6CA1\u6709\u6240\u9700\u7684\u771F\u5B9E\u900F\u660E\u50CF\u7D20", "\u6838\u5BF9\u8F93\u5165\u56FE\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u65B0\u751F\u56FE\u3002"],
+  SUBMISSION_RESULT_UNKNOWN: ["\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9", "\u5237\u65B0\u539F\u4EFB\u52A1\u72B6\u6001\uFF0C\u4E0D\u8981\u518D\u6B21\u4ED8\u8D39\u63D0\u4EA4\u3002"],
+  GENERATION_FAILED: ["\u751F\u6210\u9636\u6BB5\u672A\u5B8C\u6210", "\u6838\u5BF9\u539F\u4EFB\u52A1\u72B6\u6001\uFF1B\u5982\u9700\u91CD\u505A\u5E94\u91CD\u65B0\u786E\u8BA4\u3002"],
+  DOWNLOAD_FAILED: ["\u7ED3\u679C\u4E0B\u8F7D\u672A\u5B8C\u6210", "\u7F51\u7EDC\u6062\u590D\u540E\u624B\u52A8\u5237\u65B0\u539F\u4EFB\u52A1\u4FDD\u5B58\uFF0C\u4E0D\u91CD\u65B0\u751F\u56FE\u3002"],
+  PROCESSING_FAILED: ["\u672C\u5730\u52A0\u5DE5\u672A\u5B8C\u6210", "\u6838\u5BF9\u5DE5\u5177\u53C2\u6570\u540E\u4EC5\u7EE7\u7EED\u672C\u5730\u52A0\u5DE5\u3002"],
+  ARCHIVE_FAILED: ["\u6210\u679C\u5F52\u6863\u672A\u5B8C\u6210", "\u6838\u5BF9\u8F93\u51FA\u76EE\u5F55\u540E\u624B\u52A8\u5237\u65B0\u539F\u4EFB\u52A1\u3002"],
+  CONNECTION_FAILED: ["\u72B6\u6001\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528", "\u8FDE\u63A5\u6062\u590D\u540E\u5237\u65B0\u539F\u4EFB\u52A1\u72B6\u6001\u3002"],
+  SUMMARY_UPDATE_FAILED: ["\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0", "\u6838\u5BF9\u76EE\u5F55\u6743\u9650\uFF1B\u624B\u52A8\u4FEE\u6539\u8FC7\u7684\u603B\u7ED3\u4F1A\u4FDD\u7559\u3002"]
+};
+var TaskDiagnosticSchema = external_exports.object({
+  stage: external_exports.enum(["generation", "download", "processing", "archive", "connection"]),
+  code: external_exports.enum(Object.keys(advice)),
+  at: external_exports.string().datetime().optional()
+});
+function diagnose(stage, error51, at) {
+  const raw = error51 && typeof error51 === "object" ? error51.code : void 0;
+  const aliases = {
+    SIGN_IN_REQUIRED: "AUTH_REQUIRED",
+    SESSION_REPLACED: "SESSION_CHANGED",
+    EACCES: "PERMISSION_DENIED",
+    EPERM: "PERMISSION_DENIED",
+    SUBSCRIPTION_REQUIRED: "PERMISSION_DENIED",
+    TOOL_NOT_AUTHORIZED: "PERMISSION_DENIED",
+    ENOENT: "SOURCE_UNAVAILABLE",
+    REFERENCE_UNAVAILABLE: "SOURCE_UNAVAILABLE",
+    ENOSPC: "DISK_FULL"
+  };
+  const fallback = {
+    generation: "GENERATION_FAILED",
+    download: "DOWNLOAD_FAILED",
+    processing: "PROCESSING_FAILED",
+    archive: "ARCHIVE_FAILED",
+    connection: "CONNECTION_FAILED"
+  };
+  const code = typeof raw === "string" ? Object.hasOwn(advice, raw) ? raw : Object.hasOwn(aliases, raw) ? aliases[raw] : fallback[stage] : fallback[stage];
+  return { stage, code, ...at && Number.isFinite(Date.parse(at)) ? { at: new Date(at).toISOString() } : {} };
+}
+function taskDiagnostics(task) {
+  const rows = [...task.diagnostics ?? [], ...task.files.flatMap((file2) => file2.diagnostic ? [file2.diagnostic] : [])];
+  for (const step of task.audit?.processing.steps ?? []) for (const failure of step.failures)
+    rows.push(diagnose("processing", { code: failure.code }));
+  if (task.saveStatus === "missing") rows.push({ stage: "archive", code: "LOCAL_FILE_UNAVAILABLE" });
+  if (task.saveStatus === "failed" && !rows.length) rows.push(diagnose("archive"));
+  if (task.status === "failed" && !rows.some((row) => row.stage === "generation")) rows.push(diagnose("generation"));
+  if (task.summaryStatus === "failed") rows.push({ stage: "archive", code: "SUMMARY_UPDATE_FAILED" });
+  const safe = rows.flatMap((row) => {
+    const parsed = TaskDiagnosticSchema.safeParse(row);
+    return parsed.success ? [parsed.data] : [];
+  });
+  return [...new Map(safe.map((row) => [`${row.stage}:${row.code}`, row])).values()].slice(0, 20);
+}
+
+// plugins/podplo-dsh/src/contracts.ts
+var PODPLO_MANUAL_SESSION_ID = "podplo-manual";
+var PODPLO_TOOLBOX_WORKSPACE_ID = "podplo-toolbox-v1";
+var PODPLO_GRID_SPLIT_WORKSPACE_ID = "podplo-grid-split-v1";
+var PodploPluginError = class extends Error {
+  constructor(code, message, details) {
+    super(message);
+    this.code = code;
+    this.details = details;
+    this.name = "PodploPluginError";
+  }
+  code;
+  details;
+};
+
+// plugins/podplo-dsh/src/generation-state.ts
+var comparableGenerationItems = (items) => items.map((item) => ({
+  ...item.skillId ? { skillId: item.skillId } : {},
+  ...item.sourceName ? { sourceName: item.sourceName } : {},
+  args: item.args
+}));
+function record2(value2, label) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u5FC5\u987B\u662F\u5BF9\u8C61`);
+  return value2;
+}
+function generationAudit(row) {
+  const audit = { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
+  for (const item of row.items) {
+    const planned = item.quote.outputCount, succeeded = new Set(item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []).size;
+    const remaining = Math.max(0, planned - succeeded);
+    audit.planned += planned;
+    audit.succeeded += succeeded;
+    if (item.status === "failed") audit.failed += remaining;
+    else if (item.status === "cancelled") audit.cancelled += remaining;
+    else {
+      const failed = Math.min(remaining, item.outputs?.filter((output) => !output.assetId && (output.failureCode || output.status === "failed")).length ?? 0);
+      audit.failed += failed;
+      if (item.status === "submission_unknown" || item.status === "completed") audit.unknown += remaining - failed;
+      else audit.pending += remaining - failed;
+    }
+  }
+  audit.succeeded = new Set(row.items.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? [])).size;
+  audit.unknown += Math.max(0, audit.planned - audit.succeeded - audit.failed - audit.pending - audit.cancelled - audit.unknown);
+  return audit;
+}
+function safeOperation(row) {
+  const summary = operationSummary(row);
+  const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
+  return {
+    operationId: row.operationId,
+    intentId: row.intentId,
+    planVersion: row.planVersion,
+    status: operationStatus(row),
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    quote: {
+      expiresAt,
+      totalCredits: summary.totalCredits,
+      outputCount: summary.outputCount,
+      confirmationText: `\u672C\u6279 ${summary.itemCount} \u9879\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20`
+    },
+    approvalId: row.approvalId,
+    summary,
+    items: row.items.map((item) => ({
+      itemId: item.itemId,
+      ...item.skillId ? { skillId: item.skillId } : {},
+      status: item.status,
+      totalCredits: item.quote.totalCredits,
+      outputCount: item.quote.outputCount,
+      ...item.generationId ? { generationId: item.generationId } : {},
+      ...item.remoteStatus ? { remoteStatus: item.remoteStatus } : {},
+      ...item.errorCode ? { errorCode: item.errorCode } : {},
+      ...item.outputs ? { outputs: structuredClone(item.outputs) } : {}
+    })),
+    ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
+    ...row.replacedBy ? { replacedBy: row.replacedBy } : {},
+    ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {}
+  };
+}
+function operationSummary(row) {
+  const count2 = (status) => row.items.filter((item) => item.status === status).length;
+  return {
+    itemCount: row.items.length,
+    totalCredits: row.items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
+    outputCount: row.items.reduce((sum, item) => sum + item.quote.outputCount, 0),
+    acceptedCount: row.items.filter((item) => !!item.generationId).length,
+    completedCount: count2("completed"),
+    unknownCount: count2("submission_unknown"),
+    failedCount: count2("failed"),
+    cancelledCount: count2("cancelled"),
+    pendingCount: count2("quoted") + count2("submitting"),
+    submittedCount: count2("submitted")
+  };
+}
+function operationStatus(row) {
+  const statuses = row.items.map((item) => item.status);
+  if (statuses.every((status) => status === "cancelled")) return "cancelled";
+  if (statuses.every((status) => status === "quoted") && !row.approvedAt) return "quoted";
+  if (statuses.includes("submitting") || row.approvedAt && statuses.includes("quoted")) return "submitting";
+  if (statuses.every((status) => status === "completed")) return "completed";
+  if (statuses.includes("submission_unknown")) return statuses.some((status) => ["submitted", "completed", "failed"].includes(status)) ? "partial_unknown" : "submission_unknown";
+  if (statuses.some((status) => status === "submitted")) return "submitted";
+  if (statuses.includes("cancelled") && statuses.includes("completed")) return "partial_cancelled";
+  if (statuses.some((status) => status === "failed")) return statuses.every((status) => ["failed", "completed", "cancelled"].includes(status)) && statuses.some((status) => status === "completed") ? "partial_failure" : "failed";
+  if (statuses.includes("cancelled")) return "cancelled";
+  return "submitted";
+}
+function safeGenerationOutputs(value2) {
+  if (value2 === void 0) return [];
+  if (!Array.isArray(value2) || value2.length > 100) throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
+  const uuid3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+  const code = /^[A-Za-z0-9_-]{1,80}$/u;
+  const outputs = value2.map((raw, index) => {
+    const row = record2(raw, `outputs[${index}]`);
+    if (typeof row.slotId !== "string" || !uuid3.test(row.slotId) || !Number.isInteger(row.index) || row.index < 0 || row.index > 1e3 || typeof row.status !== "string" || !code.test(row.status) || !(row.assetId === null || typeof row.assetId === "string" && uuid3.test(row.assetId)) || !(row.failureCode === null || typeof row.failureCode === "string" && code.test(row.failureCode))) {
+      throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
+    }
+    return { slotId: row.slotId, index: row.index, status: row.status, assetId: row.assetId, failureCode: row.failureCode };
+  });
+  if (new Set(outputs.map((row) => row.slotId)).size !== outputs.length || new Set(outputs.map((row) => row.index)).size !== outputs.length) {
+    throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u69FD\u4F4D\u91CD\u590D");
+  }
+  return outputs;
+}
+function definiteSubmissionFailure(code) {
+  return ["QUOTE_EXPIRED", "CONFIRMATION_MISMATCH", "USER_SKILL_CHANGED", "REFERENCE_UNAVAILABLE", "INSUFFICIENT_CREDITS"].includes(code);
+}
+
+// plugins/podplo-dsh/src/service.ts
 import { randomUUID as randomUUID9 } from "node:crypto";
 import { join as join6 } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 // plugins/podplo-dsh/src/local-toolkit.ts
-import { createHash as createHash5, randomUUID as randomUUID8 } from "node:crypto";
+import { createHash as createHash7, randomUUID as randomUUID8 } from "node:crypto";
 import { constants as constants2 } from "node:fs";
 import { lstat as lstat2, mkdir as mkdir5, open as open3, realpath as realpath3, unlink } from "node:fs/promises";
-import { basename as basename5, extname as extname3, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
-import sharp9 from "sharp";
+import { basename as basename6, extname as extname4, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
+import sharp10 from "sharp";
 
 // packages/tools/rename-contracts.ts
 var text = external_exports.string().max(180).default("");
@@ -40041,7 +40297,7 @@ import sharp4 from "sharp";
 
 // packages/tools/transparent-crop.ts
 import sharp3 from "sharp";
-import { createHash as createHash4 } from "node:crypto";
+import { createHash as createHash5 } from "node:crypto";
 var rectangle = external_exports.object({
   left: external_exports.number().int().nonnegative(),
   top: external_exports.number().int().nonnegative(),
@@ -40060,12 +40316,12 @@ var TransparentCropReportSchema = external_exports.object({
 }).strict();
 var limitInputPixels = 1e8;
 async function pixelDigest(image, signal) {
-  const hash4 = createHash4("sha256");
+  const hash5 = createHash5("sha256");
   for await (const chunk of image.toColourspace("srgb").ensureAlpha().raw()) {
     signal?.throwIfAborted();
-    hash4.update(chunk);
+    hash5.update(chunk);
   }
-  return hash4.digest("hex");
+  return hash5.digest("hex");
 }
 async function cropTransparentImage(input, signal, threshold = 0) {
   if (!CropAlphaThresholdSchema.safeParse(threshold).success) throw new Error("\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u5FC5\u987B\u662F 0\uFF5E254 \u7684\u6574\u6570");
@@ -40080,7 +40336,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   const base2 = () => sharp3(normalized.data, { limitInputPixels, failOn: "error" });
   const alpha = await base2().ensureAlpha().extractChannel("alpha").raw().toBuffer();
   const columns = new Uint32Array(width2), rows = new Uint32Array(height2);
-  let left = width2, right = -1, top = height2, bottom = -1, count = 0, nonzeroCount = 0, transparent = false;
+  let left = width2, right = -1, top = height2, bottom = -1, count2 = 0, nonzeroCount = 0, transparent = false;
   let coreLeft = width2, coreRight = -1, coreTop = height2, coreBottom = -1;
   for (let y = 0; y < height2; y++) {
     if (y % 128 === 0) signal?.throwIfAborted();
@@ -40089,7 +40345,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
       if (value2 < 255) transparent = true;
       if (value2) nonzeroCount++;
       if (value2 <= threshold) continue;
-      count++;
+      count2++;
       columns[x] = columns[x] + 1;
       rows[y] = rows[y] + 1;
       left = Math.min(left, x);
@@ -40105,25 +40361,25 @@ async function cropTransparentImage(input, signal, threshold = 0) {
     }
   }
   const issues = [];
-  const bounds = count ? { left, top, width: right - left + 1, height: bottom - top + 1 } : null;
+  const bounds = count2 ? { left, top, width: right - left + 1, height: bottom - top + 1 } : null;
   if (!metadata.hasAlpha || !transparent) issues.push("NO_TRANSPARENCY");
-  if (!count) issues.push(nonzeroCount ? "NO_PIXELS_ABOVE_THRESHOLD" : "EMPTY_IMAGE");
+  if (!count2) issues.push(nonzeroCount ? "NO_PIXELS_ABOVE_THRESHOLD" : "EMPTY_IMAGE");
   const gap = Math.max(2, Math.ceil(Math.max(width2, height2) * 5e-3));
-  if (count && (coreRight < 0 || Math.max(coreLeft - left, right - coreRight, coreTop - top, bottom - coreBottom) >= gap))
+  if (count2 && (coreRight < 0 || Math.max(coreLeft - left, right - coreRight, coreTop - top, bottom - coreBottom) >= gap))
     issues.push("FAINT_EXTENTS");
   const isolatedBand = (projection, start, end, direction) => {
     let pixels = 0, empty = 0;
     for (let i = start; direction === 1 ? i <= end : i >= end; i += direction) {
       if (projection[i]) {
-        if (empty >= gap) return pixels <= Math.max(4, Math.floor(count * 1e-3)) && pixels < count / 4;
+        if (empty >= gap) return pixels <= Math.max(4, Math.floor(count2 * 1e-3)) && pixels < count2 / 4;
         empty = 0;
         pixels += projection[i];
-        if (pixels > Math.max(4, Math.floor(count * 1e-3))) return false;
+        if (pixels > Math.max(4, Math.floor(count2 * 1e-3))) return false;
       } else if (pixels) empty++;
     }
     return false;
   };
-  if (count && (isolatedBand(columns, left, right, 1) || isolatedBand(columns, right, left, -1) || isolatedBand(rows, top, bottom, 1) || isolatedBand(rows, bottom, top, -1))) issues.push("ISOLATED_EXTENTS");
+  if (count2 && (isolatedBand(columns, left, right, 1) || isolatedBand(columns, right, left, -1) || isolatedBand(rows, top, bottom, 1) || isolatedBand(rows, bottom, top, -1))) issues.push("ISOLATED_EXTENTS");
   if (!bounds || issues.includes("NO_TRANSPARENCY")) return {
     bytes: normalized.data,
     width: width2,
@@ -40178,14 +40434,14 @@ async function prepareResizeImage(source, raw) {
     sourceSize = { width: cropped.width, height: cropped.height };
     image = sharp4(cropped.bytes, { limitInputPixels: 1e8, failOn: "error" });
   }
-  const size = targetPixels(options, sourceSize);
+  const size2 = targetPixels(options, sourceSize);
   if (options.format === "jpeg") image = image.flatten({ background: "#ffffff" });
   image = image.resize({
-    ...size,
+    ...size2,
     fit: options.sizing && options.sizing !== "fixed" ? "fill" : options.fit,
     background: { r: 255, g: 255, b: 255, alpha: options.format === "jpeg" ? 1 : 0 }
   }).withMetadata({ density: options.ppi }).toFormat(options.format);
-  return { image, size, sourceSize, format: options.format, transparentCrop };
+  return { image, size: size2, sourceSize, format: options.format, transparentCrop };
 }
 
 // packages/tools/toolkit.ts
@@ -40625,35 +40881,184 @@ var ToolboxResizeOptionsSchema = external_exports.discriminatedUnion("sizing", [
 // packages/tools/mirror-join.ts
 import sharp7 from "sharp";
 function mirrorJoinSize(width2, height2, direction, format2) {
-  const size = {
+  const size2 = {
     width: direction === "horizontal" ? width2 * 2 : width2,
     height: direction === "vertical" ? height2 * 2 : height2
   };
-  if (![width2, height2].every((value2) => Number.isSafeInteger(value2) && value2 > 0) || size.width > 3e4 || size.height > 3e4 || size.width * size.height > 1e8)
+  if (![width2, height2].every((value2) => Number.isSafeInteger(value2) && value2 > 0) || size2.width > 3e4 || size2.height > 3e4 || size2.width * size2.height > 1e8)
     throw new Error("\u955C\u50CF\u62FC\u63A5\u540E\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u51CF\u5C0F\u5355\u56FE\u5C3A\u5BF8\uFF08\u5355\u8FB9\u6700\u591A 30000 \u50CF\u7D20\uFF0C\u603B\u8BA1\u6700\u591A 1 \u4EBF\u50CF\u7D20\uFF09\u3002");
-  if (format2 === "webp" && Math.max(size.width, size.height) > 16383)
+  if (format2 === "webp" && Math.max(size2.width, size2.height) > 16383)
     throw new Error("\u955C\u50CF\u62FC\u63A5\u540E\u7684 WebP \u5355\u8FB9\u4E0D\u80FD\u8D85\u8FC7 16383 \u50CF\u7D20\uFF0C\u8BF7\u51CF\u5C0F\u5C3A\u5BF8\u6216\u6539\u7528 PNG\u3002");
-  return size;
+  return size2;
 }
 async function joinMirror(bytes, direction, ppi, format2, signal) {
   signal?.throwIfAborted();
   const image = sharp7(bytes, { limitInputPixels: 1e8, failOn: "error" });
   const metadata = await image.metadata();
-  const size = mirrorJoinSize(metadata.width, metadata.height, direction, format2);
+  const size2 = mirrorJoinSize(metadata.width, metadata.height, direction, format2);
   const { data, info } = await image.toColourspace("srgb").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
-  const stride = info.width * 4, outputStride = size.width * 4;
-  const joined = Buffer.alloc(size.width * size.height * 4);
+  const stride = info.width * 4, outputStride = size2.width * 4;
+  const joined = Buffer.alloc(size2.width * size2.height * 4);
   const reflected = direction === "horizontal" ? await sharp7(data, { raw: info }).flop().raw().toBuffer() : void 0;
   for (let y = 0; y < info.height; y++) {
     signal?.throwIfAborted();
     data.copy(joined, y * outputStride, y * stride, (y + 1) * stride);
     if (reflected) reflected.copy(joined, y * outputStride + stride, y * stride, (y + 1) * stride);
-    else data.copy(joined, (size.height - 1 - y) * outputStride, y * stride, (y + 1) * stride);
+    else data.copy(joined, (size2.height - 1 - y) * outputStride, y * stride, (y + 1) * stride);
   }
   signal?.throwIfAborted();
-  const output = await sharp7(joined, { raw: { ...size, channels: 4 } }).withMetadata({ density: ppi }).png().toBuffer();
+  const output = await sharp7(joined, { raw: { ...size2, channels: 4 } }).withMetadata({ density: ppi }).png().toBuffer();
   signal?.throwIfAborted();
-  return { ...size, bytes: output };
+  return { ...size2, bytes: output };
+}
+
+// plugins/podplo-dsh/src/image-memory-cache.ts
+import { createHash as createHash6 } from "node:crypto";
+var imageDigest = (bytes) => createHash6("sha256").update(bytes).digest("hex");
+function copy(value2) {
+  if (Buffer.isBuffer(value2)) return Buffer.from(value2);
+  if (Array.isArray(value2)) return value2.map(copy);
+  if (value2 && typeof value2 === "object") return Object.fromEntries(Object.entries(value2).map(([key, item]) => [key, copy(item)]));
+  return value2;
+}
+function size(value2) {
+  if (Buffer.isBuffer(value2)) return value2.length;
+  if (typeof value2 === "string") return Buffer.byteLength(value2);
+  if (value2 && typeof value2 === "object") return 64 + Object.entries(value2).reduce((sum, [key, item]) => sum + Buffer.byteLength(key) + size(item), 0);
+  return 8;
+}
+var ImageMemoryCache = class {
+  constructor(maxBytes = 64 * 1024 * 1024, maxEntries = 32) {
+    this.maxBytes = maxBytes;
+    this.maxEntries = maxEntries;
+  }
+  maxBytes;
+  maxEntries;
+  entries = /* @__PURE__ */ new Map();
+  bytes = 0;
+  hits = 0;
+  misses = 0;
+  epoch = 0;
+  get(key) {
+    const entry = this.entries.get(key);
+    if (!entry) {
+      this.misses++;
+      return void 0;
+    }
+    this.hits++;
+    this.entries.delete(key);
+    this.entries.set(key, entry);
+    return copy(entry.value);
+  }
+  set(key, value2, epoch = this.epoch) {
+    const bytes = size(value2);
+    if (epoch !== this.epoch || bytes > this.maxBytes || this.maxEntries < 1) return false;
+    const prior = this.entries.get(key);
+    if (prior) {
+      this.bytes -= prior.bytes;
+      this.entries.delete(key);
+    }
+    while (this.entries.size && (this.bytes + bytes > this.maxBytes || this.entries.size >= this.maxEntries)) {
+      const oldest = this.entries.keys().next().value;
+      this.bytes -= this.entries.get(oldest).bytes;
+      this.entries.delete(oldest);
+    }
+    this.entries.set(key, { value: copy(value2), bytes });
+    this.bytes += bytes;
+    return true;
+  }
+  revision() {
+    return this.epoch;
+  }
+  clear() {
+    this.entries.clear();
+    this.bytes = 0;
+    this.epoch++;
+  }
+  stats() {
+    return { entries: this.entries.size, bytes: this.bytes, hits: this.hits, misses: this.misses };
+  }
+};
+
+// plugins/podplo-dsh/src/task-result-audit.ts
+function canonical(value2) {
+  if (Array.isArray(value2)) return `[${value2.map(canonical).join(",")}]`;
+  if (value2 && typeof value2 === "object") return `{${Object.entries(value2).filter(([, item]) => item !== void 0).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}`;
+  return JSON.stringify(value2) ?? "null";
+}
+function processingStepDigest(step) {
+  return canonical({ toolName: step.toolName, options: step.options, sourceStepId: step.sourceStepId, generationItemIndexes: step.generationItemIndexes });
+}
+function auditTask(files, generation, plan, receipts = [], failures = []) {
+  const results = files.filter((file2) => file2.group === "result");
+  const originals = results.filter((file2) => file2.variant === "generated" || file2.assetId);
+  const actualGeneration = generation ?? { planned: null, succeeded: originals.length, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
+  const downloaded = results.filter((file2) => file2.status === "saved").length;
+  const steps = [];
+  const outputsByStep = /* @__PURE__ */ new Map();
+  for (const step of plan ?? []) {
+    const ids2 = step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file2) => file2.group === "reference") : originals).filter((file2) => !step.generationItemIndexes || file2.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file2.generationItemIndex)).map((file2) => file2.originId).filter((id) => !!id);
+    const inputs = [...new Set(ids2)];
+    const runs = receipts.filter((run) => run.toolName === step.toolName && run.options !== void 0 && canonical(run.options) === canonical(step.options) && run.resultIds.length > 0);
+    const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id) => inputs.includes(id)));
+    const planDigest = processingStepDigest(step);
+    const matchedFailures = failures.filter((failure) => failure.stepId === step.id && failure.planDigest === planDigest && inputs.includes(failure.inputId) && !completed.has(failure.inputId));
+    const failedIds = [...new Set(matchedFailures.map((failure) => failure.inputId))];
+    outputsByStep.set(step.id, [...new Set(runs.filter((run) => run.inputIds.some((id) => inputs.includes(id))).flatMap((run) => run.resultIds))]);
+    steps.push({
+      id: step.id,
+      label: step.label,
+      required: inputs.length,
+      completed: completed.size,
+      missingIds: inputs.filter((id) => !completed.has(id)),
+      failedIds,
+      failures: failedIds.map((inputId) => ({ inputId, code: matchedFailures.find((row) => row.inputId === inputId).code }))
+    });
+  }
+  const required2 = plan === void 0 ? null : steps.reduce((sum, step) => sum + step.required, 0);
+  const processed = steps.reduce((sum, step) => sum + step.completed, 0);
+  const audit = {
+    generation: actualGeneration,
+    download: {
+      expected: results.length,
+      saved: downloaded,
+      remaining: results.length - downloaded,
+      generated: originals.length,
+      generatedSaved: originals.filter((file2) => file2.status === "saved").length,
+      processed: results.length - originals.length,
+      processedSaved: results.filter((file2) => file2.variant === "processed" && file2.status === "saved").length,
+      failed: results.filter((file2) => file2.status === "failed").length,
+      missing: results.filter((file2) => file2.status === "missing").length
+    },
+    processing: {
+      registered: plan !== void 0,
+      required: required2,
+      completed: processed,
+      remaining: required2 === null ? null : required2 - processed,
+      failed: steps.reduce((sum, step) => sum + step.failedIds.length, 0),
+      outputs: results.filter((file2) => file2.variant === "processed").length,
+      steps
+    },
+    complete: false
+  };
+  audit.complete = actualGeneration.planned !== null && actualGeneration.succeeded === actualGeneration.planned && !actualGeneration.failed && !actualGeneration.pending && !actualGeneration.cancelled && !actualGeneration.unknown && required2 !== null && required2 === processed && audit.download.remaining === 0 && !files.some((file2) => file2.status !== "saved" || file2.reviewRequired);
+  return audit;
+}
+function auditLines(audit) {
+  const g = audit.generation, d = audit.download, p = audit.processing;
+  const lines = [
+    g.planned === 0 ? "\u751F\u6210\uFF1A\u672C\u4EFB\u52A1\u6CA1\u6709\u751F\u56FE\u6B65\u9AA4\u3002" : g.planned === null ? `\u751F\u6210\uFF1A\u5DF2\u77E5 ${g.succeeded} \u5F20\uFF0C\u539F\u4EFB\u52A1\u8BA1\u5212\u6570\u91CF\u672A\u767B\u8BB0\u3002` : `\u751F\u6210\uFF1A\u8BA1\u5212 ${g.planned} \u5F20\uFF0C\u6210\u529F ${g.succeeded} \u5F20${g.failed ? `\uFF0C\u5931\u8D25 ${g.failed} \u5F20` : ""}${g.pending ? `\uFF0C\u751F\u6210\u4E2D ${g.pending} \u5F20` : ""}${g.cancelled ? `\uFF0C\u5DF2\u505C\u6B62 ${g.cancelled} \u5F20` : ""}${g.unknown ? `\uFF0C\u5F85\u6838\u5BF9 ${g.unknown} \u5F20` : ""}\u3002`,
+    audit.delivery ? `\u6210\u54C1\uFF1A\u5DF2\u4FDD\u5B58 ${audit.delivery.saved}/${audit.delivery.expected} \u4E2A${audit.delivery.failed ? `\uFF1B\u4FDD\u5B58\u5931\u8D25 ${audit.delivery.failed} \u4E2A` : ""}${audit.delivery.missing ? `\uFF1B\u5DF2\u79FB\u52A8\u6216\u6539\u53D8 ${audit.delivery.missing} \u4E2A` : ""}\u3002` : `\u4E0B\u8F7D\uFF1A\u751F\u6210\u56FE\u5DF2\u5B58 ${d.generatedSaved}/${d.generated} \u5F20\uFF1B\u52A0\u5DE5\u6210\u54C1\u5DF2\u5B58 ${d.processedSaved}/${d.processed} \u4E2A\uFF1B\u8FD8\u6709 ${d.remaining} \u4E2A\u672A\u4FDD\u5B58${d.failed ? `\uFF08\u4FDD\u5B58\u5931\u8D25 ${d.failed} \u4E2A\uFF09` : ""}${d.missing ? `\uFF08\u5DF2\u79FB\u52A8\u6216\u6539\u53D8 ${d.missing} \u4E2A\uFF09` : ""}\u3002`
+  ];
+  if (!p.registered) lines.push(`\u5904\u7406\uFF1A\u539F\u4EFB\u52A1\u7684\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\uFF0C\u65E0\u6CD5\u5224\u65AD\u662F\u5426\u6F0F\u5904\u7406\uFF1B\u5DF2\u6709 ${p.outputs} \u4E2A\u52A0\u5DE5\u4EA7\u7269\u3002`);
+  else if (!p.steps.length) lines.push("\u5904\u7406\uFF1A\u672C\u4EFB\u52A1\u4E0D\u8981\u6C42\u540E\u7EED\u52A0\u5DE5\u3002");
+  else for (const step of p.steps) {
+    const transparencyFailures = step.failures.filter((row) => row.code === "TRANSPARENCY_REQUIRED").length;
+    lines.push(`\u5904\u7406\u300C${step.label}\u300D\uFF1A\u9700\u8981\u5904\u7406 ${step.required} \u5F20\uFF0C\u5DF2\u5904\u7406 ${step.completed} \u5F20\uFF0C\u8FD8\u6709 ${step.missingIds.length} \u5F20\u672A\u5904\u7406${step.failedIds.length ? `\uFF08\u5931\u8D25 ${step.failedIds.length} \u5F20${transparencyFailures ? `\uFF0C\u5176\u4E2D\u771F\u5B9E\u900F\u660E\u50CF\u7D20\u68C0\u67E5\u672A\u901A\u8FC7 ${transparencyFailures} \u5F20` : ""}\uFF09` : ""}\u3002`);
+  }
+  if (p.outputs && !audit.delivery) lines.push(`\u52A0\u5DE5\u4EA7\u7269\uFF1A${p.outputs} \u4E2A\uFF08\u539F\u56FE\u65B9\u5411\u3001\u955C\u50CF\u53CA\u5176\u4ED6\u7248\u672C\u5206\u522B\u8BA1\u4EA7\u7269\uFF0C\u4E0D\u91CD\u590D\u8BA1\u5904\u7406\u5F20\u6570\uFF09\u3002`);
+  lines.push(audit.complete ? "\u6838\u5BF9\u7ED3\u679C\uFF1A\u5DF2\u9F50\u5168\u3002" : "\u6838\u5BF9\u7ED3\u679C\uFF1A\u4ECD\u6709\u672A\u5B8C\u6210\u6216\u9700\u6838\u5BF9\u7684\u9879\u76EE\u3002");
+  return lines;
 }
 
 // plugins/podplo-dsh/src/toolbox-pipeline.ts
@@ -40690,6 +41095,7 @@ var toolboxToolNames = {
   print: "podplo_prepare_print_files",
   export: "podplo_export_images"
 };
+var createToolboxFrameCache = (maxBytes, maxEntries) => new ImageMemoryCache(maxBytes, maxEntries);
 var limitInputPixels3 = 1e8;
 var stemOf = (name) => basename4(name, extname2(name));
 function bounded(outputs) {
@@ -40701,48 +41107,78 @@ async function renderToolbox(inputs, plan, options) {
   for (const original of inputs) {
     options.signal?.throwIfAborted();
     if (original.kind === "file") throw new Error("\u5DE5\u5177\u7BB1\u53EA\u63A5\u53D7\u56FE\u7247\u6765\u6E90");
-    const source = sharp8(original.bytes, { limitInputPixels: limitInputPixels3, failOn: "error" }).autoOrient();
-    const metadata = await source.metadata();
-    if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247");
-    const resizeStep = plan.steps.find((step) => step.tool === "resize");
-    const ppi = resizeStep?.options.ppi ?? (metadata.density && metadata.density >= 30 && metadata.density <= 1200 ? Math.round(metadata.density) : 300);
-    let frames = [{ ...original, bytes: await source.withMetadata({ density: ppi }).png().toBuffer() }];
-    let final = [], raster = [];
-    const sidecars = [];
-    let transparentCrop;
-    if (plan.trimTransparent || resizeStep?.options.trimTransparent) {
-      await options.authorize("resize");
-      const crop = await cropTransparentImage(original.bytes, options.signal);
-      transparentCrop = crop.report;
-      frames = [{ ...original, bytes: crop.bytes }];
-      result.resizeSource ??= { id: original.id, width: crop.width, height: crop.height, trimTransparent: true };
-      final = [{
-        stem: `${stemOf(original.name)}-\u88C1\u900F\u660E\u8FB9`,
-        extension: "png",
-        bytes: crop.bytes,
-        width: crop.width,
-        height: crop.height,
-        format: "png",
-        density: ppi,
-        kind: "image",
-        sourceId: original.id
-      }];
+    const cache = options.cacheScope ? options.cache : void 0, epoch = cache?.revision();
+    let prefix = canonical({
+      scope: options.cacheScope,
+      id: original.id,
+      name: original.name,
+      kind: original.kind,
+      source: imageDigest(original.bytes),
+      crop: original.transparentCrop,
+      orderVersion: plan.orderVersion,
+      trimTransparent: plan.trimTransparent,
+      resizeTrim: plan.steps.find((step) => step.tool === "resize")?.options.trimTransparent,
+      ppi: plan.steps.find((step) => step.tool === "resize")?.options.ppi,
+      preview: !!options.preview
+    });
+    let ppi, frames, final = [], raster = [], sidecars = [];
+    let hints = { pendingPattern: false }, transparentCrop;
+    const normalizedKey = `normalize:${imageDigest(Buffer.from(prefix))}`, normalized = cache?.get(normalizedKey);
+    if (normalized) {
+      if (plan.trimTransparent || plan.steps.some((step) => step.tool === "resize" && step.options.trimTransparent)) await options.authorize("resize");
+      ({ ppi, frames, final, raster, sidecars, transparentCrop, hints } = normalized);
+    } else {
+      const source = sharp8(original.bytes, { limitInputPixels: limitInputPixels3, failOn: "error" }).autoOrient();
+      const metadata = await source.metadata();
+      if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247");
+      const resizeStep = plan.steps.find((step) => step.tool === "resize");
+      ppi = resizeStep?.options.ppi ?? (metadata.density && metadata.density >= 30 && metadata.density <= 1200 ? Math.round(metadata.density) : 300);
+      frames = [{ ...original, bytes: await source.withMetadata({ density: ppi }).png().toBuffer() }];
+      if (plan.trimTransparent || resizeStep?.options.trimTransparent) {
+        await options.authorize("resize");
+        const crop = await cropTransparentImage(original.bytes, options.signal);
+        transparentCrop = crop.report;
+        frames = [{ ...original, bytes: crop.bytes }];
+        hints.resizeSource ??= { id: original.id, width: crop.width, height: crop.height, trimTransparent: true };
+        final = [{
+          stem: `${stemOf(original.name)}-\u88C1\u900F\u660E\u8FB9`,
+          extension: "png",
+          bytes: crop.bytes,
+          width: crop.width,
+          height: crop.height,
+          format: "png",
+          density: ppi,
+          kind: "image",
+          sourceId: original.id
+        }];
+      }
+      options.signal?.throwIfAborted();
+      cache?.set(normalizedKey, { ppi, frames, final, raster, sidecars, transparentCrop, hints }, epoch);
     }
     for (const step of plan.steps) {
       if (!frames.length) break;
       options.signal?.throwIfAborted();
       await options.authorize(step.tool);
+      const pattern = step.tool === "outline" && step.options.patternId ? await options.pattern(step.options.patternId) : void 0;
+      prefix = imageDigest(Buffer.from(canonical({ prefix, step, pattern: pattern ? imageDigest(pattern) : null })));
+      const hit = cache?.get(prefix);
+      if (hit) {
+        options.signal?.throwIfAborted();
+        ({ frames, final, raster, sidecars, transparentCrop, hints } = hit);
+        bounded([...final, ...sidecars]);
+        continue;
+      }
       const next = [];
       for (const frame of frames) {
         options.signal?.throwIfAborted();
         let outputs;
         if (step.tool === "resize") {
           let base2 = sharp8(frame.bytes, { limitInputPixels: limitInputPixels3 });
-          const size = await base2.png().toBuffer({ resolveWithObject: true });
-          result.resizeSource ??= {
+          const size2 = await base2.png().toBuffer({ resolveWithObject: true });
+          hints.resizeSource ??= {
             id: original.id,
-            width: size.info.width,
-            height: size.info.height,
+            width: size2.info.width,
+            height: size2.info.height,
             trimTransparent: !!transparentCrop || plan.orderVersion === 2 && plan.steps.some((row) => row.tool === "trim")
           };
           const { image } = await prepareResizeImage(frame.bytes, { ...step.options, trimTransparent: false, format: "png", fit: "fill" });
@@ -40787,14 +41223,13 @@ async function renderToolbox(inputs, plan, options) {
             } else throw new Error("\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u771F\u5B9E\u900F\u660E\u50CF\u7D20\uFF1BRGB \u6216\u4E0D\u900F\u660E RGBA \u56FE\u7247\u4E0D\u80FD\u63CF\u8FB9");
           }
           const subject = await image.trim({ background: "#00000000", threshold: 0 }).png().toBuffer({ resolveWithObject: true });
-          result.outlineSource ??= { id: original.id, longEdge: Math.max(subject.info.width, subject.info.height) };
+          hints.outlineSource ??= { id: original.id, longEdge: Math.max(subject.info.width, subject.info.height) };
           let settings = step.options;
           if (settings.fill === "pattern" && !settings.patternId && options.preview) {
-            result.pendingPattern = true;
+            hints.pendingPattern = true;
             settings = { ...settings, fill: "none" };
           }
           const valid = OutlineOptionsSchema.parse(settings);
-          const pattern = valid.patternId ? await options.pattern(valid.patternId) : void 0;
           outputs = await processToolkit([outlineInput], { tool: "outline", options: valid }, pattern, options.signal);
           if (step.trimTransparent && !plan.trimTransparent && !plan.steps.some((row) => row.tool === "trim")) {
             const croppedOutputs = [];
@@ -40867,7 +41302,14 @@ async function renderToolbox(inputs, plan, options) {
       }
       final = next;
       frames = next.filter((row) => row.kind === "image").map((row) => ({ id: original.id, name: `${row.stem}.${row.extension}`, bytes: row.bytes, kind: "image", transparentCrop: row.transparentCrop }));
+      options.signal?.throwIfAborted();
+      if (cache) await options.authorize(step.tool);
+      options.signal?.throwIfAborted();
+      cache?.set(prefix, { ppi, frames, final, raster, sidecars, transparentCrop, hints }, epoch);
     }
+    result.pendingPattern ||= hints.pendingPattern;
+    result.resizeSource ??= hints.resizeSource;
+    result.outlineSource ??= hints.outlineSource;
     if (transparentCrop) for (const output of [...final, ...sidecars]) output.transparentCrop ??= transparentCrop;
     result.outputs.push(...final);
     result.previews.push(
@@ -40878,6 +41320,71 @@ async function renderToolbox(inputs, plan, options) {
     options.signal?.throwIfAborted();
   }
   return result;
+}
+
+// packages/tools/grid-split.ts
+import { basename as basename5, extname as extname3 } from "node:path";
+import sharp9 from "sharp";
+var GRID_SPLIT_OPERATION_NAME = "podplo_grid_split";
+var GridSplitOptionsSchema = external_exports.object({
+  rows: external_exports.number().int().min(1).max(6),
+  cols: external_exports.number().int().min(1).max(6)
+}).strict();
+function gridSplitFrames(width2, height2, raw) {
+  const options = GridSplitOptionsSchema.parse(raw);
+  if (!Number.isInteger(width2) || !Number.isInteger(height2) || width2 < 1 || height2 < 1)
+    throw new Error("\u56FE\u7247\u5C3A\u5BF8\u65E0\u6548");
+  if (options.cols > width2 || options.rows > height2)
+    throw new Error("\u884C\u5217\u6570\u4E0D\u80FD\u8D85\u8FC7\u56FE\u7247\u7684\u50CF\u7D20\u5BBD\u9AD8");
+  const frames = [];
+  for (let row = 0; row < options.rows; row += 1) {
+    const top = Math.floor(row * height2 / options.rows);
+    const bottom = Math.floor((row + 1) * height2 / options.rows);
+    for (let col = 0; col < options.cols; col += 1) {
+      const left = Math.floor(col * width2 / options.cols);
+      const right = Math.floor((col + 1) * width2 / options.cols);
+      frames.push({ row, col, left, top, width: right - left, height: bottom - top });
+    }
+  }
+  return frames;
+}
+async function splitGridImages(inputs, raw, signal) {
+  const options = GridSplitOptionsSchema.parse(raw);
+  if (!inputs.length || inputs.length > 10) throw new Error("\u4E00\u6B21\u6700\u591A\u5206\u5272 10 \u5F20\u56FE\u7247");
+  if (inputs.length * options.rows * options.cols > 400)
+    throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
+  if (inputs.reduce((sum, input) => sum + input.bytes.length, 0) > 250 * 1024 * 1024)
+    throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
+  const outputs = [];
+  let outputBytes = 0;
+  for (const input of inputs) {
+    signal?.throwIfAborted();
+    if (input.kind === "file") throw new Error("\u56FE\u7247\u5206\u5272\u53EA\u63A5\u53D7\u56FE\u7247");
+    const metadata = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    if (!metadata.width || !metadata.height || (metadata.pages ?? 1) > 1)
+      throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
+    const normalized = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+    const density = metadata.density ?? 300;
+    const stem = basename5(input.name, extname3(input.name));
+    for (const frame of gridSplitFrames(normalized.info.width, normalized.info.height, options)) {
+      signal?.throwIfAborted();
+      const bytes = await sharp9(normalized.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).withMetadata({ density }).png().toBuffer();
+      outputBytes += bytes.length;
+      if (outputBytes > 250 * 1024 * 1024) throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
+      outputs.push({
+        stem: `${stem}-\u5206\u5272-${frame.row + 1}-${frame.col + 1}`,
+        extension: "png",
+        bytes,
+        width: frame.width,
+        height: frame.height,
+        density,
+        format: "png",
+        kind: "image",
+        sourceId: input.id
+      });
+    }
+  }
+  return outputs;
 }
 
 // plugins/podplo-dsh/src/local-toolkit.ts
@@ -40909,7 +41416,7 @@ var storedOperationSchema = external_exports.object({
   completedAt: external_exports.string().datetime(),
   nativeSessionId: external_exports.string().min(1).max(240).optional(),
   inputIds: external_exports.array(external_exports.string()).max(100).optional(),
-  toolName: external_exports.enum(["podplo_resize_images", "podplo_rotate_flip_images", "podplo_adjust_image_colors", "podplo_export_images", "podplo_prepare_print_files", "podplo_package_delivery", "podplo_outline_images", "podplo_toolbox_pipeline"]).optional(),
+  toolName: external_exports.enum(["podplo_resize_images", "podplo_rotate_flip_images", "podplo_adjust_image_colors", "podplo_export_images", "podplo_prepare_print_files", "podplo_package_delivery", "podplo_outline_images", "podplo_toolbox_pipeline", "podplo_grid_split"]).optional(),
   archiveProject: external_exports.object({ key: external_exports.string(), name: external_exports.string() }).optional(),
   options: external_exports.unknown().optional()
 }).strict();
@@ -40960,6 +41467,7 @@ var processingTools = {
 var processingToolNames = Object.freeze(Object.keys(processingTools));
 function normalizedProcessingOptions(name, options) {
   if (name === TOOLBOX_PIPELINE_NAME) return ToolboxPlanSchema.parse(options);
+  if (name === GRID_SPLIT_OPERATION_NAME) return GridSplitOptionsSchema.parse(options);
   if (!processingToolNames.includes(name)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
   if (name === "podplo_resize_images") return ResizeOptionsSchema.parse(options);
   if (name === "podplo_prepare_print_files") options = withoutPrintSafetyOptions(options);
@@ -40990,11 +41498,11 @@ var definitions = Object.freeze([
   { name: "podplo_outline_images", description: `\u4E3A\u771F\u5B9E\u900F\u660E\u80CC\u666F\u4E3B\u4F53\u751F\u6210\u5E73\u6ED1\u5916\u8F6E\u5ED3\u3002\u62D2\u7EDD RGB \u6216\u4E0D\u900F\u660E RGBA\uFF0C\u907F\u514D\u628A\u6574\u5F20\u753B\u5E03\u63CF\u6210\u77E9\u5F62\u3002fillHoles=true \u8868\u793A\u4E0D\u63CF\u4E3B\u4F53\u5185\u90E8\u5B54\u6D1E\uFF1Bfill=none \u8868\u793A\u8F6E\u5ED3\u95F4\u8DDD\u900F\u660E\u3002\u9ED8\u8BA4\u540C\u65F6\u8FD4\u56DE\u539F\u56FE\u65B9\u5411\u548C\u6574\u56FE\u6C34\u5E73\u955C\u50CF\u3002${localInputGuidance}operationId \u7528\u4E8E\u5E42\u7B49\u91CD\u8BD5\u3002`, inputSchema: processingSchema(OutlineOptionsSchema) }
 ]);
 function sha256(value2) {
-  return createHash5("sha256").update(value2).digest("hex");
+  return createHash7("sha256").update(value2).digest("hex");
 }
-function canonical(value2) {
-  if (Array.isArray(value2)) return `[${value2.map(canonical).join(",")}]`;
-  if (value2 && typeof value2 === "object") return `{${Object.entries(value2).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}`;
+function canonical2(value2) {
+  if (Array.isArray(value2)) return `[${value2.map(canonical2).join(",")}]`;
+  if (value2 && typeof value2 === "object") return `{${Object.entries(value2).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical2(item)}`).join(",")}}`;
   return JSON.stringify(value2) ?? "null";
 }
 function fileFingerprint(stat) {
@@ -41026,7 +41534,7 @@ function mediaType(format2) {
   }[format2] ?? "application/octet-stream";
 }
 function safeOutputName(stem, extension) {
-  const cleaned = basename5(stem).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "").slice(0, 180) || "result";
+  const cleaned = basename6(stem).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "").slice(0, 180) || "result";
   return `${cleaned}.${extension}`;
 }
 var NativeLocalToolkit = class {
@@ -41049,6 +41557,9 @@ var NativeLocalToolkit = class {
   inflight = /* @__PURE__ */ new Map();
   previewControllers = /* @__PURE__ */ new Map();
   previewTails = /* @__PURE__ */ new Map();
+  previewCache = new ImageMemoryCache(16 * 1024 * 1024, 96);
+  frameCache = createToolboxFrameCache();
+  cacheAuthorization;
   async init() {
     if (this.initialized) return;
     if (this.closed) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u5DF2\u7ECF\u5173\u95ED");
@@ -41072,6 +41583,8 @@ var NativeLocalToolkit = class {
     this.inflight.clear();
     this.previewControllers.clear();
     this.previewTails.clear();
+    this.previewCache.clear();
+    this.frameCache.clear();
   }
   toolDefinitions() {
     return definitions;
@@ -41103,14 +41616,14 @@ var NativeLocalToolkit = class {
     const bytes = Buffer.from(args.base64, "base64");
     if (!bytes.length || bytes.length > 50 * 1024 * 1024 || bytes.toString("base64") !== args.base64)
       throw new Error("\u672C\u5730\u56FE\u7247\u7F16\u7801\u65E0\u6548\u6216\u8D85\u8FC7 50 MB");
-    const metadata = await sharp9(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    const metadata = await sharp10(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
     const expected = { "image/png": "png", "image/jpeg": "jpeg", "image/webp": "webp" }[args.contentType];
     if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1 || metadata.format !== expected)
       throw new Error("\u672C\u5730\u56FE\u7247\u5185\u5BB9\u4E0E\u58F0\u660E\u683C\u5F0F\u4E0D\u4E00\u81F4\uFF0C\u6216\u5C5E\u4E8E\u4E0D\u652F\u6301\u7684\u591A\u9875/\u52A8\u753B\u56FE\u7247");
     await this.assertIdentity(identity, "process");
     const extension = expected === "jpeg" ? "jpg" : expected;
     const stored = await this.publish({
-      stem: basename5(args.name, extname3(args.name)),
+      stem: basename6(args.name, extname4(args.name)),
       extension,
       bytes,
       width: metadata.width,
@@ -41153,14 +41666,30 @@ var NativeLocalToolkit = class {
     await this.assertIdentity(identity, "read");
     return { images: visible.filter((row) => row.kind === "image"), files: visible.filter((row) => row.kind === "file") };
   }
+  /** UI-only source queue for the independent grid splitter; processed tiles never displace imported sources. */
+  async listGridSplitInputs(sessionId, limit = 10) {
+    this.ready();
+    const session2 = opaqueId.parse(sessionId), identity = await this.identity("read"), sessionHash = sha256(session2);
+    const rows = this.store.snapshot().results.filter((row) => row.principal === identity.principal && row.session === sessionHash && row.kind === "image" && !row.sourceId).sort((left, right) => right.createdAt.localeCompare(left.createdAt)).slice(0, external_exports.number().int().min(1).max(10).parse(limit));
+    const images = [];
+    for (const row of rows) {
+      await this.readStored(row);
+      images.push(publicResult(row));
+    }
+    await this.assertIdentity(identity, "read");
+    return { images, files: [] };
+  }
   /** UI-only preview generated from the verified result bytes. */
   async resultPreview(id, sessionId) {
     this.ready();
     const identity = await this.identity("read"), row = this.ownedResult(opaqueId.parse(id), identity.principal, sha256(opaqueId.parse(sessionId)));
     if (row.kind !== "image" && row.format !== "png") throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u662F\u53EF\u9884\u89C8\u56FE\u7247");
     const source = await this.readStored(row);
-    const bytes = await sharp9(source, { limitInputPixels: 1e8, failOn: "error" }).resize(512, 512, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
+    const key = `${identity.authorization}:${row.session}:${row.id}:${row.fingerprint}:${row.digest}:512:82`, epoch = this.previewCache.revision();
+    const cached2 = this.previewCache.get(key);
+    const bytes = cached2 ?? await sharp10(source, { limitInputPixels: 1e8, failOn: "error" }).resize(512, 512, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
     await this.assertIdentity(identity, "read");
+    if (!cached2) this.previewCache.set(key, bytes, epoch);
     return { ...publicResult(row), contentType: "image/webp", bytes };
   }
   /** UI-only parameter preview. It never publishes files or records an operation. */
@@ -41190,10 +41719,39 @@ var NativeLocalToolkit = class {
     for (const step of options.steps) if (step.tool === "outline") OutlineOptionsSchema.parse(step.options);
     return this.idempotent(TOOLBOX_PIPELINE_NAME, { ...args, options }, opaqueId.parse(sessionId));
   }
+  /** UI-only equal-grid preview. It does not publish results or create an operation receipt. */
+  async gridSplitPreview(raw, sessionId) {
+    this.ready();
+    const args = previewArgs.parse(raw), options = GridSplitOptionsSchema.parse(args.options);
+    const session2 = opaqueId.parse(sessionId), key = sha256(session2);
+    this.previewControllers.get(key)?.abort();
+    const controller = new AbortController();
+    this.previewControllers.set(key, controller);
+    const previous = this.previewTails.get(key) ?? Promise.resolve(void 0);
+    const pending = previous.catch(() => void 0).then(() => this.renderGridSplitPreview({ ...args, options }, session2, controller.signal));
+    this.previewTails.set(key, pending);
+    try {
+      return await pending;
+    } catch (error51) {
+      if (controller.signal.aborted) throw new Error("PREVIEW_SUPERSEDED");
+      throw error51;
+    } finally {
+      if (this.previewControllers.get(key) === controller) this.previewControllers.delete(key);
+      if (this.previewTails.get(key) === pending) this.previewTails.delete(key);
+    }
+  }
+  async runGridSplit(raw, sessionId) {
+    this.ready();
+    const args = operationArgs.parse(raw), options = GridSplitOptionsSchema.parse(args.options);
+    if (args.ids.length * options.rows * options.cols > 400) throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
+    return this.idempotent(GRID_SPLIT_OPERATION_NAME, { ...args, options }, opaqueId.parse(sessionId));
+  }
   async renderPipeline(inputs, plan, sessionId, identity, preview = false, signal) {
     const rendered = await renderToolbox(inputs, plan, {
       preview,
       signal,
+      cache: this.frameCache,
+      cacheScope: `${identity.authorization}:${sha256(sessionId)}`,
       authorize: (tool) => this.assertIdentity(identity, "process", toolboxToolNames[tool]),
       pattern: async (id) => {
         const [input] = await this.resolveInputs([id], identity, sessionId, sha256(sessionId), "process", "podplo_outline_images");
@@ -41204,12 +41762,12 @@ var NativeLocalToolkit = class {
     await this.assertIdentity(identity, "process");
     return rendered;
   }
-  async pipelinePreview(rendered, signal = new AbortController().signal) {
+  async pipelinePreview(rendered, signal = new AbortController().signal, scope = "") {
     const images = [];
     const firstSource = rendered.previews[0]?.sourceId;
     for (const output of rendered.previews.filter((row) => row.sourceId === firstSource)) {
       const proof = output.kind === "file", mirror = /-镜像(?:-|$)/.test(output.stem);
-      const metadata = await sharp9(output.bytes, { limitInputPixels: 1e8 }).metadata();
+      const metadata = await sharp10(output.bytes, { limitInputPixels: 1e8 }).metadata();
       images.push({ ...await this.previewImage(
         proof ? "proof" : mirror ? "mirror" : "effect",
         safeOutputName(output.stem, output.extension),
@@ -41218,7 +41776,8 @@ var NativeLocalToolkit = class {
         output.height || metadata.height,
         output.format,
         output.density,
-        signal
+        signal,
+        scope
       ), sourceId: output.sourceId });
     }
     const files = rendered.outputs.filter((row) => row.kind === "file" && row.format !== "png").map((row) => ({ name: safeOutputName(row.stem, row.extension), format: row.format }));
@@ -41237,7 +41796,43 @@ var NativeLocalToolkit = class {
   async renderPipelinePreview(args, sessionId, signal) {
     const plan = ToolboxPlanSchema.parse(args.options), identity = await this.identity("process");
     const inputs = await this.resolveInputs([args.ids[0]], identity, sessionId, sha256(sessionId), "process");
-    return this.pipelinePreview(await this.renderPipeline(inputs, plan, sessionId, identity, true, signal), signal);
+    const result = await this.pipelinePreview(
+      await this.renderPipeline(inputs, plan, sessionId, identity, true, signal),
+      signal,
+      `${identity.authorization}:${sha256(sessionId)}`
+    );
+    await this.assertIdentity(identity, "process");
+    return result;
+  }
+  async renderGridSplitPreview(args, sessionId, signal) {
+    signal.throwIfAborted();
+    const identity = await this.identity("process"), sessionHash = sha256(sessionId);
+    const inputs = await this.resolveInputs([args.ids[0]], identity, sessionId, sessionHash, "process");
+    const input = inputs[0];
+    if (input.kind === "file") throw new Error("\u56FE\u7247\u5206\u5272\u53EA\u63A5\u53D7\u56FE\u7247");
+    const sourceMetadata = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    if (!sourceMetadata.width || !sourceMetadata.height || sourceMetadata.pages && sourceMetadata.pages > 1)
+      throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
+    const normalized = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+    const stem = basename6(input.name, extname4(input.name)), images = [];
+    for (const frame of gridSplitFrames(normalized.info.width, normalized.info.height, args.options)) {
+      signal.throwIfAborted();
+      const bytes = await sharp10(normalized.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).resize(320, 320, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
+      const name = safeOutputName(`${stem}-\u5206\u5272-${frame.row + 1}-${frame.col + 1}`, "png");
+      images.push({ ...await this.previewImage(
+        "effect",
+        name,
+        bytes,
+        frame.width,
+        frame.height,
+        "png",
+        sourceMetadata.density ?? 300,
+        signal,
+        `${identity.authorization}:${sessionHash}`
+      ), sourceId: input.id });
+    }
+    await this.assertIdentity(identity, "process");
+    return { toolName: GRID_SPLIT_OPERATION_NAME, images, files: [], generatedNames: images.map((row) => row.name) };
   }
   /** Host/UI download seam. The caller still receives no filesystem path. */
   async readResult(id, sessionId, purpose = "read") {
@@ -41261,7 +41856,7 @@ var NativeLocalToolkit = class {
         throw new Error("\u5F52\u6863\u52A0\u5DE5\u8F93\u5165\u65E0\u6548");
       total += input.bytes.length;
       if (total > 250 * 1024 * 1024) throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
-      return { id: input.id, name: basename5(input.name), bytes: Buffer.from(input.bytes), kind: input.kind };
+      return { id: input.id, name: basename6(input.name), bytes: Buffer.from(input.bytes), kind: input.kind };
     });
     return this.idempotentResolved(name, { operationId: args.operationId, ids: args.ids, options }, session2, inputs);
   }
@@ -41306,12 +41901,13 @@ var NativeLocalToolkit = class {
     const ownerId = external_exports.string().trim().min(1).max(500).parse(value2.ownerId);
     const namespaceValue = value2.namespace?.trim();
     const namespace = namespaceValue ? external_exports.string().max(500).parse(namespaceValue) : void 0;
-    return {
-      ownerId,
-      ...namespace ? { namespace } : {},
-      principal: sha256(ownerId),
-      authorization: sha256(`${ownerId}\0${namespace ?? ""}`)
-    };
+    const authorization = sha256(`${ownerId}\0${namespace ?? ""}`);
+    if (this.cacheAuthorization !== authorization) {
+      this.previewCache.clear();
+      this.frameCache.clear();
+      this.cacheAuthorization = authorization;
+    }
+    return { ownerId, ...namespace ? { namespace } : {}, principal: sha256(ownerId), authorization };
   }
   async assertIdentity(expected, purpose, toolName) {
     const actual = await this.identity(purpose, toolName);
@@ -41346,23 +41942,25 @@ var NativeLocalToolkit = class {
       const png = Buffer.from(preview.dataUrl.slice(preview.dataUrl.indexOf(",") + 1), "base64");
       const images2 = [await this.previewImage(
         "effect",
-        `${basename5(input.name, extname3(input.name))}-\u63CF\u8FB9.png`,
+        `${basename6(input.name, extname4(input.name))}-\u63CF\u8FB9.png`,
         png,
         preview.exportWidth,
         preview.exportHeight,
         "png",
         void 0,
-        signal
+        signal,
+        `${identity.authorization}:${sessionHash}`
       )];
       if (options.mirror) images2.push(await this.previewImage(
         "mirror",
-        `${basename5(input.name, extname3(input.name))}-\u63CF\u8FB9-\u955C\u50CF.png`,
-        await sharp9(png).flop().png().toBuffer(),
+        `${basename6(input.name, extname4(input.name))}-\u63CF\u8FB9-\u955C\u50CF.png`,
+        await sharp10(png).flop().png().toBuffer(),
         preview.exportWidth,
         preview.exportHeight,
         "png",
         void 0,
-        signal
+        signal,
+        `${identity.authorization}:${sessionHash}`
       ));
       await this.assertIdentity(identity, "process", name);
       return {
@@ -41375,7 +41973,7 @@ var NativeLocalToolkit = class {
       };
     }
     const bounded2 = await this.boundedPreviewInput(input, signal);
-    const sourceMetadata = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    const sourceMetadata = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
     if (!sourceMetadata.width || !sourceMetadata.height) throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u7684\u56FE\u7247");
     const swapsOrientation = sourceMetadata.orientation !== void 0 && [5, 6, 7, 8].includes(sourceMetadata.orientation);
     const sourceSize = {
@@ -41401,9 +41999,9 @@ var NativeLocalToolkit = class {
           Math.max(1, Math.round(previewTarget.height * scale)),
           { fit: proportional || options.fit === "inside" ? "fill" : options.fit }
         ).toBuffer();
-        const info = await sharp9(bytes).metadata();
+        const info = await sharp10(bytes).metadata();
         outputs = [{
-          stem: `${basename5(input.name, extname3(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
+          stem: `${basename6(input.name, extname4(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
           bytes,
           extension: prepared.format === "jpeg" ? "jpg" : prepared.format,
           format: prepared.format,
@@ -41426,7 +42024,8 @@ var NativeLocalToolkit = class {
         geometry.outputHeight,
         production.format,
         options.ppi,
-        signal
+        signal,
+        `${identity.authorization}:${sessionHash}`
       )];
       const files2 = [];
       await this.assertIdentity(identity, "process", name);
@@ -41438,17 +42037,18 @@ var NativeLocalToolkit = class {
         if (Math.max(widthPt, heightPt) > 14400) throw new Error("PDF \u7269\u7406\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u63D0\u9AD8 PPI \u6216\u51CF\u5C0F\u56FE\u7247");
         const image = await this.previewImage(
           "effect",
-          `${basename5(input.name, extname3(input.name))}-\u751F\u4EA7\u6587\u4EF6.pdf`,
+          `${basename6(input.name, extname4(input.name))}-\u751F\u4EA7\u6587\u4EF6.pdf`,
           bounded2.bytes,
           sourceSize.width,
           sourceSize.height,
           sourceMetadata.format ?? "png",
           operation.options.ppi,
-          signal
+          signal,
+          `${identity.authorization}:${sessionHash}`
         );
         const file2 = { name: image.name, format: "pdf", summary: `${widthPt.toFixed(1)} \xD7 ${heightPt.toFixed(1)} pt \xB7 ${operation.options.ppi} PPI` };
         await this.assertIdentity(identity, "process", name);
-        return { toolName: name, images: [{ ...image, name: basename5(input.name) }], files: [file2], generatedNames: [file2.name] };
+        return { toolName: name, images: [{ ...image, name: basename6(input.name) }], files: [file2], generatedNames: [file2.name] };
       }
       if (operation.tool === "rotate-flip") {
         const angle = (operation.options.angle % 360 + 360) % 360;
@@ -41474,7 +42074,8 @@ var NativeLocalToolkit = class {
       actualSize?.height ?? output.height,
       output.format,
       output.density,
-      signal
+      signal,
+      `${identity.authorization}:${sessionHash}`
     ));
     const files = outputs.filter((row) => row.kind === "file").map((row) => ({ name: safeOutputName(row.stem, row.extension), format: row.format }));
     await this.assertIdentity(identity, "process", name);
@@ -41482,13 +42083,13 @@ var NativeLocalToolkit = class {
   }
   async boundedPreviewInput(input, signal) {
     signal.throwIfAborted();
-    const bytes = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().resize(700, 700, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
+    const bytes = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().resize(700, 700, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
     signal.throwIfAborted();
     return { ...input, bytes, kind: "image" };
   }
   async assertStaticPreviewImage(input, signal) {
     signal.throwIfAborted();
-    const metadata = await sharp9(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).metadata();
+    const metadata = await sharp10(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).metadata();
     if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
       throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\uFF0C\u8BF7\u5148\u8F6C\u4E3A\u5355\u5F20\u9759\u6001\u56FE\u7247");
     signal.throwIfAborted();
@@ -41501,10 +42102,13 @@ var NativeLocalToolkit = class {
       height: Math.max(1, Math.min(target.height, Math.round(source.height * scale)))
     };
   }
-  async previewImage(key, name, source, width2, height2, format2, density, signal) {
+  async previewImage(key, name, source, width2, height2, format2, density, signal, scope = "") {
     signal.throwIfAborted();
-    const bytes = await sharp9(source, { limitInputPixels: 1e8, failOn: "error" }).resize(700, 700, { fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
+    const cacheKey = `${scope}:${imageDigest(source)}:700:84`, epoch = this.previewCache.revision();
+    const cached2 = scope ? this.previewCache.get(cacheKey) : void 0;
+    const bytes = cached2 ?? await sharp10(source, { limitInputPixels: 1e8, failOn: "error" }).resize(700, 700, { fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
     signal.throwIfAborted();
+    if (scope && !cached2) this.previewCache.set(cacheKey, bytes, epoch);
     return {
       key,
       name,
@@ -41516,8 +42120,8 @@ var NativeLocalToolkit = class {
     };
   }
   async idempotent(name, args, session2) {
-    const identity = await this.identity("process", name === TOOLBOX_PIPELINE_NAME ? void 0 : name), sessionHash = sha256(session2);
-    const digest = sha256(canonical({ name, ids: args.ids, options: args.options }));
+    const identity = await this.identity("process", name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : name), sessionHash = sha256(session2);
+    const digest = sha256(canonical2({ name, ids: args.ids, options: args.options }));
     const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
@@ -41533,8 +42137,8 @@ var NativeLocalToolkit = class {
     }
   }
   async idempotentResolved(name, args, session2, inputs) {
-    const identity = await this.identity("process", name === TOOLBOX_PIPELINE_NAME ? void 0 : name), sessionHash = sha256(session2);
-    const digest = sha256(canonical({ name, ids: args.ids, options: args.options }));
+    const identity = await this.identity("process", name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : name), sessionHash = sha256(session2);
+    const digest = sha256(canonical2({ name, ids: args.ids, options: args.options }));
     const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
@@ -41550,7 +42154,7 @@ var NativeLocalToolkit = class {
     }
   }
   async execute(name, args, sessionId, sessionHash, identity, digest, archivedInputs) {
-    const authName = name === TOOLBOX_PIPELINE_NAME ? void 0 : name;
+    const authName = name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : name;
     const existing = this.store.snapshot().operations.find((row) => row.principal === identity.principal && row.session === sessionHash && row.operationId === args.operationId);
     if (existing) {
       if (name === TOOLBOX_PIPELINE_NAME) {
@@ -41567,12 +42171,13 @@ var NativeLocalToolkit = class {
     const inputs = archivedInputs ?? await this.resolveInputs(args.ids, identity, sessionId, sessionHash, "process", authName);
     await this.assertIdentity(identity, "process", authName);
     let rendered;
-    const tool = name === TOOLBOX_PIPELINE_NAME ? void 0 : processingTools[name];
+    const tool = name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : processingTools[name];
     let outputs;
     if (name === TOOLBOX_PIPELINE_NAME) {
       rendered = await this.renderPipeline(inputs, ToolboxPlanSchema.parse(args.options), sessionId, identity);
       outputs = rendered.outputs;
-    } else if (tool === "resize") outputs = await this.resize(inputs, args.options);
+    } else if (name === GRID_SPLIT_OPERATION_NAME) outputs = await splitGridImages(inputs, GridSplitOptionsSchema.parse(args.options));
+    else if (tool === "resize") outputs = await this.resize(inputs, args.options);
     else {
       const operation = ToolkitOperationSchema.parse({ tool, options: args.options });
       let pattern;
@@ -41591,7 +42196,7 @@ var NativeLocalToolkit = class {
     if (outputs.length > 400 || outputs.reduce((sum, row) => sum + row.bytes.length, 0) > 250 * 1024 * 1024)
       throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
     await this.assertIdentity(identity, "process", authName);
-    const finalPreview = rendered ? await this.pipelinePreview(rendered) : void 0;
+    const finalPreview = rendered ? await this.pipelinePreview(rendered, void 0, `${identity.authorization}:${sessionHash}`) : void 0;
     await this.assertIdentity(identity, "process", authName);
     const stored = [];
     try {
@@ -41657,7 +42262,7 @@ var NativeLocalToolkit = class {
         const resolved = await this.options.resolveInput(identity.ownerId, sessionId, id);
         await this.assertIdentity(identity, purpose, toolName);
         if (!resolved || resolved.id !== id || !Buffer.isBuffer(resolved.bytes)) throw new Error("\u539F\u751F\u9644\u4EF6\u89E3\u6790\u7ED3\u679C\u65E0\u6548");
-        input = { id, name: basename5(external_exports.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
+        input = { id, name: basename6(external_exports.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
       }
       if (!input.bytes.length || input.bytes.length > 50 * 1024 * 1024) throw new Error("\u5355\u6587\u4EF6\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB");
       total += input.bytes.length;
@@ -41672,10 +42277,10 @@ var NativeLocalToolkit = class {
     const inputs = await this.resolveInputs(ids2, identity, sessionId, sessionHash, "read"), rows = [];
     for (const input of inputs) {
       if (input.kind === "file") {
-        rows.push({ id: input.id, name: input.name, kind: "file", format: extname3(input.name).slice(1).toLowerCase() });
+        rows.push({ id: input.id, name: input.name, kind: "file", format: extname4(input.name).slice(1).toLowerCase() });
         continue;
       }
-      const image = sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
+      const image = sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
       const metadata = await image.metadata();
       if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
       const hasAlpha = metadata.hasAlpha === true;
@@ -41686,7 +42291,7 @@ var NativeLocalToolkit = class {
         kind: "image",
         width: metadata.width,
         height: metadata.height,
-        format: metadata.format ?? extname3(input.name).slice(1).toLowerCase(),
+        format: metadata.format ?? extname4(input.name).slice(1).toLowerCase(),
         density: metadata.density,
         hasAlpha,
         hasTransparency
@@ -41698,7 +42303,7 @@ var NativeLocalToolkit = class {
   async assertTransparentForOutline(inputs) {
     for (const input of inputs) {
       if (input.kind === "file") throw new Error("\u81EA\u52A8\u63CF\u8FB9\u53EA\u63A5\u53D7\u56FE\u7247");
-      const image = sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
+      const image = sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
       const metadata = await image.metadata();
       const transparent = metadata.hasAlpha === true && !(await image.stats()).isOpaque;
       if (!transparent) throw new Error(`\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u771F\u5B9E\u900F\u660E\u80CC\u666F\uFF1B${input.name} \u662F RGB \u6216\u4E0D\u900F\u660E RGBA\uFF0C\u5DF2\u62D2\u7EDD\uFF0C\u907F\u514D\u63CF\u6210\u6574\u5F20\u77E9\u5F62`);
@@ -41710,9 +42315,9 @@ var NativeLocalToolkit = class {
       if (input.kind === "file") throw new Error("\u5C3A\u5BF8\u8C03\u6574\u53EA\u63A5\u53D7\u56FE\u7247");
       const { image, format: format2, transparentCrop } = await prepareResizeImage(input.bytes, options);
       const bytes = await image.toBuffer();
-      const output = await sharp9(bytes).metadata();
+      const output = await sharp10(bytes).metadata();
       outputs.push({
-        stem: `${basename5(input.name, extname3(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
+        stem: `${basename6(input.name, extname4(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
         extension: format2 === "jpeg" ? "jpg" : format2,
         bytes,
         width: output.width,
@@ -41852,26 +42457,7 @@ function parseProcessingPlan(value2, history = {}) {
   });
 }
 
-// plugins/podplo-dsh/src/contracts.ts
-var PODPLO_MANUAL_SESSION_ID = "podplo-manual";
-var PODPLO_TOOLBOX_WORKSPACE_ID = "podplo-toolbox-v1";
-var PodploPluginError = class extends Error {
-  constructor(code, message, details) {
-    super(message);
-    this.code = code;
-    this.details = details;
-    this.name = "PodploPluginError";
-  }
-  code;
-  details;
-};
-
 // plugins/podplo-dsh/src/service.ts
-var comparableGenerationItems = (items) => items.map((item) => ({
-  ...item.skillId ? { skillId: item.skillId } : {},
-  ...item.sourceName ? { sourceName: item.sourceName } : {},
-  args: item.args
-}));
 var objectSchema = (properties, required2 = [], additionalProperties = false) => ({
   type: "object",
   properties,
@@ -41916,7 +42502,7 @@ var TOOL_DEFINITIONS = [
   { name: "podplo_resolve_selection", description: "Resolve an exact Skill, gallery item or private asset for native conversation injection.", inputSchema: objectSchema({ kind: { type: "string", enum: ["skill", "gallery", "asset"] }, id: stringSchema }, ["kind", "id"]) },
   { name: "podplo_generation_capabilities", description: "Read the authoritative generation quote input JSON schema and complete current model list. Use a returned model id; never guess a UUID. Treat only exposed schema fields as controllable modes: For transparent images, check the selected model and schema for background=transparent and output_format=png or webp. These are provider parameters in each item.args, not prompt instructions. An absent parameter does not prove the underlying model never supports it, and prompt text must not impersonate a missing mode switch.", inputSchema: objectSchema({ refresh: { type: "boolean" } }) },
   { name: "podplo_prepare_generation", description: `Quote the complete user-requested generation batch without submitting it. Before calling, collect every image/item the user asked to execute and call this tool exactly once with expectedOutputCount equal to the full requested output total. Never split "\u5168\u90E8\u6267\u884C" into separate approval batches. The Host rejects missing, partial or oversized batches before showing a confirmation. For current-conversation images, put their opaque attachment/result IDs in each item.args.referenceAssetIds; the Host imports them into the signed-in user's private references before quoting. Existing private cloud asset UUIDs are reused without uploading. Pass provider parameters in each item.args: a transparent-background request requires background="transparent" and output_format="png" or "webp" (PNG by default), after checking podplo_generation_capabilities for schema and model support. Never rely only on wording in prompt for an alpha channel; JPEG cannot carry alpha. Missing server support must be reported, not replaced by prompt text. When status is quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears in the current conversation. End the turn and wait for that card; do not call ask_user_question or ask the user to report that they clicked it. The Agent is resumed with the verified operation status after the UI approval finishes.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, expectedOutputCount: { type: "integer", minimum: 1, maximum: 1e4, description: "The complete number of images the user asked to execute in this batch. Derive it from the whole request, never from a partial subset." }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, sourceName: { type: "string", maxLength: 255 }, args: { type: "object", properties: { count: { type: "integer", minimum: 1, description: "Output count for this item; all item counts must cover expectedOutputCount." }, referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "expectedOutputCount", "items"]) },
-  { name: "podplo_generation_status", description: "Read or refresh one existing generation operation. This never resubmits. completed only means remote generation finished; verify real pixels for transparency or later local processing with podplo_selected_image_info.", inputSchema: objectSchema({ operationId: stringSchema, refresh: { type: "boolean" } }, ["operationId"]) },
+  { name: "podplo_generation_status", description: "Read or refresh one existing generation operation. This never resubmits. completed only means remote generation finished; the Host verifies pixels and executes registered local processing. Report factual Host execution status without inspecting or judging output quality, changing parameters, or repeating paid generation.", inputSchema: objectSchema({ operationId: stringSchema, refresh: { type: "boolean" } }, ["operationId"]) },
   { name: "podplo_list_generations", description: "List generation operations for the current account.", inputSchema: objectSchema({}) }
 ];
 var MCP_ACTIONS = {
@@ -41941,7 +42527,7 @@ var MCP_ACTIONS = {
   podplo_generation_status: "generation.status",
   podplo_list_generations: "generation.list"
 };
-function record2(value2, label = "\u53C2\u6570") {
+function record3(value2, label = "\u53C2\u6570") {
   if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u5FC5\u987B\u662F\u5BF9\u8C61`);
   return value2;
 }
@@ -41972,7 +42558,7 @@ function stringArray(value2, label, maximum = 200) {
   return [...value2];
 }
 function jsonObject(value2, label) {
-  const input = record2(value2, label);
+  const input = record3(value2, label);
   try {
     return structuredClone(input);
   } catch {
@@ -42037,9 +42623,10 @@ var PodploPluginService = class extends EventEmitter2 {
   stoppedOperationIds = /* @__PURE__ */ new Set();
   favoriteMigrationJobs = /* @__PURE__ */ new Map();
   favoriteWriteJobs = /* @__PURE__ */ new Map();
+  changeRevision = 0;
   initialized = false;
   closed = false;
-  onlineChanged = () => this.emit("change", this.snapshot());
+  onlineChanged = () => this.publish();
   async init() {
     if (this.initialized) return;
     if (this.closed) throw new PodploPluginError("SERVICE_CLOSED", "\u670D\u52A1\u5DF2\u5173\u95ED");
@@ -42053,7 +42640,7 @@ var PodploPluginService = class extends EventEmitter2 {
           item.status = "submission_unknown";
           item.errorCode = "SUBMISSION_RESULT_UNKNOWN";
         }
-        row.status = this.operationStatus(row);
+        row.status = operationStatus(row);
         row.updatedAt = this.now().toISOString();
       }
     });
@@ -42062,7 +42649,7 @@ var PodploPluginService = class extends EventEmitter2 {
     this.online.on?.("change", this.onlineChanged);
     await this.pruneConfirmations();
     this.initialized = true;
-    this.emit("change", this.snapshot());
+    this.publish();
   }
   async close() {
     if (this.closed) return;
@@ -42090,12 +42677,16 @@ var PodploPluginService = class extends EventEmitter2 {
       sessionId: row.nativeSessionId,
       intentId: row.intentId,
       project: row.archiveProject,
+      diagnostics: [
+        ...row.lastStatusDiagnostic ? [row.lastStatusDiagnostic] : [],
+        ...row.items.filter((item) => ["failed", "submission_unknown"].includes(item.status) || item.outputs?.some((output) => !output.assetId && (output.failureCode || output.status === "failed"))).slice(0, 10).map((item) => diagnose("generation", { code: item.status === "submission_unknown" ? "SUBMISSION_RESULT_UNKNOWN" : item.errorCode ?? item.outputs?.find((output) => !output.assetId && output.failureCode)?.failureCode }, row.updatedAt))
+      ],
       name: row.taskName || "\u751F\u56FE\u4EFB\u52A1",
       createdAt: row.createdAt,
-      status: this.operationStatus(row),
+      status: operationStatus(row),
       ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
       ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
-      generationAudit: this.generationAudit(row),
+      generationAudit: generationAudit(row),
       ...row.processingPlan !== void 0 ? { processingPlan: row.processingPlan } : {},
       generationCalls: row.items.map((item) => ({
         prompt: typeof item.args.prompt === "string" ? item.args.prompt : "",
@@ -42118,6 +42709,15 @@ var PodploPluginService = class extends EventEmitter2 {
     await this.assertOwner(ownerId, false);
     return { ownerId, items };
   }
+  /** Host-only observation; do not scan historical operations through UI RPC. */
+  pendingGenerationIds() {
+    const state = this.online.snapshot();
+    if (!this.initialized || state.status !== "connected" || !state.identity?.userId) return [];
+    return this.store.snapshot().operations.filter((row) => row.ownerId === state.identity.userId && row.items.some((item) => item.generationId && item.status === "submitted")).map((row) => row.operationId);
+  }
+  refreshPendingGeneration(operationId2) {
+    return this.generationStatus({ operationId: operationId2, refresh: true }, { source: "ui" }, true);
+  }
   async setProcessingPlan(input, caller) {
     const sessionId = this.nativeSessionFor(caller), ownerId = await this.owner(true);
     const operationId2 = text2(input.operationId, "operationId", 180);
@@ -42135,28 +42735,8 @@ var PodploPluginService = class extends EventEmitter2 {
       row.processingPlan = plan;
       row.updatedAt = this.now().toISOString();
     });
-    this.emit("change", this.snapshot());
+    this.publish();
     return { operationId: operationId2, registered: true, steps: plan.map((step) => ({ id: step.id, label: step.label })) };
-  }
-  generationAudit(row) {
-    const audit = { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
-    for (const item of row.items) {
-      const planned = item.quote.outputCount, succeeded = new Set(item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []).size;
-      const remaining = Math.max(0, planned - succeeded);
-      audit.planned += planned;
-      audit.succeeded += succeeded;
-      if (item.status === "failed") audit.failed += remaining;
-      else if (item.status === "cancelled") audit.cancelled += remaining;
-      else {
-        const failed = Math.min(remaining, item.outputs?.filter((output) => !output.assetId && (output.failureCode || output.status === "failed")).length ?? 0);
-        audit.failed += failed;
-        if (item.status === "submission_unknown" || item.status === "completed") audit.unknown += remaining - failed;
-        else audit.pending += remaining - failed;
-      }
-    }
-    audit.succeeded = new Set(row.items.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? [])).size;
-    audit.unknown += Math.max(0, audit.planned - audit.succeeded - audit.failed - audit.pending - audit.cancelled - audit.unknown);
-    return audit;
   }
   /**
    * Synchronously latches a trusted native-session Stop before any asynchronous
@@ -42178,14 +42758,20 @@ var PodploPluginService = class extends EventEmitter2 {
     for (const operationId2 of operationIds) this.stoppedOperationIds.add(operationId2);
     return epoch;
   }
+  publish() {
+    this.changeRevision++;
+    this.emit("change", this.snapshot());
+  }
   snapshot() {
     const state = this.online.snapshot();
     const ownerId = state.identity?.userId;
     const saved = this.initialized ? this.store.snapshot() : { operations: [], confirmations: [] };
     return {
       initialized: this.initialized,
+      revision: this.changeRevision,
       account: {
         status: state.status,
+        ...this.online.uiAuthorizationScope ? { uiScope: this.online.uiAuthorizationScope() } : {},
         ...ownerId ? { userId: ownerId } : {},
         ...state.identity?.email ? { email: state.identity.email } : {},
         ...state.balance ? { balance: structuredClone(state.balance) } : {}
@@ -42196,7 +42782,7 @@ var PodploPluginService = class extends EventEmitter2 {
       },
       pending: {
         confirmations: ownerId ? saved.confirmations.filter((row) => row.ownerId === ownerId && !row.cancelledAt && Date.parse(row.expiresAt) > this.now().getTime()).length : 0,
-        generations: ownerId ? saved.operations.filter((row) => row.ownerId === ownerId && ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(this.operationStatus(row))).length : 0
+        generations: ownerId ? saved.operations.filter((row) => row.ownerId === ownerId && ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(operationStatus(row))).length : 0
       }
     };
   }
@@ -42236,14 +42822,14 @@ var PodploPluginService = class extends EventEmitter2 {
       row.status = "cancelled";
       row.updatedAt = this.now().toISOString();
     });
-    this.emit("change", this.snapshot());
+    this.publish();
     const operation = this.store.snapshot().operations.find((row) => row.ownerId === found.ownerId && row.operationId === operationId2);
-    return this.safeOperation(operation);
+    return safeOperation(operation);
   }
   async dispatch(action, args, caller) {
     if (!this.initialized) throw new PodploPluginError("NOT_INITIALIZED", "\u670D\u52A1\u5C1A\u672A\u521D\u59CB\u5316");
     if (this.closed) throw new PodploPluginError("SERVICE_CLOSED", "\u670D\u52A1\u5DF2\u5173\u95ED");
-    const input = args === void 0 ? {} : record2(args);
+    const input = args === void 0 ? {} : record3(args);
     let data;
     switch (action) {
       case "snapshot":
@@ -42398,8 +42984,8 @@ var PodploPluginService = class extends EventEmitter2 {
     const expectedContextOwner = includeGenerationContext && state.status === "connected" ? await this.owner(false) : void 0;
     let result = publicSkill;
     if (resolveBinding && state.status === "connected") {
-      const resolved = record2(await this.online.skillDetails(slug2), "Skill \u8BE6\u60C5");
-      const details = record2(resolved.details ?? {}, "Skill \u516C\u5F00\u8BE6\u60C5");
+      const resolved = record3(await this.online.skillDetails(slug2), "Skill \u8BE6\u60C5");
+      const details = record3(resolved.details ?? {}, "Skill \u516C\u5F00\u8BE6\u60C5");
       const binding = { ...resolved };
       delete binding.details;
       if (typeof binding.id === "string") this.skillBindings.set(binding.id, { slug: slug2, label: publicSkill.title });
@@ -42417,11 +43003,11 @@ var PodploPluginService = class extends EventEmitter2 {
     const expectedContextOwner = includeGenerationContext && state.status === "connected" ? await this.owner(false) : void 0;
     let bindings = [];
     if (resolveBindings && state.status === "connected") {
-      const resolved = record2(await this.online.resolveSkillFamily(slug2), "Skill \u65CF\u8BE6\u60C5");
+      const resolved = record3(await this.online.resolveSkillFamily(slug2), "Skill \u65CF\u8BE6\u60C5");
       bindings = Array.isArray(resolved.members) ? resolved.members : [];
     }
     const members = publicMembers.map((member) => {
-      const binding = bindings.find((value2) => record2(value2).slug === member.slug);
+      const binding = bindings.find((value2) => record3(value2).slug === member.slug);
       if (binding && typeof binding.id === "string") this.skillBindings.set(binding.id, { slug: member.slug, label: member.title });
       if (!resolveBindings) return member;
       return {
@@ -42463,7 +43049,7 @@ var PodploPluginService = class extends EventEmitter2 {
     this.requireUi(caller);
     const ownerId = await this.owner(true);
     const galleryId = text2(input.id, "id", 180);
-    const item = record2(await this.galleryDetail({ id: galleryId }, caller), "\u56FE\u5E93\u9879");
+    const item = record3(await this.galleryDetail({ id: galleryId }, caller), "\u56FE\u5E93\u9879");
     if (item.id !== galleryId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(galleryId))
       throw new PodploPluginError("GALLERY_REFERENCE_UNAVAILABLE", "\u8BE5\u56FE\u5E93\u56FE\u7247\u6CA1\u6709\u53EF\u7528\u7684\u8D44\u4EA7 ID");
     const publicUrl = (value2) => {
@@ -42528,16 +43114,16 @@ var PodploPluginService = class extends EventEmitter2 {
       removed: 0,
       retryable: false
     };
-    const count = (status) => row.results.filter((item) => item.status === status).length;
+    const count2 = (status) => row.results.filter((item) => item.status === status).length;
     return {
       status: row.status,
       total: row.results.length,
-      added: count("added"),
-      existing: count("existing"),
-      rejected: count("rejected"),
-      unknown: count("unknown"),
-      removed: count("removed"),
-      retryable: count("rejected") > 0,
+      added: count2("added"),
+      existing: count2("existing"),
+      rejected: count2("rejected"),
+      unknown: count2("unknown"),
+      removed: count2("removed"),
+      retryable: count2("rejected") > 0,
       updatedAt: row.updatedAt
     };
   }
@@ -42679,7 +43265,7 @@ var PodploPluginService = class extends EventEmitter2 {
           migration.updatedAt = this.now().toISOString();
         }
       });
-      this.emit("change", this.snapshot());
+      this.publish();
       return result;
     });
     this.favoriteWriteJobs.set(ownerId, task);
@@ -42700,7 +43286,7 @@ var PodploPluginService = class extends EventEmitter2 {
       throw new PodploPluginError("INVALID_ARGUMENT", "\u8BF7\u901A\u8FC7\u4E8C\u8FDB\u5236\u4E0A\u4F20\u901A\u9053\u63D0\u4EA4\u56FE\u7247");
     const detail = await this.online.uploadReference({ filename, contentType, bytes: input.bytes }, ownerId);
     await this.assertOwner(ownerId, false);
-    this.emit("change", this.snapshot());
+    this.publish();
     return detail;
   }
   async assetDelete(input, caller) {
@@ -42714,7 +43300,7 @@ var PodploPluginService = class extends EventEmitter2 {
     const ids2 = stringArray(confirmation.payload.ids, "ids");
     const result = await this.online.deleteUploads(ids2, confirmation.ownerId);
     await this.workbench.forgetUploads(confirmation.ownerId, result.deletedIds);
-    this.emit("change", this.snapshot());
+    this.publish();
     return result;
   }
   skillReferenceIds(value2) {
@@ -42746,7 +43332,7 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async mySkillCreate(input, caller) {
     const ownerId = await this.owner(true);
-    const prepared = await this.resolveMySkillInput(record2(input.input, "input"), caller, ownerId, UserSkillCreateSchema);
+    const prepared = await this.resolveMySkillInput(record3(input.input, "input"), caller, ownerId, UserSkillCreateSchema);
     await this.assertOwner(ownerId, true);
     const skill = await this.online.createUserSkill(prepared);
     await this.assertOwner(ownerId, true);
@@ -42756,7 +43342,7 @@ var PodploPluginService = class extends EventEmitter2 {
   async mySkillUpdate(input, caller) {
     const id = text2(input.id, "id", 180);
     const ownerId = await this.owner(true);
-    const prepared = await this.resolveMySkillInput(record2(input.input, "input"), caller, ownerId, UserSkillUpdateSchema);
+    const prepared = await this.resolveMySkillInput(record3(input.input, "input"), caller, ownerId, UserSkillUpdateSchema);
     await this.assertOwner(ownerId, true);
     const skill = await this.online.updateUserSkill(id, prepared);
     await this.assertOwner(ownerId, true);
@@ -42789,7 +43375,7 @@ var PodploPluginService = class extends EventEmitter2 {
     const id = text2(confirmation.payload.id, "id", 180);
     await this.online.deleteUserSkill(id, text2(confirmation.payload.expectedUpdatedAt, "expectedUpdatedAt", 80));
     this.personalSkillVersions.delete(this.personalSkillKey(confirmation.ownerId, id));
-    this.emit("change", this.snapshot());
+    this.publish();
     return { deleted: true, id };
   }
   async resolveSelection(input, caller) {
@@ -42797,7 +43383,7 @@ var PodploPluginService = class extends EventEmitter2 {
     const id = text2(input.id, "id", 180);
     const nativeSessionId = caller.source === "ui" && caller.sessionId === void 0 ? void 0 : this.options.resolveNativeSessionId?.(caller);
     if (kind === "gallery") {
-      const item = record2(await this.galleryDetail({ id }, caller));
+      const item = record3(await this.galleryDetail({ id }, caller));
       return {
         version: 1,
         kind: "gallery",
@@ -42829,9 +43415,9 @@ var PodploPluginService = class extends EventEmitter2 {
       const publicSkill = catalog?.skills.find((row) => row.slug === slug2 && row.executable);
       if (publicSkill) {
         const ownerId2 = await this.owner(true);
-        const detail = record2(await this.skillDetail({ slug: slug2 }));
+        const detail = record3(await this.skillDetail({ slug: slug2 }));
         await this.assertOwner(ownerId2, true);
-        const detailBinding = detail.binding ? record2(detail.binding) : void 0;
+        const detailBinding = detail.binding ? record3(detail.binding) : void 0;
         if (typeof detailBinding?.id !== "string" || detailBinding.availableForCurrentPlan !== true)
           throw new PodploPluginError("SKILL_UNAVAILABLE", "\u8BE5 Skill \u5F53\u524D\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u6743\u9650\u540E\u91CD\u8BD5");
         return {
@@ -42926,14 +43512,14 @@ var PodploPluginService = class extends EventEmitter2 {
       if (!isDeepStrictEqual(comparableGenerationItems(exact.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(exact.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
       this.assertQuotedOutputCount(exact.items, expectedOutputCount);
-      return this.safeOperation(exact);
+      return safeOperation(exact);
     }
     const previous = state.operations.find((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.intentId === intentId && row.planVersion === planVersion);
     if (previous) {
       if (!isDeepStrictEqual(comparableGenerationItems(previous.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(previous.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
       this.assertQuotedOutputCount(previous.items, expectedOutputCount);
-      return this.safeOperation(previous);
+      return safeOperation(previous);
     }
     const key = `${ownerId}:${nativeSessionId}:${intentId}:${planVersion}`;
     const active = this.preparing.get(key);
@@ -42960,7 +43546,7 @@ var PodploPluginService = class extends EventEmitter2 {
   preparedItems(value2, allowOrdinary = false) {
     if (!Array.isArray(value2) || value2.length < 1 || value2.length > 100) throw new PodploPluginError("INVALID_ARGUMENT", "items \u5FC5\u987B\u5305\u542B 1-100 \u9879");
     return value2.map((raw, index) => {
-      const item = record2(raw, `items[${index}]`);
+      const item = record3(raw, `items[${index}]`);
       const args = jsonObject(item.args, `items[${index}].args`);
       const sourceName = item.sourceName === void 0 ? {} : { sourceName: text2(item.sourceName, "sourceName", 255) };
       if (item.skillId === void 0) {
@@ -42985,9 +43571,9 @@ var PodploPluginService = class extends EventEmitter2 {
     if (expectedOutputCount === void 0) return;
     let planned = 0;
     for (const item of items) {
-      const count = item.args.count;
-      if (count === void 0 || !Number.isSafeInteger(count) || count < 1) return;
-      planned += count;
+      const count2 = item.args.count;
+      if (count2 === void 0 || !Number.isSafeInteger(count2) || count2 < 1) return;
+      planned += count2;
       if (!Number.isSafeInteger(planned)) return;
     }
     if (planned !== expectedOutputCount) {
@@ -43106,9 +43692,9 @@ var PodploPluginService = class extends EventEmitter2 {
       saved.operations.unshift(row);
       saved.operations = saved.operations.slice(0, 500);
     });
-    this.emit("change", this.snapshot());
+    this.publish();
     const persisted = this.store.snapshot().operations.find((value2) => value2.ownerId === ownerId && value2.nativeSessionId === nativeSessionId && value2.intentId === intentId && value2.planVersion === planVersion);
-    return this.safeOperation(persisted);
+    return safeOperation(persisted);
   }
   async generationApprove(input, caller, nativeApproval = false) {
     if (!nativeApproval) this.requireUi(caller);
@@ -43123,20 +43709,20 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     if (operation.approvalId !== approvalId) throw new PodploPluginError("CONFIRMATION_MISMATCH", "\u62A5\u4EF7\u786E\u8BA4\u4E0D\u5339\u914D");
     const pending = operation.items.filter((item) => item.status === "quoted");
-    if (!pending.length) return this.safeOperation(operation);
+    if (!pending.length) return safeOperation(operation);
     if (pending.some((item) => Date.parse(item.quote.expiresAt) <= this.now().getTime())) throw new PodploPluginError("QUOTE_EXPIRED", "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u4EE5\u65B0\u65B9\u6848\u7248\u672C\u91CD\u65B0\u62A5\u4EF7");
     for (const item of pending) await this.assertPersonalSkillCurrent(item, ownerId);
     await this.assertOwner(ownerId, true);
     await this.store.transaction((saved) => {
       const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
       row.approvedAt ??= this.now().toISOString();
-      row.status = this.operationStatus(row);
+      row.status = operationStatus(row);
       row.updatedAt = this.now().toISOString();
     });
     operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
     this.startSubmission(operationId2, ownerId);
-    this.emit("change", this.snapshot());
-    return this.safeOperation(operation);
+    this.publish();
+    return safeOperation(operation);
   }
   startSubmission(operationId2, ownerId) {
     if (this.submissionJobs.has(operationId2)) return;
@@ -43171,7 +43757,7 @@ var PodploPluginService = class extends EventEmitter2 {
         const current = row.items.find((value2) => value2.itemId === itemId);
         if (current.status !== "quoted" || this.stoppedOperationIds.has(operationId2)) return false;
         current.status = "submitting";
-        row.status = this.operationStatus(row);
+        row.status = operationStatus(row);
         row.updatedAt = this.now().toISOString();
         return true;
       });
@@ -43201,7 +43787,7 @@ var PodploPluginService = class extends EventEmitter2 {
           current.status = "submitted";
           current.generationId = result.id;
           current.remoteStatus = result.status;
-          row.status = this.operationStatus(row);
+          row.status = operationStatus(row);
           row.updatedAt = this.now().toISOString();
         });
         accepted = true;
@@ -43210,9 +43796,9 @@ var PodploPluginService = class extends EventEmitter2 {
         await this.store.transaction((saved) => {
           const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
           const current = row.items.find((value2) => value2.itemId === itemId);
-          current.status = this.definiteSubmissionFailure(code) ? "failed" : "submission_unknown";
+          current.status = definiteSubmissionFailure(code) ? "failed" : "submission_unknown";
           current.errorCode = code;
-          row.status = this.operationStatus(row);
+          row.status = operationStatus(row);
           row.updatedAt = this.now().toISOString();
         });
         if (code === "SESSION_CHANGED") {
@@ -43221,16 +43807,16 @@ var PodploPluginService = class extends EventEmitter2 {
         }
       }
       if (accepted) this.scheduleAccountRefresh(ownerId);
-      this.emit("change", this.snapshot());
+      this.publish();
     }
     await this.store.transaction((saved) => {
       const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
       if (row) {
-        row.status = this.operationStatus(row);
+        row.status = operationStatus(row);
         row.updatedAt = this.now().toISOString();
       }
     });
-    this.emit("change", this.snapshot());
+    this.publish();
   }
   async failUnsubmittedItem(operationId2, ownerId, itemId, code) {
     await this.store.transaction((saved) => {
@@ -43240,7 +43826,7 @@ var PodploPluginService = class extends EventEmitter2 {
         item.status = "failed";
         item.errorCode = code;
       }
-      row.status = this.operationStatus(row);
+      row.status = operationStatus(row);
       row.updatedAt = this.now().toISOString();
     });
   }
@@ -43251,7 +43837,7 @@ var PodploPluginService = class extends EventEmitter2 {
         item.status = "failed";
         item.errorCode = code;
       }
-      row.status = this.operationStatus(row);
+      row.status = operationStatus(row);
       row.updatedAt = this.now().toISOString();
     });
   }
@@ -43263,7 +43849,7 @@ var PodploPluginService = class extends EventEmitter2 {
         item.errorCode = code;
       }
       row.stoppedAt ??= this.now().toISOString();
-      row.status = this.operationStatus(row);
+      row.status = operationStatus(row);
       row.updatedAt = this.now().toISOString();
     });
   }
@@ -43280,7 +43866,7 @@ var PodploPluginService = class extends EventEmitter2 {
         item.errorCode = "NATIVE_SESSION_STOPPED";
       }
       row.stoppedAt ??= this.now().toISOString();
-      row.status = this.operationStatus(row);
+      row.status = operationStatus(row);
       row.updatedAt = this.now().toISOString();
     });
   }
@@ -43322,12 +43908,12 @@ var PodploPluginService = class extends EventEmitter2 {
           }
           if (item.status === "cancelled" && item.errorCode === "NATIVE_SESSION_STOPPED") cancelledItems++;
         }
-        row.status = this.operationStatus(row);
+        row.status = operationStatus(row);
         row.updatedAt = stoppedAt;
       }
     });
     if (this.pendingSessionStops.get(nativeSessionId)?.epoch === stopEpoch) this.pendingSessionStops.delete(nativeSessionId);
-    this.emit("change", this.snapshot());
+    this.publish();
     return { stopped: true, cancelledItems };
   }
   currentSessionStopEpoch(nativeSessionId) {
@@ -43345,11 +43931,11 @@ var PodploPluginService = class extends EventEmitter2 {
       row.status = "cancelled";
       row.updatedAt = this.now().toISOString();
     });
-    this.emit("change", this.snapshot());
+    this.publish();
     const operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
-    return this.safeOperation(operation);
+    return safeOperation(operation);
   }
-  async generationStatus(input, caller) {
+  async generationStatus(input, caller, pendingOnly = false) {
     const ownerId = await this.owner(false);
     const operationId2 = text2(input.operationId, "operationId", 180);
     const nativeSessionId = caller.source === "agent" ? this.nativeSessionFor(caller) : void 0;
@@ -43357,95 +43943,45 @@ var PodploPluginService = class extends EventEmitter2 {
     if (!operation) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
     const refresh = bool(input.refresh);
     if (refresh) {
-      for (const item of operation.items.filter((value2) => value2.generationId && ["submitted", "completed", "failed"].includes(value2.status))) {
+      for (const item of operation.items.filter((value2) => value2.generationId && (pendingOnly ? value2.status === "submitted" : ["submitted", "completed", "failed"].includes(value2.status)))) {
         await this.assertOwner(ownerId, false);
-        const remote = await this.gateway().status(item.generationId);
+        let remote;
+        try {
+          remote = await this.gateway().status(item.generationId);
+        } catch (error51) {
+          await this.assertOwner(ownerId, false);
+          await this.store.transaction((saved) => {
+            const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+            row.lastStatusDiagnostic = diagnose("connection", error51, this.now().toISOString());
+          });
+          this.publish();
+          throw error51;
+        }
         await this.assertOwner(ownerId, false);
         await this.store.transaction((saved) => {
           const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+          delete row.lastStatusDiagnostic;
           const current = row.items.find((value2) => value2.itemId === item.itemId);
           current.remoteStatus = remote.status;
-          current.outputs = this.safeGenerationOutputs(remote.outputs);
+          current.outputs = safeGenerationOutputs(remote.outputs);
           if (remote.status === "completed") current.status = "completed";
           else if (["failed", "cancelled", "rejected"].includes(remote.status)) current.status = "failed";
           else current.status = "submitted";
-          row.status = this.operationStatus(row);
+          row.status = operationStatus(row);
           row.updatedAt = this.now().toISOString();
         });
         if (["completed", "failed", "cancelled", "rejected"].includes(remote.status)) this.scheduleAccountRefresh(ownerId);
       }
       operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
     }
-    if (refresh) this.emit("change", this.snapshot());
-    return this.safeOperation(operation);
+    if (refresh) this.publish();
+    return safeOperation(operation);
   }
   async generationList(caller, input) {
     const ownerId = await this.owner(false);
     if (input.scope === "manual") this.requireUi(caller);
     const nativeSessionId = input.scope === "manual" ? PODPLO_MANUAL_SESSION_ID : caller.source === "agent" || caller.sessionId !== void 0 ? this.nativeSessionFor(caller) : void 0;
-    return { items: this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && (nativeSessionId === void 0 || row.nativeSessionId === nativeSessionId)).map((row) => this.safeOperation(row)) };
-  }
-  safeOperation(row) {
-    const summary = this.operationSummary(row);
-    const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
-    return {
-      operationId: row.operationId,
-      intentId: row.intentId,
-      planVersion: row.planVersion,
-      status: this.operationStatus(row),
-      createdAt: row.createdAt,
-      updatedAt: row.updatedAt,
-      quote: {
-        expiresAt,
-        totalCredits: summary.totalCredits,
-        outputCount: summary.outputCount,
-        confirmationText: `\u672C\u6279 ${summary.itemCount} \u9879\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20`
-      },
-      approvalId: row.approvalId,
-      summary,
-      items: row.items.map((item) => ({
-        itemId: item.itemId,
-        ...item.skillId ? { skillId: item.skillId } : {},
-        status: item.status,
-        totalCredits: item.quote.totalCredits,
-        outputCount: item.quote.outputCount,
-        ...item.generationId ? { generationId: item.generationId } : {},
-        ...item.remoteStatus ? { remoteStatus: item.remoteStatus } : {},
-        ...item.errorCode ? { errorCode: item.errorCode } : {},
-        ...item.outputs ? { outputs: structuredClone(item.outputs) } : {}
-      })),
-      ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
-      ...row.replacedBy ? { replacedBy: row.replacedBy } : {},
-      ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {}
-    };
-  }
-  operationSummary(row) {
-    const count = (status) => row.items.filter((item) => item.status === status).length;
-    return {
-      itemCount: row.items.length,
-      totalCredits: row.items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
-      outputCount: row.items.reduce((sum, item) => sum + item.quote.outputCount, 0),
-      acceptedCount: row.items.filter((item) => !!item.generationId).length,
-      completedCount: count("completed"),
-      unknownCount: count("submission_unknown"),
-      failedCount: count("failed"),
-      cancelledCount: count("cancelled"),
-      pendingCount: count("quoted") + count("submitting"),
-      submittedCount: count("submitted")
-    };
-  }
-  operationStatus(row) {
-    const statuses = row.items.map((item) => item.status);
-    if (statuses.every((status) => status === "cancelled")) return "cancelled";
-    if (statuses.every((status) => status === "quoted") && !row.approvedAt) return "quoted";
-    if (statuses.includes("submitting") || row.approvedAt && statuses.includes("quoted")) return "submitting";
-    if (statuses.every((status) => status === "completed")) return "completed";
-    if (statuses.includes("submission_unknown")) return statuses.some((status) => ["submitted", "completed", "failed"].includes(status)) ? "partial_unknown" : "submission_unknown";
-    if (statuses.some((status) => status === "submitted")) return "submitted";
-    if (statuses.includes("cancelled") && statuses.includes("completed")) return "partial_cancelled";
-    if (statuses.some((status) => status === "failed")) return statuses.every((status) => ["failed", "completed", "cancelled"].includes(status)) && statuses.some((status) => status === "completed") ? "partial_failure" : "failed";
-    if (statuses.includes("cancelled")) return "cancelled";
-    return "submitted";
+    return { items: this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && (nativeSessionId === void 0 || row.nativeSessionId === nativeSessionId)).map((row) => safeOperation(row)) };
   }
   async assertOwner(ownerId, write) {
     if (await this.owner(write) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
@@ -43478,7 +44014,7 @@ var PodploPluginService = class extends EventEmitter2 {
       if (this.online.snapshot().identity?.userId !== ownerId) return "owner-changed";
       await this.online.refresh();
       if (this.online.snapshot().identity?.userId !== ownerId) return "owner-changed";
-      this.emit("change", this.snapshot());
+      this.publish();
       return "refreshed";
     } catch (error51) {
       if (this.errorCode(error51) === "SESSION_CHANGED" || this.online.snapshot().identity?.userId !== ownerId) return "owner-changed";
@@ -43512,26 +44048,6 @@ var PodploPluginService = class extends EventEmitter2 {
     await this.assertOwner(ownerId, false);
     await this.online.userSkill(item.skillId, { expectedUpdatedAt: item.personalUpdatedAt });
     await this.assertOwner(ownerId, false);
-  }
-  definiteSubmissionFailure(code) {
-    return ["QUOTE_EXPIRED", "CONFIRMATION_MISMATCH", "USER_SKILL_CHANGED", "REFERENCE_UNAVAILABLE", "INSUFFICIENT_CREDITS"].includes(code);
-  }
-  safeGenerationOutputs(value2) {
-    if (value2 === void 0) return [];
-    if (!Array.isArray(value2) || value2.length > 100) throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
-    const uuid3 = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
-    const code = /^[A-Za-z0-9_-]{1,80}$/u;
-    const outputs = value2.map((raw, index) => {
-      const row = record2(raw, `outputs[${index}]`);
-      if (typeof row.slotId !== "string" || !uuid3.test(row.slotId) || !Number.isInteger(row.index) || row.index < 0 || row.index > 1e3 || typeof row.status !== "string" || !code.test(row.status) || !(row.assetId === null || typeof row.assetId === "string" && uuid3.test(row.assetId)) || !(row.failureCode === null || typeof row.failureCode === "string" && code.test(row.failureCode))) {
-        throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
-      }
-      return { slotId: row.slotId, index: row.index, status: row.status, assetId: row.assetId, failureCode: row.failureCode };
-    });
-    if (new Set(outputs.map((row) => row.slotId)).size !== outputs.length || new Set(outputs.map((row) => row.index)).size !== outputs.length) {
-      throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u69FD\u4F4D\u91CD\u590D");
-    }
-    return outputs;
   }
   publicModelCapabilities(value2) {
     if (!Array.isArray(value2) || value2.length > 200) throw new PodploPluginError("INVALID_MODEL_RESPONSE", "\u4E3B\u7AD9\u6A21\u578B\u5217\u8868\u683C\u5F0F\u65E0\u6548");
@@ -43610,7 +44126,7 @@ var PodploPluginService = class extends EventEmitter2 {
       saved.confirmations.unshift(row);
       saved.confirmations = saved.confirmations.slice(0, 200);
     });
-    this.emit("change", this.snapshot());
+    this.publish();
     return { confirmationRequired: true, confirmationId: row.id, summary, expiresAt: row.expiresAt };
   }
   async consumeConfirmation(id, kind) {
@@ -43635,7 +44151,7 @@ var PodploPluginService = class extends EventEmitter2 {
       row.cancelledAt = this.now().toISOString();
       return { confirmationId: id, cancelled: true, alreadyCancelled: false };
     });
-    this.emit("change", this.snapshot());
+    this.publish();
     return result;
   }
   async pruneConfirmations() {
@@ -43651,7 +44167,7 @@ var PodploPluginService = class extends EventEmitter2 {
 };
 
 // plugins/podplo-dsh/src/generation-gateway.ts
-import { createHash as createHash6 } from "node:crypto";
+import { createHash as createHash8 } from "node:crypto";
 
 // plugins/podplo-dsh/src/generation-background.ts
 var allows = (schema, value2) => schema?.type === "string" && (!schema.enum || schema.enum.includes(value2));
@@ -43684,62 +44200,6 @@ function normalizeBackground(input) {
   if (format2 !== "png" && format2 !== "webp") throw new Error("TRANSPARENT_OUTPUT_FORMAT_REQUIRED");
   return { ...input, output_format: format2 };
 }
-
-// plugins/podplo-dsh/package.json
-var package_default = {
-  name: "@podplo/dsh-plugin",
-  version: "0.1.7",
-  private: true,
-  license: "UNLICENSED",
-  description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
-  type: "module",
-  main: "dist/index.js",
-  exports: {
-    ".": "./dist/index.js",
-    "./client": "./dist/client.js",
-    "./package.json": "./package.json",
-    "./locale/en.json": "./locale/en.json"
-  },
-  files: [
-    "dist",
-    "cordis.patch.yml",
-    "README.md",
-    "locale"
-  ],
-  dsh: {
-    bundle: {
-      patch: "./cordis.patch.yml"
-    },
-    client: {
-      platform: "web",
-      immediately: true,
-      inject: [
-        "@deepseek-ai/dsh-client-connection",
-        "@deepseek-ai/dsh-client-ui-sidebar",
-        "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-workspace",
-        "@deepseek-ai/dsh-client-ui-session"
-      ]
-    }
-  },
-  dependencies: {
-    sharp: "0.35.5"
-  },
-  peerDependencies: {
-    "@deepseek-ai/cordis": "~4.1.0",
-    "@deepseek-ai/dsh-mcp-client": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-home-paths": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-credentials": "0.2.2-rc.1",
-    "@deepseek-ai/schemastery": "~3.19.0"
-  },
-  engines: {
-    node: ">=24.9.0"
-  }
-};
-
-// plugins/podplo-dsh/src/version.ts
-var PLUGIN_VERSION = package_default.version;
 
 // plugins/podplo-dsh/src/generation-gateway.ts
 var object3 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
@@ -43878,7 +44338,7 @@ var NativeGenerationGateway = class {
     if (!Array.isArray(modelResult.models) || modelResult.models.some((value3) => !object3(value3))) throw new OnlineError("INVALID_TOOL_RESPONSE");
     if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
     const value2 = {
-      version: `sha256:${createHash6("sha256").update(JSON.stringify(quoteInputSchema)).digest("hex")}`,
+      version: `sha256:${createHash8("sha256").update(JSON.stringify(quoteInputSchema)).digest("hex")}`,
       quoteInputSchema,
       refreshedAt: (/* @__PURE__ */ new Date()).toISOString(),
       models: modelResult.models
@@ -43957,7 +44417,7 @@ import { randomBytes as randomBytes2, timingSafeEqual as timingSafeEqual2 } from
 var mcpServerInstructions = "\u63D0\u4EA4\u524D\u628A\u4E0D\u660E\u786E\u7684\u9700\u6C42\u96C6\u4E2D\u95EE\u6E05\u3002\u968F\u673A\u8303\u56F4\u4E0D\u660E\u786E\u65F6\u5148\u4E2D\u6027\u6F84\u6E05\u4E00\u6B21\uFF1B\u660E\u786E\u540E\u76F4\u63A5\u8C03\u7528 podplo_prepare_skill_batch\u3002\u6211\u7684 Skill \u4F7F\u7528 skillSource=personal\uFF1B\u591A\u6587\u4EF6\u5939\u7528 groups \u4E00\u6B21\u6574\u6279\u62A5\u4EF7\uFF1B\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[]\uFF0C\u7531\u5BBF\u4E3B\u8BFB\u53D6\u5B8C\u6574\u9884\u8BBE\uFF0C\u4E0D\u7531\u6A21\u578B\u7FFB\u8BD1\u5C3A\u5BF8\u3001\u987A\u5E8F\u6216\u955C\u50CF\u62FC\u63A5\u3002\u4E0D\u8981\u9010\u56FE\u8BFB\u53D6\u3001\u641C\u7D22\u811A\u672C\u6216\u81EA\u884C\u8BC4\u4EF7\u6548\u679C\u3002\u6536\u8D39\u53EA\u8BA4\u5F53\u524D\u5BF9\u8BDD\u7684\u53EF\u4FE1\u300C\u786E\u8BA4\u5E76\u751F\u6210\u300D\u539F\u751F\u5BA1\u6279\uFF0C\u62D2\u7EDD\u5373\u505C\u6B62\u3002\u786E\u8BA4\u540E\u7531\u5BBF\u4E3B\u81EA\u52A8\u5B8C\u6210\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5168\u90E8\u672C\u5730\u52A0\u5DE5\uFF0C\u5E76\u53D1\u6700\u591A\u4E24\u5F20\uFF0C\u4E0D\u518D\u8981\u6C42\u4EBA\u5DE5\u4ECB\u5165\u3002\u6A21\u578B\u4E0D\u8BC4\u4EF7\u6210\u679C\u8D28\u91CF\uFF0C\u4E0D\u6539\u53C2\u6570\uFF0C\u4E0D\u91CD\u751F\u6210\uFF0C\u4E0D\u91CD\u590D\u62A5\u4EF7\u6216\u52A0\u5DE5\uFF1B\u5DF2\u6709\u64CD\u4F5C\u4EC5\u8BFB\u53D6\u72B6\u6001\u3002\u6280\u672F\u5931\u8D25\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u81EA\u52A8\u6362\u65B9\u6848\u6216\u91CD\u8BD5\u6536\u8D39\u3002\u6210\u679C\u4FDD\u7559 AI \u539F\u56FE\u3001\u6700\u7EC8\u52A0\u5DE5\u56FE/PDF \u548C\u4EFB\u52A1\u603B\u7ED3\uFF0C\u4E0D\u8F93\u51FA\u5F85\u590D\u6838\u3001\u6821\u6837\u6216 JSON \u62A5\u544A\u3002\u53EA\u6709\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u8981\u6C42\u7684\u52A0\u5DE5\u5747\u5B8C\u6210\u624D\u80FD\u62A5\u544A\u6574\u4F53\u6210\u529F\u3002";
 var MAX_UI_BODY = 72 * 1024 * 1024;
 var MAX_MCP_BODY = 32 * 1024 * 1024;
-var record3 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
+var record4 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
 function publicError(error51) {
   if (error51 instanceof PrintSizeError) return { code: error51.code, message: PRINT_SIZE_ERRORS[error51.code], details: {} };
   if (error51 instanceof OnlineError && /^[A-Z_]{1,80}$/.test(error51.code)) {
@@ -43999,12 +44459,12 @@ function pluginUploadHandler(service, validSession = () => false) {
     const reply = (value2) => Response.json(value2, { headers: { "Cache-Control": "no-store" } });
     try {
       const principal = peer.principal;
-      if (!(principal === "owner" || record3(principal) && principal.kind === "owner"))
+      if (!(principal === "owner" || record4(principal) && principal.kind === "owner"))
         return reply({ ok: false, error: { code: "PODPLO_OWNER_REQUIRED", message: "\u6B64 PodPlo \u8FDE\u63A5\u53EA\u5411\u5F53\u524D DSH \u6240\u6709\u8005\u5F00\u653E\u3002", details: {} } });
       const metadata = request.headers.get("X-Podplo-Upload");
       if (request.method !== "POST" || !metadata || metadata.length > 6e3) throw new Error("invalid upload");
       const input = JSON.parse(decodeURIComponent(metadata));
-      if (!record3(input) || typeof input.filename !== "string" || input.filename.length > 255 || !input.filename.trim() || typeof input.ownerId !== "string" || !input.ownerId || input.ownerId.length > 180) throw new Error("invalid upload");
+      if (!record4(input) || typeof input.filename !== "string" || input.filename.length > 255 || !input.filename.trim() || typeof input.ownerId !== "string" || !input.ownerId || input.ownerId.length > 180) throw new Error("invalid upload");
       const sessionId = input.sessionId;
       if (sessionId !== void 0 && (typeof sessionId !== "string" || !validSession(sessionId))) throw new Error("unknown native session");
       const contentType = request.headers.get("Content-Type");
@@ -44048,13 +44508,13 @@ function pluginRpcHandler(service, validSession = () => false) {
     const reply = (result) => Response.json({ type: "server-response", rpcId, result }, { headers: { "Cache-Control": "no-store" } });
     try {
       const principal = peer.principal;
-      if (!(principal === "owner" || record3(principal) && principal.kind === "owner")) return reply({
+      if (!(principal === "owner" || record4(principal) && principal.kind === "owner")) return reply({
         ok: false,
         error: { code: "PODPLO_OWNER_REQUIRED", message: "\u6B64 PodPlo \u8FDE\u63A5\u53EA\u5411\u5F53\u524D DSH \u6240\u6709\u8005\u5F00\u653E\u3002", details: {} }
       });
       if (request.method !== "POST") throw new Error("POST required");
       const message = await requestJson(request);
-      if (!record3(message) || message.type !== "client-request" || typeof message.rpcId !== "string" || message.rpcId.length > 200 || message.method !== "podplo/request" || !record3(message.payload) || typeof message.payload.action !== "string") throw new Error("invalid request");
+      if (!record4(message) || message.type !== "client-request" || typeof message.rpcId !== "string" || message.rpcId.length > 200 || message.method !== "podplo/request" || !record4(message.payload) || typeof message.payload.action !== "string") throw new Error("invalid request");
       rpcId = message.rpcId;
       const { action, args, sessionId } = message.payload;
       if (action === "assets.upload") throw new Error("binary upload route required");
@@ -44110,14 +44570,14 @@ async function startPluginMcp(service) {
       let id = null;
       try {
         const message = await nodeJson(request);
-        if (!record3(message) || message.jsonrpc !== "2.0" || typeof message.method !== "string") throw new Error("invalid JSON RPC");
+        if (!record4(message) || message.jsonrpc !== "2.0" || typeof message.method !== "string") throw new Error("invalid JSON RPC");
         if (message.id === void 0) {
           response.writeHead(202).end();
           return;
         }
         if (typeof message.id !== "string" && typeof message.id !== "number") throw new Error("invalid RPC ID");
         id = message.id;
-        const params = record3(message.params) ? message.params : {};
+        const params = record4(message.params) ? message.params : {};
         let result;
         switch (message.method) {
           case "initialize":
@@ -44186,13 +44646,13 @@ async function startPluginMcp(service) {
 }
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
-import sharp11 from "sharp";
-import { basename as basename8, extname as extname6 } from "node:path";
+import sharp12 from "sharp";
+import { basename as basename9, extname as extname7 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
-import { createHash as createHash7 } from "node:crypto";
-import { basename as basename6, extname as extname4, join as join7 } from "node:path";
-import sharp10 from "sharp";
+import { createHash as createHash9 } from "node:crypto";
+import { basename as basename7, extname as extname5, join as join7 } from "node:path";
+import sharp11 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
 var MAX_INPUT_PIXELS = 4e7;
@@ -44207,14 +44667,14 @@ var MappingSchema = external_exports.object({
   status: external_exports.enum(["uploading", "ready", "unknown"]),
   updatedAt: external_exports.string().datetime()
 }).strict();
-var hash2 = (value2) => createHash7("sha256").update(value2).digest("hex");
+var hash2 = (value2) => createHash9("sha256").update(value2).digest("hex");
 var fail = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var authorizationHash = (identity) => hash2(`${identity.ownerId}\0${identity.namespace ?? ""}`);
 function safeWebpName(value2) {
-  const leaf = basename6(value2.replace(/\\/gu, "/"));
-  const stem = basename6(leaf, extname4(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
+  const leaf = basename7(value2.replace(/\\/gu, "/"));
+  const stem = basename7(leaf, extname5(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
   return `${stem}.webp`;
 }
 async function normalizeNativeReference(input) {
@@ -44222,7 +44682,7 @@ async function normalizeNativeReference(input) {
   if (!source.length || source.length > MAX_INPUT_BYTES) fail("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
   let metadata;
   try {
-    metadata = await sharp10(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
+    metadata = await sharp11(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
   } catch {
     return fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
   }
@@ -44240,14 +44700,14 @@ async function normalizeNativeReference(input) {
   for (let attempt = 0; attempt < 9; attempt++) {
     const width2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
     const height2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
-    output = await sharp10(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
+    output = await sharp11(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
     if (output.length <= targetBytes) break;
     const ratio = Math.sqrt(targetBytes / output.length) * 0.92;
     scale *= Math.max(0.42, Math.min(0.88, ratio));
     quality = Math.max(38, quality - 7);
   }
   if (!output.length || output.length > MAX_OUTPUT_BYTES) fail("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
-  const verified = await sharp10(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
+  const verified = await sharp11(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
   if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)
     fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
   return { name: safeWebpName(input.name), bytes: output, fingerprint: hash2(output) };
@@ -44394,10 +44854,10 @@ var NativeReferenceBridge = class {
 };
 
 // plugins/podplo-dsh/src/output-directory.ts
-import { createHash as createHash8, randomUUID as randomUUID10 } from "node:crypto";
+import { createHash as createHash10, randomUUID as randomUUID10 } from "node:crypto";
 import { constants as constants3 } from "node:fs";
 import { lstat as lstat3, mkdir as mkdir6, open as open4, realpath as realpath4, unlink as unlink2 } from "node:fs/promises";
-import { basename as basename7, dirname as dirname7, extname as extname5, isAbsolute as isAbsolute4, join as join8, relative as relative3 } from "node:path";
+import { basename as basename8, dirname as dirname7, extname as extname6, isAbsolute as isAbsolute4, join as join8, relative as relative3 } from "node:path";
 var hashPattern2 = /^[a-f0-9]{64}$/u;
 var opaqueSession = external_exports.string().min(1).max(240).regex(/^[^/\\\0\r\n]+$/u);
 var directoryRowSchema = external_exports.object({
@@ -44415,14 +44875,14 @@ function validateState2(value2) {
   return state;
 }
 function sha2562(value2) {
-  return createHash8("sha256").update(value2).digest("hex");
+  return createHash10("sha256").update(value2).digest("hex");
 }
 function fingerprint(stat) {
   return `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}`;
 }
 function safeName(value2) {
-  const extension = extname5(basename7(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
-  const rawStem = basename7(value2, extname5(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
+  const extension = extname6(basename8(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
+  const rawStem = basename8(value2, extname6(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
   const stem = Array.from(rawStem || "result").slice(0, 160).join("");
   return `${stem}${extension || ".bin"}`;
 }
@@ -44506,7 +44966,7 @@ var OutputDirectoryManager = class {
     const base2 = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base2, true) : base2;
     const requested = safeName(external_exports.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
-    const extension = extname5(requested), stem = basename7(requested, extension);
+    const extension = extname6(requested), stem = basename8(requested, extension);
     let published, publishedName = "", publishedFingerprint = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
@@ -44557,14 +45017,14 @@ var OutputDirectoryManager = class {
   }
   async open(exportId, sessionId) {
     if (!this.options.openPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6");
-    const { identity, record: record5 } = await this.ownedExport(exportId, sessionId);
-    await this.options.openPath(record5.path);
+    const { identity, record: record6 } = await this.ownedExport(exportId, sessionId);
+    await this.options.openPath(record6.path);
     await this.assertIdentity(identity, "export");
   }
   async reveal(exportId, sessionId) {
     if (!this.options.revealPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6\u6240\u5728\u4F4D\u7F6E");
-    const { identity, record: record5 } = await this.ownedExport(exportId, sessionId);
-    await this.options.revealPath(record5.path);
+    const { identity, record: record6 } = await this.ownedExport(exportId, sessionId);
+    await this.options.revealPath(record6.path);
     await this.assertIdentity(identity, "export");
   }
   async openDirectory() {
@@ -44615,23 +45075,23 @@ var OutputDirectoryManager = class {
   async ownedExport(exportIdValue, sessionId) {
     this.ready();
     const exportId = external_exports.string().uuid().parse(exportIdValue), session2 = sha2562(opaqueSession.parse(sessionId));
-    const identity = await this.identity("export"), record5 = this.sessionExports.get(exportId);
-    if (!record5 || record5.owner !== identity.principal || record5.session !== session2 || record5.authorization !== identity.authorization)
+    const identity = await this.identity("export"), record6 = this.sessionExports.get(exportId);
+    if (!record6 || record6.owner !== identity.principal || record6.session !== session2 || record6.authorization !== identity.authorization)
       throw new Error("\u8BE5\u5BFC\u51FA\u8BB0\u5F55\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
-    assertAllowedFileName(record5.name);
+    assertAllowedFileName(record6.name);
     const rootRow = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
     if (!rootRow) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5DF2\u6E05\u9664");
-    const base2 = await this.verifyRoot(rootRow.path), root = record5.reviewRequired ? await this.reviewDirectory(base2) : base2;
-    const stat = await lstat3(record5.path).catch(() => void 0);
-    if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record5.fingerprint)
+    const base2 = await this.verifyRoot(rootRow.path), root = record6.reviewRequired ? await this.reviewDirectory(base2) : base2;
+    const stat = await lstat3(record6.path).catch(() => void 0);
+    if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record6.fingerprint)
       throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u6539\u53D8");
-    const actual = await realpath4(record5.path);
+    const actual = await realpath4(record6.path);
     const boundary = relative3(root, actual);
     if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute4(boundary)) throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u4E0D\u518D\u53EF\u4FE1");
-    return { identity, record: { ...record5, path: actual } };
+    return { identity, record: { ...record6, path: actual } };
   }
   dropOwnerExports(principal) {
-    for (const [id, record5] of this.sessionExports) if (record5.owner === principal) this.sessionExports.delete(id);
+    for (const [id, record6] of this.sessionExports) if (record6.owner === principal) this.sessionExports.delete(id);
   }
   timestamp() {
     return (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString();
@@ -44658,7 +45118,8 @@ var importReferenceDefinition = {
   } }
 };
 function session(ctx, id) {
-  if (id === PODPLO_TOOLBOX_WORKSPACE_ID) return fail2("NATIVE_SESSION_REQUIRED", "\u5DE5\u5177\u7BB1\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
+  if (id === PODPLO_TOOLBOX_WORKSPACE_ID || id === PODPLO_GRID_SPLIT_WORKSPACE_ID)
+    return fail2("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
   return id && ctx.agents.get(id) || fail2("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
 }
 function imageReceipt(events, id) {
@@ -44698,7 +45159,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
   } finally {
     reader.releaseLock();
   }
-  const bytes = Buffer.concat(chunks), meta3 = await sharp11(bytes, { limitInputPixels: 1e8 }).metadata();
+  const bytes = Buffer.concat(chunks), meta3 = await sharp12(bytes, { limitInputPixels: 1e8 }).metadata();
   if (!meta3.width || !meta3.height || !["png", "jpeg", "webp"].includes(meta3.format ?? "")) fail2("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
   return bytes;
 }
@@ -44706,7 +45167,7 @@ async function nativeToolkitTransport(options) {
   const { ctx, online, service } = options;
   const toolkit = new NativeLocalToolkit({
     directory: options.directory,
-    archiveProject: (sessionId) => sessionId === PODPLO_TOOLBOX_WORKSPACE_ID ? { key: "podplo:toolbox", name: "\u5DE5\u5177\u7BB1" } : options.archiveProject?.(sessionId),
+    archiveProject: (sessionId) => sessionId === PODPLO_TOOLBOX_WORKSPACE_ID ? { key: "podplo:toolbox", name: "\u5DE5\u5177\u7BB1" } : sessionId === PODPLO_GRID_SPLIT_WORKSPACE_ID ? { key: "podplo:grid-split", name: "\u56FE\u7247\u5206\u5272" } : options.archiveProject?.(sessionId),
     async authorize(input = { purpose: "read" }) {
       const slug2 = input.toolName && IMAGE_TOOLKIT_CATALOG.find((row) => row.agent === input.toolName)?.slug;
       const ownerId = await online.workspaceIdentity(input.purpose !== "read", slug2);
@@ -44824,15 +45285,20 @@ async function nativeToolkitTransport(options) {
       }
     },
     async dispatch(action, args, caller) {
-      const standalone2 = action.startsWith("toolbox.");
+      const toolboxStandalone = action.startsWith("toolbox.");
+      const gridSplitStandalone = action.startsWith("splitter.");
+      const standalone2 = toolboxStandalone || gridSplitStandalone;
       if (!standalone2 && !action.startsWith("local.")) return service.dispatch(action, args, caller);
       if (caller.source !== "ui") return fail2("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
       if (!standalone2) session(ctx, caller.sessionId);
-      const scope = standalone2 ? PODPLO_TOOLBOX_WORKSPACE_ID : caller.sessionId;
-      if (standalone2) action = `local.${action.slice("toolbox.".length)}`;
-      if (standalone2 && action === "local.save") return { ok: true, data: await toolkit.runPipeline(args, scope) };
-      if (standalone2 && action === "local.pipelinePreview") return { ok: true, data: await toolkit.toolPreview(TOOLBOX_PIPELINE_NAME, args, scope) };
-      if (action === "local.list") return { ok: true, data: await toolkit.list(scope) };
+      const scope = gridSplitStandalone ? PODPLO_GRID_SPLIT_WORKSPACE_ID : standalone2 ? PODPLO_TOOLBOX_WORKSPACE_ID : caller.sessionId;
+      if (toolboxStandalone) action = `local.${action.slice("toolbox.".length)}`;
+      if (gridSplitStandalone) action = `local.${action.slice("splitter.".length)}`;
+      if (toolboxStandalone && action === "local.save") return { ok: true, data: await toolkit.runPipeline(args, scope) };
+      if (toolboxStandalone && action === "local.pipelinePreview") return { ok: true, data: await toolkit.toolPreview(TOOLBOX_PIPELINE_NAME, args, scope) };
+      if (gridSplitStandalone && action === "local.save") return { ok: true, data: await toolkit.runGridSplit(args, scope) };
+      if (gridSplitStandalone && action === "local.preview") return { ok: true, data: await toolkit.gridSplitPreview(args, scope) };
+      if (action === "local.list") return { ok: true, data: gridSplitStandalone ? await toolkit.listGridSplitInputs(scope) : await toolkit.list(scope) };
       if (action === "local.importInput") return { ok: true, data: await toolkit.importInput(args, scope) };
       if (standalone2 && action === "local.use") {
         session(ctx, caller.sessionId);
@@ -44891,10 +45357,10 @@ async function nativeToolkitTransport(options) {
         const bytes = await downloadOriginal(detail.downloadUrl, id, options.fetcher);
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
           return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
-        const format2 = (await sharp11(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
+        const format2 = (await sharp12(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
         if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail2("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id}`;
-        const stem = basename8(originalName, extname6(originalName));
+        const stem = basename9(originalName, extname7(originalName));
         const trustedName = `${stem || `\u7D20\u6750-${id}`}.${format2 === "jpeg" ? "jpg" : format2}`;
         return { ok: true, data: await outputs.export(bytes, trustedName, scope) };
       }
@@ -44938,7 +45404,7 @@ For non-folder work use targeted Skill details once, reuse returned capabilities
 
 After the trusted native quote confirmation, the Host performs generation, download and every registered local processing step automatically, at most two local jobs concurrently. No further user intervention or model quality review is needed. Do not inspect, rate or critique outputs; do not change prompts, parameters or processing plans; do not repeat completed or failed work, regenerate, re-quote or run extra tools to improve quality. Report factual execution status only. A technical failure is reported as a failure; it never authorizes paid retry or an alternative workflow. Reuse operation IDs and read status after uncertain submission. Transparency is background="transparent", never just prompt wording.
 
-Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected, cancelled or unavailable ends the turn without retry. Do not ask whether approval was clicked or create another approval question. In IM use podplo_wait_generation; after the Host completes generation/download/processing, use podplo_prepare_generation_delivery and dsh_im_return_file for returned images. Otherwise wait for the verified Host completion notification. Returned files are queued for delivery; do not claim receipt. No timeout resubmission. Task artifacts are AI originals and selected final processed images/PDF plus \u4EFB\u52A1\u603B\u7ED3.txt (actual count, submitted prompts, model/Skill/tool calls); no review folders, proof images or JSON reports.`;
+Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected, cancelled or unavailable ends the turn without retry. Do not ask whether approval was clicked or create another approval question. In IM use podplo_wait_generation; after the Host completes generation/download/processing, use podplo_prepare_generation_delivery and dsh_im_return_file for returned images. Otherwise wait for the verified Host completion notification. Returned files are queued for delivery; do not claim receipt. No timeout resubmission. New task folders contain only final selected production images/PDF in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt (actual count, submitted prompts, model/Skill/tool calls). Do not deliver copies of source/reference images, AI originals when superseded, intermediate versions, review folders, proof images or JSON reports. For generation-only tasks the generated image itself is the final deliverable. Recovery bytes stay in the private Host cache; historical tasks keep their recorded layout.`;
 function standardAgentPlugins() {
   return [
     { id: "persona", name: "@deepseek-ai/dsh-persona", config: { prefix: `You are the PodPlo assistant powered by the {{model}} model.
@@ -45031,7 +45497,7 @@ async function registerPodploNativePresets(agentPresets, options = {}) {
 }
 
 // plugins/podplo-dsh/src/jev-routing.ts
-import { createHash as createHash9, randomUUID as randomUUID11 } from "node:crypto";
+import { createHash as createHash11, randomUUID as randomUUID11 } from "node:crypto";
 var stages = ["discover_skill", "read_inputs", "prepare_generation", "wait_generation", "process_outputs", "deliver", "complete"];
 var groups = ["skill_discovery", "skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status", "image_processing", "delivery"];
 var workflows = ["podplo_generation", "image_processing", "other"];
@@ -45383,7 +45849,7 @@ function installJevUsageObserver(options) {
       names: toolNames,
       count: toolNames.length,
       schemaBytes: Buffer.byteLength(schema),
-      schemaHash: createHash9("sha256").update(schema).digest("hex")
+      schemaHash: createHash11("sha256").update(schema).digest("hex")
     };
     const routingState = options.routingStates.get(sessionId);
     const applied = routingState?.current ?? fullApplication(0, "baseline");
@@ -45469,99 +45935,187 @@ function installJevUsageObserver(options) {
 }
 
 // plugins/podplo-dsh/src/task-archive-host.ts
-import { createHash as createHash12 } from "node:crypto";
-import { basename as basename10, extname as extname8, join as join10 } from "node:path";
+import { createHash as createHash15 } from "node:crypto";
+import { basename as basename11, extname as extname9, join as join11 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash10, randomUUID as randomUUID12 } from "node:crypto";
+import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
+import { constants as constants5 } from "node:fs";
+import { link, lstat as lstat5, mkdir as mkdir8, open as open6, realpath as realpath6, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
+import { basename as basename10, dirname as dirname8, extname as extname8, isAbsolute as isAbsolute6, join as join10 } from "node:path";
+import sharp13 from "sharp";
+
+// plugins/podplo-dsh/src/operation-log.ts
+import { createHash as createHash12, randomUUID as randomUUID12 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
-import { link, lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, rm as rm4, unlink as unlink3 } from "node:fs/promises";
-import { basename as basename9, dirname as dirname8, extname as extname7, isAbsolute as isAbsolute5, join as join9 } from "node:path";
-import sharp12 from "sharp";
-
-// plugins/podplo-dsh/src/task-result-audit.ts
-function canonical2(value2) {
-  if (Array.isArray(value2)) return `[${value2.map(canonical2).join(",")}]`;
-  if (value2 && typeof value2 === "object") return `{${Object.entries(value2).filter(([, item]) => item !== void 0).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical2(item)}`).join(",")}}`;
-  return JSON.stringify(value2) ?? "null";
-}
-function processingStepDigest(step) {
-  return canonical2({ toolName: step.toolName, options: step.options, sourceStepId: step.sourceStepId, generationItemIndexes: step.generationItemIndexes });
-}
-function auditTask(files, generation, plan, receipts = [], failures = []) {
-  const results = files.filter((file2) => file2.group === "result");
-  const originals = results.filter((file2) => file2.variant === "generated" || file2.assetId);
-  const actualGeneration = generation ?? { planned: null, succeeded: originals.length, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
-  const downloaded = results.filter((file2) => file2.status === "saved").length;
-  const steps = [];
-  const outputsByStep = /* @__PURE__ */ new Map();
-  for (const step of plan ?? []) {
-    const ids2 = step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file2) => file2.group === "reference") : originals).filter((file2) => !step.generationItemIndexes || file2.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file2.generationItemIndex)).map((file2) => file2.originId).filter((id) => !!id);
-    const inputs = [...new Set(ids2)];
-    const runs = receipts.filter((run) => run.toolName === step.toolName && run.options !== void 0 && canonical2(run.options) === canonical2(step.options) && run.resultIds.length > 0);
-    const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id) => inputs.includes(id)));
-    const planDigest = processingStepDigest(step);
-    const matchedFailures = failures.filter((failure) => failure.stepId === step.id && failure.planDigest === planDigest && inputs.includes(failure.inputId) && !completed.has(failure.inputId));
-    const failedIds = [...new Set(matchedFailures.map((failure) => failure.inputId))];
-    outputsByStep.set(step.id, [...new Set(runs.filter((run) => run.inputIds.some((id) => inputs.includes(id))).flatMap((run) => run.resultIds))]);
-    steps.push({
-      id: step.id,
-      label: step.label,
-      required: inputs.length,
-      completed: completed.size,
-      missingIds: inputs.filter((id) => !completed.has(id)),
-      failedIds,
-      failures: failedIds.map((inputId) => ({ inputId, code: matchedFailures.find((row) => row.inputId === inputId).code }))
-    });
+import { lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
+import { isAbsolute as isAbsolute5, join as join9 } from "node:path";
+var hash3 = (value2) => createHash12("sha256").update(value2).digest("hex");
+var archiveTaskKey = (ownerId, sessionId, key) => hash3(`${hash3(ownerId)}\0${sessionId}\0${key}`);
+var stageSchema = external_exports.enum(["generation", "download", "processing", "archive", "connection"]);
+var statusSchema = external_exports.enum(["running", "completed", "failed", "stopped", "unknown"]);
+var count = external_exports.number().int().min(0).max(1e6).optional();
+var countsSchema = external_exports.object({ planned: count, generated: count, processed: count, saved: count });
+var entrySchema = external_exports.object({
+  id: external_exports.string().regex(/^[a-f0-9]{64}$/),
+  type: external_exports.enum(["generation", "toolbox", "local"]),
+  startedAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  stage: stageSchema,
+  status: statusSchema,
+  counts: countsSchema,
+  durationMs: external_exports.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).optional(),
+  stages: external_exports.array(external_exports.object({ stage: stageSchema, status: statusSchema, at: external_exports.string().datetime() })).max(5),
+  diagnostics: external_exports.array(TaskDiagnosticSchema).max(20)
+});
+function archiveLogUpdate(key, task, at) {
+  const audit = task.audit, diagnostics = taskDiagnostics(task);
+  let stage = "archive", status = "running";
+  if (audit?.generation.pending) stage = "generation";
+  else if (audit?.generation.unknown) {
+    stage = "generation";
+    status = "unknown";
+  } else if (["cancelled", "partial_cancelled"].includes(task.status)) {
+    stage = "generation";
+    status = "stopped";
+  } else if (task.status === "failed" || task.saveStatus === "failed" || task.saveStatus === "missing" || audit?.generation.failed || audit?.processing.failed) {
+    stage = diagnostics.find((row) => row.code !== "SUMMARY_UPDATE_FAILED")?.stage ?? "archive";
+    status = "failed";
+  } else if (audit?.download.remaining) stage = "download";
+  else if (audit?.processing.registered && audit.processing.remaining) stage = "processing";
+  else if (task.saveStatus === "saved") status = "completed";
+  if (diagnostics.some((row) => row.stage === "connection") && status === "running") {
+    stage = "connection";
+    status = "unknown";
   }
-  const required2 = plan === void 0 ? null : steps.reduce((sum, step) => sum + step.required, 0);
-  const processed = steps.reduce((sum, step) => sum + step.completed, 0);
-  const audit = {
-    generation: actualGeneration,
-    download: {
-      expected: results.length,
-      saved: downloaded,
-      remaining: results.length - downloaded,
-      generated: originals.length,
-      generatedSaved: originals.filter((file2) => file2.status === "saved").length,
-      processed: results.length - originals.length,
-      processedSaved: results.filter((file2) => file2.variant === "processed" && file2.status === "saved").length,
-      failed: results.filter((file2) => file2.status === "failed").length,
-      missing: results.filter((file2) => file2.status === "missing").length
-    },
-    processing: {
-      registered: plan !== void 0,
-      required: required2,
-      completed: processed,
-      remaining: required2 === null ? null : required2 - processed,
-      failed: steps.reduce((sum, step) => sum + step.failedIds.length, 0),
-      outputs: results.filter((file2) => file2.variant === "processed").length,
-      steps
-    },
-    complete: false
+  return {
+    key,
+    create: false,
+    startedAt: task.createdAt,
+    at,
+    stage,
+    status,
+    diagnostics,
+    counts: {
+      ...audit?.generation.planned ? { planned: audit.generation.planned } : {},
+      ...audit ? { generated: audit.generation.succeeded } : {},
+      ...audit?.generation.planned && audit.processing.registered ? { processed: audit.processing.completed } : {},
+      saved: task.savedCount
+    }
   };
-  audit.complete = actualGeneration.planned !== null && actualGeneration.succeeded === actualGeneration.planned && !actualGeneration.failed && !actualGeneration.pending && !actualGeneration.cancelled && !actualGeneration.unknown && required2 !== null && required2 === processed && audit.download.remaining === 0 && !files.some((file2) => file2.status !== "saved" || file2.reviewRequired);
-  return audit;
 }
-function auditLines(audit) {
-  const g = audit.generation, d = audit.download, p = audit.processing;
-  const lines = [
-    g.planned === 0 ? "\u751F\u6210\uFF1A\u672C\u4EFB\u52A1\u6CA1\u6709\u751F\u56FE\u6B65\u9AA4\u3002" : g.planned === null ? `\u751F\u6210\uFF1A\u5DF2\u77E5 ${g.succeeded} \u5F20\uFF0C\u539F\u4EFB\u52A1\u8BA1\u5212\u6570\u91CF\u672A\u767B\u8BB0\u3002` : `\u751F\u6210\uFF1A\u8BA1\u5212 ${g.planned} \u5F20\uFF0C\u6210\u529F ${g.succeeded} \u5F20${g.failed ? `\uFF0C\u5931\u8D25 ${g.failed} \u5F20` : ""}${g.pending ? `\uFF0C\u751F\u6210\u4E2D ${g.pending} \u5F20` : ""}${g.cancelled ? `\uFF0C\u5DF2\u505C\u6B62 ${g.cancelled} \u5F20` : ""}${g.unknown ? `\uFF0C\u5F85\u6838\u5BF9 ${g.unknown} \u5F20` : ""}\u3002`,
-    audit.delivery ? `\u6210\u54C1\uFF1A\u5DF2\u4FDD\u5B58 ${audit.delivery.saved}/${audit.delivery.expected} \u4E2A${audit.delivery.failed ? `\uFF1B\u4FDD\u5B58\u5931\u8D25 ${audit.delivery.failed} \u4E2A` : ""}${audit.delivery.missing ? `\uFF1B\u5DF2\u79FB\u52A8\u6216\u6539\u53D8 ${audit.delivery.missing} \u4E2A` : ""}\u3002` : `\u4E0B\u8F7D\uFF1A\u751F\u6210\u56FE\u5DF2\u5B58 ${d.generatedSaved}/${d.generated} \u5F20\uFF1B\u52A0\u5DE5\u6210\u54C1\u5DF2\u5B58 ${d.processedSaved}/${d.processed} \u4E2A\uFF1B\u8FD8\u6709 ${d.remaining} \u4E2A\u672A\u4FDD\u5B58${d.failed ? `\uFF08\u4FDD\u5B58\u5931\u8D25 ${d.failed} \u4E2A\uFF09` : ""}${d.missing ? `\uFF08\u5DF2\u79FB\u52A8\u6216\u6539\u53D8 ${d.missing} \u4E2A\uFF09` : ""}\u3002`
-  ];
-  if (!p.registered) lines.push(`\u5904\u7406\uFF1A\u539F\u4EFB\u52A1\u7684\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\uFF0C\u65E0\u6CD5\u5224\u65AD\u662F\u5426\u6F0F\u5904\u7406\uFF1B\u5DF2\u6709 ${p.outputs} \u4E2A\u52A0\u5DE5\u4EA7\u7269\u3002`);
-  else if (!p.steps.length) lines.push("\u5904\u7406\uFF1A\u672C\u4EFB\u52A1\u4E0D\u8981\u6C42\u540E\u7EED\u52A0\u5DE5\u3002");
-  else for (const step of p.steps) {
-    const transparencyFailures = step.failures.filter((row) => row.code === "TRANSPARENCY_REQUIRED").length;
-    lines.push(`\u5904\u7406\u300C${step.label}\u300D\uFF1A\u9700\u8981\u5904\u7406 ${step.required} \u5F20\uFF0C\u5DF2\u5904\u7406 ${step.completed} \u5F20\uFF0C\u8FD8\u6709 ${step.missingIds.length} \u5F20\u672A\u5904\u7406${step.failedIds.length ? `\uFF08\u5931\u8D25 ${step.failedIds.length} \u5F20${transparencyFailures ? `\uFF0C\u5176\u4E2D\u771F\u5B9E\u900F\u660E\u50CF\u7D20\u68C0\u67E5\u672A\u901A\u8FC7 ${transparencyFailures} \u5F20` : ""}\uFF09` : ""}\u3002`);
+var documentSchema = external_exports.object({ schemaVersion: external_exports.literal(1), operations: external_exports.array(entrySchema).max(10) });
+var OperationLog = class {
+  constructor(options) {
+    this.options = options;
+    if (!isAbsolute5(options.directory)) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
   }
-  if (p.outputs && !audit.delivery) lines.push(`\u52A0\u5DE5\u4EA7\u7269\uFF1A${p.outputs} \u4E2A\uFF08\u539F\u56FE\u65B9\u5411\u3001\u955C\u50CF\u53CA\u5176\u4ED6\u7248\u672C\u5206\u522B\u8BA1\u4EA7\u7269\uFF0C\u4E0D\u91CD\u590D\u8BA1\u5904\u7406\u5F20\u6570\uFF09\u3002`);
-  lines.push(audit.complete ? "\u6838\u5BF9\u7ED3\u679C\uFF1A\u5DF2\u9F50\u5168\u3002" : "\u6838\u5BF9\u7ED3\u679C\uFF1A\u4ECD\u6709\u672A\u5B8C\u6210\u6216\u9700\u6838\u5BF9\u7684\u9879\u76EE\u3002");
-  return lines;
-}
+  options;
+  tail = Promise.resolve();
+  closed = false;
+  async same(expected) {
+    const actual = await this.options.authorize();
+    if (actual.ownerId !== expected.ownerId || actual.namespace !== expected.namespace) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u8D26\u53F7\u5DF2\u53D8\u5316");
+  }
+  async directory(owner) {
+    await mkdir7(this.options.directory, { recursive: true, mode: 448 });
+    const base2 = await lstat4(this.options.directory);
+    if (!base2.isDirectory() || base2.isSymbolicLink()) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u4E0D\u53EF\u7528");
+    const root = join9(await realpath5(this.options.directory), "operation-logs"), directory = join9(root, hash3(owner));
+    for (const path of [root, directory]) {
+      await mkdir7(path, { recursive: true, mode: 448 });
+      const stat = await lstat4(path);
+      if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath5(path) !== path) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u4E0D\u53EF\u7528");
+    }
+    return directory;
+  }
+  async load(directory) {
+    const path = join9(directory, "operations.json");
+    try {
+      const handle = await open5(path, constants4.O_RDONLY | constants4.O_NOFOLLOW);
+      try {
+        const stat = await handle.stat();
+        if (!stat.isFile() || stat.size > 128 * 1024) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u683C\u5F0F\u65E0\u6548");
+        return documentSchema.parse(JSON.parse(await handle.readFile("utf8"))).operations;
+      } finally {
+        await handle.close();
+      }
+    } catch (error51) {
+      if (error51.code === "ENOENT") return [];
+      throw error51;
+    }
+  }
+  record(identity, update) {
+    return this.recordMany(identity, [update]);
+  }
+  recordMany(identity, updates) {
+    if (this.closed) return Promise.resolve(false);
+    identity = { ownerId: identity.ownerId, namespace: identity.namespace };
+    const work = this.tail.then(async () => {
+      await this.same(identity);
+      const directory = await this.directory(identity.ownerId), original = await this.load(directory);
+      let rows = original;
+      for (const update of updates) {
+        const id = hash3(update.key), prior = rows.find((row2) => row2.id === id);
+        if (!prior && update.create === false) continue;
+        const startedAt = external_exports.string().datetime().parse(prior?.startedAt ?? update.startedAt);
+        const at = external_exports.string().datetime().parse(update.at ?? (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString());
+        if (prior && at < prior.updatedAt) continue;
+        const diagnostics = [...new Map([...prior?.diagnostics ?? [], ...update.diagnostics ?? []].flatMap((row2) => {
+          const parsed = TaskDiagnosticSchema.safeParse(row2);
+          return parsed.success ? [parsed.data] : [];
+        }).map((row2) => [`${row2.stage}:${row2.code}`, row2])).values()].slice(-20);
+        const counts = countsSchema.parse({ ...prior?.counts, ...update.counts });
+        const type = prior?.type ?? update.type ?? "local";
+        const semantic = { type, stage: update.stage, status: update.status, counts, diagnostics };
+        if (prior && JSON.stringify(semantic) === JSON.stringify({ type: prior.type, stage: prior.stage, status: prior.status, counts: prior.counts, diagnostics: prior.diagnostics })) continue;
+        const stages2 = [...(prior?.stages ?? []).filter((row2) => row2.stage !== update.stage), { stage: update.stage, status: update.status, at }];
+        const row = entrySchema.parse({
+          id,
+          startedAt,
+          updatedAt: at,
+          ...semantic,
+          stages: stages2,
+          ...["completed", "failed", "stopped"].includes(update.status) ? { durationMs: Math.max(0, Date.parse(at) - Date.parse(startedAt)) } : {}
+        });
+        rows = [row, ...rows.filter((saved) => saved.id !== id)].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 10);
+      }
+      if (JSON.stringify(rows) === JSON.stringify(original)) return true;
+      await this.same(identity);
+      const temporary = join9(directory, `.${randomUUID12()}.tmp`);
+      try {
+        const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
+        try {
+          await handle.writeFile(JSON.stringify({ schemaVersion: 1, pluginVersion: PLUGIN_VERSION, operations: rows }, null, 2) + "\n");
+          await handle.sync();
+        } finally {
+          await handle.close();
+        }
+        await this.same(identity);
+        if (await realpath5(directory) !== directory) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5DF2\u53D8\u5316");
+        await rename4(temporary, join9(directory, "operations.json"));
+      } finally {
+        await unlink3(temporary).catch(() => void 0);
+      }
+      return true;
+    }).catch(() => false);
+    this.tail = work;
+    return work;
+  }
+  async read() {
+    await this.tail;
+    const identity = await this.options.authorize(), rows = await this.load(await this.directory(identity.ownerId));
+    await this.same(identity);
+    return { schemaVersion: 1, pluginVersion: PLUGIN_VERSION, operations: rows };
+  }
+  async close() {
+    this.closed = true;
+    await this.tail;
+  }
+};
 
 // plugins/podplo-dsh/src/task-archive.ts
-var hash3 = (value2) => createHash10("sha256").update(value2).digest("hex");
+var hash4 = (value2) => createHash13("sha256").update(value2).digest("hex");
 var safeLabel = (value2, fallback, limit = 48) => value2.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim().slice(0, limit) || fallback;
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
 var finalTimestamp = (value2) => {
@@ -45577,6 +46131,7 @@ var fileSchema = external_exports.object({
   id: external_exports.string().uuid(),
   source: sourceSchema,
   group: external_exports.enum(["reference", "result"]),
+  diagnostic: TaskDiagnosticSchema.optional(),
   label: external_exports.string(),
   sourceId: external_exports.string().optional(),
   name: external_exports.string().optional(),
@@ -45599,7 +46154,7 @@ var projectSchema = external_exports.object({
   id: external_exports.string().regex(/^[a-f0-9]{64}$/u),
   owner: external_exports.string().regex(/^[a-f0-9]{64}$/u),
   name: external_exports.string(),
-  directory: external_exports.string().refine(isAbsolute5),
+  directory: external_exports.string().refine(isAbsolute6),
   stamp: external_exports.string()
 });
 var taskSchema = external_exports.object({
@@ -45607,6 +46162,7 @@ var taskSchema = external_exports.object({
   owner: external_exports.string().regex(/^[a-f0-9]{64}$/u),
   key: external_exports.string(),
   sessionId: external_exports.string(),
+  diagnostics: external_exports.array(TaskDiagnosticSchema).max(20).optional(),
   projectId: external_exports.string(),
   name: external_exports.string(),
   createdAt: external_exports.string().datetime(),
@@ -45615,7 +46171,7 @@ var taskSchema = external_exports.object({
   approvedAt: external_exports.string().datetime().optional(),
   stoppedAt: external_exports.string().datetime().optional(),
   processingResumedAt: external_exports.string().datetime().optional(),
-  directory: external_exports.string().refine(isAbsolute5),
+  directory: external_exports.string().refine(isAbsolute6),
   stamp: external_exports.string(),
   archiveFormat: external_exports.literal(2).optional(),
   files: external_exports.array(fileSchema),
@@ -45696,29 +46252,53 @@ function sessionStopApplies(task, stoppedAt) {
   const beganAt = task.approvedAt ?? task.createdAt;
   return Date.parse(beganAt) <= Date.parse(stoppedAt) && (!task.processingResumedAt || Date.parse(task.processingResumedAt) < Date.parse(stoppedAt)) && !storedTaskFinished(task);
 }
+function localCalendarDate(value2) {
+  if (!/^\d{4}-\d{2}-\d{2}$/u.test(value2)) return;
+  const [year, month, day] = value2.split("-").map(Number);
+  const date5 = new Date(year, month - 1, day);
+  if (date5.getFullYear() === year && date5.getMonth() === month - 1 && date5.getDate() === day) return date5;
+}
+function archiveDateBounds(filters, now = /* @__PURE__ */ new Date()) {
+  let start, end;
+  if (filters.period === "custom") {
+    start = localCalendarDate(filters.from);
+    end = localCalendarDate(filters.to);
+    if (filters.from && !start || filters.to && !end || filters.from && filters.to && filters.from > filters.to)
+      throw new Error("\u5904\u7406\u7ED3\u679C\u65E5\u671F\u7B5B\u9009\u65E0\u6548");
+    if (end) end.setDate(end.getDate() + 1);
+  } else if (filters.period !== "all") {
+    start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    start.setDate(start.getDate() - (filters.period === "7days" ? 6 : filters.period === "30days" ? 29 : 0));
+  }
+  return { start: start?.getTime(), end: end?.getTime() };
+}
 var TaskArchiveManager = class {
   constructor(options) {
     this.options = options;
-    this.store = new AtomicStore(join9(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
+    this.store = new AtomicStore(join10(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
       const state = stateSchema3.parse(raw);
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true });
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join9(project.directory, basename9(task.directory)) !== task.directory || task.files.some((file2) => [file2.name, file2.cacheName, file2.publishedName].some((name) => name && (basename9(name) !== name || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name)))))
+        if (!project || join10(project.directory, basename10(task.directory)) !== task.directory || task.files.some((file2) => [file2.name, file2.cacheName, file2.publishedName].some((name) => name && (basename10(name) !== name || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name)))))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
     });
   }
   options;
+  previewCache = new ImageMemoryCache(16 * 1024 * 1024, 96);
+  cacheGrant;
   store;
   jobs = /* @__PURE__ */ new Map();
+  reschedule = /* @__PURE__ */ new Set();
   tail = Promise.resolve();
   closed = false;
   root = "";
   async init() {
-    await mkdir7(this.options.directory, { recursive: true, mode: 448 });
-    this.root = await realpath5(this.options.directory);
+    await mkdir8(this.options.directory, { recursive: true, mode: 448 });
+    this.root = await realpath6(this.options.directory);
     await this.store.load();
   }
   async close() {
@@ -45726,6 +46306,7 @@ var TaskArchiveManager = class {
     await Promise.allSettled(this.jobs.values());
     await this.tail;
     await this.store.flush();
+    this.previewCache.clear();
   }
   serial(work) {
     const next = this.tail.then(work);
@@ -45734,19 +46315,24 @@ var TaskArchiveManager = class {
   }
   async identity() {
     const value2 = await this.options.authorize();
-    return { ...value2, owner: hash3(value2.ownerId), grant: hash3(`${value2.ownerId}\0${value2.namespace ?? ""}`) };
+    const grant = hash4(`${value2.ownerId}\0${value2.namespace ?? ""}`);
+    if (this.cacheGrant !== grant) {
+      this.previewCache.clear();
+      this.cacheGrant = grant;
+    }
+    return { ...value2, owner: hash4(value2.ownerId), grant };
   }
   async same(expected) {
     if ((await this.identity()).grant !== expected.grant) throw new Error("\u5F53\u524D\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u67E5\u770B\u6210\u679C");
   }
   async directory(path, expected) {
-    const stat = await lstat4(path);
-    if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath5(path) !== path || expected && stamp(stat) !== expected)
+    const stat = await lstat5(path);
+    if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath6(path) !== path || expected && stamp(stat) !== expected)
       throw new Error("\u6210\u679C\u6587\u4EF6\u5939\u5DF2\u79FB\u52A8\u6216\u6539\u53D8\uFF0C\u8BF7\u6062\u590D\u539F\u4F4D\u7F6E\u540E\u91CD\u8BD5");
     return stamp(stat);
   }
   async createDirectory(path) {
-    await mkdir7(path, { mode: 448 }).catch((error51) => {
+    await mkdir8(path, { mode: 448 }).catch((error51) => {
       if (error51.code !== "EEXIST") throw error51;
     });
     return this.directory(path);
@@ -45754,9 +46340,9 @@ var TaskArchiveManager = class {
   async allocateDirectory(parent, base2) {
     await this.directory(parent);
     for (let index = 1; index < 1e4; index++) {
-      const path = join9(parent, index === 1 ? base2 : `${base2}-${index}`);
+      const path = join10(parent, index === 1 ? base2 : `${base2}-${index}`);
       try {
-        await mkdir7(path, { mode: 448 });
+        await mkdir8(path, { mode: 448 });
         return { path, stamp: await this.directory(path) };
       } catch (error51) {
         if (error51.code !== "EEXIST") throw error51;
@@ -45766,9 +46352,9 @@ var TaskArchiveManager = class {
   }
   async cacheDirectory(task, create = false) {
     const parts = [
-      join9(this.root, ".task-cache-v2"),
-      join9(this.root, ".task-cache-v2", task.owner),
-      join9(this.root, ".task-cache-v2", task.owner, task.id)
+      join10(this.root, ".task-cache-v2"),
+      join10(this.root, ".task-cache-v2", task.owner),
+      join10(this.root, ".task-cache-v2", task.owner, task.id)
     ];
     for (const path of parts) {
       if (create) await this.createDirectory(path);
@@ -45777,20 +46363,20 @@ var TaskArchiveManager = class {
     return parts[2];
   }
   async project(identity, input) {
-    const id = hash3(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id);
+    const id = hash4(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id);
     if (existing) {
       await this.directory(existing.directory, existing.stamp);
       return existing;
     }
     const chosen = await this.options.outputDirectory();
-    const base2 = chosen ? await realpath5(chosen) : this.root;
+    const base2 = chosen ? await realpath6(chosen) : this.root;
     await this.directory(base2);
-    const collection = join9(base2, "PodPlo\u6210\u679C");
+    const collection = join10(base2, "PodPlo\u6210\u679C");
     await this.createDirectory(collection);
-    const ownerDirectory = join9(collection, identity.owner.slice(0, 16));
+    const ownerDirectory = join10(collection, identity.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
     const name = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
-    const directory = join9(ownerDirectory, `${name}_${id.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
+    const directory = join10(ownerDirectory, `${name}_${id.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
     await this.same(identity);
     const project = { id, owner: identity.owner, name, directory, stamp: directoryStamp };
     await this.store.transaction((state) => {
@@ -45803,7 +46389,7 @@ var TaskArchiveManager = class {
       if (this.closed) return;
       const identity = await this.identity();
       if (identity.ownerId !== expectedOwner) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
-      const key = hash3(`${identity.owner}\0${input.sessionId}\0${input.key}`);
+      const key = archiveTaskKey(identity.ownerId, input.sessionId, input.key);
       if (this.store.snapshot().deleted.some((row) => row.owner === identity.owner && row.key === key)) {
         await this.same(identity);
         await this.store.transaction((state) => {
@@ -45814,12 +46400,13 @@ var TaskArchiveManager = class {
         return;
       }
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.key === key);
+      const before = task ? canonical(task) : "";
       if (!task) {
-        const project = await this.project(identity, input.project), id = randomUUID12();
+        const project = await this.project(identity, input.project), id = randomUUID13();
         const name = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
         const allocated = await this.allocateDirectory(project.directory, `${finalTimestamp(input.createdAt)}_\u56FE\u7247\u52A0\u5DE5`);
         const directory = allocated.path, directoryStamp = allocated.stamp;
-        await this.createDirectory(join9(directory, "\u6210\u54C1"));
+        await this.createDirectory(join10(directory, "\u6210\u54C1"));
         await this.same(identity);
         task = {
           id,
@@ -45847,6 +46434,7 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const row = state.tasks.find((row2) => row2.id === task.id);
         row.status = input.status;
+        if (input.diagnostics) row.diagnostics = [...(row.diagnostics ?? []).filter((item) => !["generation", "connection"].includes(item.stage)), ...input.diagnostics].slice(-20);
         if (input.approvedAt) row.approvedAt = input.approvedAt;
         row.summaryName = safeLabel(input.name, "\u4EFB\u52A1\u6210\u679C");
         if (input.generationAudit) row.generationAudit = input.generationAudit;
@@ -45856,25 +46444,63 @@ var TaskArchiveManager = class {
         row.operationIds = [.../* @__PURE__ */ new Set([...row.operationIds, ...input.operationIds])];
         for (const value2 of input.files) {
           if (row.files.some((file2) => file2.source.kind === value2.source.kind && file2.source.id === value2.source.id && file2.group === value2.group)) continue;
-          row.files.push({ ...value2, id: randomUUID12(), status: "pending", image: true });
+          row.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
         }
         const operationStopped = input.stoppedAt && (!row.processingResumedAt || Date.parse(input.stoppedAt) > Date.parse(row.processingResumedAt)) && !storedTaskFinished(row);
         if (operationStopped) row.stoppedAt = input.stoppedAt;
         const sessionStop = state.sessionStops.find((stop) => stop.owner === identity.owner && stop.sessionId === input.sessionId);
         if (sessionStop && sessionStopApplies(row, sessionStop.stoppedAt)) row.stoppedAt = sessionStop.stoppedAt;
       });
-      this.schedule(task.id, identity);
+      const current = this.store.snapshot().tasks.find((row) => row.id === task.id && row.owner === identity.owner);
+      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(task.id, identity);
       return task.id;
     });
   }
+  needsArchiveWork(task) {
+    return !!task && (task.files.some((file2) => file2.status === "pending") || task.archiveFormat === 2 && storedFinalLeaves(task).some((file2) => !file2.publishedName));
+  }
+  async observeTask(id, identity) {
+    const task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+    if (!task) return;
+    const observedAt = (/* @__PURE__ */ new Date()).toISOString(), view = await this.taskView(task, identity);
+    await this.same(identity);
+    if (this.options.activity) {
+      await this.options.activity(identity, [{ key: task.key, view, stopped: !!task.stoppedAt && !view.audit?.complete }], observedAt).catch(() => void 0);
+      await this.same(identity);
+    }
+  }
   schedule(id, identity) {
-    if (this.closed || this.jobs.has(id)) return;
+    if (this.closed) return;
+    if (this.jobs.has(id)) {
+      this.reschedule.add(id);
+      return;
+    }
     const job = this.savePending(id, identity).then(async () => {
       const task = this.store.snapshot().tasks.find((row) => row.id === id);
-      if (task) await this.list(task.sessionId);
-    }).catch(() => void 0).finally(() => {
+      if (task?.diagnostics?.some((row) => row.stage === "archive")) {
+        await this.same(identity);
+        await this.store.transaction((state) => {
+          const current = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+          if (current?.diagnostics) current.diagnostics = current.diagnostics.filter((row) => row.stage !== "archive");
+        });
+      }
+      if (task) await this.observeTask(id, identity);
+    }).catch(async (error51) => {
+      try {
+        await this.same(identity);
+        await this.store.transaction((state) => {
+          const task2 = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+          if (task2) task2.diagnostics = [...(task2.diagnostics ?? []).filter((row) => row.stage !== "archive"), diagnose("archive", error51, (/* @__PURE__ */ new Date()).toISOString())].slice(-20);
+        });
+        const task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+        if (task) await this.observeTask(id, identity);
+      } catch {
+      }
+    }).finally(() => {
       this.jobs.delete(id);
-      if (!this.closed && this.store.snapshot().tasks.find((row) => row.id === id)?.files.some((file2) => file2.status === "pending"))
+      const current = this.store.snapshot().tasks.find((row) => row.id === id);
+      const rerun = this.reschedule.delete(id) || !!current?.files.some((file2) => file2.status === "pending");
+      if (!this.closed && rerun)
         void this.same(identity).then(() => this.schedule(id, identity)).catch(() => void 0);
       this.options.changed?.(id);
     });
@@ -45886,18 +46512,18 @@ var TaskArchiveManager = class {
     await this.directory(task.directory, task.stamp);
   }
   groupDirectory(task, file2) {
-    return join9(task.directory, file2.reviewRequired ? "\u5F85\u590D\u6838" : file2.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
+    return join10(task.directory, file2.reviewRequired ? "\u5F85\u590D\u6838" : file2.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
   }
   async writeFresh(directory, name, bytes, token) {
     await this.directory(directory);
-    const path = join9(directory, name), digest = hash3(bytes);
-    const current = await lstat4(path).catch(() => void 0);
+    const path = join10(directory, name), digest = hash4(bytes);
+    const current = await lstat5(path).catch(() => void 0);
     if (current) {
-      if (hash3(await this.readPath(path)) !== digest) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
+      if (hash4(await this.readPath(path)) !== digest) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
       return { path, stat: current, digest, created: false };
     }
-    const temporary = join9(directory, `.${token}.${randomUUID12()}.part`);
-    const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
+    const temporary = join10(directory, `.${token}.${randomUUID13()}.part`);
+    const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
     try {
       await handle.writeFile(bytes);
       await handle.sync();
@@ -45906,9 +46532,9 @@ var TaskArchiveManager = class {
       await link(temporary, path);
     } finally {
       await handle.close().catch(() => void 0);
-      await unlink3(temporary).catch(() => void 0);
+      await unlink4(temporary).catch(() => void 0);
     }
-    return { path, stat: await lstat4(path), digest, created: true };
+    return { path, stat: await lstat5(path), digest, created: true };
   }
   sourceRoot(task, file2) {
     const seen = /* @__PURE__ */ new Set();
@@ -45930,7 +46556,7 @@ var TaskArchiveManager = class {
     const ordinal = Math.max(1, roots.findIndex((row) => row.source.id === root.source.id) + 1);
     for (const value2 of [root.sourceName, root.label]) {
       if (!value2) continue;
-      const raw = basename9(value2, extname7(value2));
+      const raw = basename10(value2, extname8(value2));
       const cleaned = safeLabel(raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, ""), "", 72);
       if (cleaned && !opaqueStem(cleaned) && !/^(?:原始生成|AI原图|参考(?:原图|图\d*)|图片|AI生成|成品|image|original|generated|result|source)$/iu.test(cleaned)) return cleaned;
     }
@@ -45968,16 +46594,16 @@ var TaskArchiveManager = class {
     });
   }
   preferredOutputName(task, file2) {
-    const slot = file2.outputSlot ?? 1, extension = extname7(file2.cacheName ?? file2.publishedName ?? "") || ".png";
+    const slot = file2.outputSlot ?? 1, extension = extname8(file2.cacheName ?? file2.publishedName ?? "") || ".png";
     return `${this.outputStem(task, file2)}_\u6210\u54C1${slot === 1 ? "" : `-${slot}`}${extension}`;
   }
   async publishedValid(task, file2, verifyDigest = true) {
     try {
       if (!file2.publishedName || !file2.publishedFingerprint) return false;
-      const output = join9(task.directory, "\u6210\u54C1");
+      const output = join10(task.directory, "\u6210\u54C1");
       await this.directory(output);
-      const path = join9(output, file2.publishedName), stat = await lstat4(path).catch(() => void 0);
-      return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath5(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file2.publishedFingerprint && (!verifyDigest || hash3(await this.readPath(path)) === file2.digest);
+      const path = join10(output, file2.publishedName), stat = await lstat5(path).catch(() => void 0);
+      return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath6(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file2.publishedFingerprint && (!verifyDigest || hash4(await this.readPath(path)) === file2.digest);
     } catch {
       return false;
     }
@@ -45986,7 +46612,7 @@ var TaskArchiveManager = class {
     let task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
     if (task?.archiveFormat !== 2) return;
     await this.taskDirectory(task);
-    const output = join9(task.directory, "\u6210\u54C1");
+    const output = join10(task.directory, "\u6210\u54C1");
     await this.directory(output);
     await this.same(identity);
     for (const candidate of this.finalLeaves(task)) {
@@ -46003,11 +46629,11 @@ var TaskArchiveManager = class {
       task = this.store.snapshot().tasks.find((row) => row.id === id);
       const cache = await this.cacheDirectory(task), file2 = task.files.find((row) => row.id === candidate.id);
       if (!file2.cacheName) continue;
-      const bytes = await this.readPath(join9(cache, file2.cacheName));
-      if (hash3(bytes) !== file2.digest) throw new Error("\u52A0\u5DE5\u7F13\u5B58\u5DF2\u53D8\u5316");
-      const extension = extname7(file2.cacheName), preferred = this.preferredOutputName(task, file2), base2 = basename9(preferred, extension);
+      const bytes = await this.readPath(join10(cache, file2.cacheName));
+      if (hash4(bytes) !== file2.digest) throw new Error("\u52A0\u5DE5\u7F13\u5B58\u5DF2\u53D8\u5316");
+      const extension = extname8(file2.cacheName), preferred = this.preferredOutputName(task, file2), base2 = basename10(preferred, extension);
       let name = preferred, suffix = 2;
-      while (await lstat4(join9(output, name)).catch(() => void 0)) name = `${base2}-\u526F\u672C${suffix++}${extension}`;
+      while (await lstat5(join10(output, name)).catch(() => void 0)) name = `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
       await this.same(identity);
       const saved = await this.writeFresh(output, name, bytes, file2.id);
@@ -46020,8 +46646,8 @@ var TaskArchiveManager = class {
           row.publishedFingerprint = `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`;
         });
       } catch (error51) {
-        const current2 = await lstat4(saved.path).catch(() => void 0);
-        if (saved.created && current2 && `${stamp(current2)}:${current2.size}:${current2.mtimeMs}:${current2.ctimeMs}` === `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`) await unlink3(saved.path).catch(() => void 0);
+        const current2 = await lstat5(saved.path).catch(() => void 0);
+        if (saved.created && current2 && `${stamp(current2)}:${current2.size}:${current2.mtimeMs}:${current2.ctimeMs}` === `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`) await unlink4(saved.path).catch(() => void 0);
         throw error51;
       }
     }
@@ -46033,7 +46659,7 @@ var TaskArchiveManager = class {
       await this.same(identity);
       if (await this.publishedValid(task, old)) {
         await this.same(identity);
-        await unlink3(join9(output, old.publishedName));
+        await unlink4(join10(output, old.publishedName));
       }
       await this.same(identity);
       await this.store.transaction((state) => {
@@ -46045,18 +46671,18 @@ var TaskArchiveManager = class {
     task = this.store.snapshot().tasks.find((row) => row.id === id);
     for (const leaf of this.finalLeaves(task).filter((row) => row.publishedName)) {
       const preferred = this.preferredOutputName(task, leaf);
-      if (leaf.publishedName === preferred || await lstat4(join9(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
+      if (leaf.publishedName === preferred || await lstat5(join10(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
       await this.taskDirectory(task);
       await this.same(identity);
       await this.directory(output);
       try {
-        await link(join9(output, leaf.publishedName), join9(output, preferred));
+        await link(join10(output, leaf.publishedName), join10(output, preferred));
       } catch (error51) {
         if (error51.code === "EEXIST") continue;
         throw error51;
       }
-      await unlink3(join9(output, leaf.publishedName));
-      const stat = await lstat4(join9(output, preferred));
+      await unlink4(join10(output, leaf.publishedName));
+      const stat = await lstat5(join10(output, preferred));
       await this.store.transaction((state) => {
         const row = state.tasks.find((t) => t.id === id).files.find((f) => f.id === leaf.id);
         row.publishedName = preferred;
@@ -46068,12 +46694,13 @@ var TaskArchiveManager = class {
     const initial = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
     if (initial?.archiveFormat !== 2) return;
     for (const file2 of initial.files.filter((row) => row.status === "pending")) {
+      let stage = "archive";
       try {
         await this.same(identity);
         await this.taskDirectory(initial);
         if (file2.group === "reference") {
           let sourceName;
-          if (file2.source.kind !== "asset") sourceName = await this.options.read(file2.source).then((value2) => basename9(value2.name)).catch(() => void 0);
+          if (file2.source.kind !== "asset") sourceName = await this.options.read(file2.source).then((value2) => basename10(value2.name)).catch(() => void 0);
           await this.same(identity);
           await this.store.transaction((state) => {
             const row = state.tasks.find((row2) => row2.id === id).files.find((row2) => row2.id === file2.id);
@@ -46081,12 +46708,14 @@ var TaskArchiveManager = class {
           });
           continue;
         }
+        stage = file2.source.kind === "asset" ? "download" : "processing";
         const source = await this.options.read(file2.source);
+        stage = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname7(source.name).toLowerCase().slice(1);
+        let extension = extname8(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
-          const meta3 = await sharp12(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+          const meta3 = await sharp13(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta3.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta3.format === "jpeg" ? "jpg" : meta3.format;
         }
@@ -46098,8 +46727,9 @@ var TaskArchiveManager = class {
         await this.taskDirectory(initial);
         await this.store.transaction((state) => {
           const row = state.tasks.find((row2) => row2.id === id).files.find((row2) => row2.id === file2.id);
+          delete row.diagnostic;
           Object.assign(row, {
-            sourceName: basename9(source.name),
+            sourceName: basename10(source.name),
             cacheName,
             image,
             status: "saved",
@@ -46108,10 +46738,14 @@ var TaskArchiveManager = class {
             cacheFingerprint: `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`
           });
         });
-      } catch {
+      } catch (error51) {
+        await this.same(identity);
         await this.store.transaction((state) => {
-          const row = state.tasks.find((row2) => row2.id === id)?.files.find((row2) => row2.id === file2.id);
-          if (row) row.status = "failed";
+          const row = state.tasks.find((row2) => row2.id === id && row2.owner === identity.owner)?.files.find((row2) => row2.id === file2.id);
+          if (row) {
+            row.status = "failed";
+            row.diagnostic = diagnose(stage, error51, (/* @__PURE__ */ new Date()).toISOString());
+          }
         });
       }
     }
@@ -46126,33 +46760,36 @@ var TaskArchiveManager = class {
     }
     for (const file2 of task.files.filter((row) => row.status === "pending")) {
       let published;
+      let stage = "archive";
       try {
         await this.same(identity);
         await this.taskDirectory(task);
+        stage = file2.source.kind === "asset" ? "download" : "processing";
         const source = await this.options.read(file2.source);
+        stage = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname7(source.name).toLowerCase().slice(1);
+        let extension = extname8(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
-          const meta3 = await sharp12(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+          const meta3 = await sharp13(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta3.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta3.format === "jpeg" ? "jpg" : meta3.format;
         }
-        const label = safeLabel(file2.group === "reference" ? basename9(source.name, extname7(source.name)) : (file2.label || basename9(source.name, extname7(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
+        const label = safeLabel(file2.group === "reference" ? basename10(source.name, extname8(source.name)) : (file2.label || basename10(source.name, extname8(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
         const used = new Set(this.store.snapshot().tasks.find((row) => row.id === id).files.filter((row) => row.group === file2.group && row.id !== file2.id).map((row) => row.name));
         let name = file2.name ?? `${label}.${extension}`, suffix = 2;
         while (used.has(name)) name = `${label}-${suffix++}.${extension}`;
         const directory = this.groupDirectory(task, file2);
         if (file2.reviewRequired) await this.createDirectory(directory);
         await this.directory(directory);
-        const path = join9(directory, name), digest = hash3(source.bytes);
+        const path = join10(directory, name), digest = hash4(source.bytes);
         await this.same(identity);
-        if (await lstat4(path).catch(() => void 0)) {
+        if (await lstat5(path).catch(() => void 0)) {
           const bytes = await this.readPath(path);
-          if (hash3(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
+          if (hash4(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
-          const temporary = join9(directory, `.${file2.id}.${randomUUID12()}.part`);
-          const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
+          const temporary = join10(directory, `.${file2.id}.${randomUUID13()}.part`);
+          const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
           try {
             await handle.writeFile(source.bytes);
             await handle.sync();
@@ -46164,29 +46801,34 @@ var TaskArchiveManager = class {
             published = path;
           } finally {
             await handle.close().catch(() => void 0);
-            await unlink3(temporary).catch(() => void 0);
+            await unlink4(temporary).catch(() => void 0);
           }
         }
         await this.taskDirectory(task);
         await this.directory(directory);
         await this.same(identity);
-        const stat = await lstat4(path);
+        const stat = await lstat5(path);
         await this.store.transaction((state) => {
           const saved = state.tasks.find((row) => row.id === id).files.find((row) => row.id === file2.id);
+          delete saved.diagnostic;
           Object.assign(saved, { name, image, status: "saved", digest, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
         });
-      } catch {
-        if (published) await unlink3(published).catch(() => void 0);
+      } catch (error51) {
+        if (published) await unlink4(published).catch(() => void 0);
+        await this.same(identity);
         await this.store.transaction((state) => {
-          const saved = state.tasks.find((row) => row.id === id)?.files.find((row) => row.id === file2.id);
-          if (saved) saved.status = "failed";
+          const saved = state.tasks.find((row) => row.id === id && row.owner === identity.owner)?.files.find((row) => row.id === file2.id);
+          if (saved) {
+            saved.status = "failed";
+            saved.diagnostic = diagnose(stage, error51, (/* @__PURE__ */ new Date()).toISOString());
+          }
         });
       }
     }
   }
   async readPath(path) {
-    if (await realpath5(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8");
-    const handle = await open5(path, constants4.O_RDONLY | constants4.O_NOFOLLOW);
+    if (await realpath6(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8");
+    const handle = await open6(path, constants5.O_RDONLY | constants5.O_NOFOLLOW);
     try {
       const stat = await handle.stat();
       if (!stat.isFile() || stat.size > 250 * 1024 * 1024) throw new Error("\u6210\u679C\u6587\u4EF6\u65E0\u6548");
@@ -46204,7 +46846,7 @@ var TaskArchiveManager = class {
   summary(task, files, audit, identity) {
     return this.serial(async () => {
       const latest = this.store.snapshot().tasks.find((row) => row.id === task.id);
-      if (canonical2({ ...latest, summaryDigest: void 0 }) !== canonical2({ ...task, summaryDigest: void 0 })) return;
+      if (canonical({ ...latest, summaryDigest: void 0 }) !== canonical({ ...task, summaryDigest: void 0 })) return;
       await this.taskDirectory(task);
       await this.same(identity);
       const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === task.owner);
@@ -46251,10 +46893,10 @@ var TaskArchiveManager = class {
         "\u672C\u6587\u4EF6\u7531\u4EFB\u52A1\u6210\u679C\u81EA\u52A8\u66F4\u65B0\uFF1B\u5982\u679C\u4F60\u624B\u52A8\u4FEE\u6539\uFF0C\u672C\u7A0B\u5E8F\u4F1A\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002",
         ""
       ];
-      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash3(bytes), path = join9(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
-      const stat = await lstat4(path).catch(() => void 0);
+      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash4(bytes), path = join10(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+      const stat = await lstat5(path).catch(() => void 0);
       if (stat) {
-        const existing = await this.readPath(path), existingDigest = hash3(existing);
+        const existing = await this.readPath(path), existingDigest = hash4(existing);
         if (existingDigest === digest) {
           if (latest.summaryDigest !== digest) await this.store.transaction((state) => {
             state.tasks.find((row) => row.id === task.id).summaryDigest = digest;
@@ -46263,8 +46905,8 @@ var TaskArchiveManager = class {
         }
         if (!latest.summaryDigest || existingDigest !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
       }
-      const temporary = join9(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID12()}.tmp`);
-      const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
+      const temporary = join10(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID13()}.tmp`);
+      const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
       try {
         await handle.writeFile(bytes);
         await handle.sync();
@@ -46272,15 +46914,15 @@ var TaskArchiveManager = class {
         await this.taskDirectory(task);
         await this.same(identity);
         if (stat) {
-          if (hash3(await this.readPath(path)) !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
-          await rename4(temporary, path);
+          if (hash4(await this.readPath(path)) !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
+          await rename5(temporary, path);
         } else await link(temporary, path);
         await this.store.transaction((state) => {
           state.tasks.find((row) => row.id === task.id).summaryDigest = digest;
         });
       } finally {
         await handle.close().catch(() => void 0);
-        await unlink3(temporary).catch(() => void 0);
+        await unlink4(temporary).catch(() => void 0);
       }
     });
   }
@@ -46306,22 +46948,22 @@ var TaskArchiveManager = class {
         throw new Error("\u4EFB\u52A1\u4ECD\u5728\u751F\u6210\u6216\u4FDD\u5B58\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F");
       const project = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === task.projectId);
       await this.directory(project.directory, project.stamp);
-      const existing = await lstat4(task.directory).catch((error51) => {
+      const existing = await lstat5(task.directory).catch((error51) => {
         if (error51.code !== "ENOENT") throw error51;
         return void 0;
       });
       if (existing) {
         await this.taskDirectory(task);
         await this.same(identity);
-        const staged = join9(project.directory, `.delete-${task.id}-${randomUUID12()}`);
-        await rename4(task.directory, staged);
+        const staged = join10(project.directory, `.delete-${task.id}-${randomUUID13()}`);
+        await rename5(task.directory, staged);
         try {
           await this.directory(project.directory, project.stamp);
           await this.directory(staged, task.stamp);
           await this.same(identity);
           await rm4(staged, { recursive: true });
         } catch (error51) {
-          await rename4(staged, task.directory).catch(() => void 0);
+          await rename5(staged, task.directory).catch(() => void 0);
           throw error51;
         }
       }
@@ -46357,6 +46999,8 @@ var TaskArchiveManager = class {
     const { identity, task } = await this.owned(id);
     await this.same(identity);
     return {
+      key: task.key,
+      createdAt: task.createdAt,
       sessionId: task.sessionId,
       plan: task.processingPlan,
       files: task.files,
@@ -46368,6 +47012,14 @@ var TaskArchiveManager = class {
       stoppedAt: task.stoppedAt
     };
   }
+  /** Owner-bound processing audit from persisted receipts only; never scans task folders. */
+  async processingAudit(id, sessionId) {
+    const { identity, task } = await this.owned(id);
+    if (task.sessionId !== sessionId) throw new Error("\u52A0\u5DE5\u4EFB\u52A1\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD");
+    const audit = storedTaskAudit(task);
+    await this.same(identity);
+    return audit;
+  }
   /** Read only already-published archive bytes for Host-side processing. */
   async processingInputs(id, ids2) {
     const { identity, task } = await this.owned(id);
@@ -46378,31 +47030,36 @@ var TaskArchiveManager = class {
       if (task.archiveFormat === 2) {
         const file3 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.cacheName);
         if (!file3?.cacheName || !file3.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
-        const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join9(cache, file3.cacheName));
-        if (hash3(bytes2) !== file3.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
+        const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join10(cache, file3.cacheName));
+        if (hash4(bytes2) !== file3.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
         values.push({ id: sourceId, name: file3.sourceName ?? file3.cacheName, bytes: bytes2, kind: "image" });
         continue;
       }
       const file2 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.name);
       if (!file2?.name || !file2.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
       await this.directory(this.groupDirectory(task, file2));
-      const bytes = await this.readPath(join9(this.groupDirectory(task, file2), file2.name));
-      if (hash3(bytes) !== file2.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
+      const bytes = await this.readPath(join10(this.groupDirectory(task, file2), file2.name));
+      if (hash4(bytes) !== file2.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
       values.push({ id: sourceId, name: file2.name, bytes, kind: "image" });
     }
     await this.same(identity);
     return values;
   }
   async recordProcessingFailure(id, failure) {
-    const { identity } = await this.owned(id);
+    const { identity, task } = await this.owned(id);
     await this.serial(async () => {
       await this.same(identity);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
-        task.processingFailures = task.processingFailures.filter((row) => !(row.stepId === failure.stepId && row.inputId === failure.inputId));
-        task.processingFailures.push(failure);
+        const task2 = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        task2.processingFailures = task2.processingFailures.filter((row) => !(row.stepId === failure.stepId && row.inputId === failure.inputId));
+        task2.processingFailures.push(failure);
       });
     });
+    await this.options.processingFailure?.(
+      identity,
+      { key: task.key, createdAt: task.createdAt },
+      diagnose("processing", { code: failure.code }, failure.failedAt)
+    ).catch(() => void 0);
   }
   async clearProcessingFailures(id, stepId, inputIds) {
     const { identity } = await this.owned(id);
@@ -46452,26 +47109,46 @@ var TaskArchiveManager = class {
   async openSummary(id) {
     const { identity, task } = await this.owned(id);
     await this.taskDirectory(task);
-    const path = join9(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+    const path = join10(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
     await this.readPath(path);
     await this.same(identity);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3");
     await this.options.openPath(path);
   }
-  async finalOnlyView(task, identity, available) {
+  async summaryView(task, files, audit, identity, update) {
+    if (update) {
+      try {
+        await this.summary(task, files, audit, identity);
+        return { summaryStatus: "saved" };
+      } catch {
+        return { summaryStatus: "failed", summaryError: "\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0\uFF1B\u5982\u5DF2\u624B\u52A8\u4FEE\u6539\u4EFB\u52A1\u603B\u7ED3.txt\uFF0C\u5C06\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002" };
+      }
+    }
+    if (!task.summaryDigest) return {};
+    try {
+      const bytes = await this.readPath(join10(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt"));
+      await this.same(identity);
+      if (hash4(bytes) !== task.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u6539\u53D8");
+      return { summaryStatus: "saved" };
+    } catch {
+      return { summaryStatus: "failed", summaryError: "\u4EFB\u52A1\u603B\u7ED3\u6682\u4E0D\u53EF\u7528\uFF1B\u6253\u5F00\u65F6\u4F1A\u518D\u6B21\u4E25\u683C\u6838\u9A8C\u3002" };
+    }
+  }
+  async finalOnlyView(task, identity, available, updateSummary = true) {
     const internalFiles = [];
     for (const file2 of task.files) {
       let status = file2.status;
       if (status === "saved" && !file2.referenceOnly) {
         try {
-          const cache = await this.cacheDirectory(task), path = join9(cache, file2.cacheName ?? "");
-          const stat = await lstat4(path);
-          if (!file2.cacheName || !stat.isFile() || stat.isSymbolicLink() || await realpath5(path) !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.cacheFingerprint) status = "missing";
+          const cache = await this.cacheDirectory(task), path = join10(cache, file2.cacheName ?? "");
+          const stat = await lstat5(path);
+          if (!file2.cacheName || !stat.isFile() || stat.isSymbolicLink() || await realpath6(path) !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.cacheFingerprint) status = "missing";
         } catch {
           status = "missing";
         }
       }
       internalFiles.push({
+        diagnostic: file2.diagnostic,
         id: file2.id,
         name: file2.sourceName ?? file2.label,
         group: file2.group,
@@ -46493,6 +47170,7 @@ var TaskArchiveManager = class {
       if (file2.status === "saved") status = file2.publishedName ? available && await this.publishedValid(task, file2, false) ? "saved" : "missing" : "failed";
       const name = file2.publishedName ?? this.preferredOutputName(task, file2);
       files.push({
+        diagnostic: file2.diagnostic,
         id: file2.id,
         name,
         group: "result",
@@ -46501,7 +47179,7 @@ var TaskArchiveManager = class {
         originId: file2.source.id,
         sourceId: file2.sourceId,
         generationItemIndex: file2.generationItemIndex,
-        ...file2.publishedName ? { relativePath: join9("\u6210\u54C1", file2.publishedName) } : {},
+        ...file2.publishedName ? { relativePath: join10("\u6210\u54C1", file2.publishedName) } : {},
         ...file2.source.kind === "asset" ? { assetId: file2.source.id } : {},
         variant: file2.source.kind === "asset" ? "generated" : "processed"
       });
@@ -46516,14 +47194,9 @@ var TaskArchiveManager = class {
     };
     audit.complete = audit.complete && audit.delivery.remaining === 0 && audit.delivery.expected > 0;
     const saveStatus = !available || audit.delivery.missing || internalFiles.some((file2) => file2.status === "missing") ? "missing" : internalFiles.some((file2) => file2.status === "failed") || audit.delivery.failed || audit.processing.failed ? "failed" : internalFiles.some((file2) => file2.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
-    let summaryStatus = "saved", summaryError;
-    try {
-      await this.summary(task, files, audit, identity);
-    } catch {
-      summaryStatus = "failed";
-      summaryError = "\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0\uFF1B\u5982\u5DF2\u624B\u52A8\u4FEE\u6539\u4EFB\u52A1\u603B\u7ED3.txt\uFF0C\u5C06\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002";
-    }
+    const summary = await this.summaryView(task, files, audit, identity, updateSummary);
     return {
+      diagnostics: [...task.diagnostics ?? [], ...internalFiles.flatMap((file2) => file2.diagnostic ? [file2.diagnostic] : [])].slice(-20),
       id: task.id,
       archiveFormat: 2,
       name: "\u56FE\u7247\u52A0\u5DE5",
@@ -46539,80 +47212,132 @@ var TaskArchiveManager = class {
       operationIds: task.operationIds,
       files,
       audit,
-      summaryStatus,
-      ...summaryError ? { summaryError } : {},
+      ...summary,
       ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6210\u54C1\u4FDD\u5B58\u6216\u52A0\u5DE5\u5931\u8D25\uFF0C\u53EF\u5237\u65B0\u72B6\u6001\u6838\u5BF9\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
     };
   }
-  async list(sessionId) {
-    const identity = await this.identity(), state = this.store.snapshot();
-    const items = [];
-    for (const task of state.tasks.filter((row) => row.owner === identity.owner && (!sessionId || row.sessionId === sessionId))) {
-      let available = true;
-      try {
-        await this.taskDirectory(task);
-      } catch {
-        available = false;
+  async legacyView(task, identity, available, updateSummary = true) {
+    const state = this.store.snapshot(), files = [];
+    for (const file2 of task.files) {
+      let status = file2.status;
+      if (status === "saved") {
+        const path = join10(this.groupDirectory(task, file2), file2.name);
+        const stat = available ? await lstat5(path).catch(() => void 0) : void 0;
+        if (!stat?.isFile() || stat.isSymbolicLink() || stat.size !== file2.size || await realpath6(path).catch(() => "") !== path || file2.fingerprint && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.fingerprint) status = "missing";
       }
-      if (task.archiveFormat === 2) {
-        items.push(await this.finalOnlyView(task, identity, available));
-        continue;
-      }
-      const files = [];
-      for (const file2 of task.files) {
-        let status = file2.status;
-        if (status === "saved") {
-          const path = join9(this.groupDirectory(task, file2), file2.name);
-          const stat = available ? await lstat4(path).catch(() => void 0) : void 0;
-          if (!stat?.isFile() || stat.isSymbolicLink() || stat.size !== file2.size || await realpath5(path).catch(() => "") !== path || file2.fingerprint && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.fingerprint) status = "missing";
-        }
-        files.push({
-          id: file2.id,
-          name: file2.name ?? file2.label,
-          group: file2.group,
-          image: file2.image,
-          status,
-          originId: file2.source.id,
-          reviewRequired: file2.reviewRequired,
-          generationItemIndex: file2.generationItemIndex,
-          ...file2.source.kind === "asset" ? { assetId: file2.source.id } : {},
-          ...file2.group === "result" ? { variant: file2.source.kind === "asset" ? "generated" : "processed" } : {},
-          ...file2.sourceId ? { sourceId: file2.sourceId } : {}
-        });
-      }
-      const saveStatus = !available || files.some((file2) => file2.status === "missing") ? "missing" : files.some((file2) => file2.status === "failed") ? "failed" : files.some((file2) => file2.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
-      const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
-      let summaryStatus = "saved", summaryError;
-      try {
-        await this.summary(task, files, audit, identity);
-      } catch {
-        summaryStatus = "failed";
-        summaryError = "\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0\uFF1B\u5982\u5DF2\u624B\u52A8\u4FEE\u6539\u4EFB\u52A1\u603B\u7ED3.txt\uFF0C\u5C06\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002";
-      }
-      items.push({
-        id: task.id,
-        name: task.name,
-        projectId: task.projectId,
-        projectName: state.projects.find((row) => row.id === task.projectId && row.owner === task.owner).name,
-        createdAt: task.createdAt,
-        status: task.status,
-        saveStatus,
-        directory: task.directory,
-        resultCount: files.filter((file2) => file2.group === "result").length,
-        referenceCount: files.filter((file2) => file2.group === "reference").length,
-        savedCount: files.filter((file2) => file2.status === "saved").length,
-        operationIds: task.operationIds,
-        files,
-        audit,
-        summaryStatus,
-        ...summaryError ? { summaryError } : {},
-        ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6587\u4EF6\u4FDD\u5B58\u5931\u8D25\uFF0C\u53EF\u91CD\u8BD5\u4FDD\u5B58\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
+      files.push({
+        diagnostic: file2.diagnostic,
+        id: file2.id,
+        name: file2.name ?? file2.label,
+        group: file2.group,
+        image: file2.image,
+        status,
+        originId: file2.source.id,
+        reviewRequired: file2.reviewRequired,
+        generationItemIndex: file2.generationItemIndex,
+        ...file2.source.kind === "asset" ? { assetId: file2.source.id } : {},
+        ...file2.group === "result" ? { variant: file2.source.kind === "asset" ? "generated" : "processed" } : {},
+        ...file2.sourceId ? { sourceId: file2.sourceId } : {}
       });
     }
+    const saveStatus = !available || files.some((file2) => file2.status === "missing") ? "missing" : files.some((file2) => file2.status === "failed") ? "failed" : files.some((file2) => file2.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
+    const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+    const summary = await this.summaryView(task, files, audit, identity, updateSummary);
+    return {
+      diagnostics: task.diagnostics,
+      id: task.id,
+      name: task.name,
+      projectId: task.projectId,
+      projectName: state.projects.find((row) => row.id === task.projectId && row.owner === task.owner).name,
+      createdAt: task.createdAt,
+      status: task.status,
+      saveStatus,
+      directory: task.directory,
+      resultCount: files.filter((file2) => file2.group === "result").length,
+      referenceCount: files.filter((file2) => file2.group === "reference").length,
+      savedCount: files.filter((file2) => file2.status === "saved").length,
+      operationIds: task.operationIds,
+      files,
+      audit,
+      ...summary,
+      ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6587\u4EF6\u4FDD\u5B58\u5931\u8D25\uFF0C\u53EF\u91CD\u8BD5\u4FDD\u5B58\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
+    };
+  }
+  async taskView(task, identity, updateSummary = true) {
+    let available = true;
+    try {
+      await this.taskDirectory(task);
+    } catch {
+      available = false;
+    }
+    return task.archiveFormat === 2 ? this.finalOnlyView(task, identity, available, updateSummary) : this.legacyView(task, identity, available, updateSummary);
+  }
+  async list(sessionId) {
+    const observedAt = (/* @__PURE__ */ new Date()).toISOString();
+    const identity = await this.identity(), state = this.store.snapshot();
+    const items = [];
+    for (const task of state.tasks.filter((row) => row.owner === identity.owner && (!sessionId || row.sessionId === sessionId)))
+      items.push(await this.taskView(task, identity));
     await this.same(identity);
     items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    if (this.options.activity) {
+      const tasks = items.map((view) => {
+        const task = state.tasks.find((task2) => task2.id === view.id);
+        return { key: task.key, view, stopped: !!task.stoppedAt && !view.audit?.complete };
+      });
+      await this.options.activity(identity, tasks, observedAt).catch(() => void 0);
+      await this.same(identity);
+    }
     const deletedAssetIds = this.store.snapshot().deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds);
     return { items, deletedAssetIds };
+  }
+  /** Lightweight current-owner metadata for Host-side filtering. Never touches task folders or files. */
+  async catalog(filters) {
+    const identity = await this.identity(), state = this.store.snapshot();
+    const projects = state.projects.filter((row) => row.owner === identity.owner).map((row) => ({ id: row.id, name: row.name })).sort((a, b) => a.name.localeCompare(b.name));
+    const projectNames = new Map(projects.map((row) => [row.id, row.name]));
+    const bounds = archiveDateBounds(filters), query = filters.query.trim().toLocaleLowerCase();
+    const headers = state.tasks.filter((row) => row.owner === identity.owner).flatMap((task) => {
+      const projectName = projectNames.get(task.projectId);
+      if (!projectName || filters.project && filters.project !== task.projectId) return [];
+      const name = task.archiveFormat === 2 ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
+      if (!`${name} ${projectName}`.toLocaleLowerCase().includes(query)) return [];
+      const createdAt = Date.parse(task.createdAt);
+      if (!Number.isFinite(createdAt) || bounds.start !== void 0 && createdAt < bounds.start || bounds.end !== void 0 && createdAt >= bounds.end) return [];
+      return [{ verified: false, id: task.id, name, projectId: task.projectId, projectName, createdAt: task.createdAt }];
+    }).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.id.localeCompare(b.id));
+    const deletedAssetIds = state.deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds);
+    const knownAssetIds = [.../* @__PURE__ */ new Set([...state.tasks.filter((row) => row.owner === identity.owner).flatMap((task) => task.files.filter((file2) => file2.group === "result" && file2.source.kind === "asset").map((file2) => file2.source.id)), ...deletedAssetIds])];
+    await this.same(identity);
+    return { headers, total: headers.length, projects, knownAssetIds, deletedAssetIds };
+  }
+  /** Verify only the exact local tasks selected for the visible page. */
+  async page(ids2) {
+    if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id) => !/^[0-9a-f-]{36}$/iu.test(id)))
+      throw new Error("\u5904\u7406\u7ED3\u679C\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
+    const identity = await this.identity(), state = this.store.snapshot();
+    const tasks = ids2.map((id) => state.tasks.find((row) => row.owner === identity.owner && row.id === id));
+    if (tasks.some((task) => !task)) throw new Error("\u5904\u7406\u7ED3\u679C\u5206\u9875\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5");
+    const items = [];
+    for (const task of tasks) items.push(await this.taskView(task, identity, false));
+    await this.same(identity);
+    return { items };
+  }
+  async detail(id) {
+    const { identity, task } = await this.owned(id);
+    const view = await this.taskView(task, identity, false);
+    await this.same(identity);
+    return view;
+  }
+  /** Metadata-only source index for hiding results already represented by an archive task. */
+  async index(sessionId) {
+    const identity = await this.identity(), state = this.store.snapshot();
+    const tasks = state.tasks.filter((row) => row.owner === identity.owner && (!sessionId || row.sessionId === sessionId));
+    const originIds = [...new Set(tasks.flatMap((task) => task.files.map((file2) => file2.source.id)))];
+    const assetIds = [...new Set(tasks.flatMap((task) => task.files.filter((file2) => file2.group === "result" && file2.source.kind === "asset").map((file2) => file2.source.id)))];
+    const deletedAssetIds = [...new Set(state.deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds))];
+    await this.same(identity);
+    return { originIds, assetIds, deletedAssetIds };
   }
   async findSource(sessionId, ids2) {
     const identity = await this.identity();
@@ -46624,16 +47349,18 @@ var TaskArchiveManager = class {
   async append(id, files, operationId2, receipt) {
     const { identity } = await this.owned(id);
     await this.serial(async () => {
+      const before = canonical(this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner));
       await this.same(identity);
       await this.store.transaction((state) => {
         const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
         for (const value2 of files) if (!task.files.some((file2) => file2.source.kind === value2.source.kind && file2.source.id === value2.source.id))
-          task.files.push({ ...value2, id: randomUUID12(), status: "pending", image: true });
+          task.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
         task.operationIds = [.../* @__PURE__ */ new Set([...task.operationIds, operationId2])];
         if (receipt && !task.processingRuns.some((run) => run.operationId === receipt.operationId))
           task.processingRuns.push({ ...receipt, resultIds: files.map((file2) => file2.source.id) });
       });
-      this.schedule(id, identity);
+      const current = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(id, identity);
     });
   }
   async retry(id) {
@@ -46643,8 +47370,8 @@ var TaskArchiveManager = class {
     if (task.archiveFormat === 2) {
       const cache = await this.cacheDirectory(task);
       for (const file2 of task.files.filter((file3) => file3.status === "saved" && file3.cacheName)) {
-        const path = join9(cache, file2.cacheName), stat = await lstat4(path).catch(() => void 0);
-        if (!stat?.isFile() || stat.isSymbolicLink() || await realpath5(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.cacheFingerprint) absent.add(file2.id);
+        const path = join10(cache, file2.cacheName), stat = await lstat5(path).catch(() => void 0);
+        if (!stat?.isFile() || stat.isSymbolicLink() || await realpath6(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.cacheFingerprint) absent.add(file2.id);
       }
       await this.same(identity);
       await this.store.transaction((state) => {
@@ -46655,7 +47382,7 @@ var TaskArchiveManager = class {
       return;
     }
     for (const file2 of task.files.filter((file3) => file3.status === "saved" && file3.name))
-      if (!await lstat4(join9(this.groupDirectory(task, file2), file2.name)).catch(() => void 0)) absent.add(file2.id);
+      if (!await lstat5(join10(this.groupDirectory(task, file2), file2.name)).catch(() => void 0)) absent.add(file2.id);
     await this.store.transaction((state) => {
       for (const file2 of state.tasks.find((row) => row.id === id).files)
         if (file2.status === "failed" || absent.has(file2.id)) file2.status = "pending";
@@ -46666,14 +47393,17 @@ var TaskArchiveManager = class {
     const { identity, task } = await this.owned(id), file2 = task.files.find((row) => row.id === fileId && row.status === "saved");
     const name = task.archiveFormat === 2 ? file2?.publishedName : file2?.name;
     if (!file2 || !name) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
-    const directory = task.archiveFormat === 2 ? join9(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2);
+    const directory = task.archiveFormat === 2 ? join10(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2);
     await this.taskDirectory(task);
     await this.directory(directory);
-    const bytes = await this.readPath(join9(directory, name));
-    if (hash3(bytes) !== file2.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
-    const result = preview && file2.image ? await sharp12(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes;
+    const bytes = await this.readPath(join10(directory, name));
+    if (hash4(bytes) !== file2.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
+    const key = `${identity.grant}:${task.sessionId}:${task.id}:${file2.id}:${file2.digest}:640:82`, epoch = this.previewCache.revision();
+    const cached2 = preview && file2.image ? this.previewCache.get(key) : void 0;
+    const result = cached2 ?? (preview && file2.image ? await sharp13(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
     await this.same(identity);
-    return { bytes: result, name, image: file2.image, contentType: preview && file2.image ? "image/webp" : `image/${extname7(name).slice(1)}` };
+    if (preview && file2.image && !cached2) this.previewCache.set(key, result, epoch);
+    return { bytes: result, name, image: file2.image, contentType: preview && file2.image ? "image/webp" : `image/${extname8(name).slice(1)}` };
   }
   async openTask(id) {
     const { identity, task } = await this.owned(id);
@@ -46702,7 +47432,7 @@ var TaskArchiveManager = class {
     await this.same(identity);
     const name = task.archiveFormat === 2 ? file2?.publishedName : file2?.name;
     if (!this.options.revealPath || !file2 || !name) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
-    await this.options.revealPath(join9(task.archiveFormat === 2 ? join9(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2), name));
+    await this.options.revealPath(join10(task.archiveFormat === 2 ? join10(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2), name));
   }
   async wait() {
     while (this.jobs.size) await Promise.allSettled(this.jobs.values());
@@ -46714,8 +47444,8 @@ var TaskArchiveManager = class {
 };
 
 // plugins/podplo-dsh/src/archive-processing-pipeline.ts
-import { createHash as createHash11 } from "node:crypto";
-import sharp13 from "sharp";
+import { createHash as createHash14 } from "node:crypto";
+import sharp14 from "sharp";
 var automaticProcessingTools = /* @__PURE__ */ new Set([
   "podplo_outline_images",
   "podplo_rotate_flip_images",
@@ -46810,7 +47540,7 @@ var ArchiveProcessingPipeline = class {
       const beforeProcess = await this.deps.context(taskId);
       const latestStep = beforeProcess.plan?.find((row) => row.id === step.id);
       if (this.closed || beforeProcess.sessionId !== sessionId || !beforeProcess.approvedAt || beforeProcess.stoppedAt || !latestStep || processingStepDigest(latestStep) !== planDigest) return;
-      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash11("sha256").update(canonical2({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
+      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash14("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
       await this.deps.process(
         step.toolName,
         { operationId: operationId2, ids: [inputId], options: step.options },
@@ -46838,7 +47568,7 @@ var ArchiveProcessingPipeline = class {
 };
 async function hasRealTransparency(input) {
   if (input.kind === "file") return false;
-  const image = sharp13(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).autoOrient();
+  const image = sharp14(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).autoOrient();
   const metadata = await image.metadata();
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1 || metadata.hasAlpha !== true) return false;
   return !(await image.stats()).isOpaque;
@@ -46846,6 +47576,27 @@ async function hasRealTransparency(input) {
 
 // plugins/podplo-dsh/src/task-archive-host.ts
 var standalone = { key: "podplo:standalone", name: "\u72EC\u7ACB\u4EFB\u52A1" };
+var archivePeriods = /* @__PURE__ */ new Set(["all", "today", "7days", "30days", "custom"]);
+function archiveFilters(value2) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2))
+    throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7B5B\u9009\u53C2\u6570\u65E0\u6548\u3002");
+  const raw = value2, allowed = /* @__PURE__ */ new Set(["query", "project", "period", "from", "to"]);
+  if (Object.keys(raw).some((key) => !allowed.has(key))) throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7B5B\u9009\u53C2\u6570\u65E0\u6548\u3002");
+  const text4 = (key, limit) => {
+    const current = raw[key];
+    if (current === void 0) return "";
+    if (typeof current !== "string" || current.length > limit) throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7B5B\u9009\u53C2\u6570\u65E0\u6548\u3002");
+    return current;
+  };
+  if (raw.period !== void 0 && (typeof raw.period !== "string" || !archivePeriods.has(raw.period)))
+    throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7B5B\u9009\u53C2\u6570\u65E0\u6548\u3002");
+  const period = raw.period ?? "all";
+  return { query: text4("query", 200), project: text4("project", 200), period, from: text4("from", 10), to: text4("to", 10) };
+}
+function archiveInputKeys(input, allowed) {
+  if (Object.keys(input).some((key) => !allowed.includes(key)))
+    throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u8BF7\u6C42\u53C2\u6570\u65E0\u6548\u3002");
+}
 var labels = {
   [TOOLBOX_PIPELINE_NAME]: "\u5DE5\u5177\u7BB1\u7EC4\u5408\u5904\u7406",
   podplo_resize_images: "\u8C03\u6574\u5C3A\u5BF8",
@@ -46854,7 +47605,8 @@ var labels = {
   podplo_export_images: "\u56FE\u7247\u5BFC\u51FA",
   podplo_prepare_print_files: "\u5370\u5237\u6587\u4EF6",
   podplo_package_delivery: "\u4EA4\u4ED8\u6253\u5305",
-  podplo_outline_images: "\u81EA\u52A8\u63CF\u8FB9"
+  podplo_outline_images: "\u81EA\u52A8\u63CF\u8FB9",
+  [GRID_SPLIT_OPERATION_NAME]: "\u56FE\u7247\u5206\u5272"
 };
 var deliveryTool = {
   name: "podplo_prepare_generation_delivery",
@@ -46863,8 +47615,16 @@ var deliveryTool = {
 };
 async function taskArchiveHost(options) {
   const { online, service, toolkit } = options;
+  const logStartedAt = (/* @__PURE__ */ new Date()).toISOString();
+  const operationLog = new OperationLog({
+    directory: options.directory,
+    async authorize() {
+      return { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
+    }
+  });
   let scheduleProcessing = (_taskId) => {
   };
+  let taskRevision = 0;
   const manager = new TaskArchiveManager({
     directory: options.directory,
     async authorize() {
@@ -46872,6 +47632,22 @@ async function taskArchiveHost(options) {
     },
     async outputDirectory() {
       return (await options.outputs.get()).directory;
+    },
+    activity(identity, tasks, at) {
+      return operationLog.recordMany(identity, tasks.map((task) => ({
+        ...archiveLogUpdate(task.key, task.view, at),
+        ...task.stopped ? { status: "stopped" } : {}
+      })));
+    },
+    processingFailure(identity, task, diagnostic) {
+      return operationLog.record(identity, {
+        key: task.key,
+        create: false,
+        startedAt: task.createdAt,
+        stage: "processing",
+        status: "failed",
+        diagnostics: [diagnostic]
+      });
     },
     async read(source) {
       if (source.kind === "local") return toolkit.readResult(source.id, source.sessionId);
@@ -46883,13 +47659,17 @@ async function taskArchiveHost(options) {
       if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(false)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
       return { bytes, name: detail.filename || "\u56FE\u7247.png" };
     },
-    changed: (taskId) => scheduleProcessing(taskId),
+    changed: (taskId) => {
+      taskRevision++;
+      scheduleProcessing(taskId);
+    },
     openPath: options.openPath,
     revealPath: options.revealPath
   });
   await manager.init();
   let closed = false, pending, rerun = false;
   let error51 = "";
+  let syncDiagnostic;
   const signatures = /* @__PURE__ */ new Map();
   const sync = (sessionId) => {
     if (closed) return Promise.resolve();
@@ -46897,17 +47677,39 @@ async function taskArchiveHost(options) {
       rerun = true;
       return pending;
     }
+    let stage = "generation";
+    let logTarget;
+    const scope = `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}`;
     pending = (async () => {
       do {
         rerun = false;
+        stage = "generation";
+        logTarget = void 0;
         const generations = await service.archiveGenerations();
         const grant = `${generations.ownerId}:${online.auth.namespace}`;
         for (const row of generations.items) {
           const key = `${grant}:generation:${row.operationId}`, signature = JSON.stringify(row);
           if (signatures.get(key) === signature) continue;
+          logTarget = {
+            identity: { ownerId: generations.ownerId, namespace: online.auth.namespace },
+            key: archiveTaskKey(generations.ownerId, row.sessionId, `generation:${row.intentId}`),
+            startedAt: row.approvedAt ?? row.createdAt
+          };
+          const logStatus = row.status.includes("unknown") ? "unknown" : row.status === "failed" || row.status === "partial_failure" ? "failed" : row.status === "cancelled" || row.status === "partial_cancelled" ? "stopped" : "running";
+          await operationLog.record({ ownerId: generations.ownerId, namespace: online.auth.namespace }, {
+            key: archiveTaskKey(generations.ownerId, row.sessionId, `generation:${row.intentId}`),
+            type: "generation",
+            create: (row.approvedAt ?? row.createdAt) >= logStartedAt,
+            startedAt: row.approvedAt ?? row.createdAt,
+            stage: row.status === "completed" ? "download" : "generation",
+            status: logStatus,
+            counts: { ...row.generationAudit?.planned != null ? { planned: row.generationAudit.planned } : {}, generated: row.generationAudit?.succeeded },
+            diagnostics: row.diagnostics
+          });
           const input = {
             key: `generation:${row.intentId}`,
             sessionId: row.sessionId,
+            diagnostics: row.diagnostics,
             project: row.project ?? options.projectForSession(row.sessionId) ?? standalone,
             name: row.name,
             createdAt: row.createdAt,
@@ -46928,33 +47730,45 @@ async function taskArchiveHost(options) {
               }))
             ]
           };
+          stage = "archive";
           const taskId = await manager.upsert(input, generations.ownerId);
           if (taskId) scheduleProcessing(taskId);
           signatures.set(key, signature);
         }
+        stage = "processing";
+        logTarget = void 0;
         const local = await toolkit.archiveOperations(sessionId);
         for (const row of local.items) {
           const key = `${grant}:local:${row.sessionId}:${row.operationId}`;
           if (signatures.has(key)) continue;
+          logTarget = {
+            identity: { ownerId: local.ownerId, namespace: online.auth.namespace },
+            key: archiveTaskKey(local.ownerId, row.sessionId, `local:${row.operationId}`),
+            startedAt: row.createdAt
+          };
           if (await manager.deletedOperation(row.sessionId, row.operationId)) {
             signatures.set(key, row.operationId);
             continue;
           }
           const label = labels[row.toolName] ?? "\u672C\u5730\u5904\u7406";
-          const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && row.toolName === TOOLBOX_PIPELINE_NAME;
+          const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && row.toolName === TOOLBOX_PIPELINE_NAME || row.sessionId === PODPLO_GRID_SPLIT_WORKSPACE_ID && row.toolName === GRID_SPLIT_OPERATION_NAME;
           const matches = independentBatch ? [] : await manager.findSource(row.sessionId, row.inputIds);
           const groups2 = /* @__PURE__ */ new Map();
+          const groupKeys = /* @__PURE__ */ new Map();
           for (const result of row.results) {
             const sourceMatches = independentBatch ? [] : result.sourceId ? await manager.findSource(row.sessionId, [result.sourceId]) : matches;
             const target = sourceMatches.length === 1 ? sourceMatches[0].id : "";
+            if (target) groupKeys.set(target, sourceMatches[0].key);
             groups2.set(target, [...groups2.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
               group: "result",
-              label: basename10(result.name, extname8(result.name)),
+              label: basename11(result.name, extname9(result.name)),
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
           for (const [id, files] of groups2) {
+            stage = "archive";
+            if (groupKeys.has(id)) logTarget.key = groupKeys.get(id);
             const receipt = { operationId: row.operationId, toolName: row.toolName, options: row.options, inputIds: row.inputIds, resultIds: files.map((file2) => file2.source.id) };
             if (id) await manager.append(id, files, row.operationId, receipt);
             else await manager.upsert({
@@ -46967,7 +47781,7 @@ async function taskArchiveHost(options) {
               operationIds: [row.operationId],
               generationAudit: { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
               processingRuns: [receipt],
-              ...row.toolName !== TOOLBOX_PIPELINE_NAME && row.options && typeof row.options === "object" ? { processingPlan: [{ id: "local", label, toolName: row.toolName, options: row.options }] } : {},
+              ...row.toolName !== TOOLBOX_PIPELINE_NAME && row.toolName !== GRID_SPLIT_OPERATION_NAME && row.options && typeof row.options === "object" ? { processingPlan: [{ id: "local", label, toolName: row.toolName, options: row.options }] } : {},
               files: [
                 ...row.inputIds.map((id2) => ({ source: { kind: "input", id: id2, sessionId: row.sessionId }, group: "reference", label: "\u53C2\u8003\u539F\u56FE" })),
                 ...files
@@ -46977,9 +47791,19 @@ async function taskArchiveHost(options) {
           signatures.set(key, row.operationId);
         }
         error51 = "";
+        syncDiagnostic = void 0;
       } while (rerun && !closed);
-    })().catch(() => {
+    })().catch(async (cause) => {
       error51 = "\u6210\u679C\u5F52\u6863\u5C1A\u672A\u5B8C\u6210\uFF0C\u8BF7\u68C0\u67E5\u8F93\u51FA\u76EE\u5F55\u6216\u8FDE\u63A5\u540E\u91CD\u8BD5\u3002";
+      syncDiagnostic = { scope, value: diagnose(stage, cause, (/* @__PURE__ */ new Date()).toISOString()) };
+      if (logTarget) await operationLog.record(logTarget.identity, {
+        key: logTarget.key,
+        create: false,
+        startedAt: logTarget.startedAt,
+        stage,
+        status: "failed",
+        diagnostics: [syncDiagnostic.value]
+      });
     }).finally(() => {
       pending = void 0;
     });
@@ -46987,9 +47811,7 @@ async function taskArchiveHost(options) {
   };
   const pipeline = new ArchiveProcessingPipeline({
     context: (taskId) => manager.processingContext(taskId),
-    async audit(taskId, sessionId) {
-      return (await manager.list(sessionId)).items.find((row) => row.id === taskId)?.audit;
-    },
+    audit: (taskId, sessionId) => manager.processingAudit(taskId, sessionId),
     inputs: (taskId, ids2) => manager.processingInputs(taskId, ids2),
     process: (toolName, input, sessionId, inputs) => toolkit.processArchived(toolName, input, sessionId, inputs),
     sync,
@@ -47005,12 +47827,24 @@ async function taskArchiveHost(options) {
   service.on("change", changed);
   const processingJobs = /* @__PURE__ */ new Map();
   const continueProcessing = async (taskId) => {
-    const ownerId = await online.workspaceIdentity(true), namespace = online.auth.namespace;
+    const ownerId = await online.workspaceIdentity(false), namespace = online.auth.namespace;
     const key = `${ownerId}:${namespace}:${taskId}`, existing = processingJobs.get(key);
     if (existing) return existing;
+    let logContext;
     const job = (async () => {
+      logContext = await manager.processingContext(taskId);
+      if (ownerId !== await online.workspaceIdentity(true) || namespace !== online.auth.namespace)
+        throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
       await sync();
       let context = await manager.processingContext(taskId);
+      logContext = context;
+      await operationLog.record({ ownerId, namespace }, {
+        key: context.key,
+        create: false,
+        startedAt: context.createdAt,
+        stage: "processing",
+        status: "running"
+      });
       if (!context.plan) throw new PodploPluginError("PROCESSING_PLAN_REQUIRED", "\u539F\u4EFB\u52A1\u6CA1\u6709\u767B\u8BB0\u5904\u7406\u8981\u6C42\uFF0C\u8BF7\u5728\u539F\u5BF9\u8BDD\u8865\u5145\u8981\u6C42\u540E\u518D\u7EE7\u7EED\u3002");
       await manager.resumeProcessing(taskId);
       await manager.clearProcessingFailures(taskId);
@@ -47025,14 +47859,24 @@ async function taskArchiveHost(options) {
         if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(true)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
         for (let offset = 0; offset < pendingIds.length; offset += 100) {
           const ids2 = pendingIds.slice(offset, offset + 100);
-          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash12("sha256").update(canonical2({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
+          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash15("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
           await toolkit.callTool(step.toolName, { operationId: operationId2, ids: ids2, options: step.options }, context.sessionId);
           await sync(context.sessionId);
         }
       }
       const view = (await manager.list(context.sessionId)).items.find((row) => row.id === taskId);
       return { processed: view.audit?.processing.remaining === 0, audit: view.audit };
-    })().finally(() => {
+    })().catch(async (cause) => {
+      if (logContext) await operationLog.record({ ownerId, namespace }, {
+        key: logContext.key,
+        create: false,
+        startedAt: logContext.createdAt,
+        stage: "processing",
+        status: "failed",
+        diagnostics: [diagnose("processing", cause, (/* @__PURE__ */ new Date()).toISOString())]
+      });
+      throw cause;
+    }).finally(() => {
       processingJobs.delete(key);
     });
     processingJobs.set(key, job);
@@ -47060,6 +47904,61 @@ async function taskArchiveHost(options) {
   const stopSession = async (sessionId) => {
     await sync(sessionId).catch(() => void 0);
     await manager.stopSession(sessionId);
+    await manager.list(sessionId).catch(() => void 0);
+  };
+  const runLoggedLocal = async (raw, sessionId, type, work) => {
+    const input = raw && typeof raw === "object" ? raw : {};
+    if (!sessionId || typeof input.operationId !== "string" || !input.operationId || input.operationId.length > 180) return work();
+    let identity, key, parent = false;
+    const startedAt = (/* @__PURE__ */ new Date()).toISOString(), ids2 = Array.isArray(input.ids) ? input.ids.filter((id) => typeof id === "string") : [];
+    try {
+      identity = { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
+      const prior = await toolkit.archiveOperations(sessionId);
+      if (prior.ownerId !== identity.ownerId || prior.items.some((row) => row.operationId === input.operationId)) return work();
+      const sources = type === "toolbox" ? [] : await manager.findSource(sessionId, ids2);
+      parent = sources.length === 1;
+      key = parent ? sources[0].key : archiveTaskKey(identity.ownerId, sessionId, `local:${input.operationId}`);
+    } catch {
+      return work();
+    }
+    await operationLog.record(identity, {
+      key,
+      create: !parent,
+      type,
+      startedAt,
+      stage: "processing",
+      status: "running",
+      ...!parent ? { counts: { planned: ids2.length } } : {}
+    });
+    try {
+      const result = await work();
+      await operationLog.record(identity, {
+        key,
+        create: false,
+        startedAt,
+        stage: "archive",
+        status: "running",
+        ...!parent ? { counts: { processed: ids2.length } } : {}
+      });
+      return result;
+    } catch (cause) {
+      await operationLog.record(identity, {
+        key,
+        create: false,
+        startedAt,
+        stage: "processing",
+        status: "failed",
+        diagnostics: [diagnose("processing", cause, (/* @__PURE__ */ new Date()).toISOString())]
+      });
+      throw cause;
+    }
+  };
+  const localLogJobs = /* @__PURE__ */ new Set();
+  const logLocal = (...args) => {
+    const job = runLoggedLocal(...args);
+    localLogJobs.add(job);
+    void job.then(() => localLogJobs.delete(job), () => localLogJobs.delete(job));
+    return job;
   };
   const transport = {
     async toolDefinitions() {
@@ -47093,27 +47992,30 @@ async function taskArchiveHost(options) {
           operationId: operationId2,
           status: operation.status ?? task.status,
           files: files.map((file2) => {
-            if (basename10(file2.name) !== file2.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            const expected = join10(task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE", file2.name);
+            if (basename11(file2.name) !== file2.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
+            const expected = join11(task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE", file2.name);
             const relative5 = file2.relativePath ?? expected;
             if (relative5 !== expected) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u8DEF\u5F84\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            return { name: file2.name, path: join10(task.directory, relative5) };
+            return { name: file2.name, path: join11(task.directory, relative5) };
           })
         };
       }
-      const result = await options.transport.callTool(name, args, sessionId);
+      const run = () => options.transport.callTool(name, args, sessionId);
+      const result = Object.hasOwn(labels, name) && name !== "podplo_package_delivery" ? await logLocal(args, sessionId, "local", run) : await run();
       if (name.startsWith("podplo_")) void sync(sessionId);
       return result;
     },
     async dispatch(action, raw, caller) {
-      if (action === "toolbox.reveal") {
-        if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u5DE5\u5177\u7BB1\u6253\u5F00\u7ED3\u679C\u3002");
+      if (action === "toolbox.reveal" || action === "splitter.reveal") {
+        const gridSplit = action === "splitter.reveal";
+        if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", gridSplit ? "\u8BF7\u4ECE\u56FE\u7247\u5206\u5272\u6253\u5F00\u7ED3\u679C\u3002" : "\u8BF7\u4ECE\u5DE5\u5177\u7BB1\u6253\u5F00\u7ED3\u679C\u3002");
         const id = raw?.id;
         if (typeof id !== "string") throw new Error("\u7ED3\u679C\u7F16\u53F7\u65E0\u6548");
-        await toolkit.readResult(id, PODPLO_TOOLBOX_WORKSPACE_ID);
+        const workspaceId = gridSplit ? PODPLO_GRID_SPLIT_WORKSPACE_ID : PODPLO_TOOLBOX_WORKSPACE_ID;
+        await toolkit.readResult(id, workspaceId);
         await sync();
         await manager.wait();
-        const tasks = await manager.list(PODPLO_TOOLBOX_WORKSPACE_ID);
+        const tasks = await manager.list(workspaceId);
         const task = tasks.items.find((task2) => task2.files.some((file3) => file3.group === "result" && file3.originId === id));
         const file2 = task?.files.find((file3) => file3.group === "result" && file3.originId === id);
         if (!task || !file2 || file2.status !== "saved") throw new Error("\u7ED3\u679C\u5DF2\u4FDD\u7559\u5728\u672C\u5730\uFF0C\u5F52\u6863\u6587\u4EF6\u5939\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
@@ -47123,19 +48025,62 @@ async function taskArchiveHost(options) {
       if (!action.startsWith("archive.")) {
         let result;
         try {
-          result = await options.transport.dispatch(action, raw, caller);
+          const run = () => options.transport.dispatch(action, raw, caller);
+          const loggable = caller.source === "ui" && ["toolbox.save", "toolbox.run", "splitter.save", "local.run"].includes(action);
+          const standaloneScope = action.startsWith("toolbox.") ? PODPLO_TOOLBOX_WORKSPACE_ID : action.startsWith("splitter.") ? PODPLO_GRID_SPLIT_WORKSPACE_ID : caller.sessionId;
+          result = loggable ? await logLocal(
+            raw,
+            standaloneScope,
+            action === "toolbox.save" || action === "splitter.save" ? "toolbox" : "local",
+            run
+          ) : await run();
         } catch (cause) {
           if (action === "generation.stopRemaining" && caller.sessionId) await stopSession(caller.sessionId).catch(() => void 0);
           throw cause;
         }
         if (action === "generation.stopRemaining" && caller.sessionId) await stopSession(caller.sessionId);
         if (action === "local.run") void sync(caller.sessionId);
-        if (action === "toolbox.run" || action === "toolbox.save") void sync();
+        if (action === "toolbox.run" || action === "toolbox.save" || action === "splitter.save") void sync();
+        if (action === "snapshot") {
+          const snapshot = result;
+          return { ...snapshot, data: { ...snapshot.data, taskRevision } };
+        }
         return result;
       }
       if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u754C\u9762\u67E5\u770B\u672C\u5730\u6210\u679C\u3002");
       const input = raw && typeof raw === "object" ? raw : {};
       try {
+        if (action === "archive.operationLog") return { ok: true, data: await operationLog.read() };
+        if (action === "archive.index") {
+          archiveInputKeys(input, ["scope"]);
+          if (input.scope !== void 0 && input.scope !== "session") throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7D22\u5F15\u8303\u56F4\u65E0\u6548\u3002");
+          await sync(caller.sessionId);
+          return { ok: true, data: await manager.index(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0) };
+        }
+        if (action === "archive.catalog") {
+          archiveInputKeys(input, ["filters"]);
+          const filters = archiveFilters(input.filters);
+          await sync(caller.sessionId);
+          return { ok: true, data: {
+            ...await manager.catalog(filters),
+            diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
+            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            ...error51 ? { error: error51 } : {}
+          } };
+        }
+        if (action === "archive.page") {
+          archiveInputKeys(input, ["taskIds"]);
+          if (!Array.isArray(input.taskIds) || !input.taskIds.every((id) => typeof id === "string"))
+            throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u5206\u9875\u53C2\u6570\u65E0\u6548\u3002");
+          const taskIds = input.taskIds;
+          return { ok: true, data: await manager.page(taskIds) };
+        }
+        if (action === "archive.detail") {
+          archiveInputKeys(input, ["taskId"]);
+          const taskId2 = typeof input.taskId === "string" ? input.taskId : "";
+          if (!taskId2) throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u8BE6\u60C5\u53C2\u6570\u65E0\u6548\u3002");
+          return { ok: true, data: await manager.detail(taskId2) };
+        }
         if (action === "archive.cloud") {
           const ownerId = await online.workspaceIdentity(false), namespace = online.auth.namespace;
           const page = await options.transport.dispatch("assets.list", {
@@ -47150,29 +48095,52 @@ async function taskArchiveHost(options) {
         if (action === "archive.saveCloud") {
           const assetId = typeof input.assetId === "string" ? input.assetId : "";
           const namespace = online.auth.namespace, ownerId = await online.workspaceIdentity(false);
-          const detail = await online.reference(assetId);
-          if (detail.kind !== "generated" || detail.status !== "ready") throw new Error("\u751F\u6210\u56FE\u5C1A\u672A\u5C31\u7EEA");
-          if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(false)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
-          if ((await manager.knownAssets()).has(assetId)) return { ok: true, data: { saved: true } };
-          const taskId2 = await manager.upsert({
-            key: `cloud:${assetId}`,
-            sessionId: "podplo-cloud-history",
-            project: { key: "podplo:cloud-history", name: "\u4E91\u7AEF\u5386\u53F2\u6210\u679C" },
-            name: detail.filename || "\u4E91\u7AEF\u751F\u6210\u56FE",
-            createdAt: detail.createdAt,
-            status: "completed",
-            operationIds: [],
-            generationAudit: { planned: null, succeeded: 1, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
-            files: [{ source: { kind: "asset", id: assetId, sessionId: "podplo-cloud-history" }, group: "result", label: "\u539F\u59CB\u751F\u6210" }]
-          }, ownerId);
-          if (!taskId2) throw new PodploPluginError("ARCHIVE_TASK_DELETED", "\u8BE5\u5386\u53F2\u6279\u6B21\u5DF2\u5220\u9664\uFF0C\u8BF7\u4ECE\u7D20\u6750\u5E93\u53E6\u5B58\u6240\u9700\u56FE\u7247\u3002");
-          return { ok: true, data: { taskId: taskId2 } };
+          const log = { key: archiveTaskKey(ownerId, "podplo-cloud-history", `cloud:${assetId}`), startedAt: (/* @__PURE__ */ new Date()).toISOString() };
+          let known = false, loggingStarted = false;
+          let stage = "archive";
+          try {
+            known = (await manager.knownAssets()).has(assetId);
+            if (!known) {
+              await operationLog.record({ ownerId, namespace }, { ...log, type: "local", stage: "download", status: "running", counts: { planned: 1 } });
+              loggingStarted = true;
+            }
+            stage = "download";
+            const detail = await online.reference(assetId);
+            if (detail.kind !== "generated" || detail.status !== "ready") throw new Error("\u751F\u6210\u56FE\u5C1A\u672A\u5C31\u7EEA");
+            if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(false)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
+            if (known) return { ok: true, data: { saved: true } };
+            stage = "archive";
+            const taskId2 = await manager.upsert({
+              key: `cloud:${assetId}`,
+              sessionId: "podplo-cloud-history",
+              project: { key: "podplo:cloud-history", name: "\u4E91\u7AEF\u5386\u53F2\u6210\u679C" },
+              name: detail.filename || "\u4E91\u7AEF\u751F\u6210\u56FE",
+              createdAt: detail.createdAt,
+              status: "completed",
+              operationIds: [],
+              generationAudit: { planned: null, succeeded: 1, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
+              files: [{ source: { kind: "asset", id: assetId, sessionId: "podplo-cloud-history" }, group: "result", label: "\u539F\u59CB\u751F\u6210" }]
+            }, ownerId);
+            if (!taskId2) throw new PodploPluginError("ARCHIVE_TASK_DELETED", "\u8BE5\u5386\u53F2\u6279\u6B21\u5DF2\u5220\u9664\uFF0C\u8BF7\u4ECE\u7D20\u6750\u5E93\u53E6\u5B58\u6240\u9700\u56FE\u7247\u3002");
+            return { ok: true, data: { taskId: taskId2 } };
+          } catch (cause) {
+            if (!known) await operationLog.record({ ownerId, namespace }, {
+              ...log,
+              type: "local",
+              create: !loggingStarted,
+              stage,
+              status: "failed",
+              diagnostics: [diagnose(stage, cause, (/* @__PURE__ */ new Date()).toISOString())]
+            });
+            throw cause;
+          }
         }
         if (action === "archive.list") {
           await sync(caller.sessionId);
           return { ok: true, data: {
             ...await manager.list(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0),
-            currentProjectId: createHash12("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
+            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error51 ? { error: error51 } : {}
           } };
         }
@@ -47195,9 +48163,26 @@ async function taskArchiveHost(options) {
           return { ok: true, data: { opened: true } };
         }
         if (action === "archive.retry") {
-          await sync(caller.sessionId);
-          await manager.retry(taskId);
-          return { ok: true, data: { saving: true } };
+          const ownerId = await online.workspaceIdentity(false), namespace = online.auth.namespace;
+          let logContext;
+          try {
+            logContext = await manager.processingContext(taskId);
+            await sync(caller.sessionId);
+            if (ownerId !== await online.workspaceIdentity(false) || namespace !== online.auth.namespace)
+              throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
+            await manager.retry(taskId);
+            return { ok: true, data: { saving: true } };
+          } catch (cause) {
+            if (logContext) await operationLog.record({ ownerId, namespace }, {
+              key: logContext.key,
+              create: false,
+              startedAt: logContext.createdAt,
+              stage: "archive",
+              status: "failed",
+              diagnostics: [diagnose("archive", cause, (/* @__PURE__ */ new Date()).toISOString())]
+            });
+            throw cause;
+          }
         }
         if (action === "archive.openTask") {
           await manager.openTask(taskId);
@@ -47247,9 +48232,10 @@ async function taskArchiveHost(options) {
       closed = true;
       service.off("change", changed);
       await pending;
-      await Promise.allSettled(processingJobs.values());
+      await Promise.allSettled([...processingJobs.values(), ...localLogJobs]);
       await pipeline.close();
       await manager.close();
+      await operationLog.close();
     }
   };
 }
@@ -47412,10 +48398,10 @@ async function waitForNativeGeneration(options) {
 }
 
 // plugins/podplo-dsh/src/native-skill-batch.ts
-import { constants as constants5, open as open6, readdir, realpath as realpath6, lstat as lstat5 } from "node:fs/promises";
-import { randomInt, randomUUID as randomUUID13 } from "node:crypto";
+import { constants as constants6, open as open7, readdir, realpath as realpath7, lstat as lstat6 } from "node:fs/promises";
+import { randomInt, randomUUID as randomUUID14 } from "node:crypto";
 import { homedir } from "node:os";
-import { basename as basename11, extname as extname9, isAbsolute as isAbsolute6, parse as parse3, relative as relative4, resolve, sep } from "node:path";
+import { basename as basename12, extname as extname10, isAbsolute as isAbsolute7, parse as parse3, relative as relative4, resolve, sep } from "node:path";
 
 // plugins/podplo-dsh/src/toolbox-preset.ts
 var edge = external_exports.number().min(0).max(1e3);
@@ -47552,7 +48538,7 @@ var fail3 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
-var record4 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
+var record5 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
 var text3 = (value2, name, max) => {
   if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail3("INVALID_ARGUMENT", `${name} \u65E0\u6548\u3002`);
   return value2.trim();
@@ -47560,8 +48546,8 @@ var text3 = (value2, name, max) => {
 function parseInput(value2) {
   const allowed = /* @__PURE__ */ new Set(["folderPath", "expectedImageCount", "skillQuery", "skillSource", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
   if (Object.keys(value2).some((key) => !allowed.has(key))) fail3("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
-  const count = value2.expectedImageCount;
-  if (count !== void 0 && (!Number.isInteger(count) || Number(count) < 1 || Number(count) > 100)) fail3("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
+  const count2 = value2.expectedImageCount;
+  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail3("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
   if (!["single", "random-per-image", "random-shared"].includes(String(value2.skillStrategy))) fail3("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
   if (typeof value2.ecoMode !== "boolean") fail3("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
   if (value2.background !== "opaque" && value2.background !== "transparent") fail3("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
@@ -47570,7 +48556,7 @@ function parseInput(value2) {
     fail3("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
   return {
     folderPath: text3(value2.folderPath, "folderPath", 4096),
-    ...count === void 0 ? {} : { expectedImageCount: Number(count) },
+    ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
     skillQuery: text3(value2.skillQuery, "skillQuery", 160),
     skillStrategy: value2.skillStrategy,
     model: text3(value2.model, "model", 160),
@@ -47589,8 +48575,8 @@ async function presetProcessing(input, deps) {
   if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail3("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
   if (!deps.isFolderAuthorized(input.processingPresetPath)) fail3("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
   const path = input.processingPresetPath;
-  if (!isAbsolute6(path) || extname9(path).toLowerCase() !== ".json") fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
-  const handle = await open6(path, constants5.O_RDONLY | (constants5.O_NOFOLLOW ?? 0));
+  if (!isAbsolute7(path) || extname10(path).toLowerCase() !== ".json") fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
+  const handle = await open7(path, constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0));
   try {
     const before = await handle.stat();
     if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
@@ -47638,26 +48624,26 @@ async function personalMatch(input, deps) {
 }
 function isInside(parent, child) {
   const value2 = relative4(parent, child);
-  return value2 === "" || value2 !== ".." && !value2.startsWith(`..${sep}`) && !isAbsolute6(value2);
+  return value2 === "" || value2 !== ".." && !value2.startsWith(`..${sep}`) && !isAbsolute7(value2);
 }
 async function readTrustedImageFolder(input) {
   input.signal?.throwIfAborted();
   let trustedRoot;
-  if (!isAbsolute6(input.folderPath)) {
-    if (!input.cwd || !isAbsolute6(input.cwd)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
-    trustedRoot = await realpath6(input.cwd).catch(() => fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
+  if (!isAbsolute7(input.folderPath)) {
+    if (!input.cwd || !isAbsolute7(input.cwd)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
+    trustedRoot = await realpath7(input.cwd).catch(() => fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
   }
-  const requested = isAbsolute6(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
-  const before = await lstat5(requested).catch(() => fail3("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
+  const requested = isAbsolute7(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
+  const before = await lstat6(requested).catch(() => fail3("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
   if (before.isSymbolicLink() || !before.isDirectory()) fail3("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
-  const directory = await realpath6(requested);
+  const directory = await realpath7(requested);
   if (trustedRoot && !isInside(trustedRoot, directory)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
-  const root = parse3(directory).root, home = await realpath6(homedir()).catch(() => homedir());
+  const root = parse3(directory).root, home = await realpath7(homedir()).catch(() => homedir());
   const pathParts = relative4(root, directory).split(sep);
   if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
     fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
   const entries = await readdir(directory, { withFileTypes: true });
-  const imageEntries = entries.filter((entry) => imageExtensions.has(extname9(entry.name).toLocaleLowerCase()));
+  const imageEntries = entries.filter((entry) => imageExtensions.has(extname10(entry.name).toLocaleLowerCase()));
   if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail3("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
   imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
   if (!imageEntries.length) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
@@ -47667,7 +48653,7 @@ async function readTrustedImageFolder(input) {
   const images = [];
   for (const [index, entry] of imageEntries.entries()) {
     input.signal?.throwIfAborted();
-    const handle = await open6(resolve(directory, entry.name), constants5.O_RDONLY | (constants5.O_NOFOLLOW ?? 0)).catch(() => fail3("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
+    const handle = await open7(resolve(directory, entry.name), constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0)).catch(() => fail3("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
     try {
       const first = await handle.stat();
       if (!first.isFile() || first.size < 1 || first.size > 5e7) fail3("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
@@ -47675,7 +48661,7 @@ async function readTrustedImageFolder(input) {
       const second = await handle.stat();
       if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
         fail3("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
-      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename11(entry.name), bytes });
+      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename12(entry.name), bytes });
     } finally {
       await handle.close();
     }
@@ -47694,13 +48680,13 @@ function catalogMatch(input, catalog) {
   return fail3("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
 }
 function boundSkill(value2) {
-  const row = record4(value2), details = record4(row.details);
+  const row = record5(value2), details = record5(row.details);
   if (typeof row.id !== "string" || typeof row.name !== "string" || typeof row.availableForCurrentPlan !== "boolean" || !Number.isInteger(row.minimumReferenceImages) || typeof details.slug !== "string" || typeof details.title !== "string" || !Array.isArray(details.inputs) || !Array.isArray(details.keeps) || !Array.isArray(details.changes) || typeof details.output !== "string")
     fail3("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
   return row;
 }
 function capabilities(value2) {
-  const row = record4(value2), schema = record4(row.quoteInputSchema);
+  const row = record5(value2), schema = record5(row.quoteInputSchema);
   if (row.available !== true || !Array.isArray(row.models) || !schema.properties) fail3("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
   return row;
 }
@@ -47733,10 +48719,10 @@ async function assertOwner(deps, ownerId, namespace) {
   if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
     fail3("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
 }
-function shuffledWithoutReplacement(values, count, choose) {
-  if (count > values.length) fail3("SKILL_FAMILY_TOO_SMALL", `\u8BE5 Skill \u65CF\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+function shuffledWithoutReplacement(values, count2, choose) {
+  if (count2 > values.length) fail3("SKILL_FAMILY_TOO_SMALL", `\u8BE5 Skill \u65CF\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
   const pool = [...values], selected = [];
-  while (selected.length < count) {
+  while (selected.length < count2) {
     const index = choose(pool.length);
     if (!Number.isInteger(index) || index < 0 || index >= pool.length) throw new Error("Invalid random index");
     selected.push(pool.splice(index, 1)[0]);
@@ -47841,7 +48827,7 @@ async function prepareNativeSkillBatch(raw, deps) {
   });
   deps.signal?.throwIfAborted();
   return {
-    intentId: (deps.createId ?? randomUUID13)(),
+    intentId: (deps.createId ?? randomUUID14)(),
     planVersion: 1,
     taskName: `${title} \xB7 ${items.length} \u5F20`,
     expectedOutputCount: items.length,
@@ -47855,7 +48841,7 @@ async function prepareGroupedBatch(raw, deps) {
   const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const { groups: groups2, ...shared } = raw;
   const parsed = groups2.map((group) => {
-    const row = record4(group);
+    const row = record5(group);
     if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
       fail3("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
     return parseInput({ ...shared, ...row });
@@ -47882,7 +48868,7 @@ async function prepareGroupedBatch(raw, deps) {
   }
   await assertOwner(deps, owner, namespace);
   return {
-    intentId: (deps.createId ?? randomUUID13)(),
+    intentId: (deps.createId ?? randomUUID14)(),
     planVersion: 1,
     taskName: `${names.join(" / ")}`.slice(0, 100),
     expectedOutputCount: items.length,
@@ -48149,6 +49135,64 @@ var PluginUpdateService = class {
   }
 };
 
+// plugins/podplo-dsh/src/polling.ts
+var ACTIVE_POLL_MS = 3e3;
+var IDLE_POLL_MS = 3e4;
+function startPolling(run, options = {}) {
+  const timers = options.timers ?? {
+    set(callback, delay2) {
+      const timer2 = setTimeout(callback, delay2);
+      timer2.unref?.();
+      return timer2;
+    },
+    clear(timer2) {
+      clearTimeout(timer2);
+    }
+  };
+  let timer, stopped = false, running = false, requested = false, failures = 0;
+  const visible = () => options.visible?.() !== false;
+  const clear = () => {
+    if (timer !== void 0) timers.clear(timer);
+    timer = void 0;
+  };
+  const schedule = (delay2) => {
+    clear();
+    if (!stopped && visible() && delay2 !== null) timer = timers.set(() => {
+      timer = void 0;
+      void tick();
+    }, delay2);
+  };
+  const tick = async () => {
+    if (stopped || running || !visible()) return;
+    running = true;
+    requested = false;
+    let delay2 = null;
+    try {
+      delay2 = await run();
+      failures = 0;
+    } catch {
+      delay2 = options.retryOnError?.() === false ? null : Math.min(6e4, (options.failureMs ?? IDLE_POLL_MS) * 2 ** Math.min(failures++, 4));
+    } finally {
+      running = false;
+      schedule(requested ? 0 : delay2);
+    }
+  };
+  const loop = {
+    wake() {
+      clear();
+      if (stopped || !visible()) return;
+      if (running) requested = true;
+      else schedule(0);
+    },
+    stop() {
+      stopped = true;
+      clear();
+    }
+  };
+  schedule(options.initialDelayMs ?? 0);
+  return loop;
+}
+
 // plugins/podplo-dsh/src/index.ts
 var inject = ["connection", "credentials", "agents", "sessions", "tools", "attachments", "agentPresets", "approval", "pluginManager"];
 var Config = Schema.object({
@@ -48201,10 +49245,10 @@ function userAuthorizedFolder(events, folderPath) {
     for (let index = value2.indexOf(folderPath); index >= 0; index = value2.indexOf(folderPath, index + 1)) if (boundary(value2, index)) return true;
     return false;
   };
-  const desktopName = basename12(folderPath);
+  const desktopName = basename13(folderPath);
   const desktopPath = resolve2(homedir2(), "Desktop", desktopName);
   const desktopMention = new RegExp(`(?:\u684C\u9762|Desktop)[\\s/\\\\:\uFF1A]+["\u201C'\u2018]?${desktopName.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}(?=$|[\\s"'\u201C\u201D\u2018\u2019\uFF0C\u3002\uFF1B\uFF1A\u3001\uFF01\uFF1F\uFF09)\\]}])`, "u");
-  const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute7(folderPath) && resolve2(folderPath) === desktopPath && desktopMention.test(value2);
+  const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute8(folderPath) && resolve2(folderPath) === desktopPath && desktopMention.test(value2);
   const questions = /* @__PURE__ */ new Map();
   for (const raw of events) {
     if (!raw || typeof raw !== "object") continue;
@@ -48248,14 +49292,14 @@ function userAuthorizedFolder(events, folderPath) {
   return false;
 }
 async function openLocalOutput(path, reveal = false) {
-  if (!isAbsolute7(path) || path.includes("\0")) throw new Error("Invalid local output path");
+  if (!isAbsolute8(path) || path.includes("\0")) throw new Error("Invalid local output path");
   if (process.platform === "darwin") await promisify(execFile)("/usr/bin/open", reveal ? ["-R", path] : [path]);
   else if (process.platform === "win32") await promisify(execFile)("explorer.exe", reveal ? [`/select,${path}`] : [path]);
   else await promisify(execFile)("xdg-open", [reveal ? (await import("node:path")).dirname(path) : path]);
 }
 async function apply(ctx, config2 = {}) {
   const directory = config2.directory ?? dshHomePath("podplo-native", "v1");
-  if (!isAbsolute7(directory)) throw new Error("PodPlo storage directory must be absolute");
+  if (!isAbsolute8(directory)) throw new Error("PodPlo storage directory must be absolute");
   const fixtureOrigin = process.env.PODPLO_NATIVE_TEST === "1" ? process.env.PODPLO_NATIVE_FIXTURE_ORIGIN : void 0;
   const http = new PodploHttp(fixtureOrigin);
   const cipher = await nativeCipher(ctx);
@@ -48267,7 +49311,7 @@ async function apply(ctx, config2 = {}) {
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
   const projectForSession = (id) => {
     const cwd = id ? ctx.sessions?.get(id)?.header.cwd : void 0;
-    return cwd && isAbsolute7(cwd) ? { key: `cwd:${resolve2(cwd)}`, name: basename12(resolve2(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
+    return cwd && isAbsolute8(cwd) ? { key: `cwd:${resolve2(cwd)}`, name: basename13(resolve2(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
   const galleryFetch = fixtureOrigin ? (input, init) => {
@@ -48427,7 +49471,7 @@ async function apply(ctx, config2 = {}) {
       }
       const agent = ctx.agents.get(pending.sessionId);
       if (!agent) return;
-      agent.followup({ id: randomUUID14(), role: "user", source: { kind: "user" }, content: [{
+      agent.followup({ id: randomUUID15(), role: "user", source: { kind: "user" }, content: [{
         type: "text",
         text: `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${operationId2} \u751F\u56FE\u72B6\u6001\u4E3A ${operation.status}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${localProcessing.status}\u3002\u8BF7\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u6267\u884C\u72B6\u6001\uFF0C\u7B80\u77ED\u62A5\u544A\u5F20\u6570\u3001\u6210\u679C\u4F4D\u7F6E\u53CA\u5931\u8D25\u9879\u3002\u5BBF\u4E3B\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u4E0D\u8981\u8BC4\u4EF7\u6210\u679C\u8D28\u91CF\uFF0C\u4E0D\u8981\u4FEE\u6539\u63D0\u793A\u8BCD\u3001\u53C2\u6570\u6216\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3001\u91CD\u751F\u6210\u3001\u91CD\u590D\u52A0\u5DE5\u3001\u518D\u6B21\u62A5\u4EF7\u6216\u8FFD\u52A0\u63D0\u95EE\u3002`
       }] });
@@ -48441,8 +49485,10 @@ async function apply(ctx, config2 = {}) {
       if (current) current.checking = false;
     }
   };
+  let progressPoll, refreshing, progressActive = false;
   const generationChanged = () => {
     for (const operationId2 of chatGenerationResumes.keys()) void checkChatGeneration(operationId2);
+    if (!refreshing && !progressActive && service.pendingGenerationIds().length) progressPoll?.wake();
   };
   service.on("change", generationChanged);
   const resumeChatAfterApproval = (sessionId, operationId2) => {
@@ -48455,28 +49501,28 @@ async function apply(ctx, config2 = {}) {
     resumeChatAfterApproval(sessionId, operationId2);
     nativeGenerationWaitReservations.set(operationId2, sessionId);
   };
-  let refreshing;
   const refreshProgress = () => {
-    if (closed || refreshing || service.snapshot().account.status !== "connected") return refreshing;
+    if (refreshing) return refreshing;
+    if (closed || service.snapshot().account.status !== "connected") return Promise.resolve(IDLE_POLL_MS);
     return refreshing = (async () => {
       try {
-        const result = await service.dispatch("generation.list", {}, { source: "ui" });
-        for (const row of result.data.items) {
+        for (const operationId2 of service.pendingGenerationIds()) {
           if (closed) break;
-          if (row.items?.some((item) => item.generationId && item.status === "submitted")) {
-            await service.dispatch("generation.status", { operationId: row.operationId, refresh: true }, { source: "ui" });
-          }
+          await service.refreshPendingGeneration(operationId2);
         }
         await archives.sync();
         for (const operationId2 of chatGenerationResumes.keys()) void checkChatGeneration(operationId2);
-      } catch {
+        progressActive = !!(service.pendingGenerationIds().length || archives.isBusy() || chatGenerationResumes.size);
+        return progressActive ? ACTIVE_POLL_MS : IDLE_POLL_MS;
+      } catch (error51) {
+        progressActive = false;
+        throw error51;
       } finally {
         refreshing = void 0;
       }
     })();
   };
-  const timer = setInterval(() => void refreshProgress(), 3e3);
-  timer.unref();
+  progressPoll = startPolling(refreshProgress);
   const presetForAgent = (agent) => {
     const session2 = ctx.sessions?.get(agent.id);
     return ctx.agentPresets.composedPreset(agent.ctx) ?? (session2 ? ctx.agentPresets.presetForSession(session2) : null);
@@ -48575,7 +49621,7 @@ async function apply(ctx, config2 = {}) {
           return approveGeneration(nativeSkillBatchToolName, args, execution, async (input) => {
             const events = agent.session?.snapshotEvents?.();
             const messages = Array.isArray(events) ? events.filter((event) => event?.type === "user/message" && event?.data?.source?.kind === "user") : [];
-            const requestKey = createHash13("sha256").update(canonical2({
+            const requestKey = createHash16("sha256").update(canonical({
               namespace: online.auth.namespace,
               turn: messages.length,
               message: messages.at(-1),
@@ -48787,8 +49833,8 @@ async function apply(ctx, config2 = {}) {
     jevActiveSessionIds.clear();
     observedPodploSessionIds.clear();
     jevRoutingStates.clear();
-    clearInterval(timer);
-    await refreshing;
+    progressPoll?.stop();
+    await refreshing?.catch(() => void 0);
     for (const id of [...bindings.keys()]) await remove({ id });
     await unregisterPresets();
     await mcp.close();
