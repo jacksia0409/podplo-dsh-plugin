@@ -21,8 +21,8 @@ var __commonJS = (cb, mod) => function __require() {
   }
 };
 var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, { get: all[name], enumerable: true });
+  for (var name2 in all)
+    __defProp(target, name2, { get: all[name2], enumerable: true });
 };
 var __copyProps = (to, from, except, desc) => {
   if (from && typeof from === "object" || typeof from === "function") {
@@ -5433,7 +5433,7 @@ var require_Encoding = __commonJS({
     var Encoding = (
       /** @class */
       /* @__PURE__ */ (function() {
-        function Encoding2(name, unicodeMappings) {
+        function Encoding2(name2, unicodeMappings) {
           var _this = this;
           this.canEncodeUnicodeCodePoint = function(codePoint) {
             return codePoint in _this.unicodeMappings;
@@ -5448,7 +5448,7 @@ var require_Encoding = __commonJS({
             }
             return { code: mapped[0], name: mapped[1] };
           };
-          this.name = name;
+          this.name = name2;
           this.supportedCodePoints = Object.keys(unicodeMappings).map(Number).sort(function(a, b) {
             return a - b;
           });
@@ -5849,12 +5849,12 @@ var require_errors2 = __commonJS({
         tslib_1.__extends(UnexpectedObjectTypeError2, _super);
         function UnexpectedObjectTypeError2(expected, actual) {
           var _this = this;
-          var name = function(t) {
+          var name2 = function(t) {
             var _a3, _b;
             return (_a3 = t === null || t === void 0 ? void 0 : t.name) !== null && _a3 !== void 0 ? _a3 : (_b = t === null || t === void 0 ? void 0 : t.constructor) === null || _b === void 0 ? void 0 : _b.name;
           };
-          var expectedTypes = Array.isArray(expected) ? expected.map(name) : [name(expected)];
-          var msg = "Expected instance of " + expectedTypes.join(" or ") + ", " + ("but got instance of " + (actual ? name(actual) : actual));
+          var expectedTypes = Array.isArray(expected) ? expected.map(name2) : [name2(expected)];
+          var msg = "Expected instance of " + expectedTypes.join(" or ") + ", " + ("but got instance of " + (actual ? name2(actual) : actual));
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -6671,8 +6671,8 @@ var require_PDFName = __commonJS({
     var CharCodes_1 = tslib_1.__importDefault(require_CharCodes());
     var Irregular_1 = require_Irregular();
     var utils_1 = require_utils2();
-    var decodeName = function(name) {
-      return name.replace(/#([\dABCDEF]{2})/g, function(_, hex3) {
+    var decodeName = function(name2) {
+      return name2.replace(/#([\dABCDEF]{2})/g, function(_, hex3) {
         return utils_1.charFromHexCode(hex3);
       });
     };
@@ -6685,14 +6685,14 @@ var require_PDFName = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(PDFName2, _super);
-        function PDFName2(enforcer, name) {
+        function PDFName2(enforcer, name2) {
           var _this = this;
           if (enforcer !== ENFORCER)
             throw new errors_1.PrivateConstructorError("PDFName");
           _this = _super.call(this) || this;
           var encodedName = "/";
-          for (var idx = 0, len = name.length; idx < len; idx++) {
-            var character = name[idx];
+          for (var idx = 0, len = name2.length; idx < len; idx++) {
+            var character = name2[idx];
             var code = utils_1.toCharCode(character);
             encodedName += isRegularChar(code) ? character : "#" + utils_1.toHexString(code);
           }
@@ -6754,8 +6754,8 @@ var require_PDFName = __commonJS({
           offset += utils_1.copyStringIntoBuffer(this.encodedName, buffer, offset);
           return this.encodedName.length;
         };
-        PDFName2.of = function(name) {
-          var decodedValue = decodeName(name);
+        PDFName2.of = function(name2) {
+          var decodedValue = decodeName(name2);
           var instance = pool.get(decodedValue);
           if (!instance) {
             instance = new PDFName2(ENFORCER, decodedValue);
@@ -7174,8 +7174,8 @@ var require_PDFOperator = __commonJS({
     var PDFOperator = (
       /** @class */
       (function() {
-        function PDFOperator2(name, args) {
-          this.name = name;
+        function PDFOperator2(name2, args) {
+          this.name = name2;
           this.args = args || [];
         }
         PDFOperator2.prototype.clone = function(context) {
@@ -7217,8 +7217,8 @@ var require_PDFOperator = __commonJS({
           offset += utils_1.copyStringIntoBuffer(this.name, buffer, offset);
           return offset - initialOffset;
         };
-        PDFOperator2.of = function(name, args) {
-          return new PDFOperator2(name, args);
+        PDFOperator2.of = function(name2, args) {
+          return new PDFOperator2(name2, args);
         };
         return PDFOperator2;
       })()
@@ -7719,11 +7719,11 @@ var require_PDFPageLeaf = __commonJS({
           var numberOrRef = this.getInheritableAttribute(PDFName_1.default.Rotate);
           return this.context.lookupMaybe(numberOrRef, PDFNumber_1.default);
         };
-        PDFPageLeaf2.prototype.getInheritableAttribute = function(name) {
+        PDFPageLeaf2.prototype.getInheritableAttribute = function(name2) {
           var attribute;
           this.ascend(function(node) {
             if (!attribute)
-              attribute = node.get(name);
+              attribute = node.get(name2);
           });
           return attribute;
         };
@@ -7755,9 +7755,9 @@ var require_PDFPageLeaf = __commonJS({
             Annots.remove(index);
           }
         };
-        PDFPageLeaf2.prototype.setFontDictionary = function(name, fontDictRef) {
+        PDFPageLeaf2.prototype.setFontDictionary = function(name2, fontDictRef) {
           var Font = this.normalizedEntries().Font;
-          Font.set(name, fontDictRef);
+          Font.set(name2, fontDictRef);
         };
         PDFPageLeaf2.prototype.newFontDictionaryKey = function(tag) {
           var Font = this.normalizedEntries().Font;
@@ -7768,9 +7768,9 @@ var require_PDFPageLeaf = __commonJS({
           this.setFontDictionary(key, fontDictRef);
           return key;
         };
-        PDFPageLeaf2.prototype.setXObject = function(name, xObjectRef) {
+        PDFPageLeaf2.prototype.setXObject = function(name2, xObjectRef) {
           var XObject = this.normalizedEntries().XObject;
-          XObject.set(name, xObjectRef);
+          XObject.set(name2, xObjectRef);
         };
         PDFPageLeaf2.prototype.newXObjectKey = function(tag) {
           var XObject = this.normalizedEntries().XObject;
@@ -7781,9 +7781,9 @@ var require_PDFPageLeaf = __commonJS({
           this.setXObject(key, xObjectRef);
           return key;
         };
-        PDFPageLeaf2.prototype.setExtGState = function(name, extGStateRef) {
+        PDFPageLeaf2.prototype.setExtGState = function(name2, extGStateRef) {
           var ExtGState = this.normalizedEntries().ExtGState;
-          ExtGState.set(name, extGStateRef);
+          ExtGState.set(name2, extGStateRef);
         };
         PDFPageLeaf2.prototype.newExtGStateKey = function(tag) {
           var ExtGState = this.normalizedEntries().ExtGState;
@@ -8968,9 +8968,9 @@ var require_CMap = __commonJS({
       var bfChars = new Array(glyphs.length);
       for (var idx = 0, len = glyphs.length; idx < len; idx++) {
         var glyph = glyphs[idx];
-        var id = cmapHexFormat(cmapHexString(glyphId(glyph)));
+        var id2 = cmapHexFormat(cmapHexString(glyphId(glyph)));
         var unicode = cmapHexFormat.apply(void 0, glyph.codePoints.map(cmapCodePointFormat));
-        bfChars[idx] = [id, unicode];
+        bfChars[idx] = [id2, unicode];
       }
       return fillCmapTemplate(bfChars);
     };
@@ -13270,13 +13270,13 @@ var require_PDFAcroField = __commonJS({
         };
         PDFAcroField2.prototype.setFontSize = function(fontSize) {
           var _a3;
-          var name = (_a3 = this.getFullyQualifiedName()) !== null && _a3 !== void 0 ? _a3 : "";
+          var name2 = (_a3 = this.getFullyQualifiedName()) !== null && _a3 !== void 0 ? _a3 : "";
           var da = this.getDefaultAppearance();
           if (!da)
-            throw new errors_1.MissingDAEntryError(name);
+            throw new errors_1.MissingDAEntryError(name2);
           var daMatch = utils_1.findLastMatch(da, tfRegex);
           if (!daMatch.match)
-            throw new errors_1.MissingTfOperatorError(name);
+            throw new errors_1.MissingTfOperatorError(name2);
           var daStart = da.slice(0, daMatch.pos - daMatch.match[0].length);
           var daEnd = daMatch.pos <= da.length ? da.slice(daMatch.pos) : "";
           var fontName = daMatch.match[1];
@@ -13308,11 +13308,11 @@ var require_PDFAcroField = __commonJS({
           else
             this.clearFlag(flag);
         };
-        PDFAcroField2.prototype.getInheritableAttribute = function(name) {
+        PDFAcroField2.prototype.getInheritableAttribute = function(name2) {
           var attribute;
           this.ascend(function(node) {
             if (!attribute)
-              attribute = node.dict.get(name);
+              attribute = node.dict.get(name2);
           });
           return attribute;
         };
@@ -14543,11 +14543,11 @@ var require_utils3 = __commonJS({
     var flagIsSet = function(flags, flag) {
       return (flags & flag) !== 0;
     };
-    var getInheritableAttribute = function(startNode, name) {
+    var getInheritableAttribute = function(startNode, name2) {
       var attribute;
       ascend(startNode, function(node) {
         if (!attribute)
-          attribute = node.get(name);
+          attribute = node.get(name2);
       });
       return attribute;
     };
@@ -15370,15 +15370,15 @@ var require_PDFObjectParser = __commonJS({
         };
         PDFObjectParser2.prototype.parseName = function() {
           this.bytes.assertNext(CharCodes_1.default.ForwardSlash);
-          var name = "";
+          var name2 = "";
           while (!this.bytes.done()) {
             var byte = this.bytes.peek();
             if (Whitespace_1.IsWhitespace[byte] || Delimiters_1.IsDelimiter[byte])
               break;
-            name += utils_1.charFromCode(byte);
+            name2 += utils_1.charFromCode(byte);
             this.bytes.next();
           }
-          return PDFName_1.default.of(name);
+          return PDFName_1.default.of(name2);
         };
         PDFObjectParser2.prototype.parseArray = function() {
           this.bytes.assertNext(CharCodes_1.default.LeftSquareBracket);
@@ -16254,8 +16254,8 @@ var require_objects2 = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.asNumber = exports.asPDFNumber = exports.asPDFName = void 0;
     var core_1 = require_core();
-    exports.asPDFName = function(name) {
-      return name instanceof core_1.PDFName ? name : core_1.PDFName.of(name);
+    exports.asPDFName = function(name2) {
+      return name2 instanceof core_1.PDFName ? name2 : core_1.PDFName.of(name2);
     };
     exports.asPDFNumber = function(num) {
       return num instanceof core_1.PDFNumber ? num : core_1.PDFNumber.of(num);
@@ -16496,8 +16496,8 @@ var require_operators = __commonJS({
     exports.endText = function() {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.EndText);
     };
-    exports.setFontAndSize = function(name, size2) {
-      return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetFontAndSize, [objects_1.asPDFName(name), objects_1.asPDFNumber(size2)]);
+    exports.setFontAndSize = function(name2, size2) {
+      return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetFontAndSize, [objects_1.asPDFName(name2), objects_1.asPDFNumber(size2)]);
     };
     exports.setCharacterSpacing = function(spacing) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.SetCharacterSpacing, [objects_1.asPDFNumber(spacing)]);
@@ -16544,8 +16544,8 @@ var require_operators = __commonJS({
     exports.rotateAndSkewTextDegreesAndTranslate = function(rotationAngle, xSkewAngle, ySkewAngle, x, y) {
       return exports.rotateAndSkewTextRadiansAndTranslate(rotations_1.degreesToRadians(objects_1.asNumber(rotationAngle)), rotations_1.degreesToRadians(objects_1.asNumber(xSkewAngle)), rotations_1.degreesToRadians(objects_1.asNumber(ySkewAngle)), x, y);
     };
-    exports.drawObject = function(name) {
-      return core_1.PDFOperator.of(core_1.PDFOperatorNames.DrawObject, [objects_1.asPDFName(name)]);
+    exports.drawObject = function(name2) {
+      return core_1.PDFOperator.of(core_1.PDFOperatorNames.DrawObject, [objects_1.asPDFName(name2)]);
     };
     exports.setFillingGrayscaleColor = function(gray) {
       return core_1.PDFOperator.of(core_1.PDFOperatorNames.NonStrokingColorGray, [objects_1.asPDFNumber(gray)]);
@@ -16679,7 +16679,7 @@ var require_svgPath = __commonJS({
       ["Z", 0],
       ["z", 0]
     ]);
-    var parse4 = function(path) {
+    var parse5 = function(path) {
       var cmd;
       var ret = [];
       var args = [];
@@ -17001,7 +17001,7 @@ var require_svgPath = __commonJS({
       return result;
     };
     exports.svgPathToOperators = function(path) {
-      return apply2(parse4(path));
+      return apply2(parse5(path));
     };
   }
 });
@@ -17047,7 +17047,7 @@ var require_operations = __commonJS({
       operators.push(operators_1.endText(), operators_1.popGraphicsState());
       return operators;
     };
-    exports.drawImage = function(name, options) {
+    exports.drawImage = function(name2, options) {
       return [
         operators_1.pushGraphicsState(),
         options.graphicsState && operators_1.setGraphicsState(options.graphicsState),
@@ -17055,11 +17055,11 @@ var require_operations = __commonJS({
         operators_1.rotateRadians(rotations_1.toRadians(options.rotate)),
         operators_1.scale(options.width, options.height),
         operators_1.skewRadians(rotations_1.toRadians(options.xSkew), rotations_1.toRadians(options.ySkew)),
-        operators_1.drawObject(name),
+        operators_1.drawObject(name2),
         operators_1.popGraphicsState()
       ].filter(Boolean);
     };
-    exports.drawPage = function(name, options) {
+    exports.drawPage = function(name2, options) {
       return [
         operators_1.pushGraphicsState(),
         options.graphicsState && operators_1.setGraphicsState(options.graphicsState),
@@ -17067,7 +17067,7 @@ var require_operations = __commonJS({
         operators_1.rotateRadians(rotations_1.toRadians(options.rotate)),
         operators_1.scale(options.xScale, options.yScale),
         operators_1.skewRadians(rotations_1.toRadians(options.xSkew), rotations_1.toRadians(options.ySkew)),
-        operators_1.drawObject(name),
+        operators_1.drawObject(name2),
         operators_1.popGraphicsState()
       ].filter(Boolean);
     };
@@ -17525,9 +17525,9 @@ var require_errors3 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(NoSuchFieldError2, _super);
-        function NoSuchFieldError2(name) {
+        function NoSuchFieldError2(name2) {
           var _this = this;
-          var msg = 'PDFDocument has no form field with the name "' + name + '"';
+          var msg = 'PDFDocument has no form field with the name "' + name2 + '"';
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -17539,12 +17539,12 @@ var require_errors3 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(UnexpectedFieldTypeError2, _super);
-        function UnexpectedFieldTypeError2(name, expected, actual) {
+        function UnexpectedFieldTypeError2(name2, expected, actual) {
           var _a3, _b;
           var _this = this;
           var expectedType = expected === null || expected === void 0 ? void 0 : expected.name;
           var actualType = (_b = (_a3 = actual === null || actual === void 0 ? void 0 : actual.constructor) === null || _a3 === void 0 ? void 0 : _a3.name) !== null && _b !== void 0 ? _b : actual;
-          var msg = 'Expected field "' + name + '" to be of type ' + expectedType + ", " + ("but it is actually of type " + actualType);
+          var msg = 'Expected field "' + name2 + '" to be of type ' + expectedType + ", " + ("but it is actually of type " + actualType);
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -17570,9 +17570,9 @@ var require_errors3 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(FieldAlreadyExistsError2, _super);
-        function FieldAlreadyExistsError2(name) {
+        function FieldAlreadyExistsError2(name2) {
           var _this = this;
-          var msg = 'A field already exists with the specified name: "' + name + '"';
+          var msg = 'A field already exists with the specified name: "' + name2 + '"';
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -17598,9 +17598,9 @@ var require_errors3 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(FieldExistsAsNonTerminalError2, _super);
-        function FieldExistsAsNonTerminalError2(name) {
+        function FieldExistsAsNonTerminalError2(name2) {
           var _this = this;
-          var msg = 'A non-terminal field already exists with the specified name: "' + name + '"';
+          var msg = 'A non-terminal field already exists with the specified name: "' + name2 + '"';
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -17640,9 +17640,9 @@ var require_errors3 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(ExceededMaxLengthError2, _super);
-        function ExceededMaxLengthError2(textLength, maxLength, name) {
+        function ExceededMaxLengthError2(textLength, maxLength, name2) {
           var _this = this;
-          var msg = "Attempted to set text with length=" + textLength + " for TextField with maxLength=" + maxLength + " and name=" + name;
+          var msg = "Attempted to set text with length=" + textLength + " for TextField with maxLength=" + maxLength + " and name=" + name2;
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -17654,9 +17654,9 @@ var require_errors3 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(InvalidMaxLengthError2, _super);
-        function InvalidMaxLengthError2(textLength, maxLength, name) {
+        function InvalidMaxLengthError2(textLength, maxLength, name2) {
           var _this = this;
-          var msg = "Attempted to set maxLength=" + maxLength + ", which is less than " + textLength + ", the length of this field's current value (name=" + name + ")";
+          var msg = "Attempted to set maxLength=" + maxLength + ", which is less than " + textLength + ", the length of this field's current value (name=" + name2 + ")";
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -19810,120 +19810,120 @@ var require_PDFForm = __commonJS({
           }
           return fields;
         };
-        PDFForm2.prototype.getFieldMaybe = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
+        PDFForm2.prototype.getFieldMaybe = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
           var fields = this.getFields();
           for (var idx = 0, len = fields.length; idx < len; idx++) {
             var field = fields[idx];
-            if (field.getName() === name)
+            if (field.getName() === name2)
               return field;
           }
           return void 0;
         };
-        PDFForm2.prototype.getField = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getFieldMaybe(name);
+        PDFForm2.prototype.getField = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getFieldMaybe(name2);
           if (field)
             return field;
-          throw new errors_1.NoSuchFieldError(name);
+          throw new errors_1.NoSuchFieldError(name2);
         };
-        PDFForm2.prototype.getButton = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getButton = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFButton_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFButton_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFButton_1.default, field);
         };
-        PDFForm2.prototype.getCheckBox = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getCheckBox = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFCheckBox_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFCheckBox_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFCheckBox_1.default, field);
         };
-        PDFForm2.prototype.getDropdown = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getDropdown = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFDropdown_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFDropdown_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFDropdown_1.default, field);
         };
-        PDFForm2.prototype.getOptionList = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getOptionList = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFOptionList_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFOptionList_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFOptionList_1.default, field);
         };
-        PDFForm2.prototype.getRadioGroup = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getRadioGroup = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFRadioGroup_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFRadioGroup_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFRadioGroup_1.default, field);
         };
-        PDFForm2.prototype.getSignature = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getSignature = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFSignature_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFSignature_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFSignature_1.default, field);
         };
-        PDFForm2.prototype.getTextField = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var field = this.getField(name);
+        PDFForm2.prototype.getTextField = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var field = this.getField(name2);
           if (field instanceof PDFTextField_1.default)
             return field;
-          throw new errors_1.UnexpectedFieldTypeError(name, PDFTextField_1.default, field);
+          throw new errors_1.UnexpectedFieldTypeError(name2, PDFTextField_1.default, field);
         };
-        PDFForm2.prototype.createButton = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var nameParts = splitFieldName(name);
+        PDFForm2.prototype.createButton = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var nameParts = splitFieldName(name2);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
           var button = core_1.PDFAcroPushButton.create(this.doc.context);
           button.setPartialName(nameParts.terminal);
           addFieldToParent(parent, [button, button.ref], nameParts.terminal);
           return PDFButton_1.default.of(button, button.ref, this.doc);
         };
-        PDFForm2.prototype.createCheckBox = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var nameParts = splitFieldName(name);
+        PDFForm2.prototype.createCheckBox = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var nameParts = splitFieldName(name2);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
           var checkBox = core_1.PDFAcroCheckBox.create(this.doc.context);
           checkBox.setPartialName(nameParts.terminal);
           addFieldToParent(parent, [checkBox, checkBox.ref], nameParts.terminal);
           return PDFCheckBox_1.default.of(checkBox, checkBox.ref, this.doc);
         };
-        PDFForm2.prototype.createDropdown = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var nameParts = splitFieldName(name);
+        PDFForm2.prototype.createDropdown = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var nameParts = splitFieldName(name2);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
           var comboBox = core_1.PDFAcroComboBox.create(this.doc.context);
           comboBox.setPartialName(nameParts.terminal);
           addFieldToParent(parent, [comboBox, comboBox.ref], nameParts.terminal);
           return PDFDropdown_1.default.of(comboBox, comboBox.ref, this.doc);
         };
-        PDFForm2.prototype.createOptionList = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var nameParts = splitFieldName(name);
+        PDFForm2.prototype.createOptionList = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var nameParts = splitFieldName(name2);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
           var listBox = core_1.PDFAcroListBox.create(this.doc.context);
           listBox.setPartialName(nameParts.terminal);
           addFieldToParent(parent, [listBox, listBox.ref], nameParts.terminal);
           return PDFOptionList_1.default.of(listBox, listBox.ref, this.doc);
         };
-        PDFForm2.prototype.createRadioGroup = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var nameParts = splitFieldName(name);
+        PDFForm2.prototype.createRadioGroup = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var nameParts = splitFieldName(name2);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
           var radioButton = core_1.PDFAcroRadioButton.create(this.doc.context);
           radioButton.setPartialName(nameParts.terminal);
           addFieldToParent(parent, [radioButton, radioButton.ref], nameParts.terminal);
           return PDFRadioGroup_1.default.of(radioButton, radioButton.ref, this.doc);
         };
-        PDFForm2.prototype.createTextField = function(name) {
-          utils_1.assertIs(name, "name", ["string"]);
-          var nameParts = splitFieldName(name);
+        PDFForm2.prototype.createTextField = function(name2) {
+          utils_1.assertIs(name2, "name", ["string"]);
+          var nameParts = splitFieldName(name2);
           var parent = this.findOrCreateNonTerminals(nameParts.nonTerminal);
           var text4 = core_1.PDFAcroText.create(this.doc.context);
           text4.setPartialName(nameParts.terminal);
@@ -20718,15 +20718,15 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.addJavaScript = function(name, script) {
-          utils_1.assertIs(name, "name", ["string"]);
+        PDFDocument3.prototype.addJavaScript = function(name2, script) {
+          utils_1.assertIs(name2, "name", ["string"]);
           utils_1.assertIs(script, "script", ["string"]);
-          var embedder = JavaScriptEmbedder_1.default.for(script, name);
+          var embedder = JavaScriptEmbedder_1.default.for(script, name2);
           var ref = this.context.nextRef();
           var javaScript = PDFJavaScript_1.default.of(ref, this, embedder);
           this.javaScripts.push(javaScript);
         };
-        PDFDocument3.prototype.attach = function(attachment, name, options) {
+        PDFDocument3.prototype.attach = function(attachment, name2, options) {
           if (options === void 0) {
             options = {};
           }
@@ -20734,7 +20734,7 @@ var require_PDFDocument = __commonJS({
             var bytes, embedder, ref, embeddedFile;
             return tslib_1.__generator(this, function(_a3) {
               utils_1.assertIs(attachment, "attachment", ["string", Uint8Array, ArrayBuffer]);
-              utils_1.assertIs(name, "name", ["string"]);
+              utils_1.assertIs(name2, "name", ["string"]);
               utils_1.assertOrUndefined(options.mimeType, "mimeType", ["string"]);
               utils_1.assertOrUndefined(options.description, "description", ["string"]);
               utils_1.assertOrUndefined(options.creationDate, "options.creationDate", [Date]);
@@ -20743,7 +20743,7 @@ var require_PDFDocument = __commonJS({
               ]);
               utils_1.assertIsOneOfOrUndefined(options.afRelationship, "options.afRelationship", FileEmbedder_1.AFRelationship);
               bytes = utils_1.toUint8Array(attachment);
-              embedder = FileEmbedder_1.default.for(bytes, name, options);
+              embedder = FileEmbedder_1.default.for(bytes, name2, options);
               ref = this.context.nextRef();
               embeddedFile = PDFEmbeddedFile_1.default.of(ref, this, embedder);
               this.embeddedFiles.push(embeddedFile);
@@ -22059,14 +22059,14 @@ var require_outline_curves = __commonJS({
             vertical = true;
           } else if (edge2 === 2) y++;
           else if (edge2 === 3) vertical = true;
-          const id = 2 * (y * width2 + x) + (vertical ? 1 : 0);
-          if (nodes.has(id)) return id;
+          const id2 = 2 * (y * width2 + x) + (vertical ? 1 : 0);
+          if (nodes.has(id2)) return id2;
           if (nodes.size > 25e4) throw new Error("\u8F6E\u5ED3\u788E\u7247\u8FC7\u591A\uFF0C\u8BF7\u63D0\u9AD8\u900F\u660E\u5EA6\u9608\u503C\u540E\u91CD\u8BD5\u3002");
           const a = Math.sqrt(field[y * width2 + x]) - 0.5;
           const b = Math.sqrt(field[(y + (vertical ? 1 : 0)) * width2 + x + (vertical ? 0 : 1)]) - 0.5;
           const t = Math.max(0, Math.min(1, (level - a) / (b - a)));
-          nodes.set(id, { x: x + 0.5 + (vertical ? 0 : t), y: y + 0.5 + (vertical ? t : 0), links: [] });
-          return id;
+          nodes.set(id2, { x: x + 0.5 + (vertical ? 0 : t), y: y + 0.5 + (vertical ? t : 0), links: [] });
+          return id2;
         }
         for (let y = 0; y < height2 - 1; y++) for (let x = 0; x < width2 - 1; x++) {
           const i = y * width2 + x;
@@ -22087,7 +22087,7 @@ var require_outline_curves = __commonJS({
             visited.add(current);
             const node = nodes.get(current), last = points[points.length - 1];
             if (!last || Math.hypot(last[0] - node.x, last[1] - node.y) > 1e-7) points.push([node.x, node.y]);
-            const next = node.links.find((id) => id !== previous);
+            const next = node.links.find((id2) => id2 !== previous);
             previous = current;
             current = next;
           } while (current !== void 0 && current !== start);
@@ -22399,7 +22399,7 @@ var require_outline_core = __commonJS({
 });
 
 // plugins/podplo-dsh/src/index.ts
-import { createCipheriv, createDecipheriv, createHash as createHash16, randomBytes as randomBytes3, randomUUID as randomUUID15 } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHash as createHash16, randomBytes as randomBytes3, randomUUID as randomUUID16 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir2 } from "node:os";
@@ -22940,7 +22940,7 @@ var NEVER = /* @__PURE__ */ Object.freeze({
   status: "aborted"
 });
 // @__NO_SIDE_EFFECTS__
-function $constructor(name, initializer3, params) {
+function $constructor(name2, initializer3, params) {
   function init(inst, def) {
     if (!inst._zod) {
       Object.defineProperty(inst, "_zod", {
@@ -22952,10 +22952,10 @@ function $constructor(name, initializer3, params) {
         enumerable: false
       });
     }
-    if (inst._zod.traits.has(name)) {
+    if (inst._zod.traits.has(name2)) {
       return;
     }
-    inst._zod.traits.add(name);
+    inst._zod.traits.add(name2);
     initializer3(inst, def);
     const proto = _.prototype;
     const keys = Object.keys(proto);
@@ -22969,7 +22969,7 @@ function $constructor(name, initializer3, params) {
   const Parent = params?.Parent ?? Object;
   class Definition extends Parent {
   }
-  Object.defineProperty(Definition, "name", { value: name });
+  Object.defineProperty(Definition, "name", { value: name2 });
   function _(def) {
     var _a3;
     const inst = params?.Parent ? new Definition() : this;
@@ -22985,10 +22985,10 @@ function $constructor(name, initializer3, params) {
     value: (inst) => {
       if (params?.Parent && inst instanceof params.Parent)
         return true;
-      return inst?._zod?.traits?.has(name);
+      return inst?._zod?.traits?.has(name2);
     }
   });
-  Object.defineProperty(_, "name", { value: name });
+  Object.defineProperty(_, "name", { value: name2 });
   return _;
 }
 var $brand = /* @__PURE__ */ Symbol("zod_brand");
@@ -22998,8 +22998,8 @@ var $ZodAsyncError = class extends Error {
   }
 };
 var $ZodEncodeError = class extends Error {
-  constructor(name) {
-    super(`Encountered unidirectional transform during encode: ${name}`);
+  constructor(name2) {
+    super(`Encountered unidirectional transform during encode: ${name2}`);
     this.name = "ZodEncodeError";
   }
 };
@@ -23175,8 +23175,8 @@ function mergeDefs(...defs) {
   }
   return Object.defineProperties({}, mergedDescriptors);
 }
-function cloneDef(schema) {
-  return mergeDefs(schema._zod.def);
+function cloneDef(schema2) {
+  return mergeDefs(schema2._zod.def);
 }
 function getElementAtPath(obj, path) {
   if (!path)
@@ -23398,14 +23398,14 @@ var BIGINT_FORMAT_RANGES = {
   int64: [/* @__PURE__ */ BigInt("-9223372036854775808"), /* @__PURE__ */ BigInt("9223372036854775807")],
   uint64: [/* @__PURE__ */ BigInt(0), /* @__PURE__ */ BigInt("18446744073709551615")]
 };
-function pick(schema, mask) {
-  const currDef = schema._zod.def;
+function pick(schema2, mask) {
+  const currDef = schema2._zod.def;
   const checks = currDef.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
     throw new Error(".pick() cannot be used on object schemas containing refinements");
   }
-  const def = mergeDefs(schema._zod.def, {
+  const def = mergeDefs(schema2._zod.def, {
     get shape() {
       const newShape = {};
       for (const key in mask) {
@@ -23421,18 +23421,18 @@ function pick(schema, mask) {
     },
     checks: []
   });
-  return clone(schema, def);
+  return clone(schema2, def);
 }
-function omit(schema, mask) {
-  const currDef = schema._zod.def;
+function omit(schema2, mask) {
+  const currDef = schema2._zod.def;
   const checks = currDef.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
     throw new Error(".omit() cannot be used on object schemas containing refinements");
   }
-  const def = mergeDefs(schema._zod.def, {
+  const def = mergeDefs(schema2._zod.def, {
     get shape() {
-      const newShape = { ...schema._zod.def.shape };
+      const newShape = { ...schema2._zod.def.shape };
       for (const key in mask) {
         if (!(key in currDef.shape)) {
           throw new Error(`Unrecognized key: "${key}"`);
@@ -23446,43 +23446,43 @@ function omit(schema, mask) {
     },
     checks: []
   });
-  return clone(schema, def);
+  return clone(schema2, def);
 }
-function extend(schema, shape) {
+function extend(schema2, shape) {
   if (!isPlainObject(shape)) {
     throw new Error("Invalid input to extend: expected a plain object");
   }
-  const checks = schema._zod.def.checks;
+  const checks = schema2._zod.def.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
-    const existingShape = schema._zod.def.shape;
+    const existingShape = schema2._zod.def.shape;
     for (const key in shape) {
       if (Object.getOwnPropertyDescriptor(existingShape, key) !== void 0) {
         throw new Error("Cannot overwrite keys on object schemas containing refinements. Use `.safeExtend()` instead.");
       }
     }
   }
-  const def = mergeDefs(schema._zod.def, {
+  const def = mergeDefs(schema2._zod.def, {
     get shape() {
-      const _shape = { ...schema._zod.def.shape, ...shape };
+      const _shape = { ...schema2._zod.def.shape, ...shape };
       assignProp(this, "shape", _shape);
       return _shape;
     }
   });
-  return clone(schema, def);
+  return clone(schema2, def);
 }
-function safeExtend(schema, shape) {
+function safeExtend(schema2, shape) {
   if (!isPlainObject(shape)) {
     throw new Error("Invalid input to safeExtend: expected a plain object");
   }
-  const def = mergeDefs(schema._zod.def, {
+  const def = mergeDefs(schema2._zod.def, {
     get shape() {
-      const _shape = { ...schema._zod.def.shape, ...shape };
+      const _shape = { ...schema2._zod.def.shape, ...shape };
       assignProp(this, "shape", _shape);
       return _shape;
     }
   });
-  return clone(schema, def);
+  return clone(schema2, def);
 }
 function merge(a, b) {
   if (a._zod.def.checks?.length) {
@@ -23501,16 +23501,16 @@ function merge(a, b) {
   });
   return clone(a, def);
 }
-function partial(Class2, schema, mask) {
-  const currDef = schema._zod.def;
+function partial(Class2, schema2, mask) {
+  const currDef = schema2._zod.def;
   const checks = currDef.checks;
   const hasChecks = checks && checks.length > 0;
   if (hasChecks) {
     throw new Error(".partial() cannot be used on object schemas containing refinements");
   }
-  const def = mergeDefs(schema._zod.def, {
+  const def = mergeDefs(schema2._zod.def, {
     get shape() {
-      const oldShape = schema._zod.def.shape;
+      const oldShape = schema2._zod.def.shape;
       const shape = { ...oldShape };
       if (mask) {
         for (const key in mask) {
@@ -23537,12 +23537,12 @@ function partial(Class2, schema, mask) {
     },
     checks: []
   });
-  return clone(schema, def);
+  return clone(schema2, def);
 }
-function required(Class2, schema, mask) {
-  const def = mergeDefs(schema._zod.def, {
+function required(Class2, schema2, mask) {
+  const def = mergeDefs(schema2._zod.def, {
     get shape() {
-      const oldShape = schema._zod.def.shape;
+      const oldShape = schema2._zod.def.shape;
       const shape = { ...oldShape };
       if (mask) {
         for (const key in mask) {
@@ -23568,7 +23568,7 @@ function required(Class2, schema, mask) {
       return shape;
     }
   });
-  return clone(schema, def);
+  return clone(schema2, def);
 }
 function aborted(x, startIndex = 0) {
   if (x.aborted === true)
@@ -23847,9 +23847,9 @@ function prettifyError(error51) {
 }
 
 // ../../../node_modules/zod/v4/core/parse.js
-var _parse = (_Err) => (schema, value2, _ctx, _params) => {
+var _parse = (_Err) => (schema2, value2, _ctx, _params) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
-  const result = schema._zod.run({ value: value2, issues: [] }, ctx);
+  const result = schema2._zod.run({ value: value2, issues: [] }, ctx);
   if (result instanceof Promise) {
     throw new $ZodAsyncError();
   }
@@ -23861,9 +23861,9 @@ var _parse = (_Err) => (schema, value2, _ctx, _params) => {
   return result.value;
 };
 var parse = /* @__PURE__ */ _parse($ZodRealError);
-var _parseAsync = (_Err) => async (schema, value2, _ctx, params) => {
+var _parseAsync = (_Err) => async (schema2, value2, _ctx, params) => {
   const ctx = _ctx ? { ..._ctx, async: true } : { async: true };
-  let result = schema._zod.run({ value: value2, issues: [] }, ctx);
+  let result = schema2._zod.run({ value: value2, issues: [] }, ctx);
   if (result instanceof Promise)
     result = await result;
   if (result.issues.length) {
@@ -23874,9 +23874,9 @@ var _parseAsync = (_Err) => async (schema, value2, _ctx, params) => {
   return result.value;
 };
 var parseAsync = /* @__PURE__ */ _parseAsync($ZodRealError);
-var _safeParse = (_Err) => (schema, value2, _ctx) => {
+var _safeParse = (_Err) => (schema2, value2, _ctx) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
-  const result = schema._zod.run({ value: value2, issues: [] }, ctx);
+  const result = schema2._zod.run({ value: value2, issues: [] }, ctx);
   if (result instanceof Promise) {
     throw new $ZodAsyncError();
   }
@@ -23886,9 +23886,9 @@ var _safeParse = (_Err) => (schema, value2, _ctx) => {
   } : { success: true, data: result.value };
 };
 var safeParse = /* @__PURE__ */ _safeParse($ZodRealError);
-var _safeParseAsync = (_Err) => async (schema, value2, _ctx) => {
+var _safeParseAsync = (_Err) => async (schema2, value2, _ctx) => {
   const ctx = _ctx ? { ..._ctx, async: true } : { async: true };
-  let result = schema._zod.run({ value: value2, issues: [] }, ctx);
+  let result = schema2._zod.run({ value: value2, issues: [] }, ctx);
   if (result instanceof Promise)
     result = await result;
   return result.issues.length ? {
@@ -23897,40 +23897,40 @@ var _safeParseAsync = (_Err) => async (schema, value2, _ctx) => {
   } : { success: true, data: result.value };
 };
 var safeParseAsync = /* @__PURE__ */ _safeParseAsync($ZodRealError);
-var _encode = (_Err) => (schema, value2, _ctx) => {
+var _encode = (_Err) => (schema2, value2, _ctx) => {
   const ctx = _ctx ? { ..._ctx, direction: "backward" } : { direction: "backward" };
-  return _parse(_Err)(schema, value2, ctx);
+  return _parse(_Err)(schema2, value2, ctx);
 };
 var encode = /* @__PURE__ */ _encode($ZodRealError);
-var _decode = (_Err) => (schema, value2, _ctx) => {
-  return _parse(_Err)(schema, value2, _ctx);
+var _decode = (_Err) => (schema2, value2, _ctx) => {
+  return _parse(_Err)(schema2, value2, _ctx);
 };
 var decode = /* @__PURE__ */ _decode($ZodRealError);
-var _encodeAsync = (_Err) => async (schema, value2, _ctx) => {
+var _encodeAsync = (_Err) => async (schema2, value2, _ctx) => {
   const ctx = _ctx ? { ..._ctx, direction: "backward" } : { direction: "backward" };
-  return _parseAsync(_Err)(schema, value2, ctx);
+  return _parseAsync(_Err)(schema2, value2, ctx);
 };
 var encodeAsync = /* @__PURE__ */ _encodeAsync($ZodRealError);
-var _decodeAsync = (_Err) => async (schema, value2, _ctx) => {
-  return _parseAsync(_Err)(schema, value2, _ctx);
+var _decodeAsync = (_Err) => async (schema2, value2, _ctx) => {
+  return _parseAsync(_Err)(schema2, value2, _ctx);
 };
 var decodeAsync = /* @__PURE__ */ _decodeAsync($ZodRealError);
-var _safeEncode = (_Err) => (schema, value2, _ctx) => {
+var _safeEncode = (_Err) => (schema2, value2, _ctx) => {
   const ctx = _ctx ? { ..._ctx, direction: "backward" } : { direction: "backward" };
-  return _safeParse(_Err)(schema, value2, ctx);
+  return _safeParse(_Err)(schema2, value2, ctx);
 };
 var safeEncode = /* @__PURE__ */ _safeEncode($ZodRealError);
-var _safeDecode = (_Err) => (schema, value2, _ctx) => {
-  return _safeParse(_Err)(schema, value2, _ctx);
+var _safeDecode = (_Err) => (schema2, value2, _ctx) => {
+  return _safeParse(_Err)(schema2, value2, _ctx);
 };
 var safeDecode = /* @__PURE__ */ _safeDecode($ZodRealError);
-var _safeEncodeAsync = (_Err) => async (schema, value2, _ctx) => {
+var _safeEncodeAsync = (_Err) => async (schema2, value2, _ctx) => {
   const ctx = _ctx ? { ..._ctx, direction: "backward" } : { direction: "backward" };
-  return _safeParseAsync(_Err)(schema, value2, ctx);
+  return _safeParseAsync(_Err)(schema2, value2, ctx);
 };
 var safeEncodeAsync = /* @__PURE__ */ _safeEncodeAsync($ZodRealError);
-var _safeDecodeAsync = (_Err) => async (schema, value2, _ctx) => {
-  return _safeParseAsync(_Err)(schema, value2, _ctx);
+var _safeDecodeAsync = (_Err) => async (schema2, value2, _ctx) => {
+  return _safeParseAsync(_Err)(schema2, value2, _ctx);
 };
 var safeDecodeAsync = /* @__PURE__ */ _safeDecodeAsync($ZodRealError);
 
@@ -25491,7 +25491,7 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
   const _normalized = cached(() => normalizeDef(def));
   const generateFastpass = (shape) => {
     const doc = new Doc(["shape", "payload", "ctx"]);
-    const normalized = _normalized.value;
+    const normalized2 = _normalized.value;
     const parseStr = (key) => {
       const k = esc(key);
       return `shape[${k}]._zod.run({ value: input[${k}], issues: [] }, ctx)`;
@@ -25499,47 +25499,47 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
     doc.write(`const input = payload.value;`);
     const ids2 = /* @__PURE__ */ Object.create(null);
     let counter = 0;
-    for (const key of normalized.keys) {
+    for (const key of normalized2.keys) {
       ids2[key] = `key_${counter++}`;
     }
     doc.write(`const newResult = {};`);
-    for (const key of normalized.keys) {
-      const id = ids2[key];
+    for (const key of normalized2.keys) {
+      const id2 = ids2[key];
       const k = esc(key);
-      const schema = shape[key];
-      const isOptionalIn = schema?._zod?.optin === "optional";
-      const isOptionalOut = schema?._zod?.optout === "optional";
-      doc.write(`const ${id} = ${parseStr(key)};`);
+      const schema2 = shape[key];
+      const isOptionalIn = schema2?._zod?.optin === "optional";
+      const isOptionalOut = schema2?._zod?.optout === "optional";
+      doc.write(`const ${id2} = ${parseStr(key)};`);
       if (isOptionalIn && isOptionalOut) {
         doc.write(`
-        if (${id}.issues.length) {
+        if (${id2}.issues.length) {
           if (${k} in input) {
-            payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
+            payload.issues = payload.issues.concat(${id2}.issues.map(iss => ({
               ...iss,
               path: iss.path ? [${k}, ...iss.path] : [${k}]
             })));
           }
         }
         
-        if (${id}.value === undefined) {
+        if (${id2}.value === undefined) {
           if (${k} in input) {
             newResult[${k}] = undefined;
           }
         } else {
-          newResult[${k}] = ${id}.value;
+          newResult[${k}] = ${id2}.value;
         }
         
       `);
       } else if (!isOptionalIn) {
         doc.write(`
-        const ${id}_present = ${k} in input;
-        if (${id}.issues.length) {
-          payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
+        const ${id2}_present = ${k} in input;
+        if (${id2}.issues.length) {
+          payload.issues = payload.issues.concat(${id2}.issues.map(iss => ({
             ...iss,
             path: iss.path ? [${k}, ...iss.path] : [${k}]
           })));
         }
-        if (!${id}_present && !${id}.issues.length) {
+        if (!${id2}_present && !${id2}.issues.length) {
           payload.issues.push({
             code: "invalid_type",
             expected: "nonoptional",
@@ -25548,30 +25548,30 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
           });
         }
 
-        if (${id}_present) {
-          if (${id}.value === undefined) {
+        if (${id2}_present) {
+          if (${id2}.value === undefined) {
             newResult[${k}] = undefined;
           } else {
-            newResult[${k}] = ${id}.value;
+            newResult[${k}] = ${id2}.value;
           }
         }
 
       `);
       } else {
         doc.write(`
-        if (${id}.issues.length) {
-          payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
+        if (${id2}.issues.length) {
+          payload.issues = payload.issues.concat(${id2}.issues.map(iss => ({
             ...iss,
             path: iss.path ? [${k}, ...iss.path] : [${k}]
           })));
         }
         
-        if (${id}.value === undefined) {
+        if (${id2}.value === undefined) {
           if (${k} in input) {
             newResult[${k}] = undefined;
           }
         } else {
-          newResult[${k}] = ${id}.value;
+          newResult[${k}] = ${id2}.value;
         }
         
       `);
@@ -32741,11 +32741,11 @@ var $ZodRegistry = class {
     this._map = /* @__PURE__ */ new WeakMap();
     this._idmap = /* @__PURE__ */ new Map();
   }
-  add(schema, ..._meta) {
+  add(schema2, ..._meta) {
     const meta3 = _meta[0];
-    this._map.set(schema, meta3);
+    this._map.set(schema2, meta3);
     if (meta3 && typeof meta3 === "object" && "id" in meta3) {
-      this._idmap.set(meta3.id, schema);
+      this._idmap.set(meta3.id, schema2);
     }
     return this;
   }
@@ -32754,26 +32754,26 @@ var $ZodRegistry = class {
     this._idmap = /* @__PURE__ */ new Map();
     return this;
   }
-  remove(schema) {
-    const meta3 = this._map.get(schema);
+  remove(schema2) {
+    const meta3 = this._map.get(schema2);
     if (meta3 && typeof meta3 === "object" && "id" in meta3) {
       this._idmap.delete(meta3.id);
     }
-    this._map.delete(schema);
+    this._map.delete(schema2);
     return this;
   }
-  get(schema) {
-    const p = schema._zod.parent;
+  get(schema2) {
+    const p = schema2._zod.parent;
     if (p) {
       const pm = { ...this.get(p) ?? {} };
       delete pm.id;
-      const f = { ...pm, ...this._map.get(schema) };
+      const f = { ...pm, ...this._map.get(schema2) };
       return Object.keys(f).length ? f : void 0;
     }
-    return this._map.get(schema);
+    return this._map.get(schema2);
   }
-  has(schema) {
-    return this._map.has(schema);
+  has(schema2) {
+    return this._map.has(schema2);
   }
 };
 function registry() {
@@ -33426,11 +33426,11 @@ function _endsWith(suffix, params) {
   });
 }
 // @__NO_SIDE_EFFECTS__
-function _property(property, schema, params) {
+function _property(property, schema2, params) {
   return new $ZodCheckProperty({
     check: "property",
     property,
-    schema,
+    schema: schema2,
     ...normalizeParams(params)
   });
 }
@@ -33678,23 +33678,23 @@ function _promise(Class2, innerType) {
 function _custom(Class2, fn, _params) {
   const norm = normalizeParams(_params);
   norm.abort ?? (norm.abort = true);
-  const schema = new Class2({
+  const schema2 = new Class2({
     type: "custom",
     check: "custom",
     fn,
     ...norm
   });
-  return schema;
+  return schema2;
 }
 // @__NO_SIDE_EFFECTS__
 function _refine(Class2, fn, _params) {
-  const schema = new Class2({
+  const schema2 = new Class2({
     type: "custom",
     check: "custom",
     fn,
     ...normalizeParams(_params)
   });
-  return schema;
+  return schema2;
 }
 // @__NO_SIDE_EFFECTS__
 function _superRefine(fn, params) {
@@ -33843,40 +33843,40 @@ function initializeContext(params) {
     external: params?.external ?? void 0
   };
 }
-function process2(schema, ctx, _params = { path: [], schemaPath: [] }) {
+function process2(schema2, ctx, _params = { path: [], schemaPath: [] }) {
   var _a3;
-  const def = schema._zod.def;
-  const seen = ctx.seen.get(schema);
+  const def = schema2._zod.def;
+  const seen = ctx.seen.get(schema2);
   if (seen) {
     seen.count++;
-    const isCycle = _params.schemaPath.includes(schema);
+    const isCycle = _params.schemaPath.includes(schema2);
     if (isCycle) {
       seen.cycle = _params.path;
     }
     return seen.schema;
   }
   const result = { schema: {}, count: 1, cycle: void 0, path: _params.path };
-  ctx.seen.set(schema, result);
-  const overrideSchema = schema._zod.toJSONSchema?.();
+  ctx.seen.set(schema2, result);
+  const overrideSchema = schema2._zod.toJSONSchema?.();
   if (overrideSchema) {
     result.schema = overrideSchema;
   } else {
     const params = {
       ..._params,
-      schemaPath: [..._params.schemaPath, schema],
+      schemaPath: [..._params.schemaPath, schema2],
       path: _params.path
     };
-    if (schema._zod.processJSONSchema) {
-      schema._zod.processJSONSchema(ctx, result.schema, params);
+    if (schema2._zod.processJSONSchema) {
+      schema2._zod.processJSONSchema(ctx, result.schema, params);
     } else {
       const _json = result.schema;
       const processor = ctx.processors[def.type];
       if (!processor) {
         throw new Error(`[toJSONSchema]: Non-representable type encountered: ${def.type}`);
       }
-      processor(schema, ctx, _json, params);
+      processor(schema2, ctx, _json, params);
     }
-    const parent = schema._zod.parent;
+    const parent = schema2._zod.parent;
     if (parent) {
       if (!result.ref)
         result.ref = parent;
@@ -33884,45 +33884,45 @@ function process2(schema, ctx, _params = { path: [], schemaPath: [] }) {
       ctx.seen.get(parent).isParent = true;
     }
   }
-  const meta3 = ctx.metadataRegistry.get(schema);
+  const meta3 = ctx.metadataRegistry.get(schema2);
   if (meta3)
     Object.assign(result.schema, meta3);
-  if (ctx.io === "input" && isTransforming(schema)) {
+  if (ctx.io === "input" && isTransforming(schema2)) {
     delete result.schema.examples;
     delete result.schema.default;
   }
   if (ctx.io === "input" && "_prefault" in result.schema)
     (_a3 = result.schema).default ?? (_a3.default = result.schema._prefault);
   delete result.schema._prefault;
-  const _result = ctx.seen.get(schema);
+  const _result = ctx.seen.get(schema2);
   return _result.schema;
 }
-function extractDefs(ctx, schema) {
-  const root = ctx.seen.get(schema);
+function extractDefs(ctx, schema2) {
+  const root = ctx.seen.get(schema2);
   if (!root)
     throw new Error("Unprocessed schema. This is a bug in Zod.");
   const idToSchema = /* @__PURE__ */ new Map();
   for (const entry of ctx.seen.entries()) {
-    const id = ctx.metadataRegistry.get(entry[0])?.id;
-    if (id) {
-      const existing = idToSchema.get(id);
+    const id2 = ctx.metadataRegistry.get(entry[0])?.id;
+    if (id2) {
+      const existing = idToSchema.get(id2);
       if (existing && existing !== entry[0]) {
-        throw new Error(`Duplicate schema id "${id}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`);
+        throw new Error(`Duplicate schema id "${id2}" detected during JSON Schema conversion. Two different schemas cannot share the same id when converted together.`);
       }
-      idToSchema.set(id, entry[0]);
+      idToSchema.set(id2, entry[0]);
     }
   }
   const makeURI = (entry) => {
     const defsSegment = ctx.target === "draft-2020-12" ? "$defs" : "definitions";
     if (ctx.external) {
       const externalId = ctx.external.registry.get(entry[0])?.id;
-      const uriGenerator = ctx.external.uri ?? ((id2) => id2);
+      const uriGenerator = ctx.external.uri ?? ((id3) => id3);
       if (externalId) {
         return { ref: uriGenerator(externalId) };
       }
-      const id = entry[1].defId ?? entry[1].schema.id ?? `schema${ctx.counter++}`;
-      entry[1].defId = id;
-      return { defId: id, ref: `${uriGenerator("__shared")}#/${defsSegment}/${id}` };
+      const id2 = entry[1].defId ?? entry[1].schema.id ?? `schema${ctx.counter++}`;
+      entry[1].defId = id2;
+      return { defId: id2, ref: `${uriGenerator("__shared")}#/${defsSegment}/${id2}` };
     }
     if (entry[1] === root) {
       return { ref: "#" };
@@ -33941,11 +33941,11 @@ function extractDefs(ctx, schema) {
     seen.def = { ...seen.schema };
     if (defId)
       seen.defId = defId;
-    const schema2 = seen.schema;
-    for (const key in schema2) {
-      delete schema2[key];
+    const schema3 = seen.schema;
+    for (const key in schema3) {
+      delete schema3[key];
     }
-    schema2.$ref = ref;
+    schema3.$ref = ref;
   };
   if (ctx.cycles === "throw") {
     for (const entry of ctx.seen.entries()) {
@@ -33959,19 +33959,19 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
   }
   for (const entry of ctx.seen.entries()) {
     const seen = entry[1];
-    if (schema === entry[0]) {
+    if (schema2 === entry[0]) {
       extractToDef(entry);
       continue;
     }
     if (ctx.external) {
       const ext = ctx.external.registry.get(entry[0])?.id;
-      if (schema !== entry[0] && ext) {
+      if (schema2 !== entry[0] && ext) {
         extractToDef(entry);
         continue;
       }
     }
-    const id = ctx.metadataRegistry.get(entry[0])?.id;
-    if (id) {
+    const id2 = ctx.metadataRegistry.get(entry[0])?.id;
+    if (id2) {
       extractToDef(entry);
       continue;
     }
@@ -33987,16 +33987,16 @@ Set the \`cycles\` parameter to \`"ref"\` to resolve cyclical schemas with defs.
     }
   }
 }
-function finalize(ctx, schema) {
-  const root = ctx.seen.get(schema);
+function finalize(ctx, schema2) {
+  const root = ctx.seen.get(schema2);
   if (!root)
     throw new Error("Unprocessed schema. This is a bug in Zod.");
   const flattenRef = (zodSchema) => {
     const seen = ctx.seen.get(zodSchema);
     if (seen.ref === null)
       return;
-    const schema2 = seen.def ?? seen.schema;
-    const _cached = { ...schema2 };
+    const schema3 = seen.def ?? seen.schema;
+    const _cached = { ...schema3 };
     const ref = seen.ref;
     seen.ref = null;
     if (ref) {
@@ -34004,28 +34004,28 @@ function finalize(ctx, schema) {
       const refSeen = ctx.seen.get(ref);
       const refSchema = refSeen.schema;
       if (refSchema.$ref && (ctx.target === "draft-07" || ctx.target === "draft-04" || ctx.target === "openapi-3.0")) {
-        schema2.allOf = schema2.allOf ?? [];
-        schema2.allOf.push(refSchema);
+        schema3.allOf = schema3.allOf ?? [];
+        schema3.allOf.push(refSchema);
       } else {
-        Object.assign(schema2, refSchema);
+        Object.assign(schema3, refSchema);
       }
-      Object.assign(schema2, _cached);
+      Object.assign(schema3, _cached);
       const isParentRef = zodSchema._zod.parent === ref;
       if (isParentRef) {
-        for (const key in schema2) {
+        for (const key in schema3) {
           if (key === "$ref" || key === "allOf")
             continue;
           if (!(key in _cached)) {
-            delete schema2[key];
+            delete schema3[key];
           }
         }
       }
       if (refSchema.$ref && refSeen.def) {
-        for (const key in schema2) {
+        for (const key in schema3) {
           if (key === "$ref" || key === "allOf")
             continue;
-          if (key in refSeen.def && JSON.stringify(schema2[key]) === JSON.stringify(refSeen.def[key])) {
-            delete schema2[key];
+          if (key in refSeen.def && JSON.stringify(schema3[key]) === JSON.stringify(refSeen.def[key])) {
+            delete schema3[key];
           }
         }
       }
@@ -34035,13 +34035,13 @@ function finalize(ctx, schema) {
       flattenRef(parent);
       const parentSeen = ctx.seen.get(parent);
       if (parentSeen?.schema.$ref) {
-        schema2.$ref = parentSeen.schema.$ref;
+        schema3.$ref = parentSeen.schema.$ref;
         if (parentSeen.def) {
-          for (const key in schema2) {
+          for (const key in schema3) {
             if (key === "$ref" || key === "allOf")
               continue;
-            if (key in parentSeen.def && JSON.stringify(schema2[key]) === JSON.stringify(parentSeen.def[key])) {
-              delete schema2[key];
+            if (key in parentSeen.def && JSON.stringify(schema3[key]) === JSON.stringify(parentSeen.def[key])) {
+              delete schema3[key];
             }
           }
         }
@@ -34049,7 +34049,7 @@ function finalize(ctx, schema) {
     }
     ctx.override({
       zodSchema,
-      jsonSchema: schema2,
+      jsonSchema: schema3,
       path: seen.path ?? []
     });
   };
@@ -34067,13 +34067,13 @@ function finalize(ctx, schema) {
   } else {
   }
   if (ctx.external?.uri) {
-    const id = ctx.external.registry.get(schema)?.id;
-    if (!id)
+    const id2 = ctx.external.registry.get(schema2)?.id;
+    if (!id2)
       throw new Error("Schema is missing an `id` property");
-    result.$id = ctx.external.uri(id);
+    result.$id = ctx.external.uri(id2);
   }
   Object.assign(result, root.def ?? root.schema);
-  const rootMetaId = ctx.metadataRegistry.get(schema)?.id;
+  const rootMetaId = ctx.metadataRegistry.get(schema2)?.id;
   if (rootMetaId !== void 0 && result.id === rootMetaId)
     delete result.id;
   const defs = ctx.external?.defs ?? {};
@@ -34099,10 +34099,10 @@ function finalize(ctx, schema) {
     const finalized = JSON.parse(JSON.stringify(result));
     Object.defineProperty(finalized, "~standard", {
       value: {
-        ...schema["~standard"],
+        ...schema2["~standard"],
         jsonSchema: {
-          input: createStandardJSONSchemaMethod(schema, "input", ctx.processors),
-          output: createStandardJSONSchemaMethod(schema, "output", ctx.processors)
+          input: createStandardJSONSchemaMethod(schema2, "input", ctx.processors),
+          output: createStandardJSONSchemaMethod(schema2, "output", ctx.processors)
         }
       },
       enumerable: false,
@@ -34166,18 +34166,18 @@ function isTransforming(_schema, _ctx) {
   }
   return false;
 }
-var createToJSONSchemaMethod = (schema, processors = {}) => (params) => {
+var createToJSONSchemaMethod = (schema2, processors = {}) => (params) => {
   const ctx = initializeContext({ ...params, processors });
-  process2(schema, ctx);
-  extractDefs(ctx, schema);
-  return finalize(ctx, schema);
+  process2(schema2, ctx);
+  extractDefs(ctx, schema2);
+  return finalize(ctx, schema2);
 };
-var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) => {
+var createStandardJSONSchemaMethod = (schema2, io, processors = {}) => (params) => {
   const { libraryOptions, target } = params ?? {};
   const ctx = initializeContext({ ...libraryOptions ?? {}, target, io, processors });
-  process2(schema, ctx);
-  extractDefs(ctx, schema);
-  return finalize(ctx, schema);
+  process2(schema2, ctx);
+  extractDefs(ctx, schema2);
+  return finalize(ctx, schema2);
 };
 
 // ../../../node_modules/zod/v4/core/json-schema-processors.js
@@ -34189,10 +34189,10 @@ var formatMap = {
   regex: ""
   // do not set
 };
-var stringProcessor = (schema, ctx, _json, _params) => {
+var stringProcessor = (schema2, ctx, _json, _params) => {
   const json2 = _json;
   json2.type = "string";
-  const { minimum, maximum, format: format2, patterns, contentEncoding } = schema._zod.bag;
+  const { minimum, maximum, format: format2, patterns, contentEncoding } = schema2._zod.bag;
   if (typeof minimum === "number")
     json2.minLength = minimum;
   if (typeof maximum === "number")
@@ -34221,9 +34221,9 @@ var stringProcessor = (schema, ctx, _json, _params) => {
     }
   }
 };
-var numberProcessor = (schema, ctx, _json, _params) => {
+var numberProcessor = (schema2, ctx, _json, _params) => {
   const json2 = _json;
-  const { minimum, maximum, format: format2, multipleOf, exclusiveMaximum, exclusiveMinimum } = schema._zod.bag;
+  const { minimum, maximum, format: format2, multipleOf, exclusiveMaximum, exclusiveMinimum } = schema2._zod.bag;
   if (typeof format2 === "string" && format2.includes("int"))
     json2.type = "integer";
   else
@@ -34298,8 +34298,8 @@ var dateProcessor = (_schema, ctx, _json, _params) => {
     throw new Error("Date cannot be represented in JSON Schema");
   }
 };
-var enumProcessor = (schema, _ctx, json2, _params) => {
-  const def = schema._zod.def;
+var enumProcessor = (schema2, _ctx, json2, _params) => {
+  const def = schema2._zod.def;
   const values = getEnumValues(def.entries);
   if (values.every((v) => typeof v === "number"))
     json2.type = "number";
@@ -34307,8 +34307,8 @@ var enumProcessor = (schema, _ctx, json2, _params) => {
     json2.type = "string";
   json2.enum = values;
 };
-var literalProcessor = (schema, ctx, json2, _params) => {
-  const def = schema._zod.def;
+var literalProcessor = (schema2, ctx, json2, _params) => {
+  const def = schema2._zod.def;
   const vals = [];
   for (const val of def.values) {
     if (val === void 0) {
@@ -34352,22 +34352,22 @@ var nanProcessor = (_schema, ctx, _json, _params) => {
     throw new Error("NaN cannot be represented in JSON Schema");
   }
 };
-var templateLiteralProcessor = (schema, _ctx, json2, _params) => {
+var templateLiteralProcessor = (schema2, _ctx, json2, _params) => {
   const _json = json2;
-  const pattern = schema._zod.pattern;
+  const pattern = schema2._zod.pattern;
   if (!pattern)
     throw new Error("Pattern not found in template literal");
   _json.type = "string";
   _json.pattern = pattern.source;
 };
-var fileProcessor = (schema, _ctx, json2, _params) => {
+var fileProcessor = (schema2, _ctx, json2, _params) => {
   const _json = json2;
   const file2 = {
     type: "string",
     format: "binary",
     contentEncoding: "binary"
   };
-  const { minimum, maximum, mime } = schema._zod.bag;
+  const { minimum, maximum, mime } = schema2._zod.bag;
   if (minimum !== void 0)
     file2.minLength = minimum;
   if (maximum !== void 0)
@@ -34412,10 +34412,10 @@ var setProcessor = (_schema, ctx, _json, _params) => {
     throw new Error("Set cannot be represented in JSON Schema");
   }
 };
-var arrayProcessor = (schema, ctx, _json, params) => {
+var arrayProcessor = (schema2, ctx, _json, params) => {
   const json2 = _json;
-  const def = schema._zod.def;
-  const { minimum, maximum } = schema._zod.bag;
+  const def = schema2._zod.def;
+  const { minimum, maximum } = schema2._zod.bag;
   if (typeof minimum === "number")
     json2.minItems = minimum;
   if (typeof maximum === "number")
@@ -34426,9 +34426,9 @@ var arrayProcessor = (schema, ctx, _json, params) => {
     path: [...params.path, "items"]
   });
 };
-var objectProcessor = (schema, ctx, _json, params) => {
+var objectProcessor = (schema2, ctx, _json, params) => {
   const json2 = _json;
-  const def = schema._zod.def;
+  const def = schema2._zod.def;
   json2.type = "object";
   json2.properties = {};
   const shape = def.shape;
@@ -34462,8 +34462,8 @@ var objectProcessor = (schema, ctx, _json, params) => {
     });
   }
 };
-var unionProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var unionProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   const isExclusive = def.inclusive === false;
   const options = def.options.map((x, i) => process2(x, ctx, {
     ...params,
@@ -34475,8 +34475,8 @@ var unionProcessor = (schema, ctx, json2, params) => {
     json2.anyOf = options;
   }
 };
-var intersectionProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var intersectionProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   const a = process2(def.left, ctx, {
     ...params,
     path: [...params.path, "allOf", 0]
@@ -34492,9 +34492,9 @@ var intersectionProcessor = (schema, ctx, json2, params) => {
   ];
   json2.allOf = allOf;
 };
-var tupleProcessor = (schema, ctx, _json, params) => {
+var tupleProcessor = (schema2, ctx, _json, params) => {
   const json2 = _json;
-  const def = schema._zod.def;
+  const def = schema2._zod.def;
   json2.type = "array";
   const prefixPath = ctx.target === "draft-2020-12" ? "prefixItems" : "items";
   const restPath = ctx.target === "draft-2020-12" ? "items" : ctx.target === "openapi-3.0" ? "items" : "additionalItems";
@@ -34528,15 +34528,15 @@ var tupleProcessor = (schema, ctx, _json, params) => {
       json2.additionalItems = rest;
     }
   }
-  const { minimum, maximum } = schema._zod.bag;
+  const { minimum, maximum } = schema2._zod.bag;
   if (typeof minimum === "number")
     json2.minItems = minimum;
   if (typeof maximum === "number")
     json2.maxItems = maximum;
 };
-var recordProcessor = (schema, ctx, _json, params) => {
+var recordProcessor = (schema2, ctx, _json, params) => {
   const json2 = _json;
-  const def = schema._zod.def;
+  const def = schema2._zod.def;
   json2.type = "object";
   const keyType = def.keyType;
   const keyBag = keyType._zod.bag;
@@ -34570,10 +34570,10 @@ var recordProcessor = (schema, ctx, _json, params) => {
     }
   }
 };
-var nullableProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var nullableProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   const inner = process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   if (ctx.target === "openapi-3.0") {
     seen.ref = def.innerType;
     json2.nullable = true;
@@ -34581,31 +34581,31 @@ var nullableProcessor = (schema, ctx, json2, params) => {
     json2.anyOf = [inner, { type: "null" }];
   }
 };
-var nonoptionalProcessor = (schema, ctx, _json, params) => {
-  const def = schema._zod.def;
+var nonoptionalProcessor = (schema2, ctx, _json, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
 };
-var defaultProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var defaultProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
   json2.default = JSON.parse(JSON.stringify(def.defaultValue));
 };
-var prefaultProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var prefaultProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
   if (ctx.io === "input")
     json2._prefault = JSON.parse(JSON.stringify(def.defaultValue));
 };
-var catchProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var catchProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
   let catchValue;
   try {
@@ -34615,37 +34615,37 @@ var catchProcessor = (schema, ctx, json2, params) => {
   }
   json2.default = catchValue;
 };
-var pipeProcessor = (schema, ctx, _json, params) => {
-  const def = schema._zod.def;
+var pipeProcessor = (schema2, ctx, _json, params) => {
+  const def = schema2._zod.def;
   const inIsTransform = def.in._zod.traits.has("$ZodTransform");
   const innerType = ctx.io === "input" ? inIsTransform ? def.out : def.in : def.out;
   process2(innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = innerType;
 };
-var readonlyProcessor = (schema, ctx, json2, params) => {
-  const def = schema._zod.def;
+var readonlyProcessor = (schema2, ctx, json2, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
   json2.readOnly = true;
 };
-var promiseProcessor = (schema, ctx, _json, params) => {
-  const def = schema._zod.def;
+var promiseProcessor = (schema2, ctx, _json, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
 };
-var optionalProcessor = (schema, ctx, _json, params) => {
-  const def = schema._zod.def;
+var optionalProcessor = (schema2, ctx, _json, params) => {
+  const def = schema2._zod.def;
   process2(def.innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = def.innerType;
 };
-var lazyProcessor = (schema, ctx, _json, params) => {
-  const innerType = schema._zod.innerType;
+var lazyProcessor = (schema2, ctx, _json, params) => {
+  const innerType = schema2._zod.innerType;
   process2(innerType, ctx, params);
-  const seen = ctx.seen.get(schema);
+  const seen = ctx.seen.get(schema2);
   seen.ref = innerType;
 };
 var allProcessors = {
@@ -34695,8 +34695,8 @@ function toJSONSchema(input, params) {
     const ctx2 = initializeContext({ ...params, processors: allProcessors });
     const defs = {};
     for (const entry of registry2._idmap.entries()) {
-      const [_, schema] = entry;
-      process2(schema, ctx2);
+      const [_, schema2] = entry;
+      process2(schema2, ctx2);
     }
     const schemas = {};
     const external = {
@@ -34706,9 +34706,9 @@ function toJSONSchema(input, params) {
     };
     ctx2.external = external;
     for (const entry of registry2._idmap.entries()) {
-      const [key, schema] = entry;
-      extractDefs(ctx2, schema);
-      schemas[key] = finalize(ctx2, schema);
+      const [key, schema2] = entry;
+      extractDefs(ctx2, schema2);
+      schemas[key] = finalize(ctx2, schema2);
     }
     if (Object.keys(defs).length > 0) {
       const defsSegment = ctx2.target === "draft-2020-12" ? "$defs" : "definitions";
@@ -34776,14 +34776,14 @@ var JSONSchemaGenerator = class {
    * Process a schema to prepare it for JSON Schema generation.
    * This must be called before emit().
    */
-  process(schema, _params = { path: [], schemaPath: [] }) {
-    return process2(schema, this.ctx, _params);
+  process(schema2, _params = { path: [], schemaPath: [] }) {
+    return process2(schema2, this.ctx, _params);
   }
   /**
    * Emit the final JSON Schema after processing.
    * Must call process() first.
    */
-  emit(schema, _params) {
+  emit(schema2, _params) {
     if (_params) {
       if (_params.cycles)
         this.ctx.cycles = _params.cycles;
@@ -34792,8 +34792,8 @@ var JSONSchemaGenerator = class {
       if (_params.external)
         this.ctx.external = _params.external;
     }
-    extractDefs(this.ctx, schema);
-    const result = finalize(this.ctx, schema);
+    extractDefs(this.ctx, schema2);
+    const result = finalize(this.ctx, schema2);
     const { "~standard": _, ...plainResult } = result;
     return plainResult;
   }
@@ -35758,8 +35758,8 @@ var ZodArray = /* @__PURE__ */ $constructor("ZodArray", (inst, def) => {
 function array(element, params) {
   return _array(ZodArray, element, params);
 }
-function keyof(schema) {
-  const shape = schema._zod.def.shape;
+function keyof(schema2) {
+  const shape = schema2._zod.def.shape;
   return _enum2(Object.keys(shape));
 }
 var ZodObject = /* @__PURE__ */ $constructor("ZodObject", (inst, def) => {
@@ -36384,11 +36384,11 @@ function json(params) {
   });
   return jsonSchema2;
 }
-function preprocess(fn, schema) {
+function preprocess(fn, schema2) {
   return new ZodPreprocess({
     type: "pipe",
     in: transform(fn),
-    out: schema
+    out: schema2
   });
 }
 
@@ -36495,8 +36495,8 @@ var RECOGNIZED_KEYS = /* @__PURE__ */ new Set([
   "nullable",
   "readOnly"
 ]);
-function detectVersion(schema, defaultTarget) {
-  const $schema = schema.$schema;
+function detectVersion(schema2, defaultTarget) {
+  const $schema = schema2.$schema;
   if ($schema === "https://json-schema.org/draft/2020-12/schema") {
     return "draft-2020-12";
   }
@@ -36526,27 +36526,27 @@ function resolveRef(ref, ctx) {
   }
   throw new Error(`Reference not found: ${ref}`);
 }
-function convertBaseSchema(schema, ctx) {
-  if (schema.not !== void 0) {
-    if (typeof schema.not === "object" && Object.keys(schema.not).length === 0) {
+function convertBaseSchema(schema2, ctx) {
+  if (schema2.not !== void 0) {
+    if (typeof schema2.not === "object" && Object.keys(schema2.not).length === 0) {
       return z.never();
     }
     throw new Error("not is not supported in Zod (except { not: {} } for never)");
   }
-  if (schema.unevaluatedItems !== void 0) {
+  if (schema2.unevaluatedItems !== void 0) {
     throw new Error("unevaluatedItems is not supported");
   }
-  if (schema.unevaluatedProperties !== void 0) {
+  if (schema2.unevaluatedProperties !== void 0) {
     throw new Error("unevaluatedProperties is not supported");
   }
-  if (schema.if !== void 0 || schema.then !== void 0 || schema.else !== void 0) {
+  if (schema2.if !== void 0 || schema2.then !== void 0 || schema2.else !== void 0) {
     throw new Error("Conditional schemas (if/then/else) are not supported");
   }
-  if (schema.dependentSchemas !== void 0 || schema.dependentRequired !== void 0) {
+  if (schema2.dependentSchemas !== void 0 || schema2.dependentRequired !== void 0) {
     throw new Error("dependentSchemas and dependentRequired are not supported");
   }
-  if (schema.$ref) {
-    const refPath = schema.$ref;
+  if (schema2.$ref) {
+    const refPath = schema2.$ref;
     if (ctx.refs.has(refPath)) {
       return ctx.refs.get(refPath);
     }
@@ -36565,9 +36565,9 @@ function convertBaseSchema(schema, ctx) {
     ctx.processing.delete(refPath);
     return zodSchema2;
   }
-  if (schema.enum !== void 0) {
-    const enumValues = schema.enum;
-    if (ctx.version === "openapi-3.0" && schema.nullable === true && enumValues.length === 1 && enumValues[0] === null) {
+  if (schema2.enum !== void 0) {
+    const enumValues = schema2.enum;
+    if (ctx.version === "openapi-3.0" && schema2.nullable === true && enumValues.length === 1 && enumValues[0] === null) {
       return z.null();
     }
     if (enumValues.length === 0) {
@@ -36585,13 +36585,13 @@ function convertBaseSchema(schema, ctx) {
     }
     return z.union([literalSchemas[0], literalSchemas[1], ...literalSchemas.slice(2)]);
   }
-  if (schema.const !== void 0) {
-    return z.literal(schema.const);
+  if (schema2.const !== void 0) {
+    return z.literal(schema2.const);
   }
-  const type = schema.type;
+  const type = schema2.type;
   if (Array.isArray(type)) {
     const typeSchemas = type.map((t) => {
-      const typeSchema = { ...schema, type: t };
+      const typeSchema = { ...schema2, type: t };
       return convertBaseSchema(typeSchema, ctx);
     });
     if (typeSchemas.length === 0) {
@@ -36609,8 +36609,8 @@ function convertBaseSchema(schema, ctx) {
   switch (type) {
     case "string": {
       let stringSchema2 = z.string();
-      if (schema.format) {
-        const format2 = schema.format;
+      if (schema2.format) {
+        const format2 = schema2.format;
         if (format2 === "email") {
           stringSchema2 = stringSchema2.check(z.email());
         } else if (format2 === "uri" || format2 === "uri-reference") {
@@ -36659,14 +36659,14 @@ function convertBaseSchema(schema, ctx) {
           stringSchema2 = stringSchema2.check(z.ksuid());
         }
       }
-      if (typeof schema.minLength === "number") {
-        stringSchema2 = stringSchema2.min(schema.minLength);
+      if (typeof schema2.minLength === "number") {
+        stringSchema2 = stringSchema2.min(schema2.minLength);
       }
-      if (typeof schema.maxLength === "number") {
-        stringSchema2 = stringSchema2.max(schema.maxLength);
+      if (typeof schema2.maxLength === "number") {
+        stringSchema2 = stringSchema2.max(schema2.maxLength);
       }
-      if (schema.pattern) {
-        stringSchema2 = stringSchema2.regex(new RegExp(schema.pattern));
+      if (schema2.pattern) {
+        stringSchema2 = stringSchema2.regex(new RegExp(schema2.pattern));
       }
       zodSchema = stringSchema2;
       break;
@@ -36674,24 +36674,24 @@ function convertBaseSchema(schema, ctx) {
     case "number":
     case "integer": {
       let numberSchema = type === "integer" ? z.number().int() : z.number();
-      if (typeof schema.minimum === "number") {
-        numberSchema = numberSchema.min(schema.minimum);
+      if (typeof schema2.minimum === "number") {
+        numberSchema = numberSchema.min(schema2.minimum);
       }
-      if (typeof schema.maximum === "number") {
-        numberSchema = numberSchema.max(schema.maximum);
+      if (typeof schema2.maximum === "number") {
+        numberSchema = numberSchema.max(schema2.maximum);
       }
-      if (typeof schema.exclusiveMinimum === "number") {
-        numberSchema = numberSchema.gt(schema.exclusiveMinimum);
-      } else if (schema.exclusiveMinimum === true && typeof schema.minimum === "number") {
-        numberSchema = numberSchema.gt(schema.minimum);
+      if (typeof schema2.exclusiveMinimum === "number") {
+        numberSchema = numberSchema.gt(schema2.exclusiveMinimum);
+      } else if (schema2.exclusiveMinimum === true && typeof schema2.minimum === "number") {
+        numberSchema = numberSchema.gt(schema2.minimum);
       }
-      if (typeof schema.exclusiveMaximum === "number") {
-        numberSchema = numberSchema.lt(schema.exclusiveMaximum);
-      } else if (schema.exclusiveMaximum === true && typeof schema.maximum === "number") {
-        numberSchema = numberSchema.lt(schema.maximum);
+      if (typeof schema2.exclusiveMaximum === "number") {
+        numberSchema = numberSchema.lt(schema2.exclusiveMaximum);
+      } else if (schema2.exclusiveMaximum === true && typeof schema2.maximum === "number") {
+        numberSchema = numberSchema.lt(schema2.maximum);
       }
-      if (typeof schema.multipleOf === "number") {
-        numberSchema = numberSchema.multipleOf(schema.multipleOf);
+      if (typeof schema2.multipleOf === "number") {
+        numberSchema = numberSchema.multipleOf(schema2.multipleOf);
       }
       zodSchema = numberSchema;
       break;
@@ -36706,15 +36706,15 @@ function convertBaseSchema(schema, ctx) {
     }
     case "object": {
       const shape = {};
-      const properties = schema.properties || {};
-      const requiredSet = new Set(schema.required || []);
+      const properties = schema2.properties || {};
+      const requiredSet = new Set(schema2.required || []);
       for (const [key, propSchema] of Object.entries(properties)) {
         const propZodSchema = convertSchema(propSchema, ctx);
         shape[key] = requiredSet.has(key) ? propZodSchema : propZodSchema.optional();
       }
-      if (schema.propertyNames) {
-        const keySchema = convertSchema(schema.propertyNames, ctx);
-        const valueSchema = schema.additionalProperties && typeof schema.additionalProperties === "object" ? convertSchema(schema.additionalProperties, ctx) : z.any();
+      if (schema2.propertyNames) {
+        const keySchema = convertSchema(schema2.propertyNames, ctx);
+        const valueSchema = schema2.additionalProperties && typeof schema2.additionalProperties === "object" ? convertSchema(schema2.additionalProperties, ctx) : z.any();
         if (Object.keys(shape).length === 0) {
           zodSchema = z.record(keySchema, valueSchema);
           break;
@@ -36724,8 +36724,8 @@ function convertBaseSchema(schema, ctx) {
         zodSchema = z.intersection(objectSchema3, recordSchema);
         break;
       }
-      if (schema.patternProperties) {
-        const patternProps = schema.patternProperties;
+      if (schema2.patternProperties) {
+        const patternProps = schema2.patternProperties;
         const patternKeys = Object.keys(patternProps);
         const looseRecords = [];
         for (const pattern of patternKeys) {
@@ -36752,18 +36752,18 @@ function convertBaseSchema(schema, ctx) {
         break;
       }
       const objectSchema2 = z.object(shape);
-      if (schema.additionalProperties === false) {
+      if (schema2.additionalProperties === false) {
         zodSchema = objectSchema2.strict();
-      } else if (typeof schema.additionalProperties === "object") {
-        zodSchema = objectSchema2.catchall(convertSchema(schema.additionalProperties, ctx));
+      } else if (typeof schema2.additionalProperties === "object") {
+        zodSchema = objectSchema2.catchall(convertSchema(schema2.additionalProperties, ctx));
       } else {
         zodSchema = objectSchema2.passthrough();
       }
       break;
     }
     case "array": {
-      const prefixItems = schema.prefixItems;
-      const items = schema.items;
+      const prefixItems = schema2.prefixItems;
+      const items = schema2.items;
       if (prefixItems && Array.isArray(prefixItems)) {
         const tupleItems = prefixItems.map((item) => convertSchema(item, ctx));
         const rest = items && typeof items === "object" && !Array.isArray(items) ? convertSchema(items, ctx) : void 0;
@@ -36772,34 +36772,34 @@ function convertBaseSchema(schema, ctx) {
         } else {
           zodSchema = z.tuple(tupleItems);
         }
-        if (typeof schema.minItems === "number") {
-          zodSchema = zodSchema.check(z.minLength(schema.minItems));
+        if (typeof schema2.minItems === "number") {
+          zodSchema = zodSchema.check(z.minLength(schema2.minItems));
         }
-        if (typeof schema.maxItems === "number") {
-          zodSchema = zodSchema.check(z.maxLength(schema.maxItems));
+        if (typeof schema2.maxItems === "number") {
+          zodSchema = zodSchema.check(z.maxLength(schema2.maxItems));
         }
       } else if (Array.isArray(items)) {
         const tupleItems = items.map((item) => convertSchema(item, ctx));
-        const rest = schema.additionalItems && typeof schema.additionalItems === "object" ? convertSchema(schema.additionalItems, ctx) : void 0;
+        const rest = schema2.additionalItems && typeof schema2.additionalItems === "object" ? convertSchema(schema2.additionalItems, ctx) : void 0;
         if (rest) {
           zodSchema = z.tuple(tupleItems).rest(rest);
         } else {
           zodSchema = z.tuple(tupleItems);
         }
-        if (typeof schema.minItems === "number") {
-          zodSchema = zodSchema.check(z.minLength(schema.minItems));
+        if (typeof schema2.minItems === "number") {
+          zodSchema = zodSchema.check(z.minLength(schema2.minItems));
         }
-        if (typeof schema.maxItems === "number") {
-          zodSchema = zodSchema.check(z.maxLength(schema.maxItems));
+        if (typeof schema2.maxItems === "number") {
+          zodSchema = zodSchema.check(z.maxLength(schema2.maxItems));
         }
       } else if (items !== void 0) {
         const element = convertSchema(items, ctx);
         let arraySchema = z.array(element);
-        if (typeof schema.minItems === "number") {
-          arraySchema = arraySchema.min(schema.minItems);
+        if (typeof schema2.minItems === "number") {
+          arraySchema = arraySchema.min(schema2.minItems);
         }
-        if (typeof schema.maxItems === "number") {
-          arraySchema = arraySchema.max(schema.maxItems);
+        if (typeof schema2.maxItems === "number") {
+          arraySchema = arraySchema.max(schema2.maxItems);
         }
         zodSchema = arraySchema;
       } else {
@@ -36812,90 +36812,90 @@ function convertBaseSchema(schema, ctx) {
   }
   return zodSchema;
 }
-function convertSchema(schema, ctx) {
-  if (typeof schema === "boolean") {
-    return schema ? z.any() : z.never();
+function convertSchema(schema2, ctx) {
+  if (typeof schema2 === "boolean") {
+    return schema2 ? z.any() : z.never();
   }
-  let baseSchema = convertBaseSchema(schema, ctx);
-  const hasExplicitType = schema.type || schema.enum !== void 0 || schema.const !== void 0;
-  if (schema.anyOf && Array.isArray(schema.anyOf)) {
-    const options = schema.anyOf.map((s) => convertSchema(s, ctx));
+  let baseSchema = convertBaseSchema(schema2, ctx);
+  const hasExplicitType = schema2.type || schema2.enum !== void 0 || schema2.const !== void 0;
+  if (schema2.anyOf && Array.isArray(schema2.anyOf)) {
+    const options = schema2.anyOf.map((s) => convertSchema(s, ctx));
     const anyOfUnion = z.union(options);
     baseSchema = hasExplicitType ? z.intersection(baseSchema, anyOfUnion) : anyOfUnion;
   }
-  if (schema.oneOf && Array.isArray(schema.oneOf)) {
-    const options = schema.oneOf.map((s) => convertSchema(s, ctx));
+  if (schema2.oneOf && Array.isArray(schema2.oneOf)) {
+    const options = schema2.oneOf.map((s) => convertSchema(s, ctx));
     const oneOfUnion = z.xor(options);
     baseSchema = hasExplicitType ? z.intersection(baseSchema, oneOfUnion) : oneOfUnion;
   }
-  if (schema.allOf && Array.isArray(schema.allOf)) {
-    if (schema.allOf.length === 0) {
+  if (schema2.allOf && Array.isArray(schema2.allOf)) {
+    if (schema2.allOf.length === 0) {
       baseSchema = hasExplicitType ? baseSchema : z.any();
     } else {
-      let result = hasExplicitType ? baseSchema : convertSchema(schema.allOf[0], ctx);
+      let result = hasExplicitType ? baseSchema : convertSchema(schema2.allOf[0], ctx);
       const startIdx = hasExplicitType ? 0 : 1;
-      for (let i = startIdx; i < schema.allOf.length; i++) {
-        result = z.intersection(result, convertSchema(schema.allOf[i], ctx));
+      for (let i = startIdx; i < schema2.allOf.length; i++) {
+        result = z.intersection(result, convertSchema(schema2.allOf[i], ctx));
       }
       baseSchema = result;
     }
   }
-  if (schema.nullable === true && ctx.version === "openapi-3.0") {
+  if (schema2.nullable === true && ctx.version === "openapi-3.0") {
     baseSchema = z.nullable(baseSchema);
   }
-  if (schema.readOnly === true) {
+  if (schema2.readOnly === true) {
     baseSchema = z.readonly(baseSchema);
   }
-  if (schema.default !== void 0) {
-    baseSchema = baseSchema.default(schema.default);
+  if (schema2.default !== void 0) {
+    baseSchema = baseSchema.default(schema2.default);
   }
   const extraMeta = {};
   const coreMetadataKeys = ["$id", "id", "$comment", "$anchor", "$vocabulary", "$dynamicRef", "$dynamicAnchor"];
   for (const key of coreMetadataKeys) {
-    if (key in schema) {
-      extraMeta[key] = schema[key];
+    if (key in schema2) {
+      extraMeta[key] = schema2[key];
     }
   }
   const contentMetadataKeys = ["contentEncoding", "contentMediaType", "contentSchema"];
   for (const key of contentMetadataKeys) {
-    if (key in schema) {
-      extraMeta[key] = schema[key];
+    if (key in schema2) {
+      extraMeta[key] = schema2[key];
     }
   }
-  for (const key of Object.keys(schema)) {
+  for (const key of Object.keys(schema2)) {
     if (!RECOGNIZED_KEYS.has(key)) {
-      extraMeta[key] = schema[key];
+      extraMeta[key] = schema2[key];
     }
   }
   if (Object.keys(extraMeta).length > 0) {
     ctx.registry.add(baseSchema, extraMeta);
   }
-  if (schema.description) {
-    baseSchema = baseSchema.describe(schema.description);
+  if (schema2.description) {
+    baseSchema = baseSchema.describe(schema2.description);
   }
   return baseSchema;
 }
-function fromJSONSchema(schema, params) {
-  if (typeof schema === "boolean") {
-    return schema ? z.any() : z.never();
+function fromJSONSchema(schema2, params) {
+  if (typeof schema2 === "boolean") {
+    return schema2 ? z.any() : z.never();
   }
-  let normalized;
+  let normalized2;
   try {
-    normalized = JSON.parse(JSON.stringify(schema));
+    normalized2 = JSON.parse(JSON.stringify(schema2));
   } catch {
     throw new Error("fromJSONSchema input is not valid JSON (possibly cyclic); use $defs/$ref for recursive schemas");
   }
-  const version2 = detectVersion(normalized, params?.defaultTarget);
-  const defs = normalized.$defs || normalized.definitions || {};
+  const version2 = detectVersion(normalized2, params?.defaultTarget);
+  const defs = normalized2.$defs || normalized2.definitions || {};
   const ctx = {
     version: version2,
     defs,
     refs: /* @__PURE__ */ new Map(),
     processing: /* @__PURE__ */ new Set(),
-    rootSchema: normalized,
+    rootSchema: normalized2,
     registry: params?.registry ?? globalRegistry
   };
-  return convertSchema(normalized, ctx);
+  return convertSchema(normalized2, ctx);
 }
 
 // ../../../node_modules/zod/v4/classic/coerce.js
@@ -37524,14 +37524,14 @@ var OAuthSession = class {
     };
     let settled = false;
     const promise2 = new Promise((resolve3, reject) => {
-      const fail4 = (error51) => {
+      const fail6 = (error51) => {
         if (settled) return;
         settled = true;
         abort.abort();
         reject(error51);
       };
-      cancel = () => fail4(new OnlineError("AUTHORIZATION_CANCELLED"));
-      timer = setTimeout(() => fail4(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs2);
+      cancel = () => fail6(new OnlineError("AUTHORIZATION_CANCELLED"));
+      timer = setTimeout(() => fail6(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs2);
       void (async () => {
         const resource = external_exports.object({ resource: external_exports.string(), authorization_servers: external_exports.array(external_exports.string()) }).parse(await this.http.json("/.well-known/oauth-protected-resource/api/mcp", { signal: abort.signal }));
         if (resource.resource !== `${this.http.origin}/api/mcp` || !resource.authorization_servers.includes(this.http.origin)) throw new OnlineError("RESOURCE_MISMATCH");
@@ -37575,7 +37575,7 @@ var OAuthSession = class {
           }
           if (url3.searchParams.has("error")) {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u53EF\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail4(new OnlineError("AUTHORIZATION_DENIED"));
+            fail6(new OnlineError("AUTHORIZATION_DENIED"));
             return;
           }
           const code = url3.searchParams.get("code");
@@ -37604,7 +37604,7 @@ var OAuthSession = class {
             resolve3(grant);
           }).catch((error51) => {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail4(error51);
+            fail6(error51);
           });
         });
         await new Promise((ready, rejectListen) => {
@@ -37641,7 +37641,7 @@ var OAuthSession = class {
         }).toString();
         if (settled) return;
         await openBrowser(url2.href);
-      })().catch(fail4);
+      })().catch(fail6);
     });
     this.attempt = { promise: promise2, cancel: () => cancel() };
     try {
@@ -37736,7 +37736,7 @@ var PodploMcp = class {
   referenceListCapabilityRequest;
   async rpc(method, params, retry401 = true, guard, expectedNamespace = this.auth.namespace) {
     if (!expectedNamespace) throw new OnlineError("SIGN_IN_REQUIRED", 401);
-    const id = ++this.sequence;
+    const id2 = ++this.sequence;
     const token = await this.auth.token();
     if (this.auth.namespace !== expectedNamespace) throw new OnlineError("SESSION_CHANGED");
     guard?.();
@@ -37750,7 +37750,7 @@ var PodploMcp = class {
           Authorization: `Bearer ${token}`,
           ...this.protocol ? { "MCP-Protocol-Version": this.protocol } : {}
         },
-        body: JSON.stringify({ jsonrpc: "2.0", id, method, params })
+        body: JSON.stringify({ jsonrpc: "2.0", id: id2, method, params })
       });
     } catch (error51) {
       if (this.auth.namespace !== expectedNamespace) throw new OnlineError("SESSION_CHANGED");
@@ -37773,7 +37773,7 @@ var PodploMcp = class {
       result: external_exports.unknown().optional(),
       error: external_exports.object({ code: external_exports.number(), message: external_exports.string().optional() }).optional()
     }).parse(body);
-    if (response.id !== id) throw new OnlineError("MCP_RESPONSE_ID_MISMATCH");
+    if (response.id !== id2) throw new OnlineError("MCP_RESPONSE_ID_MISMATCH");
     if (response.error) throw new OnlineError(`MCP_RPC_${response.error.code}`);
     return response.result;
   }
@@ -37793,22 +37793,22 @@ var PodploMcp = class {
       this.initializing = void 0;
     });
   }
-  async tool(name, args, mutation, guard) {
-    if (!readTools.has(name) && !(mutation === "generation" && name === "create_skill_generation") && !(mutation === "upload" && uploadTools.has(name))) throw new OnlineError("LIVE_MUTATION_BLOCKED");
+  async tool(name2, args, mutation, guard) {
+    if (!readTools.has(name2) && !(mutation === "generation" && name2 === "create_skill_generation") && !(mutation === "upload" && uploadTools.has(name2))) throw new OnlineError("LIVE_MUTATION_BLOCKED");
     await this.initialize();
     guard?.();
     const result = external_exports.object({
       isError: external_exports.boolean().optional(),
       structuredContent: external_exports.unknown().optional(),
       content: external_exports.array(external_exports.object({ type: external_exports.string(), text: external_exports.string().optional() })).optional()
-    }).parse(await this.rpc("tools/call", { name, arguments: args }, true, guard));
+    }).parse(await this.rpc("tools/call", { name: name2, arguments: args }, true, guard));
     if (result.isError) {
       const text4 = result.content?.filter((c) => c.type === "text").map((c) => c.text ?? "").join("") ?? "";
       let code = "MCP_TOOL_REJECTED";
       try {
         const error51 = JSON.parse(text4);
-        const candidate = error51.error?.code ?? error51.code;
-        if (typeof candidate === "string" && /^[A-Z_]{1,80}$/.test(candidate)) code = candidate;
+        const candidate2 = error51.error?.code ?? error51.code;
+        if (typeof candidate2 === "string" && /^[A-Z_]{1,80}$/.test(candidate2)) code = candidate2;
       } catch {
       }
       throw new OnlineError(code);
@@ -37845,8 +37845,8 @@ var PodploMcp = class {
           cursor = next || void 0;
           if (cursor) seen.add(cursor);
         } while (cursor && !tool);
-        const schema = tool?.inputSchema;
-        const properties = object2(schema) ? schema.properties : void 0;
+        const schema2 = tool?.inputSchema;
+        const properties = object2(schema2) ? schema2.properties : void 0;
         return object2(properties) && ["kind", "query", "cursor"].every((key) => Object.hasOwn(properties, key));
       } catch (error51) {
         if (this.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
@@ -37875,8 +37875,8 @@ var PodploMcp = class {
   async skills(query = "") {
     return external_exports.object({ skills: external_exports.array(SkillSchema) }).parse(await this.tool("search_skills", { query, limit: 50 })).skills;
   }
-  async userSkill(id) {
-    return UserSkillSchema.parse(await this.tool("get_user_skill", { id: external_exports.string().uuid().parse(id) }));
+  async userSkill(id2) {
+    return UserSkillSchema.parse(await this.tool("get_user_skill", { id: external_exports.string().uuid().parse(id2) }));
   }
   async quote(input) {
     return QuoteSchema.parse(await this.tool("quote_skill_generation", QuoteInputSchema.parse(input)));
@@ -38745,7 +38745,7 @@ var OnlineService = class extends EventEmitter {
         const trackedResults = await Promise.allSettled(trackedSlugs.map((slug2) => this.mcp.skills(slug2)));
         if (revision !== this.revision) return;
         const trackedSkills = trackedResults.flatMap((result, index) => result.status === "fulfilled" ? result.value.filter((skill) => skill.slug === trackedSlugs[index]) : []);
-        const personalResults = await Promise.allSettled([...this.personalSelections.keys()].map((id) => this.mcp.userSkill(id)));
+        const personalResults = await Promise.allSettled([...this.personalSelections.keys()].map((id2) => this.mcp.userSkill(id2)));
         if (revision !== this.revision) return;
         const personalSkills = personalResults.flatMap((result) => result.status === "fulfilled" ? [this.personalSkillSummary(result.value)] : []);
         const skills = this.mergeSkills(this.mergeSkills(primarySkills, trackedSkills), personalSkills);
@@ -38784,17 +38784,17 @@ var OnlineService = class extends EventEmitter {
     if (revision !== this.revision || namespace !== this.auth.namespace) throw new OnlineError("SESSION_CHANGED");
     const skills = await this.mcp.skills(query);
     if (revision !== this.revision || namespace !== this.auth.namespace) throw new OnlineError("SESSION_CHANGED");
-    const normalized = query.trim();
-    const exact = skills.find((skill) => skill.slug === normalized);
+    const normalized2 = query.trim();
+    const exact = skills.find((skill) => skill.slug === normalized2);
     if (exact?.slug) this.rememberSkillSlug(exact.slug);
-    if (!exact && this.trackedSkillSlugs.includes(normalized)) this.state.skills = this.state.skills.filter((skill) => skill.slug !== normalized);
+    if (!exact && this.trackedSkillSlugs.includes(normalized2)) this.state.skills = this.state.skills.filter((skill) => skill.slug !== normalized2);
     this.state.skills = this.mergeSkills(this.state.skills, skills);
     this.publish();
     return skills;
   }
   skillFamilies(query = "") {
-    const normalized = query.trim().toLocaleLowerCase();
-    return (this.publicDirectory.snapshot().catalog?.families ?? []).filter((family) => !normalized || `${family.slug} ${family.title}`.toLocaleLowerCase().includes(normalized));
+    const normalized2 = query.trim().toLocaleLowerCase();
+    return (this.publicDirectory.snapshot().catalog?.families ?? []).filter((family) => !normalized2 || `${family.slug} ${family.title}`.toLocaleLowerCase().includes(normalized2));
   }
   async skillDetails(slug2) {
     const namespace = await this.requireActiveSubscription();
@@ -38922,18 +38922,18 @@ var OnlineService = class extends EventEmitter {
       minimumReferenceImages: 0
     };
   }
-  async userSkill(id, options = {}) {
+  async userSkill(id2, options = {}) {
     options.signal?.throwIfAborted();
     const namespace = this.requireConnected();
     const revision = this.revision;
-    const skill = await this.mcp.userSkill(id);
+    const skill = await this.mcp.userSkill(id2);
     options.signal?.throwIfAborted();
     if (revision !== this.revision || namespace !== this.auth.namespace) throw new OnlineError("SESSION_CHANGED");
     if (options.expectedUpdatedAt && skill.updatedAt !== options.expectedUpdatedAt) throw new OnlineError("USER_SKILL_CHANGED");
     await options.beforeSelect?.(structuredClone(skill));
     options.signal?.throwIfAborted();
     if (revision !== this.revision || namespace !== this.auth.namespace) throw new OnlineError("SESSION_CHANGED");
-    this.personalSelections.set(id, skill);
+    this.personalSelections.set(id2, skill);
     this.state.skills = this.mergeSkills(this.state.skills, [this.personalSkillSummary(skill)]);
     this.publish();
     return skill;
@@ -38970,16 +38970,16 @@ var OnlineService = class extends EventEmitter {
   async createUserSkill(input) {
     return UserSkillSchema.parse(await this.userSkillRequest("/api/desktop/user-skills", "POST", UserSkillCreateSchema.parse(input)));
   }
-  async updateUserSkill(id, input) {
-    return UserSkillSchema.parse(await this.userSkillRequest(`/api/desktop/user-skills/${id}`, "PATCH", UserSkillUpdateSchema.parse(input)));
+  async updateUserSkill(id2, input) {
+    return UserSkillSchema.parse(await this.userSkillRequest(`/api/desktop/user-skills/${id2}`, "PATCH", UserSkillUpdateSchema.parse(input)));
   }
-  async deleteUserSkill(id, expectedUpdatedAt) {
+  async deleteUserSkill(id2, expectedUpdatedAt) {
     const namespace = this.requireConnected();
     const revision = this.revision;
-    await this.userSkillRequest(`/api/desktop/user-skills/${id}`, "DELETE", { expectedUpdatedAt });
+    await this.userSkillRequest(`/api/desktop/user-skills/${id2}`, "DELETE", { expectedUpdatedAt });
     if (namespace !== this.auth.namespace || revision !== this.revision) throw new OnlineError("SESSION_CHANGED");
-    this.personalSelections.delete(id);
-    this.state.skills = this.state.skills.filter((row) => row.id !== id);
+    this.personalSelections.delete(id2);
+    this.state.skills = this.state.skills.filter((row) => row.id !== id2);
     this.publish();
   }
   async favoriteRequest(path, init, write) {
@@ -39056,7 +39056,7 @@ var OnlineService = class extends EventEmitter {
     const result = await this.bearerRequest(remove);
     assertSession();
     const returnedIds = [...result.deletedIds, ...result.failed.map((row) => row.id)];
-    if (returnedIds.length !== assetIds.length || new Set(returnedIds).size !== returnedIds.length || returnedIds.some((id) => !assetIds.includes(id))) throw new OnlineError("INVALID_DELETE_RESPONSE");
+    if (returnedIds.length !== assetIds.length || new Set(returnedIds).size !== returnedIds.length || returnedIds.some((id2) => !assetIds.includes(id2))) throw new OnlineError("INVALID_DELETE_RESPONSE");
     return result;
   }
   async reference(assetId) {
@@ -39133,9 +39133,9 @@ function contains(root, file2) {
   const part = relative(root, file2);
   return part === "" || !part.startsWith("..") && !isAbsolute(part);
 }
-function planDirectory(root, title, id, createdAt) {
+function planDirectory(root, title, id2, createdAt) {
   const clean = title.normalize("NFKC").replace(/[\x00-\x1f\x7f/\\:*?"<>|]/g, "-").replace(/\.{2,}/g, "-").replace(/^[.\s-]+|[.\s-]+$/g, "").slice(0, 60) || "\u672A\u547D\u540D\u8BA1\u5212";
-  return join2(root, `${createdAt.slice(0, 10)}_${clean}_${id.slice(0, 8)}`);
+  return join2(root, `${createdAt.slice(0, 10)}_${clean}_${id2.slice(0, 8)}`);
 }
 function resultExists(root, directory, file2) {
   if (!root || !directory || !contains(root, directory) || !contains(directory, file2) || dirname4(file2) !== directory) return false;
@@ -39168,8 +39168,8 @@ async function resultThumbnail(root, directory, file2) {
     await handle.close();
   }
 }
-function localResult(root, directory, id, file2) {
-  return { id, name: basename(file2), status: resultExists(root, directory, file2) ? "available" : "missing" };
+function localResult(root, directory, id2, file2) {
+  return { id: id2, name: basename(file2), status: resultExists(root, directory, file2) ? "available" : "missing" };
 }
 
 // packages/tasks/contracts.ts
@@ -39417,9 +39417,9 @@ var DesktopWorkbench = class {
     this.store = new AtomicStore(join3(directory, "workbench.json"), () => ({ schemaVersion: 2, owners: {} }), (value2) => {
       const raw = value2;
       if (![1, 2].includes(raw?.schemaVersion) || !raw.owners) throw new Error("\u5DE5\u4F5C\u53F0\u8BB0\u5F55\u683C\u5F0F\u9519\u8BEF");
-      const s = raw.schemaVersion === 1 ? { schemaVersion: 2, owners: Object.fromEntries(Object.entries(raw.owners).map(([id, owner]) => {
+      const s = raw.schemaVersion === 1 ? { schemaVersion: 2, owners: Object.fromEntries(Object.entries(raw.owners).map(([id2, owner]) => {
         const { favorites, ...rest } = owner;
-        return [id, { ...rest, assets: favorites.map((value3) => ({ type: "skill", id: value3 })) }];
+        return [id2, { ...rest, assets: favorites.map((value3) => ({ type: "skill", id: value3 })) }];
       })) } : raw;
       for (const owner of Object.values(s.owners)) {
         if (!Array.isArray(owner.plans) || !Array.isArray(owner.assets)) throw new Error("\u5DE5\u4F5C\u53F0\u8BB0\u5F55\u4E0D\u5B8C\u6574");
@@ -39445,11 +39445,11 @@ var DesktopWorkbench = class {
       }
     });
   }
-  owner(s, id) {
-    return s.owners[id] ??= { plans: [], assets: [] };
+  owner(s, id2) {
+    return s.owners[id2] ??= { plans: [], assets: [] };
   }
-  snapshot(id) {
-    const owner = this.store.snapshot().owners[id] ?? { plans: [], assets: [] };
+  snapshot(id2) {
+    const owner = this.store.snapshot().owners[id2] ?? { plans: [], assets: [] };
     return { directory: owner.directory, assets: owner.assets, plans: owner.plans.filter((plan) => !plan.parentTaskSessionId).map((plan) => ({
       ...plan,
       results: plan.steps.filter((s) => s.output).map((s) => localResult(plan.workspaceRoot, plan.outputDirectory, s.id, s.output)),
@@ -39457,16 +39457,16 @@ var DesktopWorkbench = class {
       total: plan.steps.length
     })) };
   }
-  async setDirectory(id, directory) {
+  async setDirectory(id2, directory) {
     const actual = await realpath2(directory);
     await this.store.transaction((s) => {
-      this.owner(s, id).directory = actual;
+      this.owner(s, id2).directory = actual;
     });
   }
-  async save(id, draft, planId) {
+  async save(id2, draft, planId) {
     const input = DesktopDraftSchema.parse(draft);
     return this.store.transaction((s) => {
-      const owner = this.owner(s, id);
+      const owner = this.owner(s, id2);
       const previous = planId ? owner.plans.find((p) => p.id === planId) : void 0;
       if (planId && (!previous || previous.status !== "draft")) throw new Error("\u53EA\u80FD\u4FEE\u6539\u81EA\u5DF1\u7684\u8349\u7A3F\uFF0C\u8BF7\u65B0\u5EFA\u8BA1\u5212");
       if (previous) {
@@ -39479,29 +39479,29 @@ var DesktopWorkbench = class {
       return plan.id;
     });
   }
-  get(id, planId) {
-    const plan = this.store.snapshot().owners[id]?.plans.find((p) => p.id === planId);
+  get(id2, planId) {
+    const plan = this.store.snapshot().owners[id2]?.plans.find((p) => p.id === planId);
     if (!plan) throw new Error("\u8BA1\u5212\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
     return plan;
   }
-  taskGenerationPlans(id, parentTaskSessionId) {
-    external_exports.string().uuid().parse(id);
+  taskGenerationPlans(id2, parentTaskSessionId) {
+    external_exports.string().uuid().parse(id2);
     external_exports.string().uuid().parse(parentTaskSessionId);
-    return structuredClone((this.store.snapshot().owners[id]?.plans ?? []).filter((plan) => plan.parentTaskSessionId === parentTaskSessionId));
+    return structuredClone((this.store.snapshot().owners[id2]?.plans ?? []).filter((plan) => plan.parentTaskSessionId === parentTaskSessionId));
   }
-  taskGenerationReservedCount(id, parentTaskSessionId, exceptPlanId) {
+  taskGenerationReservedCount(id2, parentTaskSessionId, exceptPlanId) {
     external_exports.string().uuid().parse(parentTaskSessionId);
-    return (this.store.snapshot().owners[id]?.plans ?? []).filter((plan) => plan.id !== exceptPlanId && plan.parentTaskSessionId === parentTaskSessionId).reduce((total, plan) => total + reservedTaskImages(plan), 0);
+    return (this.store.snapshot().owners[id2]?.plans ?? []).filter((plan) => plan.id !== exceptPlanId && plan.parentTaskSessionId === parentTaskSessionId).reduce((total, plan) => total + reservedTaskImages(plan), 0);
   }
   /** Internal execution record; the parent conversation publishes its results on Finish. */
-  async saveTaskGeneration(id, raw, parentTaskSessionId, destination, operationId2, options = {}) {
+  async saveTaskGeneration(id2, raw, parentTaskSessionId, destination, operationId2, options = {}) {
     const draft = DesktopDraftSchema.parse(raw);
     external_exports.string().uuid().parse(parentTaskSessionId);
     external_exports.string().min(1).max(160).parse(operationId2);
     if (draft.mode !== "image" || !draft.input) throw new Error("\u4EFB\u52A1\u751F\u56FE\u7F3A\u5C11\u53C2\u6570");
     await ensurePlanDirectory(destination.workspaceRoot, destination.outputDirectory);
     return this.store.transaction((s) => {
-      const owner = this.owner(s, id);
+      const owner = this.owner(s, id2);
       const existing = owner.plans.find((plan2) => plan2.parentTaskSessionId === parentTaskSessionId && plan2.taskOperationId === operationId2);
       if (existing) {
         if (JSON.stringify(existing.input) !== JSON.stringify(draft.input)) throw new Error("\u8BE5\u751F\u56FE\u6B65\u9AA4\u53C2\u6570\u5DF2\u53D8\u5316\uFF0C\u8BF7\u65B0\u5EFA\u6B65\u9AA4");
@@ -39526,10 +39526,10 @@ var DesktopWorkbench = class {
       return plan.id;
     });
   }
-  async waitForGeneration(id, planId, signal) {
+  async waitForGeneration(id2, planId, signal) {
     for (; ; ) {
       signal.throwIfAborted();
-      const plan = this.get(id, planId);
+      const plan = this.get(id2, planId);
       if (plan.status !== "running") return plan;
       await new Promise((resolve3, reject) => {
         const abort = () => {
@@ -39545,10 +39545,10 @@ var DesktopWorkbench = class {
       });
     }
   }
-  async waitForGenerationSubmission(id, planId, signal) {
+  async waitForGenerationSubmission(id2, planId, signal) {
     for (; ; ) {
       signal.throwIfAborted();
-      const plan = this.get(id, planId);
+      const plan = this.get(id2, planId);
       if (plan.generation?.taskId || plan.status !== "running") return plan;
       await new Promise((resolve3, reject) => {
         const abort = () => {
@@ -39565,7 +39565,7 @@ var DesktopWorkbench = class {
     }
   }
   /** Only an explicitly finished conversation becomes history. Session identity makes retries idempotent. */
-  async completeTask(id, transcript) {
+  async completeTask(id2, transcript) {
     const task = TaskRecordSchema.parse(transcript);
     const first = task.messages.find((message) => message.role === "user" && message.text.trim());
     const last = task.messages.findLast((message) => message.role === "assistant" && message.text.trim());
@@ -39574,7 +39574,7 @@ var DesktopWorkbench = class {
     const output = artifacts[0];
     if (artifacts.some((artifact) => !isAbsolute2(artifact.workspaceRoot) || artifact.workspaceRoot !== output?.workspaceRoot || artifact.outputDirectory !== output?.outputDirectory || dirname5(artifact.outputDirectory) !== artifact.workspaceRoot || !contains(artifact.outputDirectory, artifact.path) || dirname5(artifact.path) !== artifact.outputDirectory)) throw new Error("\u4EFB\u52A1\u56FE\u7247\u4E0D\u5728\u540C\u4E00\u4E2A\u5DF2\u6388\u6743\u8F93\u51FA\u76EE\u5F55");
     return this.store.transaction((s) => {
-      const owner = this.owner(s, id);
+      const owner = this.owner(s, id2);
       const existing = owner.plans.find((plan2) => plan2.task?.sessionId === task.sessionId);
       if (existing) return existing.id;
       const now = (/* @__PURE__ */ new Date()).toISOString();
@@ -39595,18 +39595,18 @@ var DesktopWorkbench = class {
       return plan.id;
     });
   }
-  async renamePlan(id, planId, title) {
-    const name = PlanTitleSchema.parse(title);
+  async renamePlan(id2, planId, title) {
+    const name2 = PlanTitleSchema.parse(title);
     await this.store.transaction((s) => {
-      const plan = s.owners[id]?.plans.find((p) => p.id === planId && !p.parentTaskSessionId);
+      const plan = s.owners[id2]?.plans.find((p) => p.id === planId && !p.parentTaskSessionId);
       if (!plan) throw new Error("\u8BA1\u5212\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
-      plan.title = name;
+      plan.title = name2;
       plan.updatedAt = (/* @__PURE__ */ new Date()).toISOString();
     });
   }
-  async deletePlan(id, planId) {
+  async deletePlan(id2, planId) {
     await this.store.transaction((s) => {
-      const owner = s.owners[id];
+      const owner = s.owners[id2];
       const index = owner?.plans.findIndex((p) => p.id === planId) ?? -1;
       if (!owner || index < 0) throw new Error("\u8BA1\u5212\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
       if (owner.plans[index].status === "running" || this.jobs.has(planId)) throw new Error("\u8BA1\u5212\u6B63\u5728\u6267\u884C\uFF0C\u8BF7\u7ED3\u675F\u540E\u518D\u5220\u9664");
@@ -39616,38 +39616,38 @@ var DesktopWorkbench = class {
       if (sessionId) owner.plans = owner.plans.filter((plan) => plan.parentTaskSessionId !== sessionId);
     });
   }
-  async attachQuote(id, planId, quote) {
-    const plan = this.get(id, planId);
+  async attachQuote(id2, planId, quote) {
+    const plan = this.get(id2, planId);
     if (plan.status !== "draft" && plan.status !== "quoted") throw new Error("\u6267\u884C\u8BB0\u5F55\u4E0D\u53EF\u66F4\u6539");
     if (JSON.stringify(plan.input) !== JSON.stringify(quote.input)) throw new Error("\u62A5\u4EF7\u53C2\u6570\u4E0E\u8BA1\u5212\u4E0D\u4E00\u81F4");
     await this.store.transaction((s) => {
-      const target = this.owner(s, id).plans.find((p) => p.id === planId);
+      const target = this.owner(s, id2).plans.find((p) => p.id === planId);
       target.quote = quote;
       target.status = "quoted";
     });
   }
-  async startGeneration(id, planId, approval, transport) {
-    if (this.relocations.has(id)) throw new Error("\u6B63\u5728\u540C\u6B65\u6587\u4EF6\u91CD\u547D\u540D\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
-    const plan = this.get(id, planId);
+  async startGeneration(id2, planId, approval, transport) {
+    if (this.relocations.has(id2)) throw new Error("\u6B63\u5728\u540C\u6B65\u6587\u4EF6\u91CD\u547D\u540D\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+    const plan = this.get(id2, planId);
     if (this.jobs.has(planId) && plan.status === "running") return;
     if (plan.status !== "quoted" || plan.generation || !plan.quote) throw new Error("\u6B64\u8BA1\u5212\u5DF2\u63D0\u4EA4\u6216\u5C1A\u672A\u53D6\u5F97\u62A5\u4EF7\uFF0C\u4E0D\u80FD\u91CD\u590D\u751F\u56FE");
     const quote = plan.quote;
     if (approval.quoteId !== quote.id || approval.quoteDigest !== quoteDigest(quote) || approval.approvedCredits !== quote.totalCredits || Date.parse(quote.expiresAt) <= Date.now()) throw new Error("\u62A5\u4EF7\u5DF2\u8FC7\u671F\u6216\u8D39\u7528\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u6838\u5BF9");
     const maximumTaskImages = approval.maximumTaskImages === void 0 ? void 0 : external_exports.number().int().nonnegative().max(1e4).parse(approval.maximumTaskImages);
-    const root = plan.parentTaskSessionId ? plan.workspaceRoot : this.store.snapshot().owners[id]?.directory;
+    const root = plan.parentTaskSessionId ? plan.workspaceRoot : this.store.snapshot().owners[id2]?.directory;
     if (!root) throw new Error("\u8BF7\u5148\u8BBE\u7F6E\u672C\u5730\u5DE5\u4F5C\u6587\u4EF6\u5939");
     const directory = plan.parentTaskSessionId ? plan.outputDirectory : planDirectory(root, plan.title, plan.id, plan.createdAt);
     await ensurePlanDirectory(root, directory);
     const requestId = randomUUID7();
     await this.store.transaction((s) => {
-      const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+      const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
       if (p.status !== "quoted" || p.generation) throw new Error("\u6B64\u8BA1\u5212\u5DF2\u63D0\u4EA4");
-      if (p.preventDuplicateSkill && p.parentTaskSessionId && this.owner(s, id).plans.some((other) => other.id !== p.id && other.parentTaskSessionId === p.parentTaskSessionId && other.input?.templateId === p.input?.templateId && other.generation)) {
+      if (p.preventDuplicateSkill && p.parentTaskSessionId && this.owner(s, id2).plans.some((other) => other.id !== p.id && other.parentTaskSessionId === p.parentTaskSessionId && other.input?.templateId === p.input?.templateId && other.generation)) {
         throw new Error("\u8BE5 Skill \u5DF2\u6709\u6279\u51C6\u53CA\u63D0\u4EA4\u8BB0\u5F55\uFF1B\u8BF7\u6062\u590D\u5DF2\u6709\u7ED3\u679C\uFF0C\u4E0D\u80FD\u901A\u8FC7\u65B0\u6B65\u9AA4\u91CD\u590D\u751F\u56FE");
       }
       if (maximumTaskImages !== void 0) {
         if (!p.parentTaskSessionId) throw new Error("\u4EFB\u52A1\u56FE\u7247\u603B\u6570\u9650\u5236\u53EA\u9002\u7528\u4E8E\u4EFB\u52A1\u4F1A\u8BDD");
-        const reserved = this.owner(s, id).plans.filter((other) => other.id !== p.id && other.parentTaskSessionId === p.parentTaskSessionId).reduce((total, other) => total + reservedTaskImages(other), 0);
+        const reserved = this.owner(s, id2).plans.filter((other) => other.id !== p.id && other.parentTaskSessionId === p.parentTaskSessionId).reduce((total, other) => total + reservedTaskImages(other), 0);
         if (reserved + p.quote.outputCount > maximumTaskImages) {
           throw new Error(`\u672C\u6B21\u62A5\u4EF7\u9884\u8BA1\u751F\u6210 ${p.quote.outputCount} \u5F20\uFF0C\u4EFB\u52A1\u5DF2\u5B8C\u6210\u6216\u5904\u7406\u4E2D ${reserved} \u5F20\uFF0C\u8D85\u8FC7\u7528\u6237\u8981\u6C42\u7684\u603B\u6570 ${maximumTaskImages} \u5F20`);
         }
@@ -39663,34 +39663,34 @@ var DesktopWorkbench = class {
       try {
         const remote = await transport.submit(quote, requestId);
         await this.store.transaction((s) => {
-          const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+          const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
           p.generation.taskId = remote.id;
           p.generation.status = remote.status;
         });
-        await this.monitorGeneration(id, planId, transport);
+        await this.monitorGeneration(id2, planId, transport);
       } catch (error51) {
-        await this.failGeneration(id, planId, error51);
+        await this.failGeneration(id2, planId, error51);
       }
     })();
     this.jobs.set(planId, operation);
     void operation.finally(() => this.jobs.delete(planId));
   }
-  async resumeGeneration(id, planId, transport) {
-    if (this.relocations.has(id)) throw new Error("\u6B63\u5728\u540C\u6B65\u6587\u4EF6\u91CD\u547D\u540D\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
-    if (!this.get(id, planId).generation?.taskId) throw new Error("\u7F3A\u5C11\u5DF2\u63A5\u7EB3\u7684\u4EFB\u52A1\u7F16\u53F7\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9\uFF0C\u52FF\u91CD\u590D\u63D0\u4EA4");
+  async resumeGeneration(id2, planId, transport) {
+    if (this.relocations.has(id2)) throw new Error("\u6B63\u5728\u540C\u6B65\u6587\u4EF6\u91CD\u547D\u540D\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+    if (!this.get(id2, planId).generation?.taskId) throw new Error("\u7F3A\u5C11\u5DF2\u63A5\u7EB3\u7684\u4EFB\u52A1\u7F16\u53F7\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9\uFF0C\u52FF\u91CD\u590D\u63D0\u4EA4");
     if (this.jobs.has(planId)) return;
     await this.store.transaction((s) => {
-      const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+      const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
       p.status = "running";
       p.error = void 0;
     });
-    const operation = this.monitorGeneration(id, planId, transport).catch((error51) => this.failGeneration(id, planId, error51));
+    const operation = this.monitorGeneration(id2, planId, transport).catch((error51) => this.failGeneration(id2, planId, error51));
     this.jobs.set(planId, operation);
     void operation.finally(() => this.jobs.delete(planId));
   }
-  async failGeneration(id, planId, error51) {
+  async failGeneration(id2, planId, error51) {
     await this.store.transaction((s) => {
-      const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+      const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
       p.status = "failed";
       p.error = p.generation?.taskId ? "\u4EFB\u52A1\u67E5\u8BE2\u6216\u672C\u5730\u4FDD\u5B58\u4E2D\u65AD\uFF0C\u53EF\u67E5\u8BE2\u5DF2\u6709\u4EFB\u52A1\u7EE7\u7EED\u4FDD\u5B58\uFF1B\u4E0D\u4F1A\u91CD\u65B0\u751F\u56FE" : "\u63D0\u4EA4\u7ED3\u679C\u5C1A\u672A\u786E\u8BA4\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9\uFF0C\u52FF\u91CD\u590D\u63D0\u4EA4";
       if (error51 instanceof OnlineError && /^[A-Za-z0-9_-]{1,80}$/.test(error51.code) && Number.isInteger(error51.status) && error51.status >= 0 && error51.status <= 599) {
@@ -39699,18 +39699,18 @@ var DesktopWorkbench = class {
       }
     });
   }
-  async monitorGeneration(id, planId, transport) {
+  async monitorGeneration(id2, planId, transport) {
     for (let attempt = 0; attempt < 200 && !this.stopping; attempt++) {
-      const plan = this.get(id, planId);
+      const plan = this.get(id2, planId);
       const remote = await transport.poll(plan.generation.taskId);
       if (remote.id !== plan.generation.taskId || remote.outputCount !== plan.quote.outputCount) throw new Error("\u4EFB\u52A1\u54CD\u5E94\u4E0D\u5339\u914D");
       await this.store.transaction((s) => {
-        const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+        const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
         p.generation.status = remote.status;
         for (const output of remote.outputs) if (!p.steps.some((step) => step.id === output.slotId)) p.steps.push({ id: output.slotId, status: "queued" });
       });
       for (const output of remote.outputs) {
-        const current = this.get(id, planId);
+        const current = this.get(id2, planId);
         const step = current.steps.find((step2) => step2.id === output.slotId);
         if (step.status === "completed") continue;
         if (output.downloadUrl) {
@@ -39723,17 +39723,17 @@ var DesktopWorkbench = class {
             if (error51.code !== "EEXIST" || !resultExists(current.workspaceRoot, current.outputDirectory, path) || !(await readFile4(path)).equals(image.bytes)) throw error51;
           }
           await this.store.transaction((s) => {
-            const t = this.owner(s, id).plans.find((p) => p.id === planId).steps.find((t2) => t2.id === output.slotId);
+            const t = this.owner(s, id2).plans.find((p) => p.id === planId).steps.find((t2) => t2.id === output.slotId);
             t.status = "completed";
             t.output = path;
           });
         } else if (output.failureCode) await this.store.transaction((s) => {
-          this.owner(s, id).plans.find((p) => p.id === planId).steps.find((t) => t.id === output.slotId).status = "failed";
+          this.owner(s, id2).plans.find((p) => p.id === planId).steps.find((t) => t.id === output.slotId).status = "failed";
         });
       }
       if (["completed", "failed", "cancelled", "partial_failure", "partial-failure", "partially_completed", "rejected", "manual_review"].includes(remote.status)) {
         await this.store.transaction((s) => {
-          const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+          const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
           const complete = p.steps.filter((step) => step.status === "completed").length === p.quote.outputCount;
           p.status = complete ? "completed" : "failed";
           p.error = complete ? void 0 : `\u4E3B\u7AD9\u4EFB\u52A1\u7ED3\u675F\uFF1A${remote.failureCode ?? remote.status}\uFF1B\u79EF\u5206\u4EE5\u4E3B\u7AD9\u5B9E\u9645\u7ED3\u7B97\u4E3A\u51C6`;
@@ -39744,40 +39744,40 @@ var DesktopWorkbench = class {
     }
     throw new Error("\u4EFB\u52A1\u67E5\u8BE2\u5DF2\u6682\u505C");
   }
-  async toggleAsset(id, raw) {
+  async toggleAsset(id2, raw) {
     const asset = DesktopAssetSchema.parse(raw);
     const key = `${asset.type}:${asset.id}`;
     await this.store.transaction((s) => {
-      const owner = this.owner(s, id);
+      const owner = this.owner(s, id2);
       const index = owner.assets.findIndex((row) => `${row.type}:${row.id}` === key);
       if (index >= 0) owner.assets.splice(index, 1);
       else owner.assets.push(asset);
     });
   }
-  async rememberAsset(id, raw) {
+  async rememberAsset(id2, raw) {
     const asset = DesktopAssetSchema.parse(raw);
     const key = `${asset.type}:${asset.id}`;
     await this.store.transaction((s) => {
-      const owner = this.owner(s, id);
+      const owner = this.owner(s, id2);
       const index = owner.assets.findIndex((row) => `${row.type}:${row.id}` === key);
       if (index >= 0) owner.assets[index] = { ...owner.assets[index], ...asset };
       else owner.assets.push(asset);
     });
   }
   /** Call only after the server confirms deletion of these uploads. */
-  async forgetUploads(id, ids2) {
+  async forgetUploads(id2, ids2) {
     const removed = new Set(external_exports.array(external_exports.string().uuid()).max(200).parse(ids2));
     await this.store.transaction((s) => {
-      const owner = this.owner(s, id);
+      const owner = this.owner(s, id2);
       owner.assets = owner.assets.filter((asset) => asset.type !== "upload" || !removed.has(asset.id));
     });
   }
   /** Compatibility for pre-Assets callers and stored Skill favorites. */
-  async favorite(id, skillId) {
-    await this.toggleAsset(id, { type: "skill", id: skillId });
+  async favorite(id2, skillId) {
+    await this.toggleAsset(id2, { type: "skill", id: skillId });
   }
-  async relocateFiles(id, moves, transaction) {
-    external_exports.string().uuid().parse(id);
+  async relocateFiles(id2, moves, transaction) {
+    external_exports.string().uuid().parse(id2);
     if (!moves.length) return;
     const operation = transaction ? external_exports.object({ id: external_exports.string().min(1).max(240), rollback: external_exports.boolean() }).strict().parse(transaction) : void 0;
     const pairs = moves.map((move) => ({ from: external_exports.string().min(1).parse(move.from), to: external_exports.string().min(1).parse(move.to) }));
@@ -39786,15 +39786,15 @@ var DesktopWorkbench = class {
     const receipt = digest(pairs), reverseReceipt = digest(pairs.map((move) => ({ from: move.to, to: move.from })));
     const paths = new Map(pairs.map((move) => [move.from, move.to]));
     const affected = (plan) => plan.steps.some((step) => !!step.output && paths.has(step.output)) || !!plan.task?.artifacts?.some((artifact) => paths.has(artifact.path));
-    const current = this.store.snapshot().owners[id];
+    const current = this.store.snapshot().owners[id2];
     const applied = current?.relocationTransactions?.includes(operation?.id ?? "") ?? false;
     if (operation ? operation.rollback ? !applied : applied : current?.relocationReceipts?.includes(receipt)) return;
     const busy = current?.plans.find((plan) => affected(plan) && (plan.status === "running" || this.jobs.has(plan.id)));
     if (busy) throw new Error("\u76F8\u5173\u8BA1\u5212\u6B63\u5728\u5904\u7406\uFF0C\u5B8C\u6210\u6216\u505C\u6B62\u540E\u624D\u80FD\u91CD\u547D\u540D\u6587\u4EF6");
-    this.relocations.add(id);
+    this.relocations.add(id2);
     try {
       await this.store.transaction((state) => {
-        const owner = this.owner(state, id);
+        const owner = this.owner(state, id2);
         if (operation) {
           const alreadyApplied = owner.relocationTransactions?.includes(operation.id) ?? false;
           if (operation.rollback ? !alreadyApplied : alreadyApplied) return;
@@ -39813,14 +39813,14 @@ var DesktopWorkbench = class {
         else owner.relocationReceipts = [...(owner.relocationReceipts ?? []).filter((key) => key !== reverseReceipt), receipt].slice(-20);
       });
     } finally {
-      this.relocations.delete(id);
+      this.relocations.delete(id2);
     }
   }
   /** Produces clearly labelled local test images. Never requests a generation or downloads a remote result. */
-  async simulate(id, planId, authorizeAndSimulate) {
-    if (this.relocations.has(id)) throw new Error("\u6B63\u5728\u540C\u6B65\u6587\u4EF6\u91CD\u547D\u540D\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
+  async simulate(id2, planId, authorizeAndSimulate) {
+    if (this.relocations.has(id2)) throw new Error("\u6B63\u5728\u540C\u6B65\u6587\u4EF6\u91CD\u547D\u540D\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5");
     if (this.jobs.has(planId)) return this.jobs.get(planId);
-    const operation = this.runSimulation(id, planId, authorizeAndSimulate);
+    const operation = this.runSimulation(id2, planId, authorizeAndSimulate);
     this.jobs.set(planId, operation);
     try {
       await operation;
@@ -39828,18 +39828,18 @@ var DesktopWorkbench = class {
       this.jobs.delete(planId);
     }
   }
-  async runSimulation(id, planId, authorizeAndSimulate) {
-    const plan = this.get(id, planId);
+  async runSimulation(id2, planId, authorizeAndSimulate) {
+    const plan = this.get(id2, planId);
     if (plan.status === "completed") return;
     if (!plan.quote || plan.status !== "quoted") throw new Error("\u8BF7\u5148\u53D6\u5F97\u6709\u6548\u62A5\u4EF7");
-    const root = this.store.snapshot().owners[id]?.directory;
+    const root = this.store.snapshot().owners[id2]?.directory;
     if (!root) throw new Error("\u8BF7\u5148\u8BBE\u7F6E\u672C\u5730\u5DE5\u4F5C\u6587\u4EF6\u5939");
     const directory = planDirectory(root, plan.title, plan.id, plan.createdAt);
     await ensurePlanDirectory(root, directory);
     await authorizeAndSimulate();
     const job = (async () => {
       await this.store.transaction((s) => {
-        const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+        const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
         p.status = "running";
         p.execution = "simulation";
         p.workspaceRoot = root;
@@ -39847,7 +39847,7 @@ var DesktopWorkbench = class {
         p.steps = Array.from({ length: plan.quote.outputCount }, () => ({ id: randomUUID7(), status: "queued" }));
       });
       try {
-        const steps = this.get(id, planId).steps;
+        const steps = this.get(id2, planId).steps;
         for (let index = 0; index < steps.length; index++) {
           await ensurePlanDirectory(root, directory);
           const step = steps[index];
@@ -39856,18 +39856,18 @@ var DesktopWorkbench = class {
           const png = await sharp2(Buffer.from(svg)).png().toBuffer();
           await writeFile4(output, png, { flag: "wx" });
           await this.store.transaction((s) => {
-            const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+            const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
             const t = p.steps.find((t2) => t2.id === step.id);
             t.status = "completed";
             t.output = output;
           });
         }
         await this.store.transaction((s) => {
-          this.owner(s, id).plans.find((p) => p.id === planId).status = "completed";
+          this.owner(s, id2).plans.find((p) => p.id === planId).status = "completed";
         });
       } catch (e) {
         await this.store.transaction((s) => {
-          const p = this.owner(s, id).plans.find((p2) => p2.id === planId);
+          const p = this.owner(s, id2).plans.find((p2) => p2.id === planId);
           p.status = "failed";
           p.error = e instanceof Error ? e.message : "\u672C\u5730\u4FDD\u5B58\u5931\u8D25";
         });
@@ -39875,15 +39875,15 @@ var DesktopWorkbench = class {
     })();
     await job;
   }
-  async thumbnail(id, planId, resultId) {
-    const p = this.get(id, planId);
+  async thumbnail(id2, planId, resultId) {
+    const p = this.get(id2, planId);
     const step = p.steps.find((s) => s.id === resultId);
     if (!step?.output) throw new Error("\u7ED3\u679C\u4E0D\u5B58\u5728");
     return resultThumbnail(p.workspaceRoot, p.outputDirectory, step.output);
   }
-  async directory(id, planId) {
-    const p = planId ? this.get(id, planId) : void 0;
-    const root = p?.workspaceRoot ?? this.store.snapshot().owners[id]?.directory;
+  async directory(id2, planId) {
+    const p = planId ? this.get(id2, planId) : void 0;
+    const root = p?.workspaceRoot ?? this.store.snapshot().owners[id2]?.directory;
     const dir = p?.outputDirectory ?? root;
     if (!root || !dir) throw new Error("\u5C1A\u672A\u8BBE\u7F6E\u6587\u4EF6\u5939");
     return checkedDirectory(root, dir);
@@ -39895,13 +39895,141 @@ var DesktopWorkbench = class {
   }
 };
 
+// plugins/podplo-dsh/src/local-favorite-organization.ts
+import { randomUUID as randomUUID8 } from "node:crypto";
+import { join as join4 } from "node:path";
+
+// plugins/podplo-dsh/src/contracts.ts
+var PODPLO_MANUAL_SESSION_ID = "podplo-manual";
+var PODPLO_TOOLBOX_WORKSPACE_ID = "podplo-toolbox-v1";
+var PODPLO_GRID_SPLIT_WORKSPACE_ID = "podplo-grid-split-v1";
+var PodploPluginError = class extends Error {
+  constructor(code, message, details) {
+    super(message);
+    this.code = code;
+    this.details = details;
+    this.name = "PodploPluginError";
+  }
+  code;
+  details;
+};
+
+// plugins/podplo-dsh/src/local-favorite-organization.ts
+var name = external_exports.string().trim().min(1).max(80).refine((value2) => value2 !== "\u672A\u5206\u7C7B" && !new RegExp("\\p{Cc}", "u").test(value2));
+var note = external_exports.string().trim().min(1).max(160).refine((value2) => !new RegExp("\\p{Cc}", "u").test(value2));
+var id = external_exports.string().min(1).max(180).refine((value2) => !/[\/\\\u0000\r\n]/u.test(value2));
+var folderSchema = external_exports.object({ id: external_exports.string().uuid(), name }).strict();
+var LocalFavoriteUpdateSchema = external_exports.object({ id, note: note.nullable().optional(), folderId: external_exports.string().uuid().nullable().optional() }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0);
+var account = external_exports.object({
+  ownerId: external_exports.string().min(1).max(180),
+  folders: external_exports.array(folderSchema).max(100),
+  skills: external_exports.array(external_exports.object({ id, note: note.nullable(), folderId: external_exports.string().uuid().nullable() }).strict())
+}).strict().superRefine((value2, context) => {
+  const ids2 = new Set(value2.folders.map((row) => row.id));
+  if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.skills.map((row) => row.id)).size !== value2.skills.length || value2.skills.some((row) => row.folderId && !ids2.has(row.folderId)))
+    context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
+});
+var schema = external_exports.object({ schemaVersion: external_exports.literal(1), accounts: external_exports.array(account) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
+var fail = (code, message) => {
+  throw new PodploPluginError(code, message);
+};
+function parse3(type, input) {
+  const result = type.safeParse(input);
+  return result.success ? result.data : fail("INVALID_ARGUMENT", "\u6536\u85CF\u6587\u4EF6\u5939\u6216\u5907\u6CE8\u53C2\u6570\u65E0\u6548\u3002");
+}
+var LocalFavoriteOrganization = class {
+  store;
+  constructor(directory) {
+    this.store = new AtomicStore(join4(directory, "favorite-organization.json"), () => ({ schemaVersion: 1, accounts: [] }), (value2) => schema.parse(value2));
+  }
+  async init() {
+    await this.store.load();
+  }
+  async flush() {
+    await this.store.flush();
+  }
+  folders(ownerId) {
+    return { items: this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.folders ?? [] };
+  }
+  decorate(ownerId, rows) {
+    const metadata = new Map(this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.skills.map((row) => [row.id, row]) ?? []);
+    return rows.map((row) => row.type === "skill" ? { ...row, note: metadata.get(row.id)?.note ?? null, folderId: metadata.get(row.id)?.folderId ?? null } : row);
+  }
+  change(ownerId, update, guard) {
+    return this.store.transaction((state) => {
+      guard?.();
+      let row = state.accounts.find((row2) => row2.ownerId === ownerId);
+      if (!row) {
+        row = { ownerId, folders: [], skills: [] };
+        state.accounts.push(row);
+      }
+      return update(row);
+    });
+  }
+  create(ownerId, rawName, guard) {
+    const value2 = parse3(name, rawName);
+    return this.change(ownerId, (row) => {
+      if (row.folders.some((folder2) => folder2.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (row.folders.length >= 100) fail("FAVORITE_FOLDER_LIMIT", "\u6536\u85CF\u6587\u4EF6\u5939\u6570\u91CF\u5DF2\u8FBE\u4E0A\u9650\u3002");
+      const folder = { id: randomUUID8(), name: value2 };
+      row.folders.push(folder);
+      return { folder };
+    }, guard);
+  }
+  rename(ownerId, rawId, rawName, guard) {
+    const folderId = parse3(external_exports.string().uuid(), rawId), value2 = parse3(name, rawName);
+    return this.change(ownerId, (row) => {
+      const folder = row.folders.find((item) => item.id === folderId);
+      if (!folder) return fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (row.folders.some((item) => item.id !== folderId && item.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      folder.name = value2;
+      return { folder };
+    }, guard);
+  }
+  delete(ownerId, rawId, guard) {
+    const folderId = parse3(external_exports.string().uuid(), rawId);
+    return this.change(ownerId, (row) => {
+      if (!row.folders.some((item) => item.id === folderId)) return fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      let movedSkillCount = 0;
+      for (const skill of row.skills) if (skill.folderId === folderId) {
+        skill.folderId = null;
+        movedSkillCount++;
+      }
+      row.skills = row.skills.filter((skill) => skill.note !== null || skill.folderId !== null);
+      row.folders = row.folders.filter((item) => item.id !== folderId);
+      return { deleted: true, movedSkillCount };
+    }, guard);
+  }
+  update(ownerId, input, guard) {
+    const value2 = parse3(LocalFavoriteUpdateSchema, input);
+    return this.change(ownerId, (row) => {
+      if (value2.folderId && !row.folders.some((item) => item.id === value2.folderId)) fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      const previous = row.skills.find((skill) => skill.id === value2.id);
+      const updated = {
+        id: value2.id,
+        note: value2.note === void 0 ? previous?.note ?? null : value2.note,
+        folderId: value2.folderId === void 0 ? previous?.folderId ?? null : value2.folderId
+      };
+      row.skills = row.skills.filter((skill) => skill.id !== value2.id);
+      if (updated.note !== null || updated.folderId !== null) row.skills.push(updated);
+      return updated;
+    }, guard);
+  }
+  async forget(ownerId, skillId, guard) {
+    if (!this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.skills.some((row) => row.id === skillId)) return;
+    await this.change(ownerId, (row) => {
+      row.skills = row.skills.filter((skill) => skill.id !== skillId);
+    }, guard);
+  }
+};
+
 // plugins/podplo-dsh/src/service.ts
 import { EventEmitter as EventEmitter2 } from "node:events";
 
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.11",
+  version: "0.1.12",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -40017,21 +40145,6 @@ function taskDiagnostics(task) {
   return [...new Map(safe.map((row) => [`${row.stage}:${row.code}`, row])).values()].slice(0, 20);
 }
 
-// plugins/podplo-dsh/src/contracts.ts
-var PODPLO_MANUAL_SESSION_ID = "podplo-manual";
-var PODPLO_TOOLBOX_WORKSPACE_ID = "podplo-toolbox-v1";
-var PODPLO_GRID_SPLIT_WORKSPACE_ID = "podplo-grid-split-v1";
-var PodploPluginError = class extends Error {
-  constructor(code, message, details) {
-    super(message);
-    this.code = code;
-    this.details = details;
-    this.name = "PodploPluginError";
-  }
-  code;
-  details;
-};
-
 // plugins/podplo-dsh/src/generation-state.ts
 var comparableGenerationItems = (items) => items.map((item) => ({
   ...item.skillId ? { skillId: item.skillId } : {},
@@ -40146,15 +40259,15 @@ function definiteSubmissionFailure(code) {
 }
 
 // plugins/podplo-dsh/src/service.ts
-import { randomUUID as randomUUID9 } from "node:crypto";
-import { join as join6 } from "node:path";
+import { randomUUID as randomUUID10 } from "node:crypto";
+import { join as join7 } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 // plugins/podplo-dsh/src/local-toolkit.ts
-import { createHash as createHash7, randomUUID as randomUUID8 } from "node:crypto";
+import { createHash as createHash7, randomUUID as randomUUID9 } from "node:crypto";
 import { constants as constants2 } from "node:fs";
 import { lstat as lstat2, mkdir as mkdir5, open as open3, realpath as realpath3, unlink } from "node:fs/promises";
-import { basename as basename6, extname as extname4, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
+import { basename as basename6, extname as extname4, isAbsolute as isAbsolute3, join as join6, relative as relative2 } from "node:path";
 import sharp10 from "sharp";
 
 // packages/tools/rename-contracts.ts
@@ -40332,9 +40445,9 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   const metadata = await image.metadata();
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
     throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
-  const normalized = await image.withMetadata({ density: metadata.density ?? 300 }).png().toBuffer({ resolveWithObject: true });
-  const { width: width2, height: height2 } = normalized.info;
-  const base2 = () => sharp3(normalized.data, { limitInputPixels, failOn: "error" });
+  const normalized2 = await image.withMetadata({ density: metadata.density ?? 300 }).png().toBuffer({ resolveWithObject: true });
+  const { width: width2, height: height2 } = normalized2.info;
+  const base2 = () => sharp3(normalized2.data, { limitInputPixels, failOn: "error" });
   const alpha = await base2().ensureAlpha().extractChannel("alpha").raw().toBuffer();
   const columns = new Uint32Array(width2), rows = new Uint32Array(height2);
   let left = width2, right = -1, top = height2, bottom = -1, count2 = 0, nonzeroCount = 0, transparent = false;
@@ -40382,7 +40495,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   };
   if (count2 && (isolatedBand(columns, left, right, 1) || isolatedBand(columns, right, left, -1) || isolatedBand(rows, top, bottom, 1) || isolatedBand(rows, bottom, top, -1))) issues.push("ISOLATED_EXTENTS");
   if (!bounds || issues.includes("NO_TRANSPARENCY")) return {
-    bytes: normalized.data,
+    bytes: normalized2.data,
     width: width2,
     height: height2,
     report: { version: 1, status: "review", source: { width: width2, height: height2 }, bounds, issues, verified: false, ...thresholdReport }
@@ -40450,7 +40563,7 @@ var import_pdf_lib = __toESM(require_cjs(), 1);
 import sharp6 from "sharp";
 import { Worker as Worker2 } from "node:worker_threads";
 import { existsSync } from "node:fs";
-import { basename as basename3, dirname as dirname6, extname, join as join4 } from "node:path";
+import { basename as basename3, dirname as dirname6, extname, join as join5 } from "node:path";
 import { fileURLToPath } from "node:url";
 
 // packages/tools/outline.ts
@@ -40572,23 +40685,23 @@ function svgPath(contour, origin, sx, sy) {
 }
 async function patternLayer(pattern, path, width2, height2, scalePercent, rotation, signal) {
   signal?.throwIfAborted();
-  const normalized = await sharp5(pattern, { limitInputPixels: 16e6, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+  const normalized2 = await sharp5(pattern, { limitInputPixels: 16e6, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
   signal?.throwIfAborted();
-  if (normalized.info.width > 4096 || normalized.info.height > 4096)
+  if (normalized2.info.width > 4096 || normalized2.info.height > 4096)
     throw new Error("\u56FE\u6848\u8FC7\u5927\uFF1A\u957F\u8FB9\u6700\u591A 4096 px\uFF0C\u603B\u50CF\u7D20\u6700\u591A 1600 \u4E07");
   const radians = rotation * Math.PI / 180;
   const cosine = Math.abs(Math.cos(radians)), sine = Math.abs(Math.sin(radians));
   const imageScale = Math.max(
-    (width2 * cosine + height2 * sine) / normalized.info.width,
-    (width2 * sine + height2 * cosine) / normalized.info.height
+    (width2 * cosine + height2 * sine) / normalized2.info.width,
+    (width2 * sine + height2 * cosine) / normalized2.info.height
   ) * scalePercent / 100;
-  const imageWidth = Math.max(1, Math.round(normalized.info.width * imageScale));
-  const imageHeight = Math.max(1, Math.round(normalized.info.height * imageScale));
+  const imageWidth = Math.max(1, Math.round(normalized2.info.width * imageScale));
+  const imageHeight = Math.max(1, Math.round(normalized2.info.height * imageScale));
   const rotatedWidth = Math.ceil(imageWidth * cosine + imageHeight * sine);
   const rotatedHeight = Math.ceil(imageWidth * sine + imageHeight * cosine);
   if (imageWidth * imageHeight > 4e7 || rotatedWidth * rotatedHeight > 6e7)
     throw new Error("\u56FE\u6848\u7F29\u653E\u540E\u7684\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u964D\u4F4E\u56FE\u6848\u5927\u5C0F");
-  const rotated = await sharp5(normalized.data).resize(imageWidth, imageHeight, { fit: "fill" }).rotate(rotation, { background: "#00000000" }).png().toBuffer({ resolveWithObject: true });
+  const rotated = await sharp5(normalized2.data).resize(imageWidth, imageHeight, { fit: "fill" }).rotate(rotation, { background: "#00000000" }).png().toBuffer({ resolveWithObject: true });
   signal?.throwIfAborted();
   const cropWidth = Math.min(width2, rotated.info.width), cropHeight = Math.min(height2, rotated.info.height);
   const centered = await sharp5(rotated.data).extract({
@@ -40717,8 +40830,8 @@ if (parentPort) parentPort.once("message", (message) => {
 var limitInputPixels2 = 1e8;
 function colorWorkerPath() {
   const here = dirname6(fileURLToPath(import.meta.url));
-  const candidate = basename3(here) === "dist" ? join4(here, "tool-worker.cjs") : join4(here, "../../dist/tool-worker.cjs");
-  return existsSync(candidate) ? candidate : void 0;
+  const candidate2 = basename3(here) === "dist" ? join5(here, "tool-worker.cjs") : join5(here, "../../dist/tool-worker.cjs");
+  return existsSync(candidate2) ? candidate2 : void 0;
 }
 function adjustColors(data, options, signal) {
   signal?.throwIfAborted();
@@ -40998,20 +41111,20 @@ function auditTask(files, generation, plan, receipts = [], failures = []) {
   const steps = [];
   const outputsByStep = /* @__PURE__ */ new Map();
   for (const step of plan ?? []) {
-    const ids2 = step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file2) => file2.group === "reference") : originals).filter((file2) => !step.generationItemIndexes || file2.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file2.generationItemIndex)).map((file2) => file2.originId).filter((id) => !!id);
+    const ids2 = step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file2) => file2.group === "reference") : originals).filter((file2) => !step.generationItemIndexes || file2.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file2.generationItemIndex)).map((file2) => file2.originId).filter((id2) => !!id2);
     const inputs = [...new Set(ids2)];
     const runs = receipts.filter((run) => run.toolName === step.toolName && run.options !== void 0 && canonical(run.options) === canonical(step.options) && run.resultIds.length > 0);
-    const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id) => inputs.includes(id)));
+    const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id2) => inputs.includes(id2)));
     const planDigest = processingStepDigest(step);
     const matchedFailures = failures.filter((failure) => failure.stepId === step.id && failure.planDigest === planDigest && inputs.includes(failure.inputId) && !completed.has(failure.inputId));
     const failedIds = [...new Set(matchedFailures.map((failure) => failure.inputId))];
-    outputsByStep.set(step.id, [...new Set(runs.filter((run) => run.inputIds.some((id) => inputs.includes(id))).flatMap((run) => run.resultIds))]);
+    outputsByStep.set(step.id, [...new Set(runs.filter((run) => run.inputIds.some((id2) => inputs.includes(id2))).flatMap((run) => run.resultIds))]);
     steps.push({
       id: step.id,
       label: step.label,
       required: inputs.length,
       completed: completed.size,
-      missingIds: inputs.filter((id) => !completed.has(id)),
+      missingIds: inputs.filter((id2) => !completed.has(id2)),
       failedIds,
       failures: failedIds.map((inputId) => ({ inputId, code: matchedFailures.find((row) => row.inputId === inputId).code }))
     });
@@ -41098,7 +41211,7 @@ var toolboxToolNames = {
 };
 var createToolboxFrameCache = (maxBytes, maxEntries) => new ImageMemoryCache(maxBytes, maxEntries);
 var limitInputPixels3 = 1e8;
-var stemOf = (name) => basename4(name, extname2(name));
+var stemOf = (name2) => basename4(name2, extname2(name2));
 function bounded(outputs) {
   if (outputs.length > 400 || outputs.reduce((sum, row) => sum + row.bytes.length, 0) > 250 * 1024 * 1024)
     throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
@@ -41124,10 +41237,10 @@ async function renderToolbox(inputs, plan, options) {
     });
     let ppi, frames, final = [], raster = [], sidecars = [];
     let hints = { pendingPattern: false }, transparentCrop;
-    const normalizedKey = `normalize:${imageDigest(Buffer.from(prefix))}`, normalized = cache?.get(normalizedKey);
-    if (normalized) {
+    const normalizedKey = `normalize:${imageDigest(Buffer.from(prefix))}`, normalized2 = cache?.get(normalizedKey);
+    if (normalized2) {
       if (plan.trimTransparent || plan.steps.some((step) => step.tool === "resize" && step.options.trimTransparent)) await options.authorize("resize");
-      ({ ppi, frames, final, raster, sidecars, transparentCrop, hints } = normalized);
+      ({ ppi, frames, final, raster, sidecars, transparentCrop, hints } = normalized2);
     } else {
       const source = sharp8(original.bytes, { limitInputPixels: limitInputPixels3, failOn: "error" }).autoOrient();
       const metadata = await source.metadata();
@@ -41364,12 +41477,12 @@ async function splitGridImages(inputs, raw, signal) {
     const metadata = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
     if (!metadata.width || !metadata.height || (metadata.pages ?? 1) > 1)
       throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
-    const normalized = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+    const normalized2 = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
     const density = metadata.density ?? 300;
     const stem = basename5(input.name, extname3(input.name));
-    for (const frame of gridSplitFrames(normalized.info.width, normalized.info.height, options)) {
+    for (const frame of gridSplitFrames(normalized2.info.width, normalized2.info.height, options)) {
       signal?.throwIfAborted();
-      const bytes = await sharp9(normalized.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).withMetadata({ density }).png().toBuffer();
+      const bytes = await sharp9(normalized2.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).withMetadata({ density }).png().toBuffer();
       outputBytes += bytes.length;
       if (outputBytes > 250 * 1024 * 1024) throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
       outputs.push({
@@ -41441,8 +41554,8 @@ function validateState(value2) {
     const key = `${row.principal}:${row.session}:${row.operationId}`;
     if (operationKeys.has(key)) throw new Error("\u672C\u5730\u64CD\u4F5C\u8BB0\u5F55\u5305\u542B\u91CD\u590D\u7F16\u53F7");
     operationKeys.add(key);
-    for (const id of row.resultIds) {
-      const result = resultsById.get(id);
+    for (const id2 of row.resultIds) {
+      const result = resultsById.get(id2);
       if (!result || result.principal !== row.principal || result.session !== row.session)
         throw new Error("\u672C\u5730\u64CD\u4F5C\u8BB0\u5F55\u5F15\u7528\u4E86\u8D8A\u754C\u7ED3\u679C");
     }
@@ -41466,21 +41579,21 @@ var processingTools = {
   podplo_outline_images: "outline"
 };
 var processingToolNames = Object.freeze(Object.keys(processingTools));
-function normalizedProcessingOptions(name, options) {
-  if (name === TOOLBOX_PIPELINE_NAME) return ToolboxPlanSchema.parse(options);
-  if (name === GRID_SPLIT_OPERATION_NAME) return GridSplitOptionsSchema.parse(options);
-  if (!processingToolNames.includes(name)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
-  if (name === "podplo_resize_images") return ResizeOptionsSchema.parse(options);
-  if (name === "podplo_prepare_print_files") options = withoutPrintSafetyOptions(options);
-  return ToolkitOperationSchema.parse({ tool: processingTools[name], options }).options;
+function normalizedProcessingOptions(name2, options) {
+  if (name2 === TOOLBOX_PIPELINE_NAME) return ToolboxPlanSchema.parse(options);
+  if (name2 === GRID_SPLIT_OPERATION_NAME) return GridSplitOptionsSchema.parse(options);
+  if (!processingToolNames.includes(name2)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
+  if (name2 === "podplo_resize_images") return ResizeOptionsSchema.parse(options);
+  if (name2 === "podplo_prepare_print_files") options = withoutPrintSafetyOptions(options);
+  return ToolkitOperationSchema.parse({ tool: processingTools[name2], options }).options;
 }
 var importInputSchema = external_exports.object({
   name: external_exports.string().trim().min(1).max(255),
   contentType: external_exports.enum(["image/png", "image/jpeg", "image/webp"]),
   base64: external_exports.string().min(4).max(Math.ceil(50 * 1024 * 1024 / 3) * 4 + 4).regex(/^[A-Za-z0-9+/]+={0,2}$/u)
 }).strict();
-function jsonSchema(schema) {
-  const result = external_exports.toJSONSchema(schema, { io: "input" });
+function jsonSchema(schema2) {
+  const result = external_exports.toJSONSchema(schema2, { io: "input" });
   delete result.$schema;
   return result;
 }
@@ -41542,9 +41655,9 @@ var NativeLocalToolkit = class {
   constructor(options) {
     this.options = options;
     if (!isAbsolute3(options.directory)) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
-    this.rootCandidate = join5(options.directory, "local-toolkit-v1");
+    this.rootCandidate = join6(options.directory, "local-toolkit-v1");
     this.store = new AtomicStore(
-      join5(this.rootCandidate, "state.json"),
+      join6(this.rootCandidate, "state.json"),
       () => ({ schemaVersion: 1, results: [], operations: [] }),
       validateState
     );
@@ -41593,20 +41706,20 @@ var NativeLocalToolkit = class {
   isBusy() {
     return this.inflight.size > 0;
   }
-  async callTool(name, raw, sessionId) {
+  async callTool(name2, raw, sessionId) {
     this.ready();
     const session2 = opaqueId.parse(sessionId);
-    if (name === "podplo_selected_image_info") return this.imageInfo(infoArgs.parse(raw), session2);
-    if (name === "podplo_list_local_results") return this.list(session2, listArgs.parse(raw).limit);
-    if (!Object.hasOwn(processingTools, name)) throw new Error(`\u672A\u77E5\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\uFF1A${name}`);
-    if (name === "podplo_resize_images") {
+    if (name2 === "podplo_selected_image_info") return this.imageInfo(infoArgs.parse(raw), session2);
+    if (name2 === "podplo_list_local_results") return this.list(session2, listArgs.parse(raw).limit);
+    if (!Object.hasOwn(processingTools, name2)) throw new Error(`\u672A\u77E5\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\uFF1A${name2}`);
+    if (name2 === "podplo_resize_images") {
       const args2 = resizeArgs.parse(raw);
-      return this.idempotent(name, args2, session2);
+      return this.idempotent(name2, args2, session2);
     }
     const args = operationArgs.parse(raw);
-    const tool = processingTools[name];
+    const tool = processingTools[name2];
     const operation = ToolkitOperationSchema.parse({ tool, options: args.options });
-    return this.idempotent(name, { ...args, options: operation.options }, session2);
+    return this.idempotent(name2, { ...args, options: operation.options }, session2);
   }
   /** UI-only local image admission. Bytes are copied into the protected result store. */
   async importInput(raw, sessionId, expectedIdentity) {
@@ -41681,9 +41794,9 @@ var NativeLocalToolkit = class {
     return { images, files: [] };
   }
   /** UI-only preview generated from the verified result bytes. */
-  async resultPreview(id, sessionId) {
+  async resultPreview(id2, sessionId) {
     this.ready();
-    const identity = await this.identity("read"), row = this.ownedResult(opaqueId.parse(id), identity.principal, sha256(opaqueId.parse(sessionId)));
+    const identity = await this.identity("read"), row = this.ownedResult(opaqueId.parse(id2), identity.principal, sha256(opaqueId.parse(sessionId)));
     if (row.kind !== "image" && row.format !== "png") throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u662F\u53EF\u9884\u89C8\u56FE\u7247");
     const source = await this.readStored(row);
     const key = `${identity.authorization}:${row.session}:${row.id}:${row.fingerprint}:${row.digest}:512:82`, epoch = this.previewCache.revision();
@@ -41694,15 +41807,15 @@ var NativeLocalToolkit = class {
     return { ...publicResult(row), contentType: "image/webp", bytes };
   }
   /** UI-only parameter preview. It never publishes files or records an operation. */
-  async toolPreview(name, raw, sessionId) {
+  async toolPreview(name2, raw, sessionId) {
     this.ready();
-    if (name !== TOOLBOX_PIPELINE_NAME && !processingToolNames.includes(name)) throw new Error("\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177");
+    if (name2 !== TOOLBOX_PIPELINE_NAME && !processingToolNames.includes(name2)) throw new Error("\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177");
     const args = previewArgs.parse(raw), session2 = opaqueId.parse(sessionId), key = sha256(session2);
     this.previewControllers.get(key)?.abort();
     const controller = new AbortController();
     this.previewControllers.set(key, controller);
     const previous = this.previewTails.get(key) ?? Promise.resolve(void 0);
-    const pending = previous.catch(() => void 0).then(() => name === TOOLBOX_PIPELINE_NAME ? this.renderPipelinePreview(args, session2, controller.signal) : this.renderToolPreview(name, args, session2, controller.signal));
+    const pending = previous.catch(() => void 0).then(() => name2 === TOOLBOX_PIPELINE_NAME ? this.renderPipelinePreview(args, session2, controller.signal) : this.renderToolPreview(name2, args, session2, controller.signal));
     this.previewTails.set(key, pending);
     try {
       return await pending;
@@ -41754,8 +41867,8 @@ var NativeLocalToolkit = class {
       cache: this.frameCache,
       cacheScope: `${identity.authorization}:${sha256(sessionId)}`,
       authorize: (tool) => this.assertIdentity(identity, "process", toolboxToolNames[tool]),
-      pattern: async (id) => {
-        const [input] = await this.resolveInputs([id], identity, sessionId, sha256(sessionId), "process", "podplo_outline_images");
+      pattern: async (id2) => {
+        const [input] = await this.resolveInputs([id2], identity, sessionId, sha256(sessionId), "process", "podplo_outline_images");
         if (input.kind === "file") throw new Error("\u56FE\u6848\u9700\u8981\u9009\u62E9\u56FE\u7247");
         return input.bytes;
       }
@@ -41814,15 +41927,15 @@ var NativeLocalToolkit = class {
     const sourceMetadata = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
     if (!sourceMetadata.width || !sourceMetadata.height || sourceMetadata.pages && sourceMetadata.pages > 1)
       throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
-    const normalized = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+    const normalized2 = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
     const stem = basename6(input.name, extname4(input.name)), images = [];
-    for (const frame of gridSplitFrames(normalized.info.width, normalized.info.height, args.options)) {
+    for (const frame of gridSplitFrames(normalized2.info.width, normalized2.info.height, args.options)) {
       signal.throwIfAborted();
-      const bytes = await sharp10(normalized.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).resize(320, 320, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
-      const name = safeOutputName(`${stem}-\u5206\u5272-${frame.row + 1}-${frame.col + 1}`, "png");
+      const bytes = await sharp10(normalized2.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).resize(320, 320, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
+      const name2 = safeOutputName(`${stem}-\u5206\u5272-${frame.row + 1}-${frame.col + 1}`, "png");
       images.push({ ...await this.previewImage(
         "effect",
-        name,
+        name2,
         bytes,
         frame.width,
         frame.height,
@@ -41836,20 +41949,20 @@ var NativeLocalToolkit = class {
     return { toolName: GRID_SPLIT_OPERATION_NAME, images, files: [], generatedNames: images.map((row) => row.name) };
   }
   /** Host/UI download seam. The caller still receives no filesystem path. */
-  async readResult(id, sessionId, purpose = "read") {
+  async readResult(id2, sessionId, purpose = "read") {
     this.ready();
-    const identity = await this.identity(purpose), row = this.ownedResult(opaqueId.parse(id), identity.principal, sha256(opaqueId.parse(sessionId)));
+    const identity = await this.identity(purpose), row = this.ownedResult(opaqueId.parse(id2), identity.principal, sha256(opaqueId.parse(sessionId)));
     const bytes = await this.readStored(row);
     await this.assertIdentity(identity, purpose);
     return { ...publicResult(row), contentType: mediaType(row.format), bytes };
   }
   /** Host-only processing seam for bytes already saved and verified by TaskArchiveManager. */
-  async processArchived(name, raw, sessionId, trustedInputs) {
+  async processArchived(name2, raw, sessionId, trustedInputs) {
     this.ready();
-    if (name !== TOOLBOX_PIPELINE_NAME && !processingToolNames.includes(name)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
+    if (name2 !== TOOLBOX_PIPELINE_NAME && !processingToolNames.includes(name2)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
     const session2 = opaqueId.parse(sessionId);
-    const args = name === "podplo_resize_images" ? resizeArgs.parse(raw) : operationArgs.parse(raw);
-    const options = normalizedProcessingOptions(name, args.options);
+    const args = name2 === "podplo_resize_images" ? resizeArgs.parse(raw) : operationArgs.parse(raw);
+    const options = normalizedProcessingOptions(name2, args.options);
     if (trustedInputs.length !== args.ids.length) throw new Error("\u5F52\u6863\u52A0\u5DE5\u8F93\u5165\u6570\u91CF\u4E0D\u4E00\u81F4");
     let total = 0;
     const inputs = trustedInputs.map((input, index) => {
@@ -41859,7 +41972,7 @@ var NativeLocalToolkit = class {
       if (total > 250 * 1024 * 1024) throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
       return { id: input.id, name: basename6(input.name), bytes: Buffer.from(input.bytes), kind: input.kind };
     });
-    return this.idempotentResolved(name, { operationId: args.operationId, ids: args.ids, options }, session2, inputs);
+    return this.idempotentResolved(name2, { operationId: args.operationId, ids: args.ids, options }, session2, inputs);
   }
   /** Host-only ownership index, including imported inputs; no files or paths are exposed. */
   async referenceOwnership(sessionId) {
@@ -41883,14 +41996,14 @@ var NativeLocalToolkit = class {
       toolName: row.toolName ?? "podplo_export_images",
       project: row.archiveProject,
       options: row.options,
-      results: row.resultIds.map((id) => publicResult(state.results.find((result) => result.id === id)))
+      results: row.resultIds.map((id2) => publicResult(state.results.find((result) => result.id === id2)))
     }));
     await this.assertIdentity(identity, "read");
     return { ownerId: identity.ownerId, items };
   }
-  async archiveInput(id, sessionId) {
+  async archiveInput(id2, sessionId) {
     const identity = await this.identity("read");
-    const [input] = await this.resolveInputs([opaqueId.parse(id)], identity, opaqueId.parse(sessionId), sha256(sessionId), "read");
+    const [input] = await this.resolveInputs([opaqueId.parse(id2)], identity, opaqueId.parse(sessionId), sha256(sessionId), "read");
     await this.assertIdentity(identity, "read");
     return input;
   }
@@ -41914,18 +42027,18 @@ var NativeLocalToolkit = class {
     const actual = await this.identity(purpose, toolName);
     if (actual.authorization !== expected.authorization) throw new Error("\u5F53\u524D\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u672C\u6B21\u7ED3\u679C\u4E0D\u4F1A\u63D0\u4F9B\u7ED9\u65B0\u767B\u5F55\u6001");
   }
-  async renderToolPreview(name, args, sessionId, signal) {
+  async renderToolPreview(name2, args, sessionId, signal) {
     signal.throwIfAborted();
-    const identity = await this.identity("process", name), sessionHash = sha256(sessionId);
+    const identity = await this.identity("process", name2), sessionHash = sha256(sessionId);
     signal.throwIfAborted();
-    const tool = processingTools[name];
+    const tool = processingTools[name2];
     if (tool === "resize") ResizeOptionsSchema.parse(args.options);
     else if (tool === "outline") OutlineSettingsSchema.parse(args.options);
     else ToolkitOperationSchema.parse({ tool, options: tool === "print-bleed" ? withoutPrintSafetyOptions(args.options) : args.options });
     const requestedIds = [args.ids[0]];
-    const inputs = await this.resolveInputs(requestedIds, identity, sessionId, sessionHash, "process", name);
+    const inputs = await this.resolveInputs(requestedIds, identity, sessionId, sessionHash, "process", name2);
     signal.throwIfAborted();
-    await this.assertIdentity(identity, "process", name);
+    await this.assertIdentity(identity, "process", name2);
     const input = inputs[0];
     if (input.kind === "file") throw new Error("\u8BE5\u5DE5\u5177\u53EA\u63A5\u53D7\u56FE\u7247\uFF0C\u8BF7\u9009\u62E9\u56FE\u7247 ID");
     await this.assertStaticPreviewImage(input, signal);
@@ -41934,7 +42047,7 @@ var NativeLocalToolkit = class {
       await this.assertTransparentForOutline([input]);
       let pattern;
       if (options.patternId) {
-        const [resolved] = await this.resolveInputs([options.patternId], identity, sessionId, sessionHash, "process", name);
+        const [resolved] = await this.resolveInputs([options.patternId], identity, sessionId, sessionHash, "process", name2);
         if (resolved.kind === "file") throw new Error("\u56FE\u6848\u9700\u8981\u9009\u62E9\u56FE\u7247");
         pattern = resolved.bytes;
       }
@@ -41963,9 +42076,9 @@ var NativeLocalToolkit = class {
         signal,
         `${identity.authorization}:${sessionHash}`
       ));
-      await this.assertIdentity(identity, "process", name);
+      await this.assertIdentity(identity, "process", name2);
       return {
-        toolName: name,
+        toolName: name2,
         images: images2,
         files: [],
         generatedNames: images2.map((row) => row.name),
@@ -42029,8 +42142,8 @@ var NativeLocalToolkit = class {
         `${identity.authorization}:${sessionHash}`
       )];
       const files2 = [];
-      await this.assertIdentity(identity, "process", name);
-      return { toolName: name, images: images2, files: files2, generatedNames: [...images2.map((row) => row.name), ...files2.map((row) => row.name)] };
+      await this.assertIdentity(identity, "process", name2);
+      return { toolName: name2, images: images2, files: files2, generatedNames: [...images2.map((row) => row.name), ...files2.map((row) => row.name)] };
     } else {
       const operation = ToolkitOperationSchema.parse({ tool, options: args.options });
       if (operation.tool === "export" && operation.options.format === "pdf") {
@@ -42048,8 +42161,8 @@ var NativeLocalToolkit = class {
           `${identity.authorization}:${sessionHash}`
         );
         const file2 = { name: image.name, format: "pdf", summary: `${widthPt.toFixed(1)} \xD7 ${heightPt.toFixed(1)} pt \xB7 ${operation.options.ppi} PPI` };
-        await this.assertIdentity(identity, "process", name);
-        return { toolName: name, images: [{ ...image, name: basename6(input.name) }], files: [file2], generatedNames: [file2.name] };
+        await this.assertIdentity(identity, "process", name2);
+        return { toolName: name2, images: [{ ...image, name: basename6(input.name) }], files: [file2], generatedNames: [file2.name] };
       }
       if (operation.tool === "rotate-flip") {
         const angle = (operation.options.angle % 360 + 360) % 360;
@@ -42079,8 +42192,8 @@ var NativeLocalToolkit = class {
       `${identity.authorization}:${sessionHash}`
     ));
     const files = outputs.filter((row) => row.kind === "file").map((row) => ({ name: safeOutputName(row.stem, row.extension), format: row.format }));
-    await this.assertIdentity(identity, "process", name);
-    return { ...resizeSource ? { resizeSource } : {}, ...transparentCrop ? { transparentCrop } : {}, toolName: name, images, files, generatedNames: [...images.map((row) => row.name), ...files.map((row) => row.name)] };
+    await this.assertIdentity(identity, "process", name2);
+    return { ...resizeSource ? { resizeSource } : {}, ...transparentCrop ? { transparentCrop } : {}, toolName: name2, images, files, generatedNames: [...images.map((row) => row.name), ...files.map((row) => row.name)] };
   }
   async boundedPreviewInput(input, signal) {
     signal.throwIfAborted();
@@ -42103,7 +42216,7 @@ var NativeLocalToolkit = class {
       height: Math.max(1, Math.min(target.height, Math.round(source.height * scale)))
     };
   }
-  async previewImage(key, name, source, width2, height2, format2, density, signal, scope = "") {
+  async previewImage(key, name2, source, width2, height2, format2, density, signal, scope = "") {
     signal.throwIfAborted();
     const cacheKey = `${scope}:${imageDigest(source)}:700:84`, epoch = this.previewCache.revision();
     const cached2 = scope ? this.previewCache.get(cacheKey) : void 0;
@@ -42112,7 +42225,7 @@ var NativeLocalToolkit = class {
     if (scope && !cached2) this.previewCache.set(cacheKey, bytes, epoch);
     return {
       key,
-      name,
+      name: name2,
       dataUrl: `data:image/webp;base64,${bytes.toString("base64")}`,
       width: width2,
       height: height2,
@@ -42120,16 +42233,16 @@ var NativeLocalToolkit = class {
       ...density ? { density } : {}
     };
   }
-  async idempotent(name, args, session2) {
-    const identity = await this.identity("process", name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : name), sessionHash = sha256(session2);
-    const digest = sha256(canonical2({ name, ids: args.ids, options: args.options }));
+  async idempotent(name2, args, session2) {
+    const identity = await this.identity("process", name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME ? void 0 : name2), sessionHash = sha256(session2);
+    const digest = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
     const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
       if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise2 = this.execute(name, args, session2, sessionHash, identity, digest);
+    const promise2 = this.execute(name2, args, session2, sessionHash, identity, digest);
     this.inflight.set(key, { digest, promise: promise2 });
     try {
       return await promise2;
@@ -42137,16 +42250,16 @@ var NativeLocalToolkit = class {
       this.inflight.delete(key);
     }
   }
-  async idempotentResolved(name, args, session2, inputs) {
-    const identity = await this.identity("process", name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : name), sessionHash = sha256(session2);
-    const digest = sha256(canonical2({ name, ids: args.ids, options: args.options }));
+  async idempotentResolved(name2, args, session2, inputs) {
+    const identity = await this.identity("process", name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME ? void 0 : name2), sessionHash = sha256(session2);
+    const digest = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
     const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
       if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise2 = this.execute(name, args, session2, sessionHash, identity, digest, inputs);
+    const promise2 = this.execute(name2, args, session2, sessionHash, identity, digest, inputs);
     this.inflight.set(key, { digest, promise: promise2 });
     try {
       return await promise2;
@@ -42154,17 +42267,17 @@ var NativeLocalToolkit = class {
       this.inflight.delete(key);
     }
   }
-  async execute(name, args, sessionId, sessionHash, identity, digest, archivedInputs) {
-    const authName = name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : name;
+  async execute(name2, args, sessionId, sessionHash, identity, digest, archivedInputs) {
+    const authName = name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME ? void 0 : name2;
     const existing = this.store.snapshot().operations.find((row) => row.principal === identity.principal && row.session === sessionHash && row.operationId === args.operationId);
     if (existing) {
-      if (name === TOOLBOX_PIPELINE_NAME) {
+      if (name2 === TOOLBOX_PIPELINE_NAME) {
         const plan = ToolboxPlanSchema.parse(args.options);
         if (plan.trimTransparent) await this.assertIdentity(identity, "process", "podplo_resize_images");
         for (const step of plan.steps) await this.assertIdentity(identity, "process", toolboxToolNames[step.tool]);
       }
       if (existing.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
-      const rows = existing.resultIds.map((id) => this.ownedResult(id, identity.principal, sessionHash));
+      const rows = existing.resultIds.map((id2) => this.ownedResult(id2, identity.principal, sessionHash));
       for (const row of rows) await this.readStored(row);
       await this.assertIdentity(identity, "process", authName);
       return this.processingReply(args.operationId, rows, true);
@@ -42172,12 +42285,12 @@ var NativeLocalToolkit = class {
     const inputs = archivedInputs ?? await this.resolveInputs(args.ids, identity, sessionId, sessionHash, "process", authName);
     await this.assertIdentity(identity, "process", authName);
     let rendered;
-    const tool = name === TOOLBOX_PIPELINE_NAME || name === GRID_SPLIT_OPERATION_NAME ? void 0 : processingTools[name];
+    const tool = name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME ? void 0 : processingTools[name2];
     let outputs;
-    if (name === TOOLBOX_PIPELINE_NAME) {
+    if (name2 === TOOLBOX_PIPELINE_NAME) {
       rendered = await this.renderPipeline(inputs, ToolboxPlanSchema.parse(args.options), sessionId, identity);
       outputs = rendered.outputs;
-    } else if (name === GRID_SPLIT_OPERATION_NAME) outputs = await splitGridImages(inputs, GridSplitOptionsSchema.parse(args.options));
+    } else if (name2 === GRID_SPLIT_OPERATION_NAME) outputs = await splitGridImages(inputs, GridSplitOptionsSchema.parse(args.options));
     else if (tool === "resize") outputs = await this.resize(inputs, args.options);
     else {
       const operation = ToolkitOperationSchema.parse({ tool, options: args.options });
@@ -42218,9 +42331,9 @@ var NativeLocalToolkit = class {
           completedAt: this.timestamp(),
           nativeSessionId: sessionId,
           inputIds: args.ids,
-          toolName: name,
+          toolName: name2,
           archiveProject: this.options.archiveProject?.(sessionId),
-          options: normalizedProcessingOptions(name, args.options)
+          options: normalizedProcessingOptions(name2, args.options)
         });
       });
       try {
@@ -42253,17 +42366,17 @@ var NativeLocalToolkit = class {
   async resolveInputs(ids2, identity, sessionId, sessionHash, purpose, toolName) {
     const inputs = [];
     let total = 0;
-    for (const id of ids2) {
-      const known = this.store.snapshot().results.find((row) => row.id === id);
+    for (const id2 of ids2) {
+      const known = this.store.snapshot().results.find((row) => row.id === id2);
       let input;
       if (known) {
         if (known.principal !== identity.principal || known.session !== sessionHash) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
-        input = { id, name: known.name, kind: known.kind, bytes: await this.readStored(known) };
+        input = { id: id2, name: known.name, kind: known.kind, bytes: await this.readStored(known) };
       } else {
-        const resolved = await this.options.resolveInput(identity.ownerId, sessionId, id);
+        const resolved = await this.options.resolveInput(identity.ownerId, sessionId, id2);
         await this.assertIdentity(identity, purpose, toolName);
-        if (!resolved || resolved.id !== id || !Buffer.isBuffer(resolved.bytes)) throw new Error("\u539F\u751F\u9644\u4EF6\u89E3\u6790\u7ED3\u679C\u65E0\u6548");
-        input = { id, name: basename6(external_exports.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
+        if (!resolved || resolved.id !== id2 || !Buffer.isBuffer(resolved.bytes)) throw new Error("\u539F\u751F\u9644\u4EF6\u89E3\u6790\u7ED3\u679C\u65E0\u6548");
+        input = { id: id2, name: basename6(external_exports.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
       }
       if (!input.bytes.length || input.bytes.length > 50 * 1024 * 1024) throw new Error("\u5355\u6587\u4EF6\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB");
       total += input.bytes.length;
@@ -42335,12 +42448,12 @@ var NativeLocalToolkit = class {
   async publish(output, principal, session2) {
     const extension = output.extension.toLowerCase();
     if (!/^(?:png|jpe?g|webp|pdf|zip|json)$/u.test(extension)) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u4EA7\u751F\u4E86\u4E0D\u53D7\u652F\u6301\u7684\u6587\u4EF6\u7C7B\u578B");
-    const id = this.options.id?.() ?? randomUUID8();
-    external_exports.string().uuid().parse(id);
+    const id2 = this.options.id?.() ?? randomUUID9();
+    external_exports.string().uuid().parse(id2);
     const parts = ["results", principal, session2];
-    const relativeFile = `${parts.join("/")}/${id}.${extension}`;
+    const relativeFile = `${parts.join("/")}/${id2}.${extension}`;
     const directory = await this.ensureDirectory(parts);
-    const path = join5(directory, `${id}.${extension}`);
+    const path = join6(directory, `${id2}.${extension}`);
     const handle = await open3(path, constants2.O_WRONLY | constants2.O_CREAT | constants2.O_EXCL | constants2.O_NOFOLLOW, 384);
     let fingerprint2 = "";
     try {
@@ -42357,7 +42470,7 @@ var NativeLocalToolkit = class {
       throw new Error("\u672C\u5730\u7ED3\u679C\u76EE\u5F55\u5DF2\u88AB\u66FF\u6362");
     }
     return {
-      id,
+      id: id2,
       name: safeOutputName(output.stem, extension),
       kind: output.kind,
       width: output.width,
@@ -42378,7 +42491,7 @@ var NativeLocalToolkit = class {
     let current = this.root;
     for (const part of parts) {
       if (!/^[a-f0-9]{64}$/u.test(part) && part !== "results" && part !== "\u5F85\u590D\u6838") throw new Error("\u672C\u5730\u7ED3\u679C\u76EE\u5F55\u6807\u8BC6\u65E0\u6548");
-      current = join5(current, part);
+      current = join6(current, part);
       await mkdir5(current, { recursive: true, mode: 448 });
       const stat = await lstat2(current);
       if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error("\u672C\u5730\u7ED3\u679C\u76EE\u5F55\u5DF2\u88AB\u66FF\u6362");
@@ -42389,7 +42502,7 @@ var NativeLocalToolkit = class {
     return current;
   }
   absoluteFile(row) {
-    return join5(this.root, ...row.relativeFile.split("/"));
+    return join6(this.root, ...row.relativeFile.split("/"));
   }
   async readStored(row) {
     const path = this.absoluteFile(row);
@@ -42411,8 +42524,8 @@ var NativeLocalToolkit = class {
       await handle.close();
     }
   }
-  ownedResult(id, principal, session2) {
-    const row = this.store.snapshot().results.find((item) => item.id === id);
+  ownedResult(id2, principal, session2) {
+    const row = this.store.snapshot().results.find((item) => item.id === id2);
     if (!row || row.principal !== principal || row.session !== session2) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
     return row;
   }
@@ -42469,6 +42582,7 @@ EXECUTE WHEN CLEAR: When the image range, one uniquely matching Skill, and any r
 
 LOCAL FOLDERS: Use podplo_prepare_skill_batch for user-supplied folders. Set skillSource="personal" for \u6211\u7684 Skill. Pass an exact processingPresetPath with processingPlan=[] so the Host reads the preset. Do not read/rewrite preset JSON, list folders, inspect individual images, invent IDs or reimplement the pipeline. Put multiple folder/Skill/preset groups in one batch so the complete task is quoted once. Additional instructions are optional: omit them or pass "" when the Skill already defines the task; never invent content to fill the field.
 
+FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For folder batches set skillSource="favorite" and skillFolder when given. Conflicting exact matches require one clarification.
 OTHER INPUTS: For non-folder work, resolve the exact PodPlo Skill and reuse returned bindings, capabilities, explicit defaults and session image IDs. Call podplo_prepare_generation once for the complete requested batch. Every item keeps its selected skillId. Register only the requested processingPlan; use [] when no processing was requested. Do not scan private storage.
 
 APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs generation, download and registered local processing. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
@@ -42478,7 +42592,7 @@ var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\u
 
 \u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u552F\u4E00\u5339\u914D Skill \u53CA\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u6587\u4EF6\u5939\u6279\u91CF\u7528 podplo_prepare_skill_batch\uFF1B\u6211\u7684 Skill \u7528 skillSource=personal\uFF1B\u591A\u6587\u4EF6\u5939\u7528 groups \u4E00\u6B21\u6574\u6279\u62A5\u4EF7\uFF1B\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[] \u7531\u5BBF\u4E3B\u8BFB\u53D6\u3002\u975E\u6587\u4EF6\u5939\u4EFB\u52A1\u7684 podplo_prepare_generation \u6BCF\u9879\u5FC5\u987B\u4FDD\u7559\u6240\u9009 skillId\uFF0C\u4E00\u6B21\u63D0\u4EA4\u5B8C\u6574\u8303\u56F4\uFF0C\u53EA\u767B\u8BB0\u7528\u6237\u6307\u5B9A\u7684 processingPlan\uFF0C\u65E0\u52A0\u5DE5\u4E3A []\u3002\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u81EA\u52A8\u5B8C\u6210\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4F7F\u7528\u539F slug \u83B7\u53D6\u7ED1\u5B9A\uFF1B\u6587\u4EF6\u5939\u6279\u91CF\u53EF\u8BBE skillSource=favorite \u548C skillFolder\u3002\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u6587\u4EF6\u5939\u6279\u91CF\u7528 podplo_prepare_skill_batch\uFF1B\u6211\u7684 Skill \u7528 skillSource=personal\uFF1B\u591A\u6587\u4EF6\u5939\u7528 groups \u4E00\u6B21\u6574\u6279\u62A5\u4EF7\uFF1B\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[] \u7531\u5BBF\u4E3B\u8BFB\u53D6\u3002\u975E\u6587\u4EF6\u5939\u4EFB\u52A1\u7684 podplo_prepare_generation \u6BCF\u9879\u5FC5\u987B\u4FDD\u7559\u6240\u9009 skillId\uFF0C\u4E00\u6B21\u63D0\u4EA4\u5B8C\u6574\u8303\u56F4\uFF0C\u53EA\u767B\u8BB0\u7528\u6237\u6307\u5B9A\u7684 processingPlan\uFF0C\u65E0\u52A0\u5DE5\u4E3A []\u3002\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u81EA\u52A8\u5B8C\u6210\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
 Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill or the lookup needed to resolve it; the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
@@ -42514,6 +42628,7 @@ var personalSkillInputSchema = {
   }
 };
 var TOOL_DEFINITIONS = [
+  { name: "podplo_list_favorite_skills", description: "Read the signed-in user's favorite Skills, private remarks and folders. query matches an exact remark, original title or immutable slug; folder restricts to one exact favorite folder name or \u672A\u5206\u7C7B. Only one unique match may be used for generation; conflicting matches require clarification. Reuse the returned slug with podplo_get_skill for the current execution binding. A remark never changes the original Skill.", inputSchema: objectSchema({ query: { type: "string", minLength: 1, maxLength: 160 }, folder: { type: "string", minLength: 1, maxLength: 80 } }) },
   { name: "podplo_set_processing_plan", description: "\u4EC5\u767B\u8BB0\u7528\u6237\u5DF2\u660E\u786E\u6307\u5B9A\u7684 PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u53CA\u5176\u987A\u5E8F\uFF0C\u7528\u4E8E\u539F\u4EFB\u52A1\u6570\u91CF\u6838\u5BF9\u548C\u7EE7\u7EED\u5904\u7406\u3002\u4E0D\u8FFD\u52A0\u3001\u6539\u5199\u6216\u91CD\u6392\u6B65\u9AA4\uFF1B\u6CA1\u6709\u52A0\u5DE5\u8981\u6C42\u5FC5\u987B\u4F20\u7A7A\u6570\u7EC4\u3002\u4EC5\u66F4\u65B0\u5F53\u524D\u4F1A\u8BDD\u5DF2\u6709\u4EFB\u52A1\u7684\u672C\u5730\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u62A5\u4EF7\u6216\u751F\u56FE\uFF1B\u4E0D\u8981\u6839\u636E\u672A\u77E5\u5386\u53F2\u731C\u6D4B\u3002", inputSchema: objectSchema({ operationId: stringSchema, processingPlan: processingPlanSchema }, ["operationId", "processingPlan"]) },
   { name: "podplo_snapshot", description: "Read the safe PodPlo account and connection state.", inputSchema: objectSchema({}) },
   { name: "podplo_list_skills", description: "Search the public PodPlo executable Skill directory. Resolve one unique exact slug/title match without asking the user again; ask one consolidated question only for real duplicate, missing or conflicting Skill identity. Returns compact candidates plus catalog version and completeness; use podplo_get_skill or podplo_get_skill_family only for the selected candidate.", inputSchema: objectSchema({ query: stringSchema }) },
@@ -42544,6 +42659,7 @@ function podploAgentToolDefinitions() {
   return structuredClone(TOOL_DEFINITIONS);
 }
 var MCP_ACTIONS = {
+  podplo_list_favorite_skills: "favorites.skills.list",
   podplo_snapshot: "snapshot",
   podplo_list_skills: "skills.list",
   podplo_get_skill: "skills.detail",
@@ -42631,9 +42747,10 @@ var PodploPluginService = class extends EventEmitter2 {
   constructor(options) {
     super();
     this.options = options;
-    this.online = options.online ?? new OnlineService(join6(options.directory, "online"), options.cipher, options.openBrowser, options.http);
-    this.workbench = options.workbench ?? new DesktopWorkbench(join6(options.directory, "workbench.json"));
-    this.store = new AtomicStore(join6(options.directory, "plugin-state.json"), () => ({ schemaVersion: 3, operations: [], confirmations: [], sessionStops: [], favoriteMigrations: [] }), (value2) => {
+    this.online = options.online ?? new OnlineService(join7(options.directory, "online"), options.cipher, options.openBrowser, options.http);
+    this.favoriteOrganization = new LocalFavoriteOrganization(options.directory);
+    this.workbench = options.workbench ?? new DesktopWorkbench(join7(options.directory, "workbench.json"));
+    this.store = new AtomicStore(join7(options.directory, "plugin-state.json"), () => ({ schemaVersion: 3, operations: [], confirmations: [], sessionStops: [], favoriteMigrations: [] }), (value2) => {
       const state = value2;
       if (state?.schemaVersion !== 3 || !Array.isArray(state.operations) || !Array.isArray(state.confirmations) || !Array.isArray(state.sessionStops) || state.operations.some((row) => !Array.isArray(row.items) || typeof row.nativeSessionId !== "string" || !row.nativeSessionId)) throw new Error("PodPlo \u63D2\u4EF6\u8BB0\u5F55\u683C\u5F0F\u65E0\u6548");
       state.favoriteMigrations ??= [];
@@ -42641,12 +42758,13 @@ var PodploPluginService = class extends EventEmitter2 {
       return state;
     });
     this.now = options.now ?? (() => /* @__PURE__ */ new Date());
-    this.createId = options.id ?? randomUUID9;
+    this.createId = options.id ?? randomUUID10;
   }
   options;
   online;
   workbench;
   store;
+  favoriteOrganization;
   now;
   createId;
   gallery = /* @__PURE__ */ new Map();
@@ -42669,6 +42787,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (this.initialized) return;
     if (this.closed) throw new PodploPluginError("SERVICE_CLOSED", "\u670D\u52A1\u5DF2\u5173\u95ED");
     await this.store.load();
+    await this.favoriteOrganization.init();
     for (const stop of this.store.snapshot().sessionStops) {
       this.sessionStopEpochs.set(stop.nativeSessionId, Math.max(this.sessionStopEpochs.get(stop.nativeSessionId) ?? 0, stop.epoch));
     }
@@ -42697,6 +42816,7 @@ var PodploPluginService = class extends EventEmitter2 {
     await Promise.allSettled([...this.accountRefreshJobs.values()].map((state) => state.job));
     await Promise.allSettled(this.favoriteMigrationJobs.values());
     await Promise.allSettled(this.favoriteWriteJobs.values());
+    await this.favoriteOrganization.flush();
     this.online.close();
     await this.workbench.close();
     await this.store.flush();
@@ -42738,7 +42858,7 @@ var PodploPluginService = class extends EventEmitter2 {
       })),
       referenceIds: [...new Set(row.items.flatMap((item) => {
         const ids2 = item.quote.parameters?.referenceAssetIds ?? item.args.referenceAssetIds;
-        return Array.isArray(ids2) ? ids2.filter((id) => typeof id === "string") : [];
+        return Array.isArray(ids2) ? ids2.filter((id2) => typeof id2 === "string") : [];
       }))],
       resultIds: [...new Set(row.items.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []))],
       resultItemIndexes: Object.fromEntries(row.items.flatMap((item, index) => item.outputs?.flatMap((output) => output.assetId ? [[output.assetId, index]] : []) ?? [])),
@@ -42827,10 +42947,10 @@ var PodploPluginService = class extends EventEmitter2 {
   toolDefinitions() {
     return podploAgentToolDefinitions();
   }
-  async callTool(name, args, sessionId) {
-    const action = MCP_ACTIONS[name];
-    if (!action) throw new PodploPluginError("METHOD_NOT_FOUND", `\u672A\u77E5 PodPlo \u5DE5\u5177\uFF1A${name}`);
-    if (name === "podplo_prepare_generation" && (!args || typeof args !== "object" || Array.isArray(args) || !("expectedOutputCount" in args))) {
+  async callTool(name2, args, sessionId) {
+    const action = MCP_ACTIONS[name2];
+    if (!action) throw new PodploPluginError("METHOD_NOT_FOUND", `\u672A\u77E5 PodPlo \u5DE5\u5177\uFF1A${name2}`);
+    if (name2 === "podplo_prepare_generation" && (!args || typeof args !== "object" || Array.isArray(args) || !("expectedOutputCount" in args))) {
       throw new PodploPluginError("INVALID_ARGUMENT", "expectedOutputCount \u5FC5\u987B\u662F\u7528\u6237\u672C\u8F6E\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684\u56FE\u7247\u603B\u6570\uFF081-10000\uFF09");
     }
     return (await this.dispatch(action, args, { source: "agent", sessionId })).data;
@@ -42921,6 +43041,28 @@ var PodploPluginService = class extends EventEmitter2 {
         break;
       case "favorites.list":
         data = await this.favoritesList(input);
+        break;
+      case "favorites.skills.list":
+        data = await this.favoriteSkillsList(input);
+        break;
+      case "favorites.folders.list":
+        data = await this.favoriteFoldersList();
+        break;
+      case "favorites.folders.create":
+        this.requireUi(caller);
+        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.create(owner, text2(input.name, "\u6587\u4EF6\u5939\u540D\u79F0", 80), guard));
+        break;
+      case "favorites.folders.rename":
+        this.requireUi(caller);
+        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.rename(owner, text2(input.id, "\u6587\u4EF6\u5939 ID", 180), text2(input.name, "\u6587\u4EF6\u5939\u540D\u79F0", 80), guard));
+        break;
+      case "favorites.folders.delete":
+        this.requireUi(caller);
+        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.delete(owner, text2(input.id, "\u6587\u4EF6\u5939 ID", 180), guard));
+        break;
+      case "favorites.skill.update":
+        this.requireUi(caller);
+        data = await this.favoriteWrite((owner, guard) => this.updateFavoriteSkill(owner, input, guard));
         break;
       case "favorites.migrate":
         this.requireUi(caller);
@@ -43073,12 +43215,12 @@ var PodploPluginService = class extends EventEmitter2 {
     return caller.source === "ui" ? page : structuredClone(page);
   }
   async galleryDetail(input, _caller) {
-    const id = text2(input.id, "id", 180);
-    let item = this.gallery.get(id);
+    const id2 = text2(input.id, "id", 180);
+    let item = this.gallery.get(id2);
     if (!item) {
-      const page = await this.online.elements(id, "");
+      const page = await this.online.elements(id2, "");
       for (const row of page.items) this.gallery.set(row.id, row);
-      item = this.gallery.get(id);
+      item = this.gallery.get(id2);
     }
     if (!item) throw new PodploPluginError("GALLERY_ITEM_NOT_FOUND", "\u56FE\u5E93\u9879\u4E0D\u5B58\u5728");
     return structuredClone(item);
@@ -43194,7 +43336,7 @@ var PodploPluginService = class extends EventEmitter2 {
         code: "FAVORITES_WRITE_SCOPE_REQUIRED",
         retryable: false
       };
-      const candidates = existing ? existing.results.filter((row) => row.status === "rejected").map(({ type, id }) => ({ type, id })) : this.migrationCandidates(ownerId);
+      const candidates = existing ? existing.results.filter((row) => row.status === "rejected").map(({ type, id: id2 }) => ({ type, id: id2 })) : this.migrationCandidates(ownerId);
       if (!candidates.length) {
         if (!existing) await this.saveFavoriteMigration({ ownerId, status: "completed", results: [], updatedAt: this.now().toISOString() });
         return this.favoriteMigrationStatus(ownerId);
@@ -43266,7 +43408,95 @@ var PodploPluginService = class extends EventEmitter2 {
         height: null
       });
     }
-    return { ...page, migration };
+    return { ...page, items: this.favoriteOrganization.decorate(ownerId, page.items), migration };
+  }
+  async favoriteWrite(write) {
+    const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
+    const check2 = async () => {
+      await this.assertOwner(ownerId, false);
+      if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+    };
+    const previous = this.favoriteWriteJobs.get(ownerId) ?? Promise.resolve();
+    const task = previous.catch(() => void 0).then(async () => {
+      await check2();
+      const result = await write(ownerId, () => {
+        if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+      });
+      await check2();
+      this.publish();
+      return result;
+    });
+    this.favoriteWriteJobs.set(ownerId, task);
+    try {
+      return await task;
+    } finally {
+      if (this.favoriteWriteJobs.get(ownerId) === task) this.favoriteWriteJobs.delete(ownerId);
+    }
+  }
+  async favoriteFoldersList() {
+    const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
+    const result = this.favoriteOrganization.folders(ownerId);
+    await this.assertOwner(ownerId, false);
+    if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+    return result;
+  }
+  async updateFavoriteSkill(ownerId, input, guard) {
+    const parsed = LocalFavoriteUpdateSchema.safeParse(input);
+    if (!parsed.success) throw new PodploPluginError("INVALID_ARGUMENT", "\u6536\u85CF\u5907\u6CE8\u6216\u6587\u4EF6\u5939\u53C2\u6570\u65E0\u6548\u3002");
+    const rows = await this.allFavoriteSkills();
+    await this.assertOwner(ownerId, false);
+    guard();
+    const item = rows.find((row) => row.id === parsed.data.id);
+    if (!item) throw new PodploPluginError("FAVORITE_NOT_FOUND", "\u5F53\u524D\u6536\u85CF\u4E2D\u6CA1\u6709\u8BE5 Skill\u3002");
+    const metadata = await this.favoriteOrganization.update(ownerId, parsed.data, guard);
+    return { item: { ...item, note: metadata.note, folderId: metadata.folderId } };
+  }
+  async allFavoriteSkills() {
+    const rows = [], cursors = /* @__PURE__ */ new Set();
+    let cursor;
+    do {
+      const page = await this.favoritesList({ limit: 100, ...cursor ? { cursor } : {} });
+      rows.push(...page.items.filter((row) => row.type === "skill"));
+      cursor = page.nextCursor ?? void 0;
+      if (cursor && (cursors.has(cursor) || cursors.size >= 100)) throw new PodploPluginError("FAVORITES_LIST_INCOMPLETE", "\u6536\u85CF\u5217\u8868\u672A\u80FD\u5B8C\u6574\u8BFB\u53D6\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+      if (cursor) cursors.add(cursor);
+    } while (cursor);
+    return rows;
+  }
+  async favoriteSkillsList(input) {
+    const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
+    const query = input.query === void 0 ? void 0 : text2(input.query, "\u5907\u6CE8\u6216\u539F\u540D", 160).toLocaleLowerCase();
+    const folder = input.folder === void 0 ? void 0 : text2(input.folder, "\u6536\u85CF\u6587\u4EF6\u5939", 80).toLocaleLowerCase();
+    const check2 = async () => {
+      await this.assertOwner(ownerId, false);
+      if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+    };
+    const rows = await this.allFavoriteSkills();
+    await check2();
+    const folders = folder || rows.some((row) => row.folderId) ? (await this.favoriteFoldersList()).items : [];
+    await this.online.refreshPublicSkills?.();
+    await check2();
+    const catalog = this.online.snapshot().publicDirectory?.catalog;
+    if (!catalog) throw new PodploPluginError("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u6682\u4E0D\u53EF\u7528\u3002");
+    const items = [...new Map(rows.map((row) => [row.id, row])).values()].flatMap((row) => {
+      const original = catalog.skills.find((skill) => skill.slug === row.id);
+      if (!original) return [];
+      const folderName = row.folderId ? folders.find((item) => item.id === row.folderId)?.name ?? null : null;
+      if (row.folderId && !folderName) throw new PodploPluginError("FAVORITES_LIST_INCOMPLETE", "\u6536\u85CF\u6587\u4EF6\u5939\u4FE1\u606F\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+      if (folder && (folder === "\u672A\u5206\u7C7B" ? !!row.folderId : folderName?.toLocaleLowerCase() !== folder)) return [];
+      if (query && ![row.note, original.title, original.slug].some((value2) => value2?.toLocaleLowerCase() === query)) return [];
+      return [{
+        id: row.id,
+        slug: original.slug,
+        originalTitle: original.title,
+        note: row.note ?? null,
+        folderId: row.folderId ?? null,
+        folderName,
+        kind: original.kind,
+        executable: original.executable
+      }];
+    });
+    return { items };
   }
   async assetDetail(input, caller) {
     const detail = await this.online.reference(text2(input.id, "id", 180));
@@ -43276,10 +43506,10 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async assetFavorite(input, caller) {
     this.requireUi(caller);
-    const ownerId = await this.owner(false);
+    const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
     const kind = text2(input.kind, "kind", 20);
     if (!["skill", "gallery"].includes(kind)) throw new PodploPluginError("INVALID_ARGUMENT", "\u4EC5\u516C\u5F00 Skill \u548C\u516C\u5F00\u7D20\u6750\u53EF\u4EE5\u6536\u85CF");
-    const id = text2(input.id, "id", 180);
+    const id2 = text2(input.id, "id", 180);
     if (typeof input.favorite !== "boolean") throw new PodploPluginError("INVALID_ARGUMENT", "\u5FC5\u987B\u660E\u786E\u6307\u5B9A\u6536\u85CF\u6216\u53D6\u6D88\u6536\u85CF");
     const favorite = input.favorite;
     const previous = this.favoriteWriteJobs.get(ownerId) ?? Promise.resolve();
@@ -43287,14 +43517,19 @@ var PodploPluginService = class extends EventEmitter2 {
       if (await this.owner(false) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316");
       await this.migrateFavorites(false);
       if (await this.owner(false) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316");
-      const result = await this.online.setFavorite({ type: kind, id, favorite });
+      if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+      const result = await this.online.setFavorite({ type: kind, id: id2, favorite });
       if (await this.owner(false) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316");
+      if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+      if (kind === "skill" && result.favorite === false) await this.favoriteOrganization.forget(ownerId, id2, () => {
+        if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+      });
       if (!favorite) await this.store.transaction((state) => {
         const migration = state.favoriteMigrations.find((row) => row.ownerId === ownerId);
         if (!migration) return;
         let changed = false;
         migration.results = migration.results.map((row) => {
-          if (row.type !== kind || row.id !== id || row.status === "removed") return row;
+          if (row.type !== kind || row.id !== id2 || row.status === "removed") return row;
           changed = true;
           return { type: row.type, id: row.id, status: "removed", code: null };
         });
@@ -43343,16 +43578,16 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   skillReferenceIds(value2) {
     if (value2 === void 0) return [];
-    if (!Array.isArray(value2) || value2.length > 12 || new Set(value2).size !== value2.length || value2.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id))) {
+    if (!Array.isArray(value2) || value2.length > 12 || new Set(value2).size !== value2.length || value2.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))) {
       throw new PodploPluginError("INVALID_REFERENCE_ID", "referenceAssetIds \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 12 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84");
     }
     return value2;
   }
-  async resolveMySkillInput(raw, caller, ownerId, schema) {
+  async resolveMySkillInput(raw, caller, ownerId, schema2) {
     const ids2 = this.skillReferenceIds(raw.referenceAssetIds);
     const placeholder = "00000000-0000-4000-8000-000000000000";
-    const validated = schema.parse({ ...raw, referenceAssetIds: ids2.length ? [placeholder] : [] });
-    if (!ids2.length) return schema.parse({ ...validated, referenceAssetIds: [] });
+    const validated = schema2.parse({ ...raw, referenceAssetIds: ids2.length ? [placeholder] : [] });
+    if (!ids2.length) return schema2.parse({ ...validated, referenceAssetIds: [] });
     const cloudId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
     const sessionBound = caller.source === "agent" || caller.sessionId !== void 0;
     let resolved = ids2;
@@ -43360,13 +43595,13 @@ var PodploPluginService = class extends EventEmitter2 {
       const nativeSessionId = this.nativeSessionFor(caller);
       resolved = await this.options.resolveGenerationReferences({ ownerId, nativeSessionId, ids: ids2 });
       await this.assertOwner(ownerId, true);
-    } else if (ids2.some((id) => !cloudId.test(id))) {
+    } else if (ids2.some((id2) => !cloudId.test(id2))) {
       throw new PodploPluginError("NATIVE_REFERENCE_IMPORT_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u5BFC\u5165\u672C\u5730\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u7528 DSH \u5C06\u56FE\u7247\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\uFF0C\u6216\u5728\u754C\u9762\u9009\u62E9\u672C\u5730\u56FE\u7247");
     }
-    if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id) => typeof id !== "string" || !cloudId.test(id))) {
+    if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id2) => typeof id2 !== "string" || !cloudId.test(id2))) {
       throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u672C\u5730\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0CSkill \u672A\u4FDD\u5B58\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247");
     }
-    return schema.parse({ ...validated, referenceAssetIds: resolved });
+    return schema2.parse({ ...validated, referenceAssetIds: resolved });
   }
   async mySkillCreate(input, caller) {
     const ownerId = await this.owner(true);
@@ -43378,11 +43613,11 @@ var PodploPluginService = class extends EventEmitter2 {
     return skill;
   }
   async mySkillUpdate(input, caller) {
-    const id = text2(input.id, "id", 180);
+    const id2 = text2(input.id, "id", 180);
     const ownerId = await this.owner(true);
     const prepared = await this.resolveMySkillInput(record3(input.input, "input"), caller, ownerId, UserSkillUpdateSchema);
     await this.assertOwner(ownerId, true);
-    const skill = await this.online.updateUserSkill(id, prepared);
+    const skill = await this.online.updateUserSkill(id2, prepared);
     await this.assertOwner(ownerId, true);
     this.personalSkillVersions.set(this.personalSkillKey(ownerId, skill.id), skill.updatedAt);
     return skill;
@@ -43404,51 +43639,51 @@ var PodploPluginService = class extends EventEmitter2 {
   async mySkillDelete(input, caller) {
     const confirmationId = optionalText(input.confirmationId, "confirmationId", 180);
     if (!confirmationId) {
-      const id2 = text2(input.id, "id", 180);
+      const id3 = text2(input.id, "id", 180);
       const expectedUpdatedAt = text2(input.expectedUpdatedAt, "expectedUpdatedAt", 80);
-      return this.createConfirmation("mySkills.delete", { id: id2, expectedUpdatedAt }, "\u5220\u9664\u8FD9\u4E2A\u81EA\u5EFA Skill");
+      return this.createConfirmation("mySkills.delete", { id: id3, expectedUpdatedAt }, "\u5220\u9664\u8FD9\u4E2A\u81EA\u5EFA Skill");
     }
     this.requireUi(caller);
     const confirmation = await this.consumeConfirmation(confirmationId, "mySkills.delete");
-    const id = text2(confirmation.payload.id, "id", 180);
-    await this.online.deleteUserSkill(id, text2(confirmation.payload.expectedUpdatedAt, "expectedUpdatedAt", 80));
-    this.personalSkillVersions.delete(this.personalSkillKey(confirmation.ownerId, id));
+    const id2 = text2(confirmation.payload.id, "id", 180);
+    await this.online.deleteUserSkill(id2, text2(confirmation.payload.expectedUpdatedAt, "expectedUpdatedAt", 80));
+    this.personalSkillVersions.delete(this.personalSkillKey(confirmation.ownerId, id2));
     this.publish();
-    return { deleted: true, id };
+    return { deleted: true, id: id2 };
   }
   async resolveSelection(input, caller) {
     const kind = text2(input.kind, "kind", 20);
-    const id = text2(input.id, "id", 180);
+    const id2 = text2(input.id, "id", 180);
     const nativeSessionId = caller.source === "ui" && caller.sessionId === void 0 ? void 0 : this.options.resolveNativeSessionId?.(caller);
     if (kind === "gallery") {
-      const item = record3(await this.galleryDetail({ id }, caller));
+      const item = record3(await this.galleryDetail({ id: id2 }, caller));
       return {
         version: 1,
         kind: "gallery",
-        id,
+        id: id2,
         label: typeof item.label === "string" ? item.label : void 0,
-        locator: { galleryId: id },
+        locator: { galleryId: id2 },
         private: false,
         ...nativeSessionId ? { nativeSessionId } : {}
       };
     }
     if (kind === "asset") {
       const ownerId = await this.owner(false);
-      const detail = await this.online.reference(id);
+      const detail = await this.online.reference(id2);
       return {
         version: 1,
         kind: "asset",
-        id,
+        id: id2,
         label: detail.filename ?? void 0,
-        locator: { assetId: id },
+        locator: { assetId: id2 },
         ownerId,
         private: true,
         ...nativeSessionId ? { nativeSessionId } : {}
       };
     }
     if (kind === "skill") {
-      const binding = this.skillBindings.get(id);
-      const slug2 = binding?.slug ?? id;
+      const binding = this.skillBindings.get(id2);
+      const slug2 = binding?.slug ?? id2;
       const catalog = this.online.snapshot().publicDirectory?.catalog;
       const publicSkill = catalog?.skills.find((row) => row.slug === slug2 && row.executable);
       if (publicSkill) {
@@ -43469,7 +43704,7 @@ var PodploPluginService = class extends EventEmitter2 {
         };
       }
       const ownerId = await this.owner(false);
-      const personal = await this.online.userSkill(id);
+      const personal = await this.online.userSkill(id2);
       await this.assertOwner(ownerId, false);
       this.personalSkillVersions.set(this.personalSkillKey(ownerId, personal.id), personal.updatedAt);
       return {
@@ -43636,13 +43871,13 @@ var PodploPluginService = class extends EventEmitter2 {
         output.push({ ...item, args });
         continue;
       }
-      const parse4 = (value2, label) => {
+      const parse5 = (value2, label) => {
         if (value2 === void 0) return [];
-        if (!Array.isArray(value2) || value2.length > 14 || value2.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id)))
+        if (!Array.isArray(value2) || value2.length > 14 || value2.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2)))
           throw new PodploPluginError("INVALID_REFERENCE_ID", `${label} \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID`);
         return value2;
       };
-      const ids2 = [.../* @__PURE__ */ new Set([...parse4(primary, "referenceAssetIds"), ...parse4(compatibility, "imageIds")])];
+      const ids2 = [.../* @__PURE__ */ new Set([...parse5(primary, "referenceAssetIds"), ...parse5(compatibility, "imageIds")])];
       if (ids2.length > 14) throw new PodploPluginError("INVALID_REFERENCE_ID", "\u6BCF\u9879\u6700\u591A\u4F7F\u7528 14 \u5F20\u53C2\u8003\u56FE");
       let resolved = ids2;
       if (ids2.length === 0) {
@@ -43650,10 +43885,10 @@ var PodploPluginService = class extends EventEmitter2 {
       } else if (this.options.resolveGenerationReferences) {
         resolvedByHost = true;
         resolved = await this.options.resolveGenerationReferences({ ownerId, nativeSessionId, ids: ids2 });
-      } else if (ids2.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id))) {
+      } else if (ids2.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2))) {
         throw new PodploPluginError("NATIVE_REFERENCE_IMPORT_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u5BFC\u5165\u4F1A\u8BDD\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u4E0A\u4F20\u5230\u201C\u6211\u7684\u7D20\u6750\u201D\u3002");
       }
-      if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id) => typeof id !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id)))
+      if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id2) => typeof id2 !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
         throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247\u3002");
       args.referenceAssetIds = [...new Set(resolved)];
       delete args.imageIds;
@@ -44129,7 +44364,7 @@ var PodploPluginService = class extends EventEmitter2 {
     throw new PodploPluginError("INVALID_MODEL_RESPONSE", "\u4E3B\u7AD9\u6A21\u578B\u80FD\u529B\u5305\u542B\u975E JSON \u503C");
   }
   sensitiveCapabilityKey(key) {
-    const normalized = key.replace(/[^a-z0-9]/giu, "").toLocaleLowerCase();
+    const normalized2 = key.replace(/[^a-z0-9]/giu, "").toLocaleLowerCase();
     return [
       "token",
       "accesstoken",
@@ -44149,7 +44384,7 @@ var PodploPluginService = class extends EventEmitter2 {
       "downloadurl",
       "previewurl",
       "signedurl"
-    ].includes(normalized);
+    ].includes(normalized2);
   }
   assertGatewayQuote(quote) {
     if (!quote || typeof quote.quoteToken !== "string" || !quote.quoteToken || typeof quote.expiresAt !== "string" || !Number.isFinite(Date.parse(quote.expiresAt)) || !Number.isSafeInteger(quote.totalCredits) || quote.totalCredits < 0 || !Number.isSafeInteger(quote.outputCount) || quote.outputCount < 1 || typeof quote.confirmationText !== "string") {
@@ -44167,10 +44402,10 @@ var PodploPluginService = class extends EventEmitter2 {
     this.publish();
     return { confirmationRequired: true, confirmationId: row.id, summary, expiresAt: row.expiresAt };
   }
-  async consumeConfirmation(id, kind) {
+  async consumeConfirmation(id2, kind) {
     const ownerId = await this.owner(true);
     return this.store.transaction((saved) => {
-      const index = saved.confirmations.findIndex((value2) => value2.id === id && value2.ownerId === ownerId && value2.kind === kind && !value2.cancelledAt);
+      const index = saved.confirmations.findIndex((value2) => value2.id === id2 && value2.ownerId === ownerId && value2.kind === kind && !value2.cancelledAt);
       if (index < 0) throw new PodploPluginError("CONFIRMATION_NOT_FOUND", "\u786E\u8BA4\u5DF2\u5931\u6548\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
       const row = saved.confirmations[index];
       if (Date.parse(row.expiresAt) <= this.now().getTime()) throw new PodploPluginError("CONFIRMATION_EXPIRED", "\u786E\u8BA4\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u64CD\u4F5C");
@@ -44180,14 +44415,14 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async cancelConfirmation(input, caller) {
     this.requireUi(caller);
-    const id = text2(input.confirmationId, "confirmationId", 180);
+    const id2 = text2(input.confirmationId, "confirmationId", 180);
     const ownerId = await this.owner(true);
     const result = await this.store.transaction((saved) => {
-      const row = saved.confirmations.find((value2) => value2.id === id && value2.ownerId === ownerId);
+      const row = saved.confirmations.find((value2) => value2.id === id2 && value2.ownerId === ownerId);
       if (!row) throw new PodploPluginError("CONFIRMATION_NOT_FOUND", "\u786E\u8BA4\u5DF2\u5931\u6548\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
-      if (row.cancelledAt) return { confirmationId: id, cancelled: false, alreadyCancelled: true };
+      if (row.cancelledAt) return { confirmationId: id2, cancelled: false, alreadyCancelled: true };
       row.cancelledAt = this.now().toISOString();
-      return { confirmationId: id, cancelled: true, alreadyCancelled: false };
+      return { confirmationId: id2, cancelled: true, alreadyCancelled: false };
     });
     this.publish();
     return result;
@@ -44208,7 +44443,7 @@ var PodploPluginService = class extends EventEmitter2 {
 import { createHash as createHash8 } from "node:crypto";
 
 // plugins/podplo-dsh/src/generation-background.ts
-var allows = (schema, value2) => schema?.type === "string" && (!schema.enum || schema.enum.includes(value2));
+var allows = (schema2, value2) => schema2?.type === "string" && (!schema2.enum || schema2.enum.includes(value2));
 function transparentControl(properties, model) {
   const parameters = model?.parameterSchema?.properties ?? {};
   const declared = model?.supportsTransparentMode === true || Array.isArray(model?.backgroundModes) && model.backgroundModes.includes("transparent");
@@ -44246,8 +44481,8 @@ var ORDINARY_KEYS = /* @__PURE__ */ new Set(["prompt", "modelId", "referenceAsse
 function safeErrorCode(value2) {
   if (!object3(value2)) return void 0;
   const nested = object3(value2.error) ? value2.error.code : void 0;
-  const candidate = typeof nested === "string" ? nested : value2.code;
-  return typeof candidate === "string" && SAFE_ERROR_CODE.test(candidate) ? candidate : void 0;
+  const candidate2 = typeof nested === "string" ? nested : value2.code;
+  return typeof candidate2 === "string" && SAFE_ERROR_CODE.test(candidate2) ? candidate2 : void 0;
 }
 function mcpToolErrorCode(result) {
   const structured = safeErrorCode(result.structuredContent);
@@ -44283,7 +44518,7 @@ var NativeGenerationGateway = class {
       if (!object3(result) || typeof result.protocolVersion !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
       this.initializedFor = namespace;
     }
-    const id = ++this.sequence;
+    const id2 = ++this.sequence;
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
         const token = await this.online.auth.token(attempt > 0);
@@ -44296,10 +44531,10 @@ var NativeGenerationGateway = class {
             Authorization: `Bearer ${token}`,
             "MCP-Protocol-Version": "2025-06-18"
           },
-          body: JSON.stringify({ jsonrpc: "2.0", id, method, params })
+          body: JSON.stringify({ jsonrpc: "2.0", id: id2, method, params })
         });
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
-        if (!object3(response) || response.id !== id || response.jsonrpc !== "2.0") throw new OnlineError("MCP_TOOL_REJECTED");
+        if (!object3(response) || response.id !== id2 || response.jsonrpc !== "2.0") throw new OnlineError("MCP_TOOL_REJECTED");
         if (response.error) throw new OnlineError(safeErrorCode(response.error) ?? "MCP_TOOL_REJECTED");
         return response.result;
       } catch (error51) {
@@ -44313,8 +44548,8 @@ var NativeGenerationGateway = class {
     }
     throw new OnlineError("SIGN_IN_REQUIRED", 401);
   }
-  async call(name, args) {
-    const result = await this.rpc("tools/call", { name, arguments: args });
+  async call(name2, args) {
+    const result = await this.rpc("tools/call", { name: name2, arguments: args });
     if (!object3(result)) throw new OnlineError("MCP_TOOL_REJECTED");
     if (result.isError) throw new OnlineError(mcpToolErrorCode(result) ?? "MCP_TOOL_REJECTED");
     let output = result.structuredContent;
@@ -44422,12 +44657,12 @@ var NativeGenerationGateway = class {
   async submit(input) {
     if (input.quote.totalCredits !== input.approvedCredits || Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("CONFIRMATION_MISMATCH");
     await this.capabilities();
-    const schema = this.cached?.createSchema;
-    if (!schema || !object3(schema.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
+    const schema2 = this.cached?.createSchema;
+    if (!schema2 || !object3(schema2.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
     const args = { quoteToken: input.quote.quoteToken, clientRequestId: input.clientRequestId };
-    if ("confirmed" in schema.properties) args.confirmed = true;
-    if ("approvedCredits" in schema.properties) args.approvedCredits = input.approvedCredits;
-    if ("quoteDigest" in schema.properties) {
+    if ("confirmed" in schema2.properties) args.confirmed = true;
+    if ("approvedCredits" in schema2.properties) args.approvedCredits = input.approvedCredits;
+    if ("quoteDigest" in schema2.properties) {
       if (!object3(input.quote.parameters)) throw new OnlineError("INVALID_TOOL_RESPONSE");
       args.quoteDigest = typeof input.quote.quoteDigest === "string" ? input.quote.quoteDigest : quoteDigest(input.quote);
     }
@@ -44462,11 +44697,11 @@ function publicError(error51) {
     const status = Number.isInteger(error51.status) && error51.status >= 100 && error51.status <= 599 ? error51.status : 0;
     return { code: error51.code, message: error51.code === "SKILLS_WRITE_SCOPE_REQUIRED" ? "\u5F53\u524D\u6388\u6743\u4E0D\u652F\u6301\u7BA1\u7406\u81EA\u5EFA Skill\uFF1B\u8BF7\u5148\u786E\u8BA4\u4E3B\u7AD9\u5DF2\u5F00\u653E\u8BE5\u529F\u80FD\uFF0C\u518D\u91CD\u65B0\u6388\u6743\u3002" : error51.code === "UNAUTHENTICATED" ? "\u8BE5\u529F\u80FD\u672A\u63A5\u53D7\u5F53\u524D\u6388\u6743\uFF0C\u8BF7\u6838\u5BF9\u4E3B\u7AD9\u63A5\u53E3\u4E0E\u6743\u9650\u914D\u7F6E\u3002" : new OnlineError(error51.code, status).message, details: {} };
   }
-  const candidate = error51;
-  const known = candidate?.name === "PodploPluginError";
+  const candidate2 = error51;
+  const known = candidate2?.name === "PodploPluginError";
   return {
-    code: known && /^[A-Z_]{1,80}$/.test(candidate.code ?? "") ? candidate.code : "PODPLO_REQUEST_FAILED",
-    message: known && typeof candidate.message === "string" ? candidate.message.slice(0, 500) : "PodPlo \u8BF7\u6C42\u672A\u5B8C\u6210\uFF0C\u8BF7\u5237\u65B0\u72B6\u6001\u540E\u91CD\u8BD5\u3002",
+    code: known && /^[A-Z_]{1,80}$/.test(candidate2.code ?? "") ? candidate2.code : "PODPLO_REQUEST_FAILED",
+    message: known && typeof candidate2.message === "string" ? candidate2.message.slice(0, 500) : "PodPlo \u8BF7\u6C42\u672A\u5B8C\u6210\uFF0C\u8BF7\u5237\u65B0\u72B6\u6001\u540E\u91CD\u8BD5\u3002",
     details: {}
   };
 }
@@ -44605,7 +44840,7 @@ async function startPluginMcp(service) {
         response.writeHead(405, { Allow: "POST" }).end("{}");
         return;
       }
-      let id = null;
+      let id2 = null;
       try {
         const message = await nodeJson(request);
         if (!record4(message) || message.jsonrpc !== "2.0" || typeof message.method !== "string") throw new Error("invalid JSON RPC");
@@ -44614,7 +44849,7 @@ async function startPluginMcp(service) {
           return;
         }
         if (typeof message.id !== "string" && typeof message.id !== "number") throw new Error("invalid RPC ID");
-        id = message.id;
+        id2 = message.id;
         const params = record4(message.params) ? message.params : {};
         let result;
         switch (message.method) {
@@ -44649,12 +44884,12 @@ async function startPluginMcp(service) {
             break;
           }
           default:
-            response.end(JSON.stringify({ jsonrpc: "2.0", id, error: { code: -32601, message: "Method not found" } }));
+            response.end(JSON.stringify({ jsonrpc: "2.0", id: id2, error: { code: -32601, message: "Method not found" } }));
             return;
         }
-        response.end(JSON.stringify({ jsonrpc: "2.0", id, result }));
+        response.end(JSON.stringify({ jsonrpc: "2.0", id: id2, result }));
       } catch {
-        response.end(JSON.stringify({ jsonrpc: "2.0", id, error: { code: -32600, message: "Invalid request" } }));
+        response.end(JSON.stringify({ jsonrpc: "2.0", id: id2, error: { code: -32600, message: "Invalid request" } }));
       }
     })().catch(() => {
       if (!response.writableEnded) response.writeHead(500).end("{}");
@@ -44689,7 +44924,7 @@ import { basename as basename9, extname as extname7 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
 import { createHash as createHash9 } from "node:crypto";
-import { basename as basename7, extname as extname5, join as join7 } from "node:path";
+import { basename as basename7, extname as extname5, join as join8 } from "node:path";
 import sharp11 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
@@ -44706,7 +44941,7 @@ var MappingSchema = external_exports.object({
   updatedAt: external_exports.string().datetime()
 }).strict();
 var hash2 = (value2) => createHash9("sha256").update(value2).digest("hex");
-var fail = (code, message) => {
+var fail2 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var authorizationHash = (identity) => hash2(`${identity.ownerId}\0${identity.namespace ?? ""}`);
@@ -44717,15 +44952,15 @@ function safeWebpName(value2) {
 }
 async function normalizeNativeReference(input) {
   const source = Buffer.from(input.bytes);
-  if (!source.length || source.length > MAX_INPUT_BYTES) fail("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
+  if (!source.length || source.length > MAX_INPUT_BYTES) fail2("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
   let metadata;
   try {
     metadata = await sharp11(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
   } catch {
-    return fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
+    return fail2("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
   }
   if (!metadata.width || !metadata.height || !["jpeg", "png", "webp"].includes(metadata.format ?? "") || metadata.width * metadata.height > MAX_INPUT_PIXELS || metadata.pages && metadata.pages > 1)
-    fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
+    fail2("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
   const swaps = metadata.orientation !== void 0 && [5, 6, 7, 8].includes(metadata.orientation);
   const orientedWidth = swaps ? metadata.height : metadata.width;
   const orientedHeight = swaps ? metadata.width : metadata.height;
@@ -44744,16 +44979,16 @@ async function normalizeNativeReference(input) {
     scale *= Math.max(0.42, Math.min(0.88, ratio));
     quality = Math.max(38, quality - 7);
   }
-  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
+  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail2("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
   const verified = await sharp11(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
   if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)
-    fail("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
+    fail2("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
   return { name: safeWebpName(input.name), bytes: output, fingerprint: hash2(output) };
 }
 var NativeReferenceBridge = class {
   constructor(directory, deps) {
     this.deps = deps;
-    this.store = new AtomicStore(join7(directory, "native-reference-bridge.json"), () => ({ schemaVersion: 1, mappings: [] }), (value2) => external_exports.object({ schemaVersion: external_exports.literal(1), mappings: external_exports.array(MappingSchema).max(5e3) }).strict().parse(value2));
+    this.store = new AtomicStore(join8(directory, "native-reference-bridge.json"), () => ({ schemaVersion: 1, mappings: [] }), (value2) => external_exports.object({ schemaVersion: external_exports.literal(1), mappings: external_exports.array(MappingSchema).max(5e3) }).strict().parse(value2));
   }
   deps;
   store;
@@ -44770,49 +45005,49 @@ var NativeReferenceBridge = class {
   async resolveReferences(expectedOwnerId, sessionId, rawIds) {
     const ids2 = external_exports.array(external_exports.string().min(1).max(240).regex(OPAQUE_ID, "\u53C2\u8003\u56FE\u5FC5\u987B\u662F\u4F1A\u8BDD\u4E2D\u7684\u4E0D\u900F\u660E ID\uFF0C\u4E0D\u80FD\u662F\u6587\u4EF6\u8DEF\u5F84")).min(1).max(14).parse(rawIds);
     const identity = await this.deps.authorize(true);
-    if (identity.ownerId !== expectedOwnerId) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (identity.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
     const expectedAuthorization = authorizationHash(identity);
     const resolved = [];
-    for (const id of ids2) {
-      const local = await this.deps.resolveLocal(sessionId, id);
+    for (const id2 of ids2) {
+      const local = await this.deps.resolveLocal(sessionId, id2);
       await this.assertIdentity(identity, true);
       if (!local) {
-        if (!CLOUD_ID.test(id)) fail("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
-        resolved.push(id);
+        if (!CLOUD_ID.test(id2)) fail2("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        resolved.push(id2);
         continue;
       }
-      if (local.id !== id) fail("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
-      const normalized = await normalizeNativeReference(local);
+      if (local.id !== id2) fail2("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
+      const normalized2 = await normalizeNativeReference(local);
       await this.assertIdentity(identity, true);
-      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized));
+      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized2));
     }
     await this.assertIdentity(identity, true);
     return resolved;
   }
   /** Import bytes read by a trusted Host path without exposing paths or pixels to the model. */
   async resolveTrustedInputs(expectedOwnerId, sessionId, inputs) {
-    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
+    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail2("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
     const identity = await this.deps.authorize(true);
-    if (identity.ownerId !== expectedOwnerId) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (identity.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
     const expectedAuthorization = authorizationHash(identity);
     const normalizedInputs = [];
     for (const [index, input] of inputs.entries()) {
       if (!input || typeof input.id !== "string" || !input.id || input.id.length > 240 || typeof input.name !== "string" || !input.name || input.name.length > 255 || !(input.bytes instanceof Uint8Array))
-        fail("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
+        fail2("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
       normalizedInputs.push(await normalizeNativeReference(input));
       await this.assertIdentity(identity, true);
     }
     const resolved = [];
-    for (const normalized of normalizedInputs) {
+    for (const normalized2 of normalizedInputs) {
       await this.assertIdentity(identity, true);
-      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized));
+      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized2));
     }
     await this.assertIdentity(identity, true);
     return resolved;
   }
   async assertIdentity(expected, write) {
     const current = await this.deps.authorize(write);
-    if (authorizationHash(current) !== authorizationHash(expected)) fail("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (authorizationHash(current) !== authorizationHash(expected)) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
   }
   mappingKey(authorization, sessionId, fingerprint2) {
     return `${authorization}:${hash2(sessionId)}:${fingerprint2}`;
@@ -44849,7 +45084,7 @@ var NativeReferenceBridge = class {
           if (error51 instanceof PodploPluginError && error51.code === "ACCOUNT_CHANGED") throw error51;
         }
       }
-      return fail("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
     await this.assertIdentity(identity, true);
     await this.store.transaction((state) => {
@@ -44868,7 +45103,7 @@ var NativeReferenceBridge = class {
       if (!CLOUD_ID.test(detail.id)) throw new Error("Invalid uploaded reference id");
       if (detail.status !== "ready") {
         await this.update(mapping, { status: "unknown", cloudAssetId: detail.id });
-        fail("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+        fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
       }
       await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
       await this.assertIdentity(identity, true);
@@ -44877,7 +45112,7 @@ var NativeReferenceBridge = class {
       const latest = this.find(authorization, sessionId, input.fingerprint);
       if (latest?.status === "uploading") await this.update(latest, { status: "unknown" });
       if (error51 instanceof PodploPluginError) throw error51;
-      return fail("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
   }
   async update(mapping, patch) {
@@ -44892,10 +45127,10 @@ var NativeReferenceBridge = class {
 };
 
 // plugins/podplo-dsh/src/output-directory.ts
-import { createHash as createHash10, randomUUID as randomUUID10 } from "node:crypto";
+import { createHash as createHash10, randomUUID as randomUUID11 } from "node:crypto";
 import { constants as constants3 } from "node:fs";
 import { lstat as lstat3, mkdir as mkdir6, open as open4, realpath as realpath4, unlink as unlink2 } from "node:fs/promises";
-import { basename as basename8, dirname as dirname7, extname as extname6, isAbsolute as isAbsolute4, join as join8, relative as relative3 } from "node:path";
+import { basename as basename8, dirname as dirname7, extname as extname6, isAbsolute as isAbsolute4, join as join9, relative as relative3 } from "node:path";
 var hashPattern2 = /^[a-f0-9]{64}$/u;
 var opaqueSession = external_exports.string().min(1).max(240).regex(/^[^/\\\0\r\n]+$/u);
 var directoryRowSchema = external_exports.object({
@@ -44932,8 +45167,8 @@ var OutputDirectoryManager = class {
   constructor(options) {
     this.options = options;
     if (!isAbsolute4(options.directory)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5B58\u50A8\u4F4D\u7F6E\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
-    this.rootCandidate = join8(options.directory, "output-settings-v1");
-    this.store = new AtomicStore(join8(this.rootCandidate, "state.json"), () => ({ schemaVersion: 1, directories: [] }), validateState2);
+    this.rootCandidate = join9(options.directory, "output-settings-v1");
+    this.store = new AtomicStore(join9(this.rootCandidate, "state.json"), () => ({ schemaVersion: 1, directories: [] }), validateState2);
   }
   options;
   rootCandidate;
@@ -45008,11 +45243,11 @@ var OutputDirectoryManager = class {
     let published, publishedName = "", publishedFingerprint = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
-        const name = index === 1 ? requested : `${stem}-${index}${extension}`;
-        const candidate = join8(root, name);
+        const name2 = index === 1 ? requested : `${stem}-${index}${extension}`;
+        const candidate2 = join9(root, name2);
         let handle;
         try {
-          handle = await open4(candidate, constants3.O_WRONLY | constants3.O_CREAT | constants3.O_EXCL | constants3.O_NOFOLLOW, 384);
+          handle = await open4(candidate2, constants3.O_WRONLY | constants3.O_CREAT | constants3.O_EXCL | constants3.O_NOFOLLOW, 384);
         } catch (error51) {
           if (error51.code === "EEXIST") continue;
           throw error51;
@@ -45026,18 +45261,18 @@ var OutputDirectoryManager = class {
         } finally {
           await handle.close();
         }
-        const actual = await realpath4(candidate), boundary = relative3(root, actual);
+        const actual = await realpath4(candidate2), boundary = relative3(root, actual);
         if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute4(boundary)) {
-          await unlink2(candidate).catch(() => void 0);
+          await unlink2(candidate2).catch(() => void 0);
           throw new Error("\u8F93\u51FA\u6587\u4EF6\u8DEF\u5F84\u8D8A\u754C");
         }
         published = actual;
-        publishedName = name;
+        publishedName = name2;
         break;
       }
       if (!published) throw new Error("\u8F93\u51FA\u76EE\u5F55\u4E2D\u5B58\u5728\u8FC7\u591A\u540C\u540D\u6587\u4EF6\uFF0C\u8BF7\u8C03\u6574\u6587\u4EF6\u540D\u6216\u76EE\u5F55");
       await this.assertIdentity(identity, "export");
-      const exportId = randomUUID10();
+      const exportId = randomUUID11();
       this.sessionExports.set(exportId, {
         owner: identity.principal,
         authorization: identity.authorization,
@@ -45102,7 +45337,7 @@ var OutputDirectoryManager = class {
     return actual;
   }
   async reviewDirectory(root, create = false) {
-    const path = join8(root, "\u5F85\u590D\u6838");
+    const path = join9(root, "\u5F85\u590D\u6838");
     if (create) await mkdir6(path, { mode: 448 }).catch((error51) => {
       if (error51.code !== "EEXIST") throw error51;
     });
@@ -45129,7 +45364,7 @@ var OutputDirectoryManager = class {
     return { identity, record: { ...record6, path: actual } };
   }
   dropOwnerExports(principal) {
-    for (const [id, record6] of this.sessionExports) if (record6.owner === principal) this.sessionExports.delete(id);
+    for (const [id2, record6] of this.sessionExports) if (record6.owner === principal) this.sessionExports.delete(id2);
   }
   timestamp() {
     return (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString();
@@ -45137,7 +45372,7 @@ var OutputDirectoryManager = class {
 };
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
-var fail2 = (code, message) => {
+var fail3 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var cloudAssetId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -45155,31 +45390,31 @@ var importReferenceDefinition = {
     }
   } }
 };
-function session(ctx, id) {
-  if (id === PODPLO_TOOLBOX_WORKSPACE_ID || id === PODPLO_GRID_SPLIT_WORKSPACE_ID)
-    return fail2("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
-  return id && ctx.agents.get(id) || fail2("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
+function session(ctx, id2) {
+  if (id2 === PODPLO_TOOLBOX_WORKSPACE_ID || id2 === PODPLO_GRID_SPLIT_WORKSPACE_ID)
+    return fail3("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
+  return id2 && ctx.agents.get(id2) || fail3("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
 }
-function imageReceipt(events, id) {
+function imageReceipt(events, id2) {
   if (!events || typeof events !== "object") return;
   const object4 = events;
-  if (object4.attachmentId === id && typeof object4.mediaType === "string" && object4.mediaType.startsWith("image/")) return object4;
+  if (object4.attachmentId === id2 && typeof object4.mediaType === "string" && object4.mediaType.startsWith("image/")) return object4;
   for (const value2 of Object.values(object4)) {
-    const found = imageReceipt(value2, id);
+    const found = imageReceipt(value2, id2);
     if (found) return found;
   }
 }
 async function downloadOriginal(value2, assetId, fetcher = fetch) {
-  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail2("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
+  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail3("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
   const url2 = new URL(value2);
   if (url2.protocol !== "https:" || !/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url2.hostname) || url2.port || url2.username || url2.password || url2.hash || !new RegExp(`^/podplo-assets/(?:upload|generated)/${assetId}/original\\.(?:png|jpg|jpeg|webp)$`, "u").test(url2.pathname))
-    fail2("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
+    fail3("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
   const response = await fetcher(url2, { redirect: "error", credentials: "omit", signal: AbortSignal.timeout(6e4) });
   const limit = 1e8;
-  if (!response.ok || !response.body) fail2("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+  if (!response.ok || !response.body) fail3("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
   if (Number(response.headers.get("content-length")) > limit) {
     await response.body.cancel();
-    fail2("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+    fail3("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
   }
   const reader = response.body.getReader(), chunks = [];
   let length = 0;
@@ -45190,7 +45425,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
       length += part.value.length;
       if (length > limit) {
         await reader.cancel();
-        fail2("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+        fail3("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
       }
       chunks.push(part.value);
     }
@@ -45198,7 +45433,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
     reader.releaseLock();
   }
   const bytes = Buffer.concat(chunks), meta3 = await sharp12(bytes, { limitInputPixels: 1e8 }).metadata();
-  if (!meta3.width || !meta3.height || !["png", "jpeg", "webp"].includes(meta3.format ?? "")) fail2("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+  if (!meta3.width || !meta3.height || !["png", "jpeg", "webp"].includes(meta3.format ?? "")) fail3("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
   return bytes;
 }
 async function nativeToolkitTransport(options) {
@@ -45211,23 +45446,23 @@ async function nativeToolkitTransport(options) {
       const ownerId = await online.workspaceIdentity(input.purpose !== "read", slug2);
       return { ownerId, namespace: online.auth.namespace };
     },
-    async resolveInput(ownerId, sessionId, id) {
-      const attachmentId = id.startsWith("sha256:") ? id : bareAttachmentDigest.test(id) ? `sha256:${id}` : void 0;
+    async resolveInput(ownerId, sessionId, id2) {
+      const attachmentId = id2.startsWith("sha256:") ? id2 : bareAttachmentDigest.test(id2) ? `sha256:${id2}` : void 0;
       if (attachmentId) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
-        if (!receipt) return fail2("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail3("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
-        return { id, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data), kind: "image" };
+        return { id: id2, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data), kind: "image" };
       }
       const namespace = online.auth.namespace;
-      if (await online.workspaceIdentity(false) !== ownerId) return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
-      const detail = await online.reference(id);
-      if (!detail.downloadUrl || detail.status !== "ready") return fail2("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
-      const bytes = await downloadOriginal(detail.downloadUrl, id, options.fetcher);
+      if (await online.workspaceIdentity(false) !== ownerId) return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+      const detail = await online.reference(id2);
+      if (!detail.downloadUrl || detail.status !== "ready") return fail3("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+      const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
       if (namespace !== online.auth.namespace || await online.workspaceIdentity(false) !== ownerId)
-        return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
-      return { id, name: detail.filename ?? `\u7D20\u6750-${id}.png`, bytes, kind: "image" };
+        return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+      return { id: id2, name: detail.filename ?? `\u7D20\u6750-${id2}.png`, bytes, kind: "image" };
     }
   });
   await toolkit.init();
@@ -45246,25 +45481,25 @@ async function nativeToolkitTransport(options) {
       const ownerId = await online.workspaceIdentity(write);
       return { ownerId, ...online.auth.namespace ? { namespace: online.auth.namespace } : {} };
     },
-    async resolveLocal(sessionId, id) {
-      const attachmentId = id.startsWith("sha256:") ? id : bareAttachmentDigest.test(id) ? `sha256:${id}` : void 0;
+    async resolveLocal(sessionId, id2) {
+      const attachmentId = id2.startsWith("sha256:") ? id2 : bareAttachmentDigest.test(id2) ? `sha256:${id2}` : void 0;
       if (attachmentId) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
-        if (!receipt) return fail2("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail3("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
-        return { id, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data) };
+        return { id: id2, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data) };
       }
-      if (!cloudAssetId.test(id)) return void 0;
+      if (!cloudAssetId.test(id2)) return void 0;
       const index = localReferenceIndexes.get(sessionId);
       if (!index) throw new Error("Native reference lookup is not active");
       const known = await index.promise;
-      if (known.other.has(id))
-        return fail2("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
-      if (!known.current.has(id)) return void 0;
-      const result = await toolkit.readResult(id, sessionId, "read");
-      if (result.kind !== "image") return fail2("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
-      return { id, name: result.name, bytes: result.bytes };
+      if (known.other.has(id2))
+        return fail3("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
+      if (!known.current.has(id2)) return void 0;
+      const result = await toolkit.readResult(id2, sessionId, "read");
+      if (result.kind !== "image") return fail3("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
+      return { id: id2, name: result.name, bytes: result.bytes };
     },
     uploadReference: (input, expectedOwnerId) => online.uploadReference(input, expectedOwnerId),
     inspectReference: (assetId) => online.reference(assetId)
@@ -45301,25 +45536,25 @@ async function nativeToolkitTransport(options) {
     async toolDefinitions() {
       return [...await service.toolDefinitions(), importReferenceDefinition, ...toolkit.toolDefinitions()];
     },
-    async callTool(name, args, sessionId) {
-      if (name === importReferenceDefinition.name) {
+    async callTool(name2, args, sessionId) {
+      if (name2 === importReferenceDefinition.name) {
         session(ctx, sessionId);
         const input = args && typeof args === "object" && !Array.isArray(args) ? args : {};
-        if (Object.keys(input).some((key) => key !== "imageIds") || !Array.isArray(input.imageIds) || input.imageIds.length < 1 || input.imageIds.length > 14 || new Set(input.imageIds).size !== input.imageIds.length || input.imageIds.some((id) => typeof id !== "string" || !id || id.length > 240 || /[/\\\x00\r\n]/u.test(id)))
-          return fail2("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
+        if (Object.keys(input).some((key) => key !== "imageIds") || !Array.isArray(input.imageIds) || input.imageIds.length < 1 || input.imageIds.length > 14 || new Set(input.imageIds).size !== input.imageIds.length || input.imageIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2)))
+          return fail3("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
         const ownerId = await online.workspaceIdentity(true);
         const sourceIds = input.imageIds;
         const referenceAssetIds = await resolveGenerationReferences({ ownerId, nativeSessionId: sessionId, ids: sourceIds });
         return { referenceAssetIds, references: sourceIds.map((imageId, index) => ({ imageId, referenceAssetId: referenceAssetIds[index] })) };
       }
-      if (!localNames.has(name)) return service.callTool(name, args, sessionId);
+      if (!localNames.has(name2)) return service.callTool(name2, args, sessionId);
       session(ctx, sessionId);
       try {
-        return await toolkit.callTool(name, args, sessionId);
+        return await toolkit.callTool(name2, args, sessionId);
       } catch (error51) {
         if (error51 instanceof PodploPluginError) throw error51;
-        if (error51 instanceof PrintSizeError) return fail2(error51.code, PRINT_SIZE_ERRORS[error51.code]);
-        return fail2("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
+        if (error51 instanceof PrintSizeError) return fail3(error51.code, PRINT_SIZE_ERRORS[error51.code]);
+        return fail3("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
       }
     },
     async dispatch(action, args, caller) {
@@ -45327,7 +45562,7 @@ async function nativeToolkitTransport(options) {
       const gridSplitStandalone = action.startsWith("splitter.");
       const standalone2 = toolboxStandalone || gridSplitStandalone;
       if (!standalone2 && !action.startsWith("local.")) return service.dispatch(action, args, caller);
-      if (caller.source !== "ui") return fail2("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
+      if (caller.source !== "ui") return fail3("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
       if (!standalone2) session(ctx, caller.sessionId);
       const scope = gridSplitStandalone ? PODPLO_GRID_SPLIT_WORKSPACE_ID : standalone2 ? PODPLO_TOOLBOX_WORKSPACE_ID : caller.sessionId;
       if (toolboxStandalone) action = `local.${action.slice("toolbox.".length)}`;
@@ -45340,11 +45575,11 @@ async function nativeToolkitTransport(options) {
       if (action === "local.importInput") return { ok: true, data: await toolkit.importInput(args, scope) };
       if (standalone2 && action === "local.use") {
         session(ctx, caller.sessionId);
-        const id2 = args?.id;
-        if (typeof id2 !== "string") return fail2("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+        const id3 = args?.id;
+        if (typeof id3 !== "string") return fail3("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
         const expected = { ownerId: await online.workspaceIdentity(true), namespace: online.auth.namespace };
-        const result = await toolkit.readResult(id2, scope);
-        if (result.kind !== "image") return fail2("INVALID_REFERENCE_IMAGE", "\u8BE5\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\u3002");
+        const result = await toolkit.readResult(id3, scope);
+        if (result.kind !== "image") return fail3("INVALID_REFERENCE_IMAGE", "\u8BE5\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\u3002");
         const contentType = result.contentType === "image/jpg" ? "image/jpeg" : result.contentType;
         const copied = await toolkit.importInput({ name: result.name, contentType, base64: result.bytes.toString("base64") }, caller.sessionId, expected);
         return { ok: true, data: copied };
@@ -45353,7 +45588,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail2("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail3("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.callTool(toolName, {
           operationId: input.operationId,
           ids: input.ids,
@@ -45364,7 +45599,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail2("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail3("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.toolPreview(toolName, {
           ids: input.ids,
           options: input.options
@@ -45386,36 +45621,36 @@ async function nativeToolkitTransport(options) {
         else await outputs.reveal(input.exportId, scope);
         return { ok: true, data: { opened: true } };
       }
-      const id = args?.id;
-      if (typeof id !== "string") return fail2("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+      const id2 = args?.id;
+      if (typeof id2 !== "string") return fail3("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
       if (action === "local.output.exportAsset") {
         const namespace = online.auth.namespace, owner = await online.workspaceIdentity(true);
-        const detail = await online.reference(id);
-        if (!detail.downloadUrl || detail.status !== "ready") return fail2("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
-        const bytes = await downloadOriginal(detail.downloadUrl, id, options.fetcher);
+        const detail = await online.reference(id2);
+        if (!detail.downloadUrl || detail.status !== "ready") return fail3("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+        const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
+          return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
         const format2 = (await sharp12(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
-        if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail2("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
-        const originalName = detail.filename ?? `\u7D20\u6750-${id}`;
+        if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail3("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+        const originalName = detail.filename ?? `\u7D20\u6750-${id2}`;
         const stem = basename9(originalName, extname7(originalName));
-        const trustedName = `${stem || `\u7D20\u6750-${id}`}.${format2 === "jpeg" ? "jpg" : format2}`;
+        const trustedName = `${stem || `\u7D20\u6750-${id2}`}.${format2 === "jpeg" ? "jpg" : format2}`;
         return { ok: true, data: await outputs.export(bytes, trustedName, scope) };
       }
       if (action === "local.preview") {
-        const { bytes, ...row } = await toolkit.resultPreview(id, scope);
+        const { bytes, ...row } = await toolkit.resultPreview(id2, scope);
         return { ok: true, data: { ...row, dataUrl: `data:${row.contentType};base64,${bytes.toString("base64")}` } };
       }
       if (action === "local.output.export") {
-        const result = await toolkit.readResult(id, scope, "export");
+        const result = await toolkit.readResult(id2, scope, "export");
         return { ok: true, data: await outputs.export(result.bytes, result.name, scope) };
       }
       if (action === "local.export") {
         const namespace = online.auth.namespace, owner = await online.workspaceIdentity(true);
-        const result = await toolkit.readResult(id, scope, "export");
+        const result = await toolkit.readResult(id2, scope, "export");
         const attachment = await ctx.attachments.saveFile({ data: result.bytes, name: result.name });
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
+          return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
         return { ok: true, data: {
           attachment,
           name: result.name,
@@ -45423,7 +45658,7 @@ async function nativeToolkitTransport(options) {
           dataUrl: `data:${result.contentType};base64,${result.bytes.toString("base64")}`
         } };
       }
-      return fail2("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
+      return fail3("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
     }
   };
   return { transport, toolkit, outputs, resolveGenerationReferences, importTrustedReferences };
@@ -45515,7 +45750,7 @@ async function registerPodploNativePresets(agentPresets, options = {}) {
 }
 
 // plugins/podplo-dsh/src/jev-routing.ts
-import { createHash as createHash11, randomUUID as randomUUID11 } from "node:crypto";
+import { createHash as createHash11, randomUUID as randomUUID12 } from "node:crypto";
 var stages = ["discover_skill", "read_inputs", "prepare_generation", "wait_generation", "process_outputs", "deliver", "complete"];
 var groups = ["skill_discovery", "skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status", "image_processing", "delivery"];
 var workflows = ["podplo_generation", "image_processing", "other"];
@@ -45553,7 +45788,7 @@ function parseJevRoute(value2) {
   if (!value2 || typeof value2 !== "object") return void 0;
   const row = value2;
   if (row.schemaVersion !== 2 || !row.answers || typeof row.answers !== "object" || typeof row.model !== "string" || row.model.length < 1 || row.model.length > 100 || !safeCount(row.latencyMs) || !row.usage || !safeCount(row.usage.inputTokens) || !safeCount(row.usage.outputTokens) || row.usage.cacheReadTokens !== void 0 && !safeCount(row.usage.cacheReadTokens) || row.usage.cacheWriteTokens !== void 0 && !safeCount(row.usage.cacheWriteTokens)) return void 0;
-  const parsed = Object.fromEntries(Object.entries(row.answers).map(([id, answer]) => [id, parseTypedAnswer(answer)]));
+  const parsed = Object.fromEntries(Object.entries(row.answers).map(([id2, answer]) => [id2, parseTypedAnswer(answer)]));
   if (Object.values(parsed).some((answer) => !answer)) return void 0;
   const workflow = parsed.workflow, phase = parsed.phase;
   if (workflow?.type !== "choice" || !workflows.includes(workflow.choice) || phase?.type !== "choice" || !stages.includes(phase.choice)) return void 0;
@@ -45607,19 +45842,19 @@ function neededGroups(route) {
   else for (const group of ["input_inspection", "image_processing", "delivery"]) selected.add(group);
   return selected;
 }
-function groupForGlobalTool(name) {
-  const normalized = name.toLowerCase();
-  if (/ask_user|todo|goal|present|(^|_)(bash|pwsh|glob|working_directory|job_(?:list|output|kill))($|_)/u.test(normalized)) return "safe";
-  if (/read_image|selected_image|image_info/u.test(normalized)) return "input_inspection";
-  if (/return_file|deliver|attachment/u.test(normalized)) return "delivery";
-  if (/outline|resize|rotate|mirror|convert_image|export_image/u.test(normalized)) return "image_processing";
-  if (/skill/u.test(normalized)) return "skill_discovery";
+function groupForGlobalTool(name2) {
+  const normalized2 = name2.toLowerCase();
+  if (/ask_user|todo|goal|present|(^|_)(bash|pwsh|glob|working_directory|job_(?:list|output|kill))($|_)/u.test(normalized2)) return "safe";
+  if (/read_image|selected_image|image_info/u.test(normalized2)) return "input_inspection";
+  if (/return_file|deliver|attachment/u.test(normalized2)) return "delivery";
+  if (/outline|resize|rotate|mirror|convert_image|export_image/u.test(normalized2)) return "image_processing";
+  if (/skill/u.test(normalized2)) return "skill_discovery";
   return void 0;
 }
 function allowedRestrictableTools(route, restrictableNames2) {
   const selected = neededGroups(route);
-  return restrictableNames2.filter((name) => {
-    const group = groupForGlobalTool(name);
+  return restrictableNames2.filter((name2) => {
+    const group = groupForGlobalTool(name2);
     return group === "safe" || group !== void 0 && selected.has(group);
   }).sort();
 }
@@ -45628,7 +45863,7 @@ function routeGuidance(route, application) {
 }
 function guidanceMessage(text4) {
   return Object.freeze({
-    id: randomUUID11(),
+    id: randomUUID12(),
     role: "user",
     content: Object.freeze([{ type: "text", text: text4 }]),
     source: Object.freeze({ kind: "user" })
@@ -45649,7 +45884,7 @@ function flashUsage(usage) {
 }
 function restrictableNames(agent) {
   const view = agent.ctx.tools.view?.(agent);
-  return view?.restrictableNames instanceof Set ? [...view.restrictableNames].filter((name) => typeof name === "string" && name !== "run_code").sort() : [];
+  return view?.restrictableNames instanceof Set ? [...view.restrictableNames].filter((name2) => typeof name2 === "string" && name2 !== "run_code").sort() : [];
 }
 var fullApplication = (revision, reason) => ({
   revision,
@@ -45704,17 +45939,17 @@ function installJevRouting(options) {
     }
     if (!currentUser.text || lastRoutedFactRevision === factRevision) return decision;
     lastRoutedFactRevision = factRevision;
-    const requestId = randomUUID11(), actualRestrictableNames = restrictableNames(options.agent);
-    const account = options.snapshot().account;
-    const accountMatch = account.status === "connected" && account.userId === options.expectedUserId;
-    void postEvent({ kind: "account_check", requestId, accountStatus: account.status, accountMatch });
+    const requestId = randomUUID12(), actualRestrictableNames = restrictableNames(options.agent);
+    const account2 = options.snapshot().account;
+    const accountMatch = account2.status === "connected" && account2.userId === options.expectedUserId;
+    void postEvent({ kind: "account_check", requestId, accountStatus: account2.status, accountMatch });
     if (!accountMatch) {
       logMetric(options.logger, "warn", {
         source: "jev",
         outcome: "blocked",
         fallback: false,
         reason: "account_mismatch",
-        accountStatus: account.status,
+        accountStatus: account2.status,
         accountMatch: false
       });
       return { kind: "reject" };
@@ -45861,13 +46096,13 @@ function installJevUsageObserver(options) {
   return options.ctx.on("llm/stream", (request, next) => {
     const sessionId = request.sessionId === void 0 ? "" : String(request.sessionId);
     if (!options.activeSessionIds.has(sessionId)) return next();
-    const requestId = randomUUID11(), purpose = request.purpose ?? "conversation";
-    const schema = JSON.stringify(request.tools ?? []), toolNames = (request.tools ?? []).map((tool) => tool.name ?? "").filter(Boolean).sort();
+    const requestId = randomUUID12(), purpose = request.purpose ?? "conversation";
+    const schema2 = JSON.stringify(request.tools ?? []), toolNames = (request.tools ?? []).map((tool) => tool.name ?? "").filter(Boolean).sort();
     const tools = {
       names: toolNames,
       count: toolNames.length,
-      schemaBytes: Buffer.byteLength(schema),
-      schemaHash: createHash11("sha256").update(schema).digest("hex")
+      schemaBytes: Buffer.byteLength(schema2),
+      schemaHash: createHash11("sha256").update(schema2).digest("hex")
     };
     const routingState = options.routingStates.get(sessionId);
     const applied = routingState?.current ?? fullApplication(0, "baseline");
@@ -45954,20 +46189,20 @@ function installJevUsageObserver(options) {
 
 // plugins/podplo-dsh/src/task-archive-host.ts
 import { createHash as createHash15 } from "node:crypto";
-import { basename as basename11, extname as extname9, join as join11 } from "node:path";
+import { basename as basename11, extname as extname9, join as join12 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
+import { createHash as createHash13, randomUUID as randomUUID14 } from "node:crypto";
 import { constants as constants5 } from "node:fs";
 import { link, lstat as lstat5, mkdir as mkdir8, open as open6, realpath as realpath6, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
-import { basename as basename10, dirname as dirname8, extname as extname8, isAbsolute as isAbsolute6, join as join10 } from "node:path";
+import { basename as basename10, dirname as dirname8, extname as extname8, isAbsolute as isAbsolute6, join as join11 } from "node:path";
 import sharp13 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
-import { createHash as createHash12, randomUUID as randomUUID12 } from "node:crypto";
+import { createHash as createHash12, randomUUID as randomUUID13 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
 import { lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
-import { isAbsolute as isAbsolute5, join as join9 } from "node:path";
+import { isAbsolute as isAbsolute5, join as join10 } from "node:path";
 var hash3 = (value2) => createHash12("sha256").update(value2).digest("hex");
 var archiveTaskKey = (ownerId, sessionId, key) => hash3(`${hash3(ownerId)}\0${sessionId}\0${key}`);
 var stageSchema = external_exports.enum(["generation", "download", "processing", "archive", "connection"]);
@@ -46039,7 +46274,7 @@ var OperationLog = class {
     await mkdir7(this.options.directory, { recursive: true, mode: 448 });
     const base2 = await lstat4(this.options.directory);
     if (!base2.isDirectory() || base2.isSymbolicLink()) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u4E0D\u53EF\u7528");
-    const root = join9(await realpath5(this.options.directory), "operation-logs"), directory = join9(root, hash3(owner));
+    const root = join10(await realpath5(this.options.directory), "operation-logs"), directory = join10(root, hash3(owner));
     for (const path of [root, directory]) {
       await mkdir7(path, { recursive: true, mode: 448 });
       const stat = await lstat4(path);
@@ -46048,7 +46283,7 @@ var OperationLog = class {
     return directory;
   }
   async load(directory) {
-    const path = join9(directory, "operations.json");
+    const path = join10(directory, "operations.json");
     try {
       const handle = await open5(path, constants4.O_RDONLY | constants4.O_NOFOLLOW);
       try {
@@ -46074,7 +46309,7 @@ var OperationLog = class {
       const directory = await this.directory(identity.ownerId), original = await this.load(directory);
       let rows = original;
       for (const update of updates) {
-        const id = hash3(update.key), prior = rows.find((row2) => row2.id === id);
+        const id2 = hash3(update.key), prior = rows.find((row2) => row2.id === id2);
         if (!prior && update.create === false) continue;
         const startedAt = external_exports.string().datetime().parse(prior?.startedAt ?? update.startedAt);
         const at = external_exports.string().datetime().parse(update.at ?? (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString());
@@ -46089,18 +46324,18 @@ var OperationLog = class {
         if (prior && JSON.stringify(semantic) === JSON.stringify({ type: prior.type, stage: prior.stage, status: prior.status, counts: prior.counts, diagnostics: prior.diagnostics })) continue;
         const stages2 = [...(prior?.stages ?? []).filter((row2) => row2.stage !== update.stage), { stage: update.stage, status: update.status, at }];
         const row = entrySchema.parse({
-          id,
+          id: id2,
           startedAt,
           updatedAt: at,
           ...semantic,
           stages: stages2,
           ...["completed", "failed", "stopped"].includes(update.status) ? { durationMs: Math.max(0, Date.parse(at) - Date.parse(startedAt)) } : {}
         });
-        rows = [row, ...rows.filter((saved) => saved.id !== id)].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 10);
+        rows = [row, ...rows.filter((saved) => saved.id !== id2)].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 10);
       }
       if (JSON.stringify(rows) === JSON.stringify(original)) return true;
       await this.same(identity);
-      const temporary = join9(directory, `.${randomUUID12()}.tmp`);
+      const temporary = join10(directory, `.${randomUUID13()}.tmp`);
       try {
         const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
         try {
@@ -46111,7 +46346,7 @@ var OperationLog = class {
         }
         await this.same(identity);
         if (await realpath5(directory) !== directory) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5DF2\u53D8\u5316");
-        await rename4(temporary, join9(directory, "operations.json"));
+        await rename4(temporary, join10(directory, "operations.json"));
       } finally {
         await unlink3(temporary).catch(() => void 0);
       }
@@ -46294,12 +46529,12 @@ function archiveDateBounds(filters, now = /* @__PURE__ */ new Date()) {
 var TaskArchiveManager = class {
   constructor(options) {
     this.options = options;
-    this.store = new AtomicStore(join10(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
+    this.store = new AtomicStore(join11(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
       const state = stateSchema3.parse(raw);
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true });
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join10(project.directory, basename10(task.directory)) !== task.directory || task.files.some((file2) => [file2.name, file2.cacheName, file2.publishedName].some((name) => name && (basename10(name) !== name || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name)))))
+        if (!project || join11(project.directory, basename10(task.directory)) !== task.directory || task.files.some((file2) => [file2.name, file2.cacheName, file2.publishedName].some((name2) => name2 && (basename10(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name2)))))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
@@ -46358,7 +46593,7 @@ var TaskArchiveManager = class {
   async allocateDirectory(parent, base2) {
     await this.directory(parent);
     for (let index = 1; index < 1e4; index++) {
-      const path = join10(parent, index === 1 ? base2 : `${base2}-${index}`);
+      const path = join11(parent, index === 1 ? base2 : `${base2}-${index}`);
       try {
         await mkdir8(path, { mode: 448 });
         return { path, stamp: await this.directory(path) };
@@ -46370,9 +46605,9 @@ var TaskArchiveManager = class {
   }
   async cacheDirectory(task, create = false) {
     const parts = [
-      join10(this.root, ".task-cache-v2"),
-      join10(this.root, ".task-cache-v2", task.owner),
-      join10(this.root, ".task-cache-v2", task.owner, task.id)
+      join11(this.root, ".task-cache-v2"),
+      join11(this.root, ".task-cache-v2", task.owner),
+      join11(this.root, ".task-cache-v2", task.owner, task.id)
     ];
     for (const path of parts) {
       if (create) await this.createDirectory(path);
@@ -46381,7 +46616,7 @@ var TaskArchiveManager = class {
     return parts[2];
   }
   async project(identity, input) {
-    const id = hash4(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id);
+    const id2 = hash4(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id2);
     if (existing) {
       await this.directory(existing.directory, existing.stamp);
       return existing;
@@ -46389,14 +46624,14 @@ var TaskArchiveManager = class {
     const chosen = await this.options.outputDirectory();
     const base2 = chosen ? await realpath6(chosen) : this.root;
     await this.directory(base2);
-    const collection = join10(base2, "PodPlo\u6210\u679C");
+    const collection = join11(base2, "PodPlo\u6210\u679C");
     await this.createDirectory(collection);
-    const ownerDirectory = join10(collection, identity.owner.slice(0, 16));
+    const ownerDirectory = join11(collection, identity.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
-    const name = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
-    const directory = join10(ownerDirectory, `${name}_${id.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
+    const name2 = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
+    const directory = join11(ownerDirectory, `${name2}_${id2.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
     await this.same(identity);
-    const project = { id, owner: identity.owner, name, directory, stamp: directoryStamp };
+    const project = { id: id2, owner: identity.owner, name: name2, directory, stamp: directoryStamp };
     await this.store.transaction((state) => {
       state.projects.push(project);
     });
@@ -46420,19 +46655,19 @@ var TaskArchiveManager = class {
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.key === key);
       const before = task ? canonical(task) : "";
       if (!task) {
-        const project = await this.project(identity, input.project), id = randomUUID13();
-        const name = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
+        const project = await this.project(identity, input.project), id2 = randomUUID14();
+        const name2 = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
         const allocated = await this.allocateDirectory(project.directory, `${finalTimestamp(input.createdAt)}_\u56FE\u7247\u52A0\u5DE5`);
         const directory = allocated.path, directoryStamp = allocated.stamp;
-        await this.createDirectory(join10(directory, "\u6210\u54C1"));
+        await this.createDirectory(join11(directory, "\u6210\u54C1"));
         await this.same(identity);
         task = {
-          id,
+          id: id2,
           key,
           owner: identity.owner,
           sessionId: input.sessionId,
           projectId: project.id,
-          name,
+          name: name2,
           directory,
           stamp: directoryStamp,
           archiveFormat: 2,
@@ -46462,7 +46697,7 @@ var TaskArchiveManager = class {
         row.operationIds = [.../* @__PURE__ */ new Set([...row.operationIds, ...input.operationIds])];
         for (const value2 of input.files) {
           if (row.files.some((file2) => file2.source.kind === value2.source.kind && file2.source.id === value2.source.id && file2.group === value2.group)) continue;
-          row.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
+          row.files.push({ ...value2, id: randomUUID14(), status: "pending", image: true });
         }
         const operationStopped = input.stoppedAt && (!row.processingResumedAt || Date.parse(input.stoppedAt) > Date.parse(row.processingResumedAt)) && !storedTaskFinished(row);
         if (operationStopped) row.stoppedAt = input.stoppedAt;
@@ -46477,8 +46712,8 @@ var TaskArchiveManager = class {
   needsArchiveWork(task) {
     return !!task && (task.files.some((file2) => file2.status === "pending") || task.archiveFormat === 2 && storedFinalLeaves(task).some((file2) => !file2.publishedName));
   }
-  async observeTask(id, identity) {
-    const task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+  async observeTask(id2, identity) {
+    const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (!task) return;
     const observedAt = (/* @__PURE__ */ new Date()).toISOString(), view = await this.taskView(task, identity);
     await this.same(identity);
@@ -46487,42 +46722,42 @@ var TaskArchiveManager = class {
       await this.same(identity);
     }
   }
-  schedule(id, identity) {
+  schedule(id2, identity) {
     if (this.closed) return;
-    if (this.jobs.has(id)) {
-      this.reschedule.add(id);
+    if (this.jobs.has(id2)) {
+      this.reschedule.add(id2);
       return;
     }
-    const job = this.savePending(id, identity).then(async () => {
-      const task = this.store.snapshot().tasks.find((row) => row.id === id);
+    const job = this.savePending(id2, identity).then(async () => {
+      const task = this.store.snapshot().tasks.find((row) => row.id === id2);
       if (task?.diagnostics?.some((row) => row.stage === "archive")) {
         await this.same(identity);
         await this.store.transaction((state) => {
-          const current = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+          const current = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
           if (current?.diagnostics) current.diagnostics = current.diagnostics.filter((row) => row.stage !== "archive");
         });
       }
-      if (task) await this.observeTask(id, identity);
+      if (task) await this.observeTask(id2, identity);
     }).catch(async (error51) => {
       try {
         await this.same(identity);
         await this.store.transaction((state) => {
-          const task2 = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+          const task2 = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
           if (task2) task2.diagnostics = [...(task2.diagnostics ?? []).filter((row) => row.stage !== "archive"), diagnose("archive", error51, (/* @__PURE__ */ new Date()).toISOString())].slice(-20);
         });
-        const task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
-        if (task) await this.observeTask(id, identity);
+        const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+        if (task) await this.observeTask(id2, identity);
       } catch {
       }
     }).finally(() => {
-      this.jobs.delete(id);
-      const current = this.store.snapshot().tasks.find((row) => row.id === id);
-      const rerun = this.reschedule.delete(id) || !!current?.files.some((file2) => file2.status === "pending");
+      this.jobs.delete(id2);
+      const current = this.store.snapshot().tasks.find((row) => row.id === id2);
+      const rerun = this.reschedule.delete(id2) || !!current?.files.some((file2) => file2.status === "pending");
       if (!this.closed && rerun)
-        void this.same(identity).then(() => this.schedule(id, identity)).catch(() => void 0);
-      this.options.changed?.(id);
+        void this.same(identity).then(() => this.schedule(id2, identity)).catch(() => void 0);
+      this.options.changed?.(id2);
     });
-    this.jobs.set(id, job);
+    this.jobs.set(id2, job);
   }
   async taskDirectory(task) {
     const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === task.owner);
@@ -46530,17 +46765,17 @@ var TaskArchiveManager = class {
     await this.directory(task.directory, task.stamp);
   }
   groupDirectory(task, file2) {
-    return join10(task.directory, file2.reviewRequired ? "\u5F85\u590D\u6838" : file2.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
+    return join11(task.directory, file2.reviewRequired ? "\u5F85\u590D\u6838" : file2.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
   }
-  async writeFresh(directory, name, bytes, token) {
+  async writeFresh(directory, name2, bytes, token) {
     await this.directory(directory);
-    const path = join10(directory, name), digest = hash4(bytes);
+    const path = join11(directory, name2), digest = hash4(bytes);
     const current = await lstat5(path).catch(() => void 0);
     if (current) {
       if (hash4(await this.readPath(path)) !== digest) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
       return { path, stat: current, digest, created: false };
     }
-    const temporary = join10(directory, `.${token}.${randomUUID13()}.part`);
+    const temporary = join11(directory, `.${token}.${randomUUID14()}.part`);
     const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
     try {
       await handle.writeFile(bytes);
@@ -46618,49 +46853,49 @@ var TaskArchiveManager = class {
   async publishedValid(task, file2, verifyDigest = true) {
     try {
       if (!file2.publishedName || !file2.publishedFingerprint) return false;
-      const output = join10(task.directory, "\u6210\u54C1");
+      const output = join11(task.directory, "\u6210\u54C1");
       await this.directory(output);
-      const path = join10(output, file2.publishedName), stat = await lstat5(path).catch(() => void 0);
+      const path = join11(output, file2.publishedName), stat = await lstat5(path).catch(() => void 0);
       return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath6(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file2.publishedFingerprint && (!verifyDigest || hash4(await this.readPath(path)) === file2.digest);
     } catch {
       return false;
     }
   }
-  async reconcileFinalOutputs(id, identity) {
-    let task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+  async reconcileFinalOutputs(id2, identity) {
+    let task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (task?.archiveFormat !== 2) return;
     await this.taskDirectory(task);
-    const output = join10(task.directory, "\u6210\u54C1");
+    const output = join11(task.directory, "\u6210\u54C1");
     await this.directory(output);
     await this.same(identity);
-    for (const candidate of this.finalLeaves(task)) {
+    for (const candidate2 of this.finalLeaves(task)) {
       await this.same(identity);
-      await this.ensureOutputSlot(id, candidate.id);
-      task = this.store.snapshot().tasks.find((row) => row.id === id);
-      const current = task.files.find((row) => row.id === candidate.id);
+      await this.ensureOutputSlot(id2, candidate2.id);
+      task = this.store.snapshot().tasks.find((row) => row.id === id2);
+      const current = task.files.find((row) => row.id === candidate2.id);
       if (await this.publishedValid(task, current)) continue;
       if (current.publishedName) await this.store.transaction((state) => {
-        const row = state.tasks.find((t) => t.id === id).files.find((f) => f.id === current.id);
+        const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === current.id);
         delete row.publishedName;
         delete row.publishedFingerprint;
       });
-      task = this.store.snapshot().tasks.find((row) => row.id === id);
-      const cache = await this.cacheDirectory(task), file2 = task.files.find((row) => row.id === candidate.id);
+      task = this.store.snapshot().tasks.find((row) => row.id === id2);
+      const cache = await this.cacheDirectory(task), file2 = task.files.find((row) => row.id === candidate2.id);
       if (!file2.cacheName) continue;
-      const bytes = await this.readPath(join10(cache, file2.cacheName));
+      const bytes = await this.readPath(join11(cache, file2.cacheName));
       if (hash4(bytes) !== file2.digest) throw new Error("\u52A0\u5DE5\u7F13\u5B58\u5DF2\u53D8\u5316");
       const extension = extname8(file2.cacheName), preferred = this.preferredOutputName(task, file2), base2 = basename10(preferred, extension);
-      let name = preferred, suffix = 2;
-      while (await lstat5(join10(output, name)).catch(() => void 0)) name = `${base2}-\u526F\u672C${suffix++}${extension}`;
+      let name2 = preferred, suffix = 2;
+      while (await lstat5(join11(output, name2)).catch(() => void 0)) name2 = `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
       await this.same(identity);
-      const saved = await this.writeFresh(output, name, bytes, file2.id);
+      const saved = await this.writeFresh(output, name2, bytes, file2.id);
       try {
         await this.taskDirectory(task);
         await this.same(identity);
         await this.store.transaction((state) => {
-          const row = state.tasks.find((t) => t.id === id).files.find((f) => f.id === file2.id);
-          row.publishedName = name;
+          const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === file2.id);
+          row.publishedName = name2;
           row.publishedFingerprint = `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`;
         });
       } catch (error51) {
@@ -46669,7 +46904,7 @@ var TaskArchiveManager = class {
         throw error51;
       }
     }
-    task = this.store.snapshot().tasks.find((row) => row.id === id);
+    task = this.store.snapshot().tasks.find((row) => row.id === id2);
     const leaves = this.finalLeaves(task), leafIds = new Set(leaves.map((row) => row.id));
     for (const old of task.files.filter((row) => row.publishedName && !leafIds.has(row.id))) {
       if (!leaves.some((leaf) => leaf.publishedName && this.isAncestor(task, old, leaf))) continue;
@@ -46677,39 +46912,39 @@ var TaskArchiveManager = class {
       await this.same(identity);
       if (await this.publishedValid(task, old)) {
         await this.same(identity);
-        await unlink4(join10(output, old.publishedName));
+        await unlink4(join11(output, old.publishedName));
       }
       await this.same(identity);
       await this.store.transaction((state) => {
-        const row = state.tasks.find((t) => t.id === id).files.find((f) => f.id === old.id);
+        const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === old.id);
         delete row.publishedName;
         delete row.publishedFingerprint;
       });
     }
-    task = this.store.snapshot().tasks.find((row) => row.id === id);
+    task = this.store.snapshot().tasks.find((row) => row.id === id2);
     for (const leaf of this.finalLeaves(task).filter((row) => row.publishedName)) {
       const preferred = this.preferredOutputName(task, leaf);
-      if (leaf.publishedName === preferred || await lstat5(join10(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
+      if (leaf.publishedName === preferred || await lstat5(join11(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
       await this.taskDirectory(task);
       await this.same(identity);
       await this.directory(output);
       try {
-        await link(join10(output, leaf.publishedName), join10(output, preferred));
+        await link(join11(output, leaf.publishedName), join11(output, preferred));
       } catch (error51) {
         if (error51.code === "EEXIST") continue;
         throw error51;
       }
-      await unlink4(join10(output, leaf.publishedName));
-      const stat = await lstat5(join10(output, preferred));
+      await unlink4(join11(output, leaf.publishedName));
+      const stat = await lstat5(join11(output, preferred));
       await this.store.transaction((state) => {
-        const row = state.tasks.find((t) => t.id === id).files.find((f) => f.id === leaf.id);
+        const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === leaf.id);
         row.publishedName = preferred;
         row.publishedFingerprint = `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}`;
       });
     }
   }
-  async savePendingFinalOnly(id, identity) {
-    const initial = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+  async savePendingFinalOnly(id2, identity) {
+    const initial = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (initial?.archiveFormat !== 2) return;
     for (const file2 of initial.files.filter((row) => row.status === "pending")) {
       let stage = "archive";
@@ -46721,7 +46956,7 @@ var TaskArchiveManager = class {
           if (file2.source.kind !== "asset") sourceName = await this.options.read(file2.source).then((value2) => basename10(value2.name)).catch(() => void 0);
           await this.same(identity);
           await this.store.transaction((state) => {
-            const row = state.tasks.find((row2) => row2.id === id).files.find((row2) => row2.id === file2.id);
+            const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file2.id);
             Object.assign(row, { status: "saved", referenceOnly: true, image: false, ...sourceName ? { sourceName } : {} });
           });
           continue;
@@ -46737,14 +46972,14 @@ var TaskArchiveManager = class {
           if (!["png", "jpeg", "webp"].includes(meta3.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta3.format === "jpeg" ? "jpg" : meta3.format;
         }
-        const latest = this.store.snapshot().tasks.find((row) => row.id === id);
+        const latest = this.store.snapshot().tasks.find((row) => row.id === id2);
         const cache = await this.cacheDirectory(latest, true), cacheName = `${file2.id}.${extension}`;
         await this.same(identity);
         const saved = await this.writeFresh(cache, cacheName, source.bytes, file2.id);
         await this.same(identity);
         await this.taskDirectory(initial);
         await this.store.transaction((state) => {
-          const row = state.tasks.find((row2) => row2.id === id).files.find((row2) => row2.id === file2.id);
+          const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file2.id);
           delete row.diagnostic;
           Object.assign(row, {
             sourceName: basename10(source.name),
@@ -46759,7 +46994,7 @@ var TaskArchiveManager = class {
       } catch (error51) {
         await this.same(identity);
         await this.store.transaction((state) => {
-          const row = state.tasks.find((row2) => row2.id === id && row2.owner === identity.owner)?.files.find((row2) => row2.id === file2.id);
+          const row = state.tasks.find((row2) => row2.id === id2 && row2.owner === identity.owner)?.files.find((row2) => row2.id === file2.id);
           if (row) {
             row.status = "failed";
             row.diagnostic = diagnose(stage, error51, (/* @__PURE__ */ new Date()).toISOString());
@@ -46767,13 +47002,13 @@ var TaskArchiveManager = class {
         });
       }
     }
-    await this.reconcileFinalOutputs(id, identity);
+    await this.reconcileFinalOutputs(id2, identity);
   }
-  async savePending(id, identity) {
-    const task = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
+  async savePending(id2, identity) {
+    const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (!task) return;
     if (task.archiveFormat === 2) {
-      await this.savePendingFinalOnly(id, identity);
+      await this.savePendingFinalOnly(id2, identity);
       return;
     }
     for (const file2 of task.files.filter((row) => row.status === "pending")) {
@@ -46794,19 +47029,19 @@ var TaskArchiveManager = class {
           extension = meta3.format === "jpeg" ? "jpg" : meta3.format;
         }
         const label = safeLabel(file2.group === "reference" ? basename10(source.name, extname8(source.name)) : (file2.label || basename10(source.name, extname8(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
-        const used = new Set(this.store.snapshot().tasks.find((row) => row.id === id).files.filter((row) => row.group === file2.group && row.id !== file2.id).map((row) => row.name));
-        let name = file2.name ?? `${label}.${extension}`, suffix = 2;
-        while (used.has(name)) name = `${label}-${suffix++}.${extension}`;
+        const used = new Set(this.store.snapshot().tasks.find((row) => row.id === id2).files.filter((row) => row.group === file2.group && row.id !== file2.id).map((row) => row.name));
+        let name2 = file2.name ?? `${label}.${extension}`, suffix = 2;
+        while (used.has(name2)) name2 = `${label}-${suffix++}.${extension}`;
         const directory = this.groupDirectory(task, file2);
         if (file2.reviewRequired) await this.createDirectory(directory);
         await this.directory(directory);
-        const path = join10(directory, name), digest = hash4(source.bytes);
+        const path = join11(directory, name2), digest = hash4(source.bytes);
         await this.same(identity);
         if (await lstat5(path).catch(() => void 0)) {
           const bytes = await this.readPath(path);
           if (hash4(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
-          const temporary = join10(directory, `.${file2.id}.${randomUUID13()}.part`);
+          const temporary = join11(directory, `.${file2.id}.${randomUUID14()}.part`);
           const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
           try {
             await handle.writeFile(source.bytes);
@@ -46827,15 +47062,15 @@ var TaskArchiveManager = class {
         await this.same(identity);
         const stat = await lstat5(path);
         await this.store.transaction((state) => {
-          const saved = state.tasks.find((row) => row.id === id).files.find((row) => row.id === file2.id);
+          const saved = state.tasks.find((row) => row.id === id2).files.find((row) => row.id === file2.id);
           delete saved.diagnostic;
-          Object.assign(saved, { name, image, status: "saved", digest, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
+          Object.assign(saved, { name: name2, image, status: "saved", digest, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
         });
       } catch (error51) {
         if (published) await unlink4(published).catch(() => void 0);
         await this.same(identity);
         await this.store.transaction((state) => {
-          const saved = state.tasks.find((row) => row.id === id && row.owner === identity.owner)?.files.find((row) => row.id === file2.id);
+          const saved = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner)?.files.find((row) => row.id === file2.id);
           if (saved) {
             saved.status = "failed";
             saved.diagnostic = diagnose(stage, error51, (/* @__PURE__ */ new Date()).toISOString());
@@ -46855,9 +47090,9 @@ var TaskArchiveManager = class {
       await handle.close();
     }
   }
-  async owned(id) {
+  async owned(id2) {
     const identity = await this.identity();
-    const task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.id === id);
+    const task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.id === id2);
     if (!task) throw new Error("\u6210\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
     return { identity, task };
   }
@@ -46904,14 +47139,14 @@ var TaskArchiveManager = class {
         ...!files.some((file2) => file2.status !== "saved") ? ["\u65E0\u3002"] : [],
         "",
         "\u5C1A\u672A\u5904\u7406\u7684\u56FE\u7247\uFF1A",
-        ...audit.processing.steps.flatMap((step) => step.missingIds.map((id) => `- ${step.label}\uFF1A${files.find((file2) => file2.originId === id)?.name ?? "\u6765\u6E90\u56FE\u7247\uFF08\u5C1A\u672A\u5F52\u6863\uFF09"}`)),
+        ...audit.processing.steps.flatMap((step) => step.missingIds.map((id2) => `- ${step.label}\uFF1A${files.find((file2) => file2.originId === id2)?.name ?? "\u6765\u6E90\u56FE\u7247\uFF08\u5C1A\u672A\u5F52\u6863\uFF09"}`)),
         ...audit.processing.remaining === null ? ["\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\uFF0C\u9700\u6838\u5BF9\u539F\u4EFB\u52A1\u3002"] : audit.processing.remaining === 0 ? ["\u65E0\u3002"] : [],
         "",
         "\u63D0\u793A\uFF1A\u751F\u6210\u5931\u8D25\u6216\u63D0\u4EA4\u5F85\u6838\u5BF9\u65F6\uFF0C\u8BF7\u5148\u6838\u5BF9\u539F\u4EFB\u52A1\uFF1B\u8865\u4FDD\u5B58\u4E0D\u4F1A\u91CD\u65B0\u751F\u56FE\u3002\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\u65F6\uFF0C\u4E0D\u80FD\u636E\u6B64\u5224\u65AD\u662F\u5426\u6F0F\u5904\u7406\u3002",
         "\u672C\u6587\u4EF6\u7531\u4EFB\u52A1\u6210\u679C\u81EA\u52A8\u66F4\u65B0\uFF1B\u5982\u679C\u4F60\u624B\u52A8\u4FEE\u6539\uFF0C\u672C\u7A0B\u5E8F\u4F1A\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002",
         ""
       ];
-      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash4(bytes), path = join10(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash4(bytes), path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
       const stat = await lstat5(path).catch(() => void 0);
       if (stat) {
         const existing = await this.readPath(path), existingDigest = hash4(existing);
@@ -46923,7 +47158,7 @@ var TaskArchiveManager = class {
         }
         if (!latest.summaryDigest || existingDigest !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
       }
-      const temporary = join10(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID13()}.tmp`);
+      const temporary = join11(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID14()}.tmp`);
       const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
       try {
         await handle.writeFile(bytes);
@@ -46958,11 +47193,11 @@ var TaskArchiveManager = class {
     return deleted;
   }
   /** Remove one verified local task folder, never an arbitrary client-supplied path. */
-  async deleteTask(id, confirmed) {
+  async deleteTask(id2, confirmed) {
     if (confirmed !== true) throw new Error("\u5220\u9664\u6279\u6B21\u53CA\u672C\u5730\u6587\u4EF6\u9700\u8981\u786E\u8BA4");
     return this.serial(async () => {
-      const { identity, task } = await this.owned(id);
-      if (this.jobs.has(id) || ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status))
+      const { identity, task } = await this.owned(id2);
+      if (this.jobs.has(id2) || ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status))
         throw new Error("\u4EFB\u52A1\u4ECD\u5728\u751F\u6210\u6216\u4FDD\u5B58\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F");
       const project = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === task.projectId);
       await this.directory(project.directory, project.stamp);
@@ -46973,7 +47208,7 @@ var TaskArchiveManager = class {
       if (existing) {
         await this.taskDirectory(task);
         await this.same(identity);
-        const staged = join10(project.directory, `.delete-${task.id}-${randomUUID13()}`);
+        const staged = join11(project.directory, `.delete-${task.id}-${randomUUID14()}`);
         await rename5(task.directory, staged);
         try {
           await this.directory(project.directory, project.stamp);
@@ -47010,11 +47245,11 @@ var TaskArchiveManager = class {
         });
         state.tasks = state.tasks.filter((row) => row.id !== task.id);
       });
-      return { deleted: true, taskId: id, assetIds };
+      return { deleted: true, taskId: id2, assetIds };
     });
   }
-  async processingContext(id) {
-    const { identity, task } = await this.owned(id);
+  async processingContext(id2) {
+    const { identity, task } = await this.owned(id2);
     await this.same(identity);
     return {
       key: task.key,
@@ -47031,16 +47266,16 @@ var TaskArchiveManager = class {
     };
   }
   /** Owner-bound processing audit from persisted receipts only; never scans task folders. */
-  async processingAudit(id, sessionId) {
-    const { identity, task } = await this.owned(id);
+  async processingAudit(id2, sessionId) {
+    const { identity, task } = await this.owned(id2);
     if (task.sessionId !== sessionId) throw new Error("\u52A0\u5DE5\u4EFB\u52A1\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD");
     const audit = storedTaskAudit(task);
     await this.same(identity);
     return audit;
   }
   /** Read only already-published archive bytes for Host-side processing. */
-  async processingInputs(id, ids2) {
-    const { identity, task } = await this.owned(id);
+  async processingInputs(id2, ids2) {
+    const { identity, task } = await this.owned(id2);
     if (!ids2.length || new Set(ids2).size !== ids2.length) throw new Error("\u52A0\u5DE5\u8F93\u5165\u65E0\u6548");
     const values = [];
     await this.taskDirectory(task);
@@ -47048,7 +47283,7 @@ var TaskArchiveManager = class {
       if (task.archiveFormat === 2) {
         const file3 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.cacheName);
         if (!file3?.cacheName || !file3.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
-        const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join10(cache, file3.cacheName));
+        const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join11(cache, file3.cacheName));
         if (hash4(bytes2) !== file3.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
         values.push({ id: sourceId, name: file3.sourceName ?? file3.cacheName, bytes: bytes2, kind: "image" });
         continue;
@@ -47056,19 +47291,19 @@ var TaskArchiveManager = class {
       const file2 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.name);
       if (!file2?.name || !file2.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
       await this.directory(this.groupDirectory(task, file2));
-      const bytes = await this.readPath(join10(this.groupDirectory(task, file2), file2.name));
+      const bytes = await this.readPath(join11(this.groupDirectory(task, file2), file2.name));
       if (hash4(bytes) !== file2.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
       values.push({ id: sourceId, name: file2.name, bytes, kind: "image" });
     }
     await this.same(identity);
     return values;
   }
-  async recordProcessingFailure(id, failure) {
-    const { identity, task } = await this.owned(id);
+  async recordProcessingFailure(id2, failure) {
+    const { identity, task } = await this.owned(id2);
     await this.serial(async () => {
       await this.same(identity);
       await this.store.transaction((state) => {
-        const task2 = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        const task2 = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
         task2.processingFailures = task2.processingFailures.filter((row) => !(row.stepId === failure.stepId && row.inputId === failure.inputId));
         task2.processingFailures.push(failure);
       });
@@ -47079,12 +47314,12 @@ var TaskArchiveManager = class {
       diagnose("processing", { code: failure.code }, failure.failedAt)
     ).catch(() => void 0);
   }
-  async clearProcessingFailures(id, stepId, inputIds) {
-    const { identity } = await this.owned(id);
+  async clearProcessingFailures(id2, stepId, inputIds) {
+    const { identity } = await this.owned(id2);
     await this.serial(async () => {
       await this.same(identity);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
         task.processingFailures = task.processingFailures.filter((row) => stepId !== void 0 && row.stepId !== stepId || inputIds !== void 0 && !inputIds.includes(row.inputId));
       });
     });
@@ -47112,22 +47347,22 @@ var TaskArchiveManager = class {
     for (const task of this.store.snapshot().tasks.filter((row) => row.owner === identity.owner && row.sessionId === sessionId)) this.options.changed?.(task.id);
   }
   /** Explicit UI continue resumes only this local archive task, never cloud submission. */
-  async resumeProcessing(id) {
-    const { identity } = await this.owned(id);
+  async resumeProcessing(id2) {
+    const { identity } = await this.owned(id2);
     await this.serial(async () => {
       await this.same(identity);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
         delete task.stoppedAt;
         task.processingResumedAt = (/* @__PURE__ */ new Date()).toISOString();
       });
     });
-    this.options.changed?.(id);
+    this.options.changed?.(id2);
   }
-  async openSummary(id) {
-    const { identity, task } = await this.owned(id);
+  async openSummary(id2) {
+    const { identity, task } = await this.owned(id2);
     await this.taskDirectory(task);
-    const path = join10(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+    const path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
     await this.readPath(path);
     await this.same(identity);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3");
@@ -47144,7 +47379,7 @@ var TaskArchiveManager = class {
     }
     if (!task.summaryDigest) return {};
     try {
-      const bytes = await this.readPath(join10(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt"));
+      const bytes = await this.readPath(join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt"));
       await this.same(identity);
       if (hash4(bytes) !== task.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u6539\u53D8");
       return { summaryStatus: "saved" };
@@ -47158,7 +47393,7 @@ var TaskArchiveManager = class {
       let status = file2.status;
       if (status === "saved" && !file2.referenceOnly) {
         try {
-          const cache = await this.cacheDirectory(task), path = join10(cache, file2.cacheName ?? "");
+          const cache = await this.cacheDirectory(task), path = join11(cache, file2.cacheName ?? "");
           const stat = await lstat5(path);
           if (!file2.cacheName || !stat.isFile() || stat.isSymbolicLink() || await realpath6(path) !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.cacheFingerprint) status = "missing";
         } catch {
@@ -47186,18 +47421,18 @@ var TaskArchiveManager = class {
       if (!file2.publishedName && !leafIds.has(file2.id) && !failedOrPendingLeaf) continue;
       let status = file2.status;
       if (file2.status === "saved") status = file2.publishedName ? available && await this.publishedValid(task, file2, false) ? "saved" : "missing" : "failed";
-      const name = file2.publishedName ?? this.preferredOutputName(task, file2);
+      const name2 = file2.publishedName ?? this.preferredOutputName(task, file2);
       files.push({
         diagnostic: file2.diagnostic,
         id: file2.id,
-        name,
+        name: name2,
         group: "result",
         image: file2.image,
         status,
         originId: file2.source.id,
         sourceId: file2.sourceId,
         generationItemIndex: file2.generationItemIndex,
-        ...file2.publishedName ? { relativePath: join10("\u6210\u54C1", file2.publishedName) } : {},
+        ...file2.publishedName ? { relativePath: join11("\u6210\u54C1", file2.publishedName) } : {},
         ...file2.source.kind === "asset" ? { assetId: file2.source.id } : {},
         variant: file2.source.kind === "asset" ? "generated" : "processed"
       });
@@ -47239,7 +47474,7 @@ var TaskArchiveManager = class {
     for (const file2 of task.files) {
       let status = file2.status;
       if (status === "saved") {
-        const path = join10(this.groupDirectory(task, file2), file2.name);
+        const path = join11(this.groupDirectory(task, file2), file2.name);
         const stat = available ? await lstat5(path).catch(() => void 0) : void 0;
         if (!stat?.isFile() || stat.isSymbolicLink() || stat.size !== file2.size || await realpath6(path).catch(() => "") !== path || file2.fingerprint && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.fingerprint) status = "missing";
       }
@@ -47318,11 +47553,11 @@ var TaskArchiveManager = class {
     const headers = state.tasks.filter((row) => row.owner === identity.owner).flatMap((task) => {
       const projectName = projectNames.get(task.projectId);
       if (!projectName || filters.project && filters.project !== task.projectId) return [];
-      const name = task.archiveFormat === 2 ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
-      if (!`${name} ${projectName}`.toLocaleLowerCase().includes(query)) return [];
+      const name2 = task.archiveFormat === 2 ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
+      if (!`${name2} ${projectName}`.toLocaleLowerCase().includes(query)) return [];
       const createdAt = Date.parse(task.createdAt);
       if (!Number.isFinite(createdAt) || bounds.start !== void 0 && createdAt < bounds.start || bounds.end !== void 0 && createdAt >= bounds.end) return [];
-      return [{ verified: false, id: task.id, name, projectId: task.projectId, projectName, createdAt: task.createdAt }];
+      return [{ verified: false, id: task.id, name: name2, projectId: task.projectId, projectName, createdAt: task.createdAt }];
     }).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.id.localeCompare(b.id));
     const deletedAssetIds = state.deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds);
     const knownAssetIds = [.../* @__PURE__ */ new Set([...state.tasks.filter((row) => row.owner === identity.owner).flatMap((task) => task.files.filter((file2) => file2.group === "result" && file2.source.kind === "asset").map((file2) => file2.source.id)), ...deletedAssetIds])];
@@ -47331,18 +47566,18 @@ var TaskArchiveManager = class {
   }
   /** Verify only the exact local tasks selected for the visible page. */
   async page(ids2) {
-    if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id) => !/^[0-9a-f-]{36}$/iu.test(id)))
+    if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id2) => !/^[0-9a-f-]{36}$/iu.test(id2)))
       throw new Error("\u5904\u7406\u7ED3\u679C\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
     const identity = await this.identity(), state = this.store.snapshot();
-    const tasks = ids2.map((id) => state.tasks.find((row) => row.owner === identity.owner && row.id === id));
+    const tasks = ids2.map((id2) => state.tasks.find((row) => row.owner === identity.owner && row.id === id2));
     if (tasks.some((task) => !task)) throw new Error("\u5904\u7406\u7ED3\u679C\u5206\u9875\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5");
     const items = [];
     for (const task of tasks) items.push(await this.taskView(task, identity, false));
     await this.same(identity);
     return { items };
   }
-  async detail(id) {
-    const { identity, task } = await this.owned(id);
+  async detail(id2) {
+    const { identity, task } = await this.owned(id2);
     const view = await this.taskView(task, identity, false);
     await this.same(identity);
     return view;
@@ -47364,67 +47599,67 @@ var TaskArchiveManager = class {
     return tasks.map((task) => ({ id: task.id, key: task.key, sessionId: task.sessionId, projectId: task.projectId, name: task.name, createdAt: task.createdAt }));
   }
   /** Append local processing versions to the exact source task, never by filename. */
-  async append(id, files, operationId2, receipt) {
-    const { identity } = await this.owned(id);
+  async append(id2, files, operationId2, receipt) {
+    const { identity } = await this.owned(id2);
     await this.serial(async () => {
-      const before = canonical(this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner));
+      const before = canonical(this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner));
       await this.same(identity);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id && row.owner === identity.owner);
+        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
         for (const value2 of files) if (!task.files.some((file2) => file2.source.kind === value2.source.kind && file2.source.id === value2.source.id))
-          task.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
+          task.files.push({ ...value2, id: randomUUID14(), status: "pending", image: true });
         task.operationIds = [.../* @__PURE__ */ new Set([...task.operationIds, operationId2])];
         if (receipt && !task.processingRuns.some((run) => run.operationId === receipt.operationId))
           task.processingRuns.push({ ...receipt, resultIds: files.map((file2) => file2.source.id) });
       });
-      const current = this.store.snapshot().tasks.find((row) => row.id === id && row.owner === identity.owner);
-      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(id, identity);
+      const current = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(id2, identity);
     });
   }
-  async retry(id) {
-    const { identity, task } = await this.owned(id);
+  async retry(id2) {
+    const { identity, task } = await this.owned(id2);
     await this.taskDirectory(task);
     const absent = /* @__PURE__ */ new Set();
     if (task.archiveFormat === 2) {
       const cache = await this.cacheDirectory(task);
       for (const file2 of task.files.filter((file3) => file3.status === "saved" && file3.cacheName)) {
-        const path = join10(cache, file2.cacheName), stat = await lstat5(path).catch(() => void 0);
+        const path = join11(cache, file2.cacheName), stat = await lstat5(path).catch(() => void 0);
         if (!stat?.isFile() || stat.isSymbolicLink() || await realpath6(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file2.cacheFingerprint) absent.add(file2.id);
       }
       await this.same(identity);
       await this.store.transaction((state) => {
-        for (const file2 of state.tasks.find((row) => row.id === id).files)
+        for (const file2 of state.tasks.find((row) => row.id === id2).files)
           if (file2.status === "failed" || absent.has(file2.id)) file2.status = "pending";
       });
-      this.schedule(id, identity);
+      this.schedule(id2, identity);
       return;
     }
     for (const file2 of task.files.filter((file3) => file3.status === "saved" && file3.name))
-      if (!await lstat5(join10(this.groupDirectory(task, file2), file2.name)).catch(() => void 0)) absent.add(file2.id);
+      if (!await lstat5(join11(this.groupDirectory(task, file2), file2.name)).catch(() => void 0)) absent.add(file2.id);
     await this.store.transaction((state) => {
-      for (const file2 of state.tasks.find((row) => row.id === id).files)
+      for (const file2 of state.tasks.find((row) => row.id === id2).files)
         if (file2.status === "failed" || absent.has(file2.id)) file2.status = "pending";
     });
-    this.schedule(id, identity);
+    this.schedule(id2, identity);
   }
-  async read(id, fileId, preview = false) {
-    const { identity, task } = await this.owned(id), file2 = task.files.find((row) => row.id === fileId && row.status === "saved");
-    const name = task.archiveFormat === 2 ? file2?.publishedName : file2?.name;
-    if (!file2 || !name) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
-    const directory = task.archiveFormat === 2 ? join10(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2);
+  async read(id2, fileId, preview = false) {
+    const { identity, task } = await this.owned(id2), file2 = task.files.find((row) => row.id === fileId && row.status === "saved");
+    const name2 = task.archiveFormat === 2 ? file2?.publishedName : file2?.name;
+    if (!file2 || !name2) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
+    const directory = task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2);
     await this.taskDirectory(task);
     await this.directory(directory);
-    const bytes = await this.readPath(join10(directory, name));
+    const bytes = await this.readPath(join11(directory, name2));
     if (hash4(bytes) !== file2.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
     const key = `${identity.grant}:${task.sessionId}:${task.id}:${file2.id}:${file2.digest}:640:82`, epoch = this.previewCache.revision();
     const cached2 = preview && file2.image ? this.previewCache.get(key) : void 0;
     const result = cached2 ?? (preview && file2.image ? await sharp13(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
     await this.same(identity);
     if (preview && file2.image && !cached2) this.previewCache.set(key, result, epoch);
-    return { bytes: result, name, image: file2.image, contentType: preview && file2.image ? "image/webp" : `image/${extname8(name).slice(1)}` };
+    return { bytes: result, name: name2, image: file2.image, contentType: preview && file2.image ? "image/webp" : `image/${extname8(name2).slice(1)}` };
   }
-  async openTask(id) {
-    const { identity, task } = await this.owned(id);
+  async openTask(id2) {
+    const { identity, task } = await this.owned(id2);
     const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === identity.owner);
     if (!project || dirname8(task.directory) !== project.directory) throw new Error("\u6210\u679C\u6587\u4EF6\u5939\u4E0D\u5C5E\u4E8E\u5F53\u524D\u9879\u76EE");
     await this.directory(project.directory);
@@ -47444,13 +47679,13 @@ var TaskArchiveManager = class {
       await this.options.openPath(project.directory);
     });
   }
-  async reveal(id, fileId) {
-    const { identity, task } = await this.owned(id), file2 = task.files.find((row) => row.id === fileId);
-    await this.read(id, fileId);
+  async reveal(id2, fileId) {
+    const { identity, task } = await this.owned(id2), file2 = task.files.find((row) => row.id === fileId);
+    await this.read(id2, fileId);
     await this.same(identity);
-    const name = task.archiveFormat === 2 ? file2?.publishedName : file2?.name;
-    if (!this.options.revealPath || !file2 || !name) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
-    await this.options.revealPath(join10(task.archiveFormat === 2 ? join10(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2), name));
+    const name2 = task.archiveFormat === 2 ? file2?.publishedName : file2?.name;
+    if (!this.options.revealPath || !file2 || !name2) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
+    await this.options.revealPath(join11(task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file2), name2));
   }
   async wait() {
     while (this.jobs.size) await Promise.allSettled(this.jobs.values());
@@ -47739,12 +47974,12 @@ async function taskArchiveHost(options) {
             generationCalls: row.generationCalls,
             processingPlan: row.processingPlan,
             files: [
-              ...row.referenceIds.map((id, index) => ({ source: { kind: "asset", id, sessionId: row.sessionId }, group: "reference", label: `\u53C2\u8003\u56FE${index + 1}` })),
-              ...row.resultIds.map((id) => ({
-                source: { kind: "asset", id, sessionId: row.sessionId },
+              ...row.referenceIds.map((id2, index) => ({ source: { kind: "asset", id: id2, sessionId: row.sessionId }, group: "reference", label: `\u53C2\u8003\u56FE${index + 1}` })),
+              ...row.resultIds.map((id2) => ({
+                source: { kind: "asset", id: id2, sessionId: row.sessionId },
                 group: "result",
-                label: row.resultNames?.[id] ?? "\u539F\u59CB\u751F\u6210",
-                ...row.resultItemIndexes?.[id] !== void 0 ? { generationItemIndex: row.resultItemIndexes[id] } : {}
+                label: row.resultNames?.[id2] ?? "\u539F\u59CB\u751F\u6210",
+                ...row.resultItemIndexes?.[id2] !== void 0 ? { generationItemIndex: row.resultItemIndexes[id2] } : {}
               }))
             ]
           };
@@ -47784,11 +48019,11 @@ async function taskArchiveHost(options) {
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
-          for (const [id, files] of groups2) {
+          for (const [id2, files] of groups2) {
             stage = "archive";
-            if (groupKeys.has(id)) logTarget.key = groupKeys.get(id);
+            if (groupKeys.has(id2)) logTarget.key = groupKeys.get(id2);
             const receipt = { operationId: row.operationId, toolName: row.toolName, options: row.options, inputIds: row.inputIds, resultIds: files.map((file2) => file2.source.id) };
-            if (id) await manager.append(id, files, row.operationId, receipt);
+            if (id2) await manager.append(id2, files, row.operationId, receipt);
             else await manager.upsert({
               key: `local:${row.operationId}`,
               sessionId: row.sessionId,
@@ -47801,7 +48036,7 @@ async function taskArchiveHost(options) {
               processingRuns: [receipt],
               ...row.toolName !== TOOLBOX_PIPELINE_NAME && row.toolName !== GRID_SPLIT_OPERATION_NAME && row.options && typeof row.options === "object" ? { processingPlan: [{ id: "local", label, toolName: row.toolName, options: row.options }] } : {},
               files: [
-                ...row.inputIds.map((id2) => ({ source: { kind: "input", id: id2, sessionId: row.sessionId }, group: "reference", label: "\u53C2\u8003\u539F\u56FE" })),
+                ...row.inputIds.map((id3) => ({ source: { kind: "input", id: id3, sessionId: row.sessionId }, group: "reference", label: "\u53C2\u8003\u539F\u56FE" })),
                 ...files
               ]
             }, local.ownerId);
@@ -47913,7 +48148,7 @@ async function taskArchiveHost(options) {
     if (!audit.processing.registered) return { pending: false, status: "unregistered", audit };
     if (audit.processing.failed) return { pending: false, status: "failed", audit };
     const saved = new Set(context.files.filter((file2) => file2.group === "result" && file2.status === "saved" && file2.image).map((file2) => file2.source.id));
-    const hasRunnableAutomaticWork = context.plan?.some((step) => automaticProcessingTools.has(step.toolName) && audit.processing.steps.some((row) => row.id === step.id && row.missingIds.some((id) => saved.has(id) && !row.failedIds.includes(id)))) ?? false;
+    const hasRunnableAutomaticWork = context.plan?.some((step) => automaticProcessingTools.has(step.toolName) && audit.processing.steps.some((row) => row.id === step.id && row.missingIds.some((id2) => saved.has(id2) && !row.failedIds.includes(id2)))) ?? false;
     if (hasRunnableAutomaticWork) scheduleProcessing(task.id);
     if (hasRunnableAutomaticWork) return { pending: true, status: "pending", audit };
     if (audit.generation.unknown || audit.processing.remaining) return { pending: false, status: "blocked", audit };
@@ -47928,7 +48163,7 @@ async function taskArchiveHost(options) {
     const input = raw && typeof raw === "object" ? raw : {};
     if (!sessionId || typeof input.operationId !== "string" || !input.operationId || input.operationId.length > 180) return work();
     let identity, key, parent = false;
-    const startedAt = (/* @__PURE__ */ new Date()).toISOString(), ids2 = Array.isArray(input.ids) ? input.ids.filter((id) => typeof id === "string") : [];
+    const startedAt = (/* @__PURE__ */ new Date()).toISOString(), ids2 = Array.isArray(input.ids) ? input.ids.filter((id2) => typeof id2 === "string") : [];
     try {
       identity = { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
       const prior = await toolkit.archiveOperations(sessionId);
@@ -47982,8 +48217,8 @@ async function taskArchiveHost(options) {
     async toolDefinitions() {
       return [...await options.transport.toolDefinitions(), deliveryTool];
     },
-    async callTool(name, args, sessionId) {
-      if (name === deliveryTool.name) {
+    async callTool(name2, args, sessionId) {
+      if (name2 === deliveryTool.name) {
         if (!sessionId || !options.projectForSession(sessionId)) throw new PodploPluginError("NATIVE_SESSION_REQUIRED", "\u65E0\u6CD5\u6838\u5BF9\u5F53\u524D\u539F\u751F\u4F1A\u8BDD\uFF0C\u5DF2\u62D2\u7EDD\u63D0\u4F9B\u7ED3\u679C\u6587\u4EF6");
         const operationId2 = args && typeof args === "object" && typeof args.operationId === "string" ? args.operationId.trim() : "";
         if (!operationId2 || operationId2.length > 180) throw new PodploPluginError("INVALID_OPERATION_ID", "\u751F\u56FE\u64CD\u4F5C\u7F16\u53F7\u65E0\u6548");
@@ -48011,31 +48246,31 @@ async function taskArchiveHost(options) {
           status: operation.status ?? task.status,
           files: files.map((file2) => {
             if (basename11(file2.name) !== file2.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            const expected = join11(task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE", file2.name);
+            const expected = join12(task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE", file2.name);
             const relative5 = file2.relativePath ?? expected;
             if (relative5 !== expected) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u8DEF\u5F84\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            return { name: file2.name, path: join11(task.directory, relative5) };
+            return { name: file2.name, path: join12(task.directory, relative5) };
           })
         };
       }
-      const run = () => options.transport.callTool(name, args, sessionId);
-      const result = Object.hasOwn(labels, name) && name !== "podplo_package_delivery" ? await logLocal(args, sessionId, "local", run) : await run();
-      if (name.startsWith("podplo_")) void sync(sessionId);
+      const run = () => options.transport.callTool(name2, args, sessionId);
+      const result = Object.hasOwn(labels, name2) && name2 !== "podplo_package_delivery" ? await logLocal(args, sessionId, "local", run) : await run();
+      if (name2.startsWith("podplo_")) void sync(sessionId);
       return result;
     },
     async dispatch(action, raw, caller) {
       if (action === "toolbox.reveal" || action === "splitter.reveal") {
         const gridSplit = action === "splitter.reveal";
         if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", gridSplit ? "\u8BF7\u4ECE\u56FE\u7247\u5206\u5272\u6253\u5F00\u7ED3\u679C\u3002" : "\u8BF7\u4ECE\u5DE5\u5177\u7BB1\u6253\u5F00\u7ED3\u679C\u3002");
-        const id = raw?.id;
-        if (typeof id !== "string") throw new Error("\u7ED3\u679C\u7F16\u53F7\u65E0\u6548");
+        const id2 = raw?.id;
+        if (typeof id2 !== "string") throw new Error("\u7ED3\u679C\u7F16\u53F7\u65E0\u6548");
         const workspaceId = gridSplit ? PODPLO_GRID_SPLIT_WORKSPACE_ID : PODPLO_TOOLBOX_WORKSPACE_ID;
-        await toolkit.readResult(id, workspaceId);
+        await toolkit.readResult(id2, workspaceId);
         await sync();
         await manager.wait();
         const tasks = await manager.list(workspaceId);
-        const task = tasks.items.find((task2) => task2.files.some((file3) => file3.group === "result" && file3.originId === id));
-        const file2 = task?.files.find((file3) => file3.group === "result" && file3.originId === id);
+        const task = tasks.items.find((task2) => task2.files.some((file3) => file3.group === "result" && file3.originId === id2));
+        const file2 = task?.files.find((file3) => file3.group === "result" && file3.originId === id2);
         if (!task || !file2 || file2.status !== "saved") throw new Error("\u7ED3\u679C\u5DF2\u4FDD\u7559\u5728\u672C\u5730\uFF0C\u5F52\u6863\u6587\u4EF6\u5939\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
         await manager.reveal(task.id, file2.id);
         return { ok: true, data: { opened: true } };
@@ -48088,7 +48323,7 @@ async function taskArchiveHost(options) {
         }
         if (action === "archive.page") {
           archiveInputKeys(input, ["taskIds"]);
-          if (!Array.isArray(input.taskIds) || !input.taskIds.every((id) => typeof id === "string"))
+          if (!Array.isArray(input.taskIds) || !input.taskIds.every((id2) => typeof id2 === "string"))
             throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u5206\u9875\u53C2\u6570\u65E0\u6548\u3002");
           const taskIds = input.taskIds;
           return { ok: true, data: await manager.page(taskIds) };
@@ -48417,9 +48652,47 @@ async function waitForNativeGeneration(options) {
 
 // plugins/podplo-dsh/src/native-skill-batch.ts
 import { constants as constants6, open as open7, readdir, realpath as realpath7, lstat as lstat6 } from "node:fs/promises";
-import { randomInt, randomUUID as randomUUID14 } from "node:crypto";
+import { randomInt, randomUUID as randomUUID15 } from "node:crypto";
 import { homedir } from "node:os";
-import { basename as basename12, extname as extname10, isAbsolute as isAbsolute7, parse as parse3, relative as relative4, resolve, sep } from "node:path";
+import { basename as basename12, extname as extname10, isAbsolute as isAbsolute7, parse as parse4, relative as relative4, resolve, sep } from "node:path";
+
+// plugins/podplo-dsh/src/favorite-skill-resolution.ts
+var fail4 = (code, message) => {
+  throw new PodploPluginError(code, message);
+};
+var normalized = (value2) => value2.trim().toLocaleLowerCase();
+function requiredText(value2, field, maximum) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > maximum || /[\u0000-\u001f\u007f]/u.test(value2))
+    return fail4("SKILL_QUERY_INVALID", `\u6536\u85CF Skill \u7684 ${field} \u65E0\u6548\u3002`);
+  return value2.trim();
+}
+function candidate(value2) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
+  const row = value2;
+  const id2 = requiredText(row.id, "id", 180), slug2 = requiredText(row.slug, "slug", 180);
+  const originalTitle = requiredText(row.originalTitle, "originalTitle", 255);
+  const note2 = row.note === null ? null : requiredText(row.note, "note", 160);
+  const folderId = row.folderId === null ? null : requiredText(row.folderId, "folderId", 180);
+  const folderName = row.folderName === null ? null : requiredText(row.folderName, "folderName", 80);
+  if (id2 !== slug2 || folderId === null !== (folderName === null) || !["skill", "family", "member"].includes(String(row.kind)) || typeof row.executable !== "boolean")
+    return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
+  return { id: id2, slug: slug2, originalTitle, note: note2, folderId, folderName, kind: row.kind, executable: row.executable };
+}
+async function resolveFavoriteSkill(input, list) {
+  const query = requiredText(input.query, "query", 160);
+  const folder = input.folder === void 0 ? void 0 : requiredText(input.folder, "folder", 80);
+  const result = await list({ query, ...folder ? { folder } : {} });
+  if (!result || typeof result !== "object" || !Array.isArray(result.items))
+    return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
+  const rows = [...new Map(result.items.map(candidate).map((row) => [row.slug, row])).values()].filter((row) => !folder || (normalized(folder) === "\u672A\u5206\u7C7B" ? row.folderId === null : row.folderName !== null && normalized(row.folderName) === normalized(folder)));
+  const exact = rows.filter((row) => [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === normalized(query)));
+  if (exact.length > 1) return fail4("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF Skill \u5339\u914D\u8BE5\u540D\u79F0\u6216\u5907\u6CE8\uFF0C\u8BF7\u6307\u5B9A\u6536\u85CF\u6587\u4EF6\u5939\u6216\u7CBE\u786E Skill\u3002");
+  if (!exact.length) return fail4("SKILL_NOT_FOUND", "\u6211\u7684\u6536\u85CF\u4E2D\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684 Skill\u3002");
+  const resolved = exact[0];
+  if (input.strategy === "single" && resolved.kind === "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F Skill \u65CF\uFF0C\u8BF7\u4F7F\u7528\u968F\u673A\u6210\u5458\u7B56\u7565\u3002");
+  if (input.strategy !== "single" && resolved.kind !== "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F\u5355\u4E2A Skill\uFF0C\u4E0D\u80FD\u4F7F\u7528 Skill \u65CF\u968F\u673A\u7B56\u7565\u3002");
+  return resolved;
+}
 
 // plugins/podplo-dsh/src/toolbox-preset.ts
 var edge = external_exports.number().min(0).max(1e3);
@@ -48527,7 +48800,8 @@ var nativeSkillBatchTool = {
         properties: {
           folderPath: { type: "string" },
           skillQuery: { type: "string" },
-          skillSource: { type: "string", enum: ["personal", "public", "auto"] },
+          skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
+          skillFolder: { type: "string", minLength: 1, maxLength: 80 },
           skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-shared"] },
           expectedImageCount: { type: "integer", minimum: 1, maximum: 100 },
           processingPresetPath: { type: "string" },
@@ -48537,8 +48811,9 @@ var nativeSkillBatchTool = {
       } },
       folderPath: { type: "string", minLength: 1, maxLength: 4096, description: "Exact folder path explicitly supplied by the user in this conversation. Only direct JPEG, PNG and WebP files are used; subfolders and symbolic links are never followed." },
       expectedImageCount: { type: "integer", minimum: 1, maximum: 100, description: "Optional consistency check only when the user explicitly stated a count. Omit otherwise; the Host counts all direct images." },
-      skillQuery: { type: "string", minLength: 1, maxLength: 160, description: "Exact personal Skill ID/name or public Skill/family slug/title. Ambiguous matches are rejected." },
-      skillSource: { type: "string", enum: ["personal", "public", "auto"], description: "Use personal for \u6211\u7684 Skill. Omit or use auto only if the source was not specified." },
+      skillQuery: { type: "string", minLength: 1, maxLength: 160, description: "Exact personal Skill ID/name, public Skill/family slug/title, or personal favorite remark. Ambiguous matches are rejected." },
+      skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"], description: "Use personal for \u6211\u7684 Skill and favorite for \u6211\u7684\u6536\u85CF or a favorite remark/folder. Omit or use auto only if the source was not specified." },
+      skillFolder: { type: "string", minLength: 1, maxLength: 80, description: "Exact favorite folder name; use with skillSource=favorite." },
       processingPresetPath: { type: "string", minLength: 1, maxLength: 4096, description: "User-supplied toolbox preset JSON path. Pass processingPlan: []; the Host reads and executes all enabled settings including mirrorJoin. Do not read, translate or recreate this preset yourself." },
       skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-shared"], description: "single requires one executable Skill. Random strategies require a Skill family. random-per-image samples without replacement and fails if there are too few members." },
       model: { type: "string", minLength: 1, maxLength: 160, description: "Exact current model name or ID from the user or selected Skill/tool/preset. Otherwise omit for the Host UI default." },
@@ -48551,26 +48826,29 @@ var nativeSkillBatchTool = {
     }
   }
 };
-var fail3 = (code, message) => {
+var fail5 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
 var record5 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
-var text3 = (value2, name, max) => {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail3("INVALID_ARGUMENT", `${name} \u65E0\u6548\u3002`);
+var text3 = (value2, name2, max) => {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail5("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
   return value2.trim();
 };
 function parseInput(value2) {
-  const allowed = /* @__PURE__ */ new Set(["folderPath", "expectedImageCount", "skillQuery", "skillSource", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
-  if (Object.keys(value2).some((key) => !allowed.has(key))) fail3("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+  const allowed = /* @__PURE__ */ new Set(["folderPath", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
+  if (Object.keys(value2).some((key) => !allowed.has(key))) fail5("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
   const count2 = value2.expectedImageCount;
-  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail3("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
-  if (!["single", "random-per-image", "random-shared"].includes(String(value2.skillStrategy))) fail3("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
-  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail3("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
-  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail3("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
-  if (value2.skillSource !== void 0 && !["personal", "public", "auto"].includes(String(value2.skillSource))) fail3("INVALID_ARGUMENT", "skillSource \u65E0\u6548\u3002");
+  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail5("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
+  if (!["single", "random-per-image", "random-shared"].includes(String(value2.skillStrategy))) fail5("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
+  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail5("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
+  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail5("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
+  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail5("INVALID_ARGUMENT", "skillSource \u65E0\u6548\u3002");
+  const skillFolder = value2.skillFolder === void 0 ? void 0 : text3(value2.skillFolder, "skillFolder", 80);
+  const skillSource = value2.skillSource ?? (skillFolder ? "favorite" : "auto");
+  if (skillFolder && skillSource !== "favorite") fail5("INVALID_ARGUMENT", "skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002");
   if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
-    fail3("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
+    fail5("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
   return {
     folderPath: text3(value2.folderPath, "folderPath", 4096),
     ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
@@ -48582,25 +48860,26 @@ function parseInput(value2) {
     ...value2.ecoMode === void 0 ? {} : { ecoMode: value2.ecoMode },
     ...value2.background === void 0 ? {} : { background: value2.background },
     processingPlan: value2.processingPlan,
-    skillSource: value2.skillSource ?? "auto",
+    skillSource,
+    ...skillFolder ? { skillFolder } : {},
     ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text3(value2.processingPresetPath, "processingPresetPath", 4096) } : {},
     instructions: typeof value2.instructions === "string" ? value2.instructions.trim() : ""
   };
 }
 async function presetProcessing(input, deps) {
   if (!input.processingPresetPath) return parseProcessingPlan(input.processingPlan) ?? [];
-  if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail3("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
-  if (!deps.isFolderAuthorized(input.processingPresetPath)) fail3("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
+  if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail5("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
+  if (!deps.isFolderAuthorized(input.processingPresetPath)) fail5("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
   const path = input.processingPresetPath;
-  if (!isAbsolute7(path) || extname10(path).toLowerCase() !== ".json") fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
+  if (!isAbsolute7(path) || extname10(path).toLowerCase() !== ".json") fail5("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
   const handle = await open7(path, constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0));
   try {
     const before = await handle.stat();
-    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
+    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail5("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
     const bytes = await handle.readFile();
     const after = await handle.stat();
     if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
-      fail3("LOCAL_PRESET_CHANGED", "\u9884\u8BBE\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u5C1A\u672A\u63D0\u4EA4\u4EFB\u52A1\u3002");
+      fail5("LOCAL_PRESET_CHANGED", "\u9884\u8BBE\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u5C1A\u672A\u63D0\u4EA4\u4EFB\u52A1\u3002");
     deps.signal?.throwIfAborted();
     return parseProcessingPlan([{
       id: "toolbox-preset",
@@ -48613,7 +48892,7 @@ async function presetProcessing(input, deps) {
   }
 }
 async function personalMatch(input, deps) {
-  if (input.skillStrategy !== "single" || input.skillSource === "public" || !deps.personalSkills || !deps.personalSkill) return;
+  if (input.skillStrategy !== "single" || ["public", "favorite"].includes(input.skillSource) || !deps.personalSkills || !deps.personalSkill) return;
   const found = [];
   let cursor;
   const seen = /* @__PURE__ */ new Set();
@@ -48621,11 +48900,11 @@ async function personalMatch(input, deps) {
     const page = await deps.personalSkills(/^[0-9a-f-]{36}$/iu.test(input.skillQuery) ? "" : input.skillQuery, cursor);
     found.push(...page.items.filter((row) => row.id === input.skillQuery || row.name.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase()));
     cursor = page.nextCursor ?? void 0;
-    if (cursor && seen.has(cursor)) fail3("SKILL_QUERY_INVALID", "\u4E2A\u4EBA Skill \u5206\u9875\u7ED3\u679C\u65E0\u6548\u3002");
+    if (cursor && seen.has(cursor)) fail5("SKILL_QUERY_INVALID", "\u4E2A\u4EBA Skill \u5206\u9875\u7ED3\u679C\u65E0\u6548\u3002");
     if (cursor) seen.add(cursor);
-    if (seen.size > 100) fail3("SKILL_QUERY_AMBIGUOUS", "\u8BF7\u4F7F\u7528\u4E2A\u4EBA Skill \u7684\u7CBE\u786E ID\u3002");
+    if (seen.size > 100) fail5("SKILL_QUERY_AMBIGUOUS", "\u8BF7\u4F7F\u7528\u4E2A\u4EBA Skill \u7684\u7CBE\u786E ID\u3002");
   } while (cursor);
-  if (found.length > 1) fail3("SKILL_QUERY_AMBIGUOUS", "\u6709\u591A\u4E2A\u540C\u540D\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6307\u5B9A\u7CBE\u786E ID\u3002");
+  if (found.length > 1) fail5("SKILL_QUERY_AMBIGUOUS", "\u6709\u591A\u4E2A\u540C\u540D\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6307\u5B9A\u7CBE\u786E ID\u3002");
   if (!found.length) return;
   const skill = await deps.personalSkill(found[0].id);
   return {
@@ -48647,37 +48926,37 @@ async function readTrustedImageFolder(input) {
   input.signal?.throwIfAborted();
   let trustedRoot;
   if (!isAbsolute7(input.folderPath)) {
-    if (!input.cwd || !isAbsolute7(input.cwd)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
-    trustedRoot = await realpath7(input.cwd).catch(() => fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
+    if (!input.cwd || !isAbsolute7(input.cwd)) fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
+    trustedRoot = await realpath7(input.cwd).catch(() => fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
   }
   const requested = isAbsolute7(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
-  const before = await lstat6(requested).catch(() => fail3("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
-  if (before.isSymbolicLink() || !before.isDirectory()) fail3("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
+  const before = await lstat6(requested).catch(() => fail5("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
+  if (before.isSymbolicLink() || !before.isDirectory()) fail5("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
   const directory = await realpath7(requested);
-  if (trustedRoot && !isInside(trustedRoot, directory)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
-  const root = parse3(directory).root, home = await realpath7(homedir()).catch(() => homedir());
+  if (trustedRoot && !isInside(trustedRoot, directory)) fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
+  const root = parse4(directory).root, home = await realpath7(homedir()).catch(() => homedir());
   const pathParts = relative4(root, directory).split(sep);
   if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
-    fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
+    fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
   const entries = await readdir(directory, { withFileTypes: true });
   const imageEntries = entries.filter((entry) => imageExtensions.has(extname10(entry.name).toLocaleLowerCase()));
-  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail3("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
+  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail5("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
   imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
-  if (!imageEntries.length) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
-  if (imageEntries.length > 100) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
+  if (!imageEntries.length) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
+  if (imageEntries.length > 100) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
   if (input.expectedImageCount !== void 0 && imageEntries.length !== input.expectedImageCount)
-    fail3("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
+    fail5("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
   const images = [];
   for (const [index, entry] of imageEntries.entries()) {
     input.signal?.throwIfAborted();
-    const handle = await open7(resolve(directory, entry.name), constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0)).catch(() => fail3("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
+    const handle = await open7(resolve(directory, entry.name), constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0)).catch(() => fail5("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
     try {
       const first = await handle.stat();
-      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail3("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
+      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail5("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
       const bytes = await handle.readFile();
       const second = await handle.stat();
       if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
-        fail3("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
+        fail5("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
       images.push({ id: `trusted-folder-image-${index + 1}`, name: basename12(entry.name), bytes });
     } finally {
       await handle.close();
@@ -48686,52 +48965,52 @@ async function readTrustedImageFolder(input) {
   return images;
 }
 function catalogMatch(input, catalog) {
-  if (!catalog) return fail3("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+  if (!catalog) return fail5("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
   const query = input.skillQuery.toLocaleLowerCase();
   const rows = input.skillStrategy === "single" ? catalog.skills.filter((row) => row.executable) : catalog.families;
   const exact = rows.filter((row) => row.slug.toLocaleLowerCase() === query || row.title.toLocaleLowerCase() === query);
   if (exact.length === 1) return exact[0];
   const partial2 = rows.filter((row) => `${row.slug} ${row.title}`.toLocaleLowerCase().includes(query));
-  if (exact.length > 1 || partial2.length > 1) fail3("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
+  if (exact.length > 1 || partial2.length > 1) fail5("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
   if (partial2.length === 1) return partial2[0];
-  return fail3("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
+  return fail5("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
 }
 function boundSkill(value2) {
   const row = record5(value2), details = record5(row.details);
   if (typeof row.id !== "string" || typeof row.name !== "string" || typeof row.availableForCurrentPlan !== "boolean" || !Number.isInteger(row.minimumReferenceImages) || typeof details.slug !== "string" || typeof details.title !== "string" || !Array.isArray(details.inputs) || !Array.isArray(details.keeps) || !Array.isArray(details.changes) || typeof details.output !== "string")
-    fail3("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
+    fail5("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
   return row;
 }
 function capabilities(value2) {
-  const row = record5(value2), schema = record5(row.quoteInputSchema);
-  if (row.available !== true || !Array.isArray(row.models) || !schema.properties) fail3("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
+  const row = record5(value2), schema2 = record5(row.quoteInputSchema);
+  if (row.available !== true || !Array.isArray(row.models) || !schema2.properties) fail5("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
   return row;
 }
 function modelMatch(value2, query) {
-  const normalized = (text4) => text4.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
-  const target = normalized(query);
-  const exact = value2.models.filter((model2) => normalized(model2.id) === target || normalized(model2.name) === target);
-  if (exact.length > 1) fail3("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
-  const partial2 = exact.length ? exact : value2.models.filter((model2) => normalized(model2.name).includes(target));
-  if (partial2.length !== 1) fail3(partial2.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial2.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
+  const normalized2 = (text4) => text4.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
+  const target = normalized2(query);
+  const exact = value2.models.filter((model2) => normalized2(model2.id) === target || normalized2(model2.name) === target);
+  if (exact.length > 1) fail5("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
+  const partial2 = exact.length ? exact : value2.models.filter((model2) => normalized2(model2.name).includes(target));
+  if (partial2.length !== 1) fail5(partial2.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial2.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
   const model = partial2[0];
-  if (!model.availableForCurrentPlan) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  if (!model.availableForCurrentPlan) fail5("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
   return model;
 }
 function resolveBatchParameters(input, value2) {
   const properties = value2.quoteInputSchema.properties ?? {};
   const selectedModel = input.model ? modelMatch(value2, input.model) : value2.models.find((row) => row.availableForCurrentPlan === true);
-  const model = selectedModel ?? fail3("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
-  if (model.availableForCurrentPlan === false) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  const model = selectedModel ?? fail5("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
+  if (model.availableForCurrentPlan === false) fail5("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
   const ratio = input.ratio ?? (model.ratios.includes("1:1") ? "1:1" : model.ratios[0]);
   const modelQuality = typeof model.defaultQuality === "string" && model.qualities.includes(model.defaultQuality) ? model.defaultQuality : void 0;
   const quality = input.quality ?? modelQuality ?? model.qualities[0];
-  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail3("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
-  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail3("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
+  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail5("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
+  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail5("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
   const required2 = new Set(value2.quoteInputSchema.required ?? []), missing = [];
   if (!ratio && required2.has("ratio")) missing.push("ratio");
   if (!quality && required2.has("quality")) missing.push("quality");
-  if (missing.length) fail3("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
+  if (missing.length) fail5("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
   const ecoMode = input.ecoMode ?? false;
   return {
     model,
@@ -48751,16 +49030,16 @@ function publicPrompt(skill, instructions) {
     details.output ? `Output: ${details.output}.` : "",
     `User instructions: ${instructions}`
   ].filter(Boolean).join(" ");
-  if (value2.length > 4e3) fail3("PROMPT_TOO_LONG", "\u516C\u5F00 Skill \u4FE1\u606F\u4E0E\u7528\u6237\u8981\u6C42\u5408\u5E76\u540E\u8D85\u8FC7\u63D0\u793A\u8BCD\u957F\u5EA6\u9650\u5236\u3002");
+  if (value2.length > 4e3) fail5("PROMPT_TOO_LONG", "\u516C\u5F00 Skill \u4FE1\u606F\u4E0E\u7528\u6237\u8981\u6C42\u5408\u5E76\u540E\u8D85\u8FC7\u63D0\u793A\u8BCD\u957F\u5EA6\u9650\u5236\u3002");
   return value2;
 }
 async function assertOwner(deps, ownerId, namespace) {
   deps.signal?.throwIfAborted();
   if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
-    fail3("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+    fail5("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
 }
 function shuffledWithoutReplacement(values, count2, choose) {
-  if (count2 > values.length) fail3("SKILL_FAMILY_TOO_SMALL", `\u8BE5 Skill \u65CF\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+  if (count2 > values.length) fail5("SKILL_FAMILY_TOO_SMALL", `\u8BE5 Skill \u65CF\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
   const pool = [...values], selected = [];
   while (selected.length < count2) {
     const index = choose(pool.length);
@@ -48772,23 +49051,25 @@ function shuffledWithoutReplacement(values, count2, choose) {
 async function prepareNativeSkillBatch(raw, deps) {
   if (raw.groups !== void 0) return prepareGroupedBatch(raw, deps);
   const input = parseInput(raw);
-  if (!deps.isFolderAuthorized(input.folderPath)) fail3("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
+  if (!deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
   deps.signal?.throwIfAborted();
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const processingPlan = await presetProcessing(input, deps);
   const personal = await personalMatch(input, deps);
-  if (input.skillSource === "personal" && !personal) fail3("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
+  if (input.skillSource === "personal" && !personal) fail5("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
+  if (input.skillSource === "favorite" && !deps.favoriteSkills) fail5("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
+  const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: input.skillStrategy }, deps.favoriteSkills) : void 0;
   if (input.skillSource !== "personal") await deps.online.refreshPublicSkills();
   await assertOwner(deps, ownerId, namespace);
   const catalog = deps.online.snapshot().publicDirectory?.catalog;
   if (personal && input.skillSource === "auto" && catalog?.skills.some((row) => row.executable && [row.slug, row.title].some((value2) => value2.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase())))
-    fail3("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
-  const match = personal ? void 0 : catalogMatch(input, catalog);
+    fail5("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
+  const match = personal ? void 0 : catalogMatch(favorite ? { ...input, skillQuery: favorite.slug } : input, catalog);
   let title, members;
   if (input.skillStrategy === "single") {
     const skill = personal ?? boundSkill(await deps.online.skillDetails(match.slug));
     if (!skill.availableForCurrentPlan || skill.minimumReferenceImages > 1)
-      fail3("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
+      fail5("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
     title = skill.details.title;
     members = [skill];
   } else {
@@ -48812,21 +49093,21 @@ async function prepareNativeSkillBatch(raw, deps) {
       } });
       if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
     }
-    if (!members.length) fail3("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879\u6210\u5458\u3002");
+    if (!members.length) fail5("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879\u6210\u5458\u3002");
   }
   if (!personal && deps.online.snapshot().publicDirectory?.catalog?.contentVersion !== catalog.contentVersion)
-    fail3("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+    fail5("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
   await assertOwner(deps, ownerId, namespace);
   const currentCapabilities = capabilities(await deps.generationCapabilities());
   const parameters = resolveBatchParameters(input, currentCapabilities), { model } = parameters;
   const referenceLimit = parameters.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
-  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail3("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
+  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail5("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
   const background = backgroundArgs(
     currentCapabilities.quoteInputSchema.properties ?? {},
     model,
     parameters.background === "transparent"
   );
-  if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail3("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
+  if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail5("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
   const images = await readTrustedImageFolder({ folderPath: input.folderPath, cwd: deps.cwd, expectedImageCount: input.expectedImageCount, signal: deps.signal });
   const choose = deps.randomIndex ?? randomInt;
   let assignments;
@@ -48844,8 +49125,8 @@ async function prepareNativeSkillBatch(raw, deps) {
   }
   await assertOwner(deps, ownerId, namespace);
   const referenceAssetIds = await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images });
-  if (referenceAssetIds.length !== images.length || referenceAssetIds.some((id) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id)))
-    fail3("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
+  if (referenceAssetIds.length !== images.length || referenceAssetIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
+    fail5("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
   await assertOwner(deps, ownerId, namespace);
   const items = referenceAssetIds.map((referenceAssetId, index) => {
     const skill = assignments[index];
@@ -48865,7 +49146,7 @@ async function prepareNativeSkillBatch(raw, deps) {
   });
   deps.signal?.throwIfAborted();
   return {
-    intentId: (deps.createId ?? randomUUID14)(),
+    intentId: (deps.createId ?? randomUUID15)(),
     planVersion: 1,
     taskName: `${title} \xB7 ${items.length} \u5F20`,
     expectedOutputCount: items.length,
@@ -48875,17 +49156,17 @@ async function prepareNativeSkillBatch(raw, deps) {
 }
 async function prepareGroupedBatch(raw, deps) {
   if (!Array.isArray(raw.groups) || !raw.groups.length || raw.groups.length > 10 || Object.keys(raw).some((key) => !["groups", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
-    fail3("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
+    fail5("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
   const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const { groups: groups2, ...shared } = raw;
   const parsed = groups2.map((group) => {
     const row = record5(group);
-    if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
-      fail3("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
+    if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
+      fail5("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
     return parseInput({ ...shared, ...row });
   });
   for (const input of parsed) {
-    if (!deps.isFolderAuthorized(input.folderPath)) fail3("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+    if (!deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
     await presetProcessing(input, deps);
   }
   const items = [], steps = [], names = [];
@@ -48893,7 +49174,7 @@ async function prepareGroupedBatch(raw, deps) {
     await assertOwner(deps, owner, namespace);
     const child = await prepareNativeSkillBatch(input, deps);
     const childItems = child.items, offset = items.length;
-    if (offset + childItems.length > 100) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u4EFB\u52A1\u8D85\u8FC7 100 \u5F20\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u5206\u6279\u3002");
+    if (offset + childItems.length > 100) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u4EFB\u52A1\u8D85\u8FC7 100 \u5F20\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u5206\u6279\u3002");
     const scope = childItems.map((_, i) => offset + i);
     const childSteps = child.processingPlan;
     for (const step of childSteps) steps.push({
@@ -48906,7 +49187,7 @@ async function prepareGroupedBatch(raw, deps) {
   }
   await assertOwner(deps, owner, namespace);
   return {
-    intentId: (deps.createId ?? randomUUID14)(),
+    intentId: (deps.createId ?? randomUUID15)(),
     planVersion: 1,
     taskName: `${names.join(" / ")}`.slice(0, 100),
     expectedOutputCount: items.length,
@@ -49032,13 +49313,13 @@ async function atomVersions(fetcher) {
   if (!/<id>\s*tag:github\.com,2008:https:\/\/github\.com\/jacksia0409\/podplo-dsh-plugin\/releases\s*<\/id>/iu.test(feedWithoutEntries))
     throw new Error("UNTRUSTED_FEED");
   for (const match of xml.matchAll(/<entry\b[\s\S]*?<\/entry>/giu)) {
-    const id = /<id>\s*tag:github\.com,2008:Repository\/1449998794\/([^<\s]+)\s*<\/id>/iu.exec(match[0]);
-    const tag = id ? decodeXmlAttribute(id[1]) : "", version2 = versionFromTag(tag);
+    const id2 = /<id>\s*tag:github\.com,2008:Repository\/1449998794\/([^<\s]+)\s*<\/id>/iu.exec(match[0]);
+    const tag = id2 ? decodeXmlAttribute(id2[1]) : "", version2 = versionFromTag(tag);
     if (!version2) continue;
     const links = [...match[0].matchAll(/<link\b([^>]*)>/giu)];
     for (const link2 of links) {
       const attrs = link2[1] ?? "";
-      const attribute = (name) => new RegExp(`\\b${name}=(?:"([^"]+)"|'([^']+)')`, "iu").exec(attrs);
+      const attribute = (name2) => new RegExp(`\\b${name2}=(?:"([^"]+)"|'([^']+)')`, "iu").exec(attrs);
       const hrefMatch = attribute("href"), rel = attribute("rel"), type = attribute("type");
       const href = decodeXmlAttribute(hrefMatch?.[1] ?? hrefMatch?.[2] ?? "");
       if ((rel?.[1] ?? rel?.[2]) !== "alternate" || (type?.[1] ?? type?.[2]) !== "text/html") continue;
@@ -49347,8 +49628,8 @@ async function apply(ctx, config2 = {}) {
     if (!response.ok) throw new Error("Fixture authorization failed");
   } : openAuthorization;
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
-  const projectForSession = (id) => {
-    const cwd = id ? ctx.sessions?.get(id)?.header.cwd : void 0;
+  const projectForSession = (id2) => {
+    const cwd = id2 ? ctx.sessions?.get(id2)?.header.cwd : void 0;
     return cwd && isAbsolute8(cwd) ? { key: `cwd:${resolve2(cwd)}`, name: basename13(resolve2(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
@@ -49432,9 +49713,9 @@ async function apply(ctx, config2 = {}) {
   });
   const transport = {
     ...archives.transport,
-    async callTool(name, args, sessionId) {
-      const result = await archives.transport.callTool(name, args, sessionId);
-      if (name !== "podplo_generation_status" || !sessionId) return result;
+    async callTool(name2, args, sessionId) {
+      const result = await archives.transport.callTool(name2, args, sessionId);
+      if (name2 !== "podplo_generation_status" || !sessionId) return result;
       const operation = result;
       return operation?.operationId ? {
         ...operation,
@@ -49509,7 +49790,7 @@ async function apply(ctx, config2 = {}) {
       }
       const agent = ctx.agents.get(pending.sessionId);
       if (!agent) return;
-      agent.followup({ id: randomUUID15(), role: "user", source: { kind: "user" }, content: [{
+      agent.followup({ id: randomUUID16(), role: "user", source: { kind: "user" }, content: [{
         type: "text",
         text: podploGenerationCompletionFollowup({
           operationId: operationId2,
@@ -49678,17 +49959,18 @@ async function apply(ctx, config2 = {}) {
                 signal: execution.signal,
                 createId: () => `folder-${requestKey}`,
                 personalSkills: (query, cursor) => online.userSkills(query, cursor, execution.signal),
-                personalSkill: (id) => online.userSkill(id, { signal: execution.signal }),
+                personalSkill: (id2) => online.userSkill(id2, { signal: execution.signal }),
+                favoriteSkills: async (query) => (await service.dispatch("favorites.skills.list", query, { source: "agent", sessionId: agent.id })).data,
                 isFolderAuthorized: (folderPath) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), folderPath),
                 generationCapabilities: () => service.callTool("podplo_generation_capabilities", { refresh: false }, agent.id),
-                verifySelectedSkill: async (slug2, id) => {
+                verifySelectedSkill: async (slug2, id2) => {
                   if (slug2 === null) {
-                    await service.callTool("podplo_get_my_skill", { id }, agent.id);
+                    await service.callTool("podplo_get_my_skill", { id: id2 }, agent.id);
                     return;
                   }
                   const detail = await service.callTool("podplo_get_skill", { slug: slug2 }, agent.id);
                   const binding = detail?.binding && typeof detail.binding === "object" && !Array.isArray(detail.binding) ? detail.binding : void 0;
-                  if (detail?.slug !== slug2 || binding?.id !== id)
+                  if (detail?.slug !== slug2 || binding?.id !== id2)
                     throw new PodploPluginError("SKILL_BINDING_CHANGED", `Skill ${slug2} \u7684\u6267\u884C\u7ED1\u5B9A\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u51C6\u5907\u6574\u6279\u3002`);
                 },
                 importReferences: importTrustedReferences
@@ -49716,7 +49998,7 @@ async function apply(ctx, config2 = {}) {
             const result = await waitForNativeGeneration({
               operationId: operationId2,
               signal: execution.signal,
-              read: (id) => transport.callTool("podplo_generation_status", { operationId: id, refresh: true }, agent.id)
+              read: (id2) => transport.callTool("podplo_generation_status", { operationId: id2, refresh: true }, agent.id)
             });
             if (result.nativeWait.outcome === "terminal") {
               chatGenerationResumes.delete(operationId2);
@@ -49837,14 +50119,14 @@ async function apply(ctx, config2 = {}) {
       return value2;
     }
   };
-  const handler = pluginRpcHandler(uiTransport, (id) => !!ctx.agents.get(id));
+  const handler = pluginRpcHandler(uiTransport, (id2) => !!ctx.agents.get(id2));
   const unregister = ctx.connection.fetch.register({
     path: "/api/podplo/request",
     methods: ["POST"],
     requestBody: "buffered",
     fetch: (request) => handler(request, { principal: { kind: "owner" } })
   });
-  const uploadHandler = pluginUploadHandler(uiTransport, (id) => !!ctx.agents.get(id));
+  const uploadHandler = pluginUploadHandler(uiTransport, (id2) => !!ctx.agents.get(id2));
   const unregisterUpload = ctx.connection.fetch.register({
     path: "/api/podplo/upload",
     methods: ["POST"],
@@ -49877,7 +50159,7 @@ async function apply(ctx, config2 = {}) {
     jevRoutingStates.clear();
     progressPoll?.stop();
     await refreshing?.catch(() => void 0);
-    for (const id of [...bindings.keys()]) await remove({ id });
+    for (const id2 of [...bindings.keys()]) await remove({ id: id2 });
     await unregisterPresets();
     await mcp.close();
     await archives.close();
