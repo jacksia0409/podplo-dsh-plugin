@@ -1,8 +1,14 @@
-# PodPlo Plugin v0.1.9
+# PodPlo Plugin v0.1.10
 
-需要 DeepSeek Harness 0.2.2-rc.1。这是 DSH 插件，需先安装 DSH；不包含独立 App。
+需要先安装 DeepSeek Harness。这是 DSH 插件，不包含独立 App。
 
-## 本版内容（2026-11-10）
+插件默认尝试加载所有 DSH 版本（含预发布版），不再限定为 0.2.2-rc.1；安装器也不按 DSH 版本拒绝安装。这是放宽加载条件，不代表已经验证所有版本；宿主接口变化时仍需适配。具体实测版本与范围以验收记录为准。
+
+## 本版内容（2026-11-15）
+
+- 解除 DSH 精确版本门槛及安装器 rc.1 限制，默认尝试所有版本（含预发布版）；已在 DSH 0.2.2-rc.3 完成隔离原生验证。
+
+## 上版内容（0.1.9，2026-11-10）
 
 - 操作日志仅在本地保存，移除处理结果页的日志／诊断查看和复制入口；普通失败提示与恢复操作保留。每账号仍只保留最近 10 次脱敏操作。
 
@@ -23,7 +29,7 @@
 https://github.com/jacksia0409/podplo-dsh-plugin
 
 已安装用户使用本版标签地址升级：
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.9
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.10
 
 也可通过官方插件管理器选择本地 TGZ 安装。生成或加工任务运行时不要更新；管理器支持热安装时无需重启。不修改 DSH 核心、账号或模型配置。
 

@@ -19865,7 +19865,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.9",
+  version: "0.1.10",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -19903,15 +19903,16 @@ var package_default = {
     sharp: "0.35.5"
   },
   peerDependencies: {
-    "@deepseek-ai/cordis": "~4.1.0",
-    "@deepseek-ai/dsh-mcp-client": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-home-paths": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-credentials": "0.2.2-rc.1",
-    "@deepseek-ai/schemastery": "~3.19.0"
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-mcp-client": "*",
+    "@deepseek-ai/dsh-home-paths": "*",
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-credentials": "*",
+    "@deepseek-ai/schemastery": "*"
   },
   engines: {
-    node: ">=24.9.0"
+    node: ">=24.9.0",
+    dsh: "*"
   }
 };
 
