@@ -1,4 +1,6 @@
-# PodPlo Plugin v0.1.12
+# PodPlo Plugin v0.1.13
+
+收藏夹以紧凑文件夹卡片展示，自动取第一个 Skill 作封面，名称和数量居中；点击进入，重命名、删除和个人备注操作位于“…”菜单，新建文件夹为无边框文字入口。
 
 本版在插件内提供收藏文件夹与 Skill 个人备注：支持文件夹新建、改名、删除，Skill 设置备注、移动及移除收藏；DSH 可按备注和文件夹定位。原 Skill 名称、ID 和内容保持不变。文件夹和备注按账号保存在当前电脑的插件数据中，不上传主站，也不跨设备同步；原有云端收藏机制保持。删除文件夹保留收藏及备注，成员回到未分类。
 
@@ -37,7 +39,7 @@
 https://github.com/jacksia0409/podplo-dsh-plugin
 
 已安装用户使用本版标签地址升级：
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.12
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.13
 
 也可通过官方插件管理器选择本地 TGZ 安装。生成或加工任务运行时不要更新；管理器支持热安装时无需重启。不修改 DSH 核心、账号或模型配置。
 
