@@ -39901,7 +39901,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.10",
+  version: "0.1.11",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -42458,6 +42458,40 @@ function parseProcessingPlan(value2, history = {}) {
   });
 }
 
+// plugins/podplo-dsh/src/agent-call-policy.ts
+var PODPLO_TASK_GUIDANCE = `Act as an orchestrator for executable PodPlo public/personal Skills and PodPlo built-in tools or presets.
+
+ROUTING: Every AI image generation, AI edit or AI transformation must use a selected executable PodPlo Skill. Never substitute another image-generation service, a general vision/image tool, shell/PowerShell, filesystem scripting or custom code. DSH read_image is allowed only to create or reuse a session-bound image ID and satisfy explicit file authorization; do not use it to inspect aesthetics, critique an image or invent creative instructions. Deterministic local processing may use only the exact PodPlo built-in tool or preset the user requested.
+
+INTENT: Treat the user's words and the selected PodPlo Skill/tool/preset as authoritative. Do not create, rewrite, expand, translate or optimize prompts. Do not add composition, style, identity, dimensions, model, quality, processing steps or a different order. Reuse exact user instructions and Skill/Host-supplied prompt content. Apply only the named tools/preset, in the requested order.
+
+EXECUTE WHEN CLEAR: When the image range, one uniquely matching Skill, and any requested tools/preset/order are clear, resolve exact catalog bindings and call the PodPlo tool immediately. Do not ask for optional composition, dimensions, model, ratio or quality merely to fill fields. Use a parameter only when it came from the user, the selected Skill, the selected tool/preset, or an explicit default in the authoritative current schema. Never guess a required value or paid scope. Ask one consolidated question only when execution is genuinely blocked by a missing or conflicting image range, Skill identity, tool/preset identity, call order, or required parameter with no authoritative default. Resolve a unique exact catalog match without asking. Ask once for real duplicates, absence or conflicts; do not reconfirm clear information or a path already confirmed by an answered native question. Choices are neutral unless the user asks for a recommendation.
+
+LOCAL FOLDERS: Use podplo_prepare_skill_batch for user-supplied folders. Set skillSource="personal" for \u6211\u7684 Skill. Pass an exact processingPresetPath with processingPlan=[] so the Host reads the preset. Do not read/rewrite preset JSON, list folders, inspect individual images, invent IDs or reimplement the pipeline. Put multiple folder/Skill/preset groups in one batch so the complete task is quoted once. Additional instructions are optional: omit them or pass "" when the Skill already defines the task; never invent content to fill the field.
+
+OTHER INPUTS: For non-folder work, resolve the exact PodPlo Skill and reuse returned bindings, capabilities, explicit defaults and session image IDs. Call podplo_prepare_generation once for the complete requested batch. Every item keeps its selected skillId. Register only the requested processingPlan; use [] when no processing was requested. Do not scan private storage.
+
+APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs generation, download and registered local processing. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
+
+DELIVERY: New task folders contain only final selected production images/PDF in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt. Do not deliver source/reference copies, superseded AI originals, intermediate versions, review folders, proof images or JSON reports. For generation-only tasks, the generated image itself is the final deliverable. Recovery bytes remain in the private Host cache; historical tasks keep their recorded layout.`;
+var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u548C PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002read_image \u53EA\u7528\u4E8E\u4EA7\u751F\uFF0F\u590D\u7528\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u53CA\u5FC5\u8981\u6587\u4EF6\u6388\u6743\uFF0C\u4E0D\u7528\u4E8E\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
+
+\u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u552F\u4E00\u5339\u914D Skill \u53CA\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
+
+\u6587\u4EF6\u5939\u6279\u91CF\u7528 podplo_prepare_skill_batch\uFF1B\u6211\u7684 Skill \u7528 skillSource=personal\uFF1B\u591A\u6587\u4EF6\u5939\u7528 groups \u4E00\u6B21\u6574\u6279\u62A5\u4EF7\uFF1B\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[] \u7531\u5BBF\u4E3B\u8BFB\u53D6\u3002\u975E\u6587\u4EF6\u5939\u4EFB\u52A1\u7684 podplo_prepare_generation \u6BCF\u9879\u5FC5\u987B\u4FDD\u7559\u6240\u9009 skillId\uFF0C\u4E00\u6B21\u63D0\u4EA4\u5B8C\u6574\u8303\u56F4\uFF0C\u53EA\u767B\u8BB0\u7528\u6237\u6307\u5B9A\u7684 processingPlan\uFF0C\u65E0\u52A0\u5DE5\u4E3A []\u3002\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u81EA\u52A8\u5B8C\u6210\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
+var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
+
+Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill or the lookup needed to resolve it; the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
+
+Use read-only PodPlo catalog lookups to resolve a unique exact match without asking. Ask one consolidated question only for a genuine blocker: duplicate/missing Skill, unclear image range, ambiguous tool/preset, conflicting order, or a required parameter with no user/Skill/tool/preset/schema default. Do not ask about optional model, ratio, quality, dimensions or composition, and do not reconfirm information already clear.
+
+When ready, call exit_plan_mode with the concise plan as the only and final tool call in that response. If review rejects it, revise the short call plan. If the review channel is unavailable, stay in plan mode and ask the user to switch modes manually.`;
+var PODPLO_PREPARE_GENERATION_GUIDANCE = `Agent calls are PodPlo-Skill-only: every item must keep the exact selected executable PodPlo skillId. Reuse only user, Skill, tool/preset or authoritative-schema values; do not invent or rewrite prompts, model, ratio, quality, dimensions or processing steps. Do not ask for optional fields. If a required field has no authoritative default, ask once together with any other genuine blocker before calling. Use only the exact requested processing plan, or [] when none was requested. Never replace this call with another image service, a general vision tool, shell or scripts.`;
+var PODPLO_NATIVE_APPROVAL_GUIDANCE = `This native Host requests one session-bound approval for the exact complete quote. Do not seek a second conversational confirmation. In an IM conversation, after an allowed approval call podplo_wait_generation for the returned operationId in the same turn; do not end the turn first.`;
+function podploGenerationCompletionFollowup(input) {
+  return `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${input.operationId} \u751F\u56FE\u72B6\u6001\u4E3A ${input.generationStatus}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${input.localProcessingStatus}\u3002\u8BF7\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u6267\u884C\u72B6\u6001\uFF0C\u53EA\u7B80\u77ED\u62A5\u544A\u5F20\u6570\u3001\u6210\u679C\u4F4D\u7F6E\u53CA\u5931\u8D25\u9879\u3002\u5BBF\u4E3B\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u4E0D\u8981\u770B\u56FE\u6216\u8BC4\u4EF7\u5BA1\u7F8E\uFF0C\u4E0D\u8981\u4FEE\u6539\u6216\u91CD\u5199\u63D0\u793A\u8BCD\u3001\u53C2\u6570\u6216\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u8981\u8FFD\u52A0\u5DE5\u5177\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3001\u91CD\u751F\u6210\u3001\u91CD\u590D\u52A0\u5DE5\u3001\u518D\u6B21\u62A5\u4EF7\u6216\u8FFD\u52A0\u63D0\u95EE\uFF0C\u4E0D\u8981\u6539\u7528\u5916\u90E8\u751F\u56FE\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell \u6216\u811A\u672C\u3002`;
+}
+
 // plugins/podplo-dsh/src/service.ts
 var objectSchema = (properties, required2 = [], additionalProperties = false) => ({
   type: "object",
@@ -42480,11 +42514,11 @@ var personalSkillInputSchema = {
   }
 };
 var TOOL_DEFINITIONS = [
-  { name: "podplo_set_processing_plan", description: "\u767B\u8BB0\u6216\u8865\u5168\u539F\u4EFB\u52A1\u660E\u786E\u8981\u6C42\u7684\u52A0\u5DE5\u6B65\u9AA4\uFF0C\u7528\u4E8E\u6570\u91CF\u6838\u5BF9\u548C\u7EE7\u7EED\u5904\u7406\u3002\u4EC5\u66F4\u65B0\u5F53\u524D\u4F1A\u8BDD\u5DF2\u6709\u4EFB\u52A1\u7684\u672C\u5730\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u62A5\u4EF7\u6216\u751F\u56FE\u3002\u6CA1\u6709\u52A0\u5DE5\u8981\u6C42\u7528\u7A7A\u6570\u7EC4\uFF1B\u4E0D\u8981\u6839\u636E\u672A\u77E5\u5386\u53F2\u731C\u6D4B\u3002", inputSchema: objectSchema({ operationId: stringSchema, processingPlan: processingPlanSchema }, ["operationId", "processingPlan"]) },
+  { name: "podplo_set_processing_plan", description: "\u4EC5\u767B\u8BB0\u7528\u6237\u5DF2\u660E\u786E\u6307\u5B9A\u7684 PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u53CA\u5176\u987A\u5E8F\uFF0C\u7528\u4E8E\u539F\u4EFB\u52A1\u6570\u91CF\u6838\u5BF9\u548C\u7EE7\u7EED\u5904\u7406\u3002\u4E0D\u8FFD\u52A0\u3001\u6539\u5199\u6216\u91CD\u6392\u6B65\u9AA4\uFF1B\u6CA1\u6709\u52A0\u5DE5\u8981\u6C42\u5FC5\u987B\u4F20\u7A7A\u6570\u7EC4\u3002\u4EC5\u66F4\u65B0\u5F53\u524D\u4F1A\u8BDD\u5DF2\u6709\u4EFB\u52A1\u7684\u672C\u5730\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u62A5\u4EF7\u6216\u751F\u56FE\uFF1B\u4E0D\u8981\u6839\u636E\u672A\u77E5\u5386\u53F2\u731C\u6D4B\u3002", inputSchema: objectSchema({ operationId: stringSchema, processingPlan: processingPlanSchema }, ["operationId", "processingPlan"]) },
   { name: "podplo_snapshot", description: "Read the safe PodPlo account and connection state.", inputSchema: objectSchema({}) },
-  { name: "podplo_list_skills", description: "Search the public PodPlo Skill directory. Returns compact selection candidates plus the catalog version and completeness; use podplo_get_skill or podplo_get_skill_family only after choosing a candidate.", inputSchema: objectSchema({ query: stringSchema }) },
-  { name: "podplo_get_skill", description: "Get one exact executable Skill by slug. Set includeGenerationContext=true when preparing generation to receive the safe account summary and current cached generation capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
-  { name: "podplo_get_skill_family", description: "Get one Skill family and every current executable member. Set includeGenerationContext=true when preparing generation to receive the safe account summary and current cached generation capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
+  { name: "podplo_list_skills", description: "Search the public PodPlo executable Skill directory. Resolve one unique exact slug/title match without asking the user again; ask one consolidated question only for real duplicate, missing or conflicting Skill identity. Returns compact candidates plus catalog version and completeness; use podplo_get_skill or podplo_get_skill_family only for the selected candidate.", inputSchema: objectSchema({ query: stringSchema }) },
+  { name: "podplo_get_skill", description: "Get one exact executable PodPlo Skill by slug. Reuse its binding and supplied generation content without rewriting or expanding the prompt. Set includeGenerationContext=true when preparing generation to receive the safe account summary and cached capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
+  { name: "podplo_get_skill_family", description: "Get one PodPlo Skill family and every current executable member. Reuse the selected member bindings without rewriting their prompts. Set includeGenerationContext=true when preparing generation to receive the safe account summary and cached capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
   { name: "podplo_list_gallery", description: "Search the public PodPlo gallery with cursor pagination.", inputSchema: objectSchema({ query: stringSchema, category: stringSchema, cursor: stringSchema }) },
   { name: "podplo_get_gallery_item", description: "Get one exact public gallery item by opaque id.", inputSchema: objectSchema({ id: stringSchema }, ["id"]) },
   { name: "podplo_list_assets", description: "List the signed-in user uploads or generated assets with server cursor pagination. When nextCursor is non-null, continue with that exact cursor before treating the list as complete. paginationSupported=false means the connected legacy server can return only a limited first page.", inputSchema: objectSchema({
@@ -42497,15 +42531,18 @@ var TOOL_DEFINITIONS = [
   { name: "podplo_request_asset_deletion", description: "Prepare deletion of exact private asset ids. A UI confirmation is always required.", inputSchema: objectSchema({ ids: { type: "array", items: stringSchema, minItems: 1, maxItems: 200 } }, ["ids"]) },
   { name: "podplo_list_my_skills", description: "List the signed-in user's own Skills.", inputSchema: objectSchema({ query: stringSchema, cursor: stringSchema }) },
   { name: "podplo_get_my_skill", description: "Get one owned Skill by opaque id.", inputSchema: objectSchema({ id: stringSchema }, ["id"]) },
-  { name: "podplo_create_my_skill", description: "Create a reusable personal Skill. referenceAssetIds may contain current-conversation attachment IDs, current-session local image result IDs, or existing private cloud asset UUIDs. The Host imports local images before saving. Never pass a filesystem path; first use DSH read_image or the native file chooser to create a session-bound image ID.", inputSchema: objectSchema({ input: personalSkillInputSchema }, ["input"]) },
+  { name: "podplo_create_my_skill", description: "Create a reusable personal PodPlo Skill. referenceAssetIds may contain current-conversation attachment IDs, current-session local image result IDs, or existing private cloud asset UUIDs. The Host imports local images before saving. Never pass a filesystem path; DSH read_image or the native file chooser may be used only to create a session-bound image ID and satisfy explicit file authorization, not to inspect aesthetics or invent/modify Skill instructions.", inputSchema: objectSchema({ input: personalSkillInputSchema }, ["input"]) },
   { name: "podplo_update_my_skill", description: "Update an owned Skill using its expected updatedAt value. referenceAssetIds accepts the same current-conversation local image IDs as podplo_create_my_skill and preserves their order after Host import. Never pass a filesystem path.", inputSchema: objectSchema({ id: stringSchema, input: personalSkillInputSchema }, ["id", "input"]) },
   { name: "podplo_request_my_skill_deletion", description: "Prepare deletion of an owned Skill. A UI confirmation is always required.", inputSchema: objectSchema({ id: stringSchema, expectedUpdatedAt: stringSchema }, ["id", "expectedUpdatedAt"]) },
   { name: "podplo_resolve_selection", description: "Resolve an exact Skill, gallery item or private asset for native conversation injection.", inputSchema: objectSchema({ kind: { type: "string", enum: ["skill", "gallery", "asset"] }, id: stringSchema }, ["kind", "id"]) },
-  { name: "podplo_generation_capabilities", description: "Read the authoritative generation quote input JSON schema and complete current model list. Use a returned model id; never guess a UUID. Treat only exposed schema fields as controllable modes: For transparent images, check the selected model and schema for background=transparent and output_format=png or webp. These are provider parameters in each item.args, not prompt instructions. An absent parameter does not prove the underlying model never supports it, and prompt text must not impersonate a missing mode switch.", inputSchema: objectSchema({ refresh: { type: "boolean" } }) },
-  { name: "podplo_prepare_generation", description: `Quote the complete user-requested generation batch without submitting it. Before calling, collect every image/item the user asked to execute and call this tool exactly once with expectedOutputCount equal to the full requested output total. Never split "\u5168\u90E8\u6267\u884C" into separate approval batches. The Host rejects missing, partial or oversized batches before showing a confirmation. For current-conversation images, put their opaque attachment/result IDs in each item.args.referenceAssetIds; the Host imports them into the signed-in user's private references before quoting. Existing private cloud asset UUIDs are reused without uploading. Pass provider parameters in each item.args: a transparent-background request requires background="transparent" and output_format="png" or "webp" (PNG by default), after checking podplo_generation_capabilities for schema and model support. Never rely only on wording in prompt for an alpha channel; JPEG cannot carry alpha. Missing server support must be reported, not replaced by prompt text. When status is quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears in the current conversation. End the turn and wait for that card; do not call ask_user_question or ask the user to report that they clicked it. The Agent is resumed with the verified operation status after the UI approval finishes.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, expectedOutputCount: { type: "integer", minimum: 1, maximum: 1e4, description: "The complete number of images the user asked to execute in this batch. Derive it from the whole request, never from a partial subset." }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, sourceName: { type: "string", maxLength: 255 }, args: { type: "object", properties: { count: { type: "integer", minimum: 1, description: "Output count for this item; all item counts must cover expectedOutputCount." }, referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "expectedOutputCount", "items"]) },
+  { name: "podplo_generation_capabilities", description: "Read the authoritative generation quote schema, current model list and explicit provider defaults. Use only returned ids and values; never guess. Do not ask the user to choose optional model, ratio, quality, dimensions or composition merely to fill fields. Ask once only if a required value has no user/Skill/tool/preset/schema default. For transparent images, check the selected model and schema for background=transparent and output_format=png or webp. These are provider parameters, not prompt instructions; prompt text must not impersonate a missing mode switch.", inputSchema: objectSchema({ refresh: { type: "boolean" } }) },
+  { name: "podplo_prepare_generation", description: `${PODPLO_PREPARE_GENERATION_GUIDANCE} Quote the complete user-requested generation batch without submitting it. Collect every requested image/item and call exactly once with expectedOutputCount equal to the complete total; never split "\u5168\u90E8\u6267\u884C" into separate approvals. The Host rejects missing, partial or oversized batches. For current-conversation images, put opaque attachment/result IDs in each item.args.referenceAssetIds; existing private cloud UUIDs are reused. A transparent-background request requires supported background="transparent" and output_format="png" or "webp" (PNG by default); missing support is reported, never replaced by prompt wording. When quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears. End the turn and wait for that card; do not ask whether it was clicked. The Agent resumes from verified operation status.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, expectedOutputCount: { type: "integer", minimum: 1, maximum: 1e4, description: "The complete number of images the user asked to execute in this batch. Derive it from the whole request, never from a partial subset." }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, sourceName: { type: "string", maxLength: 255 }, args: { type: "object", properties: { count: { type: "integer", minimum: 1, description: "Output count for this item; all item counts must cover expectedOutputCount." }, referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "expectedOutputCount", "items"]) },
   { name: "podplo_generation_status", description: "Read or refresh one existing generation operation. This never resubmits. completed only means remote generation finished; the Host verifies pixels and executes registered local processing. Report factual Host execution status without inspecting or judging output quality, changing parameters, or repeating paid generation.", inputSchema: objectSchema({ operationId: stringSchema, refresh: { type: "boolean" } }, ["operationId"]) },
   { name: "podplo_list_generations", description: "List generation operations for the current account.", inputSchema: objectSchema({}) }
 ];
+function podploAgentToolDefinitions() {
+  return structuredClone(TOOL_DEFINITIONS);
+}
 var MCP_ACTIONS = {
   podplo_snapshot: "snapshot",
   podplo_list_skills: "skills.list",
@@ -42788,7 +42825,7 @@ var PodploPluginService = class extends EventEmitter2 {
     };
   }
   toolDefinitions() {
-    return structuredClone(TOOL_DEFINITIONS);
+    return podploAgentToolDefinitions();
   }
   async callTool(name, args, sessionId) {
     const action = MCP_ACTIONS[name];
@@ -44415,7 +44452,7 @@ var NativeGenerationGateway = class {
 // plugins/podplo-dsh/src/transport.ts
 import { createServer as createServer2 } from "node:http";
 import { randomBytes as randomBytes2, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
-var mcpServerInstructions = "\u63D0\u4EA4\u524D\u628A\u4E0D\u660E\u786E\u7684\u9700\u6C42\u96C6\u4E2D\u95EE\u6E05\u3002\u968F\u673A\u8303\u56F4\u4E0D\u660E\u786E\u65F6\u5148\u4E2D\u6027\u6F84\u6E05\u4E00\u6B21\uFF1B\u660E\u786E\u540E\u76F4\u63A5\u8C03\u7528 podplo_prepare_skill_batch\u3002\u6211\u7684 Skill \u4F7F\u7528 skillSource=personal\uFF1B\u591A\u6587\u4EF6\u5939\u7528 groups \u4E00\u6B21\u6574\u6279\u62A5\u4EF7\uFF1B\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[]\uFF0C\u7531\u5BBF\u4E3B\u8BFB\u53D6\u5B8C\u6574\u9884\u8BBE\uFF0C\u4E0D\u7531\u6A21\u578B\u7FFB\u8BD1\u5C3A\u5BF8\u3001\u987A\u5E8F\u6216\u955C\u50CF\u62FC\u63A5\u3002\u4E0D\u8981\u9010\u56FE\u8BFB\u53D6\u3001\u641C\u7D22\u811A\u672C\u6216\u81EA\u884C\u8BC4\u4EF7\u6548\u679C\u3002\u6536\u8D39\u53EA\u8BA4\u5F53\u524D\u5BF9\u8BDD\u7684\u53EF\u4FE1\u300C\u786E\u8BA4\u5E76\u751F\u6210\u300D\u539F\u751F\u5BA1\u6279\uFF0C\u62D2\u7EDD\u5373\u505C\u6B62\u3002\u786E\u8BA4\u540E\u7531\u5BBF\u4E3B\u81EA\u52A8\u5B8C\u6210\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5168\u90E8\u672C\u5730\u52A0\u5DE5\uFF0C\u5E76\u53D1\u6700\u591A\u4E24\u5F20\uFF0C\u4E0D\u518D\u8981\u6C42\u4EBA\u5DE5\u4ECB\u5165\u3002\u6A21\u578B\u4E0D\u8BC4\u4EF7\u6210\u679C\u8D28\u91CF\uFF0C\u4E0D\u6539\u53C2\u6570\uFF0C\u4E0D\u91CD\u751F\u6210\uFF0C\u4E0D\u91CD\u590D\u62A5\u4EF7\u6216\u52A0\u5DE5\uFF1B\u5DF2\u6709\u64CD\u4F5C\u4EC5\u8BFB\u53D6\u72B6\u6001\u3002\u6280\u672F\u5931\u8D25\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u81EA\u52A8\u6362\u65B9\u6848\u6216\u91CD\u8BD5\u6536\u8D39\u3002\u6210\u679C\u4FDD\u7559 AI \u539F\u56FE\u3001\u6700\u7EC8\u52A0\u5DE5\u56FE/PDF \u548C\u4EFB\u52A1\u603B\u7ED3\uFF0C\u4E0D\u8F93\u51FA\u5F85\u590D\u6838\u3001\u6821\u6837\u6216 JSON \u62A5\u544A\u3002\u53EA\u6709\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u8981\u6C42\u7684\u52A0\u5DE5\u5747\u5B8C\u6210\u624D\u80FD\u62A5\u544A\u6574\u4F53\u6210\u529F\u3002";
+var mcpServerInstructions = PODPLO_MCP_SERVER_GUIDANCE;
 var MAX_UI_BODY = 72 * 1024 * 1024;
 var MAX_MCP_BODY = 32 * 1024 * 1024;
 var record4 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
@@ -45396,21 +45433,11 @@ async function nativeToolkitTransport(options) {
 var PODPLO_TASK_PRESET_ID = "podplo-task";
 var PODPLO_JEV_TEST_PRESET_ID = "podplo-jev-test";
 var expression = (value2) => ({ __jsExpr: value2 });
-var podploTaskGuidance = `Submit the user's PodPlo task through the supported tools. Before quoting, ask about missing or ambiguous requirements together. When the intent, Skill, model parameters and processing preset are clear, submit exactly once. Preserve every user-selected Skill/tool setting. Never invent dimensions, reorder steps, replace a Skill, or evaluate artistic quality.
-
-LOCAL-FOLDER BATCH FIRST: use podplo_prepare_skill_batch for user-supplied folders. Set skillSource="personal" for \u6211\u7684 Skill. Pass the exact processingPresetPath and processingPlan=[] for a toolbox preset; the Host reads it and executes its enabled steps, dimensions, millimetre bleed and mirrorJoin. Do not read/rewrite the JSON, search for scripts, list folders, inspect individual images, invent UUIDs, or reimplement the pipeline in shell. For multiple folders with different Skills/presets use groups in ONE batch call so the full task is quoted and confirmed once. Omit expectedImageCount unless the user supplied it. Ask once before quoting if folder/Skill/random scope is ambiguous. Choices must be neutral, without \u63A8\u8350/Recommended/best unless the user asks for a recommendation.
-Additional instructions are OPTIONAL. Omit instructions or pass "" when the selected Skill already defines the task; never invent composition, quality, identity, watermark or other requirements to fill the field. A user-named desktop preset can be resolved to its Desktop path by the Host, and an exact path selected in an answered native question is already confirmed: do not ask again. If nativeApproval reports unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate the task, repeatedly request approval, or call Stop.
-
-For non-folder work use targeted Skill details once, reuse returned capabilities and session image IDs, then call podplo_prepare_generation once with exact expectedOutputCount and the complete processingPlan. Do not scan private storage.
-
-After the trusted native quote confirmation, the Host performs generation, download and every registered local processing step automatically, at most two local jobs concurrently. No further user intervention or model quality review is needed. Do not inspect, rate or critique outputs; do not change prompts, parameters or processing plans; do not repeat completed or failed work, regenerate, re-quote or run extra tools to improve quality. Report factual execution status only. A technical failure is reported as a failure; it never authorizes paid retry or an alternative workflow. Reuse operation IDs and read status after uncertain submission. Transparency is background="transparent", never just prompt wording.
-
-Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected, cancelled or unavailable ends the turn without retry. Do not ask whether approval was clicked or create another approval question. In IM use podplo_wait_generation; after the Host completes generation/download/processing, use podplo_prepare_generation_delivery and dsh_im_return_file for returned images. Otherwise wait for the verified Host completion notification. Returned files are queued for delivery; do not claim receipt. No timeout resubmission. New task folders contain only final selected production images/PDF in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt (actual count, submitted prompts, model/Skill/tool calls). Do not deliver copies of source/reference images, AI originals when superseded, intermediate versions, review folders, proof images or JSON reports. For generation-only tasks the generated image itself is the final deliverable. Recovery bytes stay in the private Host cache; historical tasks keep their recorded layout.`;
 function standardAgentPlugins() {
   return [
     { id: "persona", name: "@deepseek-ai/dsh-persona", config: { prefix: `You are the PodPlo assistant powered by the {{model}} model.
 
-${podploTaskGuidance}` } },
+${PODPLO_TASK_GUIDANCE}` } },
     { id: "agent-instructions", name: "@deepseek-ai/dsh-agent-instructions", config: { maxBytes: 65536 } },
     { id: "time-context", name: "@deepseek-ai/dsh-time-context" },
     { id: "tool-bash", name: "@deepseek-ai/dsh-tool-bash", disabled: expression("process.platform === 'win32'") },
@@ -45429,17 +45456,7 @@ ${podploTaskGuidance}` } },
       group: true,
       isolate: { planMode: true },
       config: [
-        { id: "plan-mode", name: "@deepseek-ai/dsh-plan-mode", config: { section: `You are in plan mode. Stay in plan mode until the user approves your plan through exit_plan_mode or switches the session mode. Imperative language to implement changes means plan the implementation, not execute it. A user's conversational agreement \u2014 including an answer confirming something you asked \u2014 approves nothing and does not end plan mode; fold the confirmed decision into the plan and submit it through exit_plan_mode.
-
-Explore first. Use non-mutating reads, searches, static analysis, and checks to ground the plan in the actual repository. Do not edit or write files, change configuration, run formatters or code generation that rewrites tracked files, commit, or otherwise carry out the plan. Prefer existing functions and patterns over new machinery.
-
-The tool catalog stays the same across modes for request-cache stability. These plan-mode rules override any later tool description or guidance that suggests using mutation tools; those tools remain listed to keep the tool catalog unchanged. Do not use todo_write to track this planning phase: it tracks implementation after an approved plan, while the plan itself belongs in exit_plan_mode.
-
-Resolve discoverable facts by inspection. Use ask_user_question only for user-owned choices or material ambiguity that inspection cannot answer. Do not ask the user where code lives or how current behavior works when you can find out.
-
-Make the plan decision-complete: state the goal and success criteria; group implementation changes by subsystem; identify public API, schema, and data-flow changes; cover edge cases, failure modes, tests, acceptance criteria, and explicit assumptions. Keep it concise enough to review but detailed enough that another engineer can implement it without making design decisions.
-
-When ready, call exit_plan_mode with the complete plan markdown, starting with a # title. Make exit_plan_mode the only and final tool call in that assistant response: it presents the plan for approval, and implementation begins only in a later step after approval. Do not paste the final plan as a plain reply or ask "should I proceed?" through prose or ask_user_question. If review rejects it, incorporate the feedback and present again. If the review channel is unavailable or aborted, stay in plan mode and ask the user to switch modes manually; do not proceed with implementation.` } }
+        { id: "plan-mode", name: "@deepseek-ai/dsh-plan-mode", config: { section: PODPLO_PLAN_MODE_GUIDANCE } }
       ]
     },
     {
@@ -45478,7 +45495,7 @@ async function registerPodploNativePresets(agentPresets, options = {}) {
   const unregister = [await agentPresets.register({
     id: PODPLO_TASK_PRESET_ID,
     name: "PodPlo Agent",
-    description: "\u5728\u539F\u751F\u5BF9\u8BDD\u4E2D\u89C4\u5212\u4EFB\u52A1\uFF0C\u5E76\u8C03\u7528 PodPlo \u7D20\u6750\u3001Skill \u4E0E\u5DE5\u5177\u3002",
+    description: "\u6309\u7528\u6237\u610F\u56FE\u8C03\u7528 PodPlo \u7D20\u6750\u3001\u53EF\u6267\u884C Skill \u4E0E\u5185\u7F6E\u5DE5\u5177\u3002",
     order: 20,
     plugins: standardAgentPlugins()
   })];
@@ -48494,11 +48511,10 @@ var nativeSkillBatchToolName = "mcp__podplo__podplo_prepare_skill_batch";
 var nativeSkillBatchRawName = "podplo_prepare_skill_batch";
 var nativeSkillBatchTool = {
   name: nativeSkillBatchToolName,
-  description: "Prepare one complete PodPlo Skill batch from a user-specified local image folder. The Host\u2014not the model\u2014enumerates and safely reads direct image files, imports references, resolves current bindings and model capabilities, builds every item, quotes the whole batch once and requests the normal native approval. Do not list the folder, read individual images, invent UUIDs, or call podplo_prepare_generation separately. If random scope is ambiguous, ask neutrally before calling.",
+  description: "Prepare one complete PodPlo Skill batch from a user-specified local image folder. The Host\u2014not the model\u2014enumerates and safely reads direct image files, imports references, resolves current bindings and model capabilities, builds every item, quotes the whole batch once and requests the normal native approval. Pass model, ratio, quality, ecoMode or background only when they come from the user or the selected Skill/tool/preset; otherwise omit them and the Host applies the same authoritative defaults as the generation UI. Do not list the folder, read individual images, invent UUIDs, or call podplo_prepare_generation separately. If random scope is ambiguous, ask neutrally before calling.",
   inputSchema: {
     type: "object",
     additionalProperties: false,
-    required: ["model", "ratio", "quality", "ecoMode", "background"],
     oneOf: [
       { required: ["groups"], not: { anyOf: [{ required: ["folderPath"] }, { required: ["processingPlan"] }, { required: ["skillQuery"] }] } },
       { required: ["folderPath", "skillQuery", "skillStrategy", "processingPlan"], not: { required: ["groups"] } }
@@ -48525,11 +48541,11 @@ var nativeSkillBatchTool = {
       skillSource: { type: "string", enum: ["personal", "public", "auto"], description: "Use personal for \u6211\u7684 Skill. Omit or use auto only if the source was not specified." },
       processingPresetPath: { type: "string", minLength: 1, maxLength: 4096, description: "User-supplied toolbox preset JSON path. Pass processingPlan: []; the Host reads and executes all enabled settings including mirrorJoin. Do not read, translate or recreate this preset yourself." },
       skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-shared"], description: "single requires one executable Skill. Random strategies require a Skill family. random-per-image samples without replacement and fails if there are too few members." },
-      model: { type: "string", minLength: 1, maxLength: 160, description: "Exact current model name or ID." },
-      ratio: { type: "string", minLength: 3, maxLength: 8 },
-      quality: { type: "string", minLength: 1, maxLength: 32 },
-      ecoMode: { type: "boolean" },
-      background: { type: "string", enum: ["opaque", "transparent"] },
+      model: { type: "string", minLength: 1, maxLength: 160, description: "Exact current model name or ID from the user or selected Skill/tool/preset. Otherwise omit for the Host UI default." },
+      ratio: { type: "string", minLength: 3, maxLength: 8, description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the current model/UI default." },
+      quality: { type: "string", minLength: 1, maxLength: 32, description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the current model default." },
+      ecoMode: { type: "boolean", description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the authoritative Host default." },
+      background: { type: "string", enum: ["opaque", "transparent"], description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the normal opaque/UI default." },
       processingPlan: processingPlanSchema,
       instructions: { type: "string", maxLength: 3e3, description: "Optional additional generation-only requirements explicitly given by the user. Omit or pass an empty string when the selected Skill is the full instruction. Do not invent requirements to fill this field. Put later processing only in processingPlan." }
     }
@@ -48550,8 +48566,8 @@ function parseInput(value2) {
   const count2 = value2.expectedImageCount;
   if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail3("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
   if (!["single", "random-per-image", "random-shared"].includes(String(value2.skillStrategy))) fail3("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
-  if (typeof value2.ecoMode !== "boolean") fail3("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
-  if (value2.background !== "opaque" && value2.background !== "transparent") fail3("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
+  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail3("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
+  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail3("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
   if (value2.skillSource !== void 0 && !["personal", "public", "auto"].includes(String(value2.skillSource))) fail3("INVALID_ARGUMENT", "skillSource \u65E0\u6548\u3002");
   if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
     fail3("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
@@ -48560,11 +48576,11 @@ function parseInput(value2) {
     ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
     skillQuery: text3(value2.skillQuery, "skillQuery", 160),
     skillStrategy: value2.skillStrategy,
-    model: text3(value2.model, "model", 160),
-    ratio: text3(value2.ratio, "ratio", 8),
-    quality: text3(value2.quality, "quality", 32),
-    ecoMode: value2.ecoMode,
-    background: value2.background,
+    ...value2.model === void 0 ? {} : { model: text3(value2.model, "model", 160) },
+    ...value2.ratio === void 0 ? {} : { ratio: text3(value2.ratio, "ratio", 8) },
+    ...value2.quality === void 0 ? {} : { quality: text3(value2.quality, "quality", 32) },
+    ...value2.ecoMode === void 0 ? {} : { ecoMode: value2.ecoMode },
+    ...value2.background === void 0 ? {} : { background: value2.background },
     processingPlan: value2.processingPlan,
     skillSource: value2.skillSource ?? "auto",
     ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text3(value2.processingPresetPath, "processingPresetPath", 4096) } : {},
@@ -48702,6 +48718,29 @@ function modelMatch(value2, query) {
   if (!model.availableForCurrentPlan) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
   return model;
 }
+function resolveBatchParameters(input, value2) {
+  const properties = value2.quoteInputSchema.properties ?? {};
+  const selectedModel = input.model ? modelMatch(value2, input.model) : value2.models.find((row) => row.availableForCurrentPlan === true);
+  const model = selectedModel ?? fail3("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
+  if (model.availableForCurrentPlan === false) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  const ratio = input.ratio ?? (model.ratios.includes("1:1") ? "1:1" : model.ratios[0]);
+  const modelQuality = typeof model.defaultQuality === "string" && model.qualities.includes(model.defaultQuality) ? model.defaultQuality : void 0;
+  const quality = input.quality ?? modelQuality ?? model.qualities[0];
+  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail3("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
+  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail3("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
+  const required2 = new Set(value2.quoteInputSchema.required ?? []), missing = [];
+  if (!ratio && required2.has("ratio")) missing.push("ratio");
+  if (!quality && required2.has("quality")) missing.push("quality");
+  if (missing.length) fail3("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
+  const ecoMode = input.ecoMode ?? false;
+  return {
+    model,
+    ...ratio ? { ratio } : {},
+    ...quality ? { quality } : {},
+    ecoMode,
+    background: input.background ?? "opaque"
+  };
+}
 function publicPrompt(skill, instructions) {
   if (skill.personal) return instructions || "\u6309\u6240\u9009 Skill \u5904\u7406\u53C2\u8003\u56FE\u7247\u3002";
   const details = skill.details;
@@ -48779,15 +48818,13 @@ async function prepareNativeSkillBatch(raw, deps) {
     fail3("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
   await assertOwner(deps, ownerId, namespace);
   const currentCapabilities = capabilities(await deps.generationCapabilities());
-  const model = modelMatch(currentCapabilities, input.model);
-  if (!model.ratios.includes(input.ratio)) fail3("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
-  if (!model.qualities.includes(input.quality)) fail3("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
-  const referenceLimit = input.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
+  const parameters = resolveBatchParameters(input, currentCapabilities), { model } = parameters;
+  const referenceLimit = parameters.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
   if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail3("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
   const background = backgroundArgs(
     currentCapabilities.quoteInputSchema.properties ?? {},
     model,
-    input.background === "transparent"
+    parameters.background === "transparent"
   );
   if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail3("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
   const images = await readTrustedImageFolder({ folderPath: input.folderPath, cwd: deps.cwd, expectedImageCount: input.expectedImageCount, signal: deps.signal });
@@ -48817,11 +48854,11 @@ async function prepareNativeSkillBatch(raw, deps) {
       modelId: model.id,
       templateId: skill.id,
       referenceAssetIds: [referenceAssetId],
-      ratio: input.ratio,
-      quality: input.quality,
+      ...parameters.ratio ? { ratio: parameters.ratio } : {},
+      ...parameters.quality ? { quality: parameters.quality } : {},
       webSearch: false,
       imageSearch: false,
-      ecoMode: input.ecoMode,
+      ecoMode: parameters.ecoMode,
       count: 1,
       ...background
     } };
@@ -49412,7 +49449,7 @@ async function apply(ctx, config2 = {}) {
     throw new Error("PodPlo generation preparation tool is unavailable");
   }
   const generationPrepareToolSchema = generationPrepareDefinition.inputSchema;
-  const generationPrepareToolDescription = `${generationPrepareDefinition.description ?? ""} This native Host requests a session-bound one-shot approval for the exact quote. In an IM conversation, after an allowed approval call podplo_wait_generation for the returned operationId in the same turn; do not end the turn first.`;
+  const generationPrepareToolDescription = `${generationPrepareDefinition.description ?? ""} ${PODPLO_NATIVE_APPROVAL_GUIDANCE}`;
   const mcpTransport = {
     ...transport,
     async toolDefinitions() {
@@ -49474,7 +49511,11 @@ async function apply(ctx, config2 = {}) {
       if (!agent) return;
       agent.followup({ id: randomUUID15(), role: "user", source: { kind: "user" }, content: [{
         type: "text",
-        text: `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${operationId2} \u751F\u56FE\u72B6\u6001\u4E3A ${operation.status}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${localProcessing.status}\u3002\u8BF7\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u6267\u884C\u72B6\u6001\uFF0C\u7B80\u77ED\u62A5\u544A\u5F20\u6570\u3001\u6210\u679C\u4F4D\u7F6E\u53CA\u5931\u8D25\u9879\u3002\u5BBF\u4E3B\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u4E0D\u8981\u8BC4\u4EF7\u6210\u679C\u8D28\u91CF\uFF0C\u4E0D\u8981\u4FEE\u6539\u63D0\u793A\u8BCD\u3001\u53C2\u6570\u6216\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3001\u91CD\u751F\u6210\u3001\u91CD\u590D\u52A0\u5DE5\u3001\u518D\u6B21\u62A5\u4EF7\u6216\u8FFD\u52A0\u63D0\u95EE\u3002`
+        text: podploGenerationCompletionFollowup({
+          operationId: operationId2,
+          generationStatus: operation.status,
+          localProcessingStatus: localProcessing.status
+        })
       }] });
       chatGenerationResumes.delete(operationId2);
       chatGenerationNotified.add(operationId2);
