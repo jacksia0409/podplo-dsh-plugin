@@ -54417,18 +54417,42 @@ var PodploPluginError = class extends Error {
 var name = external_exports2.string().trim().min(1).max(80).refine((value2) => value2 !== "\u672A\u5206\u7C7B" && !new RegExp("\\p{Cc}", "u").test(value2));
 var note = external_exports2.string().trim().min(1).max(160).refine((value2) => !new RegExp("\\p{Cc}", "u").test(value2));
 var id = external_exports2.string().min(1).max(180).refine((value2) => !/[\/\\\u0000\r\n]/u.test(value2));
+var favoriteType = external_exports2.enum(["skill", "gallery"]);
 var folderSchema = external_exports2.object({ id: external_exports2.string().uuid(), name }).strict();
-var LocalFavoriteUpdateSchema = external_exports2.object({ id, note: note.nullable().optional(), folderId: external_exports2.string().uuid().nullable().optional() }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0);
-var account = external_exports2.object({
+var updateFields = { note: note.nullable().optional(), folderId: external_exports2.string().uuid().nullable().optional() };
+var LocalFavoriteItemUpdateSchema = external_exports2.object({ type: favoriteType, id, ...updateFields }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0);
+var LocalFavoriteUpdateSchema = external_exports2.object({ id, ...updateFields }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0).transform((value2) => ({ type: "skill", ...value2 }));
+var compatibleUpdate = external_exports2.union([LocalFavoriteItemUpdateSchema, LocalFavoriteUpdateSchema]);
+var itemSchema = external_exports2.object({ type: favoriteType, id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict();
+var accountV2 = external_exports2.object({
   ownerId: external_exports2.string().min(1).max(180),
   folders: external_exports2.array(folderSchema).max(100),
-  skills: external_exports2.array(external_exports2.object({ id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict())
+  items: external_exports2.array(itemSchema)
+}).strict().superRefine((value2, context) => {
+  const ids2 = new Set(value2.folders.map((row) => row.id));
+  if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.items.map((row) => `${row.type}:${row.id}`)).size !== value2.items.length || value2.items.some((row) => row.folderId && !ids2.has(row.folderId)))
+    context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
+});
+var stateV2 = external_exports2.object({ schemaVersion: external_exports2.literal(2), accounts: external_exports2.array(accountV2) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
+var legacySkill = external_exports2.object({ id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict();
+var accountV1 = external_exports2.object({
+  ownerId: external_exports2.string().min(1).max(180),
+  folders: external_exports2.array(folderSchema).max(100),
+  skills: external_exports2.array(legacySkill)
 }).strict().superRefine((value2, context) => {
   const ids2 = new Set(value2.folders.map((row) => row.id));
   if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.skills.map((row) => row.id)).size !== value2.skills.length || value2.skills.some((row) => row.folderId && !ids2.has(row.folderId)))
     context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
 });
-var schema = external_exports2.object({ schemaVersion: external_exports2.literal(1), accounts: external_exports2.array(account) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
+var stateV1 = external_exports2.object({ schemaVersion: external_exports2.literal(1), accounts: external_exports2.array(accountV1) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
+var schema = external_exports2.union([stateV2, stateV1]).transform((value2) => value2.schemaVersion === 2 ? value2 : {
+  schemaVersion: 2,
+  accounts: value2.accounts.map((row) => ({
+    ownerId: row.ownerId,
+    folders: row.folders,
+    items: row.skills.map((skill) => ({ type: "skill", ...skill }))
+  }))
+});
 var fail = (code, message) => {
   throw new PodploPluginError(code, message);
 };
@@ -54439,7 +54463,7 @@ function parse5(type, input) {
 var LocalFavoriteOrganization = class {
   store;
   constructor(directory) {
-    this.store = new AtomicStore(join4(directory, "favorite-organization.json"), () => ({ schemaVersion: 1, accounts: [] }), (value2) => schema.parse(value2));
+    this.store = new AtomicStore(join4(directory, "favorite-organization.json"), () => ({ schemaVersion: 2, accounts: [] }), (value2) => schema.parse(value2));
   }
   async init() {
     await this.store.load();
@@ -54451,15 +54475,19 @@ var LocalFavoriteOrganization = class {
     return { items: this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.folders ?? [] };
   }
   decorate(ownerId, rows) {
-    const metadata = new Map(this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.skills.map((row) => [row.id, row]) ?? []);
-    return rows.map((row) => row.type === "skill" ? { ...row, note: metadata.get(row.id)?.note ?? null, folderId: metadata.get(row.id)?.folderId ?? null } : row);
+    const metadata = new Map(this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.items.map((row) => [`${row.type}:${row.id}`, row]) ?? []);
+    return rows.map((row) => ({
+      ...row,
+      note: metadata.get(`${row.type}:${row.id}`)?.note ?? null,
+      folderId: metadata.get(`${row.type}:${row.id}`)?.folderId ?? null
+    }));
   }
   change(ownerId, update, guard) {
     return this.store.transaction((state) => {
       guard?.();
       let row = state.accounts.find((row2) => row2.ownerId === ownerId);
       if (!row) {
-        row = { ownerId, folders: [], skills: [] };
+        row = { ownerId, folders: [], items: [] };
         state.accounts.push(row);
       }
       return update(row);
@@ -54489,35 +54517,37 @@ var LocalFavoriteOrganization = class {
     const folderId = parse5(external_exports2.string().uuid(), rawId);
     return this.change(ownerId, (row) => {
       if (!row.folders.some((item) => item.id === folderId)) return fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      let movedSkillCount = 0;
-      for (const skill of row.skills) if (skill.folderId === folderId) {
-        skill.folderId = null;
-        movedSkillCount++;
+      let movedItemCount = 0, movedSkillCount = 0;
+      for (const item of row.items) if (item.folderId === folderId) {
+        item.folderId = null;
+        movedItemCount++;
+        if (item.type === "skill") movedSkillCount++;
       }
-      row.skills = row.skills.filter((skill) => skill.note !== null || skill.folderId !== null);
+      row.items = row.items.filter((item) => item.note !== null || item.folderId !== null);
       row.folders = row.folders.filter((item) => item.id !== folderId);
-      return { deleted: true, movedSkillCount };
+      return { deleted: true, movedItemCount, movedSkillCount };
     }, guard);
   }
   update(ownerId, input, guard) {
-    const value2 = parse5(LocalFavoriteUpdateSchema, input);
+    const value2 = parse5(compatibleUpdate, input);
     return this.change(ownerId, (row) => {
       if (value2.folderId && !row.folders.some((item) => item.id === value2.folderId)) fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      const previous = row.skills.find((skill) => skill.id === value2.id);
+      const previous = row.items.find((item) => item.type === value2.type && item.id === value2.id);
       const updated = {
+        type: value2.type,
         id: value2.id,
         note: value2.note === void 0 ? previous?.note ?? null : value2.note,
         folderId: value2.folderId === void 0 ? previous?.folderId ?? null : value2.folderId
       };
-      row.skills = row.skills.filter((skill) => skill.id !== value2.id);
-      if (updated.note !== null || updated.folderId !== null) row.skills.push(updated);
+      row.items = row.items.filter((item) => item.type !== value2.type || item.id !== value2.id);
+      if (updated.note !== null || updated.folderId !== null) row.items.push(updated);
       return updated;
     }, guard);
   }
-  async forget(ownerId, skillId, guard) {
-    if (!this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.skills.some((row) => row.id === skillId)) return;
+  async forget(ownerId, type, itemId, guard) {
+    if (!this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.items.some((row) => row.type === type && row.id === itemId)) return;
     await this.change(ownerId, (row) => {
-      row.skills = row.skills.filter((skill) => skill.id !== skillId);
+      row.items = row.items.filter((item) => item.type !== type || item.id !== itemId);
     }, guard);
   }
 };
@@ -54528,7 +54558,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.14",
+  version: "0.1.15",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -57681,9 +57711,13 @@ var PodploPluginService = class extends EventEmitter2 {
         this.requireUi(caller);
         data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.delete(owner, text2(input.id, "\u6587\u4EF6\u5939 ID", 180), guard));
         break;
+      case "favorites.item.update":
+        this.requireUi(caller);
+        data = await this.favoriteWrite((owner, guard) => this.updateFavoriteItem(owner, input, guard));
+        break;
       case "favorites.skill.update":
         this.requireUi(caller);
-        data = await this.favoriteWrite((owner, guard) => this.updateFavoriteSkill(owner, input, guard));
+        data = await this.favoriteWrite((owner, guard) => this.updateFavoriteItem(owner, input, guard, true));
         break;
       case "favorites.migrate":
         this.requireUi(caller);
@@ -58061,28 +58095,31 @@ var PodploPluginService = class extends EventEmitter2 {
     if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
     return result;
   }
-  async updateFavoriteSkill(ownerId, input, guard) {
-    const parsed = LocalFavoriteUpdateSchema.safeParse(input);
+  async updateFavoriteItem(ownerId, input, guard, legacySkill2 = false) {
+    const parsed = (legacySkill2 ? LocalFavoriteUpdateSchema : LocalFavoriteItemUpdateSchema).safeParse(input);
     if (!parsed.success) throw new PodploPluginError("INVALID_ARGUMENT", "\u6536\u85CF\u5907\u6CE8\u6216\u6587\u4EF6\u5939\u53C2\u6570\u65E0\u6548\u3002");
-    const rows = await this.allFavoriteSkills();
+    const rows = await this.allFavorites();
     await this.assertOwner(ownerId, false);
     guard();
-    const item = rows.find((row) => row.id === parsed.data.id);
-    if (!item) throw new PodploPluginError("FAVORITE_NOT_FOUND", "\u5F53\u524D\u6536\u85CF\u4E2D\u6CA1\u6709\u8BE5 Skill\u3002");
+    const item = rows.find((row) => row.type === parsed.data.type && row.id === parsed.data.id);
+    if (!item) throw new PodploPluginError("FAVORITE_NOT_FOUND", legacySkill2 ? "\u5F53\u524D\u6536\u85CF\u4E2D\u6CA1\u6709\u8BE5 Skill\u3002" : "\u5F53\u524D\u6536\u85CF\u4E2D\u6CA1\u6709\u8BE5\u9879\u76EE\u3002");
     const metadata = await this.favoriteOrganization.update(ownerId, parsed.data, guard);
     return { item: { ...item, note: metadata.note, folderId: metadata.folderId } };
   }
-  async allFavoriteSkills() {
+  async allFavorites() {
     const rows = [], cursors = /* @__PURE__ */ new Set();
     let cursor;
     do {
       const page = await this.favoritesList({ limit: 100, ...cursor ? { cursor } : {} });
-      rows.push(...page.items.filter((row) => row.type === "skill"));
+      rows.push(...page.items);
       cursor = page.nextCursor ?? void 0;
       if (cursor && (cursors.has(cursor) || cursors.size >= 100)) throw new PodploPluginError("FAVORITES_LIST_INCOMPLETE", "\u6536\u85CF\u5217\u8868\u672A\u80FD\u5B8C\u6574\u8BFB\u53D6\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
       if (cursor) cursors.add(cursor);
     } while (cursor);
     return rows;
+  }
+  async allFavoriteSkills() {
+    return (await this.allFavorites()).filter((row) => row.type === "skill");
   }
   async favoriteSkillsList(input) {
     const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
@@ -58142,9 +58179,14 @@ var PodploPluginService = class extends EventEmitter2 {
       const result = await this.online.setFavorite({ type: kind, id: id2, favorite });
       if (await this.owner(false) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316");
       if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
-      if (kind === "skill" && result.favorite === false) await this.favoriteOrganization.forget(ownerId, id2, () => {
-        if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
-      });
+      if (result.favorite === false) await this.favoriteOrganization.forget(
+        ownerId,
+        kind,
+        id2,
+        () => {
+          if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
+        }
+      );
       if (!favorite) await this.store.transaction((state) => {
         const migration = state.favoriteMigrations.find((row) => row.ownerId === ownerId);
         if (!migration) return;
@@ -60560,16 +60602,16 @@ function installJevRouting(options) {
     if (!currentUser.text || lastRoutedFactRevision === factRevision) return decision;
     lastRoutedFactRevision = factRevision;
     const requestId = randomUUID12(), actualRestrictableNames = restrictableNames(options.agent);
-    const account2 = options.snapshot().account;
-    const accountMatch = account2.status === "connected" && account2.userId === options.expectedUserId;
-    void postEvent({ kind: "account_check", requestId, accountStatus: account2.status, accountMatch });
+    const account = options.snapshot().account;
+    const accountMatch = account.status === "connected" && account.userId === options.expectedUserId;
+    void postEvent({ kind: "account_check", requestId, accountStatus: account.status, accountMatch });
     if (!accountMatch) {
       logMetric(options.logger, "warn", {
         source: "jev",
         outcome: "blocked",
         fallback: false,
         reason: "account_mismatch",
-        accountStatus: account2.status,
+        accountStatus: account.status,
         accountMatch: false
       });
       return { kind: "reject" };
@@ -61166,6 +61208,7 @@ var TaskArchiveManager = class {
   store;
   jobs = /* @__PURE__ */ new Map();
   reschedule = /* @__PURE__ */ new Set();
+  forcedReschedule = /* @__PURE__ */ new Set();
   tail = Promise.resolve();
   closed = false;
   root = "";
@@ -61342,13 +61385,18 @@ var TaskArchiveManager = class {
       await this.same(identity);
     }
   }
-  schedule(id2, identity) {
+  schedule(id2, identity, force = false) {
     if (this.closed) return;
     if (this.jobs.has(id2)) {
       this.reschedule.add(id2);
+      if (force) this.forcedReschedule.add(id2);
       return;
     }
-    const job = this.savePending(id2, identity).then(async () => {
+    const job = Promise.resolve().then(async () => {
+      await this.same(identity);
+      const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+      if (force || this.needsArchiveWork(task)) await this.savePending(id2, identity, force);
+    }).then(async () => {
       const task = this.store.snapshot().tasks.find((row) => row.id === id2);
       if (task?.diagnostics?.some((row) => row.stage === "archive")) {
         await this.same(identity);
@@ -61372,9 +61420,10 @@ var TaskArchiveManager = class {
     }).finally(() => {
       this.jobs.delete(id2);
       const current = this.store.snapshot().tasks.find((row) => row.id === id2);
-      const rerun = this.reschedule.delete(id2) || !!current?.files.some((file3) => file3.status === "pending");
+      const forced = this.forcedReschedule.delete(id2);
+      const rerun = this.reschedule.delete(id2) || forced || !!current?.files.some((file3) => file3.status === "pending");
       if (!this.closed && rerun)
-        void this.same(identity).then(() => this.schedule(id2, identity)).catch(() => void 0);
+        void this.same(identity).then(() => this.schedule(id2, identity, forced)).catch(() => void 0);
       this.options.changed?.(id2);
     });
     this.jobs.set(id2, job);
@@ -61481,7 +61530,7 @@ var TaskArchiveManager = class {
       return false;
     }
   }
-  async reconcileFinalOutputs(id2, identity) {
+  async reconcileFinalOutputs(id2, identity, recoverPublished) {
     let task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (task?.archiveFormat !== 2) return;
     await this.taskDirectory(task);
@@ -61494,6 +61543,7 @@ var TaskArchiveManager = class {
       task = this.store.snapshot().tasks.find((row) => row.id === id2);
       const current = task.files.find((row) => row.id === candidate2.id);
       if (await this.publishedValid(task, current)) continue;
+      if (current.publishedName && !recoverPublished) continue;
       if (current.publishedName) await this.store.transaction((state) => {
         const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === current.id);
         delete row.publishedName;
@@ -61563,7 +61613,7 @@ var TaskArchiveManager = class {
       });
     }
   }
-  async savePendingFinalOnly(id2, identity) {
+  async savePendingFinalOnly(id2, identity, recoverPublished) {
     const initial = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (initial?.archiveFormat !== 2) return;
     for (const file3 of initial.files.filter((row) => row.status === "pending")) {
@@ -61622,13 +61672,13 @@ var TaskArchiveManager = class {
         });
       }
     }
-    await this.reconcileFinalOutputs(id2, identity);
+    await this.reconcileFinalOutputs(id2, identity, recoverPublished);
   }
-  async savePending(id2, identity) {
+  async savePending(id2, identity, recoverPublished = false) {
     const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
     if (!task) return;
     if (task.archiveFormat === 2) {
-      await this.savePendingFinalOnly(id2, identity);
+      await this.savePendingFinalOnly(id2, identity, recoverPublished);
       return;
     }
     for (const file3 of task.files.filter((row) => row.status === "pending")) {
@@ -62184,6 +62234,90 @@ var TaskArchiveManager = class {
     await this.same(identity);
     return { headers, total: headers.length, projects, knownAssetIds, deletedAssetIds };
   }
+  async historyImagesForTask(task, projectName, fileIds) {
+    try {
+      await this.taskDirectory(task);
+    } catch {
+      return [];
+    }
+    const directories = /* @__PURE__ */ new Map(), items = [];
+    for (const file3 of task.files) {
+      if (fileIds && !fileIds.has(file3.id)) continue;
+      if (file3.group !== "result" || file3.status !== "saved" || !file3.image) continue;
+      const name2 = task.archiveFormat === 2 ? file3.publishedName : file3.name;
+      const fingerprint2 = task.archiveFormat === 2 ? file3.publishedFingerprint : file3.fingerprint;
+      if (!name2 || !fingerprint2 || basename10(name2) !== name2) continue;
+      const directory = task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file3);
+      if (!directories.has(directory)) {
+        try {
+          await this.directory(directory);
+          directories.set(directory, true);
+        } catch {
+          directories.set(directory, false);
+        }
+      }
+      if (!directories.get(directory)) continue;
+      const path = join11(directory, name2), stat = await lstat5(path).catch(() => void 0);
+      if (!stat?.isFile() || stat.isSymbolicLink() || await realpath6(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== fingerprint2) continue;
+      const fileTime = new Date(stat.mtimeMs);
+      const createdAt = Number.isFinite(fileTime.getTime()) ? fileTime.toISOString() : task.createdAt;
+      items.push({
+        id: `${task.id}:${file3.id}`,
+        taskId: task.id,
+        fileId: file3.id,
+        name: name2,
+        projectId: task.projectId,
+        projectName,
+        createdAt
+      });
+    }
+    return items;
+  }
+  /** Read-only gallery catalog. It never syncs cloud tasks, repairs files, writes summaries, or changes receipts. */
+  async historyCatalog(filters) {
+    const identity = await this.identity(), state = this.store.snapshot();
+    const projectNames = new Map(state.projects.filter((row) => row.owner === identity.owner).map((row) => [row.id, row.name]));
+    const all = [];
+    for (const task of state.tasks.filter((row) => row.owner === identity.owner)) {
+      const projectName = projectNames.get(task.projectId);
+      if (projectName) all.push(...await this.historyImagesForTask(task, projectName));
+    }
+    await this.same(identity);
+    const availableProjects = new Set(all.map((row) => row.projectId));
+    const projects = [...projectNames].filter(([id2]) => availableProjects.has(id2)).map(([id2, name2]) => ({ id: id2, name: name2 })).sort((a, b) => a.name.localeCompare(b.name));
+    const bounds = archiveDateBounds(filters), query = filters.query.trim().toLocaleLowerCase();
+    const headers = all.filter((item) => {
+      if (filters.project && item.projectId !== filters.project) return false;
+      if (!`${item.name} ${item.projectName}`.toLocaleLowerCase().includes(query)) return false;
+      const createdAt = Date.parse(item.createdAt);
+      return Number.isFinite(createdAt) && (bounds.start === void 0 || createdAt >= bounds.start) && (bounds.end === void 0 || createdAt < bounds.end);
+    }).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.id.localeCompare(b.id));
+    return { headers, total: headers.length, projects };
+  }
+  /** Revalidate only the exact image records selected for the current gallery page. */
+  async historyPage(ids2) {
+    const pattern = /^[0-9a-f-]{36}:[0-9a-f-]{36}$/iu;
+    if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id2) => !pattern.test(id2)))
+      throw new Error("\u5386\u53F2\u8BB0\u5F55\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
+    const identity = await this.identity(), state = this.store.snapshot();
+    const requested = /* @__PURE__ */ new Map();
+    for (const id2 of ids2) {
+      const [taskId, fileId] = id2.split(":");
+      const files = requested.get(taskId) ?? /* @__PURE__ */ new Set();
+      files.add(fileId);
+      requested.set(taskId, files);
+    }
+    const projectNames = new Map(state.projects.filter((row) => row.owner === identity.owner).map((row) => [row.id, row.name]));
+    const found = /* @__PURE__ */ new Map();
+    for (const [taskId, fileIds] of requested) {
+      const task = state.tasks.find((row) => row.owner === identity.owner && row.id === taskId);
+      const projectName = task && projectNames.get(task.projectId);
+      if (!task || !projectName) continue;
+      for (const item of await this.historyImagesForTask(task, projectName, fileIds)) found.set(item.id, item);
+    }
+    await this.same(identity);
+    return { items: ids2.flatMap((id2) => found.has(id2) ? [found.get(id2)] : []) };
+  }
   /** Verify only the exact local tasks selected for the visible page. */
   async page(ids2) {
     if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id2) => !/^[0-9a-f-]{36}$/iu.test(id2)))
@@ -62251,7 +62385,7 @@ var TaskArchiveManager = class {
         for (const file3 of state.tasks.find((row) => row.id === id2).files)
           if (file3.status === "failed" || absent.has(file3.id)) file3.status = "pending";
       });
-      this.schedule(id2, identity);
+      this.schedule(id2, identity, true);
       return;
     }
     for (const file3 of task.files.filter((file4) => file4.status === "saved" && file4.name))
@@ -62260,7 +62394,7 @@ var TaskArchiveManager = class {
       for (const file3 of state.tasks.find((row) => row.id === id2).files)
         if (file3.status === "failed" || absent.has(file3.id)) file3.status = "pending";
     });
-    this.schedule(id2, identity);
+    this.schedule(id2, identity, true);
   }
   async read(id2, fileId, preview = false) {
     const { identity, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId && row.status === "saved");
@@ -62929,6 +63063,16 @@ async function taskArchiveHost(options) {
           if (input.scope !== void 0 && input.scope !== "session") throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7D22\u5F15\u8303\u56F4\u65E0\u6548\u3002");
           await sync(caller.sessionId);
           return { ok: true, data: await manager.index(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0) };
+        }
+        if (action === "archive.historyCatalog") {
+          archiveInputKeys(input, ["filters"]);
+          return { ok: true, data: await manager.historyCatalog(archiveFilters(input.filters)) };
+        }
+        if (action === "archive.historyPage") {
+          archiveInputKeys(input, ["imageIds"]);
+          if (!Array.isArray(input.imageIds) || !input.imageIds.every((id2) => typeof id2 === "string"))
+            throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5386\u53F2\u8BB0\u5F55\u5206\u9875\u53C2\u6570\u65E0\u6548\u3002");
+          return { ok: true, data: await manager.historyPage(input.imageIds) };
         }
         if (action === "archive.catalog") {
           archiveInputKeys(input, ["filters"]);

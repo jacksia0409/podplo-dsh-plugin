@@ -134,72 +134,9 @@ function ChatGenerationProgress({ item, busy, onAction }) {
 var import_react2 = require("react");
 
 // plugins/podplo-dsh/src/task-archive.css
-var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}.ppd-archive-browser-heading h2{flex:0 0 100%;font-size:22px;margin:0}\n.ppd-archive-view-switch{display:flex;flex:0 0 auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:2px;gap:2px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:4px 9px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-library-toolbar.ppd-archive-filters{flex:1 1 640px;margin:0}.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar{flex:1;flex-wrap:wrap;justify-content:flex-start}.ppd-archive-filters .ppd-archive-toolbar>select{width:112px;max-width:100%}\n.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar>input{flex:0 1 156px;width:156px;min-width:100px;max-width:100%;height:28px;padding:4px 9px;border-radius:6px}\n.ppd-archive-filters .ppd-archive-toolbar select,.ppd-archive-filters .ppd-archive-toolbar button{min-height:28px;height:28px;padding:4px 8px}\n.ppd-archive-date-toolbar{display:contents}.ppd-archive-date-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:28px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-filters .ppd-archive-date-toolbar input{flex:0 1 auto;width:132px;min-width:0;max-width:100%;height:28px;padding:4px 8px;border-radius:6px}.ppd-archive-date-toolbar>span{align-self:center}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n\n@media(max-width:1100px){.ppd-archive-browser-heading .ppd-archive-filters{flex-basis:100%}.ppd-archive-browser-heading .ppd-archive-view-switch{margin-left:auto}}\n";
+var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}.ppd-archive-browser-heading h2{flex:0 0 100%;font-size:22px;margin:0}\n.ppd-archive-view-switch{display:flex;flex:0 0 auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:2px;gap:2px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:4px 9px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-library-toolbar.ppd-archive-filters{flex:1 1 640px;margin:0}.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar{flex:1;flex-wrap:wrap;justify-content:flex-start}.ppd-archive-filters .ppd-archive-toolbar>select{width:112px;max-width:100%}\n.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar>input{flex:0 1 156px;width:156px;min-width:100px;max-width:100%;height:28px;padding:4px 9px;border-radius:6px}\n.ppd-archive-filters .ppd-archive-toolbar select,.ppd-archive-filters .ppd-archive-toolbar button{min-height:28px;height:28px;padding:4px 8px}\n.ppd-archive-date-toolbar{display:contents}.ppd-archive-date-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:28px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-filters .ppd-archive-date-toolbar input{flex:0 1 auto;width:132px;min-width:0;max-width:100%;height:28px;padding:4px 8px;border-radius:6px}.ppd-archive-date-toolbar>span{align-self:center}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-history-description{flex:0 0 100%;margin:0;color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7}.ppd-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:14px}.ppd-history-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:9px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}.ppd-history-preview{display:flex;width:100%;height:190px;padding:0;border:0;border-radius:6px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-history-preview .ppd-archive-placeholder{width:100%;height:100%}.ppd-history-preview img{width:100%;height:100%;object-fit:contain}.ppd-history-card>strong{margin:10px 0 5px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}.ppd-history-meta{display:flex;flex-direction:column;gap:2px;color:var(--muted-foreground,#6c6c63);font-size:11px;line-height:1.5}.ppd-history-meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-history-card .ppd-archive-actions{margin-top:auto;padding-top:8px}.ppd-archive-lightbox>.ppd-archive-placeholder{width:100%;height:calc(100% - 42px)}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n\n@media(max-width:1100px){.ppd-archive-browser-heading .ppd-archive-filters{flex-basis:100%}.ppd-archive-browser-heading .ppd-archive-view-switch{margin-left:auto}}\n";
 
 // plugins/podplo-dsh/src/task-result-audit.ts
-function canonical(value2) {
-  if (Array.isArray(value2)) return `[${value2.map(canonical).join(",")}]`;
-  if (value2 && typeof value2 === "object") return `{${Object.entries(value2).filter(([, item]) => item !== void 0).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical(item)}`).join(",")}}`;
-  return JSON.stringify(value2) ?? "null";
-}
-function processingStepDigest(step) {
-  return canonical({ toolName: step.toolName, options: step.options, sourceStepId: step.sourceStepId, generationItemIndexes: step.generationItemIndexes });
-}
-function auditTask(files, generation, plan, receipts = [], failures = []) {
-  const results = files.filter((file3) => file3.group === "result");
-  const originals = results.filter((file3) => file3.variant === "generated" || file3.assetId);
-  const actualGeneration = generation ?? { planned: null, succeeded: originals.length, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
-  const downloaded = results.filter((file3) => file3.status === "saved").length;
-  const steps = [];
-  const outputsByStep = /* @__PURE__ */ new Map();
-  for (const step of plan ?? []) {
-    const ids2 = step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file3) => file3.group === "reference") : originals).filter((file3) => !step.generationItemIndexes || file3.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file3.generationItemIndex)).map((file3) => file3.originId).filter((id) => !!id);
-    const inputs = [...new Set(ids2)];
-    const runs = receipts.filter((run) => run.toolName === step.toolName && run.options !== void 0 && canonical(run.options) === canonical(step.options) && run.resultIds.length > 0);
-    const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id) => inputs.includes(id)));
-    const planDigest = processingStepDigest(step);
-    const matchedFailures = failures.filter((failure) => failure.stepId === step.id && failure.planDigest === planDigest && inputs.includes(failure.inputId) && !completed.has(failure.inputId));
-    const failedIds = [...new Set(matchedFailures.map((failure) => failure.inputId))];
-    outputsByStep.set(step.id, [...new Set(runs.filter((run) => run.inputIds.some((id) => inputs.includes(id))).flatMap((run) => run.resultIds))]);
-    steps.push({
-      id: step.id,
-      label: step.label,
-      required: inputs.length,
-      completed: completed.size,
-      missingIds: inputs.filter((id) => !completed.has(id)),
-      failedIds,
-      failures: failedIds.map((inputId) => ({ inputId, code: matchedFailures.find((row) => row.inputId === inputId).code }))
-    });
-  }
-  const required3 = plan === void 0 ? null : steps.reduce((sum, step) => sum + step.required, 0);
-  const processed = steps.reduce((sum, step) => sum + step.completed, 0);
-  const audit = {
-    generation: actualGeneration,
-    download: {
-      expected: results.length,
-      saved: downloaded,
-      remaining: results.length - downloaded,
-      generated: originals.length,
-      generatedSaved: originals.filter((file3) => file3.status === "saved").length,
-      processed: results.length - originals.length,
-      processedSaved: results.filter((file3) => file3.variant === "processed" && file3.status === "saved").length,
-      failed: results.filter((file3) => file3.status === "failed").length,
-      missing: results.filter((file3) => file3.status === "missing").length
-    },
-    processing: {
-      registered: plan !== void 0,
-      required: required3,
-      completed: processed,
-      remaining: required3 === null ? null : required3 - processed,
-      failed: steps.reduce((sum, step) => sum + step.failedIds.length, 0),
-      outputs: results.filter((file3) => file3.variant === "processed").length,
-      steps
-    },
-    complete: false
-  };
-  audit.complete = actualGeneration.planned !== null && actualGeneration.succeeded === actualGeneration.planned && !actualGeneration.failed && !actualGeneration.pending && !actualGeneration.cancelled && !actualGeneration.unknown && required3 !== null && required3 === processed && audit.download.remaining === 0 && !files.some((file3) => file3.status !== "saved" || file3.reviewRequired);
-  return audit;
-}
 function auditLines(audit) {
   const g = audit.generation, d = audit.download, p = audit.processing;
   const lines = [
@@ -229,29 +166,6 @@ function archiveDateError({ period, from, to }) {
   if (from && !localDate(from) || to && !localDate(to)) return "\u8BF7\u586B\u5199\u6709\u6548\u7684\u65E5\u671F\u3002";
   if (from && to && from > to) return "\u5F00\u59CB\u65E5\u671F\u4E0D\u80FD\u665A\u4E8E\u7ED3\u675F\u65E5\u671F\u3002";
   return "";
-}
-function filterArchiveTasks(tasks, filters, now = /* @__PURE__ */ new Date()) {
-  if (archiveDateError(filters)) return [];
-  let start, end;
-  if (filters.period === "custom") {
-    start = localDate(filters.from);
-    end = localDate(filters.to);
-    if (end) end.setDate(end.getDate() + 1);
-  } else if (filters.period !== "all") {
-    start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-    end = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
-    start.setDate(start.getDate() - (filters.period === "7days" ? 6 : filters.period === "30days" ? 29 : 0));
-  }
-  const query = filters.query.trim().toLocaleLowerCase();
-  const timestamp = (task) => {
-    const value2 = Date.parse(task.createdAt);
-    return Number.isFinite(value2) ? value2 : -Infinity;
-  };
-  return tasks.filter((task) => {
-    if (filters.project && task.projectId !== filters.project || !`${task.name} ${task.projectName}`.toLocaleLowerCase().includes(query)) return false;
-    const time5 = timestamp(task);
-    return !start && !end || Number.isFinite(time5) && (!start || time5 >= start.getTime()) && (!end || time5 < end.getTime());
-  }).sort((a, b) => timestamp(a) === timestamp(b) ? 0 : timestamp(b) - timestamp(a));
 }
 
 // plugins/podplo-dsh/src/polling.ts
@@ -780,18 +694,15 @@ function useDeferredPreview(options) {
 }
 
 // plugins/podplo-dsh/src/task-archive-pagination.ts
-function selectArchiveVisiblePage(headers, cloudTasks, requestedPage) {
-  const merged = [
-    ...headers.map((header) => ({ kind: "local", id: header.id, createdAt: header.createdAt })),
-    ...cloudTasks.map((task) => ({ kind: "cloud", id: task.id, createdAt: task.createdAt, task }))
-  ].sort((a, b) => {
+function selectArchiveVisiblePage(headers, requestedPage) {
+  const merged = headers.map((header) => ({ id: header.id, createdAt: header.createdAt })).sort((a, b) => {
     const left = Date.parse(a.createdAt), right = Date.parse(b.createdAt);
     return (Number.isFinite(right) ? right : -Infinity) - (Number.isFinite(left) ? left : -Infinity) || a.id.localeCompare(b.id);
   });
   const pageCount = Math.max(1, Math.ceil(merged.length / 20));
   const page = Math.max(1, Math.min(Number.isInteger(requestedPage) ? requestedPage : 1, pageCount));
   const entries = merged.slice((page - 1) * 20, page * 20);
-  return { merged, entries, page, pageCount, localIds: entries.filter((entry) => entry.kind === "local").map((entry) => entry.id) };
+  return { merged, entries, page, pageCount, localIds: entries.map((entry) => entry.id) };
 }
 
 // plugins/podplo-dsh/src/task-archive-ui.tsx
@@ -839,7 +750,7 @@ function ArchiveImage({ task, file: file3, request, priority = 0, fill = false, 
           if (!file3.assetId || signal.aborted) throw cause;
         }
       }
-      if (!file3.assetId) throw new Error("\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
+      if (!file3.assetId) throw new Error("\u672C\u5730\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
       const { data } = await request("assets.detail", { id: file3.assetId });
       if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
       if (typeof data?.previewUrl !== "string" || !data.previewUrl) throw new Error("\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
@@ -873,7 +784,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       setBusy(false);
     }
   };
-  const images = task.files.filter((file3) => file3.group === "result" && file3.image && (file3.status === "saved" || file3.assetId)).slice(view === "list" ? -1 : -3);
+  const images = task.files.filter((file3) => file3.group === "result" && file3.image && (file3.status === "saved" || !!file3.assetId)).slice(view === "list" ? -1 : -3);
   const running2 = ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status);
   const createdTime = Date.parse(task.createdAt);
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-card", "data-task-folder": task.id, "data-batch-view": view, children: [
@@ -916,7 +827,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       onView && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: onView, children: "\u67E5\u770B\u7ED3\u679C" }),
       task.directory ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.openTask"), children: "\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy || task.status !== "completed", onClick: () => void act("archive.saveCloud"), children: "\u4FDD\u5B58\u5230\u7535\u8111" }),
       task.summaryStatus === "saved" && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.openSummary"), children: "\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3" }),
-      library && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.navigate"), children: "\u5728\u5904\u7406\u7ED3\u679C\u4E2D\u67E5\u770B" }),
+      library && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.navigate"), children: "\u5728\u5386\u53F2\u8BB0\u5F55\u4E2D\u67E5\u770B" }),
       task.directory && (task.saveStatus === "failed" || task.audit && task.audit.download.remaining > 0) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.retry"), children: "\u4EFB\u52A1\u5237\u65B0" }),
       !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void act("archive.processPending"), children: busy ? "\u5904\u7406\u4E2D\u2026" : "\u7EE7\u7EED\u5904\u7406" }),
       task.directory && onDelete && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(
@@ -985,150 +896,105 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
     ] })
   ] });
 }
-var VERIFIED_ARCHIVE_CACHE_LIMIT = 64;
-function mergeVerifiedArchiveItems(previous, rows) {
+var VERIFIED_HISTORY_CACHE_LIMIT = 80;
+function mergeVerifiedHistoryItems(previous, rows) {
   const incoming = new Set(rows.map((row) => row.id));
-  return [...previous.filter((row) => !incoming.has(row.id)), ...rows].slice(-VERIFIED_ARCHIVE_CACHE_LIMIT);
+  return [...previous.filter((row) => !incoming.has(row.id)), ...rows].slice(-VERIFIED_HISTORY_CACHE_LIMIT);
 }
-function DeleteBatchDialog({ task, busy, error: error101, onCancel, onConfirm }) {
-  const cancel = (0, import_react2.useRef)(null);
-  (0, import_react2.useEffect)(() => {
-    const previous = document.activeElement;
-    cancel.current?.focus();
-    return () => {
-      if (previous?.isConnected) previous.focus();
-    };
-  }, []);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-delete-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(
-    "section",
-    {
-      className: "ppd-archive-delete-dialog",
-      role: "alertdialog",
-      "aria-modal": "true",
-      "aria-label": "\u5220\u9664\u6279\u6B21\u53CA\u672C\u5730\u6587\u4EF6",
-      onKeyDown: (event) => {
-        if (event.key === "Escape" && !busy) onCancel();
-        if (event.key === "Tab") {
-          const buttons = [...event.currentTarget.querySelectorAll("button:not(:disabled)")];
-          if (buttons.length) {
-            event.preventDefault();
-            const index = buttons.indexOf(document.activeElement);
-            buttons[(index + (event.shiftKey ? -1 : 1) + buttons.length) % buttons.length]?.focus();
-          }
-        }
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u5220\u9664\u8FD9\u4E2A\u6279\u6B21\uFF1F" }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: task.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
-          "\u5C06\u5220\u9664\u8BE5\u6279\u6B21\u8BB0\u5F55\u548C\u6574\u4E2A\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\uFF0C\u5305\u62EC ",
-          task.resultCount,
-          " \u4E2A\u6210\u679C\u3001",
-          task.archiveFormat === 2 ? "" : `${task.referenceCount} \u5F20\u53C2\u8003\u56FE\u3001`,
-          "\u4EFB\u52A1\u603B\u7ED3\u53CA\u4F60\u653E\u5165\u7684\u5176\u4ED6\u6587\u4EF6\u3002"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("code", { className: "ppd-archive-path", children: task.directory }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u4E91\u7AEF\u7D20\u6750\u3001\u6E90\u7D20\u6750\u548C\u5176\u4ED6\u6279\u6B21\u4E0D\u53D7\u5F71\u54CD\u3002\u6B64\u64CD\u4F5C\u65E0\u6CD5\u64A4\u9500\u3002" }),
-        error101 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { ref: cancel, type: "button", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-delete-confirm", disabled: busy, onClick: onConfirm, children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : "\u5220\u9664\u8BB0\u5F55\u548C\u672C\u5730\u6587\u4EF6" })
-        ] })
-      ]
+function HistoryImagePreview({ item, request, priority = 0, allowRetry = false }) {
+  const preview = useDeferredPreview({
+    requestIdentity: request,
+    resourceKey: `history:${item.id}`,
+    revision: item.createdAt,
+    enabled: true,
+    cachePolicy: "revalidate",
+    rootMargin: "0px",
+    priority,
+    async load(signal) {
+      if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
+      const { data } = await request("archive.preview", { taskId: item.taskId, fileId: item.fileId });
+      if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
+      if (typeof data?.dataUrl !== "string" || !data.dataUrl) throw new Error("\u672C\u5730\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
+      return data.dataUrl;
     }
-  ) });
+  });
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { ref: preview.ref, className: "ppd-archive-placeholder", children: preview.status === "ready" && preview.value ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("img", { src: preview.value, alt: item.name, loading: "lazy", onError: () => preview.markError(new Error("\u56FE\u7247\u89E3\u7801\u5931\u8D25")) }) : preview.status === "error" && allowRetry ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => preview.retry(), children: "\u91CD\u8BD5\u9884\u89C8" }) : preview.status === "error" ? "\u672C\u5730\u56FE\u7247\u5DF2\u4E0D\u53EF\u7528" : "\u6B63\u5728\u52A0\u8F7D\u2026" });
 }
-function cloudTask(row) {
-  const file3 = { id: row.id, originId: row.id, assetId: row.id, name: row.filename || "\u4E91\u7AEF\u751F\u6210\u56FE", group: "result", variant: "generated", status: "pending", image: true };
-  const generation = { planned: null, succeeded: row.status === "ready" ? 1 : 0, failed: 0, pending: row.status === "ready" ? 0 : 1, cancelled: 0, unknown: 0 };
-  return {
-    id: `cloud:${row.id}`,
-    name: row.filename || "\u4E91\u7AEF\u751F\u6210\u56FE",
-    projectId: "cloud-history",
-    projectName: "\u4E91\u7AEF\u5386\u53F2\u6210\u679C\uFF08\u672A\u627E\u5230\u539F\u4EFB\u52A1\u8BB0\u5F55\uFF09",
-    createdAt: row.createdAt || "",
-    status: row.status === "ready" ? "completed" : "submitted",
-    saveStatus: "cloud",
-    resultCount: 1,
-    referenceCount: 0,
-    savedCount: 0,
-    operationIds: [],
-    files: [file3],
-    audit: auditTask([file3], generation, void 0)
+function HistoryImageCard({ item, request, onPreview, onUse, onRefresh }) {
+  const [busy, setBusy] = (0, import_react2.useState)(""), [error101, setError] = (0, import_react2.useState)("");
+  const act = async (action) => {
+    if (busy) return;
+    setBusy(action);
+    setError("");
+    try {
+      const { data } = await request(action, action === "archive.openTask" ? { taskId: item.taskId } : { taskId: item.taskId, fileId: item.fileId });
+      if (action === "archive.use") await onUse(data);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210");
+      onRefresh();
+    } finally {
+      setBusy("");
+    }
   };
+  const createdTime = Date.parse(item.createdAt);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-history-card", "data-history-image": item.id, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-history-preview", "aria-label": `\u9884\u89C8 ${item.name}`, onClick: onPreview, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImagePreview, { item, request }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: item.name, children: item.name }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-history-meta", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { title: item.projectName, children: item.projectName }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("time", { dateTime: Number.isFinite(createdTime) ? item.createdAt : void 0, children: Number.isFinite(createdTime) ? new Date(createdTime).toLocaleString(void 0, { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "\u65F6\u95F4\u672A\u63D0\u4F9B" })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void act("archive.reveal"), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void act("archive.openTask"), children: "\u6253\u5F00\u6240\u5728\u6587\u4EF6\u5939" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void act("archive.use"), children: "\u9009\u5165\u4F1A\u8BDD" })
+    ] }),
+    error101 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 })
+  ] });
 }
 function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
-  const cached3 = (0, import_react2.useMemo)(() => uiLease ? readPanelUiState(uiLease, "archive") : void 0, [uiLease]);
-  const [items, setItems] = (0, import_react2.useState)((cached3?.items ?? []).slice(-VERIFIED_ARCHIVE_CACHE_LIMIT)), [headers, setHeaders] = (0, import_react2.useState)(cached3?.headers ?? []);
+  const cached3 = (0, import_react2.useMemo)(() => uiLease ? readPanelUiState(uiLease, "archive-history-images") : void 0, [uiLease]);
+  const [items, setItems] = (0, import_react2.useState)((cached3?.items ?? []).slice(-VERIFIED_HISTORY_CACHE_LIMIT));
+  const [headers, setHeaders] = (0, import_react2.useState)(cached3?.headers ?? []);
   const [projects, setProjects] = (0, import_react2.useState)(cached3?.projects ?? []), [catalogKey, setCatalogKey] = (0, import_react2.useState)(cached3?.catalogKey ?? "");
-  const [knownAssetIds, setKnownAssetIds] = (0, import_react2.useState)(cached3?.knownAssetIds ?? []), [error101, setError] = (0, import_react2.useState)("");
-  const [pageError, setPageError] = (0, import_react2.useState)(""), [detailError, setDetailError] = (0, import_react2.useState)("");
-  const [cloud, setCloud] = (0, import_react2.useState)(cached3?.cloud ?? []), [cursor, setCursor] = (0, import_react2.useState)(cached3?.cursor ?? null), [cloudError, setCloudError] = (0, import_react2.useState)("");
-  const [cloudLoading, setCloudLoading] = (0, import_react2.useState)(false), [paginationSupported, setPaginationSupported] = (0, import_react2.useState)(cached3?.paginationSupported);
+  const [error101, setError] = (0, import_react2.useState)(""), [pageError, setPageError] = (0, import_react2.useState)("");
   const [loading, setLoading] = (0, import_react2.useState)(!cached3?.catalogKey), [pageLoading, setPageLoading] = (0, import_react2.useState)(false);
   const [project, setProject] = (0, import_react2.useState)(cached3?.project ?? ""), [query, setQuery] = (0, import_react2.useState)(cached3?.query ?? "");
-  const [view, setView] = (0, import_react2.useState)(cached3?.view ?? "cards");
   const [period, setPeriod] = (0, import_react2.useState)(cached3?.period ?? "all"), [from, setFrom] = (0, import_react2.useState)(cached3?.from ?? ""), [to, setTo] = (0, import_react2.useState)(cached3?.to ?? "");
-  const [detail, setDetail] = (0, import_react2.useState)(targetId), [page, setPage] = (0, import_react2.useState)(cached3?.page ?? 1), [revision, setRevision] = (0, import_react2.useState)(0);
-  const [deleteTarget, setDeleteTarget] = (0, import_react2.useState)(), [deleteBusy, setDeleteBusy] = (0, import_react2.useState)(false), [deleteError, setDeleteError] = (0, import_react2.useState)("");
-  const [suppressed, setSuppressed] = (0, import_react2.useState)(cached3?.suppressed ?? []);
+  const [page, setPage] = (0, import_react2.useState)(cached3?.page ?? 1), [revision, setRevision] = (0, import_react2.useState)(0);
+  const [selected, setSelected] = (0, import_react2.useState)();
   const filters = (0, import_react2.useMemo)(() => ({ project, query, period, from, to }), [project, query, period, from, to]);
   const filterKey = (0, import_react2.useMemo)(() => JSON.stringify(filters), [filters]), dateError = archiveDateError(filters);
-  const alive = (0, import_react2.useRef)(false), cloudReading = (0, import_react2.useRef)(false), appended = (0, import_react2.useRef)(cached3?.appended ?? false), cloudSequence = (0, import_react2.useRef)(0);
   (0, import_react2.useEffect)(() => {
-    alive.current = true;
-    return () => {
-      alive.current = false;
-      cloudSequence.current++;
-    };
-  }, []);
-  (0, import_react2.useEffect)(() => {
-    setDetail(targetId);
-    if (targetId) setProject("");
-  }, [targetId]);
-  const loadCloud = async (append, after) => {
-    if (cloudReading.current) return;
-    cloudReading.current = true;
-    setCloudLoading(true);
-    const token = ++cloudSequence.current;
-    try {
-      const { data } = await request("archive.cloud", after ? { cursor: after } : {});
-      if (!alive.current || token !== cloudSequence.current) return;
-      const rows = data.items ?? [];
-      setCloud((old) => append || appended.current ? [...new Map([...old, ...rows].map((row) => [row.id, row])).values()] : rows);
-      if (append || !appended.current) setCursor(typeof data.nextCursor === "string" ? data.nextCursor : null);
-      if (append) appended.current = true;
-      setPaginationSupported(data.paginationSupported !== false);
-      setCloudError("");
-      return true;
-    } catch (cause) {
-      if (alive.current) setCloudError(cause instanceof Error ? cause.message : "\u4E91\u7AEF\u5386\u53F2\u8BFB\u53D6\u5931\u8D25");
-      return false;
-    } finally {
-      cloudReading.current = false;
-      if (alive.current) setCloudLoading(false);
+    if (targetId) {
+      setProject("");
+      setQuery("");
+      setPeriod("all");
+      setFrom("");
+      setTo("");
     }
-  };
+  }, [targetId]);
   (0, import_react2.useEffect)(() => {
     if (dateError) {
       setLoading(false);
       return;
     }
     let active = true;
+    setLoading(true);
     const load = async () => {
       try {
-        const { data } = await request("archive.catalog", { filters });
+        const { data } = await request("archive.historyCatalog", { filters });
         if (active) {
-          setHeaders(data.headers ?? []);
+          const next = data.headers ?? [], ids2 = new Set(next.map((row) => row.id));
+          setHeaders(next);
+          setItems((old) => old.filter((row) => ids2.has(row.id)));
           setProjects(data.projects ?? []);
-          setKnownAssetIds(data.knownAssetIds ?? []);
-          setSuppressed(data.deletedAssetIds ?? []);
           setCatalogKey(filterKey);
-          setError(data.error ?? "");
+          setError("");
         }
         return null;
       } catch (cause) {
-        if (active) setError(cause instanceof Error ? cause.message : "\u6210\u679C\u8BFB\u53D6\u5931\u8D25");
+        if (active) setError(cause instanceof Error ? cause.message : "\u5386\u53F2\u8BB0\u5F55\u8BFB\u53D6\u5931\u8D25");
         throw cause;
       } finally {
         if (active) setLoading(false);
@@ -1140,23 +1006,21 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
       poll.stop();
     };
   }, [request, revision, filterKey, dateError]);
-  (0, import_react2.useEffect)(() => {
-    const cloudPoll = startVisiblePolling(async () => {
-      if (await loadCloud(false) === false) throw new Error("\u4E91\u7AEF\u5386\u53F2\u8BFB\u53D6\u5931\u8D25");
-      return null;
-    });
-    return () => cloudPoll.stop();
-  }, [request, revision]);
-  const known = (0, import_react2.useMemo)(() => /* @__PURE__ */ new Set([...knownAssetIds, ...suppressed]), [knownAssetIds, suppressed]);
-  const cloudAll = (0, import_react2.useMemo)(() => cloud.filter((row) => !known.has(row.id)).map(cloudTask), [cloud, known]);
-  const cloudTasks = (0, import_react2.useMemo)(() => filterArchiveTasks(cloudAll, filters), [cloudAll, filters]);
-  const localHeaders = !dateError && catalogKey === filterKey ? headers : [];
-  const selection = (0, import_react2.useMemo)(() => selectArchiveVisiblePage(localHeaders, cloudTasks, page), [localHeaders, cloudTasks, page]);
-  const { merged, entries: visibleEntries, pageCount, page: visiblePage, localIds: visibleLocalIds } = selection;
-  const visibleLocalKey = visibleLocalIds.join(":");
+  const currentHeaders = !dateError && catalogKey === filterKey ? headers : [];
+  const selection = (0, import_react2.useMemo)(() => selectArchiveVisiblePage(currentHeaders, page), [currentHeaders, page]);
+  const { merged, entries: visibleEntries, pageCount, page: visiblePage, localIds: visibleImageIds } = selection;
+  const visibleImageKey = visibleImageIds.join(":");
   (0, import_react2.useEffect)(() => {
     if (page !== visiblePage) setPage(visiblePage);
   }, [page, visiblePage]);
+  (0, import_react2.useEffect)(() => {
+    if (selected && !headers.some((row) => row.id === selected.id)) setSelected(void 0);
+  }, [selected, headers]);
+  (0, import_react2.useEffect)(() => {
+    if (!targetId || catalogKey !== filterKey) return;
+    const index = merged.findIndex((row) => row.id === targetId || headers.find((header) => header.id === row.id)?.taskId === targetId);
+    if (index >= 0) setPage(Math.floor(index / 20) + 1);
+  }, [targetId, catalogKey, filterKey, merged, headers]);
   (0, import_react2.useEffect)(() => {
     if (!catalogKey || catalogKey !== filterKey || dateError) {
       setPageError("");
@@ -1164,7 +1028,7 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
     }
     let active = true;
     const load = async () => {
-      if (!visibleLocalIds.length) {
+      if (!visibleImageIds.length) {
         if (active) {
           setPageLoading(false);
           setPageError("");
@@ -1173,15 +1037,16 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
       }
       setPageLoading(true);
       try {
-        const { data } = await request("archive.page", { taskIds: visibleLocalIds });
-        const rows = data.items ?? [];
+        const { data } = await request("archive.historyPage", { imageIds: visibleImageIds });
+        const rows = data.items ?? [], returned = new Set(rows.map((row) => row.id));
         if (active) {
-          setItems((old) => mergeVerifiedArchiveItems(old, rows));
+          setItems((old) => mergeVerifiedHistoryItems(old.filter((row) => !visibleImageIds.includes(row.id)), rows));
+          setHeaders((old) => old.filter((row) => !visibleImageIds.includes(row.id) || returned.has(row.id)));
           setPageError("");
         }
-        return archiveNeedsPolling(rows) ? ACTIVE_POLL_MS : null;
+        return null;
       } catch (cause) {
-        if (active) setPageError(cause instanceof Error ? cause.message : "\u5F53\u524D\u9875\u6838\u9A8C\u5931\u8D25");
+        if (active) setPageError(cause instanceof Error ? cause.message : "\u5F53\u524D\u9875\u672C\u5730\u56FE\u7247\u6838\u9A8C\u5931\u8D25");
         throw cause;
       } finally {
         if (active) setPageLoading(false);
@@ -1192,85 +1057,26 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
       active = false;
       poll.stop();
     };
-  }, [request, revision, filterKey, catalogKey, visibleLocalKey, dateError]);
+  }, [request, revision, filterKey, catalogKey, visibleImageKey, dateError]);
   (0, import_react2.useEffect)(() => {
-    if (!detail || detail.startsWith("cloud:")) {
-      setDetailError("");
-      return;
-    }
-    let active = true;
-    void request("archive.detail", { taskId: detail }).then(({ data }) => {
-      if (active && data) {
-        setItems((old) => mergeVerifiedArchiveItems(old, [data]));
-        setDetailError("");
-      }
-    }).catch((cause) => {
-      if (active) setDetailError(cause instanceof Error ? cause.message : "\u4EFB\u52A1\u8BE6\u60C5\u6838\u9A8C\u5931\u8D25");
-    });
-    return () => {
-      active = false;
-    };
-  }, [request, detail, revision]);
-  (0, import_react2.useEffect)(() => {
-    if (uiLease) writePanelUiState(uiLease, "archive", {
+    if (uiLease) writePanelUiState(uiLease, "archive-history-images", {
       items,
       headers,
       projects,
       catalogKey,
-      cloud,
-      cursor,
-      knownAssetIds,
-      paginationSupported,
       project,
       query,
-      view,
       period,
       from,
       to,
-      page,
-      suppressed,
-      appended: appended.current
+      page
     });
-  }, [uiLease, items, headers, projects, catalogKey, cloud, cursor, knownAssetIds, paginationSupported, project, query, view, period, from, to, page, suppressed]);
-  const confirmDelete = async () => {
-    if (!deleteTarget || deleteBusy) return;
-    setDeleteBusy(true);
-    setDeleteError("");
-    try {
-      const { data } = await request("archive.delete", { taskId: deleteTarget.id, confirmed: true });
-      if (!alive.current) return;
-      setItems((old) => old.filter((task) => task.id !== deleteTarget.id));
-      setHeaders((old) => old.filter((task) => task.id !== deleteTarget.id));
-      setKnownAssetIds((old) => [.../* @__PURE__ */ new Set([...old, ...data.assetIds ?? []])]);
-      setSuppressed((old) => [.../* @__PURE__ */ new Set([...old, ...data.assetIds ?? []])]);
-      setDetail(void 0);
-      setDeleteTarget(void 0);
-      setRevision((value2) => value2 + 1);
-    } catch (cause) {
-      if (alive.current) setDeleteError(cause instanceof Error ? cause.message : "\u5220\u9664\u672A\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u3002");
-    } finally {
-      if (alive.current) setDeleteBusy(false);
-    }
-  };
-  const askDelete = (task) => {
-    setDeleteError("");
-    setDeleteTarget(task);
-  };
-  const deleteDialog = deleteTarget && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(DeleteBatchDialog, { task: deleteTarget, busy: deleteBusy, error: deleteError, onCancel: () => setDeleteTarget(void 0), onConfirm: () => void confirmDelete() });
+  }, [uiLease, items, headers, projects, catalogKey, project, query, period, from, to, page]);
   const verified = (0, import_react2.useMemo)(() => new Map(items.map((row) => [row.id, row])), [items]);
-  const visibleTasks = visibleEntries.flatMap((entry) => entry.kind === "cloud" ? [entry.task] : verified.has(entry.id) ? [verified.get(entry.id)] : []);
-  const current = items.find((row) => row.id === detail) ?? cloudAll.find((row) => row.id === detail);
-  if (current) return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveStyles, {}),
-    detailError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: detailError }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveDetail, { task: current, request, onBack: () => setDetail(void 0), onUse, onDelete: askDelete }),
-    deleteDialog
-  ] });
-  const projectOptions = [...new Map([
-    ...projects.map((row) => [row.id, row.name]),
-    ...cloud.some((row) => !known.has(row.id)) ? [["cloud-history", "\u4E91\u7AEF\u5386\u53F2\u6210\u679C\uFF08\u672A\u627E\u5230\u539F\u4EFB\u52A1\u8BB0\u5F55\uFF09"]] : []
-  ]).entries()];
+  const visibleImages = visibleEntries.flatMap((entry) => verified.has(entry.id) ? [verified.get(entry.id)] : []);
+  const projectOptions = projects.map((row) => [row.id, row.name]);
   const hasFilters = !!(project || query || period !== "all");
+  const refresh = () => setRevision((value2) => value2 + 1);
   const clearFilters = () => {
     setProject("");
     setQuery("");
@@ -1279,18 +1085,19 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
     setTo("");
     setPage(1);
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-task-archive-browser": true, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-task-archive-browser": true, "data-history-browser": true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveStyles, {}),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("header", { className: "ppd-archive-browser-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "\u5904\u7406\u7ED3\u679C" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "\u5386\u53F2\u8BB0\u5F55" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-history-description", children: "\u4EC5\u5C55\u793A\u8FD9\u53F0\u7535\u8111\u4E0A\u4ECD\u5B58\u5728\u4E14\u7ECF\u6838\u9A8C\u7684\u6210\u54C1\u56FE\u7247\uFF1B\u65F6\u95F4\u4EE5\u672C\u5730\u6587\u4EF6\u4FEE\u6539\u65F6\u95F4\u4E3A\u51C6\u3002" }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-library-toolbar ppd-archive-filters", children: [
         navigation,
         /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-toolbar", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { "aria-label": "\u641C\u7D22\u5904\u7406\u7ED3\u679C", placeholder: "\u641C\u7D22\u6279\u6B21\u6216\u9879\u76EE", value: query, onChange: (event) => {
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { "aria-label": "\u641C\u7D22\u5386\u53F2\u56FE\u7247", placeholder: "\u641C\u7D22\u56FE\u7247\u540D\u6216\u9879\u76EE", value: query, onChange: (event) => {
             setQuery(event.target.value);
             setPage(1);
           } }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u9879\u76EE\u7B5B\u9009\u6210\u679C", value: project, onChange: (event) => {
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u9879\u76EE\u7B5B\u9009\u5386\u53F2\u56FE\u7247", value: project, onChange: (event) => {
             setProject(event.target.value);
             setPage(1);
           }, children: [
@@ -1300,7 +1107,7 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
           /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-date-toolbar", children: [
             /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
               "\u65F6\u95F4\u8303\u56F4",
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u4EFB\u52A1\u521B\u5EFA\u65F6\u95F4\u7B5B\u9009", value: period, onChange: (event) => {
+              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u672C\u5730\u56FE\u7247\u65F6\u95F4\u7B5B\u9009", value: period, onChange: (event) => {
                 setPeriod(event.target.value);
                 setPage(1);
               }, children: [
@@ -1330,28 +1137,20 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
             ] }),
             hasFilters && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: clearFilters, children: "\u6E05\u9664\u7B5B\u9009" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { type: "button", disabled: project === "cloud-history", title: project === "cloud-history" ? "\u8BF7\u5148\u5C06\u4E91\u7AEF\u6210\u679C\u4FDD\u5B58\u5230\u7535\u8111" : void 0, onClick: () => void request("archive.openProject", project ? { projectId: project } : {}).catch((cause) => setError(cause.message)), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { type: "button", onClick: () => void request("archive.openProject", project ? { projectId: project } : {}).catch((cause) => setError(cause instanceof Error ? cause.message : "\u76EE\u5F55\u6253\u5F00\u5931\u8D25")), children: [
             "\u6253\u5F00",
             project ? "\u9879\u76EE" : "\u5F53\u524D\u9879\u76EE",
             "\u6210\u679C\u76EE\u5F55"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => {
-            appended.current = false;
-            setRevision((value2) => value2 + 1);
-          }, children: "\u5237\u65B0\u6210\u679C" })
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: refresh, children: "\u5237\u65B0\u5386\u53F2" })
         ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-view-switch", role: "group", "aria-label": "\u5904\u7406\u7ED3\u679C\u89C6\u56FE", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", "aria-pressed": view === "list", onClick: () => setView("list"), children: "\u5217\u8868" }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", "aria-pressed": view === "cards", onClick: () => setView("cards"), children: "\u5361\u7247" })
       ] })
     ] }),
     dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: dateError }),
-    (error101 || pageError || detailError || cloudError) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || pageError || detailError || cloudError }),
-    paginationSupported === false && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u5F53\u524D\u670D\u52A1\u53EA\u63D0\u4F9B\u90E8\u5206\u4E91\u7AEF\u5386\u53F2\uFF0C\u5C1A\u4E0D\u80FD\u786E\u8BA4\u5168\u90E8\u4E91\u7AEF\u56FE\u7247\u5DF2\u5217\u51FA\uFF1B\u5DF2\u5F52\u6863\u4EFB\u52A1\u4E0D\u53D7\u5F71\u54CD\u3002" }),
-    loading && !merged.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u7ED3\u679C\u2026" }) : !merged.length ? !dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u6279\u6B21" : "\u6682\u65E0\u5904\u7406\u7ED3\u679C" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-      pageLoading && visibleTasks.length < visibleEntries.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u6838\u9A8C\u5F53\u524D\u9875\u2026" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-batches", "data-batch-layout": view, children: visibleTasks.map((task) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, view, request, onView: () => setDetail(task.id), onDelete: askDelete }, task.id)) })
+    (error101 || pageError) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || pageError }),
+    loading && !merged.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u672C\u5730\u5386\u53F2\u2026" }) : !merged.length ? !dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u672C\u5730\u56FE\u7247" : "\u6682\u65E0\u672C\u5730\u5386\u53F2\u56FE\u7247" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
+      pageLoading && visibleImages.length < visibleEntries.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u6838\u9A8C\u5F53\u524D\u9875\u672C\u5730\u56FE\u7247\u2026" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-history-grid", children: visibleImages.map((item) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImageCard, { item, request, onPreview: () => setSelected(item), onUse, onRefresh: refresh }, item.id)) })
     ] }),
     merged.length > 20 && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage === 1, onClick: () => setPage(visiblePage - 1), children: "\u4E0A\u4E00\u9875" }),
@@ -1362,8 +1161,10 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage * 20 >= merged.length, onClick: () => setPage(visiblePage + 1), children: "\u4E0B\u4E00\u9875" })
     ] }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-actions", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: cloudLoading, onClick: () => void loadCloud(true, cursor), children: cloudLoading ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A\u4E91\u7AEF\u6210\u679C" }) }),
-    deleteDialog
+    selected && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-lightbox", role: "dialog", "aria-modal": "true", "aria-label": "\u672C\u5730\u5386\u53F2\u56FE\u7247\u9884\u89C8", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => setSelected(void 0), children: "\u5173\u95ED\u9884\u89C8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImagePreview, { item: selected, request, priority: 1e4, allowRetry: true })
+    ] })
   ] });
 }
 
@@ -34451,7 +34252,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.14",
+  version: "0.1.15",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -35473,7 +35274,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
   (0, import_react10.useEffect)(() => {
     writePanelUiState(uiLease, "public-skills", { query, appliedQuery, items, categories, category, page, detail, family });
   }, [uiLease, query, appliedQuery, items, categories, category, page, detail, family]);
-  const filtered = (0, import_react10.useMemo)(() => category ? items.filter((item) => item.categories?.includes(category)) : items, [category, items]);
+  const filtered = (0, import_react10.useMemo)(() => !category || category === "all" ? items : items.filter((item) => item.primaryCategory === category), [category, items]);
   const visible = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   (0, import_react10.useEffect)(() => {
     setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))));
@@ -35542,14 +35343,17 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { children: family.summary }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: family.chooseLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-grid ppd-family-grid", children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("article", { className: "ppd-card", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => {
-      navigationSequence.current++;
-      setFamily(void 0);
-      setDetail(member);
-    }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
-    ] }) }, member.slug)) })
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-grid ppd-family-grid", children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { className: "ppd-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => {
+        navigationSequence.current++;
+        setFamily(void 0);
+        setDetail(member);
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteButton, { active: favorites.has("skill", member.slug), busy: favorites.isBusy("skill", member.slug), onClick: () => void favorites.toggle(favoriteFromSkill(member)) })
+    ] }, member.slug)) })
   ] });
   if (detail) return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PublicSkillDetail, { skill: detail, onBack: () => {
     if (detail.kind === "member" && detail.familySlug) {
@@ -35596,7 +35400,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: item.coverImage, before: item.beforeImage, alt: item.title }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title: item.title, children: cardTitle(item.title) }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteButton, { active: favorites.has("skill", item.slug), busy: favorites.isBusy("skill", item.slug), onClick: () => void favorites.toggle(favoriteFromSkill(item)) })
+        item.kind !== "family" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteButton, { active: favorites.has("skill", item.slug), busy: favorites.isBusy("skill", item.slug), onClick: () => void favorites.toggle(favoriteFromSkill(item)) })
       ] }, item.slug)) }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PageNav, { page, total: filtered.length, onPage: setPage })
     ] })
@@ -36049,205 +35853,35 @@ function ConfirmDialog({ title, description, confirmLabel, busy, error: error101
     ] })
   ] }) });
 }
-function LocalResults({ request, onUse, nativeSessionId, uiLease }) {
+function LocalResults({ request, onUse, uiLease }) {
   const archiveSelection = (0, import_react10.useSyncExternalStore)(archiveTarget.subscribe, archiveTarget.getSnapshot, archiveTarget.getSnapshot);
   (0, import_react10.useEffect)(() => () => archiveTarget.clear(), []);
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ArchiveBrowser, { request, onUse, targetId: archiveSelection?.id, uiLease }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(UnfiledLocalResults, { request, onUse, conversationAvailable: !!nativeSessionId, compact: true })
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ArchiveBrowser, { request, onUse, targetId: archiveSelection?.id, uiLease });
 }
-function UnfiledLocalResults({ request, onUse, compact = false, conversationAvailable = false }) {
-  const [items, setItems] = (0, import_react10.useState)([]);
-  const [query, setQuery] = (0, import_react10.useState)("");
-  const [page, setPage] = (0, import_react10.useState)(1);
-  const [detail, setDetail] = (0, import_react10.useState)();
-  const [loading, setLoading] = (0, import_react10.useState)(true);
-  const [busy, setBusy] = (0, import_react10.useState)("");
-  const [error101, setError] = (0, import_react10.useState)("");
-  const [notice, setNotice] = (0, import_react10.useState)("");
-  const load = (0, import_react10.useCallback)(async () => {
-    setLoading(true);
-    setError("");
-    try {
-      const [toolbox, conversation, archived] = await Promise.all([
-        request("toolbox.list", {}),
-        conversationAvailable ? request("local.list", {}) : Promise.resolve({ data: void 0 }),
-        request("archive.index", {})
-      ]);
-      const project = (rows2, group, toolbox2) => Array.isArray(rows2) ? rows2.map((row) => ({ ...row, group, toolbox: toolbox2 })) : [];
-      const known = new Set(archived.data.originIds ?? []);
-      setItems([
-        ...project(toolbox.data?.images, "image", true),
-        ...project(toolbox.data?.files, "file", true),
-        ...project(conversation.data?.images, "image", false),
-        ...project(conversation.data?.files, "file", false)
-      ].filter((row) => !known.has(row.id)));
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setLoading(false);
-    }
-  }, [request, conversationAvailable]);
-  (0, import_react10.useEffect)(() => {
-    void load();
-  }, [load]);
-  const rows = (0, import_react10.useMemo)(() => {
-    const term = query.trim().toLocaleLowerCase();
-    return term ? items.filter((row) => `${row.name || ""} ${row.filename || ""} ${row.label || ""} ${row.id}`.toLocaleLowerCase().includes(term)) : items;
-  }, [items, query]);
-  const visible = rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  (0, import_react10.useEffect)(() => {
-    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(rows.length / PAGE_SIZE))));
-  }, [rows.length]);
-  const titleOf = (row) => row.name || row.filename || row.label || (row.group === "image" ? "\u672C\u5730\u56FE\u7247\u7ED3\u679C" : "\u672C\u5730\u6587\u4EF6\u7ED3\u679C");
-  const actionFor = (row, action) => `${row.toolbox ? "toolbox" : "local"}.${action}`;
-  async function open(row) {
-    setBusy(row.id);
-    setError("");
-    try {
-      if (row.group === "image") {
-        const { data } = await request(actionFor(row, "preview"), { id: row.id });
-        setDetail({ ...row, ...data, group: "image" });
-      } else setDetail(row);
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  async function choose(row) {
-    setBusy(row.id);
-    setError("");
-    try {
-      const { data } = await request("snapshot", {});
-      const ownerId = data?.account?.userId;
-      if (typeof ownerId !== "string" || !ownerId) throw new Error("\u8BF7\u5148\u767B\u5F55 PodPlo\u3002");
-      const selected = row.toolbox ? (await request("toolbox.use", { id: row.id })).data : row;
-      await onUse({ version: 1, kind: "local", id: selected.id, label: titleOf(selected), locator: { localResultId: selected.id }, ownerId, private: true });
-      setNotice("\u5DF2\u5C06\u672C\u5730\u7ED3\u679C\u5F15\u7528\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  async function exportAttachment(row) {
-    setBusy(`export:${row.id}`);
-    setError("");
-    try {
-      const { data } = await request(actionFor(row, "export"), { id: row.id });
-      if (!data?.attachment || typeof data.dataUrl !== "string" || !data.dataUrl.startsWith("data:")) throw new Error("\u672A\u6536\u5230\u53EF\u5BFC\u51FA\u7684\u672C\u5730\u7ED3\u679C\u3002");
-      const anchor = document.createElement("a");
-      anchor.href = data.dataUrl;
-      anchor.download = typeof data.name === "string" && data.name ? data.name : titleOf(row);
-      anchor.rel = "noopener";
-      anchor.click();
-      setNotice(`\u201C${titleOf(row)}\u201D\u5DF2\u5BFC\u51FA\u3002`);
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(DetailShell, { title: titleOf(detail), eyebrow: detail.group === "image" ? "\u672C\u5730\u56FE\u7247\u7ED3\u679C" : "\u672C\u5730\u6587\u4EF6\u7ED3\u679C", onBack: () => setDetail(void 0), actions: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-    conversationAvailable && detail.group === "image" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void choose(detail), children: "\u9009\u5165\u4F1A\u8BDD" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === `export:${detail.id}`, onClick: () => void exportAttachment(detail), children: "\u5BFC\u51FA\u6587\u4EF6" })
-  ] }), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: error101, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-detail-grid", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: detail.group === "image" ? detail.dataUrl : void 0, alt: titleOf(detail) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-detail-copy", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("dl", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "ID" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dd", { className: "ppd-break", children: detail.id })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "\u7C7B\u578B" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dd", { children: detail.contentType || detail.format || detail.kind || detail.group })
-          ] }),
-          detail.width && detail.height ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "\u5C3A\u5BF8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("dd", { children: [
-              detail.width,
-              " \xD7 ",
-              detail.height
-            ] })
-          ] }) : null,
-          typeof detail.bytes === "number" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "\u5927\u5C0F" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("dd", { children: [
-              detail.bytes,
-              " bytes"
-            ] })
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-lead", children: "\u5BFC\u51FA\u4F1A\u4F7F\u7528 Host \u8FD4\u56DE\u7684\u5DF2\u9A8C\u8BC1\u539F\u59CB\u5B57\u8282\uFF0C\u56FE\u7247\u3001PDF \u548C ZIP \u7B49\u7C7B\u578B\u90FD\u4FDD\u7559\u539F\u5185\u5BB9\u3002" })
-      ] })
-    ] })
-  ] });
-  if (compact && !items.length && !error101) return null;
-  const content = /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: error101, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u672C\u5730\u7ED3\u679C", busy: loading, onChange: (value2) => {
-      setQuery(value2);
-      setPage(1);
-    }, onSearch: () => setPage(1), onRefresh: () => void load() }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Status, { loading: loading && !rows.length, error: !rows.length ? error101 : "", empty: !loading && !rows.length ? "\u8FD8\u6CA1\u6709\u672C\u5730\u5DE5\u5177\u7ED3\u679C\u3002" : "", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-list", children: visible.map((row) => {
-        const title = titleOf(row);
-        return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-list-open", "aria-label": `\u67E5\u770B ${title}`, disabled: busy === row.id, onClick: () => void open(row), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title, children: cardTitle(title, true) }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("small", { children: row.group === "image" ? "\u672C\u5730\u56FE\u7247\u7ED3\u679C" : "\u672C\u5730\u6587\u4EF6\u7ED3\u679C" })
-          ] }),
-          conversationAvailable && row.group === "image" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === row.id, onClick: () => void choose(row), children: "\u9009\u5165" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === `export:${row.id}`, onClick: () => void exportAttachment(row), children: "\u5BFC\u51FA" })
-        ] }, `${row.group}:${row.id}`);
-      }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PageNav, { page, total: rows.length, onPage: setPage })
-    ] })
-  ] });
-  return compact ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("details", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("summary", { children: "\u5DE5\u5177\u8BB0\u5F55" }),
-    content
-  ] }) : content;
-}
-function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiLease }) {
+function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
   const cached3 = (0, import_react10.useMemo)(() => readPanelUiState(uiLease, "assets"), [uiLease]);
   const favoriteOwnerRef = (0, import_react10.useRef)(0);
   if (!favoriteOwnerRef.current) favoriteOwnerRef.current = favoriteResponseState.createOwner();
   const favoriteOwner = favoriteOwnerRef.current;
   const favoriteSnapshot = useFavoriteResponseSnapshot(uiLease);
-  const [tab, setTab] = (0, import_react10.useState)(cached3?.tab ?? "favorites");
+  const favorites = favoriteSnapshot.initialized ? [...favoriteSnapshot.rows] : cached3?.favorites ?? [];
   const [query, setQuery] = (0, import_react10.useState)(cached3?.query ?? "");
+  const [search, setSearch] = (0, import_react10.useState)(cached3?.search ?? "");
   const [page, setPage] = (0, import_react10.useState)(cached3?.page ?? 1);
-  const [items, setItems] = (0, import_react10.useState)(cached3?.items ?? []);
-  const [favorites, setFavorites] = (0, import_react10.useState)(favoriteSnapshot.initialized ? [...favoriteSnapshot.rows] : cached3?.favorites ?? []);
-  const [detail, setDetail] = (0, import_react10.useState)(cached3?.detail);
-  const [confirmDelete, setConfirmDelete] = (0, import_react10.useState)();
   const [loading, setLoading] = (0, import_react10.useState)(true);
   const [busy, setBusy] = (0, import_react10.useState)("");
   const [error101, setError] = (0, import_react10.useState)("");
   const [notice, setNotice] = (0, import_react10.useState)("");
-  const [uploadWarning, setUploadWarning] = (0, import_react10.useState)("");
   const [savedResource, setSavedResource] = (0, import_react10.useState)(cached3?.savedResource);
-  const [exported, setExported] = (0, import_react10.useState)();
-  const [previewRevision, setPreviewRevision] = (0, import_react10.useState)(0);
-  const [search, setSearch] = (0, import_react10.useState)(cached3?.search ?? "");
   const [cursor, setCursor] = (0, import_react10.useState)(cached3?.cursor ?? null);
-  const [paginationSupported, setPaginationSupported] = (0, import_react10.useState)(cached3?.paginationSupported);
   const [migration, setMigration] = (0, import_react10.useState)(cached3?.migration);
   const [folders, setFolders] = (0, import_react10.useState)(cached3?.folders ?? []);
-  const [folderFilter, setFolderFilter] = (0, import_react10.useState)(cached3?.folderFilter ?? "overview");
+  const [folderFilter, setFolderFilter] = (0, import_react10.useState)(() => !cached3?.folderFilter || cached3.folderFilter === "all" ? "overview" : cached3.folderFilter);
   const [foldersAvailable, setFoldersAvailable] = (0, import_react10.useState)();
   const [folderMessage, setFolderMessage] = (0, import_react10.useState)("");
   const [folderEditor, setFolderEditor] = (0, import_react10.useState)();
   const [folderDelete, setFolderDelete] = (0, import_react10.useState)();
-  const [organizeSkill, setOrganizeSkill] = (0, import_react10.useState)();
-  const scope = (0, import_react10.useRef)({ tab, search });
-  scope.current = { tab, search };
+  const [organizeItem, setOrganizeItem] = (0, import_react10.useState)();
   const detailSequence = (0, import_react10.useRef)(0);
   const [detailLoading, setDetailLoading] = (0, import_react10.useState)("");
   const [detailError, setDetailError] = (0, import_react10.useState)("");
@@ -36255,14 +35889,9 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
   const sequence = (0, import_react10.useRef)(0);
   const folderSequence = (0, import_react10.useRef)(0);
   const inFlight = (0, import_react10.useRef)(false);
-  const loadedScope = (0, import_react10.useRef)(void 0);
-  const fileInput = (0, import_react10.useRef)(null);
   (0, import_react10.useEffect)(() => {
     favoriteResponseState.seed(uiLease, cached3?.favorites ?? []);
   }, [uiLease]);
-  (0, import_react10.useEffect)(() => {
-    if (favoriteSnapshot.initialized) setFavorites([...favoriteSnapshot.rows]);
-  }, [favoriteSnapshot.initialized, favoriteSnapshot.revision]);
   (0, import_react10.useEffect)(() => () => favoriteResponseState.releaseOwner(uiLease, favoriteOwner), [favoriteOwner, uiLease]);
   const loadFolders = (0, import_react10.useCallback)(async () => {
     const token = ++folderSequence.current;
@@ -36277,31 +35906,29 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       }).slice(0, 100).map((row) => ({ id: row.id, name: row.name.trim() })) : [];
       setFolders(next);
       setFoldersAvailable(true);
-      setFolderFilter((current) => ["overview", "all", "unfiled"].includes(current) || next.some((row) => row.id === current) ? current : "all");
+      setFolderFilter((current) => ["overview", "unfiled"].includes(current) || next.some((row) => row.id === current) ? current : "overview");
     } catch {
       if (token === folderSequence.current) {
         setFoldersAvailable(false);
+        setFolderFilter("overview");
         setFolderMessage("\u6536\u85CF\u6587\u4EF6\u5939\u529F\u80FD\u6682\u4E0D\u53EF\u7528\uFF0C\u73B0\u6709\u6536\u85CF\u4ECD\u53EF\u6B63\u5E38\u4F7F\u7528\u3002");
       }
     }
   }, [request]);
   (0, import_react10.useEffect)(() => {
-    if (tab === "favorites") void loadFolders();
+    void loadFolders();
     return () => {
       folderSequence.current++;
     };
-  }, [loadFolders, refreshKey, tab]);
-  const load = (0, import_react10.useCallback)(async (append = false, target2 = scope.current, preserveCount = 0) => {
+  }, [loadFolders, refreshKey]);
+  const load = (0, import_react10.useCallback)(async (append = false) => {
     if (append && (inFlight.current || !cursorRef.current)) return;
     const token = ++sequence.current;
     inFlight.current = true;
     setLoading(true);
     setError("");
-    const favoriteRefresh = target2.tab === "favorites" ? favoriteResponseState.beginRefresh(uiLease, favoriteOwner) : void 0;
-    const kind = target2.tab === "uploads" ? "upload" : void 0;
-    if (!append && preserveCount === 0) {
-      if (target2.tab === "favorites") setFavorites([]);
-      else setItems([]);
+    const favoriteRefresh = favoriteResponseState.beginRefresh(uiLease, favoriteOwner);
+    if (!append) {
       cursorRef.current = null;
       setCursor(null);
     }
@@ -36310,21 +35937,17 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       let finalCursor = null;
       let pageItems = [];
       let nextMigration;
-      let nextPaginationSupported;
       const seenCursors = new Set(pageCursor ? [pageCursor] : []);
       let pageCount = 0;
       for (; ; ) {
-        const { data } = target2.tab === "favorites" ? await request("favorites.list", { ...pageCursor ? { cursor: pageCursor } : {}, limit: 100 }) : await request("assets.list", { ...kind ? { kind } : {}, ...target2.search ? { query: target2.search } : {}, ...pageCursor ? { cursor: pageCursor } : {}, limit: 50 });
+        const { data } = await request("favorites.list", { ...pageCursor ? { cursor: pageCursor } : {}, limit: 100 });
         if (sequence.current !== token) {
           if (favoriteRefresh) favoriteResponseState.cancelRefresh(favoriteRefresh);
           return;
         }
-        const rows2 = Array.isArray(data?.items) ? data.items : [];
-        pageItems = [...new Map([...pageItems, ...rows2].map((row) => [target2.tab === "favorites" && "type" in row ? `${row.type}:${row.id}` : row.id, row])).values()];
-        if (pageCount === 0) {
-          if (data?.migration && typeof data.migration === "object") nextMigration = data.migration;
-          nextPaginationSupported = target2.tab === "favorites" || data?.paginationSupported === true;
-        }
+        const nextRows = Array.isArray(data?.items) ? data.items : [];
+        pageItems = [...new Map([...pageItems, ...nextRows].map((row) => [`${row.type}:${row.id}`, row])).values()];
+        if (pageCount === 0 && data?.migration && typeof data.migration === "object") nextMigration = data.migration;
         pageCount++;
         const candidate = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null;
         finalCursor = candidate;
@@ -36332,7 +35955,7 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
           finalCursor = null;
           break;
         }
-        if (append || !candidate || target2.tab !== "favorites" && pageItems.length >= preserveCount || pageCount >= 100) break;
+        if (append || !candidate || pageCount >= 100) break;
         seenCursors.add(candidate);
         pageCursor = candidate;
       }
@@ -36340,18 +35963,10 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
         if (favoriteRefresh) favoriteResponseState.cancelRefresh(favoriteRefresh);
         return;
       }
-      if (target2.tab === "favorites") {
-        const favoritesPage = pageItems;
-        if (favoriteRefresh) favoriteResponseState.finishRefresh(favoriteRefresh, favoritesPage, { append, complete: !finalCursor });
-        if (nextMigration) setMigration(nextMigration);
-      } else {
-        const assetsPage = pageItems;
-        setItems((old) => append ? [...new Map([...old, ...assetsPage].map((row) => [row.id, row])).values()] : assetsPage);
-      }
+      if (favoriteRefresh) favoriteResponseState.finishRefresh(favoriteRefresh, pageItems, { append, complete: !finalCursor });
+      if (nextMigration) setMigration(nextMigration);
       cursorRef.current = finalCursor;
       setCursor(finalCursor);
-      setPaginationSupported(nextPaginationSupported);
-      setPreviewRevision((value2) => value2 + 1);
     } catch (error102) {
       if (favoriteRefresh) favoriteResponseState.failRefresh(favoriteRefresh, displayError(error102));
       if (sequence.current === token) setError(displayError(error102));
@@ -36363,74 +35978,40 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
     }
   }, [favoriteOwner, request, uiLease]);
   (0, import_react10.useEffect)(() => {
-    const nextScope = JSON.stringify([tab, search]);
-    const preserveCount = loadedScope.current === void 0 || loadedScope.current === nextScope ? tab === "favorites" ? favorites.length : items.length : 0;
-    loadedScope.current = nextScope;
-    void load(false, { tab, search }, preserveCount);
+    void load();
     return () => {
       sequence.current++;
       inFlight.current = false;
     };
-  }, [load, tab, search, refreshKey]);
+  }, [load, refreshKey]);
   (0, import_react10.useEffect)(() => {
-    const row = cached3?.detail ?? cached3?.savedResource?.row;
-    if (row) void open(row);
+    if (cached3?.savedResource?.row) void open(cached3.savedResource.row);
     return () => {
       detailSequence.current++;
     };
   }, []);
   (0, import_react10.useEffect)(() => {
-    writePanelUiState(uiLease, "assets", { tab, query, search, page, items, favorites, cursor, paginationSupported, migration, detail, savedResource, folders, folderFilter });
-  }, [uiLease, tab, query, search, page, items, favorites, cursor, paginationSupported, migration, detail, savedResource, folders, folderFilter]);
+    writePanelUiState(uiLease, "assets", { query, search, page, favorites, cursor, migration, savedResource, folders, folderFilter });
+  }, [uiLease, query, search, page, favorites, cursor, migration, savedResource, folders, folderFilter]);
   const folderName = (0, import_react10.useCallback)((folderId) => folders.find((folder) => folder.id === folderId)?.name ?? "", [folders]);
   const rows = (0, import_react10.useMemo)(() => {
-    let source = tab === "favorites" ? favorites : items.filter((row) => row.kind === "upload");
-    if (tab === "favorites" && !["all", "overview"].includes(folderFilter)) source = source.filter((row) => "type" in row && row.type === "skill" && (folderFilter === "unfiled" ? !row.folderId : row.folderId === folderFilter));
+    let source = favorites;
+    if (folderFilter !== "overview") source = source.filter((row) => folderFilter === "unfiled" ? !row.folderId : row.folderId === folderFilter);
     const term = search.trim().toLocaleLowerCase();
-    return tab === "favorites" && term ? source.filter((row) => `${"type" in row ? `${row.note || ""} ${row.label || ""} ${folderName(row.folderId)}` : row.filename || ""} ${row.id}`.toLocaleLowerCase().includes(term)) : source;
-  }, [favoriteSnapshot.revision, favorites, folderFilter, folderName, items, search, tab]);
-  const folderOverview = tab === "favorites" && foldersAvailable === true && folderFilter === "overview" && !search.trim();
+    return term ? source.filter((row) => `${row.note || ""} ${row.label || ""} ${folderName(row.folderId)} ${row.id}`.toLocaleLowerCase().includes(term)) : source;
+  }, [favoriteSnapshot.revision, favorites, folderFilter, folderName, search]);
+  const folderOverview = foldersAvailable === true && folderFilter === "overview" && !search.trim();
   const visible = rows.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   (0, import_react10.useEffect)(() => {
     setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(rows.length / PAGE_SIZE))));
   }, [rows.length]);
-  function switchTab(value2) {
-    detailSequence.current++;
-    setBusy((current) => current === "upload" ? current : "");
-    if (value2 !== tab) {
-      sequence.current++;
-      inFlight.current = false;
-      setItems([]);
-      if (value2 === "favorites") setFavorites(favoriteSnapshot.initialized ? [...favoriteSnapshot.rows] : []);
-      setCursor(null);
-      cursorRef.current = null;
-      setPaginationSupported(void 0);
-    }
-    setTab(value2);
-    setPage(1);
-    setQuery("");
-    setSearch("");
-    setDetail(void 0);
-    setSavedResource(void 0);
-    setError("");
-  }
   async function open(row) {
     const token = ++detailSequence.current;
     setDetailLoading(row.id);
     setDetailError("");
-    setExported(void 0);
-    if ("kind" in row) {
-      setDetail(row);
-      setSavedResource(void 0);
-    } else {
-      setDetail(void 0);
-      setSavedResource({ row });
-    }
+    setSavedResource({ row });
     try {
-      if ("kind" in row) {
-        const { data } = await request("assets.detail", { id: row.id });
-        if (token === detailSequence.current) setDetail(data);
-      } else if (row.type === "gallery") {
+      if (row.type === "gallery") {
         const { data } = await request("gallery.detail", { id: row.id });
         if (token === detailSequence.current) setSavedResource({ row, gallery: data });
       } else {
@@ -36468,15 +36049,9 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
     setBusy(row.id);
     setError("");
     try {
-      const selectionKind = "kind" in row ? "asset" : row.type === "skill" ? "skill" : "gallery";
-      let previewUrl = "kind" in row ? row.previewUrl : row.imageUrl;
-      if ("kind" in row) {
-        const { data: detail2 } = await request("assets.detail", { id: row.id });
-        if (detail2?.id !== row.id || detail2?.status !== "ready" || typeof detail2?.previewUrl !== "string" || !detail2.previewUrl) throw new Error("\u8FD9\u5F20\u7D20\u6750\u5C1A\u672A\u51C6\u5907\u597D\u53EF\u7528\u9884\u89C8\uFF0C\u8BF7\u7A0D\u540E\u5237\u65B0\u3002");
-        previewUrl = detail2.previewUrl;
-      }
+      const selectionKind = row.type === "skill" ? "skill" : "gallery";
       const { data } = await request("selection.resolve", { kind: selectionKind, id: row.id });
-      await onUse({ ...data, previewUrl });
+      await onUse({ ...data, previewUrl: row.imageUrl });
       setNotice(selectionKind === "skill" ? "\u5DF2\u5728\u751F\u56FE\u6846\u4E2D\u66F4\u6362 Skill\u3002" : "\u5DF2\u5C06\u7D20\u6750\u52A0\u5165\u751F\u56FE\u6846\u3002");
     } catch (error102) {
       setError(displayError(error102));
@@ -36484,54 +36059,16 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       setBusy("");
     }
   }
-  async function upload(files) {
-    if (!files.length || busy === "upload") return;
-    setBusy("upload");
-    setError("");
-    setUploadWarning("");
-    setNotice("");
-    const supported = files.filter((file3) => ["image/jpeg", "image/png", "image/webp"].includes(file3.type));
-    const unsupported = files.length - supported.length;
-    let uploaded = 0;
-    let processing = 0;
-    const failed = [];
-    try {
-      let cursor2 = 0;
-      const worker = async () => {
-        for (; ; ) {
-          const file3 = supported[cursor2++];
-          if (!file3) return;
-          try {
-            const { data } = await request("assets.upload", { file: file3 });
-            uploaded++;
-            if (data?.status !== "ready") processing++;
-          } catch {
-            failed.push(file3.name);
-          }
-        }
-      };
-      await Promise.all(Array.from({ length: Math.min(4, supported.length) }, worker));
-      if (uploaded) {
-        switchTab("uploads");
-        await load(false, { tab: "uploads", search: "" });
-        setNotice(`${uploaded} \u4E2A\u7D20\u6750\u5DF2\u4E0A\u4F20${processing ? `\uFF0C\u5176\u4E2D ${processing} \u4E2A\u6B63\u5728\u5904\u7406` : ""}\u3002`);
-      }
-      const problems = [unsupported ? `${unsupported} \u4E2A\u6587\u4EF6\u683C\u5F0F\u4E0D\u652F\u6301` : "", failed.length ? `${failed.length} \u4E2A\u6587\u4EF6\u4E0A\u4F20\u5931\u8D25${failed.length <= 3 ? `\uFF08${failed.join("\u3001")}\uFF09` : ""}` : ""].filter(Boolean);
-      if (problems.length) setUploadWarning(`${problems.join("\uFF1B")}\u3002\u4EC5\u652F\u6301 JPEG\u3001PNG \u6216 WebP\u3002`);
-      else if (!uploaded) setError("\u8BF7\u9009\u62E9 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
-    } finally {
-      setBusy("");
-      if (fileInput.current) fileInput.current.value = "";
-    }
-  }
   async function toggleFavorite(row) {
-    const token = favoriteResponseState.beginMutation(uiLease, favoriteOwner, row.type, row.id, false);
+    const target2 = !favoriteResponseState.has(uiLease, row.type, row.id);
+    row = favoriteSnapshot.rows.find((item) => item.type === row.type && item.id === row.id) ?? row;
+    const token = favoriteResponseState.beginMutation(uiLease, favoriteOwner, row.type, row.id, target2);
     if (!token) return;
     setError("");
     try {
-      const { data } = await request("assets.favorite", { kind: row.type, id: row.id, favorite: false });
+      const { data } = await request("assets.favorite", { kind: row.type, id: row.id, favorite: target2 });
       if (typeof data?.favorite !== "boolean") throw new Error("\u4E3B\u7AD9\u672A\u8FD4\u56DE\u53EF\u6838\u5BF9\u7684\u6536\u85CF\u72B6\u6001\u3002");
-      const resultMessage = data.favorite ? "\u4E3B\u7AD9\u8FD4\u56DE\u8BE5\u9879\u4ECD\u4E3A\u5DF2\u6536\u85CF\uFF0C\u672A\u80FD\u53D6\u6D88\u3002" : "";
+      const resultMessage = data.favorite === target2 ? "" : data.favorite ? "\u4E3B\u7AD9\u8FD4\u56DE\u8BE5\u9879\u4ECD\u4E3A\u5DF2\u6536\u85CF\uFF0C\u672A\u80FD\u53D6\u6D88\u3002" : "\u4E3B\u7AD9\u8FD4\u56DE\u8BE5\u9879\u4ECD\u672A\u6536\u85CF\uFF0C\u672A\u80FD\u6DFB\u52A0\u3002";
       if (favoriteResponseState.finishMutation(token, data.favorite, row, resultMessage)) {
         void refreshFavoritesInBackground(request, uiLease, favoriteOwner);
         return data.favorite;
@@ -36575,12 +36112,12 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       const { data } = await request("favorites.folders.delete", { id: target2.id });
       if (data?.deleted !== true) throw new Error("\u6587\u4EF6\u5939\u672A\u5220\u9664\u3002");
       folderSequence.current++;
-      favoriteResponseState.clearFolder(uiLease, target2.id);
       setFolders((current) => current.filter((row) => row.id !== target2.id));
       setFolderFilter((current) => current === target2.id ? "unfiled" : current);
-      const moved = Number.isInteger(data?.movedSkillCount) ? Number(data.movedSkillCount) : void 0;
+      const moved = Number.isInteger(data?.movedItemCount) ? Number(data.movedItemCount) : Number.isInteger(data?.movedSkillCount) ? Number(data.movedSkillCount) : void 0;
+      await load();
       setFolderDelete(void 0);
-      setFolderMessage(moved === void 0 ? "\u6587\u4EF6\u5939\u5DF2\u5220\u9664\uFF0C\u5176\u4E2D\u7684 Skill \u5DF2\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\u3002" : `\u6587\u4EF6\u5939\u5DF2\u5220\u9664\uFF0C${moved} \u4E2A Skill \u5DF2\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\u3002`);
+      setFolderMessage(moved === void 0 ? "\u6587\u4EF6\u5939\u5DF2\u5220\u9664\uFF0C\u5176\u4E2D\u7684\u6536\u85CF\u5DF2\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\u3002" : `\u6587\u4EF6\u5939\u5DF2\u5220\u9664\uFF0C${moved} \u9879\u6536\u85CF\u5DF2\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\u3002`);
     } catch (error102) {
       setFolderDelete((current) => current ? { ...current, error: displayError(error102) } : current);
     } finally {
@@ -36588,37 +36125,36 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
     }
   }
   function startOrganizing(row) {
-    if (row.type !== "skill") return;
-    setOrganizeSkill({ row, note: row.note ?? "", folderId: row.folderId ?? "", error: "" });
+    setOrganizeItem({ row, note: row.note ?? "", folderId: row.folderId ?? "", error: "" });
   }
-  async function saveSkillOrganization() {
-    if (!organizeSkill) return;
-    const note = organizeSkill.note.trim();
+  async function saveItemOrganization() {
+    if (!organizeItem) return;
+    const note = organizeItem.note.trim();
     if (note.length > 160) {
-      setOrganizeSkill((current) => current ? { ...current, error: "\u5907\u6CE8\u6700\u591A 160 \u4E2A\u5B57\u7B26\u3002" } : current);
+      setOrganizeItem((current) => current ? { ...current, error: "\u5907\u6CE8\u6700\u591A 160 \u4E2A\u5B57\u7B26\u3002" } : current);
       return;
     }
-    const token = favoriteResponseState.beginMutation(uiLease, favoriteOwner, "skill", organizeSkill.row.id, true);
+    const token = favoriteResponseState.beginMutation(uiLease, favoriteOwner, organizeItem.row.type, organizeItem.row.id, true);
     if (!token) return;
-    setOrganizeSkill((current) => current ? { ...current, error: "" } : current);
+    setOrganizeItem((current) => current ? { ...current, error: "" } : current);
     try {
-      const { data } = await request("favorites.skill.update", { id: organizeSkill.row.id, note: note || null, folderId: organizeSkill.folderId || null });
+      const { data } = await request("favorites.item.update", { type: organizeItem.row.type, id: organizeItem.row.id, note: note || null, folderId: organizeItem.folderId || null });
       const item = data?.item;
-      if (!item || item.type !== "skill" || item.id !== organizeSkill.row.id || item.note !== (note || null) || item.folderId !== (organizeSkill.folderId || null)) throw new Error("\u672A\u6536\u5230\u53EF\u6838\u5BF9\u7684\u6536\u85CF Skill\u3002");
+      if (!item || item.type !== organizeItem.row.type || item.id !== organizeItem.row.id || item.note !== (note || null) || item.folderId !== (organizeItem.folderId || null)) throw new Error("\u672A\u6536\u5230\u53EF\u6838\u5BF9\u7684\u6536\u85CF\u9879\u3002");
       if (favoriteResponseState.finishMutation(token, true, item)) {
-        setOrganizeSkill(void 0);
+        setOrganizeItem(void 0);
         setNotice("");
       }
     } catch (error102) {
       favoriteResponseState.failMutation(token, displayError(error102));
-      setOrganizeSkill((current) => current ? { ...current, error: displayError(error102) } : current);
+      setOrganizeItem((current) => current ? { ...current, error: displayError(error102) } : current);
     }
   }
-  async function removeOrganizedSkill() {
-    if (!organizeSkill) return;
-    const removed = await toggleFavorite(organizeSkill.row);
+  async function removeOrganizedItem() {
+    if (!organizeItem) return;
+    const removed = await toggleFavorite(organizeItem.row);
     if (removed === false) {
-      setOrganizeSkill(void 0);
+      setOrganizeItem(void 0);
       setNotice("\u5DF2\u4ECE\u6536\u85CF\u5939\u79FB\u9664\u3002");
     }
   }
@@ -36635,121 +36171,6 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       setBusy("");
     }
   }
-  async function askDelete(row) {
-    setBusy(row.id);
-    setError("");
-    try {
-      const { data } = await request("assets.delete", { ids: [row.id] });
-      if (!data?.confirmationRequired || !data.confirmationId) throw new Error("\u672A\u6536\u5230\u53EF\u9A8C\u8BC1\u7684\u5220\u9664\u786E\u8BA4\u3002");
-      setConfirmDelete({ id: row.id, confirmationId: data.confirmationId, label: row.filename || "\u8FD9\u5F20\u79C1\u6709\u7D20\u6750" });
-      onChanged();
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  async function cancelDelete() {
-    if (!confirmDelete) return;
-    setBusy(confirmDelete.id);
-    setError("");
-    try {
-      await request("confirmation.cancel", { confirmationId: confirmDelete.confirmationId });
-      setConfirmDelete(void 0);
-      onChanged();
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  async function deleteConfirmed() {
-    if (!confirmDelete) return;
-    setBusy(confirmDelete.id);
-    setError("");
-    try {
-      const { data } = await request("assets.delete", { confirmationId: confirmDelete.confirmationId });
-      const failure = Array.isArray(data?.failed) && data.failed.length ? `\uFF0C${data.failed.length} \u9879\u672A\u80FD\u5220\u9664` : "";
-      setNotice(`\u79C1\u6709\u4E0A\u4F20\u5DF2\u5220\u9664${failure}\u3002`);
-      setConfirmDelete(void 0);
-      setDetail(void 0);
-      await load();
-      onChanged();
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  async function exportAsset(row) {
-    setBusy(`export:${row.id}`);
-    setError("");
-    setNotice("");
-    try {
-      const { data } = await request("local.output.exportAsset", { id: row.id });
-      if (typeof data?.exportId !== "string" || typeof data?.path !== "string") throw new Error("\u672A\u6536\u5230\u53EF\u6838\u5BF9\u7684\u5BFC\u51FA\u4F4D\u7F6E\u3002");
-      setExported(data);
-      setNotice("\u539F\u56FE\u5DF2\u4FDD\u5B58\u5230\u5DE5\u5177\u7BB1\u7684\u8F93\u51FA\u76EE\u5F55\u3002");
-    } catch (error102) {
-      setError(displayError(error102));
-    } finally {
-      setBusy("");
-    }
-  }
-  const deleteDialog = confirmDelete ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ConfirmDialog, { title: "\u5220\u9664\u79C1\u6709\u4E0A\u4F20\uFF1F", description: `\u201C${confirmDelete.label}\u201D\u5C06\u88AB\u6C38\u4E45\u5220\u9664\u3002\u5F15\u7528\u8BE5\u56FE\u7684 Skill \u4E4B\u540E\u53EF\u80FD\u9700\u8981\u4FEE\u590D\u3002`, confirmLabel: "\u786E\u8BA4\u5220\u9664", busy: busy === confirmDelete.id, error: error101, onCancel: () => void cancelDelete(), onConfirm: () => void deleteConfirmed() }) : null;
-  if (detail) {
-    const privateRow = "kind" in detail;
-    const title = privateRow ? detail.filename || (detail.kind === "generated" ? "\u672C\u4EBA\u751F\u6210\u56FE" : "\u79C1\u6709\u4E0A\u4F20") : detail.label || detail.id;
-    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(DetailShell, { title, eyebrow: privateRow ? detail.kind === "generated" ? "\u751F\u6210\u8BB0\u5F55" : "\u79C1\u6709\u4E0A\u4F20" : "\u6211\u7684\u6536\u85CF", onBack: () => {
-        detailSequence.current++;
-        setDetailLoading("");
-        setDetail(void 0);
-        setExported(void 0);
-        setDetailError("");
-      }, actions: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: "\u9009\u5165\u4F1A\u8BDD" }),
-        privateRow && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === `export:${detail.id}` || detail.status !== "ready", onClick: () => void exportAsset(detail), children: busy === `export:${detail.id}` ? "\u6B63\u5728\u5BFC\u51FA\u2026" : "\u5BFC\u51FA\u5230\u8F93\u51FA\u76EE\u5F55" }),
-        privateRow && detail.kind === "upload" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => void askDelete(detail), children: "\u5220\u9664" })
-      ] }), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: detailError || uploadWarning, notice: detailLoading === detail.id ? "\u6B63\u5728\u8865\u9F50\u7D20\u6750\u8BE6\u60C5\u2026" : notice }),
-        detailError && detailLoading !== detail.id && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(detail), children: "\u91CD\u8BD5\u8BE6\u60C5" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-detail-grid", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: privateRow ? detail.previewUrl : detail.imageUrl, alt: title }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-detail-copy", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("dl", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "ID" }),
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dd", { className: "ppd-break", children: detail.id })
-              ] }),
-              privateRow && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "\u72B6\u6001" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dd", { children: detail.status })
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dt", { children: "\u5C3A\u5BF8" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("dd", { children: detail.width && detail.height ? `${detail.width} \xD7 ${detail.height}` : "\u5904\u7406\u4E2D\u6216\u672A\u63D0\u4F9B" })
-                ] })
-              ] })
-            ] }),
-            privateRow && detail.downloadUrl && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("a", { className: "ppd-button", href: detail.downloadUrl, target: "_blank", rel: "noreferrer", children: "\u6D4F\u89C8\u5668\u4E0B\u8F7D\u539F\u56FE" }),
-            privateRow && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-lead", children: "\u201C\u5BFC\u51FA\u5230\u8F93\u51FA\u76EE\u5F55\u201D\u4F1A\u4FDD\u5B58\u7ECF Host \u6838\u9A8C\u7684\u672C\u4EBA\u539F\u56FE\uFF1B\u8F93\u51FA\u4F4D\u7F6E\u53EF\u5728\u5DE5\u5177\u7BB1\u4E2D\u8BBE\u7F6E\u3002" }),
-            onOpenToolbox && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-link-button", onClick: onOpenToolbox, children: "\u524D\u5F80\u5DE5\u5177\u7BB1\u8BBE\u7F6E\u8F93\u51FA\u76EE\u5F55" }),
-            exported && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { className: "ppd-export-result", role: "status", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: exported.name }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("code", { className: "ppd-break", children: exported.path }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-actions", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void request("local.output.open", { exportId: exported.exportId }).catch((error102) => setError(displayError(error102))), children: "\u6253\u5F00\u6587\u4EF6" }),
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void request("local.output.reveal", { exportId: exported.exportId }).catch((error102) => setError(displayError(error102))), children: "\u6240\u5728\u6587\u4EF6\u5939" })
-              ] })
-            ] })
-          ] })
-        ] })
-      ] }),
-      deleteDialog
-    ] });
-  }
   if (savedResource) {
     const back = () => {
       detailSequence.current++;
@@ -36758,10 +36179,13 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       setDetailError("");
     };
     const noticeBlock = /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: detailError, notice: detailLoading === savedResource.row.id ? "\u6B63\u5728\u8865\u9F50\u6536\u85CF\u8BE6\u60C5\u2026" : notice }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: detailError || favoriteSnapshot.error || error101, notice: detailLoading === savedResource.row.id ? "\u6B63\u5728\u8865\u9F50\u6536\u85CF\u8BE6\u60C5\u2026" : notice }),
       detailError && detailLoading !== savedResource.row.id && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(savedResource.row), children: "\u91CD\u8BD5\u8BE6\u60C5" })
     ] });
-    if (savedResource.skill) return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PublicSkillDetail, { skill: savedResource.skill, onBack: () => savedResource.family ? setSavedResource({ ...savedResource, skill: void 0 }) : back(), notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy || !savedResource.skill.executable, onClick: () => void useSavedSkill(savedResource.skill), children: "\u4F7F\u7528 Skill" }) });
+    if (savedResource.skill) return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PublicSkillDetail, { skill: savedResource.skill, onBack: () => savedResource.family ? setSavedResource({ ...savedResource, skill: void 0 }) : back(), notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy || !savedResource.skill.executable, onClick: () => void useSavedSkill(savedResource.skill), children: "\u4F7F\u7528 Skill" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", savedResource.skill.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", savedResource.skill.slug), onClick: () => void toggleFavorite(favoriteFromSkill(savedResource.skill)) })
+    ] }) });
     if (savedResource.gallery) return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GalleryDetail, { item: savedResource.gallery, onBack: back, notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy, onClick: () => void use(savedResource.row), children: "\u52A0\u5165\u53C2\u8003\u56FE" }) });
     if (savedResource.family) return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(DetailShell, { title: savedResource.family.title, onBack: back, children: [
       noticeBlock,
@@ -36769,10 +36193,13 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { children: savedResource.family.summary }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: savedResource.family.chooseLabel })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-grid ppd-family-grid", children: savedResource.family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("article", { className: "ppd-card", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => setSavedResource({ ...savedResource, skill: member }), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
-      ] }) }, member.slug)) })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-grid ppd-family-grid", children: savedResource.family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { className: "ppd-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => setSavedResource({ ...savedResource, skill: member }), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", member.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", member.slug), onClick: () => void toggleFavorite(favoriteFromSkill(member)) })
+      ] }, member.slug)) })
     ] });
     const title = savedResource.row.label || savedResource.row.id;
     return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(DetailShell, { title, eyebrow: "\u6211\u7684\u6536\u85CF", onBack: back, children: [
@@ -36792,12 +36219,12 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
     setFolderMessage("");
   };
   const activeFolder = folders.find((folder) => folder.id === folderFilter);
-  const folderControls = tab === "favorites" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+  const folderControls = /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-collection-heading", children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-collection-location", children: [
-        !folderOverview && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-collection-back", "aria-label": "\u8FD4\u56DE\u6536\u85CF\u6587\u4EF6\u5939", onClick: () => enterFolder("overview"), children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Icon, { name: "back" }) }),
+        !folderOverview && foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-collection-back", "aria-label": "\u8FD4\u56DE\u6536\u85CF\u6587\u4EF6\u5939", onClick: () => enterFolder("overview"), children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Icon, { name: "back" }) }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { children: folderOverview ? "\u6211\u7684\u6536\u85CF\u5939" : search.trim() ? "\u641C\u7D22\u7ED3\u679C" : folderFilter === "unfiled" ? "\u672A\u5206\u7C7B" : activeFolder?.name || "\u5168\u90E8\u6536\u85CF" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { children: folderOverview ? "\u6211\u7684\u6536\u85CF\u5939" : search.trim() ? "\u641C\u7D22\u7ED3\u679C" : folderFilter === "unfiled" ? "\u672A\u5206\u7C7B" : activeFolder?.name || "\u6211\u7684\u6536\u85CF" }),
           !folderOverview && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("small", { children: [
             rows.length,
             cursor ? "+" : "",
@@ -36806,10 +36233,8 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-actions", children: [
-        folderOverview ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-link-button", onClick: () => enterFolder("all"), children: [
-          "\u5168\u90E8\u6536\u85CF ",
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { "aria-hidden": "true", children: "\u2197" })
-        ] }) : activeFolder && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${activeFolder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: activeFolder.name, folder: activeFolder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder: activeFolder }) }] }),
+        activeFolder && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${activeFolder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: activeFolder.name, folder: activeFolder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder: activeFolder }) }] }),
+        " ",
         foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-button ppd-new-folder", onClick: () => setFolderEditor({ mode: "create", value: "" }), children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Icon, { name: "plus" }),
           " \u65B0\u5EFA\u6587\u4EF6\u5939"
@@ -36821,9 +36246,9 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       foldersAvailable === false && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadFolders(), children: "\u91CD\u8BD5" })
     ] }),
     foldersAvailable === true && folderMessage && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-collection-status", role: "status", children: folderMessage })
-  ] }) : null;
+  ] });
   const folderCards = /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-collection-grid", "aria-label": "\u6536\u85CF\u6587\u4EF6\u5939", children: [...folders, { id: "unfiled", name: "\u672A\u5206\u7C7B" }].map((folder) => {
-    const members = favorites.filter((row) => row.type === "skill" && (folder.id === "unfiled" ? !row.folderId : row.folderId === folder.id));
+    const members = favorites.filter((row) => folder.id === "unfiled" ? !row.folderId : row.folderId === folder.id);
     const cover = members[0];
     return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { className: "ppd-collection-card", "data-folder-id": folder.id, children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-collection-open", "aria-label": `\u6253\u5F00\u6587\u4EF6\u5939 ${folder.name}`, onClick: () => enterFolder(folder.id), children: [
@@ -36838,7 +36263,7 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("small", { children: [
             members.length,
             cursor ? "+" : "",
-            " \u4E2A Skill"
+            " \u9879\u6536\u85CF"
           ] })
         ] })
       ] }),
@@ -36860,107 +36285,90 @@ function AssetsPanel({ request, onUse, onChanged, refreshKey, onOpenToolbox, uiL
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: busy === "folder-editor", children: "\u4FDD\u5B58" })
     ] })
   ] }) }) : null;
-  const folderDeleteDialog = folderDelete ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6536\u85CF\u6587\u4EF6\u5939\uFF1F", description: `\u201C${folderDelete.folder.name}\u201D\u4E2D\u7684 Skill \u4F1A\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\uFF0C\u6536\u85CF\u4E0D\u4F1A\u88AB\u53D6\u6D88\u3002`, confirmLabel: "\u5220\u9664\u6587\u4EF6\u5939", busy: busy === `folder-delete:${folderDelete.folder.id}`, error: folderDelete.error, onCancel: () => setFolderDelete(void 0), onConfirm: () => void deleteFolderConfirmed() }) : null;
-  const organizationBusy = organizeSkill ? favoriteResponseState.isBusy(uiLease, "skill", organizeSkill.row.id) : false;
-  const organizeSkillDialog = organizeSkill ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-favorite-editor-title", onSubmit: (event) => {
+  const folderDeleteDialog = folderDelete ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6536\u85CF\u6587\u4EF6\u5939\uFF1F", description: `\u201C${folderDelete.folder.name}\u201D\u4E2D\u7684\u6536\u85CF\u4F1A\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\uFF0C\u6536\u85CF\u4E0D\u4F1A\u88AB\u53D6\u6D88\u3002`, confirmLabel: "\u5220\u9664\u6587\u4EF6\u5939", busy: busy === `folder-delete:${folderDelete.folder.id}`, error: folderDelete.error, onCancel: () => setFolderDelete(void 0), onConfirm: () => void deleteFolderConfirmed() }) : null;
+  const organizationBusy = organizeItem ? favoriteResponseState.isBusy(uiLease, organizeItem.row.type, organizeItem.row.id) : false;
+  const organizeItemDialog = organizeItem ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-favorite-editor-title", onSubmit: (event) => {
     event.preventDefault();
-    void saveSkillOrganization();
+    void saveItemOrganization();
   }, children: [
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { id: "ppd-favorite-editor-title", children: "\u7F16\u8F91\u6536\u85CF" }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { children: [
       "\u539F\u540D\uFF1A",
-      organizeSkill.row.label || organizeSkill.row.id
+      organizeItem.row.label || organizeItem.row.id
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("label", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { children: "\u6211\u7684\u5907\u6CE8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("input", { autoFocus: true, value: organizeSkill.note, maxLength: 160, placeholder: "\u4E0D\u586B\u5199\u5219\u663E\u793A\u539F\u540D", onChange: (event) => setOrganizeSkill((current) => current ? { ...current, note: event.target.value, error: "" } : current) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("small", { children: "\u5907\u6CE8\u4F9B\u672C\u4EBA\u663E\u793A\u3001\u641C\u7D22\u548C\u8C03\u7528\uFF0C\u4E3B\u7AD9 Skill \u540D\u79F0\u4FDD\u6301\u539F\u6837\u3002" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("input", { autoFocus: true, value: organizeItem.note, maxLength: 160, placeholder: "\u4E0D\u586B\u5199\u5219\u663E\u793A\u539F\u540D", onChange: (event) => setOrganizeItem((current) => current ? { ...current, note: event.target.value, error: "" } : current) }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("small", { children: "\u5907\u6CE8\u4EC5\u4F9B\u672C\u4EBA\u663E\u793A\u548C\u641C\u7D22\uFF0C\u4E0D\u4FEE\u6539\u539F\u6536\u85CF\u5185\u5BB9\u3002" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("label", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { children: "\u6536\u85CF\u6587\u4EF6\u5939" }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("select", { value: organizeSkill.folderId, disabled: foldersAvailable !== true, onChange: (event) => setOrganizeSkill((current) => current ? { ...current, folderId: event.target.value, error: "" } : current), children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("select", { value: organizeItem.folderId, disabled: foldersAvailable !== true, onChange: (event) => setOrganizeItem((current) => current ? { ...current, folderId: event.target.value, error: "" } : current), children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("option", { value: "", children: "\u672A\u5206\u7C7B" }),
         folders.map((folder) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("option", { value: folder.id, children: folder.name }, folder.id))
       ] })
     ] }),
-    organizeSkill.error && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { role: "alert", children: organizeSkill.error }),
+    organizeItem.error && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { role: "alert", children: organizeItem.error }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-favorite-editor-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: organizationBusy, onClick: () => void removeOrganizedSkill(), children: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: organizationBusy, onClick: () => void removeOrganizedItem(), children: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664" }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: organizationBusy, onClick: () => setOrganizeSkill(void 0), children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: organizationBusy, onClick: () => setOrganizeItem(void 0), children: "\u53D6\u6D88" }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: organizationBusy, children: "\u4FDD\u5B58" })
     ] })
   ] }) }) : null;
-  const migrationNotice = tab === "favorites" && migration?.status === "blocked" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u767B\u5F55\u5C1A\u672A\u6388\u6743\u4E91\u7AEF\u6536\u85CF\uFF0C\u8BF7\u9000\u51FA\u540E\u91CD\u65B0\u767B\u5F55\u4E00\u6B21\uFF1B\u5176\u4ED6\u529F\u80FD\u4ECD\u53EF\u4F7F\u7528\u3002" }) : tab === "favorites" && migration?.unknown ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "ppd-alert", role: "status", children: [
+  const migrationNotice = migration?.status === "blocked" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u767B\u5F55\u5C1A\u672A\u6388\u6743\u4E91\u7AEF\u6536\u85CF\uFF0C\u8BF7\u9000\u51FA\u540E\u91CD\u65B0\u767B\u5F55\u4E00\u6B21\uFF1B\u5176\u4ED6\u529F\u80FD\u4ECD\u53EF\u4F7F\u7528\u3002" }) : migration?.unknown ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "ppd-alert", role: "status", children: [
     "\u6709 ",
     migration.unknown,
     " \u9879\u65E7\u6536\u85CF\u7684\u8FC1\u79FB\u7ED3\u679C\u65E0\u6CD5\u786E\u8BA4\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u8BD5\uFF0C\u907F\u514D\u5DF2\u53D6\u6D88\u7684\u6536\u85CF\u88AB\u91CD\u65B0\u52A0\u56DE\u3002"
-  ] }) : tab === "favorites" && migration?.rejected ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "ppd-alert", role: "status", children: [
+  ] }) : migration?.rejected ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "ppd-alert", role: "status", children: [
     migration.rejected,
     " \u9879\u65E7\u6536\u85CF\u5DF2\u5931\u6548\u6216\u65E0\u6743\u8BBF\u95EE\u3002",
     migration.retryable && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "migration", onClick: () => void retryMigration(), children: busy === "migration" ? "\u6B63\u5728\u91CD\u8BD5\u2026" : "\u91CD\u8BD5\u5931\u8D25\u9879" })
   ] }) : null;
-  const navigation = /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("nav", { className: "ppd-tabs", "aria-label": "\u7D20\u6750\u5206\u7EC4", children: [["favorites", "\u6536\u85CF"], ["uploads", "\u4E0A\u4F20"]].map(([value2, label]) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: tab === value2 ? "is-active" : "", "aria-current": tab === value2 ? "page" : void 0, onClick: () => switchTab(value2), children: label }, value2)) });
   return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: error101 || favoriteSnapshot.error || uploadWarning, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SearchBar, { navigation, value: query, placeholder: tab === "favorites" ? "\u641C\u7D22\u5907\u6CE8\u3001\u539F\u540D\u6216\u6587\u4EF6\u5939" : "\u641C\u7D22\u5F53\u524D\u5206\u7EC4", busy: loading, onChange: setQuery, onSearch: () => {
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Notice, { error: error101 || favoriteSnapshot.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5907\u6CE8\u3001\u539F\u540D\u6216\u6587\u4EF6\u5939", busy: loading, onChange: setQuery, onSearch: () => {
       const value2 = query.trim();
       setPage(1);
       if (value2 === search) void load();
-      else {
-        if (tab !== "favorites") setItems([]);
-        setSearch(value2);
-      }
+      else setSearch(value2);
     }, onRefresh: () => {
-      void load(false, scope.current, tab === "favorites" ? favorites.length : items.length);
-      if (tab === "favorites") void loadFolders();
-    }, children: tab === "uploads" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-upload-area", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0A\u4F20\u56FE\u7247", title: "\u4E0A\u4F20\u56FE\u7247", "aria-busy": busy === "upload", disabled: busy === "upload", onClick: () => fileInput.current?.click(), children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Icon, { name: "plus" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("input", { ref: fileInput, className: "ppd-file-input", type: "file", accept: "image/jpeg,image/png,image/webp", multiple: true, onChange: (event) => {
-        const files = Array.from(event.target.files ?? []);
-        if (files.length) void upload(files);
-      } })
-    ] }) }),
+      void load();
+      void loadFolders();
+    } }),
     folderControls,
     migrationNotice,
-    tab === "uploads" && paginationSupported === false && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u670D\u52A1\u4EC5\u63D0\u4F9B\u6700\u8FD1 50 \u6761\u6DF7\u5408\u7D20\u6750\uFF0C\u672C\u5206\u7EC4\u548C\u641C\u7D22\u53EF\u80FD\u4E0D\u5B8C\u6574\u3002\u5B8C\u6574\u5386\u53F2\u9700\u8981\u670D\u52A1\u7AEF\u542F\u7528\u5206\u9875\u3002" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Status, { loading: loading && !rows.length, error: !rows.length ? error101 : "", empty: !rows.length && !folderOverview ? tab === "favorites" ? "\u6536\u85CF\u516C\u5F00 Skill \u6216\u516C\u5F00\u7D20\u6750\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : tab === "uploads" ? "\u4E0A\u4F20\u4E00\u5F20\u6216\u591A\u5F20\u79C1\u6709\u56FE\u7247\u4F5C\u4E3A\u53C2\u8003\u7D20\u6750\u3002" : "\u5B8C\u6210\u751F\u56FE\u540E\uFF0C\u7ED3\u679C\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : "", children: folderOverview ? folderCards : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Status, { loading: loading && !rows.length, error: !rows.length ? error101 : "", empty: !rows.length && !folderOverview ? "\u6536\u85CF\u516C\u5F00 Skill \u6216\u56FE\u5E93\u56FE\u7247\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : "", children: folderOverview ? folderCards : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-grid", children: visible.map((row) => {
-        const privateRow = "kind" in row;
-        const privatePreview = privateRow;
-        const favoriteRow = privateRow ? void 0 : row;
-        const originalTitle = privateRow ? row.filename || "\u79C1\u6709\u4E0A\u4F20" : favoriteRow.label || favoriteRow.id;
-        const skillFavorite = favoriteRow?.type === "skill";
-        const title = skillFavorite && favoriteRow.note ? favoriteRow.note : originalTitle;
-        const subtitle = skillFavorite ? [favoriteRow.note ? `\u539F\u540D\uFF1A${originalTitle}` : "", folderName(favoriteRow.folderId) || "\u672A\u5206\u7C7B"].filter(Boolean).join(" \xB7 ") : privateRow ? `\u4E0A\u4F20 \xB7 ${row.status}` : favoriteRow.assetKind || favoriteRow.type;
-        return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { className: `ppd-card ${skillFavorite ? "ppd-favorite-skill-card" : ""}`, "data-asset-id": row.id, children: [
+        const originalTitle = row.label || row.id;
+        const title = row.note || originalTitle;
+        const subtitle = [row.note ? `\u539F\u540D\uFF1A${originalTitle}` : "", row.type === "gallery" ? "\u56FE\u5E93\u56FE\u7247" : "Skill", folderName(row.folderId) || "\u672A\u5206\u7C7B"].filter(Boolean).join(" \xB7 ");
+        const responseBusy = favoriteResponseState.isBusy(uiLease, row.type, row.id);
+        return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("article", { className: "ppd-card ppd-favorite-skill-card", "data-asset-id": row.id, "data-favorite-type": row.type, children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${title}`, disabled: busy === row.id, onClick: () => void open(row), children: [
-            privatePreview ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PrivateAssetPreview, { id: row.id, alt: title, request, revision: previewRevision }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: favoriteRow.imageUrl, alt: title }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ImageFrame, { src: row.imageUrl, alt: title }),
             /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { className: "ppd-card-copy", children: [
               /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { title, children: cardTitle(title) }),
               /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("small", { title: subtitle, children: subtitle })
             ] })
           ] }),
-          favoriteRow && !skillFavorite && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteButton, { active: true, busy: favoriteResponseState.isBusy(uiLease, favoriteRow.type, favoriteRow.id), onClick: () => void toggleFavorite(favoriteRow) }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
-          skillFavorite && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6536\u85CF ${title}`, disabled: favoriteResponseState.isBusy(uiLease, "skill", favoriteRow.id), actions: [{ label: "\u5907\u6CE8\u4E0E\u6587\u4EF6\u5939", run: () => startOrganizing(favoriteRow) }, { label: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664", danger: true, run: () => void toggleFavorite(favoriteRow) }] }),
-          privateRow && row.kind === "upload" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-card-delete", "aria-label": "\u5220\u9664\u4E0A\u4F20", onClick: () => void askDelete(row), children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Icon, { name: "trash" }) })
-        ] }, `${privateRow ? row.kind : row.type}:${row.id}`);
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6536\u85CF ${title}`, disabled: responseBusy, actions: [{ label: "\u5907\u6CE8\u4E0E\u6587\u4EF6\u5939", run: () => startOrganizing(row) }, { label: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664", danger: true, run: () => void toggleFavorite(row) }] })
+        ] }, `${row.type}:${row.id}`);
       }) }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PageNav, { page, total: rows.length, onPage: setPage })
     ] }) }),
     cursor && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-load-more", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: tab === "favorites" ? "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" : "\u52A0\u8F7D\u66F4\u591A\u7D20\u6750" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { children: [
         "\u5DF2\u52A0\u8F7D ",
         rows.length,
         " \u6761"
       ] })
     ] }),
-    deleteDialog,
     folderEditorDialog,
     folderDeleteDialog,
-    organizeSkillDialog
+    organizeItemDialog
   ] });
 }
 function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nativeSessionId }) {
@@ -37083,7 +36491,7 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       error101 && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-alert", role: "alert", children: error101 }),
       snapshot && section === "generation" && !historyOpen && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => setHistoryOpen(true), children: "\u5386\u53F2\u8BB0\u5F55" }) }),
       snapshot && historyOpen && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-content ppd-history-content", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationHistory, { request: stableComposerRequest, submission: submission?.ownerId === accountKey ? submission : void 0, onBack: () => setHistoryOpen(false), renderAsset: (id) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PrivateAssetPreview, { id, alt: "\u751F\u6210\u7ED3\u679C", request: stableComposerRequest, revision: 0 }) }, accountUiScope) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Status, { loading: !error101, error: error101, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(LocalResults, { request: stableRequest, onUse: stableOnUse, nativeSessionId, uiLease }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AssetsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, onOpenToolbox: onNavigate ? () => onNavigate("toolbox") : void 0, uiLease }, accountUiScope) })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Status, { loading: !error101, error: error101, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(LocalResults, { request: stableRequest, onUse: stableOnUse, uiLease }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AssetsPanel, { request: stableRequest, onUse: selectForComposer, refreshKey: pendingCount, uiLease }, accountUiScope) })
     ] }),
     snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { hidden: historyOpen, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) })
   ] });
@@ -37128,7 +36536,7 @@ var chat_generation_progress_default = ".ppd-chat-progress-details{display:grid;
 // plugins/podplo-dsh/src/client.tsx
 var import_jsx_runtime13 = require("react/jsx-runtime");
 var inject = ["slots", "connection", "layout", "uiWorkspace", "sessions"];
-var sectionLabels = { generation: "\u751F\u56FE", gallery: "\u56FE\u5E93", skills: "Skill \u5E93", assets: "\u6211\u7684\u7D20\u6750", results: "\u5904\u7406\u7ED3\u679C", toolbox: "\u5DE5\u5177\u7BB1" };
+var sectionLabels = { generation: "\u751F\u56FE", gallery: "\u56FE\u5E93", skills: "Skill \u5E93", assets: "\u6211\u7684\u7D20\u6750", results: "\u5386\u53F2\u8BB0\u5F55", toolbox: "\u5DE5\u5177\u7BB1" };
 var referenceText = (selection) => `
 \u5DF2\u9009\u62E9 PodPlo ${selection.kind === "skill" ? "Skill" : "\u7D20\u6750"}\uFF1A${selection.label ?? selection.id}
 PodPlo \u5F15\u7528\uFF1A${JSON.stringify(selection)}
