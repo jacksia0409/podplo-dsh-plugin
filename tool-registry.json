@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "pluginVersion": "0.1.16",
+  "registrySha256": "adb01c5530372c48ac471f8552dca068c5557a853e1a25468bbf0886fc9e5247",
+  "registry": {
+    "schemaVersion": 1,
+    "tools": [
+      {
+        "id": "image-processing-outline",
+        "name": "图片处理与描边",
+        "description": "图片旋转、调色、描边、透明边裁剪、尺寸、出血与输出设置。",
+        "operations": [
+          {
+            "id": "rotate-flip",
+            "name": "旋转翻转",
+            "token": "podplo_rotate_flip_images"
+          },
+          {
+            "id": "basic-color-adjustment",
+            "name": "调色",
+            "token": "podplo_adjust_image_colors"
+          },
+          {
+            "id": "auto-outline",
+            "name": "描边",
+            "token": "podplo_outline_images"
+          },
+          {
+            "id": "transparent-crop",
+            "name": "裁剪透明图杂边",
+            "token": "trim"
+          },
+          {
+            "id": "print-size-adjustment",
+            "name": "尺寸",
+            "token": "podplo_resize_images"
+          },
+          {
+            "id": "print-bleed-safety",
+            "name": "出血",
+            "token": "podplo_prepare_print_files"
+          },
+          {
+            "id": "output-settings",
+            "name": "输出设置",
+            "token": "podplo_export_images"
+          }
+        ]
+      },
+      {
+        "id": "grid-split",
+        "name": "图片分割",
+        "description": "按行列将图片平均分割为多张切片。",
+        "operations": [
+          {
+            "id": "grid-split",
+            "name": "图片分割",
+            "token": "podplo_grid_split"
+          }
+        ]
+      }
+    ]
+  }
+}

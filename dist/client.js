@@ -33182,23 +33182,60 @@ function createToolboxPreset(options, enabled, trimTransparent, threshold) {
   };
 }
 
+// packages/online/tool-registry.json
+var tool_registry_default = {
+  schemaVersion: 1,
+  tools: [
+    {
+      id: "image-processing-outline",
+      name: "\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9",
+      description: "\u56FE\u7247\u65CB\u8F6C\u3001\u8C03\u8272\u3001\u63CF\u8FB9\u3001\u900F\u660E\u8FB9\u88C1\u526A\u3001\u5C3A\u5BF8\u3001\u51FA\u8840\u4E0E\u8F93\u51FA\u8BBE\u7F6E\u3002",
+      operations: [
+        { id: "rotate-flip", name: "\u65CB\u8F6C\u7FFB\u8F6C", token: "podplo_rotate_flip_images" },
+        { id: "basic-color-adjustment", name: "\u8C03\u8272", token: "podplo_adjust_image_colors" },
+        { id: "auto-outline", name: "\u63CF\u8FB9", token: "podplo_outline_images" },
+        { id: "transparent-crop", name: "\u88C1\u526A\u900F\u660E\u56FE\u6742\u8FB9", token: "trim" },
+        { id: "print-size-adjustment", name: "\u5C3A\u5BF8", token: "podplo_resize_images" },
+        { id: "print-bleed-safety", name: "\u51FA\u8840", token: "podplo_prepare_print_files" },
+        { id: "output-settings", name: "\u8F93\u51FA\u8BBE\u7F6E", token: "podplo_export_images" }
+      ]
+    },
+    {
+      id: "grid-split",
+      name: "\u56FE\u7247\u5206\u5272",
+      description: "\u6309\u884C\u5217\u5C06\u56FE\u7247\u5E73\u5747\u5206\u5272\u4E3A\u591A\u5F20\u5207\u7247\u3002",
+      operations: [
+        { id: "grid-split", name: "\u56FE\u7247\u5206\u5272", token: "podplo_grid_split" }
+      ]
+    }
+  ]
+};
+
 // packages/online/tool-groups.ts
-var TOOL_GROUP_DEFINITIONS = [
-  { slug: "rotate-flip", name: "\u65CB\u8F6C\u4E0E\u7FFB\u8F6C", tools: ["podplo_rotate_flip_images"] },
-  { slug: "basic-color-adjustment", name: "\u57FA\u7840\u8C03\u8272", tools: ["podplo_adjust_image_colors"] },
-  { slug: "auto-outline", name: "\u81EA\u52A8\u63CF\u8FB9", tools: ["podplo_outline_images"] },
-  { slug: "transparent-crop", name: "\u88C1\u526A\u900F\u660E\u56FE\u6742\u8FB9", tools: ["trim"] },
-  { slug: "print-size-adjustment", name: "\u5370\u5237\u5C3A\u5BF8\u8C03\u6574", tools: ["podplo_resize_images"] },
-  { slug: "print-bleed-safety", name: "\u51FA\u8840", tools: ["podplo_prepare_print_files"] },
-  { slug: "output-settings", name: "\u8F93\u51FA\u8BBE\u7F6E", tools: ["podplo_export_images"] },
-  { slug: "grid-split", name: "\u56FE\u7247\u5206\u5272", tools: ["podplo_grid_split"] }
-];
+if (tool_registry_default.schemaVersion !== 1) throw new Error("Unsupported PodPlo tool registry schema");
+var TOOL_GROUP_DEFINITIONS = tool_registry_default.tools.map((entry) => ({
+  slug: entry.id,
+  name: entry.name,
+  description: entry.description,
+  operations: entry.operations,
+  tools: entry.operations.map((operation) => operation.token)
+}));
+var IMAGE_PROCESSING_TOOL_ID = "image-processing-outline";
+var GRID_SPLIT_TOOL_ID = "grid-split";
 var definitionsByTool = /* @__PURE__ */ new Map();
+var operationsByTool = /* @__PURE__ */ new Map();
 for (const definition of TOOL_GROUP_DEFINITIONS) {
-  for (const tool of definition.tools) definitionsByTool.set(tool, definition);
+  for (const operation of definition.operations) {
+    if (definitionsByTool.has(operation.token)) throw new Error(`Duplicate PodPlo tool operation token: ${operation.token}`);
+    definitionsByTool.set(operation.token, definition);
+    operationsByTool.set(operation.token, operation);
+  }
 }
-function toolGroupDefinitionFor(tool) {
-  return definitionsByTool.get(tool);
+function toolOperationDefinitionFor(tool) {
+  return operationsByTool.get(tool);
+}
+function toolGroupDefinitionBySlug(slug) {
+  return TOOL_GROUP_DEFINITIONS.find((definition) => definition.slug === slug);
 }
 function toolGroupAccessBySlug(groups) {
   const received = new Map(groups.map((group) => [group.slug, group]));
@@ -33211,13 +33248,14 @@ function toolGroupAccessBySlug(groups) {
 // plugins/podplo-dsh/src/ManualToolboxPanel.tsx
 var import_jsx_runtime7 = require("react/jsx-runtime");
 var tools = [
-  { key: "rotate", label: "\u65CB\u8F6C\u7FFB\u8F6C", toolName: "podplo_rotate_flip_images", help: "\u65CB\u8F6C / \u6C34\u5E73\u4E0E\u5782\u76F4\u955C\u50CF", group: "\u56FE\u50CF\u5904\u7406" },
-  { key: "color", label: "\u8C03\u8272", toolName: "podplo_adjust_image_colors", help: "\u4EAE\u5EA6 / \u5BF9\u6BD4\u5EA6 / \u9971\u548C\u5EA6", group: "\u56FE\u50CF\u5904\u7406" },
-  { key: "outline", label: "\u63CF\u8FB9", toolName: "podplo_outline_images", help: "\u900F\u660E\u4E3B\u4F53\u8F6E\u5ED3", group: "\u56FE\u50CF\u5904\u7406" },
-  { key: "resize", label: "\u5C3A\u5BF8", toolName: "podplo_resize_images", help: "\u6700\u7EC8\u5BBD\u9AD8 / \u9501\u5B9A\u6BD4\u4F8B", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" },
-  { key: "print", label: "\u51FA\u8840", toolName: "podplo_prepare_print_files", help: "\u56DB\u8FB9\u8BBE\u7F6E / \u88C1\u5207\u6821\u6837", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" },
-  { key: "export", label: "\u8F93\u51FA\u8BBE\u7F6E", toolName: "podplo_export_images", help: "\u955C\u50CF\u62FC\u63A5 / \u683C\u5F0F / PDF", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" }
+  { key: "rotate", label: toolOperationDefinitionFor("podplo_rotate_flip_images").name, help: "\u65CB\u8F6C / \u6C34\u5E73\u4E0E\u5782\u76F4\u955C\u50CF", group: "\u56FE\u50CF\u5904\u7406" },
+  { key: "color", label: toolOperationDefinitionFor("podplo_adjust_image_colors").name, help: "\u4EAE\u5EA6 / \u5BF9\u6BD4\u5EA6 / \u9971\u548C\u5EA6", group: "\u56FE\u50CF\u5904\u7406" },
+  { key: "outline", label: toolOperationDefinitionFor("podplo_outline_images").name, help: "\u900F\u660E\u4E3B\u4F53\u8F6E\u5ED3", group: "\u56FE\u50CF\u5904\u7406" },
+  { key: "resize", label: toolOperationDefinitionFor("podplo_resize_images").name, help: "\u6700\u7EC8\u5BBD\u9AD8 / \u9501\u5B9A\u6BD4\u4F8B", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" },
+  { key: "print", label: toolOperationDefinitionFor("podplo_prepare_print_files").name, help: "\u56DB\u8FB9\u8BBE\u7F6E / \u88C1\u5207\u6821\u6837", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" },
+  { key: "export", label: toolOperationDefinitionFor("podplo_export_images").name, help: "\u955C\u50CF\u62FC\u63A5 / \u683C\u5F0F / PDF", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" }
 ];
+var imageProcessingDefinition = toolGroupDefinitionBySlug(IMAGE_PROCESSING_TOOL_ID);
 var initialOptions = {
   resize: { lockAspect: true, resizeAxis: "width", width: 2e3, height: 2e3, unit: "px", ppi: 300, trimTransparent: false },
   rotate: { angle: 0, flipHorizontal: false, flipVertical: false },
@@ -33319,12 +33357,12 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   const [presetNotice, setPresetNotice] = (0, import_react6.useState)("");
   const [error101, setError] = (0, import_react6.useState)("");
   const groupAccess = (0, import_react6.useMemo)(() => toolGroupAccessBySlug(toolGroups), [toolGroups]);
-  const accessForTool = (tool) => groupAccess[toolGroupDefinitionFor(tool.toolName).slug];
+  const imageProcessingAccess = groupAccess[IMAGE_PROCESSING_TOOL_ID];
   const effectiveEnabled = Object.fromEntries(tools.map((tool) => [
     tool.key,
-    enabled[tool.key] && accessForTool(tool).status === "active"
+    enabled[tool.key] && imageProcessingAccess.status === "active"
   ]));
-  const trimAccess = groupAccess["transparent-crop"];
+  const trimAccess = imageProcessingAccess;
   const effectiveTrim = trimTransparent && trimAccess.status === "active";
   const selectedIds = (0, import_react6.useMemo)(() => selected.filter((id) => images.some((row) => row.id === id)), [selected, images]);
   const previewIds = JSON.stringify(selectedIds);
@@ -33462,7 +33500,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   (0, import_react6.useEffect)(() => {
     setEnabled((current) => Object.fromEntries(tools.map((tool) => [
       tool.key,
-      accessForTool(tool).status === "active" ? current[tool.key] : false
+      imageProcessingAccess.status === "active" ? current[tool.key] : false
     ])));
     if (trimAccess.status !== "active") setTrimTransparent(false);
     setLatest([]);
@@ -33560,7 +33598,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       resizeEdited.current = true;
       const allowedEnabled = Object.fromEntries(tools.map((tool) => [
         tool.key,
-        accessForTool(tool).status === "active" && preset.enabled[tool.key]
+        imageProcessingAccess.status === "active" && preset.enabled[tool.key]
       ]));
       const allowedTrim = trimAccess.status === "active" && preset.trimTransparent;
       const skipped = tools.filter((tool) => preset.enabled[tool.key] && !allowedEnabled[tool.key]).map((tool) => tool.label);
@@ -33588,18 +33626,18 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
     /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__body", children: [
       /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("aside", { className: "ppd-toolbox__parameters", "aria-label": "\u5DE5\u5177\u548C\u53C2\u6570", children: [
         /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("header", { className: "ppd-toolbox__header", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h2", { children: "\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9" }),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "\u52FE\u9009\u5DE5\u5177\uFF0C\u6309\u4ECE\u4E0A\u5230\u4E0B\u7684\u987A\u5E8F\u53E0\u52A0\u3002\u672A\u52FE\u9009\u9879\u4E0D\u53C2\u4E0E\u4FDD\u5B58\u3002" })
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h2", { children: imageProcessingDefinition.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "\u52FE\u9009\u5DE5\u5177\uFF0C\u6309\u4ECE\u4E0A\u5230\u4E0B\u7684\u987A\u5E8F\u53E0\u52A0\u3002\u672A\u52FE\u9009\u9879\u4E0D\u53C2\u4E0E\u4FDD\u5B58\u3002" }),
+          imageProcessingAccess.status !== "active" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { "data-toolbox-authorization": true, children: imageProcessingAccess.status === "expired" ? `${imageProcessingDefinition.name}\u6388\u6743\u5DF2\u5230\u671F\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u7EED\u671F\u3002` : `\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u83B7\u5F97${imageProcessingDefinition.name}\u6388\u6743\u3002` })
         ] }) }),
         /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-toolbox__modules", children: tools.map((row) => {
-          const access = accessForTool(row);
+          const access = imageProcessingAccess;
           return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_react6.default.Fragment, { children: [
             /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { className: "ppd-toolbox__module", "data-toolbox-module": row.key, "data-toolbox-access": access.status, children: [
               /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
                 /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", checked: effectiveEnabled[row.key], disabled: !!busy || access.status !== "active", onChange: (event) => setEnabled((current) => ({ ...current, [row.key]: event.target.checked })) }),
                 row.label
               ] }) }),
-              access.status !== "active" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { "data-toolbox-authorization": true, children: access.status === "expired" ? "\u8BE5\u6A21\u5757\u6388\u6743\u5DF2\u5230\u671F\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u7EED\u671F\u3002" : "\u8BE5\u6A21\u5757\u5C1A\u672A\u83B7\u5F97\u4E3B\u7AD9\u6388\u6743\u3002" }),
               effectiveEnabled[row.key] && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("fieldset", { disabled: !!busy, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
                 ToolFields,
                 {
@@ -33620,9 +33658,8 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
                   setTrimTransparent(checked);
                   if (!checked) setEnabled({ resize: false, rotate: false, color: false, outline: false, print: false, export: false });
                 } }),
-                "\u88C1\u526A\u900F\u660E\u56FE\u6742\u8FB9"
+                toolOperationDefinitionFor("trim").name
               ] }) }),
-              trimAccess.status !== "active" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { "data-toolbox-authorization": true, children: trimAccess.status === "expired" ? "\u8BE5\u6A21\u5757\u6388\u6743\u5DF2\u5230\u671F\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u7EED\u671F\u3002" : "\u8BE5\u6A21\u5757\u5C1A\u672A\u83B7\u5F97\u4E3B\u7AD9\u6388\u6743\u3002" }),
               effectiveTrim && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("fieldset", { disabled: !!busy, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__fields", children: [
                 /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__range-field", "data-trim-threshold-field": true, children: [
                   /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { htmlFor: trimThresholdId, children: [
@@ -34106,7 +34143,7 @@ function GridSplitPanel({ request, access }) {
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: "ppd-grid-split", "data-grid-split-panel": true, "data-has-message": hasMessage, "aria-label": "PodPlo \u56FE\u7247\u5206\u5272", children: [
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("header", { className: "ppd-grid-split__header", children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h1", { children: "\u56FE\u7247\u5206\u5272" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h1", { children: toolGroupDefinitionBySlug(GRID_SPLIT_TOOL_ID).name }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "\u6309\u884C\u5217\u5E73\u5747\u5207\u5206\uFF0C\u4F59\u6570\u50CF\u7D20\u4F1A\u5B8C\u6574\u5206\u914D\u5230\u5404\u5207\u7247\u3002" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { className: "ppd-grid-split__upload", children: [
@@ -34222,7 +34259,7 @@ function ToolboxPanel({ request, onUse, toolGroups }) {
           "aria-selected": active === "processing",
           "aria-controls": `${id}-processing`,
           onClick: () => setActive("processing"),
-          children: "\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9"
+          children: toolGroupDefinitionBySlug(IMAGE_PROCESSING_TOOL_ID).name
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
@@ -34237,12 +34274,12 @@ function ToolboxPanel({ request, onUse, toolGroups }) {
             setSplitterOpened(true);
             setActive("splitter");
           },
-          children: "\u56FE\u7247\u5206\u5272"
+          children: toolGroupDefinitionBySlug(GRID_SPLIT_TOOL_ID).name
         }
       )
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "ppd-toolbox-hub__panel", role: "tabpanel", id: `${id}-processing`, "aria-labelledby": `${id}-processing-tab`, hidden: active !== "processing", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ManualToolboxPanel, { request, onUse, toolGroups }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "ppd-toolbox-hub__panel", role: "tabpanel", id: `${id}-splitter`, "aria-labelledby": `${id}-splitter-tab`, hidden: active !== "splitter", children: splitterOpened && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(GridSplitPanel, { request, access: toolGroupAccessBySlug(toolGroups)["grid-split"] }) })
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "ppd-toolbox-hub__panel", role: "tabpanel", id: `${id}-splitter`, "aria-labelledby": `${id}-splitter-tab`, hidden: active !== "splitter", children: splitterOpened && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(GridSplitPanel, { request, access: toolGroupAccessBySlug(toolGroups)[GRID_SPLIT_TOOL_ID] }) })
   ] });
 }
 
@@ -34252,7 +34289,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.15",
+  version: "0.1.16",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -34262,10 +34299,12 @@ var package_default = {
     ".": "./dist/index.js",
     "./client": "./dist/client.js",
     "./package.json": "./package.json",
+    "./tool-registry.json": "./tool-registry.json",
     "./locale/en.json": "./locale/en.json"
   },
   files: [
     "dist",
+    "tool-registry.json",
     "cordis.patch.yml",
     "README.md",
     "locale"

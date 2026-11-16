@@ -37995,20 +37995,52 @@ var PodploMcp = class {
   }
 };
 
+// packages/online/tool-registry.json
+var tool_registry_default = {
+  schemaVersion: 1,
+  tools: [
+    {
+      id: "image-processing-outline",
+      name: "\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9",
+      description: "\u56FE\u7247\u65CB\u8F6C\u3001\u8C03\u8272\u3001\u63CF\u8FB9\u3001\u900F\u660E\u8FB9\u88C1\u526A\u3001\u5C3A\u5BF8\u3001\u51FA\u8840\u4E0E\u8F93\u51FA\u8BBE\u7F6E\u3002",
+      operations: [
+        { id: "rotate-flip", name: "\u65CB\u8F6C\u7FFB\u8F6C", token: "podplo_rotate_flip_images" },
+        { id: "basic-color-adjustment", name: "\u8C03\u8272", token: "podplo_adjust_image_colors" },
+        { id: "auto-outline", name: "\u63CF\u8FB9", token: "podplo_outline_images" },
+        { id: "transparent-crop", name: "\u88C1\u526A\u900F\u660E\u56FE\u6742\u8FB9", token: "trim" },
+        { id: "print-size-adjustment", name: "\u5C3A\u5BF8", token: "podplo_resize_images" },
+        { id: "print-bleed-safety", name: "\u51FA\u8840", token: "podplo_prepare_print_files" },
+        { id: "output-settings", name: "\u8F93\u51FA\u8BBE\u7F6E", token: "podplo_export_images" }
+      ]
+    },
+    {
+      id: "grid-split",
+      name: "\u56FE\u7247\u5206\u5272",
+      description: "\u6309\u884C\u5217\u5C06\u56FE\u7247\u5E73\u5747\u5206\u5272\u4E3A\u591A\u5F20\u5207\u7247\u3002",
+      operations: [
+        { id: "grid-split", name: "\u56FE\u7247\u5206\u5272", token: "podplo_grid_split" }
+      ]
+    }
+  ]
+};
+
 // packages/online/tool-groups.ts
-var TOOL_GROUP_DEFINITIONS = [
-  { slug: "rotate-flip", name: "\u65CB\u8F6C\u4E0E\u7FFB\u8F6C", tools: ["podplo_rotate_flip_images"] },
-  { slug: "basic-color-adjustment", name: "\u57FA\u7840\u8C03\u8272", tools: ["podplo_adjust_image_colors"] },
-  { slug: "auto-outline", name: "\u81EA\u52A8\u63CF\u8FB9", tools: ["podplo_outline_images"] },
-  { slug: "transparent-crop", name: "\u88C1\u526A\u900F\u660E\u56FE\u6742\u8FB9", tools: ["trim"] },
-  { slug: "print-size-adjustment", name: "\u5370\u5237\u5C3A\u5BF8\u8C03\u6574", tools: ["podplo_resize_images"] },
-  { slug: "print-bleed-safety", name: "\u51FA\u8840", tools: ["podplo_prepare_print_files"] },
-  { slug: "output-settings", name: "\u8F93\u51FA\u8BBE\u7F6E", tools: ["podplo_export_images"] },
-  { slug: "grid-split", name: "\u56FE\u7247\u5206\u5272", tools: ["podplo_grid_split"] }
-];
+if (tool_registry_default.schemaVersion !== 1) throw new Error("Unsupported PodPlo tool registry schema");
+var TOOL_GROUP_DEFINITIONS = tool_registry_default.tools.map((entry) => ({
+  slug: entry.id,
+  name: entry.name,
+  description: entry.description,
+  operations: entry.operations,
+  tools: entry.operations.map((operation) => operation.token)
+}));
 var definitionsByTool = /* @__PURE__ */ new Map();
+var operationsByTool = /* @__PURE__ */ new Map();
 for (const definition of TOOL_GROUP_DEFINITIONS) {
-  for (const tool of definition.tools) definitionsByTool.set(tool, definition);
+  for (const operation of definition.operations) {
+    if (definitionsByTool.has(operation.token)) throw new Error(`Duplicate PodPlo tool operation token: ${operation.token}`);
+    definitionsByTool.set(operation.token, definition);
+    operationsByTool.set(operation.token, operation);
+  }
 }
 function toolGroupDefinitionFor(tool) {
   return definitionsByTool.get(tool);
@@ -38625,7 +38657,7 @@ var OnlineService = class extends EventEmitter {
       const definition = toolGroupDefinitionFor(toolName);
       const group = definition && this.state.authorizedToolGroups.find((candidate2) => candidate2.slug === definition.slug);
       if (group && Date.parse(group.expiresAt) <= this.estimatedServerTime()) throw new OnlineError("TOOL_GROUP_EXPIRED");
-      if (!definition || !group || !group.tools.includes(toolName)) throw new OnlineError("TOOL_GROUP_REQUIRED");
+      if (!definition || !group || !this.groupHasExpectedTools(group) || !group.tools.includes(toolName)) throw new OnlineError("TOOL_GROUP_REQUIRED");
     }
     return identity.userId;
   }
@@ -54558,7 +54590,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.15",
+  version: "0.1.16",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -54568,10 +54600,12 @@ var package_default = {
     ".": "./dist/index.js",
     "./client": "./dist/client.js",
     "./package.json": "./package.json",
+    "./tool-registry.json": "./tool-registry.json",
     "./locale/en.json": "./locale/en.json"
   },
   files: [
     "dist",
+    "tool-registry.json",
     "cordis.patch.yml",
     "README.md",
     "locale"

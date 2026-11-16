@@ -1,6 +1,6 @@
 {
   "name": "@podplo/dsh-plugin",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "private": true,
   "license": "UNLICENSED",
   "description": "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -10,10 +10,12 @@
     ".": "./dist/index.js",
     "./client": "./dist/client.js",
     "./package.json": "./package.json",
+    "./tool-registry.json": "./tool-registry.json",
     "./locale/en.json": "./locale/en.json"
   },
   "files": [
     "dist",
+    "tool-registry.json",
     "cordis.patch.yml",
     "README.md",
     "locale"
