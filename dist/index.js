@@ -6437,21 +6437,21 @@ var require_PDFArray = __commonJS({
         PDFArray2.prototype.size = function() {
           return this.array.length;
         };
-        PDFArray2.prototype.push = function(object5) {
-          this.array.push(object5);
+        PDFArray2.prototype.push = function(object6) {
+          this.array.push(object6);
         };
-        PDFArray2.prototype.insert = function(index, object5) {
-          this.array.splice(index, 0, object5);
+        PDFArray2.prototype.insert = function(index, object6) {
+          this.array.splice(index, 0, object6);
         };
-        PDFArray2.prototype.indexOf = function(object5) {
-          var index = this.array.indexOf(object5);
+        PDFArray2.prototype.indexOf = function(object6) {
+          var index = this.array.indexOf(object6);
           return index === -1 ? void 0 : index;
         };
         PDFArray2.prototype.remove = function(index) {
           this.array.splice(index, 1);
         };
-        PDFArray2.prototype.set = function(idx, object5) {
-          this.array[idx] = object5;
+        PDFArray2.prototype.set = function(idx, object6) {
+          this.array[idx] = object6;
         };
         PDFArray2.prototype.get = function(index) {
           return this.array[index];
@@ -7491,8 +7491,8 @@ var require_PDFContext = __commonJS({
           this.indirectObjects = /* @__PURE__ */ new Map();
           this.rng = rng_1.SimpleRNG.withSeed(1);
         }
-        PDFContext2.prototype.assign = function(ref, object5) {
-          this.indirectObjects.set(ref, object5);
+        PDFContext2.prototype.assign = function(ref, object6) {
+          this.indirectObjects.set(ref, object6);
           if (ref.objectNumber > this.largestObjectNumber) {
             this.largestObjectNumber = ref.objectNumber;
           }
@@ -7501,9 +7501,9 @@ var require_PDFContext = __commonJS({
           this.largestObjectNumber += 1;
           return PDFRef_1.default.of(this.largestObjectNumber);
         };
-        PDFContext2.prototype.register = function(object5) {
+        PDFContext2.prototype.register = function(object6) {
           var ref = this.nextRef();
-          this.assign(ref, object5);
+          this.assign(ref, object6);
           return ref;
         };
         PDFContext2.prototype.delete = function(ref) {
@@ -7553,8 +7553,8 @@ var require_PDFContext = __commonJS({
         PDFContext2.prototype.getObjectRef = function(pdfObject) {
           var entries = Array.from(this.indirectObjects.entries());
           for (var idx = 0, len = entries.length; idx < len; idx++) {
-            var _a5 = entries[idx], ref = _a5[0], object5 = _a5[1];
-            if (object5 === pdfObject) {
+            var _a5 = entries[idx], ref = _a5[0], object6 = _a5[1];
+            if (object6 === pdfObject) {
               return ref;
             }
           }
@@ -7582,9 +7582,9 @@ var require_PDFContext = __commonJS({
             return array3;
           } else {
             var dict = PDFDict_1.default.withContext(this);
-            var keys = Object.keys(literal3);
-            for (var idx = 0, len = keys.length; idx < len; idx++) {
-              var key = keys[idx];
+            var keys2 = Object.keys(literal3);
+            for (var idx = 0, len = keys2.length; idx < len; idx++) {
+              var key = keys2[idx];
               var value2 = literal3[key];
               if (value2 !== void 0)
                 dict.set(PDFName_1.default.of(key), this.obj(value2));
@@ -7884,8 +7884,8 @@ var require_PDFObjectCopier = __commonJS({
         function PDFObjectCopier2(src, dest) {
           var _this = this;
           this.traversedObjects = /* @__PURE__ */ new Map();
-          this.copy = function(object5) {
-            return object5 instanceof PDFPageLeaf_1.default ? _this.copyPDFPage(object5) : object5 instanceof PDFDict_1.default ? _this.copyPDFDict(object5) : object5 instanceof PDFArray_1.default ? _this.copyPDFArray(object5) : object5 instanceof PDFStream_1.default ? _this.copyPDFStream(object5) : object5 instanceof PDFRef_1.default ? _this.copyPDFIndirectObject(object5) : object5.clone();
+          this.copy = function(object6) {
+            return object6 instanceof PDFPageLeaf_1.default ? _this.copyPDFPage(object6) : object6 instanceof PDFDict_1.default ? _this.copyPDFDict(object6) : object6 instanceof PDFArray_1.default ? _this.copyPDFArray(object6) : object6 instanceof PDFStream_1.default ? _this.copyPDFStream(object6) : object6 instanceof PDFRef_1.default ? _this.copyPDFIndirectObject(object6) : object6.clone();
           };
           this.copyPDFPage = function(originalPage) {
             var clonedPage = originalPage.clone();
@@ -8222,8 +8222,8 @@ var require_PDFObjectStream = __commonJS({
         PDFObjectStream2.prototype.getContentsString = function() {
           var value2 = this.offsetsString;
           for (var idx = 0, len = this.objects.length; idx < len; idx++) {
-            var _a5 = this.objects[idx], object5 = _a5[1];
-            value2 += object5 + "\n";
+            var _a5 = this.objects[idx], object6 = _a5[1];
+            value2 += object6 + "\n";
           }
           return value2;
         };
@@ -8231,8 +8231,8 @@ var require_PDFObjectStream = __commonJS({
           var buffer = new Uint8Array(this.getUnencodedContentsSize());
           var offset = utils_1.copyStringIntoBuffer(this.offsetsString, buffer, 0);
           for (var idx = 0, len = this.objects.length; idx < len; idx++) {
-            var _a5 = this.objects[idx], object5 = _a5[1];
-            offset += object5.copyBytesInto(buffer, offset);
+            var _a5 = this.objects[idx], object6 = _a5[1];
+            offset += object6.copyBytesInto(buffer, offset);
             buffer[offset++] = CharCodes_1.default.Newline;
           }
           return buffer;
@@ -8252,9 +8252,9 @@ var require_PDFObjectStream = __commonJS({
           var offset = 0;
           var offsets = new Array(this.objects.length);
           for (var idx = 0, len = this.objects.length; idx < len; idx++) {
-            var _a5 = this.objects[idx], ref = _a5[0], object5 = _a5[1];
+            var _a5 = this.objects[idx], ref = _a5[0], object6 = _a5[1];
             offsets[idx] = [ref.objectNumber, offset];
-            offset += object5.sizeInBytes() + 1;
+            offset += object6.sizeInBytes() + 1;
           }
           return offsets;
         };
@@ -8299,7 +8299,7 @@ var require_PDFWriter = __commonJS({
         }
         PDFWriter2.prototype.serializeToBuffer = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var _a5, size2, header, indirectObjects, xref, trailerDict, trailer, offset, buffer, idx, len, _b, ref, object5, objectNumber, generationNumber, n;
+            var _a5, size2, header, indirectObjects, xref, trailerDict, trailer, offset, buffer, idx, len, _b, ref, object6, objectNumber, generationNumber, n;
             return tslib_1.__generator(this, function(_c) {
               switch (_c.label) {
                 case 0:
@@ -8315,7 +8315,7 @@ var require_PDFWriter = __commonJS({
                   _c.label = 2;
                 case 2:
                   if (!(idx < len)) return [3, 5];
-                  _b = indirectObjects[idx], ref = _b[0], object5 = _b[1];
+                  _b = indirectObjects[idx], ref = _b[0], object6 = _b[1];
                   objectNumber = String(ref.objectNumber);
                   offset += utils_1.copyStringIntoBuffer(objectNumber, buffer, offset);
                   buffer[offset++] = CharCodes_1.default.Space;
@@ -8326,7 +8326,7 @@ var require_PDFWriter = __commonJS({
                   buffer[offset++] = CharCodes_1.default.b;
                   buffer[offset++] = CharCodes_1.default.j;
                   buffer[offset++] = CharCodes_1.default.Newline;
-                  offset += object5.copyBytesInto(buffer, offset);
+                  offset += object6.copyBytesInto(buffer, offset);
                   buffer[offset++] = CharCodes_1.default.Newline;
                   buffer[offset++] = CharCodes_1.default.e;
                   buffer[offset++] = CharCodes_1.default.n;
@@ -8336,7 +8336,7 @@ var require_PDFWriter = __commonJS({
                   buffer[offset++] = CharCodes_1.default.j;
                   buffer[offset++] = CharCodes_1.default.Newline;
                   buffer[offset++] = CharCodes_1.default.Newline;
-                  n = object5 instanceof PDFObjectStream_1.default ? object5.getObjectsCount() : 1;
+                  n = object6 instanceof PDFObjectStream_1.default ? object6.getObjectsCount() : 1;
                   if (!this.shouldWaitForTick(n)) return [3, 4];
                   return [4, utils_1.waitForTick()];
                 case 3:
@@ -8362,9 +8362,9 @@ var require_PDFWriter = __commonJS({
           });
         };
         PDFWriter2.prototype.computeIndirectObjectSize = function(_a5) {
-          var ref = _a5[0], object5 = _a5[1];
+          var ref = _a5[0], object6 = _a5[1];
           var refSize = ref.sizeInBytes() + 3;
-          var objectSize = object5.sizeInBytes() + 9;
+          var objectSize = object6.sizeInBytes() + 9;
           return refSize + objectSize;
         };
         PDFWriter2.prototype.createTrailerDict = function() {
@@ -8687,7 +8687,7 @@ var require_PDFStreamWriter = __commonJS({
         }
         PDFStreamWriter2.prototype.computeBufferSize = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var objectNumber, header, size2, xrefStream, uncompressedObjects, compressedObjects, objectStreamRefs, indirectObjects, idx, len, indirectObject, ref, object5, shouldNotCompress, chunk, objectStreamRef, idx, len, chunk, ref, objectStream, xrefStreamRef, xrefOffset, trailer;
+            var objectNumber, header, size2, xrefStream, uncompressedObjects, compressedObjects, objectStreamRefs, indirectObjects, idx, len, indirectObject, ref, object6, shouldNotCompress, chunk, objectStreamRef, idx, len, chunk, ref, objectStream, xrefStreamRef, xrefOffset, trailer;
             return tslib_1.__generator(this, function(_a5) {
               switch (_a5.label) {
                 case 0:
@@ -8704,8 +8704,8 @@ var require_PDFStreamWriter = __commonJS({
                 case 1:
                   if (!(idx < len)) return [3, 6];
                   indirectObject = indirectObjects[idx];
-                  ref = indirectObject[0], object5 = indirectObject[1];
-                  shouldNotCompress = ref === this.context.trailerInfo.Encrypt || object5 instanceof PDFStream_1.default || object5 instanceof PDFInvalidObject_1.default || ref.generationNumber !== 0;
+                  ref = indirectObject[0], object6 = indirectObject[1];
+                  shouldNotCompress = ref === this.context.trailerInfo.Encrypt || object6 instanceof PDFStream_1.default || object6 instanceof PDFInvalidObject_1.default || ref.generationNumber !== 0;
                   if (!shouldNotCompress) return [3, 4];
                   uncompressedObjects.push(indirectObject);
                   xrefStream.addUncompressedEntry(ref, size2);
@@ -13715,9 +13715,9 @@ var require_PDFWidgetAnnotation = __commonJS({
           var _a5;
           var normal = (_a5 = this.getAppearances()) === null || _a5 === void 0 ? void 0 : _a5.normal;
           if (normal instanceof PDFDict_1.default) {
-            var keys = normal.keys();
-            for (var idx = 0, len = keys.length; idx < len; idx++) {
-              var key = keys[idx];
+            var keys2 = normal.keys();
+            for (var idx = 0, len = keys2.length; idx < len; idx++) {
+              var key = keys2[idx];
               if (key !== PDFName_1.default.of("Off"))
                 return key;
             }
@@ -15506,7 +15506,7 @@ var require_PDFObjectStreamParser = __commonJS({
         }
         PDFObjectStreamParser2.prototype.parseIntoContext = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var offsetsAndObjectNumbers, idx, len, _a5, objectNumber, offset, object5, ref;
+            var offsetsAndObjectNumbers, idx, len, _a5, objectNumber, offset, object6, ref;
             return tslib_1.__generator(this, function(_b) {
               switch (_b.label) {
                 case 0:
@@ -15521,9 +15521,9 @@ var require_PDFObjectStreamParser = __commonJS({
                   if (!(idx < len)) return [3, 4];
                   _a5 = offsetsAndObjectNumbers[idx], objectNumber = _a5.objectNumber, offset = _a5.offset;
                   this.bytes.moveTo(this.firstOffset + offset);
-                  object5 = this.parseObject();
+                  object6 = this.parseObject();
                   ref = PDFRef_1.default.of(objectNumber, 0);
-                  this.context.assign(ref, object5);
+                  this.context.assign(ref, object6);
                   if (!this.shouldWaitForTick()) return [3, 3];
                   return [4, utils_1.waitForTick()];
                 case 2:
@@ -15747,8 +15747,8 @@ var require_PDFParser = __commonJS({
           if (!isValidCatalog(catalog)) {
             var indirectObjects = this.context.enumerateIndirectObjects();
             for (var idx = 0, len = indirectObjects.length; idx < len; idx++) {
-              var _a5 = indirectObjects[idx], ref = _a5[0], object5 = _a5[1];
-              if (isValidCatalog(object5)) {
+              var _a5 = indirectObjects[idx], ref = _a5[0], object6 = _a5[1];
+              if (isValidCatalog(object6)) {
                 this.context.trailerInfo.Root = ref;
               }
             }
@@ -15791,25 +15791,25 @@ var require_PDFParser = __commonJS({
         };
         PDFParser2.prototype.parseIndirectObject = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var ref, object5;
+            var ref, object6;
             return tslib_1.__generator(this, function(_a5) {
               switch (_a5.label) {
                 case 0:
                   ref = this.parseIndirectObjectHeader();
                   this.skipWhitespaceAndComments();
-                  object5 = this.parseObject();
+                  object6 = this.parseObject();
                   this.skipWhitespaceAndComments();
                   this.matchKeyword(Keywords_1.Keywords.endobj);
-                  if (!(object5 instanceof PDFRawStream_1.default && object5.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("ObjStm"))) return [3, 2];
-                  return [4, PDFObjectStreamParser_1.default.forStream(object5, this.shouldWaitForTick).parseIntoContext()];
+                  if (!(object6 instanceof PDFRawStream_1.default && object6.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("ObjStm"))) return [3, 2];
+                  return [4, PDFObjectStreamParser_1.default.forStream(object6, this.shouldWaitForTick).parseIntoContext()];
                 case 1:
                   _a5.sent();
                   return [3, 3];
                 case 2:
-                  if (object5 instanceof PDFRawStream_1.default && object5.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("XRef")) {
-                    PDFXRefStreamParser_1.default.forStream(object5).parseIntoContext();
+                  if (object6 instanceof PDFRawStream_1.default && object6.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("XRef")) {
+                    PDFXRefStreamParser_1.default.forStream(object6).parseIntoContext();
                   } else {
-                    this.context.assign(ref, object5);
+                    this.context.assign(ref, object6);
                   }
                   _a5.label = 3;
                 case 3:
@@ -15840,8 +15840,8 @@ var require_PDFParser = __commonJS({
           if (failed)
             throw new errors_1.PDFInvalidObjectParsingError(startPos);
           var end = this.bytes.offset() - Keywords_1.Keywords.endobj.length;
-          var object5 = PDFInvalidObject_1.default.of(this.bytes.slice(start, end));
-          this.context.assign(ref, object5);
+          var object6 = PDFInvalidObject_1.default.of(this.bytes.slice(start, end));
+          this.context.assign(ref, object6);
           return ref;
         };
         PDFParser2.prototype.parseIndirectObjects = function() {
@@ -22399,7 +22399,7 @@ var require_outline_core = __commonJS({
 });
 
 // plugins/podplo-dsh/src/index.ts
-import { createCipheriv, createDecipheriv, createHash as createHash16, randomBytes as randomBytes3 } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHash as createHash17, randomBytes as randomBytes4 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir2 } from "node:os";
@@ -22958,9 +22958,9 @@ function $constructor(name2, initializer5, params) {
     inst._zod.traits.add(name2);
     initializer5(inst, def);
     const proto = _.prototype;
-    const keys = Object.keys(proto);
-    for (let i = 0; i < keys.length; i++) {
-      const k = keys[i];
+    const keys2 = Object.keys(proto);
+    for (let i = 0; i < keys2.length; i++) {
+      const k = keys2[i];
       if (!(k in inst)) {
         inst[k] = proto[k].bind(inst);
       }
@@ -23134,9 +23134,9 @@ function floatSafeRemainder(val, step) {
   return ratio - roundedRatio;
 }
 var EVALUATING = /* @__PURE__ */ Symbol("evaluating");
-function defineLazy(object5, key, getter) {
+function defineLazy(object6, key, getter) {
   let value2 = void 0;
-  Object.defineProperty(object5, key, {
+  Object.defineProperty(object6, key, {
     get() {
       if (value2 === EVALUATING) {
         return void 0;
@@ -23148,7 +23148,7 @@ function defineLazy(object5, key, getter) {
       return value2;
     },
     set(v) {
-      Object.defineProperty(object5, key, {
+      Object.defineProperty(object6, key, {
         value: v
         // configurable: true,
       });
@@ -23184,12 +23184,12 @@ function getElementAtPath(obj, path) {
   return path.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject(promisesObj) {
-  const keys = Object.keys(promisesObj);
-  const promises = keys.map((key) => promisesObj[key]);
+  const keys2 = Object.keys(promisesObj);
+  const promises = keys2.map((key) => promisesObj[key]);
   return Promise.all(promises).then((results) => {
     const resolvedObj = {};
-    for (let i = 0; i < keys.length; i++) {
-      resolvedObj[keys[i]] = results[i];
+    for (let i = 0; i < keys2.length; i++) {
+      resolvedObj[keys2[i]] = results[i];
     }
     return resolvedObj;
   });
@@ -25369,8 +25369,8 @@ function handlePropertyResult(result, final, key, input, isOptionalIn, isOptiona
   }
 }
 function normalizeDef(def) {
-  const keys = Object.keys(def.shape);
-  for (const k of keys) {
+  const keys2 = Object.keys(def.shape);
+  for (const k of keys2) {
     if (!def.shape?.[k]?._zod?.traits?.has("$ZodType")) {
       throw new Error(`Invalid element at key "${k}": expected a Zod schema`);
     }
@@ -25378,9 +25378,9 @@ function normalizeDef(def) {
   const okeys = optionalKeys(def.shape);
   return {
     ...def,
-    keys,
-    keySet: new Set(keys),
-    numKeys: keys.length,
+    keys: keys2,
+    keySet: new Set(keys2),
+    numKeys: keys2.length,
     optionalKeys: new Set(okeys)
   };
 }
@@ -35989,11 +35989,11 @@ var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
   inst._zod.processJSONSchema = (ctx, json3, params) => enumProcessor(inst, ctx, json3, params);
   inst.enum = def.entries;
   inst.options = Object.values(def.entries);
-  const keys = new Set(Object.keys(def.entries));
+  const keys2 = new Set(Object.keys(def.entries));
   inst.extract = (values, params) => {
     const newEntries = {};
     for (const value2 of values) {
-      if (keys.has(value2)) {
+      if (keys2.has(value2)) {
         newEntries[value2] = def.entries[value2];
       } else
         throw new Error(`Key ${value2} not found in enum`);
@@ -36008,7 +36008,7 @@ var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
   inst.exclude = (values, params) => {
     const newEntries = { ...def.entries };
     for (const value2 of values) {
-      if (keys.has(value2)) {
+      if (keys2.has(value2)) {
         delete newEntries[value2];
       } else
         throw new Error(`Key ${value2} not found in enum`);
@@ -38651,15 +38651,15 @@ var OnlineService = class extends EventEmitter {
       this.requireConnected();
       if (this.state.desktopContextStatus !== "verified") await this.verifyDesktopContext();
     }
-    const identity = this.snapshot().identity;
-    if (!identity) throw new OnlineError("SIGN_IN_REQUIRED");
+    const identity2 = this.snapshot().identity;
+    if (!identity2) throw new OnlineError("SIGN_IN_REQUIRED");
     if (toolName) {
       const definition = toolGroupDefinitionFor(toolName);
       const group = definition && this.state.authorizedToolGroups.find((candidate2) => candidate2.slug === definition.slug);
       if (group && Date.parse(group.expiresAt) <= this.estimatedServerTime()) throw new OnlineError("TOOL_GROUP_EXPIRED");
       if (!definition || !group || !this.groupHasExpectedTools(group) || !group.tools.includes(toolName)) throw new OnlineError("TOOL_GROUP_REQUIRED");
     }
-    return identity.userId;
+    return identity2.userId;
   }
   async textRuntimeConfig() {
     const ownerId = await this.workspaceIdentity(true);
@@ -40490,9 +40490,9 @@ function $constructor2(name2, initializer5, params) {
     inst._zod.traits.add(name2);
     initializer5(inst, def);
     const proto = _.prototype;
-    const keys = Object.keys(proto);
-    for (let i = 0; i < keys.length; i++) {
-      const k = keys[i];
+    const keys2 = Object.keys(proto);
+    for (let i = 0; i < keys2.length; i++) {
+      const k = keys2[i];
       if (!(k in inst)) {
         inst[k] = proto[k].bind(inst);
       }
@@ -40666,9 +40666,9 @@ function floatSafeRemainder2(val, step) {
   return ratio - roundedRatio;
 }
 var EVALUATING2 = /* @__PURE__ */ Symbol("evaluating");
-function defineLazy2(object5, key, getter) {
+function defineLazy2(object6, key, getter) {
   let value2 = void 0;
-  Object.defineProperty(object5, key, {
+  Object.defineProperty(object6, key, {
     get() {
       if (value2 === EVALUATING2) {
         return void 0;
@@ -40680,7 +40680,7 @@ function defineLazy2(object5, key, getter) {
       return value2;
     },
     set(v) {
-      Object.defineProperty(object5, key, {
+      Object.defineProperty(object6, key, {
         value: v
         // configurable: true,
       });
@@ -40716,12 +40716,12 @@ function getElementAtPath2(obj, path) {
   return path.reduce((acc, key) => acc?.[key], obj);
 }
 function promiseAllObject2(promisesObj) {
-  const keys = Object.keys(promisesObj);
-  const promises = keys.map((key) => promisesObj[key]);
+  const keys2 = Object.keys(promisesObj);
+  const promises = keys2.map((key) => promisesObj[key]);
   return Promise.all(promises).then((results) => {
     const resolvedObj = {};
-    for (let i = 0; i < keys.length; i++) {
-      resolvedObj[keys[i]] = results[i];
+    for (let i = 0; i < keys2.length; i++) {
+      resolvedObj[keys2[i]] = results[i];
     }
     return resolvedObj;
   });
@@ -42901,8 +42901,8 @@ function handlePropertyResult2(result, final, key, input, isOptionalIn, isOption
   }
 }
 function normalizeDef2(def) {
-  const keys = Object.keys(def.shape);
-  for (const k of keys) {
+  const keys2 = Object.keys(def.shape);
+  for (const k of keys2) {
     if (!def.shape?.[k]?._zod?.traits?.has("$ZodType")) {
       throw new Error(`Invalid element at key "${k}": expected a Zod schema`);
     }
@@ -42910,9 +42910,9 @@ function normalizeDef2(def) {
   const okeys = optionalKeys2(def.shape);
   return {
     ...def,
-    keys,
-    keySet: new Set(keys),
-    numKeys: keys.length,
+    keys: keys2,
+    keySet: new Set(keys2),
+    numKeys: keys2.length,
     optionalKeys: new Set(okeys)
   };
 }
@@ -53521,11 +53521,11 @@ var ZodEnum2 = /* @__PURE__ */ $constructor2("ZodEnum", (inst, def) => {
   inst._zod.processJSONSchema = (ctx, json3, params) => enumProcessor2(inst, ctx, json3, params);
   inst.enum = def.entries;
   inst.options = Object.values(def.entries);
-  const keys = new Set(Object.keys(def.entries));
+  const keys2 = new Set(Object.keys(def.entries));
   inst.extract = (values, params) => {
     const newEntries = {};
     for (const value2 of values) {
-      if (keys.has(value2)) {
+      if (keys2.has(value2)) {
         newEntries[value2] = def.entries[value2];
       } else
         throw new Error(`Key ${value2} not found in enum`);
@@ -53540,7 +53540,7 @@ var ZodEnum2 = /* @__PURE__ */ $constructor2("ZodEnum", (inst, def) => {
   inst.exclude = (values, params) => {
     const newEntries = { ...def.entries };
     for (const value2 of values) {
-      if (keys.has(value2)) {
+      if (keys2.has(value2)) {
         delete newEntries[value2];
       } else
         throw new Error(`Key ${value2} not found in enum`);
@@ -54618,7 +54618,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.17",
+  version: "0.1.18",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -54740,6 +54740,7 @@ function taskDiagnostics(task) {
 var comparableGenerationItems = (items) => items.map((item) => ({
   ...item.skillId ? { skillId: item.skillId } : {},
   ...item.sourceName ? { sourceName: item.sourceName } : {},
+  ...item.pricingReferenceCount !== void 0 ? { pricingReferenceCount: item.pricingReferenceCount } : {},
   ...item.stage ? { stage: item.stage } : {},
   ...item.dependsOn ? { dependsOn: item.dependsOn } : {},
   args: item.args
@@ -54768,10 +54769,48 @@ function generationAudit(row) {
   audit.unknown += Math.max(0, audit.planned - audit.succeeded - audit.failed - audit.pending - audit.cancelled - audit.unknown);
   return audit;
 }
+function estimatedFinalOutputCount(row) {
+  const dependedOn = new Set(row.items.flatMap((item) => item.dependsOn ? [item.dependsOn.itemIndex] : []));
+  const leafItems = new Set(row.items.map((_, index) => index).filter((index) => !dependedOn.has(index)));
+  if (!row.processingPlan?.length) return [...leafItems].reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
+  const stepCounts = /* @__PURE__ */ new Map(), consumedItems = /* @__PURE__ */ new Set();
+  const referencedSteps = new Set(row.processingPlan.flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
+  for (const step of row.processingPlan) {
+    const indexes = step.generationItemIndexes ?? [...leafItems];
+    let count2 = step.sourceStepId ? stepCounts.get(step.sourceStepId) ?? 0 : indexes.reduce((sum, index) => sum + (row.items[index]?.quote.outputCount ?? 0), 0);
+    if (!step.sourceStepId) for (const index of indexes) consumedItems.add(index);
+    if (step.toolName === "podplo_grid_split" && step.options && typeof step.options === "object") {
+      const options = step.options;
+      if (Number.isSafeInteger(options.rows) && Number.isSafeInteger(options.cols)) count2 *= Number(options.rows) * Number(options.cols);
+    }
+    stepCounts.set(step.id, count2);
+  }
+  const untouched = [...leafItems].filter((index) => !consumedItems.has(index)).reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
+  return untouched + row.processingPlan.filter((step) => !referencedSteps.has(step.id)).reduce((sum, step) => sum + (stepCounts.get(step.id) ?? 0), 0);
+}
 function safeOperation(row) {
   const summary = operationSummary(row);
   const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
-  const confirmationText = row.items.some((item) => item.dependsOn) ? `\u6574\u6761\u6D41\u7A0B ${summary.itemCount} \u9879 AI \u751F\u6210\uFF0C\u6700\u591A ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20 AI \u56FE\u7247\uFF1B\u786E\u8BA4\u540E\u540E\u7EED\u9636\u6BB5\u81EA\u52A8\u6267\u884C\uFF0C\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1 AI \u5F20\u6570\u6216\u79EF\u5206` : `\u672C\u6279 ${summary.itemCount} \u9879\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20`;
+  const sufficientCredits = row.balanceAtQuote ? row.balanceAtQuote.availableCredits >= summary.totalCredits : void 0;
+  const stages2 = [...new Map(row.items.map((item, index) => [item.stage?.id ?? `item-${index}`, item.stage?.label ?? `\u9636\u6BB5 ${index + 1}`])).entries()].map(([id2, label]) => {
+    const items = row.items.filter((item, index) => (item.stage?.id ?? `item-${index}`) === id2);
+    const skills = /* @__PURE__ */ new Map();
+    for (const item of items) skills.set(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill", (skills.get(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill") ?? 0) + 1);
+    const skillSummary = [...skills].slice(0, 5).map(([name2, count2]) => `${name2}\xD7${count2}`).join("\u3001") + (skills.size > 5 ? `\u7B49 ${skills.size} \u4E2A Skill` : "");
+    return {
+      id: id2,
+      label,
+      skillSummary,
+      aiOutputCount: items.reduce((sum, item) => sum + item.quote.outputCount, 0),
+      credits: items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
+      models: [...new Set(items.flatMap((item) => item.modelName ? [item.modelName] : []))],
+      ecoMode: items.some((item) => item.args.ecoMode === true)
+    };
+  });
+  const processingSummary = row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
+  const finalOutputCount = estimatedFinalOutputCount(row);
+  const stageText = stages2.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
+  const confirmationText = `${stageText}\u3002\u6574\u5355\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0CAI \u8F93\u51FA ${summary.outputCount} \u5F20` + (processingSummary ? `\uFF1B\u672C\u5730\u52A0\u5DE5 ${processingSummary}\uFF0C\u9884\u8BA1\u6210\u54C1 ${finalOutputCount} \u5F20\uFF08\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1\u79EF\u5206\uFF09` : "") + "\u3002";
   return {
     operationId: row.operationId,
     intentId: row.intentId,
@@ -54779,18 +54818,36 @@ function safeOperation(row) {
     status: operationStatus(row),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
-    quote: { expiresAt, totalCredits: summary.totalCredits, outputCount: summary.outputCount, confirmationText },
+    quote: {
+      expiresAt,
+      totalCredits: summary.totalCredits,
+      outputCount: summary.outputCount,
+      confirmationText,
+      ...row.pricingVersion ? { pricingVersion: row.pricingVersion } : {},
+      ...row.planDigest ? { planDigest: row.planDigest } : {},
+      ...row.balanceAtQuote ? {
+        availableCredits: row.balanceAtQuote.availableCredits,
+        reservedCredits: row.balanceAtQuote.reservedCredits,
+        billingContextId: row.balanceAtQuote.billingContextId,
+        sufficientCredits
+      } : {}
+    },
     approvalId: row.approvalId,
     summary,
+    stages: stages2,
+    finalOutputCount,
     items: row.items.map((item) => ({
       itemId: item.itemId,
       ...item.skillId ? { skillId: item.skillId } : {},
       ...item.skillName ? { skillName: item.skillName } : {},
+      ...item.sourceName ? { sourceName: item.sourceName } : {},
+      ...item.modelName ? { modelName: item.modelName } : {},
       ...item.stage ? { stage: structuredClone(item.stage) } : {},
       ...item.dependsOn ? { dependsOn: structuredClone(item.dependsOn) } : {},
       status: item.status,
       totalCredits: item.approvedCredits ?? item.quote.totalCredits,
       outputCount: item.approvedOutputCount ?? item.quote.outputCount,
+      parameters: Object.fromEntries(["ratio", "quality", "resolution", "thinkingLevel", "ecoMode", "webSearch", "imageSearch", "background", "count"].flatMap((key) => item.args[key] === void 0 ? [] : [[key, item.args[key]]])),
       ...item.retry ? { retry: structuredClone(item.retry), waitReason: "retry" } : {},
       ...item.statusBlocked ? {
         statusBlocked: structuredClone(item.statusBlocked),
@@ -54814,7 +54871,8 @@ function safeOperation(row) {
     })),
     ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
     ...row.replacedBy ? { replacedBy: row.replacedBy } : {},
-    ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {}
+    ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
+    ...row.processingPlan ? { processingPlan: structuredClone(row.processingPlan) } : {}
   };
 }
 function operationSummary(row) {
@@ -56431,8 +56489,8 @@ var NativeLocalToolkit = class {
   async importInput(raw, sessionId, expectedIdentity) {
     this.ready();
     const args = importInputSchema.parse(raw), session2 = opaqueId.parse(sessionId);
-    const identity = await this.identity("process"), sessionHash = sha256(session2);
-    if (expectedIdentity && (expectedIdentity.ownerId !== identity.ownerId || expectedIdentity.namespace !== identity.namespace)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
+    const identity2 = await this.identity("process"), sessionHash = sha256(session2);
+    if (expectedIdentity && (expectedIdentity.ownerId !== identity2.ownerId || expectedIdentity.namespace !== identity2.namespace)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
     const bytes = Buffer.from(args.base64, "base64");
     if (!bytes.length || bytes.length > 50 * 1024 * 1024 || bytes.toString("base64") !== args.base64)
       throw new Error("\u672C\u5730\u56FE\u7247\u7F16\u7801\u65E0\u6548\u6216\u8D85\u8FC7 50 MB");
@@ -56440,7 +56498,7 @@ var NativeLocalToolkit = class {
     const expected = { "image/png": "png", "image/jpeg": "jpeg", "image/webp": "webp" }[args.contentType];
     if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1 || metadata.format !== expected)
       throw new Error("\u672C\u5730\u56FE\u7247\u5185\u5BB9\u4E0E\u58F0\u660E\u683C\u5F0F\u4E0D\u4E00\u81F4\uFF0C\u6216\u5C5E\u4E8E\u4E0D\u652F\u6301\u7684\u591A\u9875/\u52A8\u753B\u56FE\u7247");
-    await this.assertIdentity(identity, "process");
+    await this.assertIdentity(identity2, "process");
     const extension = expected === "jpeg" ? "jpg" : expected;
     const stored = await this.publish({
       stem: basename6(args.name, extname4(args.name)),
@@ -56451,16 +56509,16 @@ var NativeLocalToolkit = class {
       density: metadata.density,
       format: expected,
       kind: "image"
-    }, identity.principal, sessionHash);
+    }, identity2.principal, sessionHash);
     try {
-      await this.assertIdentity(identity, "process");
+      await this.assertIdentity(identity2, "process");
       await this.store.transaction((state) => {
-        if (state.results.filter((row) => row.principal === identity.principal && row.session === sessionHash).length >= 2e3)
+        if (state.results.filter((row) => row.principal === identity2.principal && row.session === sessionHash).length >= 2e3)
           throw new Error("\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u8FC7\u591A\uFF0C\u8BF7\u65B0\u5EFA\u4F1A\u8BDD");
         state.results.push(stored);
       });
       try {
-        await this.assertIdentity(identity, "process");
+        await this.assertIdentity(identity2, "process");
       } catch (error101) {
         await this.store.transaction((state) => {
           state.results = state.results.filter((row) => row.id !== stored.id);
@@ -56476,39 +56534,39 @@ var NativeLocalToolkit = class {
   /** UI-only read model. No MCP-visible path is returned. */
   async list(sessionId, limit = 100) {
     this.ready();
-    const session2 = opaqueId.parse(sessionId), identity = await this.identity("read"), sessionHash = sha256(session2);
-    const rows = this.store.snapshot().results.filter((row) => row.principal === identity.principal && row.session === sessionHash).sort((left, right) => right.createdAt.localeCompare(left.createdAt)).slice(0, external_exports2.number().int().min(1).max(200).parse(limit));
+    const session2 = opaqueId.parse(sessionId), identity2 = await this.identity("read"), sessionHash = sha256(session2);
+    const rows = this.store.snapshot().results.filter((row) => row.principal === identity2.principal && row.session === sessionHash).sort((left, right) => right.createdAt.localeCompare(left.createdAt)).slice(0, external_exports2.number().int().min(1).max(200).parse(limit));
     const visible = [];
     for (const row of rows) {
       await this.readStored(row);
       visible.push(publicResult(row));
     }
-    await this.assertIdentity(identity, "read");
+    await this.assertIdentity(identity2, "read");
     return { images: visible.filter((row) => row.kind === "image"), files: visible.filter((row) => row.kind === "file") };
   }
   /** UI-only source queue for the independent grid splitter; processed tiles never displace imported sources. */
   async listGridSplitInputs(sessionId, limit = 10) {
     this.ready();
-    const session2 = opaqueId.parse(sessionId), identity = await this.identity("read"), sessionHash = sha256(session2);
-    const rows = this.store.snapshot().results.filter((row) => row.principal === identity.principal && row.session === sessionHash && row.kind === "image" && !row.sourceId).sort((left, right) => right.createdAt.localeCompare(left.createdAt)).slice(0, external_exports2.number().int().min(1).max(10).parse(limit));
+    const session2 = opaqueId.parse(sessionId), identity2 = await this.identity("read"), sessionHash = sha256(session2);
+    const rows = this.store.snapshot().results.filter((row) => row.principal === identity2.principal && row.session === sessionHash && row.kind === "image" && !row.sourceId).sort((left, right) => right.createdAt.localeCompare(left.createdAt)).slice(0, external_exports2.number().int().min(1).max(10).parse(limit));
     const images = [];
     for (const row of rows) {
       await this.readStored(row);
       images.push(publicResult(row));
     }
-    await this.assertIdentity(identity, "read");
+    await this.assertIdentity(identity2, "read");
     return { images, files: [] };
   }
   /** UI-only preview generated from the verified result bytes. */
   async resultPreview(id2, sessionId) {
     this.ready();
-    const identity = await this.identity("read"), row = this.ownedResult(opaqueId.parse(id2), identity.principal, sha256(opaqueId.parse(sessionId)));
+    const identity2 = await this.identity("read"), row = this.ownedResult(opaqueId.parse(id2), identity2.principal, sha256(opaqueId.parse(sessionId)));
     if (row.kind !== "image" && row.format !== "png") throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u662F\u53EF\u9884\u89C8\u56FE\u7247");
     const source = await this.readStored(row);
-    const key = `${identity.authorization}:${row.session}:${row.id}:${row.fingerprint}:${row.digest}:512:82`, epoch = this.previewCache.revision();
+    const key = `${identity2.authorization}:${row.session}:${row.id}:${row.fingerprint}:${row.digest}:512:82`, epoch = this.previewCache.revision();
     const cached3 = this.previewCache.get(key);
     const bytes = cached3 ?? await sharp10(source, { limitInputPixels: 1e8, failOn: "error" }).resize(512, 512, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
-    await this.assertIdentity(identity, "read");
+    await this.assertIdentity(identity2, "read");
     if (!cached3) this.previewCache.set(key, bytes, epoch);
     return { ...publicResult(row), contentType: "image/webp", bytes };
   }
@@ -56566,20 +56624,20 @@ var NativeLocalToolkit = class {
     if (args.ids.length * options.rows * options.cols > 400) throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
     return this.idempotent(GRID_SPLIT_OPERATION_NAME, { ...args, options }, opaqueId.parse(sessionId));
   }
-  async renderPipeline(inputs, plan, sessionId, identity, preview = false, signal) {
+  async renderPipeline(inputs, plan, sessionId, identity2, preview = false, signal) {
     const rendered = await renderToolbox(inputs, plan, {
       preview,
       signal,
       cache: this.frameCache,
-      cacheScope: `${identity.authorization}:${sha256(sessionId)}`,
-      authorize: (tool) => this.assertIdentity(identity, "process", toolboxToolNames[tool]),
+      cacheScope: `${identity2.authorization}:${sha256(sessionId)}`,
+      authorize: (tool) => this.assertIdentity(identity2, "process", toolboxToolNames[tool]),
       pattern: async (id2) => {
-        const [input] = await this.resolveInputs([id2], identity, sessionId, sha256(sessionId), "process", "podplo_outline_images");
+        const [input] = await this.resolveInputs([id2], identity2, sessionId, sha256(sessionId), "process", "podplo_outline_images");
         if (input.kind === "file") throw new Error("\u56FE\u6848\u9700\u8981\u9009\u62E9\u56FE\u7247");
         return input.bytes;
       }
     });
-    await this.assertIdentity(identity, "process");
+    await this.assertIdentity(identity2, "process");
     return rendered;
   }
   async pipelinePreview(rendered, signal = new AbortController().signal, scope = "") {
@@ -56614,21 +56672,21 @@ var NativeLocalToolkit = class {
     };
   }
   async renderPipelinePreview(args, sessionId, signal) {
-    const plan = ToolboxPlanSchema.parse(args.options), identity = await this.identity("process");
-    await this.assertOperationAuthorization(identity, TOOLBOX_PIPELINE_NAME, plan);
-    const inputs = await this.resolveInputs([args.ids[0]], identity, sessionId, sha256(sessionId), "process");
+    const plan = ToolboxPlanSchema.parse(args.options), identity2 = await this.identity("process");
+    await this.assertOperationAuthorization(identity2, TOOLBOX_PIPELINE_NAME, plan);
+    const inputs = await this.resolveInputs([args.ids[0]], identity2, sessionId, sha256(sessionId), "process");
     const result = await this.pipelinePreview(
-      await this.renderPipeline(inputs, plan, sessionId, identity, true, signal),
+      await this.renderPipeline(inputs, plan, sessionId, identity2, true, signal),
       signal,
-      `${identity.authorization}:${sha256(sessionId)}`
+      `${identity2.authorization}:${sha256(sessionId)}`
     );
-    await this.assertOperationAuthorization(identity, TOOLBOX_PIPELINE_NAME, plan);
+    await this.assertOperationAuthorization(identity2, TOOLBOX_PIPELINE_NAME, plan);
     return result;
   }
   async renderGridSplitPreview(args, sessionId, signal) {
     signal.throwIfAborted();
-    const identity = await this.identity("process", GRID_SPLIT_OPERATION_NAME), sessionHash = sha256(sessionId);
-    const inputs = await this.resolveInputs([args.ids[0]], identity, sessionId, sessionHash, "process");
+    const identity2 = await this.identity("process", GRID_SPLIT_OPERATION_NAME), sessionHash = sha256(sessionId);
+    const inputs = await this.resolveInputs([args.ids[0]], identity2, sessionId, sessionHash, "process");
     const input = inputs[0];
     if (input.kind === "file") throw new Error("\u56FE\u7247\u5206\u5272\u53EA\u63A5\u53D7\u56FE\u7247");
     const sourceMetadata = await sharp10(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
@@ -56649,18 +56707,18 @@ var NativeLocalToolkit = class {
         "png",
         sourceMetadata.density ?? 300,
         signal,
-        `${identity.authorization}:${sessionHash}`
+        `${identity2.authorization}:${sessionHash}`
       ), sourceId: input.id });
     }
-    await this.assertIdentity(identity, "process", GRID_SPLIT_OPERATION_NAME);
+    await this.assertIdentity(identity2, "process", GRID_SPLIT_OPERATION_NAME);
     return { toolName: GRID_SPLIT_OPERATION_NAME, images, files: [], generatedNames: images.map((row) => row.name) };
   }
   /** Host/UI download seam. The caller still receives no filesystem path. */
   async readResult(id2, sessionId, purpose = "read") {
     this.ready();
-    const identity = await this.identity(purpose), row = this.ownedResult(opaqueId.parse(id2), identity.principal, sha256(opaqueId.parse(sessionId)));
+    const identity2 = await this.identity(purpose), row = this.ownedResult(opaqueId.parse(id2), identity2.principal, sha256(opaqueId.parse(sessionId)));
     const bytes = await this.readStored(row);
-    await this.assertIdentity(identity, purpose);
+    await this.assertIdentity(identity2, purpose);
     return { ...publicResult(row), contentType: mediaType(row.format), bytes };
   }
   /** Host-only processing seam for bytes already saved and verified by TaskArchiveManager. */
@@ -56684,18 +56742,18 @@ var NativeLocalToolkit = class {
   /** Host-only ownership index, including imported inputs; no files or paths are exposed. */
   async referenceOwnership(sessionId) {
     this.ready();
-    const identity = await this.identity("read"), sessionHash = sha256(opaqueId.parse(sessionId));
+    const identity2 = await this.identity("read"), sessionHash = sha256(opaqueId.parse(sessionId));
     const current = /* @__PURE__ */ new Set(), other = /* @__PURE__ */ new Set();
     for (const row of this.store.snapshot().results) {
-      if (row.principal === identity.principal) (row.session === sessionHash ? current : other).add(row.id);
+      if (row.principal === identity2.principal) (row.session === sessionHash ? current : other).add(row.id);
     }
-    await this.assertIdentity(identity, "read");
+    await this.assertIdentity(identity2, "read");
     return { current, other };
   }
   /** Host-only recovery receipts; ordinary MCP listing remains session-scoped. */
   async archiveOperations(sessionId) {
-    const identity = await this.identity("read"), state = this.store.snapshot();
-    const items = state.operations.filter((row) => row.principal === identity.principal && (row.nativeSessionId || sessionId && row.session === sha256(sessionId))).map((row) => ({
+    const identity2 = await this.identity("read"), state = this.store.snapshot();
+    const items = state.operations.filter((row) => row.principal === identity2.principal && (row.nativeSessionId || sessionId && row.session === sha256(sessionId))).map((row) => ({
       operationId: row.operationId,
       sessionId: row.nativeSessionId ?? sessionId,
       createdAt: row.completedAt,
@@ -56705,13 +56763,13 @@ var NativeLocalToolkit = class {
       options: row.options,
       results: row.resultIds.map((id2) => publicResult(state.results.find((result) => result.id === id2)))
     }));
-    await this.assertIdentity(identity, "read");
-    return { ownerId: identity.ownerId, items };
+    await this.assertIdentity(identity2, "read");
+    return { ownerId: identity2.ownerId, items };
   }
   async archiveInput(id2, sessionId) {
-    const identity = await this.identity("read");
-    const [input] = await this.resolveInputs([opaqueId.parse(id2)], identity, opaqueId.parse(sessionId), sha256(sessionId), "read");
-    await this.assertIdentity(identity, "read");
+    const identity2 = await this.identity("read");
+    const [input] = await this.resolveInputs([opaqueId.parse(id2)], identity2, opaqueId.parse(sessionId), sha256(sessionId), "read");
+    await this.assertIdentity(identity2, "read");
     return input;
   }
   ready() {
@@ -56736,20 +56794,20 @@ var NativeLocalToolkit = class {
   }
   async renderToolPreview(name2, args, sessionId, signal) {
     signal.throwIfAborted();
-    const identity = await this.identity("process", name2), sessionHash = sha256(sessionId);
+    const identity2 = await this.identity("process", name2), sessionHash = sha256(sessionId);
     signal.throwIfAborted();
     const tool = processingTools[name2];
     if (tool === "resize") {
       const options = ResizeOptionsSchema.parse(args.options);
-      if (options.trimTransparent) await this.assertIdentity(identity, "process", "trim");
+      if (options.trimTransparent) await this.assertIdentity(identity2, "process", "trim");
     } else if (tool === "outline") {
       const options = OutlineSettingsSchema.parse(args.options);
-      if (options.mirror) await this.assertIdentity(identity, "process", "podplo_export_images");
+      if (options.mirror) await this.assertIdentity(identity2, "process", "podplo_export_images");
     } else ToolkitOperationSchema.parse({ tool, options: tool === "print-bleed" ? withoutPrintSafetyOptions(args.options) : args.options });
     const requestedIds = [args.ids[0]];
-    const inputs = await this.resolveInputs(requestedIds, identity, sessionId, sessionHash, "process", name2);
+    const inputs = await this.resolveInputs(requestedIds, identity2, sessionId, sessionHash, "process", name2);
     signal.throwIfAborted();
-    await this.assertOperationAuthorization(identity, name2, args.options);
+    await this.assertOperationAuthorization(identity2, name2, args.options);
     const input = inputs[0];
     if (input.kind === "file") throw new Error("\u8BE5\u5DE5\u5177\u53EA\u63A5\u53D7\u56FE\u7247\uFF0C\u8BF7\u9009\u62E9\u56FE\u7247 ID");
     await this.assertStaticPreviewImage(input, signal);
@@ -56758,7 +56816,7 @@ var NativeLocalToolkit = class {
       await this.assertTransparentForOutline([input]);
       let pattern;
       if (options.patternId) {
-        const [resolved] = await this.resolveInputs([options.patternId], identity, sessionId, sessionHash, "process", name2);
+        const [resolved] = await this.resolveInputs([options.patternId], identity2, sessionId, sessionHash, "process", name2);
         if (resolved.kind === "file") throw new Error("\u56FE\u6848\u9700\u8981\u9009\u62E9\u56FE\u7247");
         pattern = resolved.bytes;
       }
@@ -56774,7 +56832,7 @@ var NativeLocalToolkit = class {
         "png",
         void 0,
         signal,
-        `${identity.authorization}:${sessionHash}`
+        `${identity2.authorization}:${sessionHash}`
       )];
       if (options.mirror) images2.push(await this.previewImage(
         "mirror",
@@ -56785,9 +56843,9 @@ var NativeLocalToolkit = class {
         "png",
         void 0,
         signal,
-        `${identity.authorization}:${sessionHash}`
+        `${identity2.authorization}:${sessionHash}`
       ));
-      await this.assertOperationAuthorization(identity, name2, args.options);
+      await this.assertOperationAuthorization(identity2, name2, args.options);
       return {
         toolName: name2,
         images: images2,
@@ -56850,10 +56908,10 @@ var NativeLocalToolkit = class {
         production.format,
         options.ppi,
         signal,
-        `${identity.authorization}:${sessionHash}`
+        `${identity2.authorization}:${sessionHash}`
       )];
       const files2 = [];
-      await this.assertOperationAuthorization(identity, name2, args.options);
+      await this.assertOperationAuthorization(identity2, name2, args.options);
       return { toolName: name2, images: images2, files: files2, generatedNames: [...images2.map((row) => row.name), ...files2.map((row) => row.name)] };
     } else {
       const operation = ToolkitOperationSchema.parse({ tool, options: args.options });
@@ -56869,10 +56927,10 @@ var NativeLocalToolkit = class {
           sourceMetadata.format ?? "png",
           operation.options.ppi,
           signal,
-          `${identity.authorization}:${sessionHash}`
+          `${identity2.authorization}:${sessionHash}`
         );
         const file3 = { name: image.name, format: "pdf", summary: `${widthPt.toFixed(1)} \xD7 ${heightPt.toFixed(1)} pt \xB7 ${operation.options.ppi} PPI` };
-        await this.assertOperationAuthorization(identity, name2, args.options);
+        await this.assertOperationAuthorization(identity2, name2, args.options);
         return { toolName: name2, images: [{ ...image, name: basename6(input.name) }], files: [file3], generatedNames: [file3.name] };
       }
       if (operation.tool === "rotate-flip") {
@@ -56900,10 +56958,10 @@ var NativeLocalToolkit = class {
       output.format,
       output.density,
       signal,
-      `${identity.authorization}:${sessionHash}`
+      `${identity2.authorization}:${sessionHash}`
     ));
     const files = outputs.filter((row) => row.kind === "file").map((row) => ({ name: safeOutputName(row.stem, row.extension), format: row.format }));
-    await this.assertOperationAuthorization(identity, name2, args.options);
+    await this.assertOperationAuthorization(identity2, name2, args.options);
     return { ...resizeSource ? { resizeSource } : {}, ...transparentCrop ? { transparentCrop } : {}, toolName: name2, images, files, generatedNames: [...images.map((row) => row.name), ...files.map((row) => row.name)] };
   }
   async boundedPreviewInput(input, signal) {
@@ -56945,15 +57003,15 @@ var NativeLocalToolkit = class {
     };
   }
   async idempotent(name2, args, session2) {
-    const identity = await this.identity("process"), sessionHash = sha256(session2);
+    const identity2 = await this.identity("process"), sessionHash = sha256(session2);
     const digest = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
-    const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
+    const key = `${identity2.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
       if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise3 = this.execute(name2, args, session2, sessionHash, identity, digest);
+    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest);
     this.inflight.set(key, { digest, promise: promise3 });
     try {
       return await promise3;
@@ -56962,15 +57020,15 @@ var NativeLocalToolkit = class {
     }
   }
   async idempotentResolved(name2, args, session2, inputs) {
-    const identity = await this.identity("process"), sessionHash = sha256(session2);
+    const identity2 = await this.identity("process"), sessionHash = sha256(session2);
     const digest = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
-    const key = `${identity.principal}:${sessionHash}:${args.operationId}`;
+    const key = `${identity2.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
       if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise3 = this.execute(name2, args, session2, sessionHash, identity, digest, inputs);
+    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest, inputs);
     this.inflight.set(key, { digest, promise: promise3 });
     try {
       return await promise3;
@@ -56978,23 +57036,23 @@ var NativeLocalToolkit = class {
       this.inflight.delete(key);
     }
   }
-  async execute(name2, args, sessionId, sessionHash, identity, digest, archivedInputs) {
-    const existing = this.store.snapshot().operations.find((row) => row.principal === identity.principal && row.session === sessionHash && row.operationId === args.operationId);
+  async execute(name2, args, sessionId, sessionHash, identity2, digest, archivedInputs) {
+    const existing = this.store.snapshot().operations.find((row) => row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId);
     if (existing) {
       if (existing.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
-      const rows = existing.resultIds.map((id2) => this.ownedResult(id2, identity.principal, sessionHash));
+      const rows = existing.resultIds.map((id2) => this.ownedResult(id2, identity2.principal, sessionHash));
       for (const row of rows) await this.readStored(row);
-      await this.assertIdentity(identity, "process");
+      await this.assertIdentity(identity2, "process");
       return this.processingReply(args.operationId, rows, true);
     }
-    await this.assertOperationAuthorization(identity, name2, args.options);
-    const inputs = archivedInputs ?? await this.resolveInputs(args.ids, identity, sessionId, sessionHash, "process");
-    await this.assertOperationAuthorization(identity, name2, args.options);
+    await this.assertOperationAuthorization(identity2, name2, args.options);
+    const inputs = archivedInputs ?? await this.resolveInputs(args.ids, identity2, sessionId, sessionHash, "process");
+    await this.assertOperationAuthorization(identity2, name2, args.options);
     let rendered;
     const tool = name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME ? void 0 : processingTools[name2];
     let outputs;
     if (name2 === TOOLBOX_PIPELINE_NAME) {
-      rendered = await this.renderPipeline(inputs, ToolboxPlanSchema.parse(args.options), sessionId, identity);
+      rendered = await this.renderPipeline(inputs, ToolboxPlanSchema.parse(args.options), sessionId, identity2);
       outputs = rendered.outputs;
     } else if (name2 === GRID_SPLIT_OPERATION_NAME) outputs = await splitGridImages(inputs, GridSplitOptionsSchema.parse(args.options));
     else if (tool === "resize") outputs = await this.resize(inputs, args.options);
@@ -57004,7 +57062,7 @@ var NativeLocalToolkit = class {
       if (operation.tool === "outline") {
         await this.assertTransparentForOutline(inputs);
         if (operation.options.patternId) {
-          const [resolved] = await this.resolveInputs([operation.options.patternId], identity, sessionId, sessionHash, "process", "podplo_outline_images");
+          const [resolved] = await this.resolveInputs([operation.options.patternId], identity2, sessionId, sessionHash, "process", "podplo_outline_images");
           if (resolved.kind === "file") throw new Error("\u56FE\u6848\u9700\u8981\u9009\u62E9\u56FE\u7247");
           pattern = resolved.bytes;
         }
@@ -57015,21 +57073,21 @@ var NativeLocalToolkit = class {
     if (!outputs.length) throw new Error("\u672C\u5730\u56FE\u50CF\u5904\u7406\u6CA1\u6709\u4EA7\u751F\u7ED3\u679C");
     if (outputs.length > 400 || outputs.reduce((sum, row) => sum + row.bytes.length, 0) > 250 * 1024 * 1024)
       throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
-    await this.assertOperationAuthorization(identity, name2, args.options);
-    const finalPreview = rendered ? await this.pipelinePreview(rendered, void 0, `${identity.authorization}:${sessionHash}`) : void 0;
-    await this.assertOperationAuthorization(identity, name2, args.options);
+    await this.assertOperationAuthorization(identity2, name2, args.options);
+    const finalPreview = rendered ? await this.pipelinePreview(rendered, void 0, `${identity2.authorization}:${sessionHash}`) : void 0;
+    await this.assertOperationAuthorization(identity2, name2, args.options);
     const stored = [];
     try {
-      for (const output of outputs) stored.push(await this.publish(output, identity.principal, sessionHash));
-      await this.assertOperationAuthorization(identity, name2, args.options);
+      for (const output of outputs) stored.push(await this.publish(output, identity2.principal, sessionHash));
+      await this.assertOperationAuthorization(identity2, name2, args.options);
       await this.store.transaction((state) => {
-        const prior = state.operations.find((row) => row.principal === identity.principal && row.session === sessionHash && row.operationId === args.operationId);
+        const prior = state.operations.find((row) => row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId);
         if (prior) throw new Error(prior.digest === digest ? "\u540C\u4E00\u64CD\u4F5C\u6B63\u5728\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u8BFB\u53D6\u7ED3\u679C" : "\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
-        if (state.results.filter((row) => row.principal === identity.principal && row.session === sessionHash).length + stored.length > 2e3)
+        if (state.results.filter((row) => row.principal === identity2.principal && row.session === sessionHash).length + stored.length > 2e3)
           throw new Error("\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u8FC7\u591A\uFF0C\u8BF7\u65B0\u5EFA\u4F1A\u8BDD");
         state.results.push(...stored);
         state.operations.push({
-          principal: identity.principal,
+          principal: identity2.principal,
           session: sessionHash,
           operationId: args.operationId,
           digest,
@@ -57043,11 +57101,11 @@ var NativeLocalToolkit = class {
         });
       });
       try {
-        await this.assertOperationAuthorization(identity, name2, args.options);
+        await this.assertOperationAuthorization(identity2, name2, args.options);
       } catch (error101) {
         await this.store.transaction((state) => {
           state.results = state.results.filter((row) => !stored.some((item) => item.id === row.id));
-          state.operations = state.operations.filter((row) => !(row.principal === identity.principal && row.session === sessionHash && row.operationId === args.operationId));
+          state.operations = state.operations.filter((row) => !(row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId));
         });
         throw error101;
       }
@@ -57089,21 +57147,21 @@ var NativeLocalToolkit = class {
     }
     return tools;
   }
-  async assertOperationAuthorization(identity, name2, options) {
-    for (const tool of this.operationAuthorizationTools(name2, options)) await this.assertIdentity(identity, "process", tool);
+  async assertOperationAuthorization(identity2, name2, options) {
+    for (const tool of this.operationAuthorizationTools(name2, options)) await this.assertIdentity(identity2, "process", tool);
   }
-  async resolveInputs(ids2, identity, sessionId, sessionHash, purpose, toolName) {
+  async resolveInputs(ids2, identity2, sessionId, sessionHash, purpose, toolName) {
     const inputs = [];
     let total = 0;
     for (const id2 of ids2) {
       const known = this.store.snapshot().results.find((row) => row.id === id2);
       let input;
       if (known) {
-        if (known.principal !== identity.principal || known.session !== sessionHash) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
+        if (known.principal !== identity2.principal || known.session !== sessionHash) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
         input = { id: id2, name: known.name, kind: known.kind, bytes: await this.readStored(known) };
       } else {
-        const resolved = await this.options.resolveInput(identity.ownerId, sessionId, id2);
-        await this.assertIdentity(identity, purpose, toolName);
+        const resolved = await this.options.resolveInput(identity2.ownerId, sessionId, id2);
+        await this.assertIdentity(identity2, purpose, toolName);
         if (!resolved || resolved.id !== id2 || !Buffer.isBuffer(resolved.bytes)) throw new Error("\u539F\u751F\u9644\u4EF6\u89E3\u6790\u7ED3\u679C\u65E0\u6548");
         input = { id: id2, name: basename6(external_exports2.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
       }
@@ -57115,9 +57173,9 @@ var NativeLocalToolkit = class {
     return inputs;
   }
   async imageInfo(args, sessionId) {
-    const identity = await this.identity("read"), sessionHash = sha256(sessionId);
-    const ids2 = args.ids ?? this.store.snapshot().results.filter((row) => row.principal === identity.principal && row.session === sessionHash).map((row) => row.id);
-    const inputs = await this.resolveInputs(ids2, identity, sessionId, sessionHash, "read"), rows = [];
+    const identity2 = await this.identity("read"), sessionHash = sha256(sessionId);
+    const ids2 = args.ids ?? this.store.snapshot().results.filter((row) => row.principal === identity2.principal && row.session === sessionHash).map((row) => row.id);
+    const inputs = await this.resolveInputs(ids2, identity2, sessionId, sessionHash, "read"), rows = [];
     for (const input of inputs) {
       if (input.kind === "file") {
         rows.push({ id: input.id, name: input.name, kind: "file", format: extname4(input.name).slice(1).toLowerCase() });
@@ -57140,7 +57198,7 @@ var NativeLocalToolkit = class {
         hasTransparency
       });
     }
-    await this.assertIdentity(identity, "read");
+    await this.assertIdentity(identity2, "read");
     return { images: rows.filter((row) => row.kind === "image"), files: rows.filter((row) => row.kind === "file") };
   }
   async assertTransparentForOutline(inputs) {
@@ -57330,9 +57388,151 @@ Use read-only PodPlo catalog lookups to resolve a unique exact match without ask
 
 When ready, call exit_plan_mode with the concise plan as the only and final tool call in that response. If review rejects it, revise the short call plan. If the review channel is unavailable, stay in plan mode and ask the user to switch modes manually.`;
 var PODPLO_PREPARE_GENERATION_GUIDANCE = `Agent calls are PodPlo-Skill-only: every item must keep the exact selected executable PodPlo skillId. Reuse only user, Skill, tool/preset or authoritative-schema values; do not invent or rewrite prompts, model, ratio, quality, dimensions or processing steps. Do not ask for optional fields. If a required field has no authoritative default, ask once together with any other genuine blocker before calling. Use only the exact requested processing plan, or [] when none was requested. Never replace this call with another image service, a general vision tool, shell or scripts.`;
-var PODPLO_NATIVE_APPROVAL_GUIDANCE = `This native Host requests one session-bound approval for the exact complete quote. Do not seek a second conversational confirmation. In an IM conversation, after an allowed approval call podplo_wait_generation for the returned operationId in the same turn; do not end the turn first.`;
 function podploGenerationCompletionFollowup(input) {
   return `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${input.operationId} \u751F\u56FE\u72B6\u6001\u4E3A ${input.generationStatus}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${input.localProcessingStatus}\u3002\u8BF7\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u6267\u884C\u72B6\u6001\uFF0C\u53EA\u7B80\u77ED\u62A5\u544A\u5F20\u6570\u3001\u6210\u679C\u4F4D\u7F6E\u53CA\u5931\u8D25\u9879\u3002\u5BBF\u4E3B\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u4E0D\u8981\u770B\u56FE\u6216\u8BC4\u4EF7\u5BA1\u7F8E\uFF0C\u4E0D\u8981\u4FEE\u6539\u6216\u91CD\u5199\u63D0\u793A\u8BCD\u3001\u53C2\u6570\u6216\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u8981\u8FFD\u52A0\u5DE5\u5177\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3001\u91CD\u751F\u6210\u3001\u91CD\u590D\u52A0\u5DE5\u3001\u518D\u6B21\u62A5\u4EF7\u6216\u8FFD\u52A0\u63D0\u95EE\uFF0C\u4E0D\u8981\u6539\u7528\u5916\u90E8\u751F\u56FE\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell \u6216\u811A\u672C\u3002`;
+}
+
+// packages/online/generation-credit-pricing.ts
+var object4 = (v) => !!v && typeof v === "object" && !Array.isArray(v);
+var integer4 = (v) => Number.isSafeInteger(v) && Number(v) >= 0;
+var keys = (v, k) => Object.keys(v).length === k.length && k.every((x) => Object.hasOwn(v, x));
+function isGenerationCreditPricingRule(value2) {
+  if (!object4(value2) || !keys(value2, ["version", "unit", "maxPromptCharacters", "prices"]) || value2.version !== 2 || value2.unit !== "credits" || !integer4(value2.maxPromptCharacters) || !Array.isArray(value2.prices) || !value2.prices.length) return false;
+  const seen = /* @__PURE__ */ new Set();
+  return value2.prices.every((row) => {
+    if (!object4(row) || !keys(row, ["quality", "resolution", "referenceImages", "ecoMode", "webSearch", "imageSearch", "promptBands"]) || !(row.quality === null || typeof row.quality === "string") || typeof row.resolution !== "string" || !row.resolution || !integer4(row.referenceImages) || typeof row.ecoMode !== "boolean" || typeof row.webSearch !== "boolean" || typeof row.imageSearch !== "boolean" || !Array.isArray(row.promptBands) || !row.promptBands.length) return false;
+    const key = JSON.stringify([row.quality, row.resolution, row.referenceImages, row.ecoMode, row.webSearch, row.imageSearch]);
+    if (seen.has(key)) return false;
+    seen.add(key);
+    let previousStart = -1, previousPrice = -1;
+    return row.promptBands.every((band, index) => {
+      if (!Array.isArray(band) || band.length !== 2 || !integer4(band[0]) || !integer4(band[1]) || band[0] > Number(value2.maxPromptCharacters) || (index === 0 ? band[0] !== 0 : band[0] <= previousStart) || band[1] <= previousPrice) return false;
+      [previousStart, previousPrice] = band;
+      return true;
+    });
+  });
+}
+function calculateGenerationCreditsFromRule(rule, input) {
+  if (!isGenerationCreditPricingRule(rule)) throw new Error("Unsupported public sale price table");
+  const references = input.referenceImageCount ?? 0;
+  if (!integer4(references)) throw new Error("Unsupported reference count");
+  const length = Array.from(input.prompt?.trim() ?? "").length;
+  if (length > rule.maxPromptCharacters) throw new Error("Prompt exceeds public price coverage");
+  const price = rule.prices.find((row) => row.quality === (input.quality ?? null) && row.resolution === input.resolution && row.referenceImages === references && row.ecoMode === !!input.ecoMode && row.webSearch === !!input.webSearch && row.imageSearch === !!input.imageSearch);
+  if (!price) throw new Error("Unsupported public sale price options");
+  let credits = price.promptBands[0][1];
+  for (const [start, amount] of price.promptBands) {
+    if (start > length) break;
+    credits = amount;
+  }
+  return credits;
+}
+
+// packages/online/generation-credit-rules.json
+var generation_credit_rules_default = { schemaVersion: 2, models: [{ key: "gpt-image-1-5", name: "GPT Image 1.5", defaultQuality: "low", defaultResolution: "1K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: "low", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 1], [34, 2], [3562, 3], [7090, 4], [10618, 5], [14146, 6], [17674, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 4], [3244, 5], [6772, 6], [10300, 7], [13828, 8], [17356, 9]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [2926, 7], [6454, 8], [9982, 9], [13510, 10], [17038, 11]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [2611, 9], [6139, 10], [9667, 11], [13195, 12], [16723, 13]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2293, 11], [5821, 12], [9349, 13], [12877, 14], [16405, 15], [19933, 16]] }, { quality: "low", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [1978, 13], [5506, 14], [9034, 15], [12562, 16], [16090, 17], [19618, 18]] }, { quality: "low", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [1660, 15], [5188, 16], [8716, 17], [12244, 18], [15772, 19], [19300, 20]] }, { quality: "low", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [1342, 17], [4870, 18], [8398, 19], [11926, 20], [15454, 21], [18982, 22]] }, { quality: "low", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1027, 19], [4555, 20], [8083, 21], [11611, 22], [15139, 23], [18667, 24]] }, { quality: "low", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [709, 21], [4237, 22], [7765, 23], [11293, 24], [14821, 25], [18349, 26]] }, { quality: "low", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [394, 23], [3922, 24], [7450, 25], [10978, 26], [14506, 27], [18034, 28]] }, { quality: "low", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [76, 25], [3604, 26], [7132, 27], [10660, 28], [14188, 29], [17716, 30]] }, { quality: "low", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [3286, 28], [6814, 29], [10342, 30], [13870, 31], [17398, 32]] }, { quality: "low", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 1], [34, 2], [3562, 3], [7090, 4], [10618, 5], [14146, 6], [17674, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [2332, 3], [5860, 4], [9388, 5], [12916, 6], [16444, 7], [19972, 8]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1102, 3], [4630, 4], [8158, 5], [11686, 6], [15214, 7], [18742, 8]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [3403, 4], [6931, 5], [10459, 6], [13987, 7], [17515, 8]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [2173, 4], [5701, 5], [9229, 6], [12757, 7], [16285, 8], [19813, 9]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [2515, 7], [6043, 8], [9571, 9], [13099, 10], [16627, 11]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [2200, 9], [5728, 10], [9256, 11], [12784, 12], [16312, 13], [19840, 14]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [1882, 11], [5410, 12], [8938, 13], [12466, 14], [15994, 15], [19522, 16]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [1564, 13], [5092, 14], [8620, 15], [12148, 16], [15676, 17], [19204, 18]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [1249, 15], [4777, 16], [8305, 17], [11833, 18], [15361, 19], [18889, 20]] }, { quality: "medium", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [931, 17], [4459, 18], [7987, 19], [11515, 20], [15043, 21], [18571, 22]] }, { quality: "medium", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [616, 19], [4144, 20], [7672, 21], [11200, 22], [14728, 23], [18256, 24]] }, { quality: "medium", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [298, 21], [3826, 22], [7354, 23], [10882, 24], [14410, 25], [17938, 26]] }, { quality: "medium", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [3508, 24], [7036, 25], [10564, 26], [14092, 27], [17620, 28]] }, { quality: "medium", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [3193, 26], [6721, 27], [10249, 28], [13777, 29], [17305, 30]] }, { quality: "medium", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [2875, 28], [6403, 29], [9931, 30], [13459, 31], [16987, 32]] }, { quality: "medium", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 29], [2560, 30], [6088, 31], [9616, 32], [13144, 33], [16672, 34]] }, { quality: "medium", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [2242, 32], [5770, 33], [9298, 34], [12826, 35], [16354, 36], [19882, 37]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [2515, 7], [6043, 8], [9571, 9], [13099, 10], [16627, 11]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1288, 7], [4816, 8], [8344, 9], [11872, 10], [15400, 11], [18928, 12]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [58, 7], [3586, 8], [7114, 9], [10642, 10], [14170, 11], [17698, 12]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 7], [2356, 8], [5884, 9], [9412, 10], [12940, 11], [16468, 12], [19996, 13]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 7], [1129, 8], [4657, 9], [8185, 10], [11713, 11], [15241, 12], [18769, 13]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [2482, 24], [6010, 25], [9538, 26], [13066, 27], [16594, 28]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [2164, 26], [5692, 27], [9220, 28], [12748, 29], [16276, 30], [19804, 31]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [1846, 28], [5374, 29], [8902, 30], [12430, 31], [15958, 32], [19486, 33]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 29], [1531, 30], [5059, 31], [8587, 32], [12115, 33], [15643, 34], [19171, 35]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [1213, 32], [4741, 33], [8269, 34], [11797, 35], [15325, 36], [18853, 37]] }, { quality: "high", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [898, 34], [4426, 35], [7954, 36], [11482, 37], [15010, 38], [18538, 39]] }, { quality: "high", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 35], [580, 36], [4108, 37], [7636, 38], [11164, 39], [14692, 40], [18220, 41]] }, { quality: "high", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [262, 38], [3790, 39], [7318, 40], [10846, 41], [14374, 42], [17902, 43]] }, { quality: "high", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 40], [3475, 41], [7003, 42], [10531, 43], [14059, 44], [17587, 45]] }, { quality: "high", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 42], [3157, 43], [6685, 44], [10213, 45], [13741, 46], [17269, 47]] }, { quality: "high", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 44], [2842, 45], [6370, 46], [9898, 47], [13426, 48], [16954, 49]] }, { quality: "high", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 46], [2524, 47], [6052, 48], [9580, 49], [13108, 50], [16636, 51]] }, { quality: "high", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 48], [2206, 49], [5734, 50], [9262, 51], [12790, 52], [16318, 53], [19846, 54]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 23], [2482, 24], [6010, 25], [9538, 26], [13066, 27], [16594, 28]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 23], [1252, 24], [4780, 25], [8308, 26], [11836, 27], [15364, 28], [18892, 29]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 23], [22, 24], [3550, 25], [7078, 26], [10606, 27], [14134, 28], [17662, 29]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 24], [2323, 25], [5851, 26], [9379, 27], [12907, 28], [16435, 29], [19963, 30]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 24], [1093, 25], [4621, 26], [8149, 27], [11677, 28], [15205, 29], [18733, 30]] }] } }, { key: "gpt-image-2", name: "GPT Image 2", defaultQuality: "low", defaultResolution: "1K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: "low", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 1], [1765, 2], [5290, 3], [8821, 4], [12346, 5], [15877, 6], [19402, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1447, 4], [4975, 5], [8503, 6], [12031, 7], [15559, 8], [19087, 9]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [1129, 6], [4657, 7], [8185, 8], [11713, 9], [15241, 10], [18769, 11]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [814, 8], [4342, 9], [7870, 10], [11398, 11], [14926, 12], [18454, 13]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [496, 10], [4024, 11], [7552, 12], [11080, 13], [14608, 14], [18136, 15]] }, { quality: "low", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [178, 12], [3706, 13], [7234, 14], [10762, 15], [14290, 16], [17818, 17]] }, { quality: "low", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [3391, 15], [6919, 16], [10447, 17], [13975, 18], [17503, 19]] }, { quality: "low", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [3073, 17], [6601, 18], [10129, 19], [13657, 20], [17185, 21]] }, { quality: "low", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [2758, 19], [6286, 20], [9814, 21], [13342, 22], [16870, 23]] }, { quality: "low", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [2440, 21], [5968, 22], [9496, 23], [13024, 24], [16552, 25]] }, { quality: "low", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [2122, 23], [5650, 24], [9178, 25], [12706, 26], [16234, 27], [19762, 28]] }, { quality: "low", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [1807, 25], [5335, 26], [8863, 27], [12391, 28], [15919, 29], [19447, 30]] }, { quality: "low", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [1489, 27], [5017, 28], [8545, 29], [12073, 30], [15601, 31], [19129, 32]] }, { quality: "low", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 1], [1765, 2], [5290, 3], [8821, 4], [12346, 5], [15877, 6], [19402, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [4063, 3], [7591, 4], [11119, 5], [14647, 6], [18175, 7]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [2833, 3], [6361, 4], [9889, 5], [13417, 6], [16945, 7]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1606, 3], [5134, 4], [8662, 5], [12190, 6], [15718, 7], [19246, 8]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [376, 3], [3904, 4], [7432, 5], [10960, 6], [14488, 7], [18016, 8]] }, { quality: "low", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1672, 3], [5203, 4], [8728, 5], [12259, 6], [15784, 7], [19315, 8]] }, { quality: "low", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 4], [1357, 5], [4885, 6], [8413, 7], [11941, 8], [15469, 9], [18997, 10]] }, { quality: "low", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1039, 7], [4567, 8], [8095, 9], [11623, 10], [15151, 11], [18679, 12]] }, { quality: "low", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [724, 9], [4252, 10], [7780, 11], [11308, 12], [14836, 13], [18364, 14]] }, { quality: "low", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [406, 11], [3934, 12], [7462, 13], [10990, 14], [14518, 15], [18046, 16]] }, { quality: "low", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [88, 13], [3616, 14], [7144, 15], [10672, 16], [14200, 17], [17728, 18]] }, { quality: "low", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [3301, 16], [6829, 17], [10357, 18], [13885, 19], [17413, 20]] }, { quality: "low", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [2983, 18], [6511, 19], [10039, 20], [13567, 21], [17095, 22]] }, { quality: "low", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2668, 20], [6196, 21], [9724, 22], [13252, 23], [16780, 24]] }, { quality: "low", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [2350, 22], [5878, 23], [9406, 24], [12934, 25], [16462, 26], [19990, 27]] }, { quality: "low", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [2032, 24], [5560, 25], [9088, 26], [12616, 27], [16144, 28], [19672, 29]] }, { quality: "low", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [1717, 26], [5245, 27], [8773, 28], [12301, 29], [15829, 30], [19357, 31]] }, { quality: "low", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [1399, 28], [4927, 29], [8455, 30], [11983, 31], [15511, 32], [19039, 33]] }, { quality: "low", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1672, 3], [5203, 4], [8728, 5], [12259, 6], [15784, 7], [19315, 8]] }, { quality: "low", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [445, 3], [3973, 4], [7501, 5], [11029, 6], [14557, 7], [18085, 8]] }, { quality: "low", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [2743, 4], [6271, 5], [9799, 6], [13327, 7], [16855, 8]] }, { quality: "low", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1516, 4], [5044, 5], [8572, 6], [12100, 7], [15628, 8], [19156, 9]] }, { quality: "low", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [286, 4], [3814, 5], [7342, 6], [10870, 7], [14398, 8], [17926, 9]] }, { quality: "low", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 3], [487, 4], [4012, 5], [7543, 6], [11068, 7], [14599, 8], [18124, 9]] }, { quality: "low", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [169, 6], [3697, 7], [7225, 8], [10753, 9], [14281, 10], [17809, 11]] }, { quality: "low", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3379, 9], [6907, 10], [10435, 11], [13963, 12], [17491, 13]] }, { quality: "low", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [3064, 11], [6592, 12], [10120, 13], [13648, 14], [17176, 15]] }, { quality: "low", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [2746, 13], [6274, 14], [9802, 15], [13330, 16], [16858, 17]] }, { quality: "low", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [2428, 15], [5956, 16], [9484, 17], [13012, 18], [16540, 19]] }, { quality: "low", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2113, 17], [5641, 18], [9169, 19], [12697, 20], [16225, 21], [19753, 22]] }, { quality: "low", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1795, 19], [5323, 20], [8851, 21], [12379, 22], [15907, 23], [19435, 24]] }, { quality: "low", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1480, 21], [5008, 22], [8536, 23], [12064, 24], [15592, 25], [19120, 26]] }, { quality: "low", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1162, 23], [4690, 24], [8218, 25], [11746, 26], [15274, 27], [18802, 28]] }, { quality: "low", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [844, 25], [4372, 26], [7900, 27], [11428, 28], [14956, 29], [18487, 30]] }, { quality: "low", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [529, 27], [4057, 28], [7585, 29], [11113, 30], [14641, 31], [18169, 32]] }, { quality: "low", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [211, 29], [3739, 30], [7267, 31], [10795, 32], [14323, 33], [17851, 34]] }, { quality: "low", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [487, 4], [4012, 5], [7543, 6], [11068, 7], [14599, 8], [18124, 9]] }, { quality: "low", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [2785, 5], [6313, 6], [9841, 7], [13369, 8], [16897, 9]] }, { quality: "low", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [1555, 5], [5083, 6], [8611, 7], [12139, 8], [15667, 9], [19195, 10]] }, { quality: "low", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [328, 5], [3856, 6], [7384, 7], [10912, 8], [14440, 9], [17968, 10]] }, { quality: "low", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [2626, 6], [6154, 7], [9682, 8], [13210, 9], [16738, 10]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16021, 14], [19546, 15]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [1591, 12], [5119, 13], [8647, 14], [12175, 15], [15703, 16], [19231, 17]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [1273, 14], [4801, 15], [8329, 16], [11857, 17], [15385, 18], [18913, 19]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [958, 16], [4486, 17], [8014, 18], [11542, 19], [15070, 20], [18598, 21]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [640, 18], [4168, 19], [7696, 20], [11224, 21], [14752, 22], [18280, 23]] }, { quality: "medium", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [322, 20], [3850, 21], [7378, 22], [10906, 23], [14434, 24], [17962, 25]] }, { quality: "medium", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [7, 22], [3535, 23], [7063, 24], [10591, 25], [14119, 26], [17647, 27]] }, { quality: "medium", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [3217, 25], [6745, 26], [10273, 27], [13801, 28], [17329, 29]] }, { quality: "medium", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [2902, 27], [6430, 28], [9958, 29], [13486, 30], [17014, 31]] }, { quality: "medium", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [2584, 29], [6112, 30], [9640, 31], [13168, 32], [16696, 33]] }, { quality: "medium", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [2269, 31], [5797, 32], [9322, 33], [12850, 34], [16378, 35], [19906, 36]] }, { quality: "medium", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [1951, 33], [5479, 34], [9007, 35], [12535, 36], [16063, 37], [19591, 38]] }, { quality: "medium", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [1633, 35], [5161, 36], [8689, 37], [12217, 38], [15745, 39], [19273, 40]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16021, 14], [19546, 15]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [679, 10], [4207, 11], [7735, 12], [11263, 13], [14791, 14], [18319, 15]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2977, 11], [6505, 12], [10033, 13], [13561, 14], [17089, 15]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [1750, 11], [5278, 12], [8806, 13], [12334, 14], [15862, 15], [19390, 16]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [520, 11], [4048, 12], [7576, 13], [11104, 14], [14632, 15], [18160, 16]] }, { quality: "medium", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1042, 19], [4570, 20], [8101, 21], [11626, 22], [15154, 23], [18682, 24]] }, { quality: "medium", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [727, 21], [4255, 22], [7783, 23], [11311, 24], [14839, 25], [18367, 26]] }, { quality: "medium", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [409, 23], [3937, 24], [7465, 25], [10993, 26], [14521, 27], [18049, 28]] }, { quality: "medium", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [94, 25], [3622, 26], [7150, 27], [10678, 28], [14206, 29], [17734, 30]] }, { quality: "medium", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [3304, 28], [6832, 29], [10360, 30], [13888, 31], [17416, 32]] }, { quality: "medium", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 29], [2986, 30], [6514, 31], [10042, 32], [13570, 33], [17098, 34]] }, { quality: "medium", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [2671, 32], [6199, 33], [9727, 34], [13255, 35], [16783, 36]] }, { quality: "medium", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [2353, 34], [5881, 35], [9409, 36], [12937, 37], [16465, 38], [19993, 39]] }, { quality: "medium", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 35], [2038, 36], [5566, 37], [9094, 38], [12622, 39], [16150, 40], [19678, 41]] }, { quality: "medium", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [1720, 38], [5248, 39], [8776, 40], [12304, 41], [15832, 42], [19360, 43]] }, { quality: "medium", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [1402, 40], [4930, 41], [8458, 42], [11986, 43], [15514, 44], [19042, 45]] }, { quality: "medium", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [1087, 42], [4615, 43], [8143, 44], [11671, 45], [15199, 46], [18727, 47]] }, { quality: "medium", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [769, 44], [4297, 45], [7825, 46], [11353, 47], [14881, 48], [18409, 49]] }, { quality: "medium", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1042, 19], [4570, 20], [8101, 21], [11626, 22], [15154, 23], [18682, 24]] }, { quality: "medium", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [3343, 20], [6871, 21], [10399, 22], [13927, 23], [17455, 24]] }, { quality: "medium", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2113, 20], [5641, 21], [9169, 22], [12697, 23], [16225, 24], [19753, 25]] }, { quality: "medium", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [886, 20], [4414, 21], [7942, 22], [11470, 23], [14998, 24], [18526, 25]] }, { quality: "medium", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [3184, 21], [6712, 22], [10240, 23], [13768, 24], [17296, 25]] }, { quality: "medium", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [865, 31], [4393, 32], [7918, 33], [11446, 34], [14974, 35], [18502, 36]] }, { quality: "medium", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [547, 33], [4075, 34], [7603, 35], [11131, 36], [14659, 37], [18187, 38]] }, { quality: "medium", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [229, 35], [3757, 36], [7285, 37], [10813, 38], [14341, 39], [17869, 40]] }, { quality: "medium", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3442, 38], [6970, 39], [10498, 40], [14026, 41], [17554, 42]] }, { quality: "medium", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [3124, 40], [6652, 41], [10180, 42], [13708, 43], [17236, 44]] }, { quality: "medium", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [2806, 42], [6337, 43], [9865, 44], [13390, 45], [16921, 46]] }, { quality: "medium", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [2491, 44], [6019, 45], [9547, 46], [13075, 47], [16603, 48]] }, { quality: "medium", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 45], [2173, 46], [5701, 47], [9229, 48], [12757, 49], [16285, 50], [19813, 51]] }, { quality: "medium", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 47], [1858, 48], [5386, 49], [8914, 50], [12442, 51], [15970, 52], [19498, 53]] }, { quality: "medium", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 49], [1540, 50], [5068, 51], [8596, 52], [12124, 53], [15652, 54], [19180, 55]] }, { quality: "medium", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 51], [1222, 52], [4753, 53], [8278, 54], [11806, 55], [15334, 56], [18862, 57]] }, { quality: "medium", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [907, 54], [4435, 55], [7963, 56], [11491, 57], [15019, 58], [18547, 59]] }, { quality: "medium", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [589, 56], [4117, 57], [7645, 58], [11173, 59], [14701, 60], [18229, 61]] }, { quality: "medium", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 30], [865, 31], [4393, 32], [7918, 33], [11446, 34], [14974, 35], [18502, 36]] }, { quality: "medium", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3163, 32], [6691, 33], [10219, 34], [13747, 35], [17275, 36]] }, { quality: "medium", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [1933, 32], [5461, 33], [8989, 34], [12517, 35], [16045, 36], [19573, 37]] }, { quality: "medium", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [706, 32], [4234, 33], [7762, 34], [11290, 35], [14818, 36], [18346, 37]] }, { quality: "medium", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 32], [3004, 33], [6532, 34], [10060, 35], [13588, 36], [17116, 37]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 36], [2338, 37], [5866, 38], [9394, 39], [12922, 40], [16450, 41], [19978, 42]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 38], [2023, 39], [5551, 40], [9079, 41], [12607, 42], [16135, 43], [19663, 44]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 40], [1705, 41], [5233, 42], [8761, 43], [12289, 44], [15817, 45], [19345, 46]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 42], [1390, 43], [4918, 44], [8446, 45], [11974, 46], [15502, 47], [19030, 48]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 44], [1072, 45], [4600, 46], [8128, 47], [11656, 48], [15184, 49], [18712, 50]] }, { quality: "high", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 46], [757, 47], [4282, 48], [7810, 49], [11338, 50], [14866, 51], [18394, 52]] }, { quality: "high", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 48], [439, 49], [3967, 50], [7495, 51], [11023, 52], [14551, 53], [18079, 54]] }, { quality: "high", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 50], [121, 51], [3649, 52], [7177, 53], [10705, 54], [14233, 55], [17761, 56]] }, { quality: "high", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [3334, 54], [6862, 55], [10390, 56], [13918, 57], [17446, 58]] }, { quality: "high", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [3016, 56], [6544, 57], [10072, 58], [13600, 59], [17128, 60]] }, { quality: "high", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 57], [2698, 58], [6229, 59], [9754, 60], [13282, 61], [16810, 62]] }, { quality: "high", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 59], [2383, 60], [5911, 61], [9439, 62], [12967, 63], [16495, 64]] }, { quality: "high", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 61], [2065, 62], [5593, 63], [9121, 64], [12649, 65], [16177, 66], [19705, 67]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 36], [2338, 37], [5866, 38], [9394, 39], [12922, 40], [16450, 41], [19978, 42]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 36], [1111, 37], [4639, 38], [8167, 39], [11695, 40], [15223, 41], [18751, 42]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3409, 38], [6937, 39], [10465, 40], [13993, 41], [17521, 42]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [2182, 38], [5710, 39], [9238, 40], [12766, 41], [16294, 42], [19822, 43]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [952, 38], [4480, 39], [8008, 40], [11536, 41], [15064, 42], [18592, 43]] }, { quality: "high", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 73], [2410, 74], [5938, 75], [9466, 76], [12994, 77], [16522, 78]] }, { quality: "high", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 75], [2095, 76], [5623, 77], [9151, 78], [12679, 79], [16207, 80], [19735, 81]] }, { quality: "high", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 77], [1777, 78], [5305, 79], [8833, 80], [12361, 81], [15889, 82], [19417, 83]] }, { quality: "high", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 79], [1462, 80], [4990, 81], [8518, 82], [12046, 83], [15574, 84], [19102, 85]] }, { quality: "high", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 81], [1144, 82], [4672, 83], [8200, 84], [11728, 85], [15256, 86], [18784, 87]] }, { quality: "high", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 83], [826, 84], [4354, 85], [7882, 86], [11410, 87], [14938, 88], [18466, 89]] }, { quality: "high", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 85], [511, 86], [4039, 87], [7567, 88], [11095, 89], [14623, 90], [18151, 91]] }, { quality: "high", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 87], [193, 88], [3721, 89], [7249, 90], [10777, 91], [14305, 92], [17833, 93]] }, { quality: "high", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 90], [3406, 91], [6934, 92], [10462, 93], [13990, 94], [17518, 95]] }, { quality: "high", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 92], [3088, 93], [6616, 94], [10144, 95], [13672, 96], [17200, 97]] }, { quality: "high", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 94], [2770, 95], [6298, 96], [9826, 97], [13354, 98], [16885, 99]] }, { quality: "high", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 96], [2455, 97], [5983, 98], [9511, 99], [13039, 100], [16567, 101]] }, { quality: "high", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 98], [2137, 99], [5665, 100], [9193, 101], [12721, 102], [16249, 103], [19777, 104]] }, { quality: "high", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 73], [2410, 74], [5938, 75], [9466, 76], [12994, 77], [16522, 78]] }, { quality: "high", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 73], [1183, 74], [4711, 75], [8239, 76], [11767, 77], [15295, 78], [18823, 79]] }, { quality: "high", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [3481, 75], [7009, 76], [10537, 77], [14065, 78], [17593, 79]] }, { quality: "high", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [2254, 75], [5782, 76], [9310, 77], [12838, 78], [16366, 79], [19894, 80]] }, { quality: "high", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [1024, 75], [4552, 76], [8080, 77], [11608, 78], [15136, 79], [18664, 80]] }, { quality: "high", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 121], [1708, 122], [5236, 123], [8764, 124], [12292, 125], [15823, 126], [19348, 127]] }, { quality: "high", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 123], [1393, 124], [4921, 125], [8449, 126], [11977, 127], [15505, 128], [19033, 129]] }, { quality: "high", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 125], [1075, 126], [4603, 127], [8131, 128], [11659, 129], [15187, 130], [18715, 131]] }, { quality: "high", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 127], [760, 128], [4288, 129], [7816, 130], [11344, 131], [14872, 132], [18400, 133]] }, { quality: "high", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 129], [442, 130], [3970, 131], [7498, 132], [11026, 133], [14554, 134], [18082, 135]] }, { quality: "high", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 131], [124, 132], [3652, 133], [7180, 134], [10708, 135], [14236, 136], [17764, 137]] }, { quality: "high", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 134], [3337, 135], [6865, 136], [10393, 137], [13921, 138], [17449, 139]] }, { quality: "high", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 136], [3019, 137], [6547, 138], [10075, 139], [13603, 140], [17131, 141]] }, { quality: "high", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 138], [2704, 139], [6232, 140], [9760, 141], [13288, 142], [16816, 143]] }, { quality: "high", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 140], [2386, 141], [5914, 142], [9442, 143], [12970, 144], [16498, 145]] }, { quality: "high", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 142], [2068, 143], [5596, 144], [9124, 145], [12652, 146], [16180, 147], [19708, 148]] }, { quality: "high", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 144], [1753, 145], [5281, 146], [8809, 147], [12337, 148], [15865, 149], [19393, 150]] }, { quality: "high", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 146], [1435, 147], [4963, 148], [8491, 149], [12019, 150], [15547, 151], [19075, 152]] }, { quality: "high", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 121], [1708, 122], [5236, 123], [8764, 124], [12292, 125], [15823, 126], [19348, 127]] }, { quality: "high", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 121], [481, 122], [4009, 123], [7537, 124], [11065, 125], [14593, 126], [18121, 127]] }, { quality: "high", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [2779, 123], [6307, 124], [9835, 125], [13363, 126], [16891, 127]] }, { quality: "high", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [1552, 123], [5080, 124], [8608, 125], [12136, 126], [15664, 127], [19192, 128]] }, { quality: "high", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [322, 123], [3850, 124], [7378, 125], [10906, 126], [14434, 127], [17962, 128]] }] } }, { key: "gpt-image-2-5-flare", name: "GPT Image 2.5 Flare", defaultQuality: "low", defaultResolution: "1K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: "low", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 1], [1765, 2], [5290, 3], [8821, 4], [12346, 5], [15877, 6], [19402, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1447, 4], [4975, 5], [8503, 6], [12031, 7], [15559, 8], [19087, 9]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [1129, 6], [4657, 7], [8185, 8], [11713, 9], [15241, 10], [18769, 11]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [814, 8], [4342, 9], [7870, 10], [11398, 11], [14926, 12], [18454, 13]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [496, 10], [4024, 11], [7552, 12], [11080, 13], [14608, 14], [18136, 15]] }, { quality: "low", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [178, 12], [3706, 13], [7234, 14], [10762, 15], [14290, 16], [17818, 17]] }, { quality: "low", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [3391, 15], [6919, 16], [10447, 17], [13975, 18], [17503, 19]] }, { quality: "low", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [3073, 17], [6601, 18], [10129, 19], [13657, 20], [17185, 21]] }, { quality: "low", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [2758, 19], [6286, 20], [9814, 21], [13342, 22], [16870, 23]] }, { quality: "low", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [2440, 21], [5968, 22], [9496, 23], [13024, 24], [16552, 25]] }, { quality: "low", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [2122, 23], [5650, 24], [9178, 25], [12706, 26], [16234, 27], [19762, 28]] }, { quality: "low", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [1807, 25], [5335, 26], [8863, 27], [12391, 28], [15919, 29], [19447, 30]] }, { quality: "low", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [1489, 27], [5017, 28], [8545, 29], [12073, 30], [15601, 31], [19129, 32]] }, { quality: "low", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 1], [1765, 2], [5290, 3], [8821, 4], [12346, 5], [15877, 6], [19402, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [4063, 3], [7591, 4], [11119, 5], [14647, 6], [18175, 7]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [2833, 3], [6361, 4], [9889, 5], [13417, 6], [16945, 7]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1606, 3], [5134, 4], [8662, 5], [12190, 6], [15718, 7], [19246, 8]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [376, 3], [3904, 4], [7432, 5], [10960, 6], [14488, 7], [18016, 8]] }, { quality: "low", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1672, 3], [5203, 4], [8728, 5], [12259, 6], [15784, 7], [19315, 8]] }, { quality: "low", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 4], [1357, 5], [4885, 6], [8413, 7], [11941, 8], [15469, 9], [18997, 10]] }, { quality: "low", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1039, 7], [4567, 8], [8095, 9], [11623, 10], [15151, 11], [18679, 12]] }, { quality: "low", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [724, 9], [4252, 10], [7780, 11], [11308, 12], [14836, 13], [18364, 14]] }, { quality: "low", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [406, 11], [3934, 12], [7462, 13], [10990, 14], [14518, 15], [18046, 16]] }, { quality: "low", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [88, 13], [3616, 14], [7144, 15], [10672, 16], [14200, 17], [17728, 18]] }, { quality: "low", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [3301, 16], [6829, 17], [10357, 18], [13885, 19], [17413, 20]] }, { quality: "low", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [2983, 18], [6511, 19], [10039, 20], [13567, 21], [17095, 22]] }, { quality: "low", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2668, 20], [6196, 21], [9724, 22], [13252, 23], [16780, 24]] }, { quality: "low", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [2350, 22], [5878, 23], [9406, 24], [12934, 25], [16462, 26], [19990, 27]] }, { quality: "low", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [2032, 24], [5560, 25], [9088, 26], [12616, 27], [16144, 28], [19672, 29]] }, { quality: "low", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [1717, 26], [5245, 27], [8773, 28], [12301, 29], [15829, 30], [19357, 31]] }, { quality: "low", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [1399, 28], [4927, 29], [8455, 30], [11983, 31], [15511, 32], [19039, 33]] }, { quality: "low", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1672, 3], [5203, 4], [8728, 5], [12259, 6], [15784, 7], [19315, 8]] }, { quality: "low", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [445, 3], [3973, 4], [7501, 5], [11029, 6], [14557, 7], [18085, 8]] }, { quality: "low", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [2743, 4], [6271, 5], [9799, 6], [13327, 7], [16855, 8]] }, { quality: "low", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1516, 4], [5044, 5], [8572, 6], [12100, 7], [15628, 8], [19156, 9]] }, { quality: "low", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [286, 4], [3814, 5], [7342, 6], [10870, 7], [14398, 8], [17926, 9]] }, { quality: "low", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 3], [487, 4], [4012, 5], [7543, 6], [11068, 7], [14599, 8], [18124, 9]] }, { quality: "low", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [169, 6], [3697, 7], [7225, 8], [10753, 9], [14281, 10], [17809, 11]] }, { quality: "low", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3379, 9], [6907, 10], [10435, 11], [13963, 12], [17491, 13]] }, { quality: "low", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [3064, 11], [6592, 12], [10120, 13], [13648, 14], [17176, 15]] }, { quality: "low", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [2746, 13], [6274, 14], [9802, 15], [13330, 16], [16858, 17]] }, { quality: "low", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [2428, 15], [5956, 16], [9484, 17], [13012, 18], [16540, 19]] }, { quality: "low", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2113, 17], [5641, 18], [9169, 19], [12697, 20], [16225, 21], [19753, 22]] }, { quality: "low", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1795, 19], [5323, 20], [8851, 21], [12379, 22], [15907, 23], [19435, 24]] }, { quality: "low", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1480, 21], [5008, 22], [8536, 23], [12064, 24], [15592, 25], [19120, 26]] }, { quality: "low", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1162, 23], [4690, 24], [8218, 25], [11746, 26], [15274, 27], [18802, 28]] }, { quality: "low", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [844, 25], [4372, 26], [7900, 27], [11428, 28], [14956, 29], [18487, 30]] }, { quality: "low", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [529, 27], [4057, 28], [7585, 29], [11113, 30], [14641, 31], [18169, 32]] }, { quality: "low", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [211, 29], [3739, 30], [7267, 31], [10795, 32], [14323, 33], [17851, 34]] }, { quality: "low", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [487, 4], [4012, 5], [7543, 6], [11068, 7], [14599, 8], [18124, 9]] }, { quality: "low", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [2785, 5], [6313, 6], [9841, 7], [13369, 8], [16897, 9]] }, { quality: "low", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [1555, 5], [5083, 6], [8611, 7], [12139, 8], [15667, 9], [19195, 10]] }, { quality: "low", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [328, 5], [3856, 6], [7384, 7], [10912, 8], [14440, 9], [17968, 10]] }, { quality: "low", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [2626, 6], [6154, 7], [9682, 8], [13210, 9], [16738, 10]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 2], [916, 3], [4447, 4], [7972, 5], [11500, 6], [15028, 7], [18559, 8]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 4], [601, 5], [4129, 6], [7657, 7], [11185, 8], [14713, 9], [18241, 10]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [283, 7], [3811, 8], [7339, 9], [10867, 10], [14395, 11], [17923, 12]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [3496, 10], [7024, 11], [10552, 12], [14080, 13], [17608, 14]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [3178, 12], [6706, 13], [10234, 14], [13762, 15], [17290, 16]] }, { quality: "medium", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [2860, 14], [6388, 15], [9916, 16], [13444, 17], [16972, 18]] }, { quality: "medium", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [2545, 16], [6073, 17], [9601, 18], [13129, 19], [16657, 20]] }, { quality: "medium", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [2227, 18], [5755, 19], [9283, 20], [12811, 21], [16339, 22], [19867, 23]] }, { quality: "medium", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [1912, 20], [5440, 21], [8968, 22], [12496, 23], [16024, 24], [19552, 25]] }, { quality: "medium", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [1594, 22], [5122, 23], [8650, 24], [12178, 25], [15706, 26], [19234, 27]] }, { quality: "medium", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [1276, 24], [4804, 25], [8332, 26], [11860, 27], [15388, 28], [18916, 29]] }, { quality: "medium", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [961, 26], [4489, 27], [8017, 28], [11545, 29], [15073, 30], [18601, 31]] }, { quality: "medium", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [643, 28], [4171, 29], [7699, 30], [11227, 31], [14755, 32], [18283, 33]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [916, 3], [4447, 4], [7972, 5], [11500, 6], [15028, 7], [18559, 8]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [3217, 4], [6745, 5], [10273, 6], [13801, 7], [17329, 8]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1987, 4], [5515, 5], [9043, 6], [12571, 7], [16099, 8], [19627, 9]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [760, 4], [4288, 5], [7816, 6], [11344, 7], [14872, 8], [18400, 9]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [3058, 5], [6586, 6], [10114, 7], [13642, 8], [17170, 9]] }, { quality: "medium", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [3349, 6], [6874, 7], [10405, 8], [13930, 9], [17458, 10]] }, { quality: "medium", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [3031, 8], [6559, 9], [10087, 10], [13615, 11], [17143, 12]] }, { quality: "medium", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [2713, 10], [6241, 11], [9769, 12], [13297, 13], [16825, 14]] }, { quality: "medium", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [2398, 12], [5926, 13], [9454, 14], [12982, 15], [16510, 16]] }, { quality: "medium", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [2080, 14], [5608, 15], [9136, 16], [12664, 17], [16192, 18], [19720, 19]] }, { quality: "medium", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [1762, 16], [5290, 17], [8818, 18], [12346, 19], [15874, 20], [19405, 21]] }, { quality: "medium", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [1447, 18], [4975, 19], [8503, 20], [12031, 21], [15559, 22], [19087, 23]] }, { quality: "medium", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [1129, 20], [4657, 21], [8185, 22], [11713, 23], [15241, 24], [18769, 25]] }, { quality: "medium", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [814, 22], [4342, 23], [7870, 24], [11398, 25], [14926, 26], [18454, 27]] }, { quality: "medium", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [496, 24], [4024, 25], [7552, 26], [11080, 27], [14608, 28], [18136, 29]] }, { quality: "medium", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [178, 26], [3706, 27], [7237, 28], [10765, 29], [14293, 30], [17821, 31]] }, { quality: "medium", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [3391, 29], [6919, 30], [10447, 31], [13975, 32], [17503, 33]] }, { quality: "medium", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [3073, 31], [6601, 32], [10129, 33], [13657, 34], [17185, 35]] }, { quality: "medium", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [3349, 6], [6874, 7], [10405, 8], [13930, 9], [17458, 10]] }, { quality: "medium", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [2119, 6], [5647, 7], [9175, 8], [12703, 9], [16231, 10], [19759, 11]] }, { quality: "medium", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [889, 6], [4417, 7], [7945, 8], [11473, 9], [15001, 10], [18529, 11]] }, { quality: "medium", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [3190, 7], [6718, 8], [10246, 9], [13774, 10], [17302, 11]] }, { quality: "medium", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1960, 7], [5488, 8], [9016, 9], [12544, 10], [16072, 11], [19600, 12]] }, { quality: "medium", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3292, 9], [6823, 10], [10348, 11], [13876, 12], [17407, 13]] }, { quality: "medium", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2977, 11], [6505, 12], [10033, 13], [13561, 14], [17089, 15]] }, { quality: "medium", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [2659, 13], [6187, 14], [9715, 15], [13243, 16], [16771, 17]] }, { quality: "medium", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [2344, 15], [5872, 16], [9400, 17], [12928, 18], [16456, 19], [19984, 20]] }, { quality: "medium", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2026, 17], [5554, 18], [9082, 19], [12610, 20], [16138, 21], [19666, 22]] }, { quality: "medium", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1708, 19], [5236, 20], [8767, 21], [12292, 22], [15820, 23], [19348, 24]] }, { quality: "medium", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1393, 21], [4921, 22], [8449, 23], [11977, 24], [15505, 25], [19033, 26]] }, { quality: "medium", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1075, 23], [4603, 24], [8131, 25], [11659, 26], [15187, 27], [18715, 28]] }, { quality: "medium", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [760, 25], [4288, 26], [7816, 27], [11344, 28], [14872, 29], [18400, 30]] }, { quality: "medium", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [442, 27], [3970, 28], [7498, 29], [11026, 30], [14554, 31], [18082, 32]] }, { quality: "medium", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [127, 29], [3655, 30], [7183, 31], [10711, 32], [14236, 33], [17764, 34]] }, { quality: "medium", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3337, 32], [6865, 33], [10393, 34], [13921, 35], [17449, 36]] }, { quality: "medium", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [3019, 34], [6547, 35], [10075, 36], [13603, 37], [17131, 38]] }, { quality: "medium", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3292, 9], [6823, 10], [10348, 11], [13876, 12], [17407, 13]] }, { quality: "medium", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [2065, 9], [5593, 10], [9121, 11], [12649, 12], [16177, 13], [19705, 14]] }, { quality: "medium", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [835, 9], [4363, 10], [7891, 11], [11419, 12], [14947, 13], [18475, 14]] }, { quality: "medium", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [3136, 10], [6664, 11], [10192, 12], [13720, 13], [17248, 14]] }, { quality: "medium", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16018, 14], [19546, 15]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16021, 14], [19546, 15]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [1591, 12], [5119, 13], [8647, 14], [12175, 15], [15703, 16], [19231, 17]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [1273, 14], [4801, 15], [8329, 16], [11857, 17], [15385, 18], [18913, 19]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [958, 16], [4486, 17], [8014, 18], [11542, 19], [15070, 20], [18598, 21]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [640, 18], [4168, 19], [7696, 20], [11224, 21], [14752, 22], [18280, 23]] }, { quality: "high", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [322, 20], [3850, 21], [7378, 22], [10906, 23], [14434, 24], [17962, 25]] }, { quality: "high", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [7, 22], [3535, 23], [7063, 24], [10591, 25], [14119, 26], [17647, 27]] }, { quality: "high", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [3217, 25], [6745, 26], [10273, 27], [13801, 28], [17329, 29]] }, { quality: "high", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [2902, 27], [6430, 28], [9958, 29], [13486, 30], [17014, 31]] }, { quality: "high", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [2584, 29], [6112, 30], [9640, 31], [13168, 32], [16696, 33]] }, { quality: "high", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [2269, 31], [5797, 32], [9322, 33], [12850, 34], [16378, 35], [19906, 36]] }, { quality: "high", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [1951, 33], [5479, 34], [9007, 35], [12535, 36], [16063, 37], [19591, 38]] }, { quality: "high", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [1633, 35], [5161, 36], [8689, 37], [12217, 38], [15745, 39], [19273, 40]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16021, 14], [19546, 15]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [679, 10], [4207, 11], [7735, 12], [11263, 13], [14791, 14], [18319, 15]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2977, 11], [6505, 12], [10033, 13], [13561, 14], [17089, 15]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [1750, 11], [5278, 12], [8806, 13], [12334, 14], [15862, 15], [19390, 16]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [520, 11], [4048, 12], [7576, 13], [11104, 14], [14632, 15], [18160, 16]] }, { quality: "high", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1042, 19], [4570, 20], [8101, 21], [11626, 22], [15154, 23], [18682, 24]] }, { quality: "high", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [727, 21], [4255, 22], [7783, 23], [11311, 24], [14839, 25], [18367, 26]] }, { quality: "high", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [409, 23], [3937, 24], [7465, 25], [10993, 26], [14521, 27], [18049, 28]] }, { quality: "high", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [94, 25], [3622, 26], [7150, 27], [10678, 28], [14206, 29], [17734, 30]] }, { quality: "high", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [3304, 28], [6832, 29], [10360, 30], [13888, 31], [17416, 32]] }, { quality: "high", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 29], [2986, 30], [6514, 31], [10042, 32], [13570, 33], [17098, 34]] }, { quality: "high", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [2671, 32], [6199, 33], [9727, 34], [13255, 35], [16783, 36]] }, { quality: "high", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [2353, 34], [5881, 35], [9409, 36], [12937, 37], [16465, 38], [19993, 39]] }, { quality: "high", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 35], [2038, 36], [5566, 37], [9094, 38], [12622, 39], [16150, 40], [19678, 41]] }, { quality: "high", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [1720, 38], [5248, 39], [8776, 40], [12304, 41], [15832, 42], [19360, 43]] }, { quality: "high", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [1402, 40], [4930, 41], [8458, 42], [11986, 43], [15514, 44], [19042, 45]] }, { quality: "high", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [1087, 42], [4615, 43], [8143, 44], [11671, 45], [15199, 46], [18727, 47]] }, { quality: "high", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [769, 44], [4297, 45], [7825, 46], [11353, 47], [14881, 48], [18409, 49]] }, { quality: "high", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1042, 19], [4570, 20], [8101, 21], [11626, 22], [15154, 23], [18682, 24]] }, { quality: "high", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [3343, 20], [6871, 21], [10399, 22], [13927, 23], [17455, 24]] }, { quality: "high", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2113, 20], [5641, 21], [9169, 22], [12697, 23], [16225, 24], [19753, 25]] }, { quality: "high", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [886, 20], [4414, 21], [7942, 22], [11470, 23], [14998, 24], [18526, 25]] }, { quality: "high", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [3184, 21], [6712, 22], [10240, 23], [13768, 24], [17296, 25]] }, { quality: "high", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [865, 31], [4393, 32], [7918, 33], [11446, 34], [14974, 35], [18502, 36]] }, { quality: "high", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [547, 33], [4075, 34], [7603, 35], [11131, 36], [14659, 37], [18187, 38]] }, { quality: "high", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [229, 35], [3757, 36], [7285, 37], [10813, 38], [14341, 39], [17869, 40]] }, { quality: "high", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3442, 38], [6970, 39], [10498, 40], [14026, 41], [17554, 42]] }, { quality: "high", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [3124, 40], [6652, 41], [10180, 42], [13708, 43], [17236, 44]] }, { quality: "high", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [2806, 42], [6337, 43], [9865, 44], [13390, 45], [16921, 46]] }, { quality: "high", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [2491, 44], [6019, 45], [9547, 46], [13075, 47], [16603, 48]] }, { quality: "high", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 45], [2173, 46], [5701, 47], [9229, 48], [12757, 49], [16285, 50], [19813, 51]] }, { quality: "high", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 47], [1858, 48], [5386, 49], [8914, 50], [12442, 51], [15970, 52], [19498, 53]] }, { quality: "high", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 49], [1540, 50], [5068, 51], [8596, 52], [12124, 53], [15652, 54], [19180, 55]] }, { quality: "high", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 51], [1222, 52], [4753, 53], [8278, 54], [11806, 55], [15334, 56], [18862, 57]] }, { quality: "high", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [907, 54], [4435, 55], [7963, 56], [11491, 57], [15019, 58], [18547, 59]] }, { quality: "high", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [589, 56], [4117, 57], [7645, 58], [11173, 59], [14701, 60], [18229, 61]] }, { quality: "high", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 30], [865, 31], [4393, 32], [7918, 33], [11446, 34], [14974, 35], [18502, 36]] }, { quality: "high", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3163, 32], [6691, 33], [10219, 34], [13747, 35], [17275, 36]] }, { quality: "high", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [1933, 32], [5461, 33], [8989, 34], [12517, 35], [16045, 36], [19573, 37]] }, { quality: "high", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [706, 32], [4234, 33], [7762, 34], [11290, 35], [14818, 36], [18346, 37]] }, { quality: "high", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 32], [3004, 33], [6532, 34], [10060, 35], [13588, 36], [17116, 37]] }, { quality: "xhigh", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2014, 17], [5542, 18], [9070, 19], [12598, 20], [16129, 21], [19654, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1699, 19], [5227, 20], [8755, 21], [12283, 22], [15811, 23], [19339, 24]] }, { quality: "xhigh", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1381, 21], [4909, 22], [8437, 23], [11965, 24], [15493, 25], [19021, 26]] }, { quality: "xhigh", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1066, 23], [4594, 24], [8122, 25], [11650, 26], [15178, 27], [18706, 28]] }, { quality: "xhigh", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [748, 25], [4276, 26], [7804, 27], [11332, 28], [14860, 29], [18388, 30]] }, { quality: "xhigh", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [430, 27], [3958, 28], [7486, 29], [11014, 30], [14542, 31], [18070, 32]] }, { quality: "xhigh", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [115, 29], [3643, 30], [7171, 31], [10699, 32], [14227, 33], [17755, 34]] }, { quality: "xhigh", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3325, 32], [6853, 33], [10381, 34], [13909, 35], [17437, 36]] }, { quality: "xhigh", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [3010, 34], [6538, 35], [10066, 36], [13594, 37], [17122, 38]] }, { quality: "xhigh", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 35], [2692, 36], [6220, 37], [9748, 38], [13276, 39], [16804, 40]] }, { quality: "xhigh", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [2374, 38], [5902, 39], [9430, 40], [12958, 41], [16486, 42]] }, { quality: "xhigh", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [2059, 40], [5587, 41], [9115, 42], [12643, 43], [16171, 44], [19699, 45]] }, { quality: "xhigh", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [1741, 42], [5269, 43], [8797, 44], [12325, 45], [15853, 46], [19381, 47]] }, { quality: "xhigh", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2014, 17], [5542, 18], [9070, 19], [12598, 20], [16129, 21], [19654, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 16], [787, 17], [4315, 18], [7843, 19], [11371, 20], [14899, 21], [18427, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 17], [3085, 18], [6613, 19], [10141, 20], [13669, 21], [17197, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 17], [1858, 18], [5386, 19], [8914, 20], [12442, 21], [15970, 22], [19498, 23]] }, { quality: "xhigh", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 17], [628, 18], [4156, 19], [7684, 20], [11212, 21], [14740, 22], [18268, 23]] }, { quality: "xhigh", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [484, 33], [4012, 34], [7540, 35], [11068, 36], [14596, 37], [18124, 38]] }, { quality: "xhigh", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [169, 35], [3697, 36], [7225, 37], [10753, 38], [14281, 39], [17809, 40]] }, { quality: "xhigh", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3379, 38], [6907, 39], [10435, 40], [13963, 41], [17491, 42]] }, { quality: "xhigh", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [3064, 40], [6592, 41], [10120, 42], [13648, 43], [17176, 44]] }, { quality: "xhigh", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [2746, 42], [6274, 43], [9802, 44], [13330, 45], [16858, 46]] }, { quality: "xhigh", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [2428, 44], [5956, 45], [9484, 46], [13015, 47], [16540, 48]] }, { quality: "xhigh", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 45], [2113, 46], [5641, 47], [9169, 48], [12697, 49], [16225, 50], [19753, 51]] }, { quality: "xhigh", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 47], [1795, 48], [5323, 49], [8851, 50], [12379, 51], [15907, 52], [19435, 53]] }, { quality: "xhigh", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 49], [1480, 50], [5008, 51], [8536, 52], [12064, 53], [15592, 54], [19120, 55]] }, { quality: "xhigh", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 51], [1162, 52], [4690, 53], [8218, 54], [11746, 55], [15274, 56], [18802, 57]] }, { quality: "xhigh", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [844, 54], [4372, 55], [7900, 56], [11428, 57], [14956, 58], [18487, 59]] }, { quality: "xhigh", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [529, 56], [4057, 57], [7585, 58], [11113, 59], [14641, 60], [18169, 61]] }, { quality: "xhigh", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 57], [211, 58], [3739, 59], [7267, 60], [10795, 61], [14323, 62], [17851, 63]] }, { quality: "xhigh", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 32], [484, 33], [4012, 34], [7540, 35], [11068, 36], [14596, 37], [18124, 38]] }, { quality: "xhigh", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 33], [2785, 34], [6313, 35], [9841, 36], [13369, 37], [16897, 38]] }, { quality: "xhigh", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 33], [1555, 34], [5083, 35], [8611, 36], [12139, 37], [15667, 38], [19195, 39]] }, { quality: "xhigh", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 33], [328, 34], [3856, 35], [7384, 36], [10912, 37], [14440, 38], [17968, 39]] }, { quality: "xhigh", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 34], [2626, 35], [6154, 36], [9682, 37], [13210, 38], [16738, 39]] }, { quality: "xhigh", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 54], [2518, 55], [6046, 56], [9574, 57], [13102, 58], [16633, 59]] }, { quality: "xhigh", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 56], [2203, 57], [5731, 58], [9259, 59], [12787, 60], [16315, 61], [19843, 62]] }, { quality: "xhigh", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 58], [1885, 59], [5413, 60], [8941, 61], [12469, 62], [15997, 63], [19525, 64]] }, { quality: "xhigh", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 60], [1570, 61], [5098, 62], [8626, 63], [12154, 64], [15682, 65], [19210, 66]] }, { quality: "xhigh", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 62], [1252, 63], [4780, 64], [8308, 65], [11836, 66], [15364, 67], [18892, 68]] }, { quality: "xhigh", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 64], [934, 65], [4462, 66], [7990, 67], [11518, 68], [15046, 69], [18574, 70]] }, { quality: "xhigh", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 66], [619, 67], [4147, 68], [7675, 69], [11203, 70], [14731, 71], [18259, 72]] }, { quality: "xhigh", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 68], [301, 69], [3829, 70], [7357, 71], [10885, 72], [14413, 73], [17941, 74]] }, { quality: "xhigh", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 71], [3514, 72], [7042, 73], [10570, 74], [14098, 75], [17626, 76]] }, { quality: "xhigh", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 73], [3196, 74], [6724, 75], [10252, 76], [13780, 77], [17308, 78]] }, { quality: "xhigh", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 75], [2878, 76], [6406, 77], [9934, 78], [13462, 79], [16990, 80]] }, { quality: "xhigh", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 77], [2563, 78], [6091, 79], [9619, 80], [13147, 81], [16675, 82]] }, { quality: "xhigh", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 79], [2245, 80], [5773, 81], [9301, 82], [12829, 83], [16357, 84], [19885, 85]] }, { quality: "xhigh", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 54], [2518, 55], [6046, 56], [9574, 57], [13102, 58], [16633, 59]] }, { quality: "xhigh", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 54], [1291, 55], [4819, 56], [8347, 57], [11875, 58], [15403, 59], [18931, 60]] }, { quality: "xhigh", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 54], [61, 55], [3589, 56], [7117, 57], [10645, 58], [14173, 59], [17701, 60]] }, { quality: "xhigh", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 55], [2362, 56], [5890, 57], [9418, 58], [12946, 59], [16474, 60]] }, { quality: "xhigh", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 55], [1132, 56], [4660, 57], [8188, 58], [11716, 59], [15244, 60], [18772, 61]] }, { quality: "max", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 36], [2338, 37], [5866, 38], [9394, 39], [12922, 40], [16450, 41], [19978, 42]] }, { quality: "max", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 38], [2023, 39], [5551, 40], [9079, 41], [12607, 42], [16135, 43], [19663, 44]] }, { quality: "max", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 40], [1705, 41], [5233, 42], [8761, 43], [12289, 44], [15817, 45], [19345, 46]] }, { quality: "max", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 42], [1390, 43], [4918, 44], [8446, 45], [11974, 46], [15502, 47], [19030, 48]] }, { quality: "max", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 44], [1072, 45], [4600, 46], [8128, 47], [11656, 48], [15184, 49], [18712, 50]] }, { quality: "max", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 46], [757, 47], [4282, 48], [7810, 49], [11338, 50], [14866, 51], [18394, 52]] }, { quality: "max", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 48], [439, 49], [3967, 50], [7495, 51], [11023, 52], [14551, 53], [18079, 54]] }, { quality: "max", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 50], [121, 51], [3649, 52], [7177, 53], [10705, 54], [14233, 55], [17761, 56]] }, { quality: "max", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [3334, 54], [6862, 55], [10390, 56], [13918, 57], [17446, 58]] }, { quality: "max", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [3016, 56], [6544, 57], [10072, 58], [13600, 59], [17128, 60]] }, { quality: "max", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 57], [2698, 58], [6229, 59], [9754, 60], [13282, 61], [16810, 62]] }, { quality: "max", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 59], [2383, 60], [5911, 61], [9439, 62], [12967, 63], [16495, 64]] }, { quality: "max", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 61], [2065, 62], [5593, 63], [9121, 64], [12649, 65], [16177, 66], [19705, 67]] }, { quality: "max", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 36], [2338, 37], [5866, 38], [9394, 39], [12922, 40], [16450, 41], [19978, 42]] }, { quality: "max", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 36], [1111, 37], [4639, 38], [8167, 39], [11695, 40], [15223, 41], [18751, 42]] }, { quality: "max", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3409, 38], [6937, 39], [10465, 40], [13993, 41], [17521, 42]] }, { quality: "max", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [2182, 38], [5710, 39], [9238, 40], [12766, 41], [16294, 42], [19822, 43]] }, { quality: "max", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [952, 38], [4480, 39], [8008, 40], [11536, 41], [15064, 42], [18592, 43]] }, { quality: "max", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 73], [2410, 74], [5938, 75], [9466, 76], [12994, 77], [16522, 78]] }, { quality: "max", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 75], [2095, 76], [5623, 77], [9151, 78], [12679, 79], [16207, 80], [19735, 81]] }, { quality: "max", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 77], [1777, 78], [5305, 79], [8833, 80], [12361, 81], [15889, 82], [19417, 83]] }, { quality: "max", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 79], [1462, 80], [4990, 81], [8518, 82], [12046, 83], [15574, 84], [19102, 85]] }, { quality: "max", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 81], [1144, 82], [4672, 83], [8200, 84], [11728, 85], [15256, 86], [18784, 87]] }, { quality: "max", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 83], [826, 84], [4354, 85], [7882, 86], [11410, 87], [14938, 88], [18466, 89]] }, { quality: "max", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 85], [511, 86], [4039, 87], [7567, 88], [11095, 89], [14623, 90], [18151, 91]] }, { quality: "max", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 87], [193, 88], [3721, 89], [7249, 90], [10777, 91], [14305, 92], [17833, 93]] }, { quality: "max", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 90], [3406, 91], [6934, 92], [10462, 93], [13990, 94], [17518, 95]] }, { quality: "max", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 92], [3088, 93], [6616, 94], [10144, 95], [13672, 96], [17200, 97]] }, { quality: "max", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 94], [2770, 95], [6298, 96], [9826, 97], [13354, 98], [16885, 99]] }, { quality: "max", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 96], [2455, 97], [5983, 98], [9511, 99], [13039, 100], [16567, 101]] }, { quality: "max", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 98], [2137, 99], [5665, 100], [9193, 101], [12721, 102], [16249, 103], [19777, 104]] }, { quality: "max", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 73], [2410, 74], [5938, 75], [9466, 76], [12994, 77], [16522, 78]] }, { quality: "max", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 73], [1183, 74], [4711, 75], [8239, 76], [11767, 77], [15295, 78], [18823, 79]] }, { quality: "max", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [3481, 75], [7009, 76], [10537, 77], [14065, 78], [17593, 79]] }, { quality: "max", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [2254, 75], [5782, 76], [9310, 77], [12838, 78], [16366, 79], [19894, 80]] }, { quality: "max", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [1024, 75], [4552, 76], [8080, 77], [11608, 78], [15136, 79], [18664, 80]] }, { quality: "max", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 121], [1708, 122], [5236, 123], [8764, 124], [12292, 125], [15823, 126], [19348, 127]] }, { quality: "max", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 123], [1393, 124], [4921, 125], [8449, 126], [11977, 127], [15505, 128], [19033, 129]] }, { quality: "max", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 125], [1075, 126], [4603, 127], [8131, 128], [11659, 129], [15187, 130], [18715, 131]] }, { quality: "max", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 127], [760, 128], [4288, 129], [7816, 130], [11344, 131], [14872, 132], [18400, 133]] }, { quality: "max", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 129], [442, 130], [3970, 131], [7498, 132], [11026, 133], [14554, 134], [18082, 135]] }, { quality: "max", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 131], [124, 132], [3652, 133], [7180, 134], [10708, 135], [14236, 136], [17764, 137]] }, { quality: "max", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 134], [3337, 135], [6865, 136], [10393, 137], [13921, 138], [17449, 139]] }, { quality: "max", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 136], [3019, 137], [6547, 138], [10075, 139], [13603, 140], [17131, 141]] }, { quality: "max", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 138], [2704, 139], [6232, 140], [9760, 141], [13288, 142], [16816, 143]] }, { quality: "max", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 140], [2386, 141], [5914, 142], [9442, 143], [12970, 144], [16498, 145]] }, { quality: "max", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 142], [2068, 143], [5596, 144], [9124, 145], [12652, 146], [16180, 147], [19708, 148]] }, { quality: "max", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 144], [1753, 145], [5281, 146], [8809, 147], [12337, 148], [15865, 149], [19393, 150]] }, { quality: "max", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 146], [1435, 147], [4963, 148], [8491, 149], [12019, 150], [15547, 151], [19075, 152]] }, { quality: "max", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 121], [1708, 122], [5236, 123], [8764, 124], [12292, 125], [15823, 126], [19348, 127]] }, { quality: "max", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 121], [481, 122], [4009, 123], [7537, 124], [11065, 125], [14593, 126], [18121, 127]] }, { quality: "max", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [2779, 123], [6307, 124], [9835, 125], [13363, 126], [16891, 127]] }, { quality: "max", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [1552, 123], [5080, 124], [8608, 125], [12136, 126], [15664, 127], [19192, 128]] }, { quality: "max", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [322, 123], [3850, 124], [7378, 125], [10906, 126], [14434, 127], [17962, 128]] }] } }, { key: "gpt-image-2-5-sunburst", name: "GPT Image 2.5 Sunburst", defaultQuality: "low", defaultResolution: "1K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: "low", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 1], [1765, 2], [5290, 3], [8821, 4], [12346, 5], [15877, 6], [19402, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1447, 4], [4975, 5], [8503, 6], [12031, 7], [15559, 8], [19087, 9]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [1129, 6], [4657, 7], [8185, 8], [11713, 9], [15241, 10], [18769, 11]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [814, 8], [4342, 9], [7870, 10], [11398, 11], [14926, 12], [18454, 13]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [496, 10], [4024, 11], [7552, 12], [11080, 13], [14608, 14], [18136, 15]] }, { quality: "low", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [178, 12], [3706, 13], [7234, 14], [10762, 15], [14290, 16], [17818, 17]] }, { quality: "low", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [3391, 15], [6919, 16], [10447, 17], [13975, 18], [17503, 19]] }, { quality: "low", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [3073, 17], [6601, 18], [10129, 19], [13657, 20], [17185, 21]] }, { quality: "low", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [2758, 19], [6286, 20], [9814, 21], [13342, 22], [16870, 23]] }, { quality: "low", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [2440, 21], [5968, 22], [9496, 23], [13024, 24], [16552, 25]] }, { quality: "low", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [2122, 23], [5650, 24], [9178, 25], [12706, 26], [16234, 27], [19762, 28]] }, { quality: "low", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [1807, 25], [5335, 26], [8863, 27], [12391, 28], [15919, 29], [19447, 30]] }, { quality: "low", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [1489, 27], [5017, 28], [8545, 29], [12073, 30], [15601, 31], [19129, 32]] }, { quality: "low", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 1], [1765, 2], [5290, 3], [8821, 4], [12346, 5], [15877, 6], [19402, 7]] }, { quality: "low", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [4063, 3], [7591, 4], [11119, 5], [14647, 6], [18175, 7]] }, { quality: "low", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [2833, 3], [6361, 4], [9889, 5], [13417, 6], [16945, 7]] }, { quality: "low", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1606, 3], [5134, 4], [8662, 5], [12190, 6], [15718, 7], [19246, 8]] }, { quality: "low", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [376, 3], [3904, 4], [7432, 5], [10960, 6], [14488, 7], [18016, 8]] }, { quality: "low", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1672, 3], [5203, 4], [8728, 5], [12259, 6], [15784, 7], [19315, 8]] }, { quality: "low", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 4], [1357, 5], [4885, 6], [8413, 7], [11941, 8], [15469, 9], [18997, 10]] }, { quality: "low", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1039, 7], [4567, 8], [8095, 9], [11623, 10], [15151, 11], [18679, 12]] }, { quality: "low", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [724, 9], [4252, 10], [7780, 11], [11308, 12], [14836, 13], [18364, 14]] }, { quality: "low", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [406, 11], [3934, 12], [7462, 13], [10990, 14], [14518, 15], [18046, 16]] }, { quality: "low", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [88, 13], [3616, 14], [7144, 15], [10672, 16], [14200, 17], [17728, 18]] }, { quality: "low", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [3301, 16], [6829, 17], [10357, 18], [13885, 19], [17413, 20]] }, { quality: "low", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [2983, 18], [6511, 19], [10039, 20], [13567, 21], [17095, 22]] }, { quality: "low", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2668, 20], [6196, 21], [9724, 22], [13252, 23], [16780, 24]] }, { quality: "low", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [2350, 22], [5878, 23], [9406, 24], [12934, 25], [16462, 26], [19990, 27]] }, { quality: "low", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [2032, 24], [5560, 25], [9088, 26], [12616, 27], [16144, 28], [19672, 29]] }, { quality: "low", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [1717, 26], [5245, 27], [8773, 28], [12301, 29], [15829, 30], [19357, 31]] }, { quality: "low", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [1399, 28], [4927, 29], [8455, 30], [11983, 31], [15511, 32], [19039, 33]] }, { quality: "low", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [1672, 3], [5203, 4], [8728, 5], [12259, 6], [15784, 7], [19315, 8]] }, { quality: "low", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [445, 3], [3973, 4], [7501, 5], [11029, 6], [14557, 7], [18085, 8]] }, { quality: "low", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [2743, 4], [6271, 5], [9799, 6], [13327, 7], [16855, 8]] }, { quality: "low", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1516, 4], [5044, 5], [8572, 6], [12100, 7], [15628, 8], [19156, 9]] }, { quality: "low", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [286, 4], [3814, 5], [7342, 6], [10870, 7], [14398, 8], [17926, 9]] }, { quality: "low", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 3], [487, 4], [4012, 5], [7543, 6], [11068, 7], [14599, 8], [18124, 9]] }, { quality: "low", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [169, 6], [3697, 7], [7225, 8], [10753, 9], [14281, 10], [17809, 11]] }, { quality: "low", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3379, 9], [6907, 10], [10435, 11], [13963, 12], [17491, 13]] }, { quality: "low", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [3064, 11], [6592, 12], [10120, 13], [13648, 14], [17176, 15]] }, { quality: "low", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [2746, 13], [6274, 14], [9802, 15], [13330, 16], [16858, 17]] }, { quality: "low", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [2428, 15], [5956, 16], [9484, 17], [13012, 18], [16540, 19]] }, { quality: "low", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2113, 17], [5641, 18], [9169, 19], [12697, 20], [16225, 21], [19753, 22]] }, { quality: "low", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1795, 19], [5323, 20], [8851, 21], [12379, 22], [15907, 23], [19435, 24]] }, { quality: "low", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1480, 21], [5008, 22], [8536, 23], [12064, 24], [15592, 25], [19120, 26]] }, { quality: "low", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1162, 23], [4690, 24], [8218, 25], [11746, 26], [15274, 27], [18802, 28]] }, { quality: "low", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [844, 25], [4372, 26], [7900, 27], [11428, 28], [14956, 29], [18487, 30]] }, { quality: "low", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [529, 27], [4057, 28], [7585, 29], [11113, 30], [14641, 31], [18169, 32]] }, { quality: "low", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [211, 29], [3739, 30], [7267, 31], [10795, 32], [14323, 33], [17851, 34]] }, { quality: "low", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [487, 4], [4012, 5], [7543, 6], [11068, 7], [14599, 8], [18124, 9]] }, { quality: "low", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [2785, 5], [6313, 6], [9841, 7], [13369, 8], [16897, 9]] }, { quality: "low", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [1555, 5], [5083, 6], [8611, 7], [12139, 8], [15667, 9], [19195, 10]] }, { quality: "low", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [328, 5], [3856, 6], [7384, 7], [10912, 8], [14440, 9], [17968, 10]] }, { quality: "low", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [2626, 6], [6154, 7], [9682, 8], [13210, 9], [16738, 10]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 2], [916, 3], [4447, 4], [7972, 5], [11500, 6], [15028, 7], [18559, 8]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 4], [601, 5], [4129, 6], [7657, 7], [11185, 8], [14713, 9], [18241, 10]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [283, 7], [3811, 8], [7339, 9], [10867, 10], [14395, 11], [17923, 12]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [3496, 10], [7024, 11], [10552, 12], [14080, 13], [17608, 14]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [3178, 12], [6706, 13], [10234, 14], [13762, 15], [17290, 16]] }, { quality: "medium", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [2860, 14], [6388, 15], [9916, 16], [13444, 17], [16972, 18]] }, { quality: "medium", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [2545, 16], [6073, 17], [9601, 18], [13129, 19], [16657, 20]] }, { quality: "medium", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [2227, 18], [5755, 19], [9283, 20], [12811, 21], [16339, 22], [19867, 23]] }, { quality: "medium", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [1912, 20], [5440, 21], [8968, 22], [12496, 23], [16024, 24], [19552, 25]] }, { quality: "medium", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [1594, 22], [5122, 23], [8650, 24], [12178, 25], [15706, 26], [19234, 27]] }, { quality: "medium", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [1276, 24], [4804, 25], [8332, 26], [11860, 27], [15388, 28], [18916, 29]] }, { quality: "medium", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [961, 26], [4489, 27], [8017, 28], [11545, 29], [15073, 30], [18601, 31]] }, { quality: "medium", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [643, 28], [4171, 29], [7699, 30], [11227, 31], [14755, 32], [18283, 33]] }, { quality: "medium", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 2], [916, 3], [4447, 4], [7972, 5], [11500, 6], [15028, 7], [18559, 8]] }, { quality: "medium", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [3217, 4], [6745, 5], [10273, 6], [13801, 7], [17329, 8]] }, { quality: "medium", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [1987, 4], [5515, 5], [9043, 6], [12571, 7], [16099, 8], [19627, 9]] }, { quality: "medium", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 3], [760, 4], [4288, 5], [7816, 6], [11344, 7], [14872, 8], [18400, 9]] }, { quality: "medium", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 4], [3058, 5], [6586, 6], [10114, 7], [13642, 8], [17170, 9]] }, { quality: "medium", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [3349, 6], [6874, 7], [10405, 8], [13930, 9], [17458, 10]] }, { quality: "medium", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [3031, 8], [6559, 9], [10087, 10], [13615, 11], [17143, 12]] }, { quality: "medium", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [2713, 10], [6241, 11], [9769, 12], [13297, 13], [16825, 14]] }, { quality: "medium", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [2398, 12], [5926, 13], [9454, 14], [12982, 15], [16510, 16]] }, { quality: "medium", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [2080, 14], [5608, 15], [9136, 16], [12664, 17], [16192, 18], [19720, 19]] }, { quality: "medium", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [1762, 16], [5290, 17], [8818, 18], [12346, 19], [15874, 20], [19405, 21]] }, { quality: "medium", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [1447, 18], [4975, 19], [8503, 20], [12031, 21], [15559, 22], [19087, 23]] }, { quality: "medium", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [1129, 20], [4657, 21], [8185, 22], [11713, 23], [15241, 24], [18769, 25]] }, { quality: "medium", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [814, 22], [4342, 23], [7870, 24], [11398, 25], [14926, 26], [18454, 27]] }, { quality: "medium", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [496, 24], [4024, 25], [7552, 26], [11080, 27], [14608, 28], [18136, 29]] }, { quality: "medium", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 25], [178, 26], [3706, 27], [7237, 28], [10765, 29], [14293, 30], [17821, 31]] }, { quality: "medium", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [3391, 29], [6919, 30], [10447, 31], [13975, 32], [17503, 33]] }, { quality: "medium", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [3073, 31], [6601, 32], [10129, 33], [13657, 34], [17185, 35]] }, { quality: "medium", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [3349, 6], [6874, 7], [10405, 8], [13930, 9], [17458, 10]] }, { quality: "medium", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [2119, 6], [5647, 7], [9175, 8], [12703, 9], [16231, 10], [19759, 11]] }, { quality: "medium", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [889, 6], [4417, 7], [7945, 8], [11473, 9], [15001, 10], [18529, 11]] }, { quality: "medium", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [3190, 7], [6718, 8], [10246, 9], [13774, 10], [17302, 11]] }, { quality: "medium", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1960, 7], [5488, 8], [9016, 9], [12544, 10], [16072, 11], [19600, 12]] }, { quality: "medium", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3292, 9], [6823, 10], [10348, 11], [13876, 12], [17407, 13]] }, { quality: "medium", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2977, 11], [6505, 12], [10033, 13], [13561, 14], [17089, 15]] }, { quality: "medium", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [2659, 13], [6187, 14], [9715, 15], [13243, 16], [16771, 17]] }, { quality: "medium", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 14], [2344, 15], [5872, 16], [9400, 17], [12928, 18], [16456, 19], [19984, 20]] }, { quality: "medium", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2026, 17], [5554, 18], [9082, 19], [12610, 20], [16138, 21], [19666, 22]] }, { quality: "medium", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1708, 19], [5236, 20], [8767, 21], [12292, 22], [15820, 23], [19348, 24]] }, { quality: "medium", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1393, 21], [4921, 22], [8449, 23], [11977, 24], [15505, 25], [19033, 26]] }, { quality: "medium", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1075, 23], [4603, 24], [8131, 25], [11659, 26], [15187, 27], [18715, 28]] }, { quality: "medium", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [760, 25], [4288, 26], [7816, 27], [11344, 28], [14872, 29], [18400, 30]] }, { quality: "medium", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [442, 27], [3970, 28], [7498, 29], [11026, 30], [14554, 31], [18082, 32]] }, { quality: "medium", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [127, 29], [3655, 30], [7183, 31], [10711, 32], [14236, 33], [17764, 34]] }, { quality: "medium", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3337, 32], [6865, 33], [10393, 34], [13921, 35], [17449, 36]] }, { quality: "medium", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [3019, 34], [6547, 35], [10075, 36], [13603, 37], [17131, 38]] }, { quality: "medium", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3292, 9], [6823, 10], [10348, 11], [13876, 12], [17407, 13]] }, { quality: "medium", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [2065, 9], [5593, 10], [9121, 11], [12649, 12], [16177, 13], [19705, 14]] }, { quality: "medium", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [835, 9], [4363, 10], [7891, 11], [11419, 12], [14947, 13], [18475, 14]] }, { quality: "medium", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [3136, 10], [6664, 11], [10192, 12], [13720, 13], [17248, 14]] }, { quality: "medium", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16018, 14], [19546, 15]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16021, 14], [19546, 15]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [1591, 12], [5119, 13], [8647, 14], [12175, 15], [15703, 16], [19231, 17]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [1273, 14], [4801, 15], [8329, 16], [11857, 17], [15385, 18], [18913, 19]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 15], [958, 16], [4486, 17], [8014, 18], [11542, 19], [15070, 20], [18598, 21]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 17], [640, 18], [4168, 19], [7696, 20], [11224, 21], [14752, 22], [18280, 23]] }, { quality: "high", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [322, 20], [3850, 21], [7378, 22], [10906, 23], [14434, 24], [17962, 25]] }, { quality: "high", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [7, 22], [3535, 23], [7063, 24], [10591, 25], [14119, 26], [17647, 27]] }, { quality: "high", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [3217, 25], [6745, 26], [10273, 27], [13801, 28], [17329, 29]] }, { quality: "high", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [2902, 27], [6430, 28], [9958, 29], [13486, 30], [17014, 31]] }, { quality: "high", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [2584, 29], [6112, 30], [9640, 31], [13168, 32], [16696, 33]] }, { quality: "high", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [2269, 31], [5797, 32], [9322, 33], [12850, 34], [16378, 35], [19906, 36]] }, { quality: "high", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [1951, 33], [5479, 34], [9007, 35], [12535, 36], [16063, 37], [19591, 38]] }, { quality: "high", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [1633, 35], [5161, 36], [8689, 37], [12217, 38], [15745, 39], [19273, 40]] }, { quality: "high", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [1906, 10], [5434, 11], [8962, 12], [12490, 13], [16021, 14], [19546, 15]] }, { quality: "high", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [679, 10], [4207, 11], [7735, 12], [11263, 13], [14791, 14], [18319, 15]] }, { quality: "high", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2977, 11], [6505, 12], [10033, 13], [13561, 14], [17089, 15]] }, { quality: "high", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [1750, 11], [5278, 12], [8806, 13], [12334, 14], [15862, 15], [19390, 16]] }, { quality: "high", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [520, 11], [4048, 12], [7576, 13], [11104, 14], [14632, 15], [18160, 16]] }, { quality: "high", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1042, 19], [4570, 20], [8101, 21], [11626, 22], [15154, 23], [18682, 24]] }, { quality: "high", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [727, 21], [4255, 22], [7783, 23], [11311, 24], [14839, 25], [18367, 26]] }, { quality: "high", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [409, 23], [3937, 24], [7465, 25], [10993, 26], [14521, 27], [18049, 28]] }, { quality: "high", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [94, 25], [3622, 26], [7150, 27], [10678, 28], [14206, 29], [17734, 30]] }, { quality: "high", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [3304, 28], [6832, 29], [10360, 30], [13888, 31], [17416, 32]] }, { quality: "high", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 29], [2986, 30], [6514, 31], [10042, 32], [13570, 33], [17098, 34]] }, { quality: "high", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [2671, 32], [6199, 33], [9727, 34], [13255, 35], [16783, 36]] }, { quality: "high", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [2353, 34], [5881, 35], [9409, 36], [12937, 37], [16465, 38], [19993, 39]] }, { quality: "high", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 35], [2038, 36], [5566, 37], [9094, 38], [12622, 39], [16150, 40], [19678, 41]] }, { quality: "high", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [1720, 38], [5248, 39], [8776, 40], [12304, 41], [15832, 42], [19360, 43]] }, { quality: "high", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [1402, 40], [4930, 41], [8458, 42], [11986, 43], [15514, 44], [19042, 45]] }, { quality: "high", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [1087, 42], [4615, 43], [8143, 44], [11671, 45], [15199, 46], [18727, 47]] }, { quality: "high", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [769, 44], [4297, 45], [7825, 46], [11353, 47], [14881, 48], [18409, 49]] }, { quality: "high", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1042, 19], [4570, 20], [8101, 21], [11626, 22], [15154, 23], [18682, 24]] }, { quality: "high", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [3343, 20], [6871, 21], [10399, 22], [13927, 23], [17455, 24]] }, { quality: "high", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2113, 20], [5641, 21], [9169, 22], [12697, 23], [16225, 24], [19753, 25]] }, { quality: "high", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [886, 20], [4414, 21], [7942, 22], [11470, 23], [14998, 24], [18526, 25]] }, { quality: "high", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [3184, 21], [6712, 22], [10240, 23], [13768, 24], [17296, 25]] }, { quality: "high", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 30], [865, 31], [4393, 32], [7918, 33], [11446, 34], [14974, 35], [18502, 36]] }, { quality: "high", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [547, 33], [4075, 34], [7603, 35], [11131, 36], [14659, 37], [18187, 38]] }, { quality: "high", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [229, 35], [3757, 36], [7285, 37], [10813, 38], [14341, 39], [17869, 40]] }, { quality: "high", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3442, 38], [6970, 39], [10498, 40], [14026, 41], [17554, 42]] }, { quality: "high", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [3124, 40], [6652, 41], [10180, 42], [13708, 43], [17236, 44]] }, { quality: "high", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [2806, 42], [6337, 43], [9865, 44], [13390, 45], [16921, 46]] }, { quality: "high", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [2491, 44], [6019, 45], [9547, 46], [13075, 47], [16603, 48]] }, { quality: "high", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 45], [2173, 46], [5701, 47], [9229, 48], [12757, 49], [16285, 50], [19813, 51]] }, { quality: "high", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 47], [1858, 48], [5386, 49], [8914, 50], [12442, 51], [15970, 52], [19498, 53]] }, { quality: "high", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 49], [1540, 50], [5068, 51], [8596, 52], [12124, 53], [15652, 54], [19180, 55]] }, { quality: "high", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 51], [1222, 52], [4753, 53], [8278, 54], [11806, 55], [15334, 56], [18862, 57]] }, { quality: "high", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [907, 54], [4435, 55], [7963, 56], [11491, 57], [15019, 58], [18547, 59]] }, { quality: "high", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [589, 56], [4117, 57], [7645, 58], [11173, 59], [14701, 60], [18229, 61]] }, { quality: "high", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 30], [865, 31], [4393, 32], [7918, 33], [11446, 34], [14974, 35], [18502, 36]] }, { quality: "high", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3163, 32], [6691, 33], [10219, 34], [13747, 35], [17275, 36]] }, { quality: "high", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [1933, 32], [5461, 33], [8989, 34], [12517, 35], [16045, 36], [19573, 37]] }, { quality: "high", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 31], [706, 32], [4234, 33], [7762, 34], [11290, 35], [14818, 36], [18346, 37]] }, { quality: "high", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 32], [3004, 33], [6532, 34], [10060, 35], [13588, 36], [17116, 37]] }, { quality: "xhigh", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2014, 17], [5542, 18], [9070, 19], [12598, 20], [16129, 21], [19654, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [1699, 19], [5227, 20], [8755, 21], [12283, 22], [15811, 23], [19339, 24]] }, { quality: "xhigh", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [1381, 21], [4909, 22], [8437, 23], [11965, 24], [15493, 25], [19021, 26]] }, { quality: "xhigh", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [1066, 23], [4594, 24], [8122, 25], [11650, 26], [15178, 27], [18706, 28]] }, { quality: "xhigh", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 24], [748, 25], [4276, 26], [7804, 27], [11332, 28], [14860, 29], [18388, 30]] }, { quality: "xhigh", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 26], [430, 27], [3958, 28], [7486, 29], [11014, 30], [14542, 31], [18070, 32]] }, { quality: "xhigh", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28], [115, 29], [3643, 30], [7171, 31], [10699, 32], [14227, 33], [17755, 34]] }, { quality: "xhigh", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 31], [3325, 32], [6853, 33], [10381, 34], [13909, 35], [17437, 36]] }, { quality: "xhigh", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 33], [3010, 34], [6538, 35], [10066, 36], [13594, 37], [17122, 38]] }, { quality: "xhigh", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 35], [2692, 36], [6220, 37], [9748, 38], [13276, 39], [16804, 40]] }, { quality: "xhigh", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [2374, 38], [5902, 39], [9430, 40], [12958, 41], [16486, 42]] }, { quality: "xhigh", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [2059, 40], [5587, 41], [9115, 42], [12643, 43], [16171, 44], [19699, 45]] }, { quality: "xhigh", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [1741, 42], [5269, 43], [8797, 44], [12325, 45], [15853, 46], [19381, 47]] }, { quality: "xhigh", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 16], [2014, 17], [5542, 18], [9070, 19], [12598, 20], [16129, 21], [19654, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 16], [787, 17], [4315, 18], [7843, 19], [11371, 20], [14899, 21], [18427, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 17], [3085, 18], [6613, 19], [10141, 20], [13669, 21], [17197, 22]] }, { quality: "xhigh", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 17], [1858, 18], [5386, 19], [8914, 20], [12442, 21], [15970, 22], [19498, 23]] }, { quality: "xhigh", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 17], [628, 18], [4156, 19], [7684, 20], [11212, 21], [14740, 22], [18268, 23]] }, { quality: "xhigh", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 32], [484, 33], [4012, 34], [7540, 35], [11068, 36], [14596, 37], [18124, 38]] }, { quality: "xhigh", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 34], [169, 35], [3697, 36], [7225, 37], [10753, 38], [14281, 39], [17809, 40]] }, { quality: "xhigh", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3379, 38], [6907, 39], [10435, 40], [13963, 41], [17491, 42]] }, { quality: "xhigh", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 39], [3064, 40], [6592, 41], [10120, 42], [13648, 43], [17176, 44]] }, { quality: "xhigh", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 41], [2746, 42], [6274, 43], [9802, 44], [13330, 45], [16858, 46]] }, { quality: "xhigh", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 43], [2428, 44], [5956, 45], [9484, 46], [13015, 47], [16540, 48]] }, { quality: "xhigh", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 45], [2113, 46], [5641, 47], [9169, 48], [12697, 49], [16225, 50], [19753, 51]] }, { quality: "xhigh", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 47], [1795, 48], [5323, 49], [8851, 50], [12379, 51], [15907, 52], [19435, 53]] }, { quality: "xhigh", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 49], [1480, 50], [5008, 51], [8536, 52], [12064, 53], [15592, 54], [19120, 55]] }, { quality: "xhigh", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 51], [1162, 52], [4690, 53], [8218, 54], [11746, 55], [15274, 56], [18802, 57]] }, { quality: "xhigh", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [844, 54], [4372, 55], [7900, 56], [11428, 57], [14956, 58], [18487, 59]] }, { quality: "xhigh", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [529, 56], [4057, 57], [7585, 58], [11113, 59], [14641, 60], [18169, 61]] }, { quality: "xhigh", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 57], [211, 58], [3739, 59], [7267, 60], [10795, 61], [14323, 62], [17851, 63]] }, { quality: "xhigh", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 32], [484, 33], [4012, 34], [7540, 35], [11068, 36], [14596, 37], [18124, 38]] }, { quality: "xhigh", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 33], [2785, 34], [6313, 35], [9841, 36], [13369, 37], [16897, 38]] }, { quality: "xhigh", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 33], [1555, 34], [5083, 35], [8611, 36], [12139, 37], [15667, 38], [19195, 39]] }, { quality: "xhigh", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 33], [328, 34], [3856, 35], [7384, 36], [10912, 37], [14440, 38], [17968, 39]] }, { quality: "xhigh", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 34], [2626, 35], [6154, 36], [9682, 37], [13210, 38], [16738, 39]] }, { quality: "xhigh", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 54], [2518, 55], [6046, 56], [9574, 57], [13102, 58], [16633, 59]] }, { quality: "xhigh", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 56], [2203, 57], [5731, 58], [9259, 59], [12787, 60], [16315, 61], [19843, 62]] }, { quality: "xhigh", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 58], [1885, 59], [5413, 60], [8941, 61], [12469, 62], [15997, 63], [19525, 64]] }, { quality: "xhigh", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 60], [1570, 61], [5098, 62], [8626, 63], [12154, 64], [15682, 65], [19210, 66]] }, { quality: "xhigh", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 62], [1252, 63], [4780, 64], [8308, 65], [11836, 66], [15364, 67], [18892, 68]] }, { quality: "xhigh", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 64], [934, 65], [4462, 66], [7990, 67], [11518, 68], [15046, 69], [18574, 70]] }, { quality: "xhigh", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 66], [619, 67], [4147, 68], [7675, 69], [11203, 70], [14731, 71], [18259, 72]] }, { quality: "xhigh", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 68], [301, 69], [3829, 70], [7357, 71], [10885, 72], [14413, 73], [17941, 74]] }, { quality: "xhigh", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 71], [3514, 72], [7042, 73], [10570, 74], [14098, 75], [17626, 76]] }, { quality: "xhigh", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 73], [3196, 74], [6724, 75], [10252, 76], [13780, 77], [17308, 78]] }, { quality: "xhigh", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 75], [2878, 76], [6406, 77], [9934, 78], [13462, 79], [16990, 80]] }, { quality: "xhigh", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 77], [2563, 78], [6091, 79], [9619, 80], [13147, 81], [16675, 82]] }, { quality: "xhigh", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 79], [2245, 80], [5773, 81], [9301, 82], [12829, 83], [16357, 84], [19885, 85]] }, { quality: "xhigh", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 54], [2518, 55], [6046, 56], [9574, 57], [13102, 58], [16633, 59]] }, { quality: "xhigh", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 54], [1291, 55], [4819, 56], [8347, 57], [11875, 58], [15403, 59], [18931, 60]] }, { quality: "xhigh", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 54], [61, 55], [3589, 56], [7117, 57], [10645, 58], [14173, 59], [17701, 60]] }, { quality: "xhigh", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 55], [2362, 56], [5890, 57], [9418, 58], [12946, 59], [16474, 60]] }, { quality: "xhigh", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 55], [1132, 56], [4660, 57], [8188, 58], [11716, 59], [15244, 60], [18772, 61]] }, { quality: "max", resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 36], [2338, 37], [5866, 38], [9394, 39], [12922, 40], [16450, 41], [19978, 42]] }, { quality: "max", resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 38], [2023, 39], [5551, 40], [9079, 41], [12607, 42], [16135, 43], [19663, 44]] }, { quality: "max", resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 40], [1705, 41], [5233, 42], [8761, 43], [12289, 44], [15817, 45], [19345, 46]] }, { quality: "max", resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 42], [1390, 43], [4918, 44], [8446, 45], [11974, 46], [15502, 47], [19030, 48]] }, { quality: "max", resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 44], [1072, 45], [4600, 46], [8128, 47], [11656, 48], [15184, 49], [18712, 50]] }, { quality: "max", resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 46], [757, 47], [4282, 48], [7810, 49], [11338, 50], [14866, 51], [18394, 52]] }, { quality: "max", resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 48], [439, 49], [3967, 50], [7495, 51], [11023, 52], [14551, 53], [18079, 54]] }, { quality: "max", resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 50], [121, 51], [3649, 52], [7177, 53], [10705, 54], [14233, 55], [17761, 56]] }, { quality: "max", resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 53], [3334, 54], [6862, 55], [10390, 56], [13918, 57], [17446, 58]] }, { quality: "max", resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 55], [3016, 56], [6544, 57], [10072, 58], [13600, 59], [17128, 60]] }, { quality: "max", resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 57], [2698, 58], [6229, 59], [9754, 60], [13282, 61], [16810, 62]] }, { quality: "max", resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 59], [2383, 60], [5911, 61], [9439, 62], [12967, 63], [16495, 64]] }, { quality: "max", resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 61], [2065, 62], [5593, 63], [9121, 64], [12649, 65], [16177, 66], [19705, 67]] }, { quality: "max", resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 36], [2338, 37], [5866, 38], [9394, 39], [12922, 40], [16450, 41], [19978, 42]] }, { quality: "max", resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 36], [1111, 37], [4639, 38], [8167, 39], [11695, 40], [15223, 41], [18751, 42]] }, { quality: "max", resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [3409, 38], [6937, 39], [10465, 40], [13993, 41], [17521, 42]] }, { quality: "max", resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [2182, 38], [5710, 39], [9238, 40], [12766, 41], [16294, 42], [19822, 43]] }, { quality: "max", resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 37], [952, 38], [4480, 39], [8008, 40], [11536, 41], [15064, 42], [18592, 43]] }, { quality: "max", resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 73], [2410, 74], [5938, 75], [9466, 76], [12994, 77], [16522, 78]] }, { quality: "max", resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 75], [2095, 76], [5623, 77], [9151, 78], [12679, 79], [16207, 80], [19735, 81]] }, { quality: "max", resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 77], [1777, 78], [5305, 79], [8833, 80], [12361, 81], [15889, 82], [19417, 83]] }, { quality: "max", resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 79], [1462, 80], [4990, 81], [8518, 82], [12046, 83], [15574, 84], [19102, 85]] }, { quality: "max", resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 81], [1144, 82], [4672, 83], [8200, 84], [11728, 85], [15256, 86], [18784, 87]] }, { quality: "max", resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 83], [826, 84], [4354, 85], [7882, 86], [11410, 87], [14938, 88], [18466, 89]] }, { quality: "max", resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 85], [511, 86], [4039, 87], [7567, 88], [11095, 89], [14623, 90], [18151, 91]] }, { quality: "max", resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 87], [193, 88], [3721, 89], [7249, 90], [10777, 91], [14305, 92], [17833, 93]] }, { quality: "max", resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 90], [3406, 91], [6934, 92], [10462, 93], [13990, 94], [17518, 95]] }, { quality: "max", resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 92], [3088, 93], [6616, 94], [10144, 95], [13672, 96], [17200, 97]] }, { quality: "max", resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 94], [2770, 95], [6298, 96], [9826, 97], [13354, 98], [16885, 99]] }, { quality: "max", resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 96], [2455, 97], [5983, 98], [9511, 99], [13039, 100], [16567, 101]] }, { quality: "max", resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 98], [2137, 99], [5665, 100], [9193, 101], [12721, 102], [16249, 103], [19777, 104]] }, { quality: "max", resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 73], [2410, 74], [5938, 75], [9466, 76], [12994, 77], [16522, 78]] }, { quality: "max", resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 73], [1183, 74], [4711, 75], [8239, 76], [11767, 77], [15295, 78], [18823, 79]] }, { quality: "max", resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [3481, 75], [7009, 76], [10537, 77], [14065, 78], [17593, 79]] }, { quality: "max", resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [2254, 75], [5782, 76], [9310, 77], [12838, 78], [16366, 79], [19894, 80]] }, { quality: "max", resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 74], [1024, 75], [4552, 76], [8080, 77], [11608, 78], [15136, 79], [18664, 80]] }, { quality: "max", resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 121], [1708, 122], [5236, 123], [8764, 124], [12292, 125], [15823, 126], [19348, 127]] }, { quality: "max", resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 123], [1393, 124], [4921, 125], [8449, 126], [11977, 127], [15505, 128], [19033, 129]] }, { quality: "max", resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 125], [1075, 126], [4603, 127], [8131, 128], [11659, 129], [15187, 130], [18715, 131]] }, { quality: "max", resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 127], [760, 128], [4288, 129], [7816, 130], [11344, 131], [14872, 132], [18400, 133]] }, { quality: "max", resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 129], [442, 130], [3970, 131], [7498, 132], [11026, 133], [14554, 134], [18082, 135]] }, { quality: "max", resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 131], [124, 132], [3652, 133], [7180, 134], [10708, 135], [14236, 136], [17764, 137]] }, { quality: "max", resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 134], [3337, 135], [6865, 136], [10393, 137], [13921, 138], [17449, 139]] }, { quality: "max", resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 136], [3019, 137], [6547, 138], [10075, 139], [13603, 140], [17131, 141]] }, { quality: "max", resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 138], [2704, 139], [6232, 140], [9760, 141], [13288, 142], [16816, 143]] }, { quality: "max", resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 140], [2386, 141], [5914, 142], [9442, 143], [12970, 144], [16498, 145]] }, { quality: "max", resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 142], [2068, 143], [5596, 144], [9124, 145], [12652, 146], [16180, 147], [19708, 148]] }, { quality: "max", resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 144], [1753, 145], [5281, 146], [8809, 147], [12337, 148], [15865, 149], [19393, 150]] }, { quality: "max", resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 146], [1435, 147], [4963, 148], [8491, 149], [12019, 150], [15547, 151], [19075, 152]] }, { quality: "max", resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 121], [1708, 122], [5236, 123], [8764, 124], [12292, 125], [15823, 126], [19348, 127]] }, { quality: "max", resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 121], [481, 122], [4009, 123], [7537, 124], [11065, 125], [14593, 126], [18121, 127]] }, { quality: "max", resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [2779, 123], [6307, 124], [9835, 125], [13363, 126], [16891, 127]] }, { quality: "max", resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [1552, 123], [5080, 124], [8608, 125], [12136, 126], [15664, 127], [19192, 128]] }, { quality: "max", resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 122], [322, 123], [3850, 124], [7378, 125], [10906, 126], [14434, 127], [17962, 128]] }] } }, { key: "nano-banana-2", name: "Nano Banana 2", defaultQuality: null, defaultResolution: "0.5K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 10], [4882, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 10], [4882, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [17362, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 10], [1522, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 10], [1522, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [19738, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [14005, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [16378, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [10645, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [13018, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [7285, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [9658, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [3925, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [6298, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [565, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [18781, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [18781, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [2938, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [15421, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [15421, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [12061, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [12061, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [8701, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [8701, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [5341, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [5341, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [17824, 10]] }, { quality: null, resolution: "0.5K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [1981, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [1981, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [14464, 10]] }, { quality: null, resolution: "0.5K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 12]] }, { quality: null, resolution: "0.5K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [16837, 15]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 10], [4882, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 10], [4882, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 13]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [17362, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 10], [1522, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 10], [1522, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 13], [19738, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [14005, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 13], [16378, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [10645, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 13], [13018, 14]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 8], [7285, 9]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 11]] }, { quality: null, resolution: "0.5K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 13], [9658, 14]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [6910, 15]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [6910, 15]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [19390, 13]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [3550, 15]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [3550, 15]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [16030, 13]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [190, 15]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [190, 15]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [18406, 18]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [12670, 13]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [15046, 18]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [9313, 13]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [11686, 18]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [5953, 13]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [8326, 18]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [2593, 13]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [4966, 18]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15], [17449, 16]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15], [17449, 16]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [1606, 18]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15], [14089, 16]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15], [14089, 16]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 18]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15], [10729, 16]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15], [10729, 16]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 18]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15], [7369, 16]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15], [7369, 16]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 18]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [19849, 14]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15], [4009, 16]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15], [4009, 16]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 18]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 13], [16492, 14]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 15], [649, 16]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 15], [649, 16]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 18], [18865, 19]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 12]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 14], [6910, 15]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 14], [6910, 15]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 17]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 12], [19390, 13]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 14], [3550, 15]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 14], [3550, 15]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 17]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 12], [16030, 13]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 14], [190, 15]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 14], [190, 15]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 17], [18406, 18]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 12], [12670, 13]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 17], [15046, 18]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 12], [9313, 13]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 15]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 17], [11686, 18]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 20], [9772, 21]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 20], [9772, 21]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 20], [6412, 21]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 20], [6412, 21]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [18892, 19]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 20], [3052, 21]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 20], [3052, 21]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [15532, 19]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23], [17905, 24]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [12172, 19]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23], [14548, 24]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [8815, 19]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23], [11188, 24]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [5455, 19]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23], [7828, 24]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 18], [2095, 19]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23], [4468, 24]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21], [16948, 22]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21], [16948, 22]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 23], [1108, 24]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21], [13591, 22]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21], [13591, 22]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 24]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21], [10231, 22]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21], [10231, 22]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 24]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21], [6871, 22]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21], [6871, 22]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 24]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [19351, 20]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 21], [3511, 22]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 21], [3511, 22]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 24]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 20], [9772, 21]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 20], [9772, 21]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 23]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 20], [6412, 21]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 20], [6412, 21]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 23]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18], [18892, 19]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 20], [3052, 21]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 20], [3052, 21]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 23]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18], [15532, 19]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 23], [17905, 24]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 18], [12172, 19]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 21]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 23], [14548, 24]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 29], [14059, 30]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 29], [14059, 30]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 29], [10699, 30]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 29], [10699, 30]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 29], [7339, 30]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 29], [7339, 30]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [19819, 28]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 29], [3979, 30]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 29], [3979, 30]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [16462, 28]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 29], [619, 30]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 29], [619, 30]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32], [18835, 33]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [13102, 28]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32], [15475, 33]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [9742, 28]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32], [12115, 33]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [6382, 28]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32], [8755, 33]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 27], [3022, 28]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32], [5395, 33]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30], [17878, 31]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30], [17878, 31]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 32], [2035, 33]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30], [14518, 31]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30], [14518, 31]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 33]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30], [11158, 31]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30], [11158, 31]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 33]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 28]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 30], [7798, 31]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 30], [7798, 31]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 33]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 27]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 29], [14059, 30]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 29], [14059, 30]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 27]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 29], [10699, 30]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 29], [10699, 30]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 27]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 29], [7339, 30]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 29], [7339, 30]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 27], [19819, 28]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 29], [3979, 30]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 29], [3979, 30]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 32]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 27], [16462, 28]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 29], [619, 30]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 29], [619, 30]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 32], [18835, 33]] }] } }, { key: "nano-banana-2-lite", name: "Nano Banana 2 Lite", defaultQuality: null, defaultResolution: "1K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [7678, 6]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [4324, 6]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 5], [973, 6]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [7678, 6]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [4324, 6]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 5], [973, 6]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6]] }] } }, { key: "nano-banana-2-1", name: "Nano Banana 2.1", defaultQuality: null, defaultResolution: "1K", rule: { version: 2, unit: "credits", maxPromptCharacters: 2e4, prices: [{ quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [8440, 7]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 8], [3958, 9], [15718, 10]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 8], [3958, 9], [15718, 10]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 11], [11239, 12]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [5077, 7], [16837, 8]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 8], [598, 9], [12358, 10]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 8], [598, 9], [12358, 10]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 11], [7876, 12], [19636, 13]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1714, 7], [13474, 8]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 9], [8995, 10]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 9], [8995, 10]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 11], [4513, 12], [16273, 13]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [10111, 8]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 9], [5632, 10], [17392, 11]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 9], [5632, 10], [17392, 11]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 11], [1150, 12], [12910, 13]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [6748, 8], [18508, 9]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 9], [2269, 10], [14029, 11]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 9], [2269, 10], [14029, 11]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 12], [9550, 13]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [3385, 8], [15145, 9]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 10], [10666, 11]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 10], [10666, 11]] }, { quality: null, resolution: "1K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 12], [6187, 13], [17947, 14]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 7], [22, 8], [11782, 9]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 10], [7303, 11], [19063, 12]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 10], [7303, 11], [19063, 12]] }, { quality: null, resolution: "1K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 12], [2824, 13], [14584, 14]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [8419, 9]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 10], [3940, 11], [15700, 12]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 10], [3940, 11], [15700, 12]] }, { quality: null, resolution: "1K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [11221, 14]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [5059, 9], [16819, 10]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 10], [577, 11], [12337, 12]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 10], [577, 11], [12337, 12]] }, { quality: null, resolution: "1K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [7858, 14], [19618, 15]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 8], [1696, 9], [13456, 10]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [8974, 12]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [8974, 12]] }, { quality: null, resolution: "1K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [4495, 14], [16255, 15]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [10093, 10]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [5611, 12], [17371, 13]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [5611, 12], [17371, 13]] }, { quality: null, resolution: "1K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [1132, 14], [12892, 15]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [6730, 10], [18490, 11]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [2248, 12], [14008, 13]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [2248, 12], [14008, 13]] }, { quality: null, resolution: "1K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [9529, 15]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [3367, 10], [15127, 11]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 12], [10648, 13]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 12], [10648, 13]] }, { quality: null, resolution: "1K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [6166, 15], [17926, 16]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [8440, 7]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 8], [3958, 9], [15718, 10]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 8], [3958, 9], [15718, 10]] }, { quality: null, resolution: "1K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 11], [11239, 12]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [5077, 7], [16837, 8]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 8], [598, 9], [12358, 10]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 8], [598, 9], [12358, 10]] }, { quality: null, resolution: "1K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 11], [7876, 12], [19636, 13]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 6], [1714, 7], [13474, 8]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 9], [8995, 10]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 9], [8995, 10]] }, { quality: null, resolution: "1K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 11], [4513, 12], [16273, 13]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 7], [10111, 8]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 9], [5632, 10], [17392, 11]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 9], [5632, 10], [17392, 11]] }, { quality: null, resolution: "1K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 11], [1150, 12], [12910, 13]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 7], [6748, 8], [18508, 9]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 9], [2269, 10], [14029, 11]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 9], [2269, 10], [14029, 11]] }, { quality: null, resolution: "1K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 12], [9550, 13]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [10918, 10]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [6439, 12], [18199, 13]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [6439, 12], [18199, 13]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 13], [1960, 14], [13720, 15]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [7555, 10], [19315, 11]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 11], [3076, 12], [14836, 13]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 11], [3076, 12], [14836, 13]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [10357, 15]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [4192, 10], [15952, 11]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 12], [11473, 13]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 12], [11473, 13]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [6994, 15], [18754, 16]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 9], [832, 10], [12592, 11]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 12], [8110, 13], [19870, 14]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 12], [8110, 13], [19870, 14]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [3631, 15], [15391, 16]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [9229, 11]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 12], [4747, 13], [16507, 14]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 12], [4747, 13], [16507, 14]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 14], [268, 15], [12028, 16]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [5866, 11], [17626, 12]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 12], [1384, 13], [13144, 14]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 12], [1384, 13], [13144, 14]] }, { quality: null, resolution: "2K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 15], [8665, 16]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 10], [2503, 11], [14263, 12]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 13], [9781, 14]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 13], [9781, 14]] }, { quality: null, resolution: "2K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 15], [5302, 16], [17062, 17]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [10900, 12]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 13], [6421, 14], [18181, 15]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 13], [6421, 14], [18181, 15]] }, { quality: null, resolution: "2K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 15], [1939, 16], [13699, 17]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [7537, 12], [19297, 13]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 13], [3058, 14], [14818, 15]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 13], [3058, 14], [14818, 15]] }, { quality: null, resolution: "2K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 16], [10336, 17]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [4174, 12], [15934, 13]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [11455, 15]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [11455, 15]] }, { quality: null, resolution: "2K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 16], [6973, 17], [18733, 18]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 11], [811, 12], [12571, 13]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [8092, 15], [19852, 16]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [8092, 15], [19852, 16]] }, { quality: null, resolution: "2K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 16], [3610, 17], [15370, 18]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [9208, 13]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [4729, 15], [16489, 16]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [4729, 15], [16489, 16]] }, { quality: null, resolution: "2K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 16], [250, 17], [12010, 18]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 12], [5845, 13], [17605, 14]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 14], [1366, 15], [13126, 16]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 14], [1366, 15], [13126, 16]] }, { quality: null, resolution: "2K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 17], [8647, 18]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [10918, 10]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 11], [6439, 12], [18199, 13]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 11], [6439, 12], [18199, 13]] }, { quality: null, resolution: "2K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 13], [1960, 14], [13720, 15]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [7555, 10], [19315, 11]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 11], [3076, 12], [14836, 13]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 11], [3076, 12], [14836, 13]] }, { quality: null, resolution: "2K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 14], [10357, 15]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [4192, 10], [15952, 11]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 12], [11473, 13]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 12], [11473, 13]] }, { quality: null, resolution: "2K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 14], [6994, 15], [18754, 16]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 9], [832, 10], [12592, 11]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 12], [8110, 13], [19870, 14]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 12], [8110, 13], [19870, 14]] }, { quality: null, resolution: "2K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 14], [3631, 15], [15391, 16]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 10], [9229, 11]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 12], [4747, 13], [16507, 14]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 12], [4747, 13], [16507, 14]] }, { quality: null, resolution: "2K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 14], [268, 15], [12028, 16]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2518, 20], [14278, 21]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 22], [9799, 23]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 22], [9799, 23]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 24], [5320, 25], [17080, 26]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [10915, 21]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 22], [6436, 23], [18196, 24]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 22], [6436, 23], [18196, 24]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 24], [1957, 25], [13717, 26]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [7552, 21], [19312, 22]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 22], [3073, 23], [14833, 24]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 22], [3073, 23], [14833, 24]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 25], [10354, 26]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [4192, 21], [15952, 22]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 23], [11470, 24]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 23], [11470, 24]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 25], [6991, 26], [18751, 27]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 20], [829, 21], [12589, 22]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 23], [8107, 24], [19867, 25]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 23], [8107, 24], [19867, 25]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 25], [3628, 26], [15388, 27]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [9226, 22]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 23], [4744, 24], [16504, 25]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 23], [4744, 24], [16504, 25]] }, { quality: null, resolution: "4K", referenceImages: 5, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 25], [265, 26], [12025, 27]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [5863, 22], [17623, 23]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 23], [1381, 24], [13141, 25]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 23], [1381, 24], [13141, 25]] }, { quality: null, resolution: "4K", referenceImages: 6, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 26], [8662, 27]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 21], [2500, 22], [14260, 23]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 24], [9781, 25]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 24], [9781, 25]] }, { quality: null, resolution: "4K", referenceImages: 7, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 26], [5299, 27], [17059, 28]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [10897, 23]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 24], [6418, 25], [18178, 26]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 24], [6418, 25], [18178, 26]] }, { quality: null, resolution: "4K", referenceImages: 8, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 26], [1936, 27], [13696, 28]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [7534, 23], [19294, 24]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 24], [3055, 25], [14815, 26]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 24], [3055, 25], [14815, 26]] }, { quality: null, resolution: "4K", referenceImages: 9, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 27], [10333, 28]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [4171, 23], [15931, 24]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 25], [11452, 26]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 25], [11452, 26]] }, { quality: null, resolution: "4K", referenceImages: 10, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 27], [6970, 28], [18730, 29]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 22], [808, 23], [12568, 24]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 25], [8089, 26], [19849, 27]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 25], [8089, 26], [19849, 27]] }, { quality: null, resolution: "4K", referenceImages: 11, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 27], [3610, 28], [15370, 29]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: false, promptBands: [[0, 23], [9205, 24]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: false, imageSearch: true, promptBands: [[0, 25], [4726, 26], [16486, 27]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: false, promptBands: [[0, 25], [4726, 26], [16486, 27]] }, { quality: null, resolution: "4K", referenceImages: 12, ecoMode: false, webSearch: true, imageSearch: true, promptBands: [[0, 27], [247, 28], [12007, 29]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 19], [2518, 20], [14278, 21]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 22], [9799, 23]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 22], [9799, 23]] }, { quality: null, resolution: "4K", referenceImages: 0, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 24], [5320, 25], [17080, 26]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [10915, 21]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 22], [6436, 23], [18196, 24]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 22], [6436, 23], [18196, 24]] }, { quality: null, resolution: "4K", referenceImages: 1, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 24], [1957, 25], [13717, 26]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [7552, 21], [19312, 22]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 22], [3073, 23], [14833, 24]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 22], [3073, 23], [14833, 24]] }, { quality: null, resolution: "4K", referenceImages: 2, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 25], [10354, 26]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [4192, 21], [15952, 22]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 23], [11470, 24]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 23], [11470, 24]] }, { quality: null, resolution: "4K", referenceImages: 3, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 25], [6991, 26], [18751, 27]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: false, promptBands: [[0, 20], [829, 21], [12589, 22]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: false, imageSearch: true, promptBands: [[0, 23], [8107, 24], [19867, 25]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: false, promptBands: [[0, 23], [8107, 24], [19867, 25]] }, { quality: null, resolution: "4K", referenceImages: 4, ecoMode: true, webSearch: true, imageSearch: true, promptBands: [[0, 25], [3628, 26], [15388, 27]] }] } }] };
+
+// packages/online/generation-credit-pricing.source.json
+var generation_credit_pricing_source_default = {
+  schemaVersion: 2,
+  evaluatorSha256: "3af1f79188fe446bba39ab5e9c94118c8f5a3a2cc3fbcd39e0d93078513a30b7",
+  pricesSha256: "4abf422f5041a104b902510e37c880185681379ab0c7437853bc05bed758c183",
+  purpose: "Public integer sale-credit table only; generation is authoritatively requoted by the server."
+};
+
+// plugins/podplo-dsh/src/generation-local-pricing.ts
+function referenceCount(userReferences, presetReferences) {
+  const ids2 = [...userReferences ?? [], ...Array.isArray(presetReferences) ? presetReferences : []].filter((value2) => typeof value2 === "string" && !!value2);
+  return new Set(ids2).size;
+}
+var identity = (value2) => typeof value2 === "string" ? value2.toLowerCase().replace(/[^a-z0-9]/g, "") : "";
+var bundledModels = new Map(generation_credit_rules_default.models.flatMap((model) => [model.key, model.name].map((key) => [identity(key), model])));
+var localGenerationPricingVersion = generation_credit_pricing_source_default.pricesSha256;
+function calculateLocalGenerationQuote(model, input) {
+  const bundled = model && [model.id, model.modelId, model.key, model.name, model.label, model.modelName].map((value2) => bundledModels.get(identity(value2))).find(Boolean);
+  const rule = bundled?.rule;
+  const count2 = input.count;
+  const resolution = input.resolution || (typeof model?.defaultResolution === "string" ? model.defaultResolution : bundled?.defaultResolution ?? "");
+  const quality = input.quality || (typeof model?.defaultQuality === "string" ? model.defaultQuality : bundled?.defaultQuality ?? void 0);
+  if (!isGenerationCreditPricingRule(rule) || !resolution || !Number.isSafeInteger(count2) || count2 < 1) return void 0;
+  try {
+    const creditsPerImage = calculateGenerationCreditsFromRule(rule, {
+      quality: quality ?? null,
+      resolution,
+      prompt: input.prompt,
+      referenceImageCount: input.referenceImageCount ?? referenceCount(input.referenceAssetIds, input.presetReferenceAssetIds),
+      ecoMode: input.ecoMode,
+      webSearch: input.webSearch,
+      imageSearch: input.imageSearch
+    });
+    const totalCredits = creditsPerImage * count2;
+    if (!Number.isSafeInteger(creditsPerImage) || creditsPerImage < 0 || !Number.isSafeInteger(totalCredits)) return void 0;
+    return { creditsPerImage, totalCredits, outputCount: count2, pricingVersion: localGenerationPricingVersion };
+  } catch {
+    return void 0;
+  }
+}
+
+// plugins/podplo-dsh/src/generation-order-plan.ts
+import { createHash as createHash8, randomBytes as randomBytes2 } from "node:crypto";
+function stable(value2) {
+  if (Array.isArray(value2)) return value2.map(stable);
+  if (!value2 || typeof value2 !== "object") return value2;
+  const record7 = value2;
+  return Object.fromEntries(Object.keys(record7).sort().map((key) => [key, stable(record7[key])]));
+}
+function generationOrderDigest(value2) {
+  return createHash8("sha256").update(JSON.stringify(stable(value2))).digest("hex");
+}
+function createGenerationOrderToken() {
+  return `podplo_order_${randomBytes2(32).toString("base64url")}`;
+}
+function generationArgs(item) {
+  const args = structuredClone(item.args);
+  delete args.visibility;
+  if (typeof args.prompt === "string") args.prompt = args.prompt.trim();
+  const references = Array.isArray(args.referenceAssetIds) ? args.referenceAssetIds.filter((value2) => typeof value2 === "string") : [];
+  if (item.dependsOn) references.splice(item.dependsOn.referenceIndex, 1);
+  args.referenceAssetIds = references;
+  args.webSearch = args.webSearch === true;
+  args.imageSearch = args.imageSearch === true;
+  args.ecoMode = args.ecoMode === true;
+  return args;
+}
+function buildGenerationOrder(input) {
+  const items = input.items.map((item) => ({
+    itemId: item.itemId,
+    generation: generationArgs(item),
+    referenceSlots: item.dependsOn ? [{
+      itemId: input.items[item.dependsOn.itemIndex].itemId,
+      outputIndex: item.dependsOn.outputIndex,
+      referenceIndex: item.dependsOn.referenceIndex
+    }] : [],
+    processingPlan: structuredClone(input.processingPlan ?? []),
+    localCredits: item.approvedCredits ?? item.quote.totalCredits
+  }));
+  const approvedTotalCredits = items.reduce((sum, item) => sum + item.localCredits, 0);
+  const planDigest = generationOrderDigest(items);
+  const localQuoteDigest = generationOrderDigest({
+    planDigest,
+    pricingVersion: input.pricingVersion,
+    expectedBillingContextId: input.expectedBillingContextId,
+    totalCredits: approvedTotalCredits,
+    items: items.map((item) => ({
+      itemId: item.itemId,
+      localCredits: item.localCredits,
+      outputCount: item.generation.count
+    }))
+  });
+  return {
+    clientOrderId: input.clientOrderId,
+    reservationToken: input.reservationToken,
+    expectedBillingContextId: input.expectedBillingContextId,
+    planDigest,
+    localQuoteDigest,
+    pricingVersion: input.pricingVersion,
+    approvedTotalCredits,
+    items
+  };
 }
 
 // plugins/podplo-dsh/src/service.ts
@@ -58513,6 +58713,8 @@ var PodploPluginService = class extends EventEmitter2 {
     return {
       available: true,
       version: result.version,
+      ...result.pricingVersion ? { pricingVersion: result.pricingVersion } : {},
+      ...result.supportsGenerationOrders !== void 0 ? { supportsGenerationOrders: result.supportsGenerationOrders } : {},
       quoteInputSchema: structuredClone(result.quoteInputSchema),
       ...result.refreshedAt ? { refreshedAt: result.refreshedAt } : {},
       models,
@@ -58530,6 +58732,7 @@ var PodploPluginService = class extends EventEmitter2 {
     const manualOrdinary = caller.source === "ui" && caller.sessionId === void 0 && nativeSessionId === PODPLO_MANUAL_SESSION_ID;
     const preparedItems = this.preparedItems(input.items, manualOrdinary);
     const expectedOutputCount = this.expectedOutputCount(input);
+    const wholeOrderRequired = input.wholeOrderRequired === true;
     this.assertPlannedOutputCount(preparedItems, expectedOutputCount);
     const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, preparedItems);
     let processingPlan;
@@ -58545,6 +58748,7 @@ var PodploPluginService = class extends EventEmitter2 {
       if (exact.intentId !== intentId || exact.planVersion !== planVersion) throw new PodploPluginError("OPERATION_MISMATCH", "\u65B0\u610F\u56FE\u6216\u65B9\u6848\u7248\u672C\u5FC5\u987B\u65B0\u5EFA\u64CD\u4F5C");
       if (!isDeepStrictEqual(comparableGenerationItems(exact.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(exact.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
+      if (wholeOrderRequired && !exact.pricingVersion) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u73B0\u6709\u65B9\u6848\u4E0D\u662F\u6574\u5355\u9884\u7559\u62A5\u4EF7\uFF0C\u8BF7\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u91CD\u8BD5\u3002");
       this.assertQuotedOutputCount(exact.items, expectedOutputCount);
       return safeOperation(exact);
     }
@@ -58552,6 +58756,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (previous) {
       if (!isDeepStrictEqual(comparableGenerationItems(previous.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
       if (processingPlan !== void 0 && !isDeepStrictEqual(previous.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
+      if (wholeOrderRequired && !previous.pricingVersion) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u73B0\u6709\u65B9\u6848\u4E0D\u662F\u6574\u5355\u9884\u7559\u62A5\u4EF7\uFF0C\u8BF7\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u91CD\u8BD5\u3002");
       this.assertQuotedOutputCount(previous.items, expectedOutputCount);
       return safeOperation(previous);
     }
@@ -58573,7 +58778,7 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     const taskName = optionalText(input.taskName, "taskName", 100);
     const archiveProject = this.options.resolveArchiveProject?.(caller, input);
-    const operation = this.prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan).finally(() => this.preparing.delete(key));
+    const operation = this.prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan, wholeOrderRequired).finally(() => this.preparing.delete(key));
     this.preparing.set(key, { items, ...expectedOutputCount !== void 0 ? { expectedOutputCount } : {}, processingPlan, promise: operation });
     return operation;
   }
@@ -58583,6 +58788,9 @@ var PodploPluginService = class extends EventEmitter2 {
       const item = record4(raw, `items[${index}]`);
       const args = jsonObject(item.args, `items[${index}].args`);
       const sourceName = item.sourceName === void 0 ? {} : { sourceName: text2(item.sourceName, "sourceName", 255) };
+      const pricingReferenceCount = item.pricingReferenceCount === void 0 ? void 0 : Number(item.pricingReferenceCount);
+      if (pricingReferenceCount !== void 0 && (!Number.isSafeInteger(pricingReferenceCount) || pricingReferenceCount < 0 || pricingReferenceCount > 14))
+        throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].pricingReferenceCount \u65E0\u6548`);
       let stage;
       if (item.stage !== void 0) {
         const rawStage = record4(item.stage, `items[${index}].stage`);
@@ -58608,11 +58816,24 @@ var PodploPluginService = class extends EventEmitter2 {
       if (item.skillId === void 0) {
         if (!allowOrdinary) throw new PodploPluginError("SKILL_REQUIRED", "\u6A21\u578B\u4E0E\u539F\u751F\u4F1A\u8BDD\u5FC5\u987B\u4F7F\u7528\u660E\u786E\u7684 Skill \u751F\u56FE");
         if (args.templateId !== void 0 && args.templateId !== null) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684\u666E\u901A\u751F\u56FE\u4E0D\u80FD\u643A\u5E26 Skill`);
-        return { ...sourceName, ...stage ? { stage } : {}, ...dependsOn ? { dependsOn } : {}, args: { ...args } };
+        return {
+          ...sourceName,
+          ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
+          ...stage ? { stage } : {},
+          ...dependsOn ? { dependsOn } : {},
+          args: { ...args }
+        };
       }
       const skillId = text2(item.skillId, `items[${index}].skillId`, 180);
       if (args.templateId !== void 0 && args.templateId !== skillId) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684 Skill \u4E0E\u62A5\u4EF7\u53C2\u6570\u4E0D\u4E00\u81F4`);
-      return { skillId, ...sourceName, ...stage ? { stage } : {}, ...dependsOn ? { dependsOn } : {}, args: { ...args, templateId: skillId } };
+      return {
+        skillId,
+        ...sourceName,
+        ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
+        ...stage ? { stage } : {},
+        ...dependsOn ? { dependsOn } : {},
+        args: { ...args, templateId: skillId }
+      };
     });
   }
   expectedOutputCount(input) {
@@ -58685,22 +58906,88 @@ var PodploPluginService = class extends EventEmitter2 {
     if (resolvedByHost) await this.assertOwner(ownerId, true);
     return output;
   }
-  async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan) {
-    await this.gateway().capabilities(false);
+  async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan, wholeOrderRequired = false) {
+    const gateway = this.gateway();
+    let capabilities2 = await gateway.capabilities(false);
+    if (capabilities2.supportsGenerationOrders === true && (!capabilities2.refreshedAt || this.now().getTime() - Date.parse(capabilities2.refreshedAt) > 3e4)) {
+      capabilities2 = await gateway.capabilities(true);
+    }
     await this.assertOwner(ownerId, true);
+    const wholeOrder = capabilities2.supportsGenerationOrders === true && !!gateway.balance && !!gateway.reserveOrder && !!gateway.submitOrderItem && !!gateway.getOrder;
+    if (wholeOrderRequired && !wholeOrder) {
+      throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u4E3B\u7AD9\u5C1A\u672A\u5F00\u653E\u6574\u5355\u6838\u4EF7\u4E0E\u9884\u7559\uFF0C\u672A\u9010\u9879\u62A5\u4EF7\u4E5F\u672A\u521B\u5EFA\u786E\u8BA4\u3002\u8BF7\u66F4\u65B0\u670D\u52A1\u540E\u91CD\u8BD5\u3002");
+    }
+    if (wholeOrder && capabilities2.pricingVersion !== localGenerationPricingVersion) {
+      throw new PodploPluginError("PRICING_VERSION_CHANGED", "\u4E3B\u7AD9\u79EF\u5206\u89C4\u5219\u5DF2\u66F4\u65B0\uFF0C\u5F53\u524D\u63D2\u4EF6\u672A\u521B\u5EFA\u786E\u8BA4\u3002\u8BF7\u66F4\u65B0\u63D2\u4EF6\u540E\u91CD\u8BD5\u3002");
+    }
+    const balance = wholeOrder ? await gateway.balance() : void 0;
+    if (balance) await this.assertOwner(ownerId, true);
     const savedItems = [];
+    const skillVersions = /* @__PURE__ */ new Map();
     for (const item of items) {
       await this.assertOwner(ownerId, true);
-      const personalUpdatedAt = item.skillId ? await this.personalSkillVersion(item.skillId, ownerId) : void 0;
+      if (item.skillId && !skillVersions.has(item.skillId)) skillVersions.set(item.skillId, this.personalSkillVersion(item.skillId, ownerId));
+      const personalUpdatedAt = item.skillId ? await skillVersions.get(item.skillId) : void 0;
       const skillName = item.skillId ? this.skillDisplayName(ownerId, item.skillId) : void 0;
-      const gateway = this.gateway();
-      if (!item.skillId && !gateway.quoteOrdinary) throw new PodploPluginError("ORDINARY_GENERATION_UNAVAILABLE", "\u5F53\u524D\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u666E\u901A\u751F\u56FE\u63A5\u53E3\uFF0C\u8BF7\u5347\u7EA7\u670D\u52A1\u540E\u91CD\u8BD5");
-      const quote = item.skillId ? await gateway.quote(item.args) : await gateway.quoteOrdinary(item.args);
+      if (wholeOrder && Object.keys(item.args).some((key) => ![
+        "prompt",
+        "modelId",
+        "templateId",
+        "referenceAssetIds",
+        "ratio",
+        "quality",
+        "resolution",
+        "thinkingLevel",
+        "webSearch",
+        "imageSearch",
+        "ecoMode",
+        "count",
+        "background",
+        "output_format"
+      ].includes(key))) {
+        throw new PodploPluginError("ORDER_PARAMETER_UNAVAILABLE", "\u5F53\u524D\u6574\u5355\u534F\u8BAE\u4E0D\u652F\u6301\u65B9\u6848\u4E2D\u7684\u989D\u5916\u751F\u56FE\u53C2\u6570\uFF0C\u672A\u521B\u5EFA\u79EF\u5206\u786E\u8BA4\u3002");
+      }
+      if (wholeOrder && personalUpdatedAt && item.pricingReferenceCount === void 0) {
+        throw new PodploPluginError("LOCAL_PRICING_CONTEXT_UNAVAILABLE", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u8BA1\u4EF7\u4E0A\u4E0B\u6587\u7F3A\u5931\uFF0C\u672A\u521B\u5EFA\u79EF\u5206\u786E\u8BA4\u3002\u8BF7\u901A\u8FC7\u6574\u5355\u5FEB\u901F\u5165\u53E3\u91CD\u8BD5\u3002");
+      }
+      const modelId = typeof item.args.modelId === "string" ? item.args.modelId : void 0;
+      const selectedModel = capabilities2.models?.find((row2) => [row2.id, row2.modelId, row2.key, row2.name, row2.label, row2.modelName].includes(modelId ?? ""));
+      const modelName = typeof selectedModel?.name === "string" ? selectedModel.name : typeof selectedModel?.label === "string" ? selectedModel.label : void 0;
+      let quote;
+      if (wholeOrder) {
+        const model = selectedModel ?? (modelId ? { id: modelId } : void 0);
+        const local = calculateLocalGenerationQuote(model, {
+          count: typeof item.args.count === "number" ? item.args.count : 1,
+          ...typeof item.args.quality === "string" ? { quality: item.args.quality } : {},
+          ...typeof item.args.resolution === "string" ? { resolution: item.args.resolution } : {},
+          ...typeof item.args.prompt === "string" ? { prompt: item.args.prompt } : {},
+          ...Array.isArray(item.args.referenceAssetIds) ? { referenceAssetIds: item.args.referenceAssetIds.filter((value2) => typeof value2 === "string") } : {},
+          ...item.pricingReferenceCount !== void 0 ? { referenceImageCount: item.pricingReferenceCount } : {},
+          ...typeof item.args.ecoMode === "boolean" ? { ecoMode: item.args.ecoMode } : {},
+          ...typeof item.args.webSearch === "boolean" ? { webSearch: item.args.webSearch } : {},
+          ...typeof item.args.imageSearch === "boolean" ? { imageSearch: item.args.imageSearch } : {}
+        });
+        if (!local || local.pricingVersion !== localGenerationPricingVersion) {
+          throw new PodploPluginError("LOCAL_PRICING_UNAVAILABLE", "\u5F53\u524D\u6A21\u578B\u6216\u53C2\u6570\u4E0D\u5728\u63D2\u4EF6\u516C\u5F00\u79EF\u5206\u8868\u4E2D\uFF0C\u672A\u521B\u5EFA\u79EF\u5206\u786E\u8BA4\u3002\u8BF7\u66F4\u65B0\u63D2\u4EF6\u6216\u8C03\u6574\u65B9\u6848\u3002");
+        }
+        quote = {
+          quoteToken: `local:${this.createId()}`,
+          expiresAt: new Date(this.now().getTime() + 10 * 6e4).toISOString(),
+          totalCredits: local.totalCredits,
+          outputCount: local.outputCount,
+          confirmationText: `\u672C\u9879 ${local.outputCount} \u5F20\uFF0C\u5171 ${local.totalCredits} \u79EF\u5206`,
+          parameters: structuredClone(item.args)
+        };
+      } else {
+        if (!item.skillId && !gateway.quoteOrdinary) throw new PodploPluginError("ORDINARY_GENERATION_UNAVAILABLE", "\u5F53\u524D\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u666E\u901A\u751F\u56FE\u63A5\u53E3\uFF0C\u8BF7\u5347\u7EA7\u670D\u52A1\u540E\u91CD\u8BD5");
+        quote = item.skillId ? await gateway.quote(item.args) : await gateway.quoteOrdinary(item.args);
+      }
       await this.assertOwner(ownerId, true);
       this.assertGatewayQuote(quote);
       savedItems.push({
         ...structuredClone(item),
         ...skillName ? { skillName } : {},
+        ...modelName ? { modelName } : {},
         itemId: this.createId(),
         status: "quoted",
         quote: structuredClone(quote),
@@ -58722,8 +59009,10 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     this.assertQuotedOutputCount(savedItems, expectedOutputCount);
     const now = this.now().toISOString();
+    const operationId2 = this.createId();
+    const reservationToken = wholeOrder ? createGenerationOrderToken() : void 0;
     const row = {
-      operationId: this.createId(),
+      operationId: operationId2,
       ownerId,
       nativeSessionId,
       intentId,
@@ -58735,8 +59024,25 @@ var PodploPluginService = class extends EventEmitter2 {
       updatedAt: now,
       ...taskName ? { taskName } : {},
       ...archiveProject ? { archiveProject } : {},
-      ...processingPlan !== void 0 ? { processingPlan } : {}
+      ...processingPlan !== void 0 ? { processingPlan } : {},
+      ...wholeOrder && balance && reservationToken ? {
+        pricingVersion: localGenerationPricingVersion,
+        reservationToken,
+        balanceAtQuote: balance
+      } : {}
     };
+    if (wholeOrder && reservationToken) {
+      const order2 = buildGenerationOrder({
+        clientOrderId: operationId2,
+        reservationToken,
+        expectedBillingContextId: balance.billingContextId,
+        pricingVersion: localGenerationPricingVersion,
+        items: savedItems,
+        processingPlan
+      });
+      row.planDigest = order2.planDigest;
+      row.localQuoteDigest = order2.localQuoteDigest;
+    }
     await this.store.transaction((saved) => {
       const existing = saved.operations.find((value2) => value2.ownerId === ownerId && value2.nativeSessionId === nativeSessionId && value2.intentId === intentId && value2.planVersion === planVersion);
       if (existing) return;
@@ -58788,9 +59094,36 @@ var PodploPluginService = class extends EventEmitter2 {
     const pending = operation.items.filter((item) => item.status === "quoted");
     if (!pending.length) return safeOperation(operation);
     if (pending.some((item) => Date.parse(item.quote.expiresAt) <= this.now().getTime())) throw new PodploPluginError("QUOTE_EXPIRED", "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u4EE5\u65B0\u65B9\u6848\u7248\u672C\u91CD\u65B0\u62A5\u4EF7");
+    if (operation.balanceAtQuote && operation.balanceAtQuote.availableCredits < operationSummary(operation).totalCredits) {
+      throw new PodploPluginError("INSUFFICIENT_CREDITS", "\u4F59\u989D\u4E0D\u8DB3\uFF0C\u6574\u5355\u672A\u9884\u7559\u4E5F\u672A\u63D0\u4EA4\u3002\u8BF7\u5145\u503C\u6216\u8C03\u6574\u65B9\u6848\u540E\u91CD\u65B0\u786E\u8BA4\u3002");
+    }
     await this.assertOwner(ownerId, true);
+    let reservation = operation.reservation;
+    if (operation.pricingVersion) {
+      const gateway = this.gateway();
+      if (!gateway.reserveOrder || !gateway.submitOrderItem || !operation.planDigest || !operation.localQuoteDigest || !operation.reservationToken || !operation.balanceAtQuote?.billingContextId) {
+        throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u4E3B\u7AD9\u6574\u5355\u9884\u7559\u63A5\u53E3\u4E0D\u53EF\u7528\uFF0C\u672A\u63D0\u4EA4\u4EFB\u4F55\u751F\u56FE\u3002");
+      }
+      const order2 = buildGenerationOrder({
+        clientOrderId: operation.operationId,
+        reservationToken: operation.reservationToken,
+        expectedBillingContextId: operation.balanceAtQuote.billingContextId,
+        pricingVersion: operation.pricingVersion,
+        items: operation.items,
+        processingPlan: operation.processingPlan
+      });
+      if (order2.planDigest !== operation.planDigest || order2.localQuoteDigest !== operation.localQuoteDigest)
+        throw new PodploPluginError("CONFIRMATION_MISMATCH", "\u6574\u5355\u65B9\u6848\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u786E\u8BA4\u3002");
+      reservation = await gateway.reserveOrder(order2);
+      await this.assertOwner(ownerId, true);
+      const approvedItems = operation.items;
+      if (reservation.items.some((reserved, index) => reserved.itemId !== approvedItems[index]?.itemId || reserved.approvedCredits !== (approvedItems[index].approvedCredits ?? approvedItems[index].quote.totalCredits) || reserved.outputCount !== (approvedItems[index].approvedOutputCount ?? approvedItems[index].quote.outputCount))) {
+        throw new PodploPluginError("ORDER_QUOTE_CHANGED", "\u4E3B\u7AD9\u6838\u4EF7\u7ED3\u679C\u4E0E\u5DF2\u786E\u8BA4\u6574\u5355\u4E0D\u4E00\u81F4\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002\u8BF7\u91CD\u65B0\u62A5\u4EF7\u5E76\u786E\u8BA4\u3002");
+      }
+    }
     await this.store.transaction((saved) => {
       const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+      if (reservation) row.reservation = structuredClone(reservation);
       row.approvedAt ??= this.now().toISOString();
       row.status = operationStatus(row);
       row.updatedAt = this.now().toISOString();
@@ -58813,6 +59146,8 @@ var PodploPluginService = class extends EventEmitter2 {
       let operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
       let item = operation?.items.find((value2) => value2.itemId === itemId);
       if (!operation || !item || item.status !== "quoted") continue;
+      const reservedOrder = !!operation.pricingVersion;
+      let dependencyAssetId;
       if (!this.retryDue(item)) continue;
       if (operation.stoppedAt || this.stoppedOperationIds.has(operationId2)) {
         await this.cancelRemainingItems(operationId2, ownerId, "NATIVE_SESSION_STOPPED");
@@ -58825,8 +59160,9 @@ var PodploPluginService = class extends EventEmitter2 {
           await this.failUnsubmittedItem(operationId2, ownerId, itemId, dependency.code);
           continue;
         }
+        dependencyAssetId = dependency.assetId;
         try {
-          if (item.dependencyQuoteAssetId !== dependency.assetId || Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
+          if (!reservedOrder && (item.dependencyQuoteAssetId !== dependency.assetId || Date.parse(item.quote.expiresAt) <= this.now().getTime())) {
             item = await this.refreshDependentQuote(operationId2, ownerId, item, dependency.assetId);
           }
         } catch (error101) {
@@ -58839,7 +59175,7 @@ var PodploPluginService = class extends EventEmitter2 {
           else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
           continue;
         }
-      } else if (Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
+      } else if (!reservedOrder && Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
         try {
           item = await this.refreshApprovedQuote(operationId2, ownerId, item, structuredClone(item.args), "root_quote");
         } catch (error101) {
@@ -58879,7 +59215,7 @@ var PodploPluginService = class extends EventEmitter2 {
         else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
         continue;
       }
-      if (Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
+      if (!reservedOrder && Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
         try {
           item = item.dependsOn && item.dependencyQuoteAssetId ? await this.refreshDependentQuote(operationId2, ownerId, item, item.dependencyQuoteAssetId) : await this.refreshApprovedQuote(operationId2, ownerId, item, structuredClone(item.args), "root_quote");
         } catch (error101) {
@@ -58919,9 +59255,26 @@ var PodploPluginService = class extends EventEmitter2 {
       let accepted = false;
       try {
         const gateway = this.gateway();
-        if (!item.skillId && !gateway.submitOrdinary) throw new PodploPluginError("ORDINARY_GENERATION_UNAVAILABLE", "\u5F53\u524D\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u666E\u901A\u751F\u56FE\u63A5\u53E3\uFF0C\u8BF7\u5347\u7EA7\u670D\u52A1\u540E\u91CD\u8BD5");
-        const submission = { quote: structuredClone(item.quote), clientRequestId: item.clientRequestId, approvedCredits: item.quote.totalCredits };
-        const result = item.skillId ? await gateway.submit(submission) : await gateway.submitOrdinary(submission);
+        let result;
+        if (reservedOrder) {
+          if (!operation.reservation || !gateway.submitOrderItem) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u6574\u5355\u9884\u7559\u51ED\u636E\u4E0D\u53EF\u7528\uFF0C\u672A\u7EE7\u7EED\u63D0\u4EA4\u3002");
+          let resolvedReferenceAssetIds;
+          if (Array.isArray(item.args.referenceAssetIds)) {
+            resolvedReferenceAssetIds = item.args.referenceAssetIds.filter((value2) => typeof value2 === "string");
+            if (item.dependsOn && dependencyAssetId) resolvedReferenceAssetIds[item.dependsOn.referenceIndex] = dependencyAssetId;
+          }
+          result = await gateway.submitOrderItem({
+            orderId: operation.reservation.orderId,
+            reservationToken: operation.reservation.reservationToken,
+            itemId: item.itemId,
+            clientRequestId: item.clientRequestId,
+            ...resolvedReferenceAssetIds ? { resolvedReferenceAssetIds } : {}
+          });
+        } else {
+          if (!item.skillId && !gateway.submitOrdinary) throw new PodploPluginError("ORDINARY_GENERATION_UNAVAILABLE", "\u5F53\u524D\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u666E\u901A\u751F\u56FE\u63A5\u53E3\uFF0C\u8BF7\u5347\u7EA7\u670D\u52A1\u540E\u91CD\u8BD5");
+          const submission = { quote: structuredClone(item.quote), clientRequestId: item.clientRequestId, approvedCredits: item.quote.totalCredits };
+          result = item.skillId ? await gateway.submit(submission) : await gateway.submitOrdinary(submission);
+        }
         await this.assertOwner(ownerId, true);
         await this.store.transaction((saved) => {
           const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
@@ -58939,6 +59292,15 @@ var PodploPluginService = class extends EventEmitter2 {
           await this.recoverExpiredBeforeCreate(operationId2, ownerId, itemId, item.dependsOn ? "dependency_quote" : "root_quote");
           this.publish();
           continue;
+        }
+        if (reservedOrder && !definiteSubmissionFailure(code)) {
+          const recovered = await this.reconcileGenerationOrder(operationId2, ownerId).catch(() => false);
+          if (recovered) {
+            accepted = true;
+            this.scheduleAccountRefresh(ownerId);
+            this.publish();
+            continue;
+          }
         }
         await this.store.transaction((saved) => {
           const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
@@ -58963,7 +59325,51 @@ var PodploPluginService = class extends EventEmitter2 {
         row.updatedAt = this.now().toISOString();
       }
     });
+    const finished = this.store.snapshot().operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+    if (finished?.reservation && finished.items.some((item) => ["failed", "cancelled"].includes(item.status)) && !finished.items.some((item) => ["quoted", "submitting", "submission_unknown"].includes(item.status))) {
+      await this.releaseOrderReservation(finished).catch(() => {
+      });
+    }
     this.publish();
+  }
+  async releaseOrderReservation(operation) {
+    if (!operation.reservation || !this.gateway().cancelOrder) return;
+    await this.gateway().cancelOrder({
+      orderId: operation.reservation.orderId,
+      reservationToken: operation.reservation.reservationToken
+    });
+  }
+  async reconcileGenerationOrder(operationId2, ownerId) {
+    const operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
+    const gateway = this.gateway();
+    if (!operation?.reservation || !gateway.getOrder) return false;
+    const remote = await gateway.getOrder({
+      orderId: operation.reservation.orderId,
+      reservationToken: operation.reservation.reservationToken
+    });
+    await this.assertOwner(ownerId, false);
+    let recovered = false;
+    await this.store.transaction((saved) => {
+      const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+      for (const remoteItem of remote.items) {
+        const item = row.items.find((value2) => value2.itemId === remoteItem.itemId);
+        if (!item) continue;
+        if (remoteItem.generationId && ["submitting", "submission_unknown"].includes(item.status)) {
+          item.generationId = remoteItem.generationId;
+          item.remoteStatus = remoteItem.status;
+          item.status = "submitted";
+          delete item.errorCode;
+          recovered = true;
+        } else if (!remoteItem.generationId && ["failed", "cancelled", "rejected"].includes(remoteItem.status) && ["quoted", "submitting", "submission_unknown"].includes(item.status)) {
+          item.status = remoteItem.status === "cancelled" ? "cancelled" : "failed";
+          item.errorCode = remoteItem.failureCode ?? "ORDER_ITEM_FAILED";
+          recovered = true;
+        }
+      }
+      row.status = operationStatus(row);
+      row.updatedAt = this.now().toISOString();
+    });
+    return recovered;
   }
   dependencyResult(operation, item) {
     const dependency = item.dependsOn;
@@ -59227,6 +59633,10 @@ var PodploPluginService = class extends EventEmitter2 {
     if (pendingOnly && generationIsPaused(operation)) return safeOperation(operation);
     const refresh = bool(input.refresh);
     if (refresh) {
+      if (operation.reservation && operation.items.some((item) => ["submitting", "submission_unknown"].includes(item.status))) {
+        await this.reconcileGenerationOrder(operationId2, ownerId).catch(() => false);
+        operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
+      }
       for (const item of operation.items.filter((value2) => value2.generationId && (pendingOnly ? value2.status === "submitted" : ["submitted", "completed", "failed"].includes(value2.status)))) {
         if (pendingOnly && item.statusBlocked) continue;
         if (item.retry?.phase === "status" && !this.retryDue(item)) continue;
@@ -59420,7 +59830,8 @@ var PodploPluginService = class extends EventEmitter2 {
       "signingkey",
       "downloadurl",
       "previewurl",
-      "signedurl"
+      "signedurl",
+      "creditpricing"
     ].includes(normalized2);
   }
   assertGatewayQuote(quote) {
@@ -59477,7 +59888,7 @@ var PodploPluginService = class extends EventEmitter2 {
 };
 
 // plugins/podplo-dsh/src/generation-gateway.ts
-import { createHash as createHash8 } from "node:crypto";
+import { createHash as createHash9 } from "node:crypto";
 
 // plugins/podplo-dsh/src/generation-background.ts
 var allows = (schema2, value2) => schema2?.type === "string" && (!schema2.enum || schema2.enum.includes(value2));
@@ -59512,12 +59923,12 @@ function normalizeBackground(input) {
 }
 
 // plugins/podplo-dsh/src/generation-gateway.ts
-var object4 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
+var object5 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
 var SAFE_ERROR_CODE = /^[A-Z_]{1,80}$/u;
 var ORDINARY_KEYS = /* @__PURE__ */ new Set(["prompt", "modelId", "referenceAssetIds", "ratio", "quality", "resolution", "thinkingLevel", "webSearch", "imageSearch", "ecoMode", "count", "background", "output_format"]);
 function safeErrorCode(value2) {
-  if (!object4(value2)) return void 0;
-  const nested = object4(value2.error) ? value2.error.code : void 0;
+  if (!object5(value2)) return void 0;
+  const nested = object5(value2.error) ? value2.error.code : void 0;
   const candidate2 = typeof nested === "string" ? nested : value2.code;
   return typeof candidate2 === "string" && SAFE_ERROR_CODE.test(candidate2) ? candidate2 : void 0;
 }
@@ -59526,7 +59937,7 @@ function mcpToolErrorCode(result) {
   if (structured) return structured;
   if (!Array.isArray(result.content)) return void 0;
   for (const item of result.content) {
-    if (!object4(item) || item.type !== "text" || typeof item.text !== "string" || item.text.length > 1e4) continue;
+    if (!object5(item) || item.type !== "text" || typeof item.text !== "string" || item.text.length > 1e4) continue;
     try {
       const code = safeErrorCode(JSON.parse(item.text));
       if (code) return code;
@@ -59552,7 +59963,7 @@ var NativeGenerationGateway = class {
         capabilities: {},
         clientInfo: { name: "PodPlo Native DSH", version: PLUGIN_VERSION }
       }, false);
-      if (!object4(result) || typeof result.protocolVersion !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
+      if (!object5(result) || typeof result.protocolVersion !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
       this.initializedFor = namespace;
     }
     const id2 = ++this.sequence;
@@ -59571,7 +59982,7 @@ var NativeGenerationGateway = class {
           body: JSON.stringify({ jsonrpc: "2.0", id: id2, method, params })
         });
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
-        if (!object4(response) || response.id !== id2 || response.jsonrpc !== "2.0") throw new OnlineError("MCP_TOOL_REJECTED");
+        if (!object5(response) || response.id !== id2 || response.jsonrpc !== "2.0") throw new OnlineError("MCP_TOOL_REJECTED");
         if (response.error) throw new OnlineError(safeErrorCode(response.error) ?? "MCP_TOOL_REJECTED");
         return response.result;
       } catch (error101) {
@@ -59587,19 +59998,19 @@ var NativeGenerationGateway = class {
   }
   async call(name2, args) {
     const result = await this.rpc("tools/call", { name: name2, arguments: args });
-    if (!object4(result)) throw new OnlineError("MCP_TOOL_REJECTED");
+    if (!object5(result)) throw new OnlineError("MCP_TOOL_REJECTED");
     if (result.isError) throw new OnlineError(mcpToolErrorCode(result) ?? "MCP_TOOL_REJECTED");
     let output = result.structuredContent;
     if (output === void 0 && Array.isArray(result.content)) {
-      const text4 = result.content.find((value2) => object4(value2) && value2.type === "text" && typeof value2.text === "string");
-      if (object4(text4)) {
+      const text4 = result.content.find((value2) => object5(value2) && value2.type === "text" && typeof value2.text === "string");
+      if (object5(text4)) {
         try {
           output = JSON.parse(text4.text);
         } catch {
         }
       }
     }
-    if (!object4(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    if (!object5(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
     return output;
   }
   async desktop(path, body) {
@@ -59611,7 +60022,7 @@ var NativeGenerationGateway = class {
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
         const output = await this.online.auth.http.json(path, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
-        if (!object4(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+        if (!object5(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
         return output;
       } catch (error101) {
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
@@ -59631,36 +60042,77 @@ var NativeGenerationGateway = class {
     const seen = /* @__PURE__ */ new Set();
     let quote;
     let create;
+    const orderNames = /* @__PURE__ */ new Set();
     do {
       const page = await this.rpc("tools/list", cursor ? { cursor } : {});
-      if (!object4(page) || !Array.isArray(page.tools)) throw new OnlineError("INVALID_TOOL_RESPONSE");
-      quote ??= page.tools.find((value3) => object4(value3) && value3.name === "quote_skill_generation");
-      create ??= page.tools.find((value3) => object4(value3) && value3.name === "create_skill_generation");
+      if (!object5(page) || !Array.isArray(page.tools)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+      quote ??= page.tools.find((value3) => object5(value3) && value3.name === "quote_skill_generation");
+      create ??= page.tools.find((value3) => object5(value3) && value3.name === "create_skill_generation");
+      for (const value3 of page.tools) if (object5(value3) && typeof value3.name === "string" && ["reserve_generation_order", "create_generation_order_item", "get_generation_order", "cancel_generation_order"].includes(value3.name)) orderNames.add(value3.name);
       const next = page.nextCursor;
       if (next !== void 0 && next !== null && (typeof next !== "string" || !next || seen.has(next) || seen.size >= 100)) throw new OnlineError("INVALID_TOOL_RESPONSE");
       cursor = typeof next === "string" ? next : void 0;
       if (cursor) seen.add(cursor);
     } while (cursor);
-    if (!quote || !object4(quote.inputSchema) || quote.inputSchema.type !== "object") throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
+    if (!quote || !object5(quote.inputSchema) || quote.inputSchema.type !== "object") throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
     if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
     const quoteInputSchema = structuredClone(quote.inputSchema);
-    const modelResult = await this.call("get_models", {});
-    if (!Array.isArray(modelResult.models) || modelResult.models.some((value3) => !object4(value3))) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    const modelResult = await this.call("get_models", { includePricing: false });
+    if (!Array.isArray(modelResult.models) || modelResult.models.some((value3) => !object5(value3)) || orderNames.size === 4 && (typeof modelResult.pricingVersion !== "string" || !/^[a-f0-9]{64}$/u.test(modelResult.pricingVersion))) throw new OnlineError("INVALID_TOOL_RESPONSE");
     if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
     const value2 = {
-      version: `sha256:${createHash8("sha256").update(JSON.stringify(quoteInputSchema)).digest("hex")}`,
+      version: `sha256:${createHash9("sha256").update(JSON.stringify(quoteInputSchema)).digest("hex")}`,
+      ...typeof modelResult.pricingVersion === "string" ? { pricingVersion: modelResult.pricingVersion } : {},
+      supportsGenerationOrders: orderNames.size === 4,
       quoteInputSchema,
       refreshedAt: (/* @__PURE__ */ new Date()).toISOString(),
       models: modelResult.models
     };
-    this.cached = { namespace, value: value2, ...object4(create?.inputSchema) ? { createSchema: create.inputSchema } : {} };
+    this.cached = {
+      namespace,
+      value: value2,
+      ...object5(create?.inputSchema) ? { createSchema: create.inputSchema } : {},
+      orderTools: orderNames.size === 4
+    };
     return structuredClone(value2);
+  }
+  async balance() {
+    const output = await this.call("get_credit_balance", {});
+    if (!Number.isSafeInteger(output.availableCredits) || Number(output.availableCredits) < 0 || !Number.isSafeInteger(output.reservedCredits) || Number(output.reservedCredits) < 0 || typeof output.billingContextId !== "string" || !/^(?:personal|team:[0-9a-f-]{36})$/iu.test(output.billingContextId)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    return { availableCredits: Number(output.availableCredits), reservedCredits: Number(output.reservedCredits), billingContextId: output.billingContextId };
+  }
+  async reserveOrder(input) {
+    await this.capabilities();
+    if (!this.cached?.orderTools) throw new OnlineError("ORDER_RESERVATION_UNAVAILABLE");
+    const output = await this.call("reserve_generation_order", input);
+    if (typeof output.orderId !== "string" || !output.orderId || output.reservationToken !== input.reservationToken || output.billingContextId !== input.expectedBillingContextId || output.planDigest !== input.planDigest || output.localQuoteDigest !== input.localQuoteDigest || output.pricingVersion !== input.pricingVersion || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) !== input.approvedTotalCredits || !Number.isSafeInteger(output.reservedCredits) || Number(output.reservedCredits) < 0 || Number(output.reservedCredits) > input.approvedTotalCredits || !Number.isSafeInteger(output.availableCreditsBefore) || Number(output.availableCreditsBefore) < 0 || !Number.isSafeInteger(output.availableCreditsAfter) || Number(output.availableCreditsAfter) < 0 || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Array.isArray(output.items) || output.items.length !== input.items.length || typeof output.idempotent !== "boolean")
+      throw new OnlineError("INVALID_TOOL_RESPONSE");
+    return output;
+  }
+  async submitOrderItem(input) {
+    const output = await this.call("create_generation_order_item", input);
+    const id2 = typeof output.generationId === "string" ? output.generationId : output.id;
+    if (typeof id2 !== "string" || !id2 || typeof output.status !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
+    return { ...output, id: id2 };
+  }
+  async getOrder(input) {
+    const output = await this.call("get_generation_order", input);
+    if (output.orderId !== input.orderId || typeof output.status !== "string" || !Array.isArray(output.items) || output.items.some((item) => !object5(item) || typeof item.itemId !== "string" || typeof item.status !== "string" || !(item.generationId === null || typeof item.generationId === "string") || !Number.isSafeInteger(item.approvedCredits) || !Number.isSafeInteger(item.outputCount) || !(item.failureCode === null || typeof item.failureCode === "string"))) {
+      throw new OnlineError("INVALID_TOOL_RESPONSE");
+    }
+    return output;
+  }
+  async cancelOrder(input) {
+    const output = await this.call("cancel_generation_order", { ...input, confirmed: true });
+    if (output.orderId !== input.orderId || !Number.isSafeInteger(output.releasedCredits) || Number(output.releasedCredits) < 0)
+      throw new OnlineError("INVALID_TOOL_RESPONSE");
+    return { orderId: input.orderId, releasedCredits: Number(output.releasedCredits) };
   }
   async quote(input) {
     input = this.backgroundInput(input);
     if (input.background === "transparent") {
       const { quoteInputSchema } = await this.capabilities();
-      const properties = object4(quoteInputSchema.properties) ? quoteInputSchema.properties : {};
+      const properties = object5(quoteInputSchema.properties) ? quoteInputSchema.properties : {};
       if (!properties.background || !properties.output_format) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
     }
     const output = await this.call("quote_skill_generation", input);
@@ -59677,7 +60129,7 @@ var NativeGenerationGateway = class {
       else if (value2 !== void 0 && value2 !== null && value2 !== false) throw new OnlineError("ORDINARY_PARAMETER_UNAVAILABLE");
     }
     const output = await this.desktop("/api/desktop/generations/quote", ordinary);
-    if (typeof output.quoteToken !== "string" || !output.quoteToken || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) < 0 || !Number.isSafeInteger(output.outputCount) || Number(output.outputCount) < 1 || typeof output.confirmationText !== "string" || !object4(output.parameters) || output.parameters.templateId !== void 0 && output.parameters.templateId !== null) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    if (typeof output.quoteToken !== "string" || !output.quoteToken || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) < 0 || !Number.isSafeInteger(output.outputCount) || Number(output.outputCount) < 1 || typeof output.confirmationText !== "string" || !object5(output.parameters) || output.parameters.templateId !== void 0 && output.parameters.templateId !== null) throw new OnlineError("INVALID_TOOL_RESPONSE");
     this.assertBackgroundQuote(input, output);
     return output;
   }
@@ -59689,19 +60141,19 @@ var NativeGenerationGateway = class {
     }
   }
   assertBackgroundQuote(input, output) {
-    if (input.background === "transparent" && (!object4(output.parameters) || output.parameters.background !== "transparent" || output.parameters.output_format !== input.output_format)) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
+    if (input.background === "transparent" && (!object5(output.parameters) || output.parameters.background !== "transparent" || output.parameters.output_format !== input.output_format)) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
   }
   async submit(input) {
     if (input.quote.totalCredits !== input.approvedCredits) throw new OnlineError("CONFIRMATION_MISMATCH");
     if (Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED_BEFORE_SUBMIT");
     await this.capabilities();
     const schema2 = this.cached?.createSchema;
-    if (!schema2 || !object4(schema2.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
+    if (!schema2 || !object5(schema2.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
     const args = { quoteToken: input.quote.quoteToken, clientRequestId: input.clientRequestId };
     if ("confirmed" in schema2.properties) args.confirmed = true;
     if ("approvedCredits" in schema2.properties) args.approvedCredits = input.approvedCredits;
     if ("quoteDigest" in schema2.properties) {
-      if (!object4(input.quote.parameters)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+      if (!object5(input.quote.parameters)) throw new OnlineError("INVALID_TOOL_RESPONSE");
       args.quoteDigest = typeof input.quote.quoteDigest === "string" ? input.quote.quoteDigest : quoteDigest(input.quote);
     }
     const output = await this.call("create_skill_generation", args);
@@ -59709,7 +60161,7 @@ var NativeGenerationGateway = class {
     return output;
   }
   async submitOrdinary(input) {
-    if (input.quote.totalCredits !== input.approvedCredits || !object4(input.quote.parameters)) throw new OnlineError("CONFIRMATION_MISMATCH");
+    if (input.quote.totalCredits !== input.approvedCredits || !object5(input.quote.parameters)) throw new OnlineError("CONFIRMATION_MISMATCH");
     if (Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED_BEFORE_SUBMIT");
     const output = await this.desktop("/api/desktop/generations", { ...input.quote.parameters, clientRequestId: input.clientRequestId, approvedCredits: input.approvedCredits });
     if (typeof output.id !== "string" || typeof output.status !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
@@ -59724,7 +60176,7 @@ var NativeGenerationGateway = class {
 
 // plugins/podplo-dsh/src/transport.ts
 import { createServer as createServer2 } from "node:http";
-import { randomBytes as randomBytes2, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
+import { randomBytes as randomBytes3, timingSafeEqual as timingSafeEqual2 } from "node:crypto";
 var mcpServerInstructions = PODPLO_MCP_SERVER_GUIDANCE;
 var MAX_UI_BODY = 72 * 1024 * 1024;
 var MAX_MCP_BODY = 32 * 1024 * 1024;
@@ -59942,7 +60394,7 @@ async function startPluginMcp(service) {
   return {
     url: `http://127.0.0.1:${address.port}/mcp`,
     bind(sessionId) {
-      const token = randomBytes2(32).toString("base64url");
+      const token = randomBytes3(32).toString("base64url");
       sessions.set(token, sessionId);
       return { headers: { Authorization: `Bearer ${token}` }, dispose: () => {
         sessions.delete(token);
@@ -59961,7 +60413,7 @@ import sharp12 from "sharp";
 import { basename as basename9, extname as extname7 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
-import { createHash as createHash9 } from "node:crypto";
+import { createHash as createHash10 } from "node:crypto";
 import { basename as basename7, extname as extname5, join as join8 } from "node:path";
 import sharp11 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
@@ -59978,11 +60430,11 @@ var MappingSchema = external_exports2.object({
   status: external_exports2.enum(["uploading", "ready", "unknown"]),
   updatedAt: external_exports2.string().datetime()
 }).strict();
-var hash3 = (value2) => createHash9("sha256").update(value2).digest("hex");
+var hash3 = (value2) => createHash10("sha256").update(value2).digest("hex");
 var fail2 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
-var authorizationHash = (identity) => hash3(`${identity.ownerId}\0${identity.namespace ?? ""}`);
+var authorizationHash = (identity2) => hash3(`${identity2.ownerId}\0${identity2.namespace ?? ""}`);
 function safeWebpName(value2) {
   const leaf = basename7(value2.replace(/\\/gu, "/"));
   const stem = basename7(leaf, extname5(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
@@ -60042,13 +60494,13 @@ var NativeReferenceBridge = class {
   }
   async resolveReferences(expectedOwnerId, sessionId, rawIds) {
     const ids2 = external_exports2.array(external_exports2.string().min(1).max(240).regex(OPAQUE_ID, "\u53C2\u8003\u56FE\u5FC5\u987B\u662F\u4F1A\u8BDD\u4E2D\u7684\u4E0D\u900F\u660E ID\uFF0C\u4E0D\u80FD\u662F\u6587\u4EF6\u8DEF\u5F84")).min(1).max(14).parse(rawIds);
-    const identity = await this.deps.authorize(true);
-    if (identity.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
-    const expectedAuthorization = authorizationHash(identity);
+    const identity2 = await this.deps.authorize(true);
+    if (identity2.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    const expectedAuthorization = authorizationHash(identity2);
     const resolved = [];
     for (const id2 of ids2) {
       const local = await this.deps.resolveLocal(sessionId, id2);
-      await this.assertIdentity(identity, true);
+      await this.assertIdentity(identity2, true);
       if (!local) {
         if (!CLOUD_ID.test(id2)) fail2("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         resolved.push(id2);
@@ -60056,31 +60508,31 @@ var NativeReferenceBridge = class {
       }
       if (local.id !== id2) fail2("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
       const normalized2 = await normalizeNativeReference(local);
-      await this.assertIdentity(identity, true);
-      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized2));
+      await this.assertIdentity(identity2, true);
+      resolved.push(await this.resolveLocal(identity2, expectedAuthorization, sessionId, normalized2));
     }
-    await this.assertIdentity(identity, true);
+    await this.assertIdentity(identity2, true);
     return resolved;
   }
   /** Import bytes read by a trusted Host path without exposing paths or pixels to the model. */
   async resolveTrustedInputs(expectedOwnerId, sessionId, inputs) {
     if (!sessionId || inputs.length < 1 || inputs.length > 100) fail2("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
-    const identity = await this.deps.authorize(true);
-    if (identity.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
-    const expectedAuthorization = authorizationHash(identity);
+    const identity2 = await this.deps.authorize(true);
+    if (identity2.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    const expectedAuthorization = authorizationHash(identity2);
     const normalizedInputs = [];
     for (const [index, input] of inputs.entries()) {
       if (!input || typeof input.id !== "string" || !input.id || input.id.length > 240 || typeof input.name !== "string" || !input.name || input.name.length > 255 || !(input.bytes instanceof Uint8Array))
         fail2("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
       normalizedInputs.push(await normalizeNativeReference(input));
-      await this.assertIdentity(identity, true);
+      await this.assertIdentity(identity2, true);
     }
     const resolved = [];
     for (const normalized2 of normalizedInputs) {
-      await this.assertIdentity(identity, true);
-      resolved.push(await this.resolveLocal(identity, expectedAuthorization, sessionId, normalized2));
+      await this.assertIdentity(identity2, true);
+      resolved.push(await this.resolveLocal(identity2, expectedAuthorization, sessionId, normalized2));
     }
-    await this.assertIdentity(identity, true);
+    await this.assertIdentity(identity2, true);
     return resolved;
   }
   async assertIdentity(expected, write) {
@@ -60094,11 +60546,11 @@ var NativeReferenceBridge = class {
     const session2 = hash3(sessionId);
     return this.store.snapshot().mappings.find((row) => row.authorization === authorization && row.session === session2 && row.fingerprint === fingerprint2);
   }
-  async resolveLocal(identity, authorization, sessionId, input) {
+  async resolveLocal(identity2, authorization, sessionId, input) {
     const key = this.mappingKey(authorization, sessionId, input.fingerprint);
     const pending = this.inFlight.get(key);
     if (pending) return pending;
-    const operation = this.resolveOrUpload(identity, authorization, sessionId, input);
+    const operation = this.resolveOrUpload(identity2, authorization, sessionId, input);
     this.inFlight.set(key, operation);
     try {
       return await operation;
@@ -60106,14 +60558,14 @@ var NativeReferenceBridge = class {
       if (this.inFlight.get(key) === operation) this.inFlight.delete(key);
     }
   }
-  async resolveOrUpload(identity, authorization, sessionId, input) {
+  async resolveOrUpload(identity2, authorization, sessionId, input) {
     let mapping = this.find(authorization, sessionId, input.fingerprint);
     if (mapping?.status === "ready" && mapping.cloudAssetId) return mapping.cloudAssetId;
     if (mapping) {
       if (mapping.cloudAssetId && this.deps.inspectReference) {
         try {
           const detail = await this.deps.inspectReference(mapping.cloudAssetId);
-          await this.assertIdentity(identity, true);
+          await this.assertIdentity(identity2, true);
           if (detail.id === mapping.cloudAssetId && detail.status === "ready") {
             await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
             return detail.id;
@@ -60124,7 +60576,7 @@ var NativeReferenceBridge = class {
       }
       return fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
-    await this.assertIdentity(identity, true);
+    await this.assertIdentity(identity2, true);
     await this.store.transaction((state) => {
       if (state.mappings.length >= 5e3) throw new PodploPluginError("REFERENCE_MAPPING_FULL", "\u53C2\u8003\u56FE\u4E0A\u4F20\u6620\u5C04\u5DF2\u6EE1\uFF0C\u8BF7\u8054\u7CFB\u652F\u6301\u5904\u7406\u3002");
       state.mappings.push(MappingSchema.parse({
@@ -60137,14 +60589,14 @@ var NativeReferenceBridge = class {
     });
     mapping = this.find(authorization, sessionId, input.fingerprint);
     try {
-      const detail = await this.deps.uploadReference({ filename: input.name, contentType: "image/webp", bytes: input.bytes }, identity.ownerId);
+      const detail = await this.deps.uploadReference({ filename: input.name, contentType: "image/webp", bytes: input.bytes }, identity2.ownerId);
       if (!CLOUD_ID.test(detail.id)) throw new Error("Invalid uploaded reference id");
       if (detail.status !== "ready") {
         await this.update(mapping, { status: "unknown", cloudAssetId: detail.id });
         fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
       }
       await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
-      await this.assertIdentity(identity, true);
+      await this.assertIdentity(identity2, true);
       return detail.id;
     } catch (error101) {
       const latest = this.find(authorization, sessionId, input.fingerprint);
@@ -60165,7 +60617,7 @@ var NativeReferenceBridge = class {
 };
 
 // plugins/podplo-dsh/src/output-directory.ts
-import { createHash as createHash10, randomUUID as randomUUID11 } from "node:crypto";
+import { createHash as createHash11, randomUUID as randomUUID11 } from "node:crypto";
 import { constants as constants3 } from "node:fs";
 import { lstat as lstat3, mkdir as mkdir6, open as open4, realpath as realpath4, unlink as unlink2 } from "node:fs/promises";
 import { basename as basename8, dirname as dirname7, extname as extname6, isAbsolute as isAbsolute4, join as join9, relative as relative3 } from "node:path";
@@ -60186,7 +60638,7 @@ function validateState2(value2) {
   return state;
 }
 function sha2562(value2) {
-  return createHash10("sha256").update(value2).digest("hex");
+  return createHash11("sha256").update(value2).digest("hex");
 }
 function fingerprint(stat) {
   return `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}`;
@@ -60227,31 +60679,31 @@ var OutputDirectoryManager = class {
   }
   async get() {
     this.ready();
-    const identity = await this.identity("read");
-    const row = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
+    const identity2 = await this.identity("read");
+    const row = this.store.snapshot().directories.find((item) => item.principal === identity2.principal);
     if (!row) return { configured: false };
     await this.verifyRoot(row.path);
-    await this.assertIdentity(identity, "read");
+    await this.assertIdentity(identity2, "read");
     return { configured: true, directory: row.path };
   }
   async configure(pathValue, confirmed) {
     this.ready();
     if (confirmed !== true) throw new Error("\u8BF7\u660E\u786E\u786E\u8BA4\u8FD9\u4E2A\u8F93\u51FA\u76EE\u5F55\u540E\u518D\u4FDD\u5B58");
-    const identity = await this.identity("export");
+    const identity2 = await this.identity("export");
     const requested = external_exports2.string().trim().min(1).max(4096).parse(pathValue);
     if (!isAbsolute4(requested)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u73B0\u5B58\u7684\u7EDD\u5BF9\u8DEF\u5F84");
     const path = await this.verifyRoot(requested);
-    await this.assertIdentity(identity, "export");
-    const previous = this.store.snapshot().directories.find((row) => row.principal === identity.principal);
+    await this.assertIdentity(identity2, "export");
+    const previous = this.store.snapshot().directories.find((row) => row.principal === identity2.principal);
     await this.store.transaction((state) => {
-      state.directories = state.directories.filter((row) => row.principal !== identity.principal);
-      state.directories.push({ principal: identity.principal, path, configuredAt: this.timestamp() });
+      state.directories = state.directories.filter((row) => row.principal !== identity2.principal);
+      state.directories.push({ principal: identity2.principal, path, configuredAt: this.timestamp() });
     });
     try {
-      await this.assertIdentity(identity, "export");
+      await this.assertIdentity(identity2, "export");
     } catch (error101) {
       await this.store.transaction((state) => {
-        state.directories = state.directories.filter((row) => row.principal !== identity.principal);
+        state.directories = state.directories.filter((row) => row.principal !== identity2.principal);
         if (previous) state.directories.push(previous);
       });
       throw error101;
@@ -60260,19 +60712,19 @@ var OutputDirectoryManager = class {
   }
   async clear() {
     this.ready();
-    const identity = await this.identity("export");
+    const identity2 = await this.identity("export");
     await this.store.transaction((state) => {
-      state.directories = state.directories.filter((row) => row.principal !== identity.principal);
+      state.directories = state.directories.filter((row) => row.principal !== identity2.principal);
     });
-    this.dropOwnerExports(identity.principal);
-    await this.assertIdentity(identity, "export");
+    this.dropOwnerExports(identity2.principal);
+    await this.assertIdentity(identity2, "export");
     return { configured: false };
   }
   async export(bytes, suggestedName, sessionId, reviewRequired = false) {
     this.ready();
     if (!Buffer.isBuffer(bytes) || !bytes.length || bytes.length > 250 * 1024 * 1024) throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-    const session2 = opaqueSession.parse(sessionId), identity = await this.identity("export");
-    const row = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
+    const session2 = opaqueSession.parse(sessionId), identity2 = await this.identity("export");
+    const row = this.store.snapshot().directories.find((item) => item.principal === identity2.principal);
     if (!row) throw new Error("\u8BF7\u5148\u5728\u624B\u52A8\u5DE5\u5177\u7BB1\u4E2D\u786E\u8BA4\u8F93\u51FA\u76EE\u5F55");
     const base2 = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base2, true) : base2;
     const requested = safeName(external_exports2.string().min(1).max(255).parse(suggestedName));
@@ -60309,11 +60761,11 @@ var OutputDirectoryManager = class {
         break;
       }
       if (!published) throw new Error("\u8F93\u51FA\u76EE\u5F55\u4E2D\u5B58\u5728\u8FC7\u591A\u540C\u540D\u6587\u4EF6\uFF0C\u8BF7\u8C03\u6574\u6587\u4EF6\u540D\u6216\u76EE\u5F55");
-      await this.assertIdentity(identity, "export");
+      await this.assertIdentity(identity2, "export");
       const exportId = randomUUID11();
       this.sessionExports.set(exportId, {
-        owner: identity.principal,
-        authorization: identity.authorization,
+        owner: identity2.principal,
+        authorization: identity2.authorization,
         session: sha2562(session2),
         path: published,
         name: publishedName,
@@ -60328,24 +60780,24 @@ var OutputDirectoryManager = class {
   }
   async open(exportId, sessionId) {
     if (!this.options.openPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6");
-    const { identity, record: record7 } = await this.ownedExport(exportId, sessionId);
+    const { identity: identity2, record: record7 } = await this.ownedExport(exportId, sessionId);
     await this.options.openPath(record7.path);
-    await this.assertIdentity(identity, "export");
+    await this.assertIdentity(identity2, "export");
   }
   async reveal(exportId, sessionId) {
     if (!this.options.revealPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6\u6240\u5728\u4F4D\u7F6E");
-    const { identity, record: record7 } = await this.ownedExport(exportId, sessionId);
+    const { identity: identity2, record: record7 } = await this.ownedExport(exportId, sessionId);
     await this.options.revealPath(record7.path);
-    await this.assertIdentity(identity, "export");
+    await this.assertIdentity(identity2, "export");
   }
   async openDirectory() {
     if (!this.options.openPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u8F93\u51FA\u76EE\u5F55");
-    const identity = await this.identity("export");
-    const row = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
+    const identity2 = await this.identity("export");
+    const row = this.store.snapshot().directories.find((item) => item.principal === identity2.principal);
     if (!row) throw new Error("\u5C1A\u672A\u914D\u7F6E\u8F93\u51FA\u76EE\u5F55");
     const root = await this.verifyRoot(row.path);
     await this.options.openPath(root);
-    await this.assertIdentity(identity, "export");
+    await this.assertIdentity(identity2, "export");
   }
   ready() {
     if (!this.initialized) throw new Error("\u8F93\u51FA\u76EE\u5F55\u670D\u52A1\u5C1A\u672A\u521D\u59CB\u5316");
@@ -60386,11 +60838,11 @@ var OutputDirectoryManager = class {
   async ownedExport(exportIdValue, sessionId) {
     this.ready();
     const exportId = external_exports2.string().uuid().parse(exportIdValue), session2 = sha2562(opaqueSession.parse(sessionId));
-    const identity = await this.identity("export"), record7 = this.sessionExports.get(exportId);
-    if (!record7 || record7.owner !== identity.principal || record7.session !== session2 || record7.authorization !== identity.authorization)
+    const identity2 = await this.identity("export"), record7 = this.sessionExports.get(exportId);
+    if (!record7 || record7.owner !== identity2.principal || record7.session !== session2 || record7.authorization !== identity2.authorization)
       throw new Error("\u8BE5\u5BFC\u51FA\u8BB0\u5F55\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
     assertAllowedFileName(record7.name);
-    const rootRow = this.store.snapshot().directories.find((item) => item.principal === identity.principal);
+    const rootRow = this.store.snapshot().directories.find((item) => item.principal === identity2.principal);
     if (!rootRow) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5DF2\u6E05\u9664");
     const base2 = await this.verifyRoot(rootRow.path), root = record7.reviewRequired ? await this.reviewDirectory(base2) : base2;
     const stat = await lstat3(record7.path).catch(() => void 0);
@@ -60399,7 +60851,7 @@ var OutputDirectoryManager = class {
     const actual = await realpath4(record7.path);
     const boundary = relative3(root, actual);
     if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute4(boundary)) throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u4E0D\u518D\u53EF\u4FE1");
-    return { identity, record: { ...record7, path: actual } };
+    return { identity: identity2, record: { ...record7, path: actual } };
   }
   dropOwnerExports(principal) {
     for (const [id2, record7] of this.sessionExports) if (record7.owner === principal) this.sessionExports.delete(id2);
@@ -60435,9 +60887,9 @@ function session(ctx, id2) {
 }
 function imageReceipt(events, id2) {
   if (!events || typeof events !== "object") return;
-  const object5 = events;
-  if (object5.attachmentId === id2 && typeof object5.mediaType === "string" && object5.mediaType.startsWith("image/")) return object5;
-  for (const value2 of Object.values(object5)) {
+  const object6 = events;
+  if (object6.attachmentId === id2 && typeof object6.mediaType === "string" && object6.mediaType.startsWith("image/")) return object6;
+  for (const value2 of Object.values(object6)) {
     const found = imageReceipt(value2, id2);
     if (found) return found;
   }
@@ -60787,7 +61239,7 @@ async function registerPodploNativePresets(agentPresets, options = {}) {
 }
 
 // plugins/podplo-dsh/src/jev-routing.ts
-import { createHash as createHash11, randomUUID as randomUUID12 } from "node:crypto";
+import { createHash as createHash12, randomUUID as randomUUID12 } from "node:crypto";
 var stages = ["discover_skill", "read_inputs", "prepare_generation", "wait_generation", "process_outputs", "deliver", "complete"];
 var groups = ["skill_discovery", "skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status", "image_processing", "delivery"];
 var workflows = ["podplo_generation", "image_processing", "other"];
@@ -61139,7 +61591,7 @@ function installJevUsageObserver(options) {
       names: toolNames,
       count: toolNames.length,
       schemaBytes: Buffer.byteLength(schema2),
-      schemaHash: createHash11("sha256").update(schema2).digest("hex")
+      schemaHash: createHash12("sha256").update(schema2).digest("hex")
     };
     const routingState = options.routingStates.get(sessionId);
     const applied = routingState?.current ?? fullApplication(0, "baseline");
@@ -61225,22 +61677,22 @@ function installJevUsageObserver(options) {
 }
 
 // plugins/podplo-dsh/src/task-archive-host.ts
-import { createHash as createHash15 } from "node:crypto";
+import { createHash as createHash16 } from "node:crypto";
 import { basename as basename11, extname as extname9, join as join12 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash13, randomUUID as randomUUID14 } from "node:crypto";
+import { createHash as createHash14, randomUUID as randomUUID14 } from "node:crypto";
 import { constants as constants5 } from "node:fs";
 import { link, lstat as lstat5, mkdir as mkdir8, open as open6, realpath as realpath6, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
 import { basename as basename10, dirname as dirname8, extname as extname8, isAbsolute as isAbsolute6, join as join11 } from "node:path";
 import sharp13 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
-import { createHash as createHash12, randomUUID as randomUUID13 } from "node:crypto";
+import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
 import { lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
 import { isAbsolute as isAbsolute5, join as join10 } from "node:path";
-var hash4 = (value2) => createHash12("sha256").update(value2).digest("hex");
+var hash4 = (value2) => createHash13("sha256").update(value2).digest("hex");
 var archiveTaskKey = (ownerId, sessionId, key) => hash4(`${hash4(ownerId)}\0${sessionId}\0${key}`);
 var stageSchema = external_exports2.enum(["generation", "download", "processing", "archive", "connection"]);
 var statusSchema = external_exports2.enum(["running", "completed", "failed", "stopped", "unknown"]);
@@ -61335,15 +61787,15 @@ var OperationLog = class {
       throw error101;
     }
   }
-  record(identity, update) {
-    return this.recordMany(identity, [update]);
+  record(identity2, update) {
+    return this.recordMany(identity2, [update]);
   }
-  recordMany(identity, updates) {
+  recordMany(identity2, updates) {
     if (this.closed) return Promise.resolve(false);
-    identity = { ownerId: identity.ownerId, namespace: identity.namespace };
+    identity2 = { ownerId: identity2.ownerId, namespace: identity2.namespace };
     const work = this.tail.then(async () => {
-      await this.same(identity);
-      const directory = await this.directory(identity.ownerId), original = await this.load(directory);
+      await this.same(identity2);
+      const directory = await this.directory(identity2.ownerId), original = await this.load(directory);
       let rows = original;
       for (const update of updates) {
         const id2 = hash4(update.key), prior = rows.find((row2) => row2.id === id2);
@@ -61371,7 +61823,7 @@ var OperationLog = class {
         rows = [row, ...rows.filter((saved) => saved.id !== id2)].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 10);
       }
       if (JSON.stringify(rows) === JSON.stringify(original)) return true;
-      await this.same(identity);
+      await this.same(identity2);
       const temporary = join10(directory, `.${randomUUID13()}.tmp`);
       try {
         const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
@@ -61381,7 +61833,7 @@ var OperationLog = class {
         } finally {
           await handle.close();
         }
-        await this.same(identity);
+        await this.same(identity2);
         if (await realpath5(directory) !== directory) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5DF2\u53D8\u5316");
         await rename4(temporary, join10(directory, "operations.json"));
       } finally {
@@ -61394,8 +61846,8 @@ var OperationLog = class {
   }
   async read() {
     await this.tail;
-    const identity = await this.options.authorize(), rows = await this.load(await this.directory(identity.ownerId));
-    await this.same(identity);
+    const identity2 = await this.options.authorize(), rows = await this.load(await this.directory(identity2.ownerId));
+    await this.same(identity2);
     return { schemaVersion: 1, pluginVersion: PLUGIN_VERSION, operations: rows };
   }
   async close() {
@@ -61405,7 +61857,7 @@ var OperationLog = class {
 };
 
 // plugins/podplo-dsh/src/task-archive.ts
-var hash5 = (value2) => createHash13("sha256").update(value2).digest("hex");
+var hash5 = (value2) => createHash14("sha256").update(value2).digest("hex");
 var safeLabel = (value2, fallback, limit = 48) => value2.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim().slice(0, limit) || fallback;
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
 var finalTimestamp = (value2) => {
@@ -61653,8 +62105,8 @@ var TaskArchiveManager = class {
     }
     return parts[2];
   }
-  async project(identity, input) {
-    const id2 = hash5(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === id2);
+  async project(identity2, input) {
+    const id2 = hash5(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity2.owner && row.id === id2);
     if (existing) {
       await this.directory(existing.directory, existing.stamp);
       return existing;
@@ -61664,12 +62116,12 @@ var TaskArchiveManager = class {
     await this.directory(base2);
     const collection = join11(base2, "PodPlo\u6210\u679C");
     await this.createDirectory(collection);
-    const ownerDirectory = join11(collection, identity.owner.slice(0, 16));
+    const ownerDirectory = join11(collection, identity2.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
     const name2 = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
     const directory = join11(ownerDirectory, `${name2}_${id2.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
-    await this.same(identity);
-    const project = { id: id2, owner: identity.owner, name: name2, directory, stamp: directoryStamp };
+    await this.same(identity2);
+    const project = { id: id2, owner: identity2.owner, name: name2, directory, stamp: directoryStamp };
     await this.store.transaction((state) => {
       state.projects.push(project);
     });
@@ -61678,31 +62130,31 @@ var TaskArchiveManager = class {
   async upsert(input, expectedOwner) {
     return this.serial(async () => {
       if (this.closed) return;
-      const identity = await this.identity();
-      if (identity.ownerId !== expectedOwner) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
-      const key = archiveTaskKey(identity.ownerId, input.sessionId, input.key);
-      if (this.store.snapshot().deleted.some((row) => row.owner === identity.owner && row.key === key)) {
-        await this.same(identity);
+      const identity2 = await this.identity();
+      if (identity2.ownerId !== expectedOwner) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
+      const key = archiveTaskKey(identity2.ownerId, input.sessionId, input.key);
+      if (this.store.snapshot().deleted.some((row) => row.owner === identity2.owner && row.key === key)) {
+        await this.same(identity2);
         await this.store.transaction((state) => {
-          const deleted = state.deleted.find((row) => row.owner === identity.owner && row.key === key);
+          const deleted = state.deleted.find((row) => row.owner === identity2.owner && row.key === key);
           deleted.operationIds = [.../* @__PURE__ */ new Set([...deleted.operationIds, ...input.operationIds])];
           deleted.assetIds = [.../* @__PURE__ */ new Set([...deleted.assetIds, ...input.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id)])];
         });
         return;
       }
-      let task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.key === key);
+      let task = this.store.snapshot().tasks.find((row) => row.owner === identity2.owner && row.key === key);
       const before = task ? canonical(task) : "";
       if (!task) {
-        const project = await this.project(identity, input.project), id2 = randomUUID14();
+        const project = await this.project(identity2, input.project), id2 = randomUUID14();
         const name2 = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
         const allocated = await this.allocateDirectory(project.directory, `${finalTimestamp(input.createdAt)}_\u56FE\u7247\u52A0\u5DE5`);
         const directory = allocated.path, directoryStamp = allocated.stamp;
         await this.createDirectory(join11(directory, "\u6210\u54C1"));
-        await this.same(identity);
+        await this.same(identity2);
         task = {
           id: id2,
           key,
-          owner: identity.owner,
+          owner: identity2.owner,
           sessionId: input.sessionId,
           projectId: project.id,
           name: name2,
@@ -61721,7 +62173,7 @@ var TaskArchiveManager = class {
           state.tasks.unshift(task);
         });
       }
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
         const row = state.tasks.find((row2) => row2.id === task.id);
         row.status = input.status;
@@ -61739,28 +62191,28 @@ var TaskArchiveManager = class {
         }
         const operationStopped = input.stoppedAt && (!row.processingResumedAt || Date.parse(input.stoppedAt) > Date.parse(row.processingResumedAt)) && !storedTaskFinished(row);
         if (operationStopped) row.stoppedAt = input.stoppedAt;
-        const sessionStop = state.sessionStops.find((stop) => stop.owner === identity.owner && stop.sessionId === input.sessionId);
+        const sessionStop = state.sessionStops.find((stop) => stop.owner === identity2.owner && stop.sessionId === input.sessionId);
         if (sessionStop && sessionStopApplies(row, sessionStop.stoppedAt)) row.stoppedAt = sessionStop.stoppedAt;
       });
-      const current = this.store.snapshot().tasks.find((row) => row.id === task.id && row.owner === identity.owner);
-      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(task.id, identity);
+      const current = this.store.snapshot().tasks.find((row) => row.id === task.id && row.owner === identity2.owner);
+      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(task.id, identity2);
       return task.id;
     });
   }
   needsArchiveWork(task) {
     return !!task && (task.files.some((file3) => file3.status === "pending") || task.archiveFormat === 2 && storedFinalLeaves(task).some((file3) => !file3.publishedName));
   }
-  async observeTask(id2, identity) {
-    const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+  async observeTask(id2, identity2) {
+    const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (!task) return;
-    const observedAt = (/* @__PURE__ */ new Date()).toISOString(), view = await this.taskView(task, identity);
-    await this.same(identity);
+    const observedAt = (/* @__PURE__ */ new Date()).toISOString(), view = await this.taskView(task, identity2);
+    await this.same(identity2);
     if (this.options.activity) {
-      await this.options.activity(identity, [{ key: task.key, view, stopped: !!task.stoppedAt && !view.audit?.complete }], observedAt).catch(() => void 0);
-      await this.same(identity);
+      await this.options.activity(identity2, [{ key: task.key, view, stopped: !!task.stoppedAt && !view.audit?.complete }], observedAt).catch(() => void 0);
+      await this.same(identity2);
     }
   }
-  schedule(id2, identity, force = false) {
+  schedule(id2, identity2, force = false) {
     if (this.closed) return;
     if (this.jobs.has(id2)) {
       this.reschedule.add(id2);
@@ -61768,28 +62220,28 @@ var TaskArchiveManager = class {
       return;
     }
     const job = Promise.resolve().then(async () => {
-      await this.same(identity);
-      const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
-      if (force || this.needsArchiveWork(task)) await this.savePending(id2, identity, force);
+      await this.same(identity2);
+      const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
+      if (force || this.needsArchiveWork(task)) await this.savePending(id2, identity2, force);
     }).then(async () => {
       const task = this.store.snapshot().tasks.find((row) => row.id === id2);
       if (task?.diagnostics?.some((row) => row.stage === "archive")) {
-        await this.same(identity);
+        await this.same(identity2);
         await this.store.transaction((state) => {
-          const current = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+          const current = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
           if (current?.diagnostics) current.diagnostics = current.diagnostics.filter((row) => row.stage !== "archive");
         });
       }
-      if (task) await this.observeTask(id2, identity);
+      if (task) await this.observeTask(id2, identity2);
     }).catch(async (error101) => {
       try {
-        await this.same(identity);
+        await this.same(identity2);
         await this.store.transaction((state) => {
-          const task2 = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+          const task2 = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
           if (task2) task2.diagnostics = [...(task2.diagnostics ?? []).filter((row) => row.stage !== "archive"), diagnose("archive", error101, (/* @__PURE__ */ new Date()).toISOString())].slice(-20);
         });
-        const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
-        if (task) await this.observeTask(id2, identity);
+        const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
+        if (task) await this.observeTask(id2, identity2);
       } catch {
       }
     }).finally(() => {
@@ -61798,7 +62250,7 @@ var TaskArchiveManager = class {
       const forced = this.forcedReschedule.delete(id2);
       const rerun = this.reschedule.delete(id2) || forced || !!current?.files.some((file3) => file3.status === "pending");
       if (!this.closed && rerun)
-        void this.same(identity).then(() => this.schedule(id2, identity, forced)).catch(() => void 0);
+        void this.same(identity2).then(() => this.schedule(id2, identity2, forced)).catch(() => void 0);
       this.options.changed?.(id2);
     });
     this.jobs.set(id2, job);
@@ -61905,15 +62357,15 @@ var TaskArchiveManager = class {
       return false;
     }
   }
-  async reconcileFinalOutputs(id2, identity, recoverPublished) {
-    let task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+  async reconcileFinalOutputs(id2, identity2, recoverPublished) {
+    let task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (task?.archiveFormat !== 2) return;
     await this.taskDirectory(task);
     const output = join11(task.directory, "\u6210\u54C1");
     await this.directory(output);
-    await this.same(identity);
+    await this.same(identity2);
     for (const candidate2 of this.finalLeaves(task)) {
-      await this.same(identity);
+      await this.same(identity2);
       await this.ensureOutputSlot(id2, candidate2.id);
       task = this.store.snapshot().tasks.find((row) => row.id === id2);
       const current = task.files.find((row) => row.id === candidate2.id);
@@ -61933,11 +62385,11 @@ var TaskArchiveManager = class {
       let name2 = preferred, suffix = 2;
       while (await lstat5(join11(output, name2)).catch(() => void 0)) name2 = `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
-      await this.same(identity);
+      await this.same(identity2);
       const saved = await this.writeFresh(output, name2, bytes, file3.id);
       try {
         await this.taskDirectory(task);
-        await this.same(identity);
+        await this.same(identity2);
         await this.store.transaction((state) => {
           const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === file3.id);
           row.publishedName = name2;
@@ -61954,12 +62406,12 @@ var TaskArchiveManager = class {
     for (const old of task.files.filter((row) => row.publishedName && !leafIds.has(row.id))) {
       if (!leaves.some((leaf) => leaf.publishedName && this.isAncestor(task, old, leaf))) continue;
       await this.taskDirectory(task);
-      await this.same(identity);
+      await this.same(identity2);
       if (await this.publishedValid(task, old)) {
-        await this.same(identity);
+        await this.same(identity2);
         await unlink4(join11(output, old.publishedName));
       }
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
         const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === old.id);
         delete row.publishedName;
@@ -61971,7 +62423,7 @@ var TaskArchiveManager = class {
       const preferred = this.preferredOutputName(task, leaf);
       if (leaf.publishedName === preferred || await lstat5(join11(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
       await this.taskDirectory(task);
-      await this.same(identity);
+      await this.same(identity2);
       await this.directory(output);
       try {
         await link(join11(output, leaf.publishedName), join11(output, preferred));
@@ -61988,18 +62440,18 @@ var TaskArchiveManager = class {
       });
     }
   }
-  async savePendingFinalOnly(id2, identity, recoverPublished) {
-    const initial = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+  async savePendingFinalOnly(id2, identity2, recoverPublished) {
+    const initial = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (initial?.archiveFormat !== 2) return;
     for (const file3 of initial.files.filter((row) => row.status === "pending")) {
       let stage = "archive";
       try {
-        await this.same(identity);
+        await this.same(identity2);
         await this.taskDirectory(initial);
         if (file3.group === "reference") {
           let sourceName;
           if (file3.source.kind !== "asset") sourceName = await this.options.read(file3.source).then((value2) => basename10(value2.name)).catch(() => void 0);
-          await this.same(identity);
+          await this.same(identity2);
           await this.store.transaction((state) => {
             const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file3.id);
             Object.assign(row, { status: "saved", referenceOnly: true, image: false, ...sourceName ? { sourceName } : {} });
@@ -62019,9 +62471,9 @@ var TaskArchiveManager = class {
         }
         const latest = this.store.snapshot().tasks.find((row) => row.id === id2);
         const cache = await this.cacheDirectory(latest, true), cacheName = `${file3.id}.${extension}`;
-        await this.same(identity);
+        await this.same(identity2);
         const saved = await this.writeFresh(cache, cacheName, source.bytes, file3.id);
-        await this.same(identity);
+        await this.same(identity2);
         await this.taskDirectory(initial);
         await this.store.transaction((state) => {
           const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file3.id);
@@ -62037,9 +62489,9 @@ var TaskArchiveManager = class {
           });
         });
       } catch (error101) {
-        await this.same(identity);
+        await this.same(identity2);
         await this.store.transaction((state) => {
-          const row = state.tasks.find((row2) => row2.id === id2 && row2.owner === identity.owner)?.files.find((row2) => row2.id === file3.id);
+          const row = state.tasks.find((row2) => row2.id === id2 && row2.owner === identity2.owner)?.files.find((row2) => row2.id === file3.id);
           if (row) {
             row.status = "failed";
             row.diagnostic = diagnose(stage, error101, (/* @__PURE__ */ new Date()).toISOString());
@@ -62047,20 +62499,20 @@ var TaskArchiveManager = class {
         });
       }
     }
-    await this.reconcileFinalOutputs(id2, identity, recoverPublished);
+    await this.reconcileFinalOutputs(id2, identity2, recoverPublished);
   }
-  async savePending(id2, identity, recoverPublished = false) {
-    const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+  async savePending(id2, identity2, recoverPublished = false) {
+    const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (!task) return;
     if (task.archiveFormat === 2) {
-      await this.savePendingFinalOnly(id2, identity, recoverPublished);
+      await this.savePendingFinalOnly(id2, identity2, recoverPublished);
       return;
     }
     for (const file3 of task.files.filter((row) => row.status === "pending")) {
       let published;
       let stage = "archive";
       try {
-        await this.same(identity);
+        await this.same(identity2);
         await this.taskDirectory(task);
         stage = file3.source.kind === "asset" ? "download" : "processing";
         const source = await this.options.read(file3.source);
@@ -62081,7 +62533,7 @@ var TaskArchiveManager = class {
         if (file3.reviewRequired) await this.createDirectory(directory);
         await this.directory(directory);
         const path = join11(directory, name2), digest = hash5(source.bytes);
-        await this.same(identity);
+        await this.same(identity2);
         if (await lstat5(path).catch(() => void 0)) {
           const bytes = await this.readPath(path);
           if (hash5(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
@@ -62094,7 +62546,7 @@ var TaskArchiveManager = class {
             await handle.close();
             await this.taskDirectory(task);
             await this.directory(directory);
-            await this.same(identity);
+            await this.same(identity2);
             await link(temporary, path);
             published = path;
           } finally {
@@ -62104,7 +62556,7 @@ var TaskArchiveManager = class {
         }
         await this.taskDirectory(task);
         await this.directory(directory);
-        await this.same(identity);
+        await this.same(identity2);
         const stat = await lstat5(path);
         await this.store.transaction((state) => {
           const saved = state.tasks.find((row) => row.id === id2).files.find((row) => row.id === file3.id);
@@ -62113,9 +62565,9 @@ var TaskArchiveManager = class {
         });
       } catch (error101) {
         if (published) await unlink4(published).catch(() => void 0);
-        await this.same(identity);
+        await this.same(identity2);
         await this.store.transaction((state) => {
-          const saved = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner)?.files.find((row) => row.id === file3.id);
+          const saved = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner)?.files.find((row) => row.id === file3.id);
           if (saved) {
             saved.status = "failed";
             saved.diagnostic = diagnose(stage, error101, (/* @__PURE__ */ new Date()).toISOString());
@@ -62136,17 +62588,17 @@ var TaskArchiveManager = class {
     }
   }
   async owned(id2) {
-    const identity = await this.identity();
-    const task = this.store.snapshot().tasks.find((row) => row.owner === identity.owner && row.id === id2);
+    const identity2 = await this.identity();
+    const task = this.store.snapshot().tasks.find((row) => row.owner === identity2.owner && row.id === id2);
     if (!task) throw new Error("\u6210\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
-    return { identity, task };
+    return { identity: identity2, task };
   }
-  summary(task, files, audit, identity) {
+  summary(task, files, audit, identity2) {
     return this.serial(async () => {
       const latest = this.store.snapshot().tasks.find((row) => row.id === task.id);
       if (canonical({ ...latest, summaryDigest: void 0 }) !== canonical({ ...task, summaryDigest: void 0 })) return;
       await this.taskDirectory(task);
-      await this.same(identity);
+      await this.same(identity2);
       const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === task.owner);
       const calls = task.generationCalls ?? [];
       const lines = [
@@ -62210,7 +62662,7 @@ var TaskArchiveManager = class {
         await handle.sync();
         await handle.close();
         await this.taskDirectory(task);
-        await this.same(identity);
+        await this.same(identity2);
         if (stat) {
           if (hash5(await this.readPath(path)) !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
           await rename5(temporary, path);
@@ -62225,26 +62677,26 @@ var TaskArchiveManager = class {
     });
   }
   async knownAssets(includeDeleted = false) {
-    const identity = await this.identity();
-    const ids2 = this.store.snapshot().tasks.filter((row) => row.owner === identity.owner).flatMap((task) => task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id));
-    const deleted = includeDeleted ? this.store.snapshot().deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds) : [];
-    await this.same(identity);
+    const identity2 = await this.identity();
+    const ids2 = this.store.snapshot().tasks.filter((row) => row.owner === identity2.owner).flatMap((task) => task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id));
+    const deleted = includeDeleted ? this.store.snapshot().deleted.filter((row) => row.owner === identity2.owner).flatMap((row) => row.assetIds) : [];
+    await this.same(identity2);
     return /* @__PURE__ */ new Set([...ids2, ...deleted]);
   }
   async deletedOperation(sessionId, operationId2) {
-    const identity = await this.identity();
-    const deleted = this.store.snapshot().deleted.some((row) => row.owner === identity.owner && row.sessionId === sessionId && (row.operationIds.includes(operationId2) || operationId2.startsWith(`archive-auto:${row.id}:`)));
-    await this.same(identity);
+    const identity2 = await this.identity();
+    const deleted = this.store.snapshot().deleted.some((row) => row.owner === identity2.owner && row.sessionId === sessionId && (row.operationIds.includes(operationId2) || operationId2.startsWith(`archive-auto:${row.id}:`)));
+    await this.same(identity2);
     return deleted;
   }
   /** Remove one verified local task folder, never an arbitrary client-supplied path. */
   async deleteTask(id2, confirmed) {
     if (confirmed !== true) throw new Error("\u5220\u9664\u6279\u6B21\u53CA\u672C\u5730\u6587\u4EF6\u9700\u8981\u786E\u8BA4");
     return this.serial(async () => {
-      const { identity, task } = await this.owned(id2);
+      const { identity: identity2, task } = await this.owned(id2);
       if (this.jobs.has(id2) || ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status))
         throw new Error("\u4EFB\u52A1\u4ECD\u5728\u751F\u6210\u6216\u4FDD\u5B58\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F");
-      const project = this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === task.projectId);
+      const project = this.store.snapshot().projects.find((row) => row.owner === identity2.owner && row.id === task.projectId);
       await this.directory(project.directory, project.stamp);
       const existing = await lstat5(task.directory).catch((error101) => {
         if (error101.code !== "ENOENT") throw error101;
@@ -62252,13 +62704,13 @@ var TaskArchiveManager = class {
       });
       if (existing) {
         await this.taskDirectory(task);
-        await this.same(identity);
+        await this.same(identity2);
         const staged = join11(project.directory, `.delete-${task.id}-${randomUUID14()}`);
         await rename5(task.directory, staged);
         try {
           await this.directory(project.directory, project.stamp);
           await this.directory(staged, task.stamp);
-          await this.same(identity);
+          await this.same(identity2);
           await rm4(staged, { recursive: true });
         } catch (error101) {
           await rename5(staged, task.directory).catch(() => void 0);
@@ -62266,17 +62718,17 @@ var TaskArchiveManager = class {
         }
       }
       if (task.archiveFormat === 2) {
-        await this.same(identity);
+        await this.same(identity2);
         const cache = await this.cacheDirectory(task).catch((error101) => {
           if (error101.code === "ENOENT") return void 0;
           throw error101;
         });
         if (cache) {
-          await this.same(identity);
+          await this.same(identity2);
           await rm4(cache, { recursive: true });
         }
       }
-      await this.same(identity);
+      await this.same(identity2);
       const assetIds = task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id);
       await this.store.transaction((state) => {
         state.deleted.push({
@@ -62294,8 +62746,8 @@ var TaskArchiveManager = class {
     });
   }
   async processingContext(id2) {
-    const { identity, task } = await this.owned(id2);
-    await this.same(identity);
+    const { identity: identity2, task } = await this.owned(id2);
+    await this.same(identity2);
     return {
       key: task.key,
       createdAt: task.createdAt,
@@ -62312,15 +62764,15 @@ var TaskArchiveManager = class {
   }
   /** Owner-bound processing audit from persisted receipts only; never scans task folders. */
   async processingAudit(id2, sessionId) {
-    const { identity, task } = await this.owned(id2);
+    const { identity: identity2, task } = await this.owned(id2);
     if (task.sessionId !== sessionId) throw new Error("\u52A0\u5DE5\u4EFB\u52A1\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD");
     const audit = storedTaskAudit(task);
-    await this.same(identity);
+    await this.same(identity2);
     return audit;
   }
   /** Read only already-published archive bytes for Host-side processing. */
   async processingInputs(id2, ids2) {
-    const { identity, task } = await this.owned(id2);
+    const { identity: identity2, task } = await this.owned(id2);
     if (!ids2.length || new Set(ids2).size !== ids2.length) throw new Error("\u52A0\u5DE5\u8F93\u5165\u65E0\u6548");
     const values = [];
     await this.taskDirectory(task);
@@ -62340,31 +62792,31 @@ var TaskArchiveManager = class {
       if (hash5(bytes) !== file3.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
       values.push({ id: sourceId, name: file3.name, bytes, kind: "image" });
     }
-    await this.same(identity);
+    await this.same(identity2);
     return values;
   }
   async recordProcessingFailure(id2, failure) {
-    const { identity, task } = await this.owned(id2);
+    const { identity: identity2, task } = await this.owned(id2);
     await this.serial(async () => {
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
-        const task2 = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+        const task2 = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
         task2.processingFailures = task2.processingFailures.filter((row) => !(row.stepId === failure.stepId && row.inputId === failure.inputId));
         task2.processingFailures.push(failure);
       });
     });
     await this.options.processingFailure?.(
-      identity,
+      identity2,
       { key: task.key, createdAt: task.createdAt },
       diagnose("processing", { code: failure.code }, failure.failedAt)
     ).catch(() => void 0);
   }
   async clearProcessingFailures(id2, stepId, inputIds) {
-    const { identity } = await this.owned(id2);
+    const { identity: identity2 } = await this.owned(id2);
     await this.serial(async () => {
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
         task.processingFailures = task.processingFailures.filter((row) => stepId !== void 0 && row.stepId !== stepId || inputIds !== void 0 && !inputIds.includes(row.inputId));
       });
     });
@@ -62376,28 +62828,28 @@ var TaskArchiveManager = class {
     return { task, context };
   }
   async stopSession(sessionId) {
-    const identity = await this.identity(), stoppedAt = (/* @__PURE__ */ new Date()).toISOString();
+    const identity2 = await this.identity(), stoppedAt = (/* @__PURE__ */ new Date()).toISOString();
     await this.serial(async () => {
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
-        const existing = state.sessionStops.find((row) => row.owner === identity.owner && row.sessionId === sessionId);
+        const existing = state.sessionStops.find((row) => row.owner === identity2.owner && row.sessionId === sessionId);
         if (existing) existing.stoppedAt = stoppedAt;
-        else state.sessionStops.push({ owner: identity.owner, sessionId, stoppedAt });
-        for (const task of state.tasks) if (task.owner === identity.owner && task.sessionId === sessionId && !storedTaskFinished(task)) {
+        else state.sessionStops.push({ owner: identity2.owner, sessionId, stoppedAt });
+        for (const task of state.tasks) if (task.owner === identity2.owner && task.sessionId === sessionId && !storedTaskFinished(task)) {
           task.stoppedAt = stoppedAt;
           delete task.processingResumedAt;
         }
       });
     });
-    for (const task of this.store.snapshot().tasks.filter((row) => row.owner === identity.owner && row.sessionId === sessionId)) this.options.changed?.(task.id);
+    for (const task of this.store.snapshot().tasks.filter((row) => row.owner === identity2.owner && row.sessionId === sessionId)) this.options.changed?.(task.id);
   }
   /** Explicit UI continue resumes only this local archive task, never cloud submission. */
   async resumeProcessing(id2) {
-    const { identity } = await this.owned(id2);
+    const { identity: identity2 } = await this.owned(id2);
     await this.serial(async () => {
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
         delete task.stoppedAt;
         task.processingResumedAt = (/* @__PURE__ */ new Date()).toISOString();
       });
@@ -62405,18 +62857,18 @@ var TaskArchiveManager = class {
     this.options.changed?.(id2);
   }
   async openSummary(id2) {
-    const { identity, task } = await this.owned(id2);
+    const { identity: identity2, task } = await this.owned(id2);
     await this.taskDirectory(task);
     const path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
     await this.readPath(path);
-    await this.same(identity);
+    await this.same(identity2);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3");
     await this.options.openPath(path);
   }
-  async summaryView(task, files, audit, identity, update) {
+  async summaryView(task, files, audit, identity2, update) {
     if (update) {
       try {
-        await this.summary(task, files, audit, identity);
+        await this.summary(task, files, audit, identity2);
         return { summaryStatus: "saved" };
       } catch {
         return { summaryStatus: "failed", summaryError: "\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0\uFF1B\u5982\u5DF2\u624B\u52A8\u4FEE\u6539\u4EFB\u52A1\u603B\u7ED3.txt\uFF0C\u5C06\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002" };
@@ -62425,14 +62877,14 @@ var TaskArchiveManager = class {
     if (!task.summaryDigest) return {};
     try {
       const bytes = await this.readPath(join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt"));
-      await this.same(identity);
+      await this.same(identity2);
       if (hash5(bytes) !== task.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u6539\u53D8");
       return { summaryStatus: "saved" };
     } catch {
       return { summaryStatus: "failed", summaryError: "\u4EFB\u52A1\u603B\u7ED3\u6682\u4E0D\u53EF\u7528\uFF1B\u6253\u5F00\u65F6\u4F1A\u518D\u6B21\u4E25\u683C\u6838\u9A8C\u3002" };
     }
   }
-  async finalOnlyView(task, identity, available, updateSummary = true) {
+  async finalOnlyView(task, identity2, available, updateSummary = true) {
     const internalFiles = [];
     for (const file3 of task.files) {
       let status = file3.status;
@@ -62492,7 +62944,7 @@ var TaskArchiveManager = class {
     };
     audit.complete = audit.complete && audit.delivery.remaining === 0 && audit.delivery.expected > 0;
     const saveStatus = !available || audit.delivery.missing || internalFiles.some((file3) => file3.status === "missing") ? "missing" : internalFiles.some((file3) => file3.status === "failed") || audit.delivery.failed || audit.processing.failed ? "failed" : internalFiles.some((file3) => file3.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
-    const summary = await this.summaryView(task, files, audit, identity, updateSummary);
+    const summary = await this.summaryView(task, files, audit, identity2, updateSummary);
     return {
       diagnostics: [...task.diagnostics ?? [], ...internalFiles.flatMap((file3) => file3.diagnostic ? [file3.diagnostic] : [])].slice(-20),
       id: task.id,
@@ -62514,7 +62966,7 @@ var TaskArchiveManager = class {
       ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6210\u54C1\u4FDD\u5B58\u6216\u52A0\u5DE5\u5931\u8D25\uFF0C\u53EF\u5237\u65B0\u72B6\u6001\u6838\u5BF9\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
     };
   }
-  async legacyView(task, identity, available, updateSummary = true) {
+  async legacyView(task, identity2, available, updateSummary = true) {
     const state = this.store.snapshot(), files = [];
     for (const file3 of task.files) {
       let status = file3.status;
@@ -62540,7 +62992,7 @@ var TaskArchiveManager = class {
     }
     const saveStatus = !available || files.some((file3) => file3.status === "missing") ? "missing" : files.some((file3) => file3.status === "failed") ? "failed" : files.some((file3) => file3.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
     const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
-    const summary = await this.summaryView(task, files, audit, identity, updateSummary);
+    const summary = await this.summaryView(task, files, audit, identity2, updateSummary);
     return {
       diagnostics: task.diagnostics,
       id: task.id,
@@ -62561,41 +63013,41 @@ var TaskArchiveManager = class {
       ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6587\u4EF6\u4FDD\u5B58\u5931\u8D25\uFF0C\u53EF\u91CD\u8BD5\u4FDD\u5B58\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
     };
   }
-  async taskView(task, identity, updateSummary = true) {
+  async taskView(task, identity2, updateSummary = true) {
     let available = true;
     try {
       await this.taskDirectory(task);
     } catch {
       available = false;
     }
-    return task.archiveFormat === 2 ? this.finalOnlyView(task, identity, available, updateSummary) : this.legacyView(task, identity, available, updateSummary);
+    return task.archiveFormat === 2 ? this.finalOnlyView(task, identity2, available, updateSummary) : this.legacyView(task, identity2, available, updateSummary);
   }
   async list(sessionId) {
     const observedAt = (/* @__PURE__ */ new Date()).toISOString();
-    const identity = await this.identity(), state = this.store.snapshot();
+    const identity2 = await this.identity(), state = this.store.snapshot();
     const items = [];
-    for (const task of state.tasks.filter((row) => row.owner === identity.owner && (!sessionId || row.sessionId === sessionId)))
-      items.push(await this.taskView(task, identity));
-    await this.same(identity);
+    for (const task of state.tasks.filter((row) => row.owner === identity2.owner && (!sessionId || row.sessionId === sessionId)))
+      items.push(await this.taskView(task, identity2));
+    await this.same(identity2);
     items.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
     if (this.options.activity) {
       const tasks = items.map((view) => {
         const task = state.tasks.find((task2) => task2.id === view.id);
         return { key: task.key, view, stopped: !!task.stoppedAt && !view.audit?.complete };
       });
-      await this.options.activity(identity, tasks, observedAt).catch(() => void 0);
-      await this.same(identity);
+      await this.options.activity(identity2, tasks, observedAt).catch(() => void 0);
+      await this.same(identity2);
     }
-    const deletedAssetIds = this.store.snapshot().deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds);
+    const deletedAssetIds = this.store.snapshot().deleted.filter((row) => row.owner === identity2.owner).flatMap((row) => row.assetIds);
     return { items, deletedAssetIds };
   }
   /** Lightweight current-owner metadata for Host-side filtering. Never touches task folders or files. */
   async catalog(filters) {
-    const identity = await this.identity(), state = this.store.snapshot();
-    const projects = state.projects.filter((row) => row.owner === identity.owner).map((row) => ({ id: row.id, name: row.name })).sort((a, b) => a.name.localeCompare(b.name));
+    const identity2 = await this.identity(), state = this.store.snapshot();
+    const projects = state.projects.filter((row) => row.owner === identity2.owner).map((row) => ({ id: row.id, name: row.name })).sort((a, b) => a.name.localeCompare(b.name));
     const projectNames = new Map(projects.map((row) => [row.id, row.name]));
     const bounds = archiveDateBounds(filters), query = filters.query.trim().toLocaleLowerCase();
-    const headers = state.tasks.filter((row) => row.owner === identity.owner).flatMap((task) => {
+    const headers = state.tasks.filter((row) => row.owner === identity2.owner).flatMap((task) => {
       const projectName = projectNames.get(task.projectId);
       if (!projectName || filters.project && filters.project !== task.projectId) return [];
       const name2 = task.archiveFormat === 2 ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
@@ -62604,9 +63056,9 @@ var TaskArchiveManager = class {
       if (!Number.isFinite(createdAt) || bounds.start !== void 0 && createdAt < bounds.start || bounds.end !== void 0 && createdAt >= bounds.end) return [];
       return [{ verified: false, id: task.id, name: name2, projectId: task.projectId, projectName, createdAt: task.createdAt }];
     }).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.id.localeCompare(b.id));
-    const deletedAssetIds = state.deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds);
-    const knownAssetIds = [.../* @__PURE__ */ new Set([...state.tasks.filter((row) => row.owner === identity.owner).flatMap((task) => task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id)), ...deletedAssetIds])];
-    await this.same(identity);
+    const deletedAssetIds = state.deleted.filter((row) => row.owner === identity2.owner).flatMap((row) => row.assetIds);
+    const knownAssetIds = [.../* @__PURE__ */ new Set([...state.tasks.filter((row) => row.owner === identity2.owner).flatMap((task) => task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id)), ...deletedAssetIds])];
+    await this.same(identity2);
     return { headers, total: headers.length, projects, knownAssetIds, deletedAssetIds };
   }
   async historyImagesForTask(task, projectName, fileIds) {
@@ -62650,14 +63102,14 @@ var TaskArchiveManager = class {
   }
   /** Read-only gallery catalog. It never syncs cloud tasks, repairs files, writes summaries, or changes receipts. */
   async historyCatalog(filters) {
-    const identity = await this.identity(), state = this.store.snapshot();
-    const projectNames = new Map(state.projects.filter((row) => row.owner === identity.owner).map((row) => [row.id, row.name]));
+    const identity2 = await this.identity(), state = this.store.snapshot();
+    const projectNames = new Map(state.projects.filter((row) => row.owner === identity2.owner).map((row) => [row.id, row.name]));
     const all = [];
-    for (const task of state.tasks.filter((row) => row.owner === identity.owner)) {
+    for (const task of state.tasks.filter((row) => row.owner === identity2.owner)) {
       const projectName = projectNames.get(task.projectId);
       if (projectName) all.push(...await this.historyImagesForTask(task, projectName));
     }
-    await this.same(identity);
+    await this.same(identity2);
     const availableProjects = new Set(all.map((row) => row.projectId));
     const projects = [...projectNames].filter(([id2]) => availableProjects.has(id2)).map(([id2, name2]) => ({ id: id2, name: name2 })).sort((a, b) => a.name.localeCompare(b.name));
     const bounds = archiveDateBounds(filters), query = filters.query.trim().toLocaleLowerCase();
@@ -62674,7 +63126,7 @@ var TaskArchiveManager = class {
     const pattern = /^[0-9a-f-]{36}:[0-9a-f-]{36}$/iu;
     if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id2) => !pattern.test(id2)))
       throw new Error("\u5386\u53F2\u8BB0\u5F55\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
-    const identity = await this.identity(), state = this.store.snapshot();
+    const identity2 = await this.identity(), state = this.store.snapshot();
     const requested = /* @__PURE__ */ new Map();
     for (const id2 of ids2) {
       const [taskId, fileId] = id2.split(":");
@@ -62682,71 +63134,71 @@ var TaskArchiveManager = class {
       files.add(fileId);
       requested.set(taskId, files);
     }
-    const projectNames = new Map(state.projects.filter((row) => row.owner === identity.owner).map((row) => [row.id, row.name]));
+    const projectNames = new Map(state.projects.filter((row) => row.owner === identity2.owner).map((row) => [row.id, row.name]));
     const found = /* @__PURE__ */ new Map();
     for (const [taskId, fileIds] of requested) {
-      const task = state.tasks.find((row) => row.owner === identity.owner && row.id === taskId);
+      const task = state.tasks.find((row) => row.owner === identity2.owner && row.id === taskId);
       const projectName = task && projectNames.get(task.projectId);
       if (!task || !projectName) continue;
       for (const item of await this.historyImagesForTask(task, projectName, fileIds)) found.set(item.id, item);
     }
-    await this.same(identity);
+    await this.same(identity2);
     return { items: ids2.flatMap((id2) => found.has(id2) ? [found.get(id2)] : []) };
   }
   /** Verify only the exact local tasks selected for the visible page. */
   async page(ids2) {
     if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id2) => !/^[0-9a-f-]{36}$/iu.test(id2)))
       throw new Error("\u5904\u7406\u7ED3\u679C\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
-    const identity = await this.identity(), state = this.store.snapshot();
-    const tasks = ids2.map((id2) => state.tasks.find((row) => row.owner === identity.owner && row.id === id2));
+    const identity2 = await this.identity(), state = this.store.snapshot();
+    const tasks = ids2.map((id2) => state.tasks.find((row) => row.owner === identity2.owner && row.id === id2));
     if (tasks.some((task) => !task)) throw new Error("\u5904\u7406\u7ED3\u679C\u5206\u9875\u5DF2\u53D8\u5316\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5");
     const items = [];
-    for (const task of tasks) items.push(await this.taskView(task, identity, false));
-    await this.same(identity);
+    for (const task of tasks) items.push(await this.taskView(task, identity2, false));
+    await this.same(identity2);
     return { items };
   }
   async detail(id2) {
-    const { identity, task } = await this.owned(id2);
-    const view = await this.taskView(task, identity, false);
-    await this.same(identity);
+    const { identity: identity2, task } = await this.owned(id2);
+    const view = await this.taskView(task, identity2, false);
+    await this.same(identity2);
     return view;
   }
   /** Metadata-only source index for hiding results already represented by an archive task. */
   async index(sessionId) {
-    const identity = await this.identity(), state = this.store.snapshot();
-    const tasks = state.tasks.filter((row) => row.owner === identity.owner && (!sessionId || row.sessionId === sessionId));
+    const identity2 = await this.identity(), state = this.store.snapshot();
+    const tasks = state.tasks.filter((row) => row.owner === identity2.owner && (!sessionId || row.sessionId === sessionId));
     const originIds = [...new Set(tasks.flatMap((task) => task.files.map((file3) => file3.source.id)))];
     const assetIds = [...new Set(tasks.flatMap((task) => task.files.filter((file3) => file3.group === "result" && file3.source.kind === "asset").map((file3) => file3.source.id)))];
-    const deletedAssetIds = [...new Set(state.deleted.filter((row) => row.owner === identity.owner).flatMap((row) => row.assetIds))];
-    await this.same(identity);
+    const deletedAssetIds = [...new Set(state.deleted.filter((row) => row.owner === identity2.owner).flatMap((row) => row.assetIds))];
+    await this.same(identity2);
     return { originIds, assetIds, deletedAssetIds };
   }
   async findSource(sessionId, ids2) {
-    const identity = await this.identity();
-    const tasks = this.store.snapshot().tasks.filter((row) => row.owner === identity.owner && row.sessionId === sessionId && row.files.some((file3) => file3.group === "result" && ids2.includes(file3.source.id)));
-    await this.same(identity);
+    const identity2 = await this.identity();
+    const tasks = this.store.snapshot().tasks.filter((row) => row.owner === identity2.owner && row.sessionId === sessionId && row.files.some((file3) => file3.group === "result" && ids2.includes(file3.source.id)));
+    await this.same(identity2);
     return tasks.map((task) => ({ id: task.id, key: task.key, sessionId: task.sessionId, projectId: task.projectId, name: task.name, createdAt: task.createdAt }));
   }
   /** Append local processing versions to the exact source task, never by filename. */
   async append(id2, files, operationId2, receipt) {
-    const { identity } = await this.owned(id2);
+    const { identity: identity2 } = await this.owned(id2);
     await this.serial(async () => {
-      const before = canonical(this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner));
-      await this.same(identity);
+      const before = canonical(this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner));
+      await this.same(identity2);
       await this.store.transaction((state) => {
-        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity.owner);
+        const task = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
         for (const value2 of files) if (!task.files.some((file3) => file3.source.kind === value2.source.kind && file3.source.id === value2.source.id))
           task.files.push({ ...value2, id: randomUUID14(), status: "pending", image: true });
         task.operationIds = [.../* @__PURE__ */ new Set([...task.operationIds, operationId2])];
         if (receipt && !task.processingRuns.some((run) => run.operationId === receipt.operationId))
           task.processingRuns.push({ ...receipt, resultIds: files.map((file3) => file3.source.id) });
       });
-      const current = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity.owner);
-      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(id2, identity);
+      const current = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
+      if (before !== canonical(current) || this.needsArchiveWork(current)) this.schedule(id2, identity2);
     });
   }
   async retry(id2) {
-    const { identity, task } = await this.owned(id2);
+    const { identity: identity2, task } = await this.owned(id2);
     await this.taskDirectory(task);
     const absent = /* @__PURE__ */ new Set();
     if (task.archiveFormat === 2) {
@@ -62755,12 +63207,12 @@ var TaskArchiveManager = class {
         const path = join11(cache, file3.cacheName), stat = await lstat5(path).catch(() => void 0);
         if (!stat?.isFile() || stat.isSymbolicLink() || await realpath6(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.cacheFingerprint) absent.add(file3.id);
       }
-      await this.same(identity);
+      await this.same(identity2);
       await this.store.transaction((state) => {
         for (const file3 of state.tasks.find((row) => row.id === id2).files)
           if (file3.status === "failed" || absent.has(file3.id)) file3.status = "pending";
       });
-      this.schedule(id2, identity, true);
+      this.schedule(id2, identity2, true);
       return;
     }
     for (const file3 of task.files.filter((file4) => file4.status === "saved" && file4.name))
@@ -62769,10 +63221,10 @@ var TaskArchiveManager = class {
       for (const file3 of state.tasks.find((row) => row.id === id2).files)
         if (file3.status === "failed" || absent.has(file3.id)) file3.status = "pending";
     });
-    this.schedule(id2, identity, true);
+    this.schedule(id2, identity2, true);
   }
   async read(id2, fileId, preview = false) {
-    const { identity, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId && row.status === "saved");
+    const { identity: identity2, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId && row.status === "saved");
     const name2 = task.archiveFormat === 2 ? file3?.publishedName : file3?.name;
     if (!file3 || !name2) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
     const directory = task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file3);
@@ -62780,38 +63232,38 @@ var TaskArchiveManager = class {
     await this.directory(directory);
     const bytes = await this.readPath(join11(directory, name2));
     if (hash5(bytes) !== file3.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
-    const key = `${identity.grant}:${task.sessionId}:${task.id}:${file3.id}:${file3.digest}:640:82`, epoch = this.previewCache.revision();
+    const key = `${identity2.grant}:${task.sessionId}:${task.id}:${file3.id}:${file3.digest}:640:82`, epoch = this.previewCache.revision();
     const cached3 = preview && file3.image ? this.previewCache.get(key) : void 0;
     const result = cached3 ?? (preview && file3.image ? await sharp13(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
-    await this.same(identity);
+    await this.same(identity2);
     if (preview && file3.image && !cached3) this.previewCache.set(key, result, epoch);
     return { bytes: result, name: name2, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname8(name2).slice(1)}` };
   }
   async openTask(id2) {
-    const { identity, task } = await this.owned(id2);
-    const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === identity.owner);
+    const { identity: identity2, task } = await this.owned(id2);
+    const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === identity2.owner);
     if (!project || dirname8(task.directory) !== project.directory) throw new Error("\u6210\u679C\u6587\u4EF6\u5939\u4E0D\u5C5E\u4E8E\u5F53\u524D\u9879\u76EE");
     await this.directory(project.directory);
     await this.directory(task.directory);
-    await this.same(identity);
+    await this.same(identity2);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u672C\u5730\u6587\u4EF6\u5939");
     await this.options.openPath(task.directory);
   }
   async openProject(input) {
     await this.serial(async () => {
-      const identity = await this.identity();
-      const project = typeof input === "string" ? this.store.snapshot().projects.find((row) => row.owner === identity.owner && row.id === input) : await this.project(identity, input);
+      const identity2 = await this.identity();
+      const project = typeof input === "string" ? this.store.snapshot().projects.find((row) => row.owner === identity2.owner && row.id === input) : await this.project(identity2, input);
       if (!project) throw new Error("\u9879\u76EE\u6210\u679C\u76EE\u5F55\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
       await this.directory(project.directory, project.stamp);
-      await this.same(identity);
+      await this.same(identity2);
       if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u672C\u5730\u6587\u4EF6\u5939");
       await this.options.openPath(project.directory);
     });
   }
   async reveal(id2, fileId) {
-    const { identity, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId);
+    const { identity: identity2, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId);
     await this.read(id2, fileId);
-    await this.same(identity);
+    await this.same(identity2);
     const name2 = task.archiveFormat === 2 ? file3?.publishedName : file3?.name;
     if (!this.options.revealPath || !file3 || !name2) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
     await this.options.revealPath(join11(task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file3), name2));
@@ -62826,7 +63278,7 @@ var TaskArchiveManager = class {
 };
 
 // plugins/podplo-dsh/src/archive-processing-pipeline.ts
-import { createHash as createHash14 } from "node:crypto";
+import { createHash as createHash15 } from "node:crypto";
 import sharp14 from "sharp";
 var automaticProcessingTools = /* @__PURE__ */ new Set([
   "podplo_outline_images",
@@ -62923,7 +63375,7 @@ var ArchiveProcessingPipeline = class {
       const beforeProcess = await this.deps.context(taskId);
       const latestStep = beforeProcess.plan?.find((row) => row.id === step.id);
       if (this.closed || beforeProcess.sessionId !== sessionId || !beforeProcess.approvedAt || beforeProcess.stoppedAt || !latestStep || processingStepDigest(latestStep) !== planDigest) return;
-      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash14("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
+      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash15("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
       await this.deps.process(
         step.toolName,
         { operationId: operationId2, ids: [inputId], options: step.options },
@@ -63016,14 +63468,14 @@ async function taskArchiveHost(options) {
     async outputDirectory() {
       return (await options.outputs.get()).directory;
     },
-    activity(identity, tasks, at) {
-      return operationLog.recordMany(identity, tasks.map((task) => ({
+    activity(identity2, tasks, at) {
+      return operationLog.recordMany(identity2, tasks.map((task) => ({
         ...archiveLogUpdate(task.key, task.view, at),
         ...task.stopped ? { status: "stopped" } : {}
       })));
     },
-    processingFailure(identity, task, diagnostic) {
-      return operationLog.record(identity, {
+    processingFailure(identity2, task, diagnostic) {
+      return operationLog.record(identity2, {
         key: task.key,
         create: false,
         startedAt: task.createdAt,
@@ -63243,7 +63695,7 @@ async function taskArchiveHost(options) {
         if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(true)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
         for (let offset = 0; offset < pendingIds.length; offset += 100) {
           const ids2 = pendingIds.slice(offset, offset + 100);
-          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash15("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
+          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash16("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
           await toolkit.callTool(step.toolName, { operationId: operationId2, ids: ids2, options: step.options }, context.sessionId);
           await sync(context.sessionId);
         }
@@ -63293,19 +63745,19 @@ async function taskArchiveHost(options) {
   const runLoggedLocal = async (raw, sessionId, type, work) => {
     const input = raw && typeof raw === "object" ? raw : {};
     if (!sessionId || typeof input.operationId !== "string" || !input.operationId || input.operationId.length > 180) return work();
-    let identity, key, parent = false;
+    let identity2, key, parent = false;
     const startedAt = (/* @__PURE__ */ new Date()).toISOString(), ids2 = Array.isArray(input.ids) ? input.ids.filter((id2) => typeof id2 === "string") : [];
     try {
-      identity = { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
+      identity2 = { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
       const prior = await toolkit.archiveOperations(sessionId);
-      if (prior.ownerId !== identity.ownerId || prior.items.some((row) => row.operationId === input.operationId)) return work();
+      if (prior.ownerId !== identity2.ownerId || prior.items.some((row) => row.operationId === input.operationId)) return work();
       const sources = type === "toolbox" ? [] : await manager.findSource(sessionId, ids2);
       parent = sources.length === 1;
-      key = parent ? sources[0].key : archiveTaskKey(identity.ownerId, sessionId, `local:${input.operationId}`);
+      key = parent ? sources[0].key : archiveTaskKey(identity2.ownerId, sessionId, `local:${input.operationId}`);
     } catch {
       return work();
     }
-    await operationLog.record(identity, {
+    await operationLog.record(identity2, {
       key,
       create: !parent,
       type,
@@ -63316,7 +63768,7 @@ async function taskArchiveHost(options) {
     });
     try {
       const result = await work();
-      await operationLog.record(identity, {
+      await operationLog.record(identity2, {
         key,
         create: false,
         startedAt,
@@ -63326,7 +63778,7 @@ async function taskArchiveHost(options) {
       });
       return result;
     } catch (cause) {
-      await operationLog.record(identity, {
+      await operationLog.record(identity2, {
         key,
         create: false,
         startedAt,
@@ -63458,7 +63910,7 @@ async function taskArchiveHost(options) {
           return { ok: true, data: {
             ...await manager.catalog(filters),
             diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
-            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash16("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -63534,7 +63986,7 @@ async function taskArchiveHost(options) {
           return { ok: true, data: {
             ...await manager.list(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0),
             diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
-            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash16("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -63676,6 +64128,13 @@ async function executeNativeGenerationApproval(options) {
     return { content: [{ type: "text", text: JSON.stringify({
       ...prepared,
       nativeApproval: { outcome: "expired", submitted: false }
+    }) }] };
+  }
+  if (prepared.quote?.sufficientCredits === false) {
+    return { content: [{ type: "text", text: JSON.stringify({
+      ...prepared,
+      nativeApproval: { outcome: "insufficient-credits", submitted: false },
+      approvalError: { code: "INSUFFICIENT_CREDITS", message: `\u6574\u5355\u9700\u8981 ${String(prepared.quote.totalCredits ?? "\u5F85\u6838\u9A8C")} \u79EF\u5206\uFF0C\u5F53\u524D\u53EF\u7528 ${String(prepared.quote.availableCredits ?? "\u672A\u77E5")} \u79EF\u5206\uFF1B\u672A\u9884\u7559\u3001\u672A\u63D0\u4EA4\u3002` }
     }) }] };
   }
   const confirmation = typeof prepared.quote?.confirmationText === "string" ? prepared.quote.confirmationText : `\u672C\u6279\u751F\u56FE\u5C06\u6263\u9664 ${String(prepared.quote?.totalCredits ?? "\u5F85\u6838\u9A8C")} \u79EF\u5206`;
@@ -64023,79 +64482,71 @@ function toolboxPresetPlan(raw) {
 }
 
 // plugins/podplo-dsh/src/native-skill-batch.ts
-var nativeSkillBatchToolName = "mcp__podplo__podplo_prepare_skill_batch";
-var nativeSkillBatchRawName = "podplo_prepare_skill_batch";
-var nativeSkillBatchTool = {
-  name: nativeSkillBatchToolName,
-  description: "Prepare one complete PodPlo Skill batch or ordered AI workflow from user-specified local image folders. For workflow, declare every stage now: a stage may read a folder or consume selected outputs of an earlier stage. The Host freezes random Skill assignments and all parameters, obtains authoritative price quotes for every AI item, requests one approval for the total ceiling, and then continues dependent stages without another model turn. Local processing outputs are not counted as AI outputs or credits. Pass model, ratio, quality, ecoMode or background only when they come from the user or the selected Skill/tool/preset; otherwise omit them and the Host applies the same authoritative defaults as the generation UI. Do not list folders, read individual images, invent IDs, or split a complete workflow into later calls.",
-  inputSchema: {
-    type: "object",
-    additionalProperties: false,
-    oneOf: [
-      { required: ["workflow"], not: { anyOf: [{ required: ["groups"] }, { required: ["folderPath"] }, { required: ["processingPlan"] }, { required: ["skillQuery"] }] } },
-      { required: ["groups"], not: { anyOf: [{ required: ["workflow"] }, { required: ["folderPath"] }, { required: ["processingPlan"] }, { required: ["skillQuery"] }] } },
-      { required: ["folderPath", "skillQuery", "skillStrategy", "processingPlan"], not: { anyOf: [{ required: ["groups"] }, { required: ["workflow"] }] } }
-    ],
-    properties: {
-      workflow: { type: "object", additionalProperties: false, required: ["stages"], properties: {
-        stages: { type: "array", minItems: 1, maxItems: 10, items: {
-          type: "object",
-          additionalProperties: false,
-          required: ["id", "source", "skillQuery", "skillStrategy", "processingPlan"],
-          properties: {
-            id: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
-            name: { type: "string", minLength: 1, maxLength: 80 },
-            source: { type: "object", additionalProperties: false, oneOf: [
-              { required: ["folderPath"], not: { required: ["stageId"] } },
-              { required: ["stageId"], not: { required: ["folderPath"] } }
-            ], properties: {
-              folderPath: { type: "string", minLength: 1, maxLength: 4096 },
-              stageId: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
-              imageIndexes: { type: "array", minItems: 1, maxItems: 100, uniqueItems: true, items: { type: "integer", minimum: 0, maximum: 99 } }
-            } },
-            skillQuery: { type: "string", minLength: 1, maxLength: 160 },
-            skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
-            skillFolder: { type: "string", minLength: 1, maxLength: 80 },
-            skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] },
-            expectedImageCount: { type: "integer", minimum: 1, maximum: 100 },
-            processingPresetPath: { type: "string" },
-            processingPlan: processingPlanSchema,
-            instructions: { type: "string", maxLength: 3e3 }
-          }
+var nativeTaskToolName = "mcp__podplo__podplo_prepare_task";
+var nativeTaskRawName = "podplo_prepare_task";
+var nativeTaskTool = {
+  name: nativeTaskToolName,
+  description: "Prepare one complete PodPlo task. Describe only ordered stages: source folder/previous stage and image scope, exact Skill/favorite selection strategy, generation choices explicitly supplied by the user, and either no local action, a validated grid split, or a user-supplied PodPlo preset path. The Host resolves files, Skills, fixed random assignments, defaults, dependencies, local plan and the exact whole-order credits; then it shows one native confirmation. Unknown local actions are rejected. Do not inspect folders, discover items one by one, invent IDs, write processingPlan, or calculate credits.",
+  inputSchema: { type: "object", additionalProperties: false, required: ["stages"], properties: {
+    stages: { type: "array", minItems: 1, maxItems: 10, items: {
+      type: "object",
+      additionalProperties: false,
+      required: ["id", "source", "skill"],
+      properties: {
+        id: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
+        name: { type: "string", minLength: 1, maxLength: 80 },
+        source: { type: "object", additionalProperties: false, oneOf: [
+          { required: ["folderPath"], not: { required: ["fromStage"] } },
+          { required: ["fromStage"], not: { required: ["folderPath"] } },
+          { required: ["referenceIds"], not: { anyOf: [{ required: ["folderPath"] }, { required: ["fromStage"] }] } }
+        ], properties: {
+          folderPath: { type: "string", minLength: 1, maxLength: 4096 },
+          fromStage: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
+          referenceIds: { type: "array", minItems: 1, maxItems: 100, uniqueItems: true, items: { type: "string", minLength: 1, maxLength: 240 } },
+          scope: { type: "string", enum: ["all", "first", "indexes"] },
+          indexes: {
+            type: "array",
+            minItems: 1,
+            maxItems: 100,
+            uniqueItems: true,
+            items: { type: "integer", minimum: 0, maximum: 99 }
+          },
+          expectedImageCount: { type: "integer", minimum: 1, maximum: 100 }
+        } },
+        skill: { type: "object", additionalProperties: false, required: ["query", "strategy"], properties: {
+          query: { type: "string", minLength: 1, maxLength: 160 },
+          source: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
+          favoriteFolder: { type: "string", minLength: 1, maxLength: 80 },
+          strategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] }
+        } },
+        generation: { type: "object", additionalProperties: false, properties: {
+          model: { type: "string", maxLength: 160 },
+          ratio: { type: "string", maxLength: 8 },
+          quality: { type: "string", maxLength: 32 },
+          ecoMode: { type: "boolean" },
+          background: { type: "string", enum: ["opaque", "transparent"] },
+          instructions: { type: "string", maxLength: 3e3 }
+        } },
+        local: { type: "object", additionalProperties: false, oneOf: [
+          { required: ["presetPath"], not: { anyOf: [{ required: ["actions"] }, { required: ["exactPlan"] }] } },
+          { required: ["actions"], not: { anyOf: [{ required: ["presetPath"] }, { required: ["exactPlan"] }] } },
+          { required: ["exactPlan"], not: { anyOf: [{ required: ["presetPath"] }, { required: ["actions"] }] } }
+        ], properties: {
+          presetPath: { type: "string", minLength: 1, maxLength: 4096 },
+          actions: {
+            type: "array",
+            maxItems: 10,
+            items: { type: "object", additionalProperties: false, required: ["type", "rows", "columns"], properties: {
+              type: { const: "grid-split" },
+              rows: { type: "integer", minimum: 1, maximum: 6 },
+              columns: { type: "integer", minimum: 1, maximum: 6 }
+            } }
+          },
+          exactPlan: { ...processingPlanSchema, description: "Exact validated plan for existing PodPlo resize, rotate/flip, color, export, print, outline, grid-split or toolbox tools. Copy options from that tool schema; the Host rejects invalid options." }
         } }
-      } },
-      groups: { type: "array", minItems: 1, maxItems: 10, description: "All requested folder/Skill/preset groups in one task and one quote. Each group keeps its own processing preset.", items: {
-        type: "object",
-        additionalProperties: false,
-        required: ["folderPath", "skillQuery", "skillStrategy", "processingPlan"],
-        properties: {
-          folderPath: { type: "string" },
-          skillQuery: { type: "string" },
-          skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
-          skillFolder: { type: "string", minLength: 1, maxLength: 80 },
-          skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] },
-          expectedImageCount: { type: "integer", minimum: 1, maximum: 100 },
-          processingPresetPath: { type: "string" },
-          processingPlan: processingPlanSchema,
-          instructions: { type: "string", description: "Optional generation-only instruction for this group." }
-        }
-      } },
-      folderPath: { type: "string", minLength: 1, maxLength: 4096, description: "Exact folder path explicitly supplied by the user in this conversation. Only direct JPEG, PNG and WebP files are used; subfolders and symbolic links are never followed." },
-      expectedImageCount: { type: "integer", minimum: 1, maximum: 100, description: "Optional consistency check only when the user explicitly stated a count. Omit otherwise; the Host counts all direct images." },
-      skillQuery: { type: "string", minLength: 1, maxLength: 160, description: "Exact personal Skill ID/name, public Skill/family slug/title, or personal favorite remark. Ambiguous matches are rejected." },
-      skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"], description: "Use personal for \u6211\u7684 Skill and favorite for \u6211\u7684\u6536\u85CF or a favorite remark/folder. Omit or use auto only if the source was not specified." },
-      skillFolder: { type: "string", minLength: 1, maxLength: 80, description: "Exact favorite folder name; use with skillSource=favorite." },
-      processingPresetPath: { type: "string", minLength: 1, maxLength: 4096, description: "User-supplied toolbox preset JSON path. Pass processingPlan: []; the Host reads and executes all enabled settings including mirrorJoin. Do not read, translate or recreate this preset yourself." },
-      skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"], description: "single requires one executable Skill. Random strategies require a Skill family. random-per-image samples without replacement; random-per-image-reuse independently samples each image and permits reuse." },
-      model: { type: "string", minLength: 1, maxLength: 160, description: "Exact current model name or ID from the user or selected Skill/tool/preset. Otherwise omit for the Host UI default." },
-      ratio: { type: "string", minLength: 3, maxLength: 8, description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the current model/UI default." },
-      quality: { type: "string", minLength: 1, maxLength: 32, description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the current model default." },
-      ecoMode: { type: "boolean", description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the authoritative Host default." },
-      background: { type: "string", enum: ["opaque", "transparent"], description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the normal opaque/UI default." },
-      processingPlan: processingPlanSchema,
-      instructions: { type: "string", maxLength: 3e3, description: "Optional additional generation-only requirements explicitly given by the user. Omit or pass an empty string when the selected Skill is the full instruction. Do not invent requirements to fill this field. Put later processing only in processingPlan." }
-    }
-  }
+      }
+    } }
+  } }
 };
 var fail5 = (code, message) => {
   throw new PodploPluginError(code, message);
@@ -64107,7 +64558,7 @@ var text3 = (value2, name2, max) => {
   return value2.trim();
 };
 function parseInput(value2) {
-  const allowed = /* @__PURE__ */ new Set(["folderPath", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
+  const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
   if (Object.keys(value2).some((key) => !allowed.has(key))) fail5("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
   const count2 = value2.expectedImageCount;
   if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail5("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
@@ -64127,8 +64578,12 @@ function parseInput(value2) {
   if (skillFolder && skillSource !== "favorite") fail5("INVALID_ARGUMENT", "skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002");
   if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
     fail5("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
+  const folderPath = value2.folderPath === void 0 ? void 0 : text3(value2.folderPath, "folderPath", 4096);
+  const referenceAssetIds = value2.referenceAssetIds;
+  if (folderPath !== void 0 === (referenceAssetIds !== void 0) || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))))
+    fail5("INVALID_ARGUMENT", "\u5FC5\u987B\u63D0\u4F9B\u4E00\u4E2A\u56FE\u7247\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750 ID\u3002");
   return {
-    folderPath: text3(value2.folderPath, "folderPath", 4096),
+    ...folderPath ? { folderPath } : { referenceAssetIds },
     ...imageIndexes ? { imageIndexes } : {},
     ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
     skillQuery: text3(value2.skillQuery, "skillQuery", 160),
@@ -64327,11 +64782,88 @@ function shuffledWithoutReplacement(values, count2, choose) {
   }
   return selected;
 }
+function expandNativeTaskInput(raw) {
+  if (Object.keys(raw).some((key) => key !== "stages") || !Array.isArray(raw.stages) || !raw.stages.length || raw.stages.length > 10)
+    fail5("INVALID_ARGUMENT", "\u6574\u5355\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879\u3002");
+  const rawStages = raw.stages;
+  const ids2 = /* @__PURE__ */ new Set();
+  const stages2 = rawStages.map((value2, index) => {
+    const stage = record6(value2), id2 = text3(stage.id, `stages[${index}].id`, 40);
+    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail5("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    if (Object.keys(stage).some((key) => !["id", "name", "source", "skill", "generation", "local"].includes(key)))
+      fail5("INVALID_ARGUMENT", "\u9636\u6BB5\u5305\u542B\u672A\u77E5\u9AD8\u5C42\u53C2\u6570\u3002");
+    ids2.add(id2);
+    const source = record6(stage.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
+    const sourceChoices = [typeof folderPath === "string", typeof fromStage === "string", Array.isArray(referenceIds)].filter(Boolean).length;
+    if (Object.keys(source).some((key) => !["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"].includes(key)) || sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
+      fail5("INVALID_ARGUMENT", "\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+    const scope = source.scope ?? "all";
+    if (!["all", "first", "indexes"].includes(String(scope))) fail5("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
+    if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail5("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
+    const imageIndexes = scope === "first" ? [0] : scope === "indexes" ? source.indexes : void 0;
+    const skill = record6(stage.skill);
+    if (Object.keys(skill).some((key) => !["query", "source", "favoriteFolder", "strategy"].includes(key))) fail5("INVALID_ARGUMENT", "Skill \u9009\u62E9\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    const strategy = String(skill.strategy);
+    if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail5("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
+    const generation = stage.generation === void 0 ? {} : record6(stage.generation);
+    if (Object.keys(generation).some((key) => !["model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
+      fail5("INVALID_ARGUMENT", "\u751F\u56FE\u9009\u9879\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    const local = stage.local === void 0 ? void 0 : record6(stage.local);
+    let processingPresetPath;
+    const processingPlan = [];
+    if (local) {
+      const choices = [local.presetPath, local.actions, local.exactPlan].filter((value3) => value3 !== void 0).length;
+      if (Object.keys(local).some((key) => !["presetPath", "actions", "exactPlan"].includes(key)) || choices !== 1)
+        fail5("INVALID_ARGUMENT", "\u672C\u5730\u52A0\u5DE5\u5FC5\u987B\u9009\u62E9\u9884\u8BBE\u8DEF\u5F84\u6216\u660E\u786E\u52A8\u4F5C\u3002");
+      if (local.presetPath !== void 0) processingPresetPath = text3(local.presetPath, "local.presetPath", 4096);
+      else if (local.exactPlan !== void 0) processingPlan.push(...parseProcessingPlan(local.exactPlan) ?? []);
+      else {
+        if (!Array.isArray(local.actions) || local.actions.length > 10) fail5("INVALID_ARGUMENT", "\u672C\u5730\u52A8\u4F5C\u65E0\u6548\u3002");
+        const actions = local.actions;
+        for (const [actionIndex, value3] of actions.entries()) {
+          const action = record6(value3);
+          if (Object.keys(action).some((key) => !["type", "rows", "columns"].includes(key)) || action.type !== "grid-split" || !Number.isInteger(action.rows) || Number(action.rows) < 1 || Number(action.rows) > 6 || !Number.isInteger(action.columns) || Number(action.columns) < 1 || Number(action.columns) > 6)
+            fail5("UNSUPPORTED_LOCAL_ACTION", "\u5F53\u524D\u9AD8\u5C42\u5165\u53E3\u53EA\u652F\u6301 grid-split\uFF1B\u5176\u4ED6\u52A8\u4F5C\u8BF7\u63D0\u4F9B\u5DF2\u4FDD\u5B58\u7684 PodPlo \u5DE5\u5177\u7BB1\u9884\u8BBE\u3002");
+          processingPlan.push({
+            id: `grid-${actionIndex + 1}`,
+            label: `${String(action.rows)}\xD7${String(action.columns)} \u5207\u56FE`,
+            toolName: GRID_SPLIT_OPERATION_NAME,
+            options: { rows: action.rows, cols: action.columns }
+          });
+        }
+      }
+    }
+    return {
+      id: id2,
+      ...stage.name === void 0 ? {} : { name: text3(stage.name, "stage.name", 80) },
+      source: { ...typeof folderPath === "string" ? { folderPath: text3(folderPath, "source.folderPath", 4096) } : Array.isArray(referenceIds) ? { referenceAssetIds: referenceIds } : { stageId: text3(fromStage, "source.fromStage", 40) }, ...imageIndexes ? { imageIndexes } : {} },
+      ...source.expectedImageCount === void 0 ? {} : { expectedImageCount: source.expectedImageCount },
+      skillQuery: text3(skill.query, "skill.query", 160),
+      skillStrategy: strategy,
+      ...skill.source === void 0 ? {} : { skillSource: skill.source },
+      ...skill.favoriteFolder === void 0 ? {} : { skillFolder: text3(skill.favoriteFolder, "skill.favoriteFolder", 80) },
+      ...generation,
+      ...processingPresetPath ? { processingPresetPath } : {},
+      processingPlan
+    };
+  });
+  return { workflow: { stages: stages2 } };
+}
+async function prepareNativeTask(raw, deps) {
+  const expanded = expandNativeTaskInput(raw);
+  const prepared = await prepareNativeSkillBatch(expanded, deps);
+  if (expanded.workflow === void 0 && Array.isArray(prepared.items)) {
+    const source = record6(raw.stages[0]), id2 = text3(source.id, "stage.id", 40);
+    const label = source.name === void 0 ? id2 : text3(source.name, "stage.name", 80);
+    prepared.items = prepared.items.map((item) => ({ ...item, stage: { id: id2, label, order: 0 } }));
+  }
+  return prepared;
+}
 async function prepareNativeSkillBatch(raw, deps) {
   if (raw.workflow !== void 0) return prepareWorkflowBatch(raw, deps);
   if (raw.groups !== void 0) return prepareGroupedBatch(raw, deps);
   const input = parseInput(raw);
-  if (!deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
+  if (input.folderPath && !deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
   deps.signal?.throwIfAborted();
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const processingPlan = await presetProcessing(input, deps);
@@ -64389,12 +64921,12 @@ async function prepareNativeSkillBatch(raw, deps) {
     parameters.background === "transparent"
   );
   if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail5("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
-  const allImages = await readTrustedImageFolder({
+  const allImages = input.folderPath ? await readTrustedImageFolder({
     folderPath: input.folderPath,
     cwd: deps.cwd,
     expectedImageCount: input.imageIndexes ? void 0 : input.expectedImageCount,
     signal: deps.signal
-  });
+  }) : input.referenceAssetIds.map((id2, index) => ({ id: id2, name: `\u4F1A\u8BDD\u56FE\u7247-${index + 1}`, bytes: new Uint8Array() }));
   if (input.imageIndexes?.some((index) => index >= allImages.length))
     fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9009\u62E9\u4E86\u6587\u4EF6\u5939\u4E2D\u4E0D\u5B58\u5728\u7684\u56FE\u7247\u3002");
   const images = input.imageIndexes ? input.imageIndexes.map((index) => allImages[index]) : allImages;
@@ -64420,25 +64952,30 @@ async function prepareNativeSkillBatch(raw, deps) {
     verified.add(skill.id);
   }
   await assertOwner(deps, ownerId, namespace);
-  const referenceAssetIds = await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images });
-  if (referenceAssetIds.length !== images.length || referenceAssetIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
+  const referenceAssetIds = input.folderPath ? await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images }) : images.map((image) => image.id);
+  if (referenceAssetIds.length !== images.length || input.folderPath && referenceAssetIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
     fail5("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
   await assertOwner(deps, ownerId, namespace);
   const items = referenceAssetIds.map((referenceAssetId, index) => {
     const skill = assignments[index];
-    return { skillId: skill.id, sourceName: images[index].name, args: {
-      prompt: prompts[index],
-      modelId: model.id,
-      templateId: skill.id,
-      referenceAssetIds: [referenceAssetId],
-      ...parameters.ratio ? { ratio: parameters.ratio } : {},
-      ...parameters.quality ? { quality: parameters.quality } : {},
-      webSearch: false,
-      imageSearch: false,
-      ecoMode: parameters.ecoMode,
-      count: 1,
-      ...background
-    } };
+    return {
+      skillId: skill.id,
+      sourceName: images[index].name,
+      pricingReferenceCount: (skill.referenceCount ?? 0) + 1,
+      args: {
+        prompt: prompts[index],
+        modelId: model.id,
+        templateId: skill.id,
+        referenceAssetIds: [referenceAssetId],
+        ...parameters.ratio ? { ratio: parameters.ratio } : {},
+        ...parameters.quality ? { quality: parameters.quality } : {},
+        webSearch: false,
+        imageSearch: false,
+        ecoMode: parameters.ecoMode,
+        count: 1,
+        ...background
+      }
+    };
   });
   deps.signal?.throwIfAborted();
   return {
@@ -64466,18 +65003,22 @@ async function prepareWorkflowBatch(raw, deps) {
       fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
     const name2 = stage.name === void 0 ? id2 : text3(stage.name, `workflow.stages[${index}].name`, 80);
     const source = record6(stage.source);
-    if (Object.keys(source).some((key) => !["folderPath", "stageId", "imageIndexes"].includes(key))) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u6765\u6E90\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    if (Object.keys(source).some((key) => !["folderPath", "referenceAssetIds", "stageId", "imageIndexes"].includes(key))) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u6765\u6E90\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
     const folderPath = source.folderPath === void 0 ? void 0 : text3(source.folderPath, "folderPath", 4096);
+    const referenceAssetIds = source.referenceAssetIds;
     const sourceStageId = source.stageId === void 0 ? void 0 : text3(source.stageId, "stageId", 40);
-    if (!!folderPath === !!sourceStageId) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+    const sourceChoices = [folderPath !== void 0, referenceAssetIds !== void 0, sourceStageId !== void 0].filter(Boolean).length;
+    if (sourceChoices !== 1 || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((value3) => typeof value3 !== "string" || !value3 || value3.length > 240 || /[/\\\x00\r\n]/u.test(value3))))
+      fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
     let imageIndexes;
     if (source.imageIndexes !== void 0) {
       if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
       imageIndexes = source.imageIndexes;
     }
     const { id: _id, name: _name, source: _source, ...generationFields } = stage;
-    const generation = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : { folderPath: "__deferred__" } });
-    return { id: id2, name: name2, folderPath, sourceStageId, imageIndexes, generation };
+    const parsedGeneration = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : referenceAssetIds ? { referenceAssetIds } : { referenceAssetIds: ["__deferred__"] } });
+    const { folderPath: _folderPath, referenceAssetIds: _referenceAssetIds, imageIndexes: _imageIndexes, ...generation } = parsedGeneration;
+    return { id: id2, name: name2, folderPath, referenceAssetIds, sourceStageId, imageIndexes, generation };
   });
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   for (const stage of parsed) {
@@ -64490,15 +65031,15 @@ async function prepareWorkflowBatch(raw, deps) {
   const items = [], steps = [], stages2 = /* @__PURE__ */ new Map();
   const names = [];
   for (const [stageIndex, stage] of parsed.entries()) {
-    let rootFolderPath, selectedSeedIndexes, parent;
+    let rootSource, selectedSeedIndexes, parent;
     let selectedParentPositions = [];
     let preparedChild;
-    if (stage.folderPath) {
-      rootFolderPath = stage.folderPath;
+    if (stage.folderPath || stage.referenceAssetIds) {
+      rootSource = stage.folderPath ? { folderPath: stage.folderPath } : { referenceAssetIds: stage.referenceAssetIds };
       preparedChild = await prepareNativeSkillBatch({
         ...shared,
         ...stage.generation,
-        folderPath: rootFolderPath,
+        ...rootSource,
         ...stage.imageIndexes ? { imageIndexes: stage.imageIndexes, expectedImageCount: stage.generation.expectedImageCount ?? stage.imageIndexes.length } : {}
       }, deps);
       const childItems = preparedChild.items;
@@ -64506,7 +65047,7 @@ async function prepareWorkflowBatch(raw, deps) {
     } else {
       const resolvedParent = stages2.get(stage.sourceStageId) ?? fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
       parent = resolvedParent;
-      rootFolderPath = resolvedParent.rootFolderPath;
+      rootSource = resolvedParent.rootSource;
       selectedParentPositions = stage.imageIndexes ?? resolvedParent.itemIndexes.map((_, index) => index);
       if (selectedParentPositions.some((index) => index >= resolvedParent.itemIndexes.length)) fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
       selectedSeedIndexes = selectedParentPositions.map((index) => resolvedParent.seedIndexes[index]);
@@ -64514,7 +65055,7 @@ async function prepareWorkflowBatch(raw, deps) {
     const child = preparedChild ?? await prepareNativeSkillBatch({
       ...shared,
       ...stage.generation,
-      folderPath: rootFolderPath,
+      ...rootSource,
       imageIndexes: selectedSeedIndexes,
       expectedImageCount: stage.generation.expectedImageCount ?? selectedSeedIndexes.length,
       processingPlan: stage.generation.processingPlan
@@ -64540,7 +65081,7 @@ async function prepareWorkflowBatch(raw, deps) {
     });
     stages2.set(stage.id, {
       id: stage.id,
-      rootFolderPath,
+      rootSource,
       seedIndexes: selectedSeedIndexes,
       itemIndexes: scope
     });
@@ -64568,7 +65109,7 @@ async function prepareGroupedBatch(raw, deps) {
     return parseInput({ ...shared, ...row });
   });
   for (const input of parsed) {
-    if (!deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+    if (!input.folderPath || !deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
     await presetProcessing(input, deps);
   }
   const items = [], steps = [], names = [];
@@ -65205,14 +65746,14 @@ async function nativeCipher(ctx) {
       const value2 = Buffer.from(encoded, "base64");
       if (value2.length === 32) key = value2;
     }
-    key ??= randomBytes3(32);
+    key ??= randomBytes4(32);
     return { kind: "grant", payload: { encryptionKey: key.toString("base64") } };
   });
   if (!key) throw new Error("PodPlo credential storage unavailable");
   return {
     available: () => true,
     encrypt(text4) {
-      const iv = randomBytes3(12), cipher = createCipheriv("aes-256-gcm", key, iv);
+      const iv = randomBytes4(12), cipher = createCipheriv("aes-256-gcm", key, iv);
       const data = Buffer.concat([cipher.update(text4, "utf8"), cipher.final()]);
       return Buffer.concat([Buffer.from("PPD1"), iv, cipher.getAuthTag(), data]);
     },
@@ -65417,8 +65958,6 @@ async function apply(ctx, config3 = {}) {
     await Promise.allSettled([outputs.close(), toolkit.close(), service.close()]);
     throw new Error("PodPlo generation preparation tool is unavailable");
   }
-  const generationPrepareToolSchema = generationPrepareDefinition.inputSchema;
-  const generationPrepareToolDescription = `${generationPrepareDefinition.description ?? ""} ${PODPLO_NATIVE_APPROVAL_GUIDANCE}`;
   const mcpTransport = {
     ...transport,
     async toolDefinitions() {
@@ -65724,31 +66263,16 @@ async function apply(ctx, config3 = {}) {
           return { approved: false, value: result };
         }
       });
-      const prepareTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
-        name: nativeGenerationPrepareToolName,
-        rawName: "podplo_prepare_generation",
-        description: generationPrepareToolDescription,
-        inputSchema: generationPrepareToolSchema,
-        async call(args, execution) {
-          return approveGeneration(
-            nativeGenerationPrepareToolName,
-            args,
-            execution,
-            (input) => transport.callTool("podplo_prepare_generation", input, agent.id)
-          );
-        }
-      });
-      const disposePrepareTool = agent.ctx.tools.register(prepareTool);
-      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool });
+      bindings.set(agent.id, { dispose: session2.dispose, fiber });
       const folderPreparations = /* @__PURE__ */ new Map();
       const batchTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
-        ...nativeSkillBatchTool,
-        rawName: nativeSkillBatchRawName,
+        ...nativeTaskTool,
+        rawName: nativeTaskRawName,
         async call(args, execution) {
-          return approveGeneration(nativeSkillBatchToolName, args, execution, async (input) => {
+          return approveGeneration(nativeTaskToolName, args, execution, async (input) => {
             const events = agent.session?.snapshotEvents?.();
             const messages = Array.isArray(events) ? events.filter((event) => event?.type === "user/message" && event?.data?.source?.kind === "user") : [];
-            const requestKey = createHash16("sha256").update(canonical({
+            const requestKey = createHash17("sha256").update(canonical({
               namespace: online.auth.namespace,
               turn: messages.length,
               message: messages.at(-1),
@@ -65756,7 +66280,7 @@ async function apply(ctx, config3 = {}) {
             })).digest("hex");
             let preparation = folderPreparations.get(requestKey);
             if (!preparation) {
-              preparation = prepareNativeSkillBatch(input, {
+              preparation = prepareNativeTask(input, {
                 online,
                 cwd: ctx.sessions?.get(agent.id)?.header.cwd,
                 nativeSessionId: agent.id,
@@ -65786,12 +66310,12 @@ async function apply(ctx, config3 = {}) {
             }
             const prepared = await preparation;
             execution.signal?.throwIfAborted?.();
-            return transport.callTool("podplo_prepare_generation", prepared, agent.id);
+            return transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
           });
         }
       });
       const disposeBatchTool = agent.ctx.tools.register(batchTool);
-      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool, disposeBatchTool });
+      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposeBatchTool });
       const waitTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
         ...nativeGenerationWaitTool,
         async call(args, execution) {
@@ -65829,12 +66353,11 @@ async function apply(ctx, config3 = {}) {
       });
       const disposeWaitTool = agent.ctx.tools.register(waitTool);
       const disposeJevRouting = enableJevTestPreset && jevActiveSessionIds.has(agent.id) ? startJevRouting(agent) : void 0;
-      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool, disposeBatchTool, disposeWaitTool, disposeJevRouting });
+      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposeBatchTool, disposeWaitTool, disposeJevRouting });
       await restoreCompletionIntents(true);
     } catch (error101) {
       const current = bindings.get(agent.id);
       current?.disposeJevRouting?.();
-      current?.disposePrepareTool?.();
       current?.disposeBatchTool?.();
       current?.disposeWaitTool?.();
       await current?.fiber?.dispose?.();
@@ -65853,7 +66376,6 @@ async function apply(ctx, config3 = {}) {
     if (!binding) return;
     bindings.delete(agent.id);
     binding.disposeJevRouting?.();
-    binding.disposePrepareTool?.();
     binding.disposeBatchTool?.();
     binding.disposeWaitTool?.();
     binding.dispose();
