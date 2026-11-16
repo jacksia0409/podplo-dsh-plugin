@@ -40,6 +40,81 @@ var import_react12 = require("react");
 // plugins/podplo-dsh/src/chat-generation-tasks.tsx
 var import_react3 = require("react");
 
+// plugins/podplo-dsh/src/panel-ui-state.ts
+var epoch = 0;
+var states = /* @__PURE__ */ new Map();
+var MAX_PANEL_UI_STATES = 64;
+var invalidationListeners = /* @__PURE__ */ new Set();
+function subscribePanelUiInvalidation(listener) {
+  invalidationListeners.add(listener);
+  return () => {
+    invalidationListeners.delete(listener);
+  };
+}
+var keyFor = (lease, panel) => JSON.stringify([lease.scope, panel]);
+function createPanelUiLease(scope) {
+  return Object.freeze({ scope, epoch });
+}
+function readPanelUiState(lease, panel) {
+  if (lease.epoch !== epoch) return void 0;
+  const key = keyFor(lease, panel);
+  const value2 = states.get(key);
+  if (value2 !== void 0) {
+    states.delete(key);
+    states.set(key, value2);
+  }
+  return value2;
+}
+function writePanelUiState(lease, panel, value2) {
+  if (lease.epoch !== epoch) return false;
+  const key = keyFor(lease, panel);
+  states.delete(key);
+  states.set(key, value2);
+  while (states.size > MAX_PANEL_UI_STATES) states.delete(states.keys().next().value);
+  return true;
+}
+function clearPanelUiState() {
+  epoch++;
+  states.clear();
+  for (const listener of invalidationListeners) {
+    try {
+      listener();
+    } catch {
+    }
+  }
+}
+function panelUiStateEpoch() {
+  return epoch;
+}
+
+// plugins/podplo-dsh/src/generation-progress-state.ts
+function generationStatusAttention(value2) {
+  const items = Array.isArray(value2) ? value2 : [];
+  const directlyBlocked = (item) => !!item && (!!item.statusBlocked || item.requiresManualStatusRefresh === true);
+  const blockedByDependency = (index, visiting = /* @__PURE__ */ new Set()) => {
+    const item = items[index];
+    if (!item || directlyBlocked(item)) return !!item;
+    if (item.status !== "quoted" || !item.dependsOn || typeof item.dependsOn !== "object") return false;
+    const parentIndex = Number(item.dependsOn.itemIndex);
+    if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
+    visiting.add(parentIndex);
+    return blockedByDependency(parentIndex, visiting);
+  };
+  const blocked = items.filter(directlyBlocked);
+  const hasRunnablePending = items.some((item, index) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? "")) && !blockedByDependency(index));
+  const authorization = blocked.some((item) => item.statusBlocked && typeof item.statusBlocked === "object" && item.statusBlocked.kind === "authorization");
+  return {
+    hasBlocked: blocked.length > 0,
+    hasRunnablePending,
+    attentionKind: authorization ? "authorization" : "manual_check"
+  };
+}
+function generationIsPaused(operation) {
+  if (operation.stoppedAt || !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(String(operation.status))) return false;
+  const attention = generationStatusAttention(operation.items);
+  return !attention.hasRunnablePending && (attention.hasBlocked || ["submission_unknown", "partial_unknown"].includes(String(operation.status)));
+}
+
 // plugins/podplo-dsh/src/chat-generation-approval.tsx
 var import_jsx_runtime = require("react/jsx-runtime");
 var object = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
@@ -80,30 +155,133 @@ function ChatGenerationApproval({ quote, attempt, onApprove }) {
 // plugins/podplo-dsh/src/chat-generation-progress.tsx
 var import_jsx_runtime2 = require("react/jsx-runtime");
 var generationStatusLabels = {
-  submitting: "\u6B63\u5728\u63D0\u4EA4",
+  submitting: "\u6B63\u5728\u51C6\u5907\u63D0\u4EA4",
   submitted: "\u6B63\u5728\u751F\u6210",
   submission_unknown: "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9",
-  partial_unknown: "\u90E8\u5206\u7ED3\u679C\u5F85\u6838\u5BF9",
-  completed: "\u672C\u6279\u751F\u56FE\u5B8C\u6210",
-  partial_failure: "\u90E8\u5206\u5B8C\u6210\u3001\u90E8\u5206\u5931\u8D25",
-  partial_cancelled: "\u90E8\u5206\u5B8C\u6210\u3001\u5176\u4F59\u5DF2\u505C\u6B62",
-  failed: "\u6267\u884C\u5931\u8D25",
+  partial_unknown: "\u90E8\u5206\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9",
+  completed: "AI \u751F\u6210\u5B8C\u6210",
+  partial_failure: "\u90E8\u5206 AI \u751F\u6210\u5B8C\u6210",
+  partial_cancelled: "\u90E8\u5206 AI \u751F\u6210\u5B8C\u6210\u3001\u5176\u4F59\u5DF2\u505C\u6B62",
+  failed: "AI \u751F\u6210\u672A\u5B8C\u6210",
   cancelled: "\u5DF2\u505C\u6B62",
   quoted: "\u7B49\u5F85\u63D0\u4EA4"
 };
 var activeGenerationStatuses = /* @__PURE__ */ new Set(["submitting", "submitted", "submission_unknown", "partial_unknown"]);
 var terminalGenerationStatuses = /* @__PURE__ */ new Set(["completed", "partial_failure", "partial_cancelled", "failed", "cancelled"]);
-function ChatGenerationProgress({ item, busy, onAction }) {
+var readableDate = (value2) => {
+  const parsed = value2 ? Date.parse(value2) : Number.NaN;
+  return Number.isFinite(parsed) ? new Date(parsed).toLocaleString() : void 0;
+};
+function generationErrorAdvice(code) {
+  if (!code) return void 0;
+  if (code === "SUBMISSION_RESULT_UNKNOWN") return { title: "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9", action: "\u4E0D\u8981\u91CD\u590D\u751F\u6210\uFF1B\u8FDE\u63A5\u6062\u590D\u540E\u5237\u65B0\u539F\u4EFB\u52A1\u3002" };
+  if (code.startsWith("DEPENDENCY_")) return { title: "\u524D\u5E8F\u9636\u6BB5\u6CA1\u6709\u53EF\u7528\u7ED3\u679C", action: "\u67E5\u770B\u524D\u5E8F\u9636\u6BB5\uFF1B\u4E0D\u4F1A\u91CD\u590D\u63D0\u4EA4\u5DF2\u7ECF\u63A5\u7EB3\u7684\u751F\u56FE\u3002" };
+  if (["NETWORK_UNAVAILABLE", "CONNECTION_FAILED", "ETIMEDOUT", "ECONNRESET"].includes(code))
+    return { title: "\u8FDE\u63A5\u6682\u65F6\u4E0D\u53EF\u7528", action: "\u4EFB\u52A1\u4F1A\u6309\u5DF2\u767B\u8BB0\u72B6\u6001\u7EE7\u7EED\u6838\u5BF9\uFF0C\u65E0\u9700\u91CD\u65B0\u786E\u8BA4\u3002" };
+  if (["RATE_LIMITED", "TOO_MANY_REQUESTS"].includes(code))
+    return { title: "\u670D\u52A1\u6682\u65F6\u7E41\u5FD9", action: "\u5C06\u6309\u5DF2\u767B\u8BB0\u65F6\u95F4\u91CD\u8BD5\uFF0C\u65E0\u9700\u91CD\u590D\u63D0\u4EA4\u3002" };
+  if (["WORKFLOW_QUOTE_CHANGED", "QUOTE_EXPIRED", "DEPENDENCY_QUOTE_EXCEEDED"].includes(code))
+    return { title: "\u540E\u7EED\u9636\u6BB5\u62A5\u4EF7\u5DF2\u4E0D\u7B26\u5408\u6279\u51C6\u989D\u5EA6", action: "\u8BE5\u6B65\u9AA4\u672A\u63D0\u4EA4\uFF1B\u5982\u9700\u7EE7\u7EED\uFF0C\u8BF7\u91CD\u65B0\u6574\u5355\u62A5\u4EF7\u786E\u8BA4\u3002" };
+  if (["USER_SKILL_CHANGED", "PERSONAL_SKILL_CHANGED", "SKILL_BINDING_CHANGED"].includes(code))
+    return { title: "\u6240\u9009 Skill \u5DF2\u53D1\u751F\u53D8\u5316", action: "\u8BE5\u6B65\u9AA4\u672A\u63D0\u4EA4\uFF1B\u6838\u5BF9 Skill \u540E\u91CD\u65B0\u6574\u5355\u62A5\u4EF7\u3002" };
+  if (["SESSION_CHANGED", "SESSION_CHANGED_BEFORE_SUBMIT", "AUTH_REQUIRED", "INVALID_TOKEN", "PERMISSION_DENIED"].includes(code))
+    return { title: "\u8D26\u53F7\u6216\u751F\u56FE\u6743\u9650\u9700\u8981\u6062\u590D", action: "\u6062\u590D\u6743\u9650\u540E\u624B\u52A8\u5237\u65B0\u5DF2\u63D0\u4EA4\u4EFB\u52A1\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" };
+  if (code === "INSUFFICIENT_CREDITS") return { title: "\u79EF\u5206\u4E0D\u8DB3", action: "\u8BE5\u6B65\u9AA4\u672A\u63D0\u4EA4\uFF1B\u6838\u5BF9\u79EF\u5206\u540E\u91CD\u65B0\u6574\u5355\u62A5\u4EF7\u3002" };
+  if (["REFERENCE_UNAVAILABLE", "SOURCE_UNAVAILABLE"].includes(code))
+    return { title: "\u8F93\u5165\u56FE\u7247\u6682\u4E0D\u53EF\u7528", action: "\u8BE5\u6B65\u9AA4\u672A\u63D0\u4EA4\uFF1B\u6838\u5BF9\u6765\u6E90\u540E\u91CD\u65B0\u6574\u5355\u62A5\u4EF7\u3002" };
+  if (code === "CANCELLED" || code === "NATIVE_SESSION_STOPPED") return { title: "\u6B65\u9AA4\u5DF2\u505C\u6B62", action: "\u5DF2\u5B8C\u6210\u7ED3\u679C\u7EE7\u7EED\u4FDD\u7559\u3002" };
+  return { title: "\u6B64\u6B65\u9AA4\u672A\u5B8C\u6210", action: "\u5237\u65B0\u539F\u4EFB\u52A1\u67E5\u770B\u72B6\u6001\uFF1B\u9700\u8981\u91CD\u505A\u65F6\u8BF7\u91CD\u65B0\u786E\u8BA4\u62A5\u4EF7\u3002" };
+}
+function generationStatusBlockedAdvice(kind) {
+  return kind === "authorization" ? { title: "\u5DF2\u63D0\u4EA4\uFF0C\u6743\u9650\u6838\u9A8C\u6682\u505C", action: "\u8BF7\u91CD\u65B0\u767B\u5F55\u6216\u6062\u590D\u751F\u56FE\u6743\u9650\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" } : { title: "\u5DF2\u63D0\u4EA4\uFF0C\u72B6\u6001\u68C0\u67E5\u6682\u505C", action: "\u8BF7\u6838\u5BF9 PodPlo \u8FDE\u63A5\u6216\u66F4\u65B0\u670D\u52A1\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" };
+}
+function itemStatus(row) {
+  if (row.statusBlocked || row.requiresManualStatusRefresh || ["authorization", "manual_status_check"].includes(row.waitReason ?? ""))
+    return generationStatusBlockedAdvice(row.statusBlocked?.kind ?? (row.waitReason === "authorization" ? "authorization" : "manual_check")).title;
+  if (row.requiresManualReconciliation || row.waitReason === "manual_reconciliation" || row.status === "submission_unknown")
+    return "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9\uFF0C\u4E0D\u91CD\u590D\u751F\u6210";
+  if (row.retry || row.waitReason === "retry") return "\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528\uFF0C\u7A0D\u540E\u81EA\u52A8\u91CD\u8BD5";
+  if (row.waitReason === "dependency") return "\u7B49\u5F85\u524D\u5E8F\u9636\u6BB5";
+  if (row.status === "completed") return "AI \u751F\u6210\u5B8C\u6210";
+  if (row.status === "submitted" || row.waitReason === "remote_generation") return "\u5DF2\u63D0\u4EA4\uFF0C\u8FDC\u7AEF\u751F\u6210\u4E2D";
+  if (row.status === "submitting") return "\u6B63\u5728\u63D0\u4EA4";
+  return generationStatusLabels[row.status] ?? "\u72B6\u6001\u5F85\u6838\u5BF9";
+}
+function stageStatus(rows) {
+  if (rows.every((row) => row.status === "completed")) return "AI \u751F\u6210\u5B8C\u6210";
+  if (rows.some((row) => row.requiresManualReconciliation || row.waitReason === "manual_reconciliation")) return "\u6709\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9";
+  if (rows.some((row) => row.statusBlocked?.kind === "authorization" || row.waitReason === "authorization")) return "\u6743\u9650\u6062\u590D\u540E\u9700\u624B\u52A8\u5237\u65B0";
+  if (rows.some((row) => row.statusBlocked || row.requiresManualStatusRefresh || row.waitReason === "manual_status_check")) return "\u9700\u8981\u624B\u52A8\u5237\u65B0\u6838\u5BF9";
+  if (rows.some((row) => row.retry || row.waitReason === "retry")) return "\u6682\u65F6\u65AD\u7EBF\uFF0C\u7B49\u5F85\u91CD\u8BD5";
+  if (rows.every((row) => row.waitReason === "dependency")) return "\u7B49\u5F85\u524D\u5E8F\u9636\u6BB5";
+  if (rows.some((row) => row.status === "submitted")) return "\u751F\u6210\u4E2D";
+  if (rows.some((row) => ["submitting", "quoted"].includes(row.status))) return "\u5F85\u63D0\u4EA4";
+  if (rows.some((row) => row.status === "failed")) return "\u6709\u6B65\u9AA4\u672A\u5B8C\u6210";
+  if (rows.every((row) => row.status === "cancelled")) return "\u5DF2\u505C\u6B62";
+  return "\u5904\u7406\u4E2D";
+}
+function groupedStages(items) {
+  const fallback = { id: "generation", label: "AI \u751F\u6210", order: 0 };
+  const stages = /* @__PURE__ */ new Map();
+  for (const row of items) {
+    const stage = row.stage ?? fallback, current = stages.get(stage.id);
+    if (current) current.rows.push(row);
+    else stages.set(stage.id, { stage, rows: [row] });
+  }
+  return [...stages.values()].sort((a, b) => a.stage.order - b.stage.order);
+}
+function generationTaskLabel(item, archive) {
+  if (generationIsPaused(item)) return "\u5F85\u4EBA\u5DE5\u5904\u7406";
+  if (item.status !== "completed") return generationStatusLabels[item.status] ?? "\u4EFB\u52A1\u72B6\u6001\u5F85\u6838\u5BF9";
+  const audit = archive?.audit;
+  if (audit?.complete && archive?.saveStatus === "saved") return "\u6700\u7EC8\u6210\u54C1\u5DF2\u5B8C\u6210";
+  if (audit?.download.remaining) return "AI \u751F\u6210\u5B8C\u6210 \xB7 \u6B63\u5728\u4E0B\u8F7D";
+  if ((audit?.processing.remaining ?? 0) > 0) return "AI \u751F\u6210\u5B8C\u6210 \xB7 \u6B63\u5728\u672C\u5730\u52A0\u5DE5";
+  if (archive?.saveStatus === "saving") return "AI \u751F\u6210\u5B8C\u6210 \xB7 \u6B63\u5728\u4FDD\u5B58\u6210\u54C1";
+  if (audit?.download.failed || audit?.download.missing || audit?.processing.failed || archive?.saveStatus === "failed")
+    return "AI \u751F\u6210\u5B8C\u6210 \xB7 \u540E\u7EED\u5904\u7406\u672A\u5B8C\u6210";
+  return "AI \u751F\u6210\u5B8C\u6210 \xB7 \u6700\u7EC8\u6210\u54C1\u72B6\u6001\u5F85\u6838\u5BF9";
+}
+function LocalPipeline({ item, archive }) {
+  if (!terminalGenerationStatuses.has(item.status) || ["failed", "cancelled"].includes(item.status)) return null;
+  const audit = archive?.audit;
+  if (!audit) return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "ppd-chat-local-pipeline", "data-local-stage": "sync", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: "\u4E0B\u8F7D\u4E0E\u672C\u5730\u52A0\u5DE5" }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: "\u6B63\u5728\u540C\u6B65\u672C\u5730\u4EFB\u52A1\u72B6\u6001" })
+  ] });
+  const download = audit.download.failed || audit.download.missing ? `\u6709 ${audit.download.failed + audit.download.missing} \u4E2A\u7ED3\u679C\u672A\u4FDD\u5B58` : audit.download.remaining > 0 ? `\u6B63\u5728\u4E0B\u8F7D \xB7 \u5DF2\u4FDD\u5B58 ${audit.download.saved}/${audit.download.expected}` : "\u4E0B\u8F7D\u5B8C\u6210";
+  const processing = !audit.processing.registered ? "\u672C\u5730\u52A0\u5DE5\u8981\u6C42\u672A\u767B\u8BB0" : !audit.processing.steps.length ? "\u672C\u4EFB\u52A1\u4E0D\u9700\u8981\u672C\u5730\u52A0\u5DE5" : audit.processing.failed ? `\u672C\u5730\u52A0\u5DE5\u6709 ${audit.processing.failed} \u9879\u672A\u5B8C\u6210` : (audit.processing.remaining ?? 0) > 0 ? `\u6B63\u5728\u672C\u5730\u52A0\u5DE5 \xB7 \u5DF2\u5B8C\u6210 ${audit.processing.completed}/${audit.processing.required}` : "\u672C\u5730\u52A0\u5DE5\u5B8C\u6210";
+  const final = audit.complete && archive?.saveStatus === "saved" ? "\u6700\u7EC8\u6210\u54C1\u5DF2\u5B8C\u6210" : audit.download.failed || audit.download.missing || audit.processing.failed || archive?.saveStatus === "failed" ? "\u6700\u7EC8\u6210\u54C1\u5C1A\u672A\u5168\u90E8\u5B8C\u6210" : "\u7B49\u5F85\u6700\u7EC8\u6210\u54C1\u6838\u5BF9";
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "ppd-chat-local-pipeline", "aria-label": "\u4E0B\u8F7D\u4E0E\u672C\u5730\u52A0\u5DE5\u8FDB\u5EA6", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { "data-local-stage": "download", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: "\u4E0B\u8F7D" }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: download })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { "data-local-stage": "processing", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: "\u672C\u5730\u52A0\u5DE5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: processing })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { "data-local-stage": "final", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: "\u6700\u7EC8\u7ED3\u679C" }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { children: final })
+    ] })
+  ] });
+}
+function ChatGenerationProgress({ item, archive, busy, onAction }) {
   const summary = item.summary;
   const settled = summary.completedCount + summary.failedCount + summary.cancelledCount;
+  const pendingCount = summary.pendingCount ?? item.items.filter((row) => ["quoted", "submitting"].includes(row.status)).length;
   const canStop = activeGenerationStatuses.has(item.status) && !item.stoppedAt;
+  const stages = groupedStages(item.items), showStageHeadings = item.items.some((row) => !!row.stage);
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "ppd-chat-progress-details", "data-podplo-progress-details": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("progress", { "aria-label": "\u5DF2\u7ED3\u675F\u7684\u751F\u56FE\u9879\u76EE", max: Math.max(1, summary.itemCount), value: settled }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("progress", { "aria-label": "\u5DF2\u7ED3\u675F\u7684 AI \u751F\u56FE\u9879\u76EE", max: Math.max(1, summary.itemCount), value: settled }),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { children: [
-      "\u5B8C\u6210 ",
+      "AI \u5DF2\u5B8C\u6210 ",
       summary.completedCount,
-      " \xB7 \u751F\u6210\u4E2D ",
+      " \xB7 \u5DF2\u63D0\u4EA4\u751F\u6210 ",
       summary.submittedCount,
+      " \xB7 \u5F85\u63D0\u4EA4 ",
+      pendingCount,
       " \xB7 \u5F85\u6838\u5BF9 ",
       summary.unknownCount,
       " \xB7 \u5931\u8D25 ",
@@ -111,18 +289,50 @@ function ChatGenerationProgress({ item, busy, onAction }) {
       " \xB7 \u5DF2\u505C\u6B62 ",
       summary.cancelledCount
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ol", { children: item.items.map((row, index) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("li", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { children: [
-        index + 1,
-        ". ",
-        row.skillId || "\u666E\u901A\u751F\u56FE",
-        " \xB7 ",
-        row.outputCount,
-        " \u5F20"
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "ppd-chat-stage-list", "data-stage-count": stages.length, children: stages.map(({ stage, rows }, stageIndex) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("section", { className: "ppd-chat-stage", "data-stage-id": stage.id, children: [
+      showStageHeadings && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("header", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("strong", { children: [
+          "\u9636\u6BB5 ",
+          stageIndex + 1,
+          "/",
+          stages.length,
+          " \xB7 ",
+          stage.label
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { children: [
+          stageStatus(rows),
+          " \xB7 ",
+          rows.filter((row) => row.status === "completed").length,
+          "/",
+          rows.length,
+          " \u9879"
+        ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: row.status === "completed" ? "\u5DF2\u5B8C\u6210" : generationStatusLabels[row.status] ?? row.status }),
-      row.errorCode && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("small", { children: row.errorCode })
-    ] }, row.itemId)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("ol", { children: rows.map((row) => {
+        const rowIndex = item.items.indexOf(row), error101 = row.statusBlocked ? generationStatusBlockedAdvice(row.statusBlocked.kind) : generationErrorAdvice(row.errorCode ?? row.lastStatusError?.code);
+        const lastSync = readableDate(row.lastStatusSucceededAt), retryAt = readableDate(row.retry?.nextAttemptAt), blockedAt = readableDate(row.statusBlocked?.at);
+        return /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("li", { "data-item-status": row.status, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { children: [
+            rowIndex + 1,
+            ". ",
+            row.skillName || (row.skillId ? "\u5DF2\u9009 Skill" : "\u666E\u901A\u751F\u56FE"),
+            " \xB7 ",
+            row.outputCount,
+            " \u5F20"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("strong", { children: itemStatus(row) }),
+          (lastSync || retryAt || blockedAt) && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("small", { className: "ppd-chat-progress-time", children: [
+            lastSync ? `\u6700\u540E\u540C\u6B65\uFF1A${lastSync}` : "",
+            lastSync && (retryAt || blockedAt) ? " \xB7 " : "",
+            retryAt ? `\u4E0B\u6B21\u91CD\u8BD5\uFF1A${retryAt}` : "",
+            retryAt && blockedAt ? " \xB7 " : "",
+            blockedAt ? `\u72B6\u6001\u68C0\u67E5\u6682\u505C\uFF1A${blockedAt}` : ""
+          ] }),
+          error101 && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("small", { className: "ppd-chat-progress-error", children: row.statusBlocked ? error101.action : `${error101.title}\u3002${error101.action}` })
+        ] }, row.itemId);
+      }) })
+    ] }, stage.id)) }),
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(LocalPipeline, { item, archive }),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "ppd-chat-progress-actions", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", disabled: busy, onClick: () => onAction("generation.status"), children: "\u5237\u65B0\u8FDB\u5EA6" }),
       canStop && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", disabled: busy, title: "\u53EA\u505C\u6B62\u672A\u63D0\u4EA4\u6B65\u9AA4\uFF0C\u5DF2\u63A5\u7EB3\u7684\u4EFB\u52A1\u7EE7\u7EED\u751F\u6210", onClick: () => onAction("generation.stopRemaining"), children: "\u505C\u6B62\u5269\u4F59\u6B65\u9AA4" })
@@ -267,55 +477,11 @@ function watchTaskChanges(read) {
     return ACTIVE_POLL_MS;
   }, false);
 }
+function archiveHasLocalWork(row) {
+  return row.saveStatus === "saving" || row.files.some((file3) => file3.status === "pending") || !["failed", "missing"].includes(row.saveStatus) && (row.audit?.processing.remaining ?? 0) > (row.audit?.processing.failed ?? 0);
+}
 function archiveNeedsPolling(items) {
-  return items.some((row) => ["submitting", "submitted"].includes(row.status) || row.saveStatus === "saving" || row.files.some((file3) => file3.status === "pending") || !["failed", "missing"].includes(row.saveStatus) && (row.audit?.processing.remaining ?? 0) > (row.audit?.processing.failed ?? 0));
-}
-
-// plugins/podplo-dsh/src/panel-ui-state.ts
-var epoch = 0;
-var states = /* @__PURE__ */ new Map();
-var MAX_PANEL_UI_STATES = 64;
-var invalidationListeners = /* @__PURE__ */ new Set();
-function subscribePanelUiInvalidation(listener) {
-  invalidationListeners.add(listener);
-  return () => {
-    invalidationListeners.delete(listener);
-  };
-}
-var keyFor = (lease, panel) => JSON.stringify([lease.scope, panel]);
-function createPanelUiLease(scope) {
-  return Object.freeze({ scope, epoch });
-}
-function readPanelUiState(lease, panel) {
-  if (lease.epoch !== epoch) return void 0;
-  const key = keyFor(lease, panel);
-  const value2 = states.get(key);
-  if (value2 !== void 0) {
-    states.delete(key);
-    states.set(key, value2);
-  }
-  return value2;
-}
-function writePanelUiState(lease, panel, value2) {
-  if (lease.epoch !== epoch) return false;
-  const key = keyFor(lease, panel);
-  states.delete(key);
-  states.set(key, value2);
-  while (states.size > MAX_PANEL_UI_STATES) states.delete(states.keys().next().value);
-  return true;
-}
-function clearPanelUiState() {
-  epoch++;
-  states.clear();
-  for (const listener of invalidationListeners) {
-    try {
-      listener();
-    } catch {
-    }
-  }
-}
-function panelUiStateEpoch() {
-  return epoch;
+  return items.some((row) => ["submitting", "submitted"].includes(row.status) || archiveHasLocalWork(row));
 }
 
 // plugins/podplo-dsh/src/deferred-preview.tsx
@@ -1185,16 +1351,23 @@ function tasksFrom(value2) {
   const batches = (Array.isArray(value2?.items) ? value2.items : []).filter((row) => (row.approvedAt || row.status === "cancelled") && row.summary && Array.isArray(row.items) && (activeGenerationStatuses.has(row.status) || terminalGenerationStatuses.has(row.status))).map((batch) => ({ operationId: batch.operationId, batch }));
   return [...quotes, ...batches];
 }
-function phase(task) {
+function linkedArchive(folders, operationId3) {
+  return folders.find((row) => row.operationIds.includes(operationId3));
+}
+function phase(task, archive) {
   if (task.quote) return Date.parse(task.quote.quote.expiresAt) <= Date.now() ? "expired" : "pending";
-  return activeGenerationStatuses.has(task.batch.status) ? "active" : "finished";
+  if (generationIsPaused(task.batch)) return archive && archiveHasLocalWork(archive) ? "active" : "paused";
+  return activeGenerationStatuses.has(task.batch.status) || !!archive && archiveNeedsPolling([archive]) ? "active" : "finished";
 }
 function ChatGenerationTasks(props) {
+  const epoch2 = (0, import_react3.useSyncExternalStore)(subscribePanelUiInvalidation, panelUiStateEpoch, panelUiStateEpoch);
   if (!props.sessionId || props.sessionId === "podplo-manual") return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(SessionTasks, { ...props, sessionId: props.sessionId }, props.sessionId);
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(SessionTasks, { ...props, sessionId: props.sessionId }, `${props.sessionId}:${epoch2}`);
 }
 function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
   const [tasks, setTasks] = (0, import_react3.useState)([]);
+  const currentTasks = (0, import_react3.useRef)([]);
+  currentTasks.current = tasks;
   const [folders, setFolders] = (0, import_react3.useState)([]);
   const [folderId, setFolderId] = (0, import_react3.useState)();
   const [hidden, setHidden] = (0, import_react3.useState)(() => readHidden(sessionId));
@@ -1206,6 +1379,8 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
   const [receipt, setReceipt] = (0, import_react3.useState)("");
   const [busy, setBusy] = (0, import_react3.useState)();
   const [error101, setError] = (0, import_react3.useState)("");
+  const [generationReadIssue, setGenerationReadIssue] = (0, import_react3.useState)(false);
+  const [archiveReadIssue, setArchiveReadIssue] = (0, import_react3.useState)(false);
   const locked = (0, import_react3.useRef)(/* @__PURE__ */ new Set());
   const quoted = (0, import_react3.useRef)(/* @__PURE__ */ new Set());
   const actionLocked = (0, import_react3.useRef)(false);
@@ -1228,7 +1403,9 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
         if (alive) {
           const declined = next.some((task) => task.batch?.status === "cancelled" && !task.batch.approvedAt && quoted.current.has(task.operationId));
           quoted.current = new Set(next.flatMap((task) => task.quote ? [task.operationId] : []));
+          currentTasks.current = next;
           setTasks(next);
+          setGenerationReadIssue(false);
           if (declined) {
             setReceipt("\u5DF2\u53D6\u6D88\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002");
             if (receiptTimer.current !== void 0) window.clearTimeout(receiptTimer.current);
@@ -1238,10 +1415,10 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
             }, 5e3);
           }
         }
-        const busy2 = next.some((task) => task.quote ? phase(task) === "pending" : ["submitting", "submitted"].includes(task.batch.status));
+        const busy2 = next.some((task) => task.quote ? phase(task) === "pending" : !generationIsPaused(task.batch) && (["submitting", "submitted"].includes(task.batch.status) || task.batch.items.some((item) => !!item.retry)));
         return busy2 ? pollMs : null;
       } catch (error102) {
-        if (alive) setTasks([]);
+        if (alive) setGenerationReadIssue(true);
         throw error102;
       }
     };
@@ -1258,10 +1435,16 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
     const loop = startVisiblePolling(async () => {
       try {
         const { data } = await request("archive.list", { scope: "session" });
-        if (alive) setFolders(data.items ?? []);
-        return archiveNeedsPolling(data.items ?? []) ? pollMs : null;
+        if (alive) {
+          setFolders(data.items ?? []);
+          setArchiveReadIssue(false);
+        }
+        return (data.items ?? []).some((row) => {
+          const batches = currentTasks.current.filter((task) => row.operationIds.includes(task.operationId)).flatMap((task) => task.batch ? [task.batch] : []);
+          return batches.length > 0 && batches.every(generationIsPaused) ? archiveHasLocalWork(row) : archiveNeedsPolling([row]);
+        }) ? pollMs : null;
       } catch (error102) {
-        if (alive) setFolders([]);
+        if (alive) setArchiveReadIssue(true);
         throw error102;
       }
     });
@@ -1317,6 +1500,7 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
       if (mounted.current) {
         setTasks(tasksFrom(data));
         setError("");
+        setGenerationReadIssue(false);
       }
     } catch (cause) {
       if (mounted.current) setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210\uFF0C\u8BF7\u5237\u65B0\u8FDB\u5EA6\u3002");
@@ -1334,8 +1518,8 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
   const listedFolders = folders.filter((row) => includeCleared || !isFolderHidden(row));
   const folder = listedFolders.find((row) => row.id === folderId);
   const settledKey = JSON.stringify([.../* @__PURE__ */ new Set([
-    ...tasks.filter((task) => ["expired", "finished"].includes(phase(task))).map((task) => task.operationId),
-    ...folders.filter((row) => !activeGenerationStatuses.has(row.status) && row.status !== "quoted").flatMap((row) => row.operationIds.length ? row.operationIds : [`archive:${row.id}`])
+    ...tasks.filter((task) => ["expired", "finished"].includes(phase(task, linkedArchive(folders, task.operationId)))).map((task) => task.operationId),
+    ...folders.filter((row) => !archiveNeedsPolling([row]) && row.status !== "quoted").flatMap((row) => row.operationIds.length ? row.operationIds : [`archive:${row.id}`])
   ])].sort());
   const showDetails = detailsView.settledKey === settledKey && detailsView.open;
   const archivedOperations = new Set(listedFolders.flatMap((row) => row.operationIds));
@@ -1343,25 +1527,27 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
   const removedFolders = folders.filter(isFolderHidden);
   const removedOperations = new Set(removedFolders.flatMap((row) => row.operationIds));
   const removedCount = removedFolders.length + tasks.filter((task) => hidden.has(task.operationId) && !removedOperations.has(task.operationId)).length;
-  const pendingCount = listedTasks.filter((task) => phase(task) === "pending").length + listedFolders.filter((row) => row.status === "quoted" && !listedTasks.some((task) => row.operationIds.includes(task.operationId))).length;
-  const activeCount = listedTasks.filter((task) => phase(task) === "active").length + listedFolders.filter((row) => activeGenerationStatuses.has(row.status) && !listedTasks.some((task) => row.operationIds.includes(task.operationId))).length;
+  const pendingCount = listedTasks.filter((task) => phase(task, linkedArchive(listedFolders, task.operationId)) === "pending").length + listedFolders.filter((row) => row.status === "quoted" && !listedTasks.some((task) => row.operationIds.includes(task.operationId))).length;
+  const activeCount = listedTasks.filter((task) => phase(task, linkedArchive(listedFolders, task.operationId)) === "active").length + listedFolders.filter((row) => archiveNeedsPolling([row]) && !listedTasks.some((task) => row.operationIds.includes(task.operationId))).length;
+  const pausedCount = listedTasks.filter((task) => phase(task, linkedArchive(listedFolders, task.operationId)) === "paused").length;
   const resultCount = listedFolders.reduce((sum, row) => sum + row.resultCount, 0);
-  const settledLabel = listedTasks.every((task) => task.batch?.status === "completed") && listedFolders.every((row) => row.status === "completed") ? "\u5DF2\u5B8C\u6210" : "\u5DF2\u7ED3\u675F";
+  const settledLabel = listedTasks.every((task) => !!task.batch && generationTaskLabel(task.batch, linkedArchive(listedFolders, task.operationId)) === "\u6700\u7EC8\u6210\u54C1\u5DF2\u5B8C\u6210") && listedFolders.every((row) => row.audit?.complete && row.saveStatus === "saved") ? "\u5DF2\u5B8C\u6210" : "\u5DF2\u7ED3\u675F";
   const detailsSummary = [
+    pausedCount ? `\u5F85\u4EBA\u5DE5\u5904\u7406 ${pausedCount}` : "",
     activeCount ? `\u8FDB\u884C\u4E2D ${activeCount}` : "",
     pendingCount ? `\u5F85\u786E\u8BA4 ${pendingCount}` : "",
-    !activeCount && !pendingCount ? settledLabel : "",
+    !activeCount && !pendingCount && !pausedCount ? settledLabel : "",
     resultCount ? `${resultCount} \u4E2A\u7ED3\u679C` : ""
   ].filter(Boolean).join(" \xB7 ");
-  const clearable = tasks.filter((task) => !hidden.has(task.operationId) && ["expired", "finished"].includes(phase(task)));
-  const clearableFolders = folders.filter((row) => !isFolderHidden(row) && row.status !== "quoted" && !activeGenerationStatuses.has(row.status) && !tasks.some((task) => row.operationIds.includes(task.operationId) && ["pending", "active"].includes(phase(task))));
+  const clearable = tasks.filter((task) => !hidden.has(task.operationId) && ["expired", "finished"].includes(phase(task, linkedArchive(folders, task.operationId))));
+  const clearableFolders = folders.filter((row) => !isFolderHidden(row) && row.status !== "quoted" && !archiveNeedsPolling([row]) && !tasks.some((task) => row.operationIds.includes(task.operationId) && ["pending", "active", "paused"].includes(phase(task, row))));
   const clearableOperations = new Set(clearableFolders.flatMap((row) => row.operationIds));
   const clearableCount = clearableFolders.length + clearable.filter((task) => !clearableOperations.has(task.operationId)).length;
   const restoreTask = (operationId3) => changeHidden([
     operationId3,
     ...folders.filter((row) => row.operationIds.includes(operationId3)).map((row) => folderHiddenKey(row.id))
   ], false);
-  const visible = showDetails ? listedTasks : listedTasks.filter((task) => !hidden.has(task.operationId) && ["pending", "active"].includes(phase(task)));
+  const visible = showDetails ? listedTasks : listedTasks.filter((task) => !hidden.has(task.operationId) && ["pending", "active", "paused"].includes(phase(task, linkedArchive(listedFolders, task.operationId))));
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "ppd-chat-tasks", "aria-label": "PodPlo \u4F1A\u8BDD\u4EFB\u52A1", "data-podplo-chat-tasks": true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ArchiveStyles, {}),
     (detailCount > 0 || removedCount > 0) && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "ppd-chat-task-toolbar", children: [
@@ -1421,16 +1607,18 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
       )
     ] }),
     receipt && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "ppd-chat-approval-receipt", role: "status", "data-podplo-chat-receipt": true, children: receipt }),
+    (generationReadIssue || archiveReadIssue) && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { role: "status", className: "ppd-chat-task-read-warning", "data-podplo-task-read-warning": true, children: "\u4EFB\u52A1\u72B6\u6001\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528\uFF0C\u5DF2\u4FDD\u7559\u4E0A\u6B21\u8BFB\u53D6\u7ED3\u679C\uFF1B\u8FDE\u63A5\u6062\u590D\u540E\u4F1A\u7EE7\u7EED\u6838\u5BF9\u3002" }),
     error101 && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { role: "alert", children: error101 }),
     /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { id: detailsId, className: "ppd-chat-task-content", "data-details-expanded": showDetails, children: [
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "ppd-chat-task-list", "data-podplo-task-view": showDetails ? "details" : "chat", children: visible.map((task) => {
-        const state = phase(task);
+        const archive = linkedArchive(listedFolders, task.operationId);
+        const state = phase(task, archive);
         const expandKey = `${task.operationId}:${state}`;
         const open = expanded[expandKey] ?? state === "pending";
         const summary = task.quote?.summary ?? task.batch.summary;
         const attempt = attempts[task.operationId];
-        const label = task.quote ? state === "expired" ? "\u62A5\u4EF7\u5DF2\u8FC7\u671F" : "PodPlo \u751F\u56FE\u62A5\u4EF7" : task.batch.status === "cancelled" && !task.batch.approvedAt ? "\u5DF2\u53D6\u6D88\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE" : generationStatusLabels[task.batch.status] ?? task.batch.status;
-        const progress = task.batch ? ` \xB7 \u5B8C\u6210 ${task.batch.summary.completedCount}/${summary.itemCount} \u9879` + (task.batch.summary.unknownCount ? ` \xB7 \u5F85\u6838\u5BF9 ${task.batch.summary.unknownCount}` : "") + (task.batch.summary.failedCount ? ` \xB7 \u5931\u8D25 ${task.batch.summary.failedCount}` : "") : "";
+        const label = task.quote ? state === "expired" ? "\u62A5\u4EF7\u5DF2\u8FC7\u671F" : "PodPlo \u751F\u56FE\u62A5\u4EF7" : task.batch.status === "cancelled" && !task.batch.approvedAt ? "\u5DF2\u53D6\u6D88\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE" : generationTaskLabel(task.batch, archive);
+        const progress = task.batch ? ` \xB7 \u5B8C\u6210 ${task.batch.summary.completedCount}/${summary.itemCount} \u9879` + (task.batch.summary.pendingCount ?? task.batch.items.filter((row) => ["quoted", "submitting"].includes(row.status)).length ? ` \xB7 \u5F85\u63D0\u4EA4 ${task.batch.summary.pendingCount ?? task.batch.items.filter((row) => ["quoted", "submitting"].includes(row.status)).length}` : "") + (task.batch.summary.unknownCount ? ` \xB7 \u5F85\u6838\u5BF9 ${task.batch.summary.unknownCount}` : "") + (task.batch.summary.failedCount ? ` \xB7 \u5931\u8D25 ${task.batch.summary.failedCount}` : "") : "";
         return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(
           "article",
           {
@@ -1487,7 +1675,7 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
               open && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "ppd-chat-task-body", children: task.quote ? /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { children: [
                 /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("span", { children: task.quote.quote.confirmationText }),
                 state === "expired" && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("small", { role: "status", children: "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u8BA9 PodPlo \u91CD\u65B0\u62A5\u4EF7\u3002" })
-              ] }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ChatGenerationProgress, { item: task.batch, busy: !!busy, onAction: (action) => void act(action, task) }) })
+              ] }) : /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ChatGenerationProgress, { item: task.batch, archive, busy: !!busy, onAction: (action) => void act(action, task) }) })
             ]
           },
           task.operationId
@@ -34289,7 +34477,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.16",
+  version: "0.1.17",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -36570,7 +36758,7 @@ var workspace_default = '.ppd-workspace{width:100%;height:100%;min-width:0;min-h
 var chat_generation_approval_default = '.ppd-chat-tasks{display:grid;gap:6px;width:min(720px,calc(100% - 16px));margin:0 auto 7px;color:#292925;font:12px/1.4 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}\n.ppd-chat-task-toolbar{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}\n.ppd-chat-tasks button{flex:0 0 auto;padding:4px 8px;border:1px solid #deded8;border-radius:6px;background:#fff;color:inherit;font:inherit;cursor:pointer}\n.ppd-chat-tasks button:disabled{opacity:.52;cursor:not-allowed}.ppd-chat-tasks button:focus-visible{outline:2px solid currentColor;outline-offset:2px}\n.ppd-chat-task-toolbar button{border:0;padding:2px 0;background:transparent;color:#696963}\n.ppd-chat-task-toolbar [data-podplo-task-details]{flex:1 1 auto;min-width:0;min-height:28px;text-align:left;white-space:normal}\n.ppd-chat-task-content{min-height:0;max-height:min(340px,35vh);overflow:auto;overscroll-behavior:contain}\n.ppd-chat-task-content[data-details-expanded=true] .ppd-chat-task-list{max-height:none;overflow:visible}\n.ppd-chat-task-list{display:grid;gap:6px;max-height:240px;overflow:auto;overscroll-behavior:contain}.ppd-chat-task-list[data-podplo-task-view=details]{max-height:340px}\n.ppd-chat-task-list>article{display:grid;gap:6px;padding:7px 10px;border:1px solid #deded8;border-radius:9px;background:#fafaf8;min-width:0}\n.ppd-chat-task-heading{display:flex;align-items:center;gap:8px;min-width:0}\n.ppd-chat-tasks .ppd-chat-task-toggle{display:flex;align-items:center;gap:7px;flex:1 1 auto;min-width:0;padding:2px 0;border:0;background:transparent;text-align:left}\n.ppd-chat-task-summary{display:flex;align-items:baseline;gap:10px;min-width:0;white-space:nowrap}.ppd-chat-task-summary strong{flex:0 0 auto;font-size:12px}.ppd-chat-task-summary>span{min-width:0;overflow:hidden;text-overflow:ellipsis;color:#696963}\n.ppd-chat-tasks .ppd-chat-confirm{min-height:32px;padding:6px 12px;border-color:#252522;border-radius:8px;background:#252522;color:#fff;font-weight:600}.ppd-chat-confirm:hover:not(:disabled){background:#000}\n.ppd-chat-tasks .ppd-chat-task-remove{border:0;padding:2px 5px;background:transparent;color:#696963;font-size:18px;line-height:1}\n.ppd-chat-task-body{padding:2px 0 3px 16px;min-width:0}.ppd-chat-task-body>div{display:grid;gap:5px}.ppd-chat-tasks small{display:block;color:#925044;overflow-wrap:anywhere}\n.ppd-chat-approval-receipt{padding:3px 0;color:#3f6748}.ppd-chat-tasks>p{margin:0;color:#925044}\n@media(max-width:620px){.ppd-chat-tasks{width:calc(100% - 12px)}.ppd-chat-task-summary{gap:5px}.ppd-chat-task-list>article{padding:6px 8px}.ppd-chat-task-heading{gap:5px}.ppd-chat-tasks .ppd-chat-confirm{padding:5px 8px}.ppd-chat-approval .ppd-chat-task-summary{display:grid;gap:1px}.ppd-chat-approval .ppd-chat-task-summary>span{font-size:11px}}\n';
 
 // plugins/podplo-dsh/src/chat-generation-progress.css
-var chat_generation_progress_default = ".ppd-chat-progress-details{display:grid;gap:6px;min-width:0}.ppd-chat-progress-details>span{color:#696963}.ppd-chat-progress-details progress{width:100%;height:6px;accent-color:#6b826d}.ppd-chat-progress-details ol{display:grid;gap:5px;margin:7px 0;padding:0;list-style:none;font-size:11px}.ppd-chat-progress-details li{display:flex;flex-wrap:wrap;gap:5px 12px;justify-content:space-between;overflow-wrap:anywhere}.ppd-chat-progress-details li small{width:100%;color:#925044}.ppd-chat-progress-actions{display:flex;flex-wrap:wrap;gap:8px}\n";
+var chat_generation_progress_default = ".ppd-chat-progress-details{display:grid;gap:7px;min-width:0}\n.ppd-chat-progress-details>span{color:#696963}\n.ppd-chat-progress-details progress{width:100%;height:6px;accent-color:#6b826d}\n.ppd-chat-stage-list{display:grid;gap:7px}\n.ppd-chat-stage{display:grid;gap:3px;min-width:0;padding:6px 7px;border:1px solid #e8e8e2;border-radius:7px;background:#fff}\n.ppd-chat-stage header{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 10px;color:#696963}\n.ppd-chat-stage header strong{color:#292925}\n.ppd-chat-progress-details ol{display:grid;gap:5px;margin:3px 0 0;padding:0;list-style:none;font-size:11px}\n.ppd-chat-progress-details li{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;overflow-wrap:anywhere}\n.ppd-chat-progress-details li small{width:100%}\n.ppd-chat-progress-details li .ppd-chat-progress-time{color:#696963}\n.ppd-chat-progress-details li .ppd-chat-progress-error{color:#925044}\n.ppd-chat-local-pipeline{display:grid;gap:4px;padding:6px 7px;border-radius:7px;background:#f1f4ef;color:#566058}\n.ppd-chat-local-pipeline>div{display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px 12px}\n.ppd-chat-local-pipeline>strong,.ppd-chat-local-pipeline>div strong{color:#292925}\n.ppd-chat-progress-actions{display:flex;flex-wrap:wrap;gap:8px}\n.ppd-chat-tasks>p.ppd-chat-task-read-warning{color:#7a6541}\n@media(max-width:620px){.ppd-chat-stage header,.ppd-chat-local-pipeline>div{display:grid;gap:1px}}\n";
 
 // plugins/podplo-dsh/src/client.tsx
 var import_jsx_runtime13 = require("react/jsx-runtime");

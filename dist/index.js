@@ -1795,9 +1795,9 @@ var require_deflate = __commonJS({
     var BS_FINISH_STARTED = 3;
     var BS_FINISH_DONE = 4;
     var OS_CODE = 3;
-    function err(strm, errorCode) {
-      strm.msg = msg[errorCode];
-      return errorCode;
+    function err(strm, errorCode2) {
+      strm.msg = msg[errorCode2];
+      return errorCode2;
     }
     function rank(f) {
       return (f << 1) - (f > 4 ? 9 : 0);
@@ -22399,7 +22399,7 @@ var require_outline_core = __commonJS({
 });
 
 // plugins/podplo-dsh/src/index.ts
-import { createCipheriv, createDecipheriv, createHash as createHash16, randomBytes as randomBytes3, randomUUID as randomUUID16 } from "node:crypto";
+import { createCipheriv, createDecipheriv, createHash as createHash16, randomBytes as randomBytes3 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir2 } from "node:os";
@@ -39912,6 +39912,34 @@ var DesktopWorkbench = class {
   }
 };
 
+// plugins/podplo-dsh/src/generation-progress-state.ts
+function generationStatusAttention(value2) {
+  const items = Array.isArray(value2) ? value2 : [];
+  const directlyBlocked = (item) => !!item && (!!item.statusBlocked || item.requiresManualStatusRefresh === true);
+  const blockedByDependency = (index, visiting = /* @__PURE__ */ new Set()) => {
+    const item = items[index];
+    if (!item || directlyBlocked(item)) return !!item;
+    if (item.status !== "quoted" || !item.dependsOn || typeof item.dependsOn !== "object") return false;
+    const parentIndex = Number(item.dependsOn.itemIndex);
+    if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
+    visiting.add(parentIndex);
+    return blockedByDependency(parentIndex, visiting);
+  };
+  const blocked = items.filter(directlyBlocked);
+  const hasRunnablePending = items.some((item, index) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? "")) && !blockedByDependency(index));
+  const authorization = blocked.some((item) => item.statusBlocked && typeof item.statusBlocked === "object" && item.statusBlocked.kind === "authorization");
+  return {
+    hasBlocked: blocked.length > 0,
+    hasRunnablePending,
+    attentionKind: authorization ? "authorization" : "manual_check"
+  };
+}
+function generationIsPaused(operation) {
+  if (operation.stoppedAt || !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(String(operation.status))) return false;
+  const attention = generationStatusAttention(operation.items);
+  return !attention.hasRunnablePending && (attention.hasBlocked || ["submission_unknown", "partial_unknown"].includes(String(operation.status)));
+}
+
 // plugins/podplo-dsh/src/local-favorite-organization.ts
 import { randomUUID as randomUUID8 } from "node:crypto";
 import { join as join4 } from "node:path";
@@ -54590,7 +54618,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.16",
+  version: "0.1.17",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -54712,6 +54740,8 @@ function taskDiagnostics(task) {
 var comparableGenerationItems = (items) => items.map((item) => ({
   ...item.skillId ? { skillId: item.skillId } : {},
   ...item.sourceName ? { sourceName: item.sourceName } : {},
+  ...item.stage ? { stage: item.stage } : {},
+  ...item.dependsOn ? { dependsOn: item.dependsOn } : {},
   args: item.args
 }));
 function record3(value2, label) {
@@ -54721,7 +54751,7 @@ function record3(value2, label) {
 function generationAudit(row) {
   const audit = { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
   for (const item of row.items) {
-    const planned = item.quote.outputCount, succeeded = new Set(item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []).size;
+    const planned = item.approvedOutputCount ?? item.quote.outputCount, succeeded = new Set(item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []).size;
     const remaining = Math.max(0, planned - succeeded);
     audit.planned += planned;
     audit.succeeded += succeeded;
@@ -54741,6 +54771,7 @@ function generationAudit(row) {
 function safeOperation(row) {
   const summary = operationSummary(row);
   const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
+  const confirmationText = row.items.some((item) => item.dependsOn) ? `\u6574\u6761\u6D41\u7A0B ${summary.itemCount} \u9879 AI \u751F\u6210\uFF0C\u6700\u591A ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20 AI \u56FE\u7247\uFF1B\u786E\u8BA4\u540E\u540E\u7EED\u9636\u6BB5\u81EA\u52A8\u6267\u884C\uFF0C\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1 AI \u5F20\u6570\u6216\u79EF\u5206` : `\u672C\u6279 ${summary.itemCount} \u9879\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20`;
   return {
     operationId: row.operationId,
     intentId: row.intentId,
@@ -54748,20 +54779,34 @@ function safeOperation(row) {
     status: operationStatus(row),
     createdAt: row.createdAt,
     updatedAt: row.updatedAt,
-    quote: {
-      expiresAt,
-      totalCredits: summary.totalCredits,
-      outputCount: summary.outputCount,
-      confirmationText: `\u672C\u6279 ${summary.itemCount} \u9879\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0C\u9884\u8BA1\u8F93\u51FA ${summary.outputCount} \u5F20`
-    },
+    quote: { expiresAt, totalCredits: summary.totalCredits, outputCount: summary.outputCount, confirmationText },
     approvalId: row.approvalId,
     summary,
     items: row.items.map((item) => ({
       itemId: item.itemId,
       ...item.skillId ? { skillId: item.skillId } : {},
+      ...item.skillName ? { skillName: item.skillName } : {},
+      ...item.stage ? { stage: structuredClone(item.stage) } : {},
+      ...item.dependsOn ? { dependsOn: structuredClone(item.dependsOn) } : {},
       status: item.status,
-      totalCredits: item.quote.totalCredits,
-      outputCount: item.quote.outputCount,
+      totalCredits: item.approvedCredits ?? item.quote.totalCredits,
+      outputCount: item.approvedOutputCount ?? item.quote.outputCount,
+      ...item.retry ? { retry: structuredClone(item.retry), waitReason: "retry" } : {},
+      ...item.statusBlocked ? {
+        statusBlocked: structuredClone(item.statusBlocked),
+        waitReason: item.statusBlocked.kind === "authorization" ? "authorization" : "manual_status_check",
+        requiresManualStatusRefresh: true,
+        userAction: item.statusBlocked.kind === "authorization" ? "\u8BF7\u91CD\u65B0\u767B\u5F55\u6216\u6062\u590D\u751F\u56FE\u6743\u9650\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" : "\u8BF7\u6838\u5BF9 PodPlo \u8FDE\u63A5\u6216\u66F4\u65B0\u670D\u52A1\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
+      } : {},
+      ...!item.retry && item.status === "quoted" && item.dependsOn && ["quoted", "submitting", "submitted"].includes(row.items[item.dependsOn.itemIndex]?.status ?? "") ? { waitReason: "dependency" } : {},
+      ...!item.retry && !item.statusBlocked && item.status === "submitted" ? { waitReason: "remote_generation" } : {},
+      ...item.status === "submission_unknown" ? {
+        waitReason: "manual_reconciliation",
+        requiresManualReconciliation: true,
+        userAction: "\u8BF7\u5728 PodPlo \u4E3B\u7AD9\u751F\u6210\u8BB0\u5F55\u4E2D\u6838\u5BF9\u8BE5\u9879\u662F\u5426\u5DF2\u521B\u5EFA\uFF1B\u6838\u5BF9\u524D\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
+      } : {},
+      ...item.lastStatusSucceededAt ? { lastStatusSucceededAt: item.lastStatusSucceededAt } : {},
+      ...item.lastStatusError ? { lastStatusError: structuredClone(item.lastStatusError) } : {},
       ...item.generationId ? { generationId: item.generationId } : {},
       ...item.remoteStatus ? { remoteStatus: item.remoteStatus } : {},
       ...item.errorCode ? { errorCode: item.errorCode } : {},
@@ -54776,8 +54821,8 @@ function operationSummary(row) {
   const count2 = (status) => row.items.filter((item) => item.status === status).length;
   return {
     itemCount: row.items.length,
-    totalCredits: row.items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
-    outputCount: row.items.reduce((sum, item) => sum + item.quote.outputCount, 0),
+    totalCredits: row.items.reduce((sum, item) => sum + (item.approvedCredits ?? item.quote.totalCredits), 0),
+    outputCount: row.items.reduce((sum, item) => sum + (item.approvedOutputCount ?? item.quote.outputCount), 0),
     acceptedCount: row.items.filter((item) => !!item.generationId).length,
     completedCount: count2("completed"),
     unknownCount: count2("submission_unknown"),
@@ -56621,7 +56666,7 @@ var NativeLocalToolkit = class {
   /** Host-only processing seam for bytes already saved and verified by TaskArchiveManager. */
   async processArchived(name2, raw, sessionId, trustedInputs) {
     this.ready();
-    if (name2 !== TOOLBOX_PIPELINE_NAME && !processingToolNames.includes(name2)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
+    if (name2 !== TOOLBOX_PIPELINE_NAME && name2 !== GRID_SPLIT_OPERATION_NAME && !processingToolNames.includes(name2)) throw new Error("\u5904\u7406\u5DE5\u5177\u65E0\u6548");
     const session2 = opaqueId.parse(sessionId);
     const args = name2 === "podplo_resize_images" ? resizeArgs.parse(raw) : operationArgs.parse(raw);
     const options = normalizedProcessingOptions(name2, args.options);
@@ -57226,7 +57271,7 @@ var processingPlanSchema = { type: "array", maxItems: 10, description: "\u672C\u
   properties: {
     id: { type: "string", pattern: "^[A-Za-z0-9_-]{1,60}$" },
     label: { type: "string", maxLength: 60 },
-    toolName: { type: "string", enum: [...processingToolNames, TOOLBOX_PIPELINE_NAME] },
+    toolName: { type: "string", enum: [...processingToolNames, TOOLBOX_PIPELINE_NAME, GRID_SPLIT_OPERATION_NAME] },
     options: { type: "object", additionalProperties: true },
     sourceStepId: { type: "string", description: "\u7701\u7565\u65F6\u5904\u7406\u672C\u6279\u751F\u6210\u539F\u56FE\uFF1B\u586B\u5199\u65F6\u5904\u7406\u524D\u4E00\u6B65\u7684\u4EA7\u7269\uFF0C\u53EA\u80FD\u6307\u5411\u524D\u9762\u5DF2\u767B\u8BB0\u7684\u6B65\u9AA4\u3002" },
     generationItemIndexes: { type: "array", minItems: 1, maxItems: 100, uniqueItems: true, items: { type: "integer", minimum: 0, maximum: 99 }, description: "Host-generated group scope; zero-based generation item indexes." }
@@ -57264,19 +57309,19 @@ INTENT: Treat the user's words and the selected PodPlo Skill/tool/preset as auth
 
 EXECUTE WHEN CLEAR: When the image range, one uniquely matching Skill, and any requested tools/preset/order are clear, resolve exact catalog bindings and call the PodPlo tool immediately. Do not ask for optional composition, dimensions, model, ratio or quality merely to fill fields. Use a parameter only when it came from the user, the selected Skill, the selected tool/preset, or an explicit default in the authoritative current schema. Never guess a required value or paid scope. Ask one consolidated question only when execution is genuinely blocked by a missing or conflicting image range, Skill identity, tool/preset identity, call order, or required parameter with no authoritative default. Resolve a unique exact catalog match without asking. Ask once for real duplicates, absence or conflicts; do not reconfirm clear information or a path already confirmed by an answered native question. Choices are neutral unless the user asks for a recommendation.
 
-LOCAL FOLDERS: Use podplo_prepare_skill_batch for user-supplied folders. Set skillSource="personal" for \u6211\u7684 Skill. Pass an exact processingPresetPath with processingPlan=[] so the Host reads the preset. Do not read/rewrite preset JSON, list folders, inspect individual images, invent IDs or reimplement the pipeline. Put multiple folder/Skill/preset groups in one batch so the complete task is quoted once. Additional instructions are optional: omit them or pass "" when the Skill already defines the task; never invent content to fill the field.
+LOCAL FOLDERS: Use podplo_prepare_skill_batch for user-supplied folders. Set skillSource="personal" for \u6211\u7684 Skill. Pass an exact processingPresetPath with processingPlan=[] so the Host reads the preset. Do not read/rewrite preset JSON, list folders, inspect individual images, invent IDs or reimplement the pipeline. Put multiple independent groups in groups. When an AI stage consumes an earlier stage, declare every stage and dependency in one workflow call; never wait for an intermediate image and wake the model to plan the next stage. The Host freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them or pass "" when the Skill already defines the task; never invent content to fill the field.
 
 FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For folder batches set skillSource="favorite" and skillFolder when given. Conflicting exact matches require one clarification.
 OTHER INPUTS: For non-folder work, resolve the exact PodPlo Skill and reuse returned bindings, capabilities, explicit defaults and session image IDs. Call podplo_prepare_generation once for the complete requested batch. Every item keeps its selected skillId. Register only the requested processingPlan; use [] when no processing was requested. Do not scan private storage.
 
-APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs generation, download and registered local processing. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
+APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
 
 DELIVERY: New task folders contain only final selected production images/PDF in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt. Do not deliver source/reference copies, superseded AI originals, intermediate versions, review folders, proof images or JSON reports. For generation-only tasks, the generated image itself is the final deliverable. Recovery bytes remain in the private Host cache; historical tasks keep their recorded layout.`;
 var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u548C PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002read_image \u53EA\u7528\u4E8E\u4EA7\u751F\uFF0F\u590D\u7528\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u53CA\u5FC5\u8981\u6587\u4EF6\u6388\u6743\uFF0C\u4E0D\u7528\u4E8E\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
 
 \u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u552F\u4E00\u5339\u914D Skill \u53CA\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4F7F\u7528\u539F slug \u83B7\u53D6\u7ED1\u5B9A\uFF1B\u6587\u4EF6\u5939\u6279\u91CF\u53EF\u8BBE skillSource=favorite \u548C skillFolder\u3002\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u6587\u4EF6\u5939\u6279\u91CF\u7528 podplo_prepare_skill_batch\uFF1B\u6211\u7684 Skill \u7528 skillSource=personal\uFF1B\u591A\u6587\u4EF6\u5939\u7528 groups \u4E00\u6B21\u6574\u6279\u62A5\u4EF7\uFF1B\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[] \u7531\u5BBF\u4E3B\u8BFB\u53D6\u3002\u975E\u6587\u4EF6\u5939\u4EFB\u52A1\u7684 podplo_prepare_generation \u6BCF\u9879\u5FC5\u987B\u4FDD\u7559\u6240\u9009 skillId\uFF0C\u4E00\u6B21\u63D0\u4EA4\u5B8C\u6574\u8303\u56F4\uFF0C\u53EA\u767B\u8BB0\u7528\u6237\u6307\u5B9A\u7684 processingPlan\uFF0C\u65E0\u52A0\u5DE5\u4E3A []\u3002\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u81EA\u52A8\u5B8C\u6210\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4F7F\u7528\u539F slug \u83B7\u53D6\u7ED1\u5B9A\uFF1B\u6587\u4EF6\u5939\u6279\u91CF\u53EF\u8BBE skillSource=favorite \u548C skillFolder\u3002\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u6587\u4EF6\u5939\u6279\u91CF\u7528 podplo_prepare_skill_batch\uFF1B\u6211\u7684 Skill \u7528 skillSource=personal\uFF1B\u591A\u4E2A\u72EC\u7ACB\u7EC4\u7528 groups\uFF0C\u540E\u7EED AI \u4F9D\u8D56\u524D\u5E8F\u7ED3\u679C\u65F6\u7528 workflow \u4E00\u6B21\u767B\u8BB0\u5168\u90E8\u9636\u6BB5\uFF0C\u4E0D\u7B49\u4E2D\u95F4\u7ED3\u679C\u518D\u5524\u9192\u6A21\u578B\u7EED\u505A\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[] \u7531\u5BBF\u4E3B\u8BFB\u53D6\u3002\u975E\u6587\u4EF6\u5939\u4EFB\u52A1\u7684 podplo_prepare_generation \u6BCF\u9879\u5FC5\u987B\u4FDD\u7559\u6240\u9009 skillId\uFF0C\u4E00\u6B21\u63D0\u4EA4\u5B8C\u6574\u8303\u56F4\uFF0C\u53EA\u767B\u8BB0\u7528\u6237\u6307\u5B9A\u7684 processingPlan\uFF0C\u65E0\u52A0\u5DE5\u4E3A []\u3002\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
 Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill or the lookup needed to resolve it; the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
@@ -57335,7 +57380,7 @@ var TOOL_DEFINITIONS = [
   { name: "podplo_request_my_skill_deletion", description: "Prepare deletion of an owned Skill. A UI confirmation is always required.", inputSchema: objectSchema({ id: stringSchema, expectedUpdatedAt: stringSchema }, ["id", "expectedUpdatedAt"]) },
   { name: "podplo_resolve_selection", description: "Resolve an exact Skill, gallery item or private asset for native conversation injection.", inputSchema: objectSchema({ kind: { type: "string", enum: ["skill", "gallery", "asset"] }, id: stringSchema }, ["kind", "id"]) },
   { name: "podplo_generation_capabilities", description: "Read the authoritative generation quote schema, current model list and explicit provider defaults. Use only returned ids and values; never guess. Do not ask the user to choose optional model, ratio, quality, dimensions or composition merely to fill fields. Ask once only if a required value has no user/Skill/tool/preset/schema default. For transparent images, check the selected model and schema for background=transparent and output_format=png or webp. These are provider parameters, not prompt instructions; prompt text must not impersonate a missing mode switch.", inputSchema: objectSchema({ refresh: { type: "boolean" } }) },
-  { name: "podplo_prepare_generation", description: `${PODPLO_PREPARE_GENERATION_GUIDANCE} Quote the complete user-requested generation batch without submitting it. Collect every requested image/item and call exactly once with expectedOutputCount equal to the complete total; never split "\u5168\u90E8\u6267\u884C" into separate approvals. The Host rejects missing, partial or oversized batches. For current-conversation images, put opaque attachment/result IDs in each item.args.referenceAssetIds; existing private cloud UUIDs are reused. A transparent-background request requires supported background="transparent" and output_format="png" or "webp" (PNG by default); missing support is reported, never replaced by prompt wording. When quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears. End the turn and wait for that card; do not ask whether it was clicked. The Agent resumes from verified operation status.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, expectedOutputCount: { type: "integer", minimum: 1, maximum: 1e4, description: "The complete number of images the user asked to execute in this batch. Derive it from the whole request, never from a partial subset." }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, sourceName: { type: "string", maxLength: 255 }, args: { type: "object", properties: { count: { type: "integer", minimum: 1, description: "Output count for this item; all item counts must cover expectedOutputCount." }, referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs from this native conversation. The Host resolves local IDs before quoting." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "expectedOutputCount", "items"]) },
+  { name: "podplo_prepare_generation", description: `${PODPLO_PREPARE_GENERATION_GUIDANCE} Quote the complete user-requested generation batch without submitting it. Collect every requested image/item and call exactly once with expectedOutputCount equal to the complete total; never split "\u5168\u90E8\u6267\u884C" into separate approvals. A later AI item may declare dependsOn to consume an earlier item output; its current reference at referenceIndex is used only for the authoritative price quote and the Host replaces it with that verified output before execution. Declare the complete dependency graph now: after approval the Host continues it without another model turn or approval. The Host rejects missing, partial or oversized batches. For current-conversation images, put opaque attachment/result IDs in each item.args.referenceAssetIds; existing private cloud UUIDs are reused. A transparent-background request requires supported background="transparent" and output_format="png" or "webp" (PNG by default); missing support is reported, never replaced by prompt wording. When quoted, the trusted "\u786E\u8BA4\u5E76\u751F\u6210" card appears. End the turn and wait for that card; do not ask whether it was clicked. The Agent resumes from verified operation status.`, inputSchema: objectSchema({ processingPlan: processingPlanSchema, taskName: { type: "string", maxLength: 100, description: "\u7B80\u77ED\u4EFB\u52A1\u540D\u79F0\uFF0C\u7528\u4E8E\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u3002" }, intentId: stringSchema, operationId: stringSchema, planVersion: { type: "integer", minimum: 1 }, expectedOutputCount: { type: "integer", minimum: 1, maximum: 1e4, description: "The complete number of AI images across every stage. Local processing outputs are not included." }, items: { type: "array", minItems: 1, maxItems: 100, items: objectSchema({ skillId: stringSchema, sourceName: { type: "string", maxLength: 255 }, stage: objectSchema({ id: { type: "string", minLength: 1, maxLength: 40, pattern: "^[A-Za-z0-9_-]+$" }, label: { type: "string", minLength: 1, maxLength: 80 }, order: { type: "integer", minimum: 0, maximum: 99 } }, ["id", "label", "order"]), dependsOn: objectSchema({ itemIndex: { type: "integer", minimum: 0, maximum: 99 }, outputIndex: { type: "integer", minimum: 0, maximum: 99 }, referenceIndex: { type: "integer", minimum: 0, maximum: 13 } }, ["itemIndex"]), args: { type: "object", properties: { count: { type: "integer", minimum: 1, description: "Output count for this item; all item counts must cover expectedOutputCount." }, referenceAssetIds: { type: "array", maxItems: 14, items: stringSchema, description: "Private cloud asset UUIDs or opaque image IDs. For a dependent item this contains the same-count pricing references; the Host replaces referenceIndex with the verified parent output." }, imageIds: { type: "array", maxItems: 14, items: stringSchema, description: "Compatibility alias for referenceAssetIds; normalized and removed before the provider quote." }, background: { type: "string", enum: ["opaque", "transparent"], description: "Provider background mode; use transparent for an alpha channel." }, output_format: { type: "string", description: "Transparent background requires png or webp; default png for transparent requests." } }, additionalProperties: true } }, ["skillId", "args"]) } }, ["intentId", "planVersion", "expectedOutputCount", "items"]) },
   { name: "podplo_generation_status", description: "Read or refresh one existing generation operation. This never resubmits. completed only means remote generation finished; the Host verifies pixels and executes registered local processing. Report factual Host execution status without inspecting or judging output quality, changing parameters, or repeating paid generation.", inputSchema: objectSchema({ operationId: stringSchema, refresh: { type: "boolean" } }, ["operationId"]) },
   { name: "podplo_list_generations", description: "List generation operations for the current account.", inputSchema: objectSchema({}) }
 ];
@@ -57455,6 +57500,7 @@ var PodploPluginService = class extends EventEmitter2 {
   skillBindings = /* @__PURE__ */ new Map();
   catalogRefresh;
   personalSkillVersions = /* @__PURE__ */ new Map();
+  personalSkillNames = /* @__PURE__ */ new Map();
   preparing = /* @__PURE__ */ new Map();
   submissionJobs = /* @__PURE__ */ new Map();
   accountRefreshJobs = /* @__PURE__ */ new Map();
@@ -57473,7 +57519,8 @@ var PodploPluginService = class extends EventEmitter2 {
     await this.store.load();
     await this.favoriteOrganization.init();
     for (const stop of this.store.snapshot().sessionStops) {
-      this.sessionStopEpochs.set(stop.nativeSessionId, Math.max(this.sessionStopEpochs.get(stop.nativeSessionId) ?? 0, stop.epoch));
+      const key = this.sessionStopKey(stop.ownerId, stop.nativeSessionId);
+      this.sessionStopEpochs.set(key, Math.max(this.sessionStopEpochs.get(key) ?? 0, stop.epoch));
     }
     await this.store.transaction((saved) => {
       for (const row of saved.operations) {
@@ -57514,40 +57561,51 @@ var PodploPluginService = class extends EventEmitter2 {
   /** Host-only archive input: never returns quote tokens, URLs or arbitrary paths to MCP. */
   async archiveGenerations() {
     const ownerId = await this.owner(false);
-    const items = this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && row.approvedAt).map((row) => ({
-      operationId: row.operationId,
-      sessionId: row.nativeSessionId,
-      intentId: row.intentId,
-      project: row.archiveProject,
-      diagnostics: [
-        ...row.lastStatusDiagnostic ? [row.lastStatusDiagnostic] : [],
-        ...row.items.filter((item) => ["failed", "submission_unknown"].includes(item.status) || item.outputs?.some((output) => !output.assetId && (output.failureCode || output.status === "failed"))).slice(0, 10).map((item) => diagnose("generation", { code: item.status === "submission_unknown" ? "SUBMISSION_RESULT_UNKNOWN" : item.errorCode ?? item.outputs?.find((output) => !output.assetId && output.failureCode)?.failureCode }, row.updatedAt))
-      ],
-      name: row.taskName || "\u751F\u56FE\u4EFB\u52A1",
-      createdAt: row.createdAt,
-      status: operationStatus(row),
-      ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
-      ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
-      generationAudit: generationAudit(row),
-      ...row.processingPlan !== void 0 ? { processingPlan: row.processingPlan } : {},
-      generationCalls: row.items.map((item) => ({
-        prompt: typeof item.args.prompt === "string" ? item.args.prompt : "",
-        skill: this.online.snapshot().skills.find((skill) => skill.id === item.skillId)?.name ?? item.skillId ?? "",
-        model: this.online.snapshot().models.find((model) => model.id === item.args.modelId)?.name ?? String(item.args.modelId ?? ""),
-        ratio: String(item.args.ratio ?? ""),
-        quality: String(item.args.quality ?? ""),
-        ecoMode: item.args.ecoMode === true,
-        background: String(item.args.background ?? ""),
-        count: item.quote.outputCount
-      })),
-      referenceIds: [...new Set(row.items.flatMap((item) => {
-        const ids2 = item.quote.parameters?.referenceAssetIds ?? item.args.referenceAssetIds;
-        return Array.isArray(ids2) ? ids2.filter((id2) => typeof id2 === "string") : [];
-      }))],
-      resultIds: [...new Set(row.items.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []))],
-      resultItemIndexes: Object.fromEntries(row.items.flatMap((item, index) => item.outputs?.flatMap((output) => output.assetId ? [[output.assetId, index]] : []) ?? [])),
-      resultNames: Object.fromEntries(row.items.flatMap((item) => item.sourceName ? item.outputs?.flatMap((output) => output.assetId ? [[output.assetId, `${item.sourceName.replace(/\.[^.]+$/u, "")}-AI\u751F\u6210`]] : []) ?? [] : []))
-    }));
+    const items = this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && row.approvedAt).map((row) => {
+      const processingUsesItem = (itemIndex) => row.processingPlan?.some((step) => !step.sourceStepId && (step.generationItemIndexes === void 0 || step.generationItemIndexes.includes(itemIndex))) ?? false;
+      const resultSourceIds = Object.fromEntries(row.items.flatMap((item) => {
+        if (!item.dependsOn || processingUsesItem(item.dependsOn.itemIndex)) return [];
+        const parent = row.items[item.dependsOn.itemIndex]?.outputs?.find((output) => output.index === item.dependsOn.outputIndex)?.assetId;
+        if (!parent) return [];
+        return (item.outputs ?? []).flatMap((output) => output.assetId ? [[output.assetId, parent]] : []);
+      }));
+      const finalOutputs = row.items.flatMap((item, itemIndex) => (item.outputs ?? []).flatMap((output) => output.assetId ? [{ item, itemIndex, output }] : []));
+      return {
+        operationId: row.operationId,
+        sessionId: row.nativeSessionId,
+        intentId: row.intentId,
+        project: row.archiveProject,
+        diagnostics: [
+          ...row.lastStatusDiagnostic ? [row.lastStatusDiagnostic] : [],
+          ...row.items.filter((item) => ["failed", "submission_unknown"].includes(item.status) || item.outputs?.some((output) => !output.assetId && (output.failureCode || output.status === "failed"))).slice(0, 10).map((item) => diagnose("generation", { code: item.status === "submission_unknown" ? "SUBMISSION_RESULT_UNKNOWN" : item.errorCode ?? item.outputs?.find((output) => !output.assetId && output.failureCode)?.failureCode }, row.updatedAt))
+        ],
+        name: row.taskName || "\u751F\u56FE\u4EFB\u52A1",
+        createdAt: row.createdAt,
+        status: operationStatus(row),
+        ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
+        ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
+        generationAudit: generationAudit(row),
+        ...row.processingPlan !== void 0 ? { processingPlan: row.processingPlan } : {},
+        generationCalls: row.items.map((item) => ({
+          prompt: typeof item.args.prompt === "string" ? item.args.prompt : "",
+          skill: item.skillName ?? this.online.snapshot().skills.find((skill) => skill.id === item.skillId)?.name ?? item.skillId ?? "",
+          model: this.online.snapshot().models.find((model) => model.id === item.args.modelId)?.name ?? String(item.args.modelId ?? ""),
+          ratio: String(item.args.ratio ?? ""),
+          quality: String(item.args.quality ?? ""),
+          ecoMode: item.args.ecoMode === true,
+          background: String(item.args.background ?? ""),
+          count: item.approvedOutputCount ?? item.quote.outputCount
+        })),
+        referenceIds: [...new Set(row.items.flatMap((item) => {
+          const ids2 = item.args.referenceAssetIds;
+          return Array.isArray(ids2) ? ids2.filter((id2) => typeof id2 === "string") : [];
+        }))],
+        resultIds: [...new Set(finalOutputs.map(({ output }) => output.assetId))],
+        resultItemIndexes: Object.fromEntries(finalOutputs.map(({ itemIndex, output }) => [output.assetId, itemIndex])),
+        resultSourceIds,
+        resultNames: Object.fromEntries(finalOutputs.flatMap(({ item, output }) => item.sourceName ? [[output.assetId, `${item.sourceName.replace(/\.[^.]+$/u, "")}-AI\u751F\u6210`]] : []))
+      };
+    });
     await this.assertOwner(ownerId, false);
     return { ownerId, items };
   }
@@ -57555,7 +57613,7 @@ var PodploPluginService = class extends EventEmitter2 {
   pendingGenerationIds() {
     const state = this.online.snapshot();
     if (!this.initialized || state.status !== "connected" || !state.identity?.userId) return [];
-    return this.store.snapshot().operations.filter((row) => row.ownerId === state.identity.userId && row.items.some((item) => item.generationId && item.status === "submitted")).map((row) => row.operationId);
+    return this.store.snapshot().operations.filter((row) => row.ownerId === state.identity.userId && !generationIsPaused(row) && (row.items.some((item) => item.generationId && item.status === "submitted") || !!row.approvedAt && row.items.some((item) => item.status === "quoted"))).map((row) => row.operationId);
   }
   refreshPendingGeneration(operationId2) {
     return this.generationStatus({ operationId: operationId2, refresh: true }, { source: "ui" }, true);
@@ -57586,17 +57644,23 @@ var PodploPluginService = class extends EventEmitter2 {
    * native stop event, then dispatch generation.stopRemaining to persist it.
    */
   markSessionStopped(nativeSessionId) {
-    return this.latchSessionStop(nativeSessionId, false);
+    const ownerId = this.online.snapshot().identity?.userId;
+    if (!ownerId) return 0;
+    return this.latchSessionStop(ownerId, nativeSessionId, false);
   }
-  latchSessionStop(nativeSessionId, forceNewEpoch) {
+  sessionStopKey(ownerId, nativeSessionId) {
+    return `${ownerId}\0${nativeSessionId}`;
+  }
+  latchSessionStop(ownerId, nativeSessionId, forceNewEpoch) {
     if (typeof nativeSessionId !== "string" || !nativeSessionId) throw new PodploPluginError("NATIVE_SESSION_REQUIRED", "\u65E0\u6CD5\u6838\u5BF9\u5F53\u524D\u539F\u751F\u4F1A\u8BDD");
-    const pending = this.pendingSessionStops.get(nativeSessionId);
+    const key = this.sessionStopKey(ownerId, nativeSessionId);
+    const pending = this.pendingSessionStops.get(key);
     if (pending && !forceNewEpoch) return pending.epoch;
-    const epoch = (this.sessionStopEpochs.get(nativeSessionId) ?? 0) + 1;
-    const operationIds = new Set(this.initialized ? this.store.snapshot().operations.filter((row) => row.nativeSessionId === nativeSessionId && row.items.some((item) => item.status === "quoted" || item.status === "submitting")).map((row) => row.operationId) : []);
+    const epoch = (this.sessionStopEpochs.get(key) ?? 0) + 1;
+    const operationIds = new Set(this.initialized ? this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.items.some((item) => item.status === "quoted" || item.status === "submitting")).map((row) => row.operationId) : []);
     const stoppedAt = this.now().toISOString();
-    this.sessionStopEpochs.set(nativeSessionId, epoch);
-    this.pendingSessionStops.set(nativeSessionId, { epoch, stoppedAt, operationIds });
+    this.sessionStopEpochs.set(key, epoch);
+    this.pendingSessionStops.set(key, { ownerId, nativeSessionId, epoch, stoppedAt, operationIds });
     for (const operationId2 of operationIds) this.stoppedOperationIds.add(operationId2);
     return epoch;
   }
@@ -58457,8 +58521,8 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async generationPrepare(input, caller) {
     const nativeSessionId = this.nativeSessionFor(caller);
-    const stopEpoch = this.currentSessionStopEpoch(nativeSessionId);
     const ownerId = await this.owner(true);
+    const stopEpoch = this.currentSessionStopEpoch(ownerId, nativeSessionId);
     const intentId = text2(input.intentId, "intentId", 180);
     const planVersion = input.planVersion;
     if (!Number.isInteger(planVersion) || planVersion < 1 || planVersion > 1e6) throw new PodploPluginError("INVALID_ARGUMENT", "planVersion \u65E0\u6548");
@@ -58519,14 +58583,36 @@ var PodploPluginService = class extends EventEmitter2 {
       const item = record4(raw, `items[${index}]`);
       const args = jsonObject(item.args, `items[${index}].args`);
       const sourceName = item.sourceName === void 0 ? {} : { sourceName: text2(item.sourceName, "sourceName", 255) };
+      let stage;
+      if (item.stage !== void 0) {
+        const rawStage = record4(item.stage, `items[${index}].stage`);
+        if (Object.keys(rawStage).some((key) => !["id", "label", "order"].includes(key)) || !Number.isSafeInteger(rawStage.order) || Number(rawStage.order) < 0 || Number(rawStage.order) > 99) {
+          throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].stage \u65E0\u6548`);
+        }
+        const id2 = text2(rawStage.id, "stage.id", 40);
+        if (!/^[A-Za-z0-9_-]+$/u.test(id2)) throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].stage.id \u65E0\u6548`);
+        stage = { id: id2, label: text2(rawStage.label, "stage.label", 80), order: Number(rawStage.order) };
+      }
+      let dependsOn;
+      if (item.dependsOn !== void 0) {
+        const dependency = record4(item.dependsOn, `items[${index}].dependsOn`);
+        if (Object.keys(dependency).some((key) => !["itemIndex", "outputIndex", "referenceIndex"].includes(key)) || !Number.isSafeInteger(dependency.itemIndex) || Number(dependency.itemIndex) < 0 || Number(dependency.itemIndex) >= index || dependency.outputIndex !== void 0 && (!Number.isSafeInteger(dependency.outputIndex) || Number(dependency.outputIndex) < 0 || Number(dependency.outputIndex) > 99) || dependency.referenceIndex !== void 0 && (!Number.isSafeInteger(dependency.referenceIndex) || Number(dependency.referenceIndex) < 0 || Number(dependency.referenceIndex) > 13)) {
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", `items[${index}] \u5FC5\u987B\u5F15\u7528\u4E00\u4E2A\u66F4\u65E9\u7684\u751F\u6210\u9879\u53CA\u6709\u6548\u8F93\u51FA\u4F4D\u7F6E`);
+        }
+        dependsOn = { itemIndex: Number(dependency.itemIndex), outputIndex: Number(dependency.outputIndex ?? 0), referenceIndex: Number(dependency.referenceIndex ?? 0) };
+        const references = args.referenceAssetIds ?? args.imageIds;
+        if (!Array.isArray(references) || dependsOn.referenceIndex >= references.length) {
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", `items[${index}] \u7F3A\u5C11\u7528\u4E8E\u7EDF\u4E00\u62A5\u4EF7\u7684\u540C\u4F4D\u7F6E\u53C2\u8003\u56FE`);
+        }
+      }
       if (item.skillId === void 0) {
         if (!allowOrdinary) throw new PodploPluginError("SKILL_REQUIRED", "\u6A21\u578B\u4E0E\u539F\u751F\u4F1A\u8BDD\u5FC5\u987B\u4F7F\u7528\u660E\u786E\u7684 Skill \u751F\u56FE");
         if (args.templateId !== void 0 && args.templateId !== null) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684\u666E\u901A\u751F\u56FE\u4E0D\u80FD\u643A\u5E26 Skill`);
-        return { ...sourceName, args: { ...args } };
+        return { ...sourceName, ...stage ? { stage } : {}, ...dependsOn ? { dependsOn } : {}, args: { ...args } };
       }
       const skillId = text2(item.skillId, `items[${index}].skillId`, 180);
       if (args.templateId !== void 0 && args.templateId !== skillId) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684 Skill \u4E0E\u62A5\u4EF7\u53C2\u6570\u4E0D\u4E00\u81F4`);
-      return { skillId, ...sourceName, args: { ...args, templateId: skillId } };
+      return { skillId, ...sourceName, ...stage ? { stage } : {}, ...dependsOn ? { dependsOn } : {}, args: { ...args, templateId: skillId } };
     });
   }
   expectedOutputCount(input) {
@@ -58574,7 +58660,10 @@ var PodploPluginService = class extends EventEmitter2 {
           throw new PodploPluginError("INVALID_REFERENCE_ID", `${label} \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID`);
         return value2;
       };
-      const ids2 = [.../* @__PURE__ */ new Set([...parse7(primary, "referenceAssetIds"), ...parse7(compatibility, "imageIds")])];
+      const rawIds = [...parse7(primary, "referenceAssetIds"), ...parse7(compatibility, "imageIds")];
+      if (item.dependsOn && new Set(rawIds).size !== rawIds.length)
+        throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u7684\u5B9A\u4EF7\u53C2\u8003\u56FE\u4E0D\u80FD\u91CD\u590D\uFF0C\u4EE5\u514D\u4F9D\u8D56\u63D2\u69FD\u53D1\u751F\u504F\u79FB");
+      const ids2 = item.dependsOn ? rawIds : [...new Set(rawIds)];
       if (ids2.length > 14) throw new PodploPluginError("INVALID_REFERENCE_ID", "\u6BCF\u9879\u6700\u591A\u4F7F\u7528 14 \u5F20\u53C2\u8003\u56FE");
       let resolved = ids2;
       if (ids2.length === 0) {
@@ -58587,8 +58676,10 @@ var PodploPluginService = class extends EventEmitter2 {
       }
       if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id2) => typeof id2 !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
         throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247\u3002");
-      args.referenceAssetIds = [...new Set(resolved)];
+      args.referenceAssetIds = item.dependsOn ? [...resolved] : [...new Set(resolved)];
       delete args.imageIds;
+      if (item.dependsOn && item.dependsOn.referenceIndex >= args.referenceAssetIds.length)
+        throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u7684\u5B9A\u4EF7\u53C2\u8003\u4F4D\u7F6E\u65E0\u6548");
       output.push({ ...item, args });
     }
     if (resolvedByHost) await this.assertOwner(ownerId, true);
@@ -58601,6 +58692,7 @@ var PodploPluginService = class extends EventEmitter2 {
     for (const item of items) {
       await this.assertOwner(ownerId, true);
       const personalUpdatedAt = item.skillId ? await this.personalSkillVersion(item.skillId, ownerId) : void 0;
+      const skillName = item.skillId ? this.skillDisplayName(ownerId, item.skillId) : void 0;
       const gateway = this.gateway();
       if (!item.skillId && !gateway.quoteOrdinary) throw new PodploPluginError("ORDINARY_GENERATION_UNAVAILABLE", "\u5F53\u524D\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u666E\u901A\u751F\u56FE\u63A5\u53E3\uFF0C\u8BF7\u5347\u7EA7\u670D\u52A1\u540E\u91CD\u8BD5");
       const quote = item.skillId ? await gateway.quote(item.args) : await gateway.quoteOrdinary(item.args);
@@ -58608,15 +58700,25 @@ var PodploPluginService = class extends EventEmitter2 {
       this.assertGatewayQuote(quote);
       savedItems.push({
         ...structuredClone(item),
+        ...skillName ? { skillName } : {},
         itemId: this.createId(),
         status: "quoted",
         quote: structuredClone(quote),
+        approvedCredits: quote.totalCredits,
+        approvedOutputCount: quote.outputCount,
         clientRequestId: this.createId(),
         ...personalUpdatedAt ? { personalUpdatedAt } : {}
       });
     }
     if (!Number.isSafeInteger(savedItems.reduce((sum, item) => sum + item.quote.totalCredits, 0)) || !Number.isSafeInteger(savedItems.reduce((sum, item) => sum + item.quote.outputCount, 0))) {
       throw new PodploPluginError("INVALID_QUOTE_RESPONSE", "\u4E3B\u7AD9\u6574\u6279\u62A5\u4EF7\u8D85\u51FA\u5B89\u5168\u8303\u56F4");
+    }
+    for (const item of savedItems) {
+      if (!item.dependsOn) continue;
+      const parent = savedItems[item.dependsOn.itemIndex];
+      if (!parent || item.dependsOn.outputIndex >= parent.quote.outputCount || !Array.isArray(item.args.referenceAssetIds) || item.dependsOn.referenceIndex >= item.args.referenceAssetIds.length) {
+        throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u5F15\u7528\u4E86\u6B63\u5F0F\u62A5\u4EF7\u4E2D\u4E0D\u5B58\u5728\u7684\u8F93\u51FA\u6216\u53C2\u8003\u4F4D\u7F6E");
+      }
     }
     this.assertQuotedOutputCount(savedItems, expectedOutputCount);
     const now = this.now().toISOString();
@@ -58639,8 +58741,9 @@ var PodploPluginService = class extends EventEmitter2 {
       const existing = saved.operations.find((value2) => value2.ownerId === ownerId && value2.nativeSessionId === nativeSessionId && value2.intentId === intentId && value2.planVersion === planVersion);
       if (existing) return;
       const stop = saved.sessionStops.find((value2) => value2.ownerId === ownerId && value2.nativeSessionId === nativeSessionId);
-      if (this.currentSessionStopEpoch(nativeSessionId) !== stopEpoch) {
-        row.stoppedAt = this.pendingSessionStops.get(nativeSessionId)?.stoppedAt ?? stop?.stoppedAt ?? now;
+      const stopKey = this.sessionStopKey(ownerId, nativeSessionId);
+      if (this.currentSessionStopEpoch(ownerId, nativeSessionId) !== stopEpoch) {
+        row.stoppedAt = this.pendingSessionStops.get(stopKey)?.stoppedAt ?? stop?.stoppedAt ?? now;
         row.status = "cancelled";
         for (const item of row.items) {
           item.status = "cancelled";
@@ -58678,10 +58781,13 @@ var PodploPluginService = class extends EventEmitter2 {
       throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u5BF9\u8BDD");
     }
     if (operation.approvalId !== approvalId) throw new PodploPluginError("CONFIRMATION_MISMATCH", "\u62A5\u4EF7\u786E\u8BA4\u4E0D\u5339\u914D");
+    if (operation.approvedAt) {
+      this.startSubmission(operationId2, ownerId);
+      return safeOperation(operation);
+    }
     const pending = operation.items.filter((item) => item.status === "quoted");
     if (!pending.length) return safeOperation(operation);
     if (pending.some((item) => Date.parse(item.quote.expiresAt) <= this.now().getTime())) throw new PodploPluginError("QUOTE_EXPIRED", "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u4EE5\u65B0\u65B9\u6848\u7248\u672C\u91CD\u65B0\u62A5\u4EF7");
-    for (const item of pending) await this.assertPersonalSkillCurrent(item, ownerId);
     await this.assertOwner(ownerId, true);
     await this.store.transaction((saved) => {
       const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
@@ -58707,26 +58813,92 @@ var PodploPluginService = class extends EventEmitter2 {
       let operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
       let item = operation?.items.find((value2) => value2.itemId === itemId);
       if (!operation || !item || item.status !== "quoted") continue;
+      if (!this.retryDue(item)) continue;
       if (operation.stoppedAt || this.stoppedOperationIds.has(operationId2)) {
         await this.cancelRemainingItems(operationId2, ownerId, "NATIVE_SESSION_STOPPED");
         break;
+      }
+      if (item.dependsOn) {
+        const dependency = this.dependencyResult(operation, item);
+        if (dependency.status === "waiting") continue;
+        if (dependency.status === "failed") {
+          await this.failUnsubmittedItem(operationId2, ownerId, itemId, dependency.code);
+          continue;
+        }
+        try {
+          if (item.dependencyQuoteAssetId !== dependency.assetId || Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
+            item = await this.refreshDependentQuote(operationId2, ownerId, item, dependency.assetId);
+          }
+        } catch (error101) {
+          const code = this.errorCode(error101);
+          if (this.authorizationBlocked(error101, code)) {
+            await this.failRemainingItems(operationId2, ownerId, code === "SESSION_CHANGED" ? "SESSION_CHANGED_BEFORE_SUBMIT" : code);
+            break;
+          }
+          if (this.transientBeforeCreate(error101)) await this.deferItem(operationId2, ownerId, itemId, "dependency_quote", code);
+          else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
+          continue;
+        }
+      } else if (Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
+        try {
+          item = await this.refreshApprovedQuote(operationId2, ownerId, item, structuredClone(item.args), "root_quote");
+        } catch (error101) {
+          const code = this.errorCode(error101);
+          if (this.authorizationBlocked(error101, code)) {
+            await this.failRemainingItems(operationId2, ownerId, code === "SESSION_CHANGED" ? "SESSION_CHANGED_BEFORE_SUBMIT" : code);
+            break;
+          }
+          if (this.transientBeforeCreate(error101)) await this.deferItem(operationId2, ownerId, itemId, "root_quote", code);
+          else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
+          continue;
+        }
       }
       try {
         await this.assertOwner(ownerId, true);
         await this.assertPersonalSkillCurrent(item, ownerId);
       } catch (error101) {
-        await this.failUnsubmittedItem(operationId2, ownerId, itemId, this.errorCode(error101));
-        if (this.errorCode(error101) === "SESSION_CHANGED") {
-          await this.failRemainingItems(operationId2, ownerId, "SESSION_CHANGED_BEFORE_SUBMIT");
+        const code = this.errorCode(error101);
+        if (this.authorizationBlocked(error101, code)) {
+          await this.failRemainingItems(operationId2, ownerId, code === "SESSION_CHANGED" ? "SESSION_CHANGED_BEFORE_SUBMIT" : code);
           break;
         }
+        if (this.transientBeforeCreate(error101)) await this.deferItem(operationId2, ownerId, itemId, "skill_binding", code);
+        else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
         continue;
+      }
+      try {
+        if (item.skillId) await this.gateway().capabilities(false);
+        await this.assertOwner(ownerId, true);
+      } catch (error101) {
+        const code = this.errorCode(error101);
+        if (this.authorizationBlocked(error101, code)) {
+          await this.failRemainingItems(operationId2, ownerId, code === "SESSION_CHANGED" ? "SESSION_CHANGED_BEFORE_SUBMIT" : code);
+          break;
+        }
+        if (this.transientBeforeCreate(error101)) await this.deferItem(operationId2, ownerId, itemId, "submission_preflight", code);
+        else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
+        continue;
+      }
+      if (Date.parse(item.quote.expiresAt) <= this.now().getTime()) {
+        try {
+          item = item.dependsOn && item.dependencyQuoteAssetId ? await this.refreshDependentQuote(operationId2, ownerId, item, item.dependencyQuoteAssetId) : await this.refreshApprovedQuote(operationId2, ownerId, item, structuredClone(item.args), "root_quote");
+        } catch (error101) {
+          const code = this.errorCode(error101);
+          if (this.authorizationBlocked(error101, code)) {
+            await this.failRemainingItems(operationId2, ownerId, code === "SESSION_CHANGED" ? "SESSION_CHANGED_BEFORE_SUBMIT" : code);
+            break;
+          }
+          if (this.transientBeforeCreate(error101)) await this.deferItem(operationId2, ownerId, itemId, item.dependsOn ? "dependency_quote" : "root_quote", code);
+          else await this.failUnsubmittedItem(operationId2, ownerId, itemId, code);
+          continue;
+        }
       }
       const started = await this.store.transaction((saved) => {
         const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
         const current = row.items.find((value2) => value2.itemId === itemId);
         if (current.status !== "quoted" || this.stoppedOperationIds.has(operationId2)) return false;
         current.status = "submitting";
+        delete current.retry;
         row.status = operationStatus(row);
         row.updatedAt = this.now().toISOString();
         return true;
@@ -58763,6 +58935,11 @@ var PodploPluginService = class extends EventEmitter2 {
         accepted = true;
       } catch (error101) {
         const code = this.errorCode(error101);
+        if (code === "QUOTE_EXPIRED_BEFORE_SUBMIT") {
+          await this.recoverExpiredBeforeCreate(operationId2, ownerId, itemId, item.dependsOn ? "dependency_quote" : "root_quote");
+          this.publish();
+          continue;
+        }
         await this.store.transaction((saved) => {
           const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
           const current = row.items.find((value2) => value2.itemId === itemId);
@@ -58787,6 +58964,140 @@ var PodploPluginService = class extends EventEmitter2 {
       }
     });
     this.publish();
+  }
+  dependencyResult(operation, item) {
+    const dependency = item.dependsOn;
+    if (!dependency) return { status: "failed", code: "INVALID_GENERATION_DEPENDENCY" };
+    const parent = operation.items[dependency.itemIndex];
+    if (!parent) return { status: "failed", code: "INVALID_GENERATION_DEPENDENCY" };
+    if (["quoted", "submitting", "submitted"].includes(parent.status)) return { status: "waiting" };
+    if (parent.status === "submission_unknown") return { status: "failed", code: "DEPENDENCY_RESULT_UNKNOWN" };
+    const output = parent.outputs?.find((value2) => value2.index === dependency.outputIndex);
+    if (output?.assetId) return { status: "ready", assetId: output.assetId };
+    return parent.status === "completed" ? { status: "failed", code: "DEPENDENCY_OUTPUT_UNAVAILABLE" } : { status: "failed", code: "DEPENDENCY_FAILED" };
+  }
+  async refreshDependentQuote(operationId2, ownerId, item, assetId) {
+    const dependency = item.dependsOn;
+    const references = item.args.referenceAssetIds;
+    if (!Array.isArray(references) || dependency.referenceIndex >= references.length || references.some((value2) => typeof value2 !== "string")) {
+      throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u7684\u62A5\u4EF7\u53C2\u8003\u4F4D\u7F6E\u65E0\u6548");
+    }
+    const args = structuredClone(item.args);
+    args.referenceAssetIds[dependency.referenceIndex] = assetId;
+    return this.refreshApprovedQuote(operationId2, ownerId, item, args, "dependency_quote", assetId);
+  }
+  async refreshApprovedQuote(operationId2, ownerId, item, args, phase, dependencyQuoteAssetId) {
+    const gateway = this.gateway();
+    if (!item.skillId && !gateway.quoteOrdinary) throw new PodploPluginError("ORDINARY_GENERATION_UNAVAILABLE", "\u5F53\u524D\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u666E\u901A\u751F\u56FE\u63A5\u53E3\uFF0C\u8BF7\u5347\u7EA7\u670D\u52A1\u540E\u91CD\u8BD5");
+    const quote = item.skillId ? await gateway.quote(args) : await gateway.quoteOrdinary(args);
+    await this.assertOwner(ownerId, true);
+    this.assertGatewayQuote(quote);
+    if (quote.parameters) {
+      for (const [key, value2] of Object.entries(args)) {
+        if (key in quote.parameters && !isDeepStrictEqual(quote.parameters[key], value2)) {
+          throw new PodploPluginError("WORKFLOW_QUOTE_CHANGED", "\u6062\u590D\u62A5\u4EF7\u672A\u4FDD\u7559\u5DF2\u51BB\u7ED3\u7684\u751F\u56FE\u53C2\u6570\uFF0C\u672A\u63D0\u4EA4\u4E5F\u672A\u8FFD\u52A0\u6263\u8D39");
+        }
+      }
+    }
+    const approvedCredits = item.approvedCredits ?? item.quote.totalCredits;
+    const approvedOutputCount = item.approvedOutputCount ?? item.quote.outputCount;
+    if (quote.totalCredits > approvedCredits || quote.outputCount !== approvedOutputCount) {
+      throw new PodploPluginError("WORKFLOW_QUOTE_CHANGED", phase === "dependency_quote" ? "\u540E\u7EE7\u6B65\u9AA4\u5B9E\u9645\u62A5\u4EF7\u8D85\u51FA\u5DF2\u786E\u8BA4\u989D\u5EA6\u6216\u8F93\u51FA\u6570\u91CF\u53D8\u5316\uFF0C\u5DF2\u505C\u6B62\u8BE5\u5206\u652F\u4E14\u672A\u63D0\u4EA4" : "\u6062\u590D\u62A5\u4EF7\u8D85\u51FA\u5DF2\u786E\u8BA4\u7684\u5355\u9879\u989D\u5EA6\u6216\u8F93\u51FA\u6570\u91CF\u53D8\u5316\uFF0C\u672A\u63D0\u4EA4\u4E5F\u672A\u8FFD\u52A0\u6263\u8D39");
+    }
+    await this.store.transaction((saved) => {
+      const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+      const current = row.items.find((value2) => value2.itemId === item.itemId);
+      if (current.status !== "quoted") return;
+      current.quote = structuredClone(quote);
+      if (dependencyQuoteAssetId) current.dependencyQuoteAssetId = dependencyQuoteAssetId;
+      delete current.retry;
+      row.updatedAt = this.now().toISOString();
+    });
+    return this.store.snapshot().operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2).items.find((value2) => value2.itemId === item.itemId);
+  }
+  retryDue(item) {
+    return !item.retry || Date.parse(item.retry.nextAttemptAt) <= this.now().getTime();
+  }
+  async deferItem(operationId2, ownerId, itemId, phase, reasonCode) {
+    const now = this.now();
+    await this.store.transaction((saved) => {
+      const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+      const item = row.items.find((value2) => value2.itemId === itemId);
+      const attempt = item.retry?.phase === phase ? item.retry.attempt + 1 : 1;
+      const delay2 = Math.min(6e4, 2e3 * 2 ** Math.min(5, attempt - 1));
+      item.retry = { phase, attempt, reasonCode, lastAttemptAt: now.toISOString(), nextAttemptAt: new Date(now.getTime() + delay2).toISOString() };
+      if (phase === "status") {
+        item.lastStatusError = { code: reasonCode, at: now.toISOString() };
+        delete item.statusBlocked;
+      }
+      row.status = operationStatus(row);
+      row.updatedAt = now.toISOString();
+    });
+  }
+  async recoverExpiredBeforeCreate(operationId2, ownerId, itemId, phase) {
+    await this.store.transaction((saved) => {
+      const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+      const item = row.items.find((value2) => value2.itemId === itemId);
+      if (item.status !== "submitting") return;
+      const now = this.now();
+      item.status = "quoted";
+      item.retry = {
+        phase,
+        attempt: 1,
+        reasonCode: "QUOTE_EXPIRED_BEFORE_SUBMIT",
+        lastAttemptAt: now.toISOString(),
+        nextAttemptAt: new Date(now.getTime() + 2e3).toISOString()
+      };
+      row.status = operationStatus(row);
+      row.updatedAt = now.toISOString();
+    });
+  }
+  transientBeforeCreate(error101) {
+    const code = this.errorCode(error101);
+    const status = this.errorStatus(error101);
+    return [
+      "NETWORK_UNAVAILABLE",
+      "RATE_LIMITED",
+      "TOO_MANY_REQUESTS",
+      "SERVER_BUSY",
+      "SERVICE_UNAVAILABLE",
+      "DESKTOP_CONTEXT_UNAVAILABLE",
+      "USER_SKILLS_NOT_READY",
+      "REQUEST_TIMEOUT"
+    ].includes(code) || Number.isInteger(status) && (status === 408 || status === 429 || status >= 500 && status <= 599);
+  }
+  errorStatus(error101) {
+    return error101 && typeof error101 === "object" && "status" in error101 ? Number(error101.status) : 0;
+  }
+  async blockStatusCheck(operationId2, ownerId, itemId, reasonCode, kind) {
+    const now = this.now().toISOString();
+    await this.store.transaction((saved) => {
+      const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+      const item = row.items.find((value2) => value2.itemId === itemId);
+      delete item.retry;
+      item.statusBlocked = { reasonCode, at: now, kind };
+      item.lastStatusError = { code: reasonCode, at: now };
+      row.status = operationStatus(row);
+      row.updatedAt = now;
+    });
+  }
+  accountBlockedBeforeCreate(code) {
+    return [
+      "SESSION_CHANGED",
+      "SESSION_REPLACED",
+      "SIGN_IN_REQUIRED",
+      "AUTHORIZATION_INVALID",
+      "INVALID_TOKEN",
+      "INVALID_GRANT",
+      "UNAUTHENTICATED",
+      "INSUFFICIENT_SCOPE",
+      "DESKTOP_NOT_AUTHORIZED",
+      "TOOL_GROUP_REQUIRED",
+      "TOOL_GROUP_EXPIRED"
+    ].includes(code);
+  }
+  authorizationBlocked(error101, code = this.errorCode(error101)) {
+    return this.accountBlockedBeforeCreate(code) || [401, 403].includes(this.errorStatus(error101));
   }
   async failUnsubmittedItem(operationId2, ownerId, itemId, code) {
     await this.store.transaction((saved) => {
@@ -58853,10 +59164,12 @@ var PodploPluginService = class extends EventEmitter2 {
     } else {
       nativeSessionId = this.nativeSessionFor(caller);
     }
-    const stopEpoch = operationId2 ? this.latchSessionStop(nativeSessionId, true) : this.markSessionStopped(nativeSessionId);
-    const pending = this.pendingSessionStops.get(nativeSessionId);
+    if (!snapshotOwnerId) throw new PodploPluginError("AUTH_REQUIRED", "\u8BF7\u5148\u767B\u5F55 PodPlo");
+    const stopEpoch = operationId2 ? this.latchSessionStop(snapshotOwnerId, nativeSessionId, true) : this.latchSessionStop(snapshotOwnerId, nativeSessionId, false);
+    const stopKey = this.sessionStopKey(snapshotOwnerId, nativeSessionId);
+    const pending = this.pendingSessionStops.get(stopKey);
     const ownerId = await this.owner(false);
-    if (snapshotOwnerId && ownerId !== snapshotOwnerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u5207\u6362\uFF0C\u5DF2\u505C\u6B62\u63D0\u4EA4\u4F46\u672A\u91C7\u7EB3\u65E7\u4F1A\u8BDD\u7ED3\u679C");
+    if (ownerId !== snapshotOwnerId || pending.ownerId !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u5207\u6362\uFF0C\u5DF2\u505C\u6B62\u63D0\u4EA4\u4F46\u672A\u91C7\u7EB3\u65E7\u4F1A\u8BDD\u7ED3\u679C");
     if (operationId2 && !this.store.snapshot().operations.some((row) => row.ownerId === ownerId && row.operationId === operationId2 && row.nativeSessionId === nativeSessionId)) {
       throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
     }
@@ -58869,7 +59182,7 @@ var PodploPluginService = class extends EventEmitter2 {
         stop.stoppedAt = stoppedAt;
       } else saved.sessionStops.unshift({ ownerId, nativeSessionId, epoch: stopEpoch, stoppedAt });
       saved.sessionStops = saved.sessionStops.slice(0, 1e3);
-      for (const row of saved.operations.filter((value2) => pending.operationIds.has(value2.operationId))) {
+      for (const row of saved.operations.filter((value2) => value2.ownerId === ownerId && value2.nativeSessionId === nativeSessionId && pending.operationIds.has(value2.operationId))) {
         row.stoppedAt ??= stoppedAt;
         for (const item of row.items) {
           if (item.status === "quoted") {
@@ -58882,12 +59195,12 @@ var PodploPluginService = class extends EventEmitter2 {
         row.updatedAt = stoppedAt;
       }
     });
-    if (this.pendingSessionStops.get(nativeSessionId)?.epoch === stopEpoch) this.pendingSessionStops.delete(nativeSessionId);
+    if (this.pendingSessionStops.get(stopKey)?.epoch === stopEpoch) this.pendingSessionStops.delete(stopKey);
     this.publish();
     return { stopped: true, cancelledItems };
   }
-  currentSessionStopEpoch(nativeSessionId) {
-    return this.sessionStopEpochs.get(nativeSessionId) ?? 0;
+  currentSessionStopEpoch(ownerId, nativeSessionId) {
+    return this.sessionStopEpochs.get(this.sessionStopKey(ownerId, nativeSessionId)) ?? 0;
   }
   async generationCancel(input, caller) {
     this.requireUi(caller);
@@ -58911,29 +59224,42 @@ var PodploPluginService = class extends EventEmitter2 {
     const nativeSessionId = caller.source === "agent" ? this.nativeSessionFor(caller) : void 0;
     let operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2 && (caller.source === "ui" || row.nativeSessionId === nativeSessionId));
     if (!operation) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
+    if (pendingOnly && generationIsPaused(operation)) return safeOperation(operation);
     const refresh = bool(input.refresh);
     if (refresh) {
       for (const item of operation.items.filter((value2) => value2.generationId && (pendingOnly ? value2.status === "submitted" : ["submitted", "completed", "failed"].includes(value2.status)))) {
+        if (pendingOnly && item.statusBlocked) continue;
+        if (item.retry?.phase === "status" && !this.retryDue(item)) continue;
         await this.assertOwner(ownerId, false);
         let remote;
         try {
           remote = await this.gateway().status(item.generationId);
         } catch (error101) {
           await this.assertOwner(ownerId, false);
-          await this.store.transaction((saved) => {
-            const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
-            row.lastStatusDiagnostic = diagnose("connection", error101, this.now().toISOString());
-          });
-          this.publish();
-          throw error101;
+          const code = this.errorCode(error101);
+          const authorizationBlocked = this.authorizationBlocked(error101, code);
+          if (authorizationBlocked) await this.blockStatusCheck(operationId2, ownerId, item.itemId, code, "authorization");
+          else if (this.transientBeforeCreate(error101)) await this.deferItem(operationId2, ownerId, item.itemId, "status", code);
+          else await this.blockStatusCheck(operationId2, ownerId, item.itemId, code, "manual_check");
+          continue;
         }
         await this.assertOwner(ownerId, false);
+        let outputs;
+        try {
+          outputs = safeGenerationOutputs(remote.outputs);
+        } catch (error101) {
+          await this.blockStatusCheck(operationId2, ownerId, item.itemId, this.errorCode(error101), "manual_check");
+          continue;
+        }
         await this.store.transaction((saved) => {
           const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
-          delete row.lastStatusDiagnostic;
           const current = row.items.find((value2) => value2.itemId === item.itemId);
+          if (current.retry?.phase === "status") delete current.retry;
+          delete current.statusBlocked;
+          current.lastStatusSucceededAt = this.now().toISOString();
+          delete current.lastStatusError;
           current.remoteStatus = remote.status;
-          current.outputs = safeGenerationOutputs(remote.outputs);
+          current.outputs = outputs;
           if (remote.status === "completed") current.status = "completed";
           else if (["failed", "cancelled", "rejected"].includes(remote.status)) current.status = "failed";
           else current.status = "submitted";
@@ -58942,7 +59268,16 @@ var PodploPluginService = class extends EventEmitter2 {
         });
         if (["completed", "failed", "cancelled", "rejected"].includes(remote.status)) this.scheduleAccountRefresh(ownerId);
       }
+      await this.store.transaction((saved) => {
+        const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
+        const recent = row.items.flatMap((item) => item.lastStatusError ? [item.lastStatusError] : []).sort((a, b) => b.at.localeCompare(a.at))[0];
+        if (recent) row.lastStatusDiagnostic = diagnose("connection", { code: recent.code }, recent.at);
+        else delete row.lastStatusDiagnostic;
+        row.status = operationStatus(row);
+        row.updatedAt = this.now().toISOString();
+      });
       operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
+      if (operation.approvedAt && operation.items.some((item) => item.status === "quoted")) this.startSubmission(operationId2, ownerId);
     }
     if (refresh) this.publish();
     return safeOperation(operation);
@@ -59007,10 +59342,15 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     await this.assertOwner(ownerId, false);
     this.personalSkillVersions.set(key, skill.updatedAt);
+    this.personalSkillNames.set(key, skill.name);
     return skill.updatedAt;
   }
   personalSkillKey(ownerId, skillId) {
     return `${ownerId}:${skillId}`;
+  }
+  skillDisplayName(ownerId, skillId) {
+    const value2 = this.skillBindings.get(skillId)?.label ?? this.personalSkillNames.get(this.personalSkillKey(ownerId, skillId)) ?? this.online.snapshot().skills.find((skill) => skill.id === skillId)?.name;
+    return typeof value2 === "string" && value2.trim() ? value2.trim().slice(0, 240) : void 0;
   }
   async assertPersonalSkillCurrent(item, ownerId) {
     if (!item.personalUpdatedAt) return;
@@ -59352,7 +59692,8 @@ var NativeGenerationGateway = class {
     if (input.background === "transparent" && (!object4(output.parameters) || output.parameters.background !== "transparent" || output.parameters.output_format !== input.output_format)) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
   }
   async submit(input) {
-    if (input.quote.totalCredits !== input.approvedCredits || Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("CONFIRMATION_MISMATCH");
+    if (input.quote.totalCredits !== input.approvedCredits) throw new OnlineError("CONFIRMATION_MISMATCH");
+    if (Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED_BEFORE_SUBMIT");
     await this.capabilities();
     const schema2 = this.cached?.createSchema;
     if (!schema2 || !object4(schema2.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
@@ -59368,8 +59709,8 @@ var NativeGenerationGateway = class {
     return output;
   }
   async submitOrdinary(input) {
-    if (input.quote.totalCredits !== input.approvedCredits || Date.parse(input.quote.expiresAt) <= Date.now() || !object4(input.quote.parameters))
-      throw new OnlineError("CONFIRMATION_MISMATCH");
+    if (input.quote.totalCredits !== input.approvedCredits || !object4(input.quote.parameters)) throw new OnlineError("CONFIRMATION_MISMATCH");
+    if (Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED_BEFORE_SUBMIT");
     const output = await this.desktop("/api/desktop/generations", { ...input.quote.parameters, clientRequestId: input.clientRequestId, approvedCredits: input.approvedCredits });
     if (typeof output.id !== "string" || typeof output.status !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
     return output;
@@ -61497,7 +61838,7 @@ var TaskArchiveManager = class {
     let current = file3;
     while (current.sourceId && !seen.has(current.source.id)) {
       seen.add(current.source.id);
-      const parent = task.files.find((row) => row.source.id === current.sourceId);
+      const parent = task.files.find((row) => row.group === "result" && row.source.id === current.sourceId) ?? task.files.find((row) => row.source.id === current.sourceId);
       if (!parent) break;
       current = parent;
     }
@@ -61524,7 +61865,7 @@ var TaskArchiveManager = class {
     while (current?.sourceId && !seen.has(current.source.id)) {
       seen.add(current.source.id);
       const parentId = current.sourceId;
-      current = task.files.find((row) => row.source.id === parentId);
+      current = task.files.find((row) => row.group === "result" && row.source.id === parentId) ?? task.files.find((row) => row.source.id === parentId);
       if (current?.id === ancestor.id) return true;
     }
     return false;
@@ -61536,7 +61877,7 @@ var TaskArchiveManager = class {
     await this.store.transaction((state) => {
       const task = state.tasks.find((row) => row.id === taskId), file3 = task.files.find((row) => row.id === fileId);
       if (file3.outputSlot) return;
-      const parent = file3.sourceId ? task.files.find((row) => row.source.id === file3.sourceId) : void 0;
+      const parent = file3.sourceId ? task.files.find((row) => row.group === "result" && row.source.id === file3.sourceId) ?? task.files.find((row) => row.source.id === file3.sourceId) : void 0;
       const siblings = task.files.filter((row) => row.group === "result" && row.sourceId === file3.sourceId && row.status === "saved" && row.cacheName && !row.reviewRequired);
       if (parent?.outputSlot && siblings[0]?.id === file3.id) {
         file3.outputSlot = parent.outputSlot;
@@ -62494,7 +62835,8 @@ var automaticProcessingTools = /* @__PURE__ */ new Set([
   "podplo_adjust_image_colors",
   "podplo_prepare_print_files",
   "podplo_export_images",
-  "podplo_toolbox_pipeline"
+  "podplo_toolbox_pipeline",
+  GRID_SPLIT_OPERATION_NAME
 ]);
 var GlobalPool = class {
   constructor(maximum) {
@@ -62767,6 +63109,7 @@ async function taskArchiveHost(options) {
                 source: { kind: "asset", id: id2, sessionId: row.sessionId },
                 group: "result",
                 label: row.resultNames?.[id2] ?? "\u539F\u59CB\u751F\u6210",
+                ...row.resultSourceIds?.[id2] ? { sourceId: row.resultSourceIds[id2] } : {},
                 ...row.resultItemIndexes?.[id2] !== void 0 ? { generationItemIndex: row.resultItemIndexes[id2] } : {}
               }))
             ]
@@ -63323,6 +63666,7 @@ async function executeNativeGenerationApproval(options) {
     throw new Error("PodPlo returned an invalid generation quote");
   const alreadySubmitted = typeof prepared.approvedAt === "string" || ["submitting", "submitted", "completed", "partial_unknown", "submission_unknown"].includes(String(prepared.status ?? ""));
   if (alreadySubmitted || prepared.status !== "quoted") {
+    if (alreadySubmitted) await options.onApproved?.(prepared.operationId);
     return { content: [{ type: "text", text: JSON.stringify({
       ...prepared,
       nativeApproval: { outcome: "not-required", submitted: alreadySubmitted }
@@ -63335,6 +63679,7 @@ async function executeNativeGenerationApproval(options) {
     }) }] };
   }
   const confirmation = typeof prepared.quote?.confirmationText === "string" ? prepared.quote.confirmationText : `\u672C\u6279\u751F\u56FE\u5C06\u6263\u9664 ${String(prepared.quote?.totalCredits ?? "\u5F85\u6838\u9A8C")} \u79EF\u5206`;
+  await options.onPrepared?.(prepared.operationId);
   const settlement = new AbortController();
   let external;
   const disposeWatch = options.watch?.({ operationId: prepared.operationId, approvalId: prepared.approvalId }, (value3) => {
@@ -63364,7 +63709,7 @@ async function executeNativeGenerationApproval(options) {
     if (external.approved) {
       result = external.value ?? prepared;
       publicOutcome = "allowed-elsewhere";
-      options.onApproved?.(prepared.operationId);
+      await options.onApproved?.(prepared.operationId);
     } else {
       publicOutcome = outcome === "allowed-once" ? "cancelled" : outcome;
       const resolved = await options.onDeclined?.({
@@ -63375,20 +63720,21 @@ async function executeNativeGenerationApproval(options) {
       if (resolved?.approved) {
         result = resolved.value ?? prepared;
         publicOutcome = "allowed-elsewhere";
-        options.onApproved?.(prepared.operationId);
+        await options.onApproved?.(prepared.operationId);
       } else result = resolved?.value ?? external.value ?? prepared;
     }
   } else if (outcome === "allowed-once") {
     result = await options.approve({ operationId: prepared.operationId, approvalId: prepared.approvalId });
-    options.onApproved?.(prepared.operationId);
+    await options.onApproved?.(prepared.operationId);
   } else if (outcome !== "unavailable") {
     const resolved = await options.onDeclined?.({ operationId: prepared.operationId, approvalId: prepared.approvalId, outcome });
     if (resolved?.approved) {
       result = resolved.value ?? prepared;
       publicOutcome = "allowed-elsewhere";
-      options.onApproved?.(prepared.operationId);
+      await options.onApproved?.(prepared.operationId);
     } else result = resolved?.value ?? prepared;
   }
+  if (publicOutcome !== "allowed-once" && publicOutcome !== "allowed-elsewhere") await options.onUnapproved?.(prepared.operationId);
   const value2 = result && typeof result === "object" ? result : {};
   return { content: [{ type: "text", text: JSON.stringify({
     ...value2,
@@ -63406,7 +63752,7 @@ var nativeGenerationWaitRawName = "podplo_wait_generation";
 var nativeGenerationWaitTool = {
   name: nativeGenerationWaitToolName,
   rawName: nativeGenerationWaitRawName,
-  description: "Wait in the current conversation for one already-approved PodPlo generation operation and its Host-managed downloads and processing to settle. Completed processing must not be repeated. This never approves, submits, retries, or cancels generation.",
+  description: "Wait in the current conversation for one already-approved PodPlo generation operation and its Host-managed downloads and processing to settle. Temporary status-read failures are retried by the Host with backoff. Completed processing must not be repeated. This never approves, submits, retries, or cancels generation. If nativeWait is timeout, do not call this tool again or poll in the model; the Host retains the completion intent and sends at most one final follow-up when the task can be verified.",
   inputSchema: {
     type: "object",
     additionalProperties: false,
@@ -63428,22 +63774,121 @@ var delay = (ms, signal) => new Promise((resolve3, reject) => {
   }
   signal.addEventListener("abort", aborted3, { once: true });
 });
+var retryableCodes = /* @__PURE__ */ new Set([
+  "NETWORK_ERROR",
+  "NETWORK_UNAVAILABLE",
+  "CONNECTION_ERROR",
+  "CONNECTION_UNAVAILABLE",
+  "FETCH_FAILED",
+  "REQUEST_TIMEOUT",
+  "SERVICE_UNAVAILABLE",
+  "UPSTREAM_UNAVAILABLE",
+  "RATE_LIMITED",
+  "ECONNRESET",
+  "ECONNREFUSED",
+  "ETIMEDOUT",
+  "EAI_AGAIN",
+  "UND_ERR_CONNECT_TIMEOUT",
+  "UND_ERR_SOCKET"
+]);
+var failClosedCodes = /* @__PURE__ */ new Set([
+  "CANCELLED",
+  "SESSION_CHANGED",
+  "SESSION_REPLACED",
+  "AUTHORIZATION_INVALID",
+  "INVALID_TOKEN",
+  "INVALID_GRANT",
+  "UNAUTHENTICATED",
+  "INSUFFICIENT_SCOPE",
+  "SIGN_IN_REQUIRED",
+  "FORBIDDEN",
+  "OPERATION_NOT_FOUND",
+  "SUBSCRIPTION_REQUIRED",
+  "DESKTOP_NOT_AUTHORIZED",
+  "TOOL_GROUP_REQUIRED",
+  "TOOL_GROUP_EXPIRED"
+]);
+function errorCode(error101) {
+  if (!error101 || typeof error101 !== "object") return "";
+  const value2 = "code" in error101 ? String(error101.code ?? "") : "";
+  if (value2) return value2;
+  return "cause" in error101 ? errorCode(error101.cause) : "";
+}
+function errorStatus(error101) {
+  if (!error101 || typeof error101 !== "object") return 0;
+  const value2 = "status" in error101 ? Number(error101.status) : 0;
+  return Number.isInteger(value2) && value2 >= 100 && value2 <= 599 ? value2 : "cause" in error101 ? errorStatus(error101.cause) : 0;
+}
+function isRetryableGenerationReadError(error101) {
+  const code = errorCode(error101);
+  if (failClosedCodes.has(code)) return false;
+  const status = errorStatus(error101);
+  return retryableCodes.has(code) || code.startsWith("UND_ERR_") || status === 408 || status === 425 || status === 429 || status >= 500 && status <= 599;
+}
+function safeRetryCode(error101) {
+  const status = errorStatus(error101);
+  if (status === 429) return "RATE_LIMITED";
+  if (status === 408 || status === 425 || status >= 500 && status <= 599) return "SERVICE_UNAVAILABLE";
+  return "NETWORK_UNAVAILABLE";
+}
 async function waitForNativeGeneration(options) {
   if (!options.operationId || options.operationId.length > 180) throw new PodploPluginError("INVALID_OPERATION_ID", "\u751F\u56FE\u64CD\u4F5C\u7F16\u53F7\u65E0\u6548");
   const timeoutMs2 = options.timeoutMs ?? 20 * 6e4, pollMs = options.pollMs ?? 3e3;
+  const maximumRetryMs = Math.max(pollMs, options.maximumRetryMs ?? 3e4);
+  const retryable = options.retryable ?? isRetryableGenerationReadError;
   const now = options.now ?? Date.now, sleep = options.sleep ?? delay, started = now();
+  let last = { operationId: options.operationId }, retryCount = 0, verifiedSnapshot = false;
   for (; ; ) {
     if (options.signal.aborted) throw options.signal.reason ?? new DOMException("Aborted", "AbortError");
-    const operation = await options.read(options.operationId);
+    let operation;
+    try {
+      operation = await options.read(options.operationId);
+    } catch (error101) {
+      if (!retryable(error101)) throw error101;
+      retryCount++;
+      const elapsed2 = Math.max(0, now() - started);
+      if (elapsed2 >= timeoutMs2) return { ...last, nativeWait: {
+        outcome: "timeout",
+        elapsedMs: elapsed2,
+        ...verifiedSnapshot ? { backgroundContinues: true, verification: "background-tracked" } : { verification: "status-unavailable" },
+        retryCount,
+        lastErrorCode: safeRetryCode(error101)
+      } };
+      const retryMs = Math.min(maximumRetryMs, pollMs * 2 ** Math.min(10, retryCount - 1));
+      await sleep(Math.min(retryMs, timeoutMs2 - elapsed2), options.signal);
+      continue;
+    }
     if (!operation || typeof operation !== "object" || operation.operationId !== options.operationId || typeof operation.status !== "string")
       throw new PodploPluginError("INVALID_GENERATION_STATUS", "\u751F\u56FE\u72B6\u6001\u54CD\u5E94\u65E0\u6548");
     if (operation.status === "quoted" && typeof operation.approvedAt !== "string")
       throw new PodploPluginError("GENERATION_NOT_APPROVED", "\u751F\u56FE\u64CD\u4F5C\u5C1A\u672A\u83B7\u5F97\u53EF\u4FE1\u786E\u8BA4");
+    last = operation;
+    retryCount = 0;
+    verifiedSnapshot = true;
     const processing = operation.localProcessing;
-    if (operation.status === "cancelled" || operation.stoppedAt || !["quoted", "submitting", "submitted"].includes(operation.status) && processing?.pending !== true)
+    const items = Array.isArray(operation.items) ? operation.items : [];
+    const attention = generationStatusAttention(items);
+    if (operation.status === "cancelled" || operation.stoppedAt)
+      return { ...operation, nativeWait: { outcome: "terminal", elapsedMs: Math.max(0, now() - started) } };
+    if (attention.hasBlocked && !attention.hasRunnablePending) {
+      return { ...operation, nativeWait: {
+        outcome: "reconciliation",
+        elapsedMs: Math.max(0, now() - started),
+        manualStatusRefresh: true,
+        attentionKind: attention.attentionKind
+      } };
+    }
+    if (["submission_unknown", "partial_unknown"].includes(operation.status) && processing?.pending !== true)
+      return { ...operation, nativeWait: { outcome: "reconciliation", elapsedMs: Math.max(0, now() - started) } };
+    if (!["quoted", "submitting", "submitted"].includes(operation.status) && processing?.pending !== true)
       return { ...operation, nativeWait: { outcome: "terminal", elapsedMs: Math.max(0, now() - started) } };
     const elapsed = Math.max(0, now() - started);
-    if (elapsed >= timeoutMs2) return { ...operation, nativeWait: { outcome: "timeout", elapsedMs: elapsed } };
+    if (elapsed >= timeoutMs2) return { ...operation, nativeWait: {
+      outcome: "timeout",
+      elapsedMs: elapsed,
+      backgroundContinues: true,
+      verification: "background-tracked"
+    } };
     await sleep(Math.min(pollMs, timeoutMs2 - elapsed), options.signal);
   }
 }
@@ -63582,15 +64027,43 @@ var nativeSkillBatchToolName = "mcp__podplo__podplo_prepare_skill_batch";
 var nativeSkillBatchRawName = "podplo_prepare_skill_batch";
 var nativeSkillBatchTool = {
   name: nativeSkillBatchToolName,
-  description: "Prepare one complete PodPlo Skill batch from a user-specified local image folder. The Host\u2014not the model\u2014enumerates and safely reads direct image files, imports references, resolves current bindings and model capabilities, builds every item, quotes the whole batch once and requests the normal native approval. Pass model, ratio, quality, ecoMode or background only when they come from the user or the selected Skill/tool/preset; otherwise omit them and the Host applies the same authoritative defaults as the generation UI. Do not list the folder, read individual images, invent UUIDs, or call podplo_prepare_generation separately. If random scope is ambiguous, ask neutrally before calling.",
+  description: "Prepare one complete PodPlo Skill batch or ordered AI workflow from user-specified local image folders. For workflow, declare every stage now: a stage may read a folder or consume selected outputs of an earlier stage. The Host freezes random Skill assignments and all parameters, obtains authoritative price quotes for every AI item, requests one approval for the total ceiling, and then continues dependent stages without another model turn. Local processing outputs are not counted as AI outputs or credits. Pass model, ratio, quality, ecoMode or background only when they come from the user or the selected Skill/tool/preset; otherwise omit them and the Host applies the same authoritative defaults as the generation UI. Do not list folders, read individual images, invent IDs, or split a complete workflow into later calls.",
   inputSchema: {
     type: "object",
     additionalProperties: false,
     oneOf: [
-      { required: ["groups"], not: { anyOf: [{ required: ["folderPath"] }, { required: ["processingPlan"] }, { required: ["skillQuery"] }] } },
-      { required: ["folderPath", "skillQuery", "skillStrategy", "processingPlan"], not: { required: ["groups"] } }
+      { required: ["workflow"], not: { anyOf: [{ required: ["groups"] }, { required: ["folderPath"] }, { required: ["processingPlan"] }, { required: ["skillQuery"] }] } },
+      { required: ["groups"], not: { anyOf: [{ required: ["workflow"] }, { required: ["folderPath"] }, { required: ["processingPlan"] }, { required: ["skillQuery"] }] } },
+      { required: ["folderPath", "skillQuery", "skillStrategy", "processingPlan"], not: { anyOf: [{ required: ["groups"] }, { required: ["workflow"] }] } }
     ],
     properties: {
+      workflow: { type: "object", additionalProperties: false, required: ["stages"], properties: {
+        stages: { type: "array", minItems: 1, maxItems: 10, items: {
+          type: "object",
+          additionalProperties: false,
+          required: ["id", "source", "skillQuery", "skillStrategy", "processingPlan"],
+          properties: {
+            id: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
+            name: { type: "string", minLength: 1, maxLength: 80 },
+            source: { type: "object", additionalProperties: false, oneOf: [
+              { required: ["folderPath"], not: { required: ["stageId"] } },
+              { required: ["stageId"], not: { required: ["folderPath"] } }
+            ], properties: {
+              folderPath: { type: "string", minLength: 1, maxLength: 4096 },
+              stageId: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
+              imageIndexes: { type: "array", minItems: 1, maxItems: 100, uniqueItems: true, items: { type: "integer", minimum: 0, maximum: 99 } }
+            } },
+            skillQuery: { type: "string", minLength: 1, maxLength: 160 },
+            skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
+            skillFolder: { type: "string", minLength: 1, maxLength: 80 },
+            skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] },
+            expectedImageCount: { type: "integer", minimum: 1, maximum: 100 },
+            processingPresetPath: { type: "string" },
+            processingPlan: processingPlanSchema,
+            instructions: { type: "string", maxLength: 3e3 }
+          }
+        } }
+      } },
       groups: { type: "array", minItems: 1, maxItems: 10, description: "All requested folder/Skill/preset groups in one task and one quote. Each group keeps its own processing preset.", items: {
         type: "object",
         additionalProperties: false,
@@ -63600,7 +64073,7 @@ var nativeSkillBatchTool = {
           skillQuery: { type: "string" },
           skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
           skillFolder: { type: "string", minLength: 1, maxLength: 80 },
-          skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-shared"] },
+          skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] },
           expectedImageCount: { type: "integer", minimum: 1, maximum: 100 },
           processingPresetPath: { type: "string" },
           processingPlan: processingPlanSchema,
@@ -63613,7 +64086,7 @@ var nativeSkillBatchTool = {
       skillSource: { type: "string", enum: ["personal", "public", "favorite", "auto"], description: "Use personal for \u6211\u7684 Skill and favorite for \u6211\u7684\u6536\u85CF or a favorite remark/folder. Omit or use auto only if the source was not specified." },
       skillFolder: { type: "string", minLength: 1, maxLength: 80, description: "Exact favorite folder name; use with skillSource=favorite." },
       processingPresetPath: { type: "string", minLength: 1, maxLength: 4096, description: "User-supplied toolbox preset JSON path. Pass processingPlan: []; the Host reads and executes all enabled settings including mirrorJoin. Do not read, translate or recreate this preset yourself." },
-      skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-shared"], description: "single requires one executable Skill. Random strategies require a Skill family. random-per-image samples without replacement and fails if there are too few members." },
+      skillStrategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"], description: "single requires one executable Skill. Random strategies require a Skill family. random-per-image samples without replacement; random-per-image-reuse independently samples each image and permits reuse." },
       model: { type: "string", minLength: 1, maxLength: 160, description: "Exact current model name or ID from the user or selected Skill/tool/preset. Otherwise omit for the Host UI default." },
       ratio: { type: "string", minLength: 3, maxLength: 8, description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the current model/UI default." },
       quality: { type: "string", minLength: 1, maxLength: 32, description: "Value from the user or selected Skill/tool/preset. Otherwise omit for the current model default." },
@@ -63634,11 +64107,18 @@ var text3 = (value2, name2, max) => {
   return value2.trim();
 };
 function parseInput(value2) {
-  const allowed = /* @__PURE__ */ new Set(["folderPath", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
+  const allowed = /* @__PURE__ */ new Set(["folderPath", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
   if (Object.keys(value2).some((key) => !allowed.has(key))) fail5("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
   const count2 = value2.expectedImageCount;
   if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail5("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
-  if (!["single", "random-per-image", "random-shared"].includes(String(value2.skillStrategy))) fail5("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
+  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail5("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
+  let imageIndexes;
+  if (value2.imageIndexes !== void 0) {
+    const indexes = value2.imageIndexes;
+    if (!Array.isArray(indexes) || !indexes.length || indexes.length > 100 || new Set(indexes).size !== indexes.length || indexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99))
+      fail5("INVALID_ARGUMENT", "\u56FE\u7247\u7D22\u5F15\u8303\u56F4\u65E0\u6548\u3002");
+    imageIndexes = indexes.map(Number);
+  }
   if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail5("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
   if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail5("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
   if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail5("INVALID_ARGUMENT", "skillSource \u65E0\u6548\u3002");
@@ -63649,6 +64129,7 @@ function parseInput(value2) {
     fail5("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
   return {
     folderPath: text3(value2.folderPath, "folderPath", 4096),
+    ...imageIndexes ? { imageIndexes } : {},
     ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
     skillQuery: text3(value2.skillQuery, "skillQuery", 160),
     skillStrategy: value2.skillStrategy,
@@ -63847,6 +64328,7 @@ function shuffledWithoutReplacement(values, count2, choose) {
   return selected;
 }
 async function prepareNativeSkillBatch(raw, deps) {
+  if (raw.workflow !== void 0) return prepareWorkflowBatch(raw, deps);
   if (raw.groups !== void 0) return prepareGroupedBatch(raw, deps);
   const input = parseInput(raw);
   if (!deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
@@ -63856,7 +64338,8 @@ async function prepareNativeSkillBatch(raw, deps) {
   const personal = await personalMatch(input, deps);
   if (input.skillSource === "personal" && !personal) fail5("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
   if (input.skillSource === "favorite" && !deps.favoriteSkills) fail5("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
-  const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: input.skillStrategy }, deps.favoriteSkills) : void 0;
+  const favoriteStrategy = input.skillStrategy === "random-per-image-reuse" ? "random-per-image" : input.skillStrategy;
+  const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: favoriteStrategy }, deps.favoriteSkills) : void 0;
   if (input.skillSource !== "personal") await deps.online.refreshPublicSkills();
   await assertOwner(deps, ownerId, namespace);
   const catalog = deps.online.snapshot().publicDirectory?.catalog;
@@ -63906,10 +64389,25 @@ async function prepareNativeSkillBatch(raw, deps) {
     parameters.background === "transparent"
   );
   if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail5("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
-  const images = await readTrustedImageFolder({ folderPath: input.folderPath, cwd: deps.cwd, expectedImageCount: input.expectedImageCount, signal: deps.signal });
+  const allImages = await readTrustedImageFolder({
+    folderPath: input.folderPath,
+    cwd: deps.cwd,
+    expectedImageCount: input.imageIndexes ? void 0 : input.expectedImageCount,
+    signal: deps.signal
+  });
+  if (input.imageIndexes?.some((index) => index >= allImages.length))
+    fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9009\u62E9\u4E86\u6587\u4EF6\u5939\u4E2D\u4E0D\u5B58\u5728\u7684\u56FE\u7247\u3002");
+  const images = input.imageIndexes ? input.imageIndexes.map((index) => allImages[index]) : allImages;
+  if (input.expectedImageCount !== void 0 && images.length !== input.expectedImageCount)
+    fail5("LOCAL_IMAGE_COUNT_MISMATCH", `\u5DE5\u4F5C\u6D41\u9009\u4E2D ${images.length} \u5F20\u56FE\u7247\uFF0C\u4E0E\u58F0\u660E\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
   const choose = deps.randomIndex ?? randomInt;
   let assignments;
   if (input.skillStrategy === "random-per-image") assignments = shuffledWithoutReplacement(members, images.length, choose);
+  else if (input.skillStrategy === "random-per-image-reuse") assignments = images.map(() => {
+    const index = choose(members.length);
+    if (!Number.isInteger(index) || index < 0 || index >= members.length) throw new Error("Invalid random index");
+    return members[index];
+  });
   else if (input.skillStrategy === "random-shared") {
     const selected = members[choose(members.length)];
     assignments = Array.from({ length: images.length }, () => selected);
@@ -63949,6 +64447,112 @@ async function prepareNativeSkillBatch(raw, deps) {
     taskName: `${title} \xB7 ${items.length} \u5F20`,
     expectedOutputCount: items.length,
     processingPlan,
+    items
+  };
+}
+async function prepareWorkflowBatch(raw, deps) {
+  if (Object.keys(raw).some((key) => !["workflow", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
+    fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u6307\u5B9A\u9636\u6BB5\u53CA\u5171\u4EAB\u751F\u56FE\u53C2\u6570\u3002");
+  const workflow = record6(raw.workflow), rawStages = workflow.stages;
+  const { workflow: _workflow, ...shared } = raw;
+  if (Object.keys(workflow).some((key) => key !== "stages") || !Array.isArray(rawStages) || !rawStages.length || rawStages.length > 10)
+    fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u65E0\u6548\u3002");
+  const stageIds = /* @__PURE__ */ new Set();
+  const parsed = rawStages.map((value2, index) => {
+    const stage = record6(value2), id2 = text3(stage.id, `workflow.stages[${index}].id`, 40);
+    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    stageIds.add(id2);
+    if (Object.keys(stage).some((key) => !["id", "name", "source", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
+      fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    const name2 = stage.name === void 0 ? id2 : text3(stage.name, `workflow.stages[${index}].name`, 80);
+    const source = record6(stage.source);
+    if (Object.keys(source).some((key) => !["folderPath", "stageId", "imageIndexes"].includes(key))) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u6765\u6E90\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    const folderPath = source.folderPath === void 0 ? void 0 : text3(source.folderPath, "folderPath", 4096);
+    const sourceStageId = source.stageId === void 0 ? void 0 : text3(source.stageId, "stageId", 40);
+    if (!!folderPath === !!sourceStageId) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+    let imageIndexes;
+    if (source.imageIndexes !== void 0) {
+      if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
+      imageIndexes = source.imageIndexes;
+    }
+    const { id: _id, name: _name, source: _source, ...generationFields } = stage;
+    const generation = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : { folderPath: "__deferred__" } });
+    return { id: id2, name: name2, folderPath, sourceStageId, imageIndexes, generation };
+  });
+  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
+  for (const stage of parsed) {
+    if (stage.folderPath && !deps.isFolderAuthorized(stage.folderPath))
+      fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u5DE5\u4F5C\u6D41\u4E2D\u7684\u6BCF\u4E2A\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+    await presetProcessing(stage.generation, deps);
+    await assertOwner(deps, ownerId, namespace);
+  }
+  const referencedStages = new Set(parsed.flatMap((stage) => stage.sourceStageId ? [stage.sourceStageId] : []));
+  const items = [], steps = [], stages2 = /* @__PURE__ */ new Map();
+  const names = [];
+  for (const [stageIndex, stage] of parsed.entries()) {
+    let rootFolderPath, selectedSeedIndexes, parent;
+    let selectedParentPositions = [];
+    let preparedChild;
+    if (stage.folderPath) {
+      rootFolderPath = stage.folderPath;
+      preparedChild = await prepareNativeSkillBatch({
+        ...shared,
+        ...stage.generation,
+        folderPath: rootFolderPath,
+        ...stage.imageIndexes ? { imageIndexes: stage.imageIndexes, expectedImageCount: stage.generation.expectedImageCount ?? stage.imageIndexes.length } : {}
+      }, deps);
+      const childItems = preparedChild.items;
+      selectedSeedIndexes = stage.imageIndexes ?? childItems.map((_, index) => index);
+    } else {
+      const resolvedParent = stages2.get(stage.sourceStageId) ?? fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
+      parent = resolvedParent;
+      rootFolderPath = resolvedParent.rootFolderPath;
+      selectedParentPositions = stage.imageIndexes ?? resolvedParent.itemIndexes.map((_, index) => index);
+      if (selectedParentPositions.some((index) => index >= resolvedParent.itemIndexes.length)) fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
+      selectedSeedIndexes = selectedParentPositions.map((index) => resolvedParent.seedIndexes[index]);
+    }
+    const child = preparedChild ?? await prepareNativeSkillBatch({
+      ...shared,
+      ...stage.generation,
+      folderPath: rootFolderPath,
+      imageIndexes: selectedSeedIndexes,
+      expectedImageCount: stage.generation.expectedImageCount ?? selectedSeedIndexes.length,
+      processingPlan: stage.generation.processingPlan
+    }, deps);
+    await assertOwner(deps, ownerId, namespace);
+    const allChildItems = child.items;
+    if (allChildItems.length !== selectedSeedIndexes.length) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u7684\u5B9A\u4EF7\u53C2\u8003\u8303\u56F4\u53D1\u751F\u53D8\u5316\u3002");
+    const selectedItems = allChildItems.map((item) => structuredClone(item));
+    const offset = items.length;
+    if (offset + selectedItems.length > 100) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u5DE5\u4F5C\u6D41\u8D85\u8FC7 100 \u4E2A AI \u751F\u6210\u9879\uFF0C\u8BF7\u5206\u6279\u3002");
+    for (const [position, item] of selectedItems.entries()) {
+      if (parent) item.dependsOn = { itemIndex: parent.itemIndexes[selectedParentPositions[position]], outputIndex: 0, referenceIndex: 0 };
+      item.stage = { id: stage.id, label: stage.name, order: stageIndex };
+      items.push(item);
+    }
+    const scope = selectedItems.map((_, index) => offset + index);
+    const childSteps = child.processingPlan;
+    if (referencedStages.has(stage.id) && childSteps.length) fail5("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u53F6\u5B50\u9636\u6BB5\u3002");
+    for (const step of childSteps) steps.push({
+      ...step,
+      id: `w${stageIndex}-${step.id}`,
+      ...step.sourceStepId ? { sourceStepId: `w${stageIndex}-${step.sourceStepId}` } : { generationItemIndexes: scope }
+    });
+    stages2.set(stage.id, {
+      id: stage.id,
+      rootFolderPath,
+      seedIndexes: selectedSeedIndexes,
+      itemIndexes: scope
+    });
+    names.push(String(child.taskName));
+  }
+  await assertOwner(deps, ownerId, namespace);
+  return {
+    intentId: (deps.createId ?? randomUUID15)(),
+    planVersion: 1,
+    taskName: names.join(" \u2192 ").slice(0, 100),
+    expectedOutputCount: items.length,
+    processingPlan: parseProcessingPlan(steps),
     items
   };
 }
@@ -64310,8 +64914,283 @@ function startPolling(run, options = {}) {
   return loop;
 }
 
+// plugins/podplo-dsh/src/generation-completion-tracker.ts
+import { randomUUID as randomUUID16 } from "node:crypto";
+import { join as join13 } from "node:path";
+var validText = (value2, maximum = 180) => typeof value2 === "string" && value2.length > 0 && value2.length <= maximum && !/[\u0000\r\n]/u.test(value2);
+var validDate = (value2) => typeof value2 === "string" && Number.isFinite(Date.parse(value2));
+var validStatus = (value2) => ["reserved", "pending", "notifying", "paused", "delivered", "stopped", "invalidated"].includes(String(value2));
+function validateState3(value2) {
+  const state = value2;
+  if (state?.schemaVersion !== 1 || !Array.isArray(state.intents)) throw new Error("PodPlo \u5B8C\u6210\u901A\u77E5\u8BB0\u5F55\u683C\u5F0F\u65E0\u6548");
+  const seen = /* @__PURE__ */ new Set();
+  for (const row of state.intents) {
+    if (!row || !validText(row.ownerId) || !validText(row.sessionId) || !validText(row.operationId) || !validText(row.followupId) || row.attentionFollowupId !== void 0 && !validText(row.attentionFollowupId) || row.attentionStatus !== void 0 && (!["notifying", "delivered"].includes(row.attentionStatus) || !row.attentionFollowupId) || !validStatus(row.status) || !validDate(row.createdAt) || !validDate(row.updatedAt)) {
+      throw new Error("PodPlo \u5B8C\u6210\u901A\u77E5\u8BB0\u5F55\u683C\u5F0F\u65E0\u6548");
+    }
+    const key = intentKey(row.ownerId, row.sessionId, row.operationId);
+    if (seen.has(key)) throw new Error("PodPlo \u5B8C\u6210\u901A\u77E5\u8BB0\u5F55\u91CD\u590D");
+    seen.add(key);
+  }
+  return state;
+}
+function intentKey(ownerId, sessionId, operationId2) {
+  return JSON.stringify([ownerId, sessionId, operationId2]);
+}
+var GenerationCompletionTracker = class {
+  store;
+  now;
+  createId;
+  constructor(directory, options = {}) {
+    this.store = new AtomicStore(join13(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
+    this.now = options.now ?? (() => /* @__PURE__ */ new Date());
+    this.createId = options.createId ?? randomUUID16;
+  }
+  async init() {
+    await this.store.load();
+  }
+  async close() {
+    await this.store.flush();
+  }
+  intents(ownerId, sessionId) {
+    return this.store.snapshot().intents.filter((row) => row.ownerId === ownerId && (!sessionId || row.sessionId === sessionId));
+  }
+  pending(ownerId) {
+    return this.intents(ownerId).filter((row) => ["reserved", "pending", "notifying", "paused"].includes(row.status));
+  }
+  get(ownerId, sessionId, operationId2) {
+    return this.store.snapshot().intents.find((row) => row.ownerId === ownerId && row.sessionId === sessionId && row.operationId === operationId2);
+  }
+  reserve(ownerId, sessionId, operationId2) {
+    if (!validText(ownerId) || !validText(sessionId) || !validText(operationId2)) throw new Error("PodPlo \u5B8C\u6210\u901A\u77E5\u7ED1\u5B9A\u65E0\u6548");
+    return this.store.transaction((state) => {
+      const existing = state.intents.find((row2) => row2.ownerId === ownerId && row2.sessionId === sessionId && row2.operationId === operationId2);
+      if (existing) {
+        if (existing.status === "invalidated") {
+          existing.status = "reserved";
+          existing.updatedAt = this.now().toISOString();
+        }
+        return existing;
+      }
+      const timestamp = this.now().toISOString();
+      const row = {
+        ownerId,
+        sessionId,
+        operationId: operationId2,
+        followupId: this.createId(),
+        status: "reserved",
+        createdAt: timestamp,
+        updatedAt: timestamp
+      };
+      state.intents.push(row);
+      if (state.intents.length > 2e3) {
+        const terminal = state.intents.filter((item) => !["reserved", "pending", "notifying", "paused"].includes(item.status)).sort((left, right) => Date.parse(left.updatedAt) - Date.parse(right.updatedAt));
+        const remove = new Set(terminal.slice(0, state.intents.length - 2e3).map((item) => intentKey(item.ownerId, item.sessionId, item.operationId)));
+        state.intents = state.intents.filter((item) => !remove.has(intentKey(item.ownerId, item.sessionId, item.operationId)));
+      }
+      return row;
+    });
+  }
+  transition(ownerId, sessionId, operationId2, status) {
+    return this.store.transaction((state) => {
+      const row = state.intents.find((item) => item.ownerId === ownerId && item.sessionId === sessionId && item.operationId === operationId2);
+      if (!row) return void 0;
+      if (["delivered", "stopped", "invalidated"].includes(row.status)) return row;
+      row.status = status;
+      row.updatedAt = this.now().toISOString();
+      return row;
+    });
+  }
+  claim(ownerId, sessionId, operationId2) {
+    return this.transition(ownerId, sessionId, operationId2, "notifying");
+  }
+  activate(ownerId, sessionId, operationId2) {
+    return this.store.transaction((state) => {
+      const row = state.intents.find((item) => item.ownerId === ownerId && item.sessionId === sessionId && item.operationId === operationId2);
+      if (!row || row.status !== "reserved") return row;
+      row.status = "pending";
+      row.updatedAt = this.now().toISOString();
+      return row;
+    });
+  }
+  async pause(ownerId, sessionId, operationId2, observed = false) {
+    return this.store.transaction((state) => {
+      const row = state.intents.find((item) => item.ownerId === ownerId && item.sessionId === sessionId && item.operationId === operationId2);
+      if (!row || ["delivered", "stopped", "invalidated"].includes(row.status)) return row;
+      row.status = "paused";
+      if (observed) {
+        row.attentionFollowupId ??= this.createId();
+        row.attentionStatus = "delivered";
+      }
+      row.updatedAt = this.now().toISOString();
+      return row;
+    });
+  }
+  resume(ownerId, sessionId, operationId2) {
+    return this.store.transaction((state) => {
+      const row = state.intents.find((item) => item.ownerId === ownerId && item.sessionId === sessionId && item.operationId === operationId2);
+      if (row?.status === "paused") {
+        row.status = "pending";
+        row.updatedAt = this.now().toISOString();
+      }
+      return row;
+    });
+  }
+  claimAttention(ownerId, sessionId, operationId2) {
+    return this.store.transaction((state) => {
+      const row = state.intents.find((item) => item.ownerId === ownerId && item.sessionId === sessionId && item.operationId === operationId2);
+      if (!row || row.status !== "paused" || row.attentionStatus === "delivered") return void 0;
+      row.attentionFollowupId ??= this.createId();
+      row.attentionStatus = "notifying";
+      row.updatedAt = this.now().toISOString();
+      return row;
+    });
+  }
+  attentionDelivered(ownerId, sessionId, operationId2) {
+    return this.store.transaction((state) => {
+      const row = state.intents.find((item) => item.ownerId === ownerId && item.sessionId === sessionId && item.operationId === operationId2);
+      if (row?.status === "paused" && row.attentionFollowupId) {
+        row.attentionStatus = "delivered";
+        row.updatedAt = this.now().toISOString();
+      }
+      return row;
+    });
+  }
+  delivered(ownerId, sessionId, operationId2) {
+    return this.transition(ownerId, sessionId, operationId2, "delivered");
+  }
+  invalidated(ownerId, sessionId, operationId2) {
+    return this.transition(ownerId, sessionId, operationId2, "invalidated");
+  }
+  stopped(ownerId, sessionId, operationId2) {
+    return this.transition(ownerId, sessionId, operationId2, "stopped");
+  }
+  stopSession(ownerId, sessionId) {
+    return this.store.transaction((state) => {
+      const timestamp = this.now().toISOString();
+      const stopped = [];
+      for (const row of state.intents) if (row.ownerId === ownerId && row.sessionId === sessionId && ["reserved", "pending", "notifying", "paused"].includes(row.status)) {
+        row.status = "stopped";
+        row.updatedAt = timestamp;
+        stopped.push(row.operationId);
+      }
+      return stopped;
+    });
+  }
+};
+var completionPrefix = "PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ";
+var projectionStateSchema = external_exports2.object({ ids: external_exports2.array(external_exports2.string().min(1).max(180)).max(2e3) }).strict();
+var completionMessages = (event) => event?.type === "user/message" ? [event.data] : event?.type === "agent/inbox/spliced" && Array.isArray(event.data?.inserted) ? event.data.inserted : [];
+var isCompletionMessage = (message) => Array.isArray(message?.content) && message.content.some((block) => block?.type === "text" && typeof block.text === "string" && block.text.startsWith(completionPrefix));
+var generationCompletionProjectionDefinition = {
+  key: "podploGenerationCompletionMessages",
+  stateVersion: 1,
+  stateSchema: projectionStateSchema,
+  init: () => ({ ids: [] }),
+  apply(state, event) {
+    const additions = completionMessages(event).filter(isCompletionMessage).map((message) => message.id).filter((id2) => validText(id2) && !state.ids.includes(id2));
+    if (!additions.length) return state;
+    return { ids: [...state.ids, ...additions].slice(-2e3) };
+  }
+};
+async function deliverGenerationCompletion(options) {
+  const current = options.tracker.get(options.ownerId, options.sessionId, options.operationId);
+  if (!current) return "missing";
+  const attention = options.kind === "attention";
+  if (attention ? current.status !== "paused" || current.attentionStatus === "delivered" : !["pending", "notifying"].includes(current.status)) return "closed";
+  const claimed = attention ? await options.tracker.claimAttention(options.ownerId, options.sessionId, options.operationId) : await options.tracker.claim(options.ownerId, options.sessionId, options.operationId);
+  if (!claimed || (attention ? claimed.status !== "paused" : !["pending", "notifying"].includes(claimed.status))) return "closed";
+  const followupId = attention ? claimed.attentionFollowupId : claimed.followupId;
+  const finish = () => attention ? options.tracker.attentionDelivered(options.ownerId, options.sessionId, options.operationId) : options.tracker.delivered(options.ownerId, options.sessionId, options.operationId);
+  if (options.alreadyDurable(followupId)) {
+    await finish();
+    return "already-durable";
+  }
+  options.send(followupId);
+  await finish();
+  return "sent";
+}
+async function executeWithCompletionReservation(options) {
+  const binding = await options.reserve();
+  try {
+    const value2 = await options.execute(binding);
+    await options.accepted(value2, binding);
+    return value2;
+  } catch (error101) {
+    await options.uncertain?.(error101, binding);
+    throw error101;
+  }
+}
+async function settleNativeGenerationWait(tracker, binding, result) {
+  if (result.nativeWait.outcome === "timeout") return "timeout";
+  const { ownerId, sessionId, operationId: operationId2 } = binding;
+  if (result.status === "cancelled" || result.stoppedAt || result.localProcessing?.status === "stopped") {
+    await tracker.stopped(ownerId, sessionId, operationId2);
+    return "terminal";
+  }
+  if (result.nativeWait.outcome === "reconciliation") {
+    await tracker.pause(ownerId, sessionId, operationId2, true);
+    return "paused";
+  }
+  await tracker.delivered(ownerId, sessionId, operationId2);
+  return "terminal";
+}
+
+// plugins/podplo-dsh/src/generation-progress-refresh.ts
+var GenerationProgressRefresh = class {
+  constructor(options) {
+    this.options = options;
+  }
+  options;
+  failures = /* @__PURE__ */ new Map();
+  archiveFailure;
+  reset() {
+    this.failures.clear();
+    this.archiveFailure = void 0;
+  }
+  nextFailure(previous, now) {
+    const failures = (previous?.failures ?? 0) + 1;
+    const base2 = Math.max(1, this.options.baseRetryMs ?? 3e3);
+    const maximum = Math.max(base2, this.options.maximumRetryMs ?? 6e4);
+    return { failures, retryAt: now + Math.min(maximum, base2 * 2 ** Math.min(10, failures - 1)) };
+  }
+  async run(operationIds) {
+    const now = this.options.now?.() ?? Date.now();
+    const active = new Set(operationIds);
+    for (const operationId2 of this.failures.keys()) if (!active.has(operationId2)) this.failures.delete(operationId2);
+    const refreshed = [], skipped = [], failed = [];
+    for (const operationId2 of operationIds) {
+      const previous = this.failures.get(operationId2);
+      if (previous && previous.retryAt > now) {
+        skipped.push(operationId2);
+        continue;
+      }
+      try {
+        await this.options.refresh(operationId2);
+        this.failures.delete(operationId2);
+        refreshed.push(operationId2);
+      } catch {
+        this.failures.set(operationId2, this.nextFailure(previous, now));
+        failed.push(operationId2);
+        this.options.warn?.("operation");
+      }
+    }
+    let archiveFailed = false, archiveSkipped = false;
+    if (this.archiveFailure && this.archiveFailure.retryAt > now) archiveSkipped = true;
+    else try {
+      await this.options.syncArchives();
+      this.archiveFailure = void 0;
+    } catch {
+      archiveFailed = true;
+      this.archiveFailure = this.nextFailure(this.archiveFailure, now);
+      this.options.warn?.("archives");
+    }
+    return { refreshed, skipped, failed, archiveFailed, archiveSkipped };
+  }
+};
+
 // plugins/podplo-dsh/src/index.ts
-var inject = ["connection", "credentials", "agents", "sessions", "tools", "attachments", "agentPresets", "approval", "pluginManager"];
+var inject = ["connection", "credentials", "agents", "sessions", "sessionProjections", "tools", "attachments", "agentPresets", "approval", "pluginManager"];
 var Config = Schema.object({
   directory: Schema.string().description("\u53EF\u9009\u72EC\u7ACB\u6570\u636E\u76EE\u5F55\uFF1B\u9ED8\u8BA4\u4F7F\u7528 DSH home \u4E2D\u7684 PodPlo \u4E13\u7528\u76EE\u5F55\u3002"),
   jevBrokerUrl: Schema.string().description("\u53EF\u9009\uFF1B\u4EC5 PodPlo Agent \xB7 Jev \u6D4B\u8BD5 preset \u4F7F\u7528\u7684\u672C\u673A loopback broker URL\u3002"),
@@ -64458,6 +65337,11 @@ async function apply(ctx, config3 = {}) {
     await service.close();
     throw error101;
   });
+  const completionTracker = new GenerationCompletionTracker(`${directory}/generation-completions-v1`);
+  await completionTracker.init().catch(async (error101) => {
+    await service.close();
+    throw error101;
+  });
   const fetcher = fixtureOrigin ? (input, init) => {
     const url3 = new URL(input instanceof Request ? input.url : input.toString());
     if (!/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url3.hostname)) throw new Error("Unexpected fixture image host");
@@ -64515,6 +65399,12 @@ async function apply(ctx, config3 = {}) {
       const result = await archives.transport.callTool(name2, args, sessionId);
       if (name2 !== "podplo_generation_status" || !sessionId) return result;
       const operation = result;
+      const hasPendingCloudItem = operation.items?.some((item) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? ""))) === true;
+      const attention = generationStatusAttention(operation.items);
+      if (operation.operationId && attention.hasBlocked && !attention.hasRunnablePending)
+        return { ...operation, localProcessing: { pending: false, status: "attention" } };
+      if (operation.operationId && ["submission_unknown", "partial_unknown"].includes(String(operation.status ?? "")) && !hasPendingCloudItem)
+        return { ...operation, localProcessing: { pending: false, status: "attention" } };
       return operation?.operationId ? {
         ...operation,
         localProcessing: await archives.operationProgress(operation.operationId, sessionId)
@@ -64549,6 +65439,12 @@ async function apply(ctx, config3 = {}) {
     await Promise.allSettled([mcp.close(), outputs.close(), toolkit.close(), service.close()]);
     throw error101;
   });
+  const completionProjection = await ctx.sessionProjections.register(generationCompletionProjectionDefinition).catch(async (error101) => {
+    await unregisterPresets();
+    await archives.close();
+    await Promise.allSettled([mcp.close(), outputs.close(), toolkit.close(), completionTracker.close(), service.close()]);
+    throw error101;
+  });
   const jevActiveSessionIds = /* @__PURE__ */ new Set();
   const observedPodploSessionIds = /* @__PURE__ */ new Set();
   const jevRoutingStates = /* @__PURE__ */ new Map();
@@ -64563,81 +65459,187 @@ async function apply(ctx, config3 = {}) {
   let closed = false;
   const nativeGenerationWaits = /* @__PURE__ */ new Set();
   const nativeGenerationWaitReservations = /* @__PURE__ */ new Map();
+  const completionApprovalReservations = /* @__PURE__ */ new Map();
   const chatGenerationResumes = /* @__PURE__ */ new Map();
   const chatGenerationNotified = /* @__PURE__ */ new Set();
-  const checkChatGeneration = async (operationId2) => {
-    const pending = chatGenerationResumes.get(operationId2);
-    if (!pending || pending.checking || closed || nativeGenerationWaits.has(operationId2)) return;
+  const completionTrackingWrites = /* @__PURE__ */ new Map();
+  const connectedOwnerId = () => {
+    const account = service.snapshot().account;
+    return account.status === "connected" && typeof account.userId === "string" ? account.userId : void 0;
+  };
+  const reserveCompletionIntent = (ownerId, sessionId, operationId2) => {
+    const key = intentKey(ownerId, sessionId, operationId2);
+    const existing = completionTrackingWrites.get(key);
+    if (existing) return existing;
+    const write = completionTracker.reserve(ownerId, sessionId, operationId2).then(() => void 0).finally(() => {
+      if (completionTrackingWrites.get(key) === write) completionTrackingWrites.delete(key);
+    });
+    completionTrackingWrites.set(key, write);
+    return write;
+  };
+  const activateCompletionIntent = (ownerId, sessionId, operationId2, reconcileReserved = false) => {
+    const key = intentKey(ownerId, sessionId, operationId2);
+    const intent = completionTracker.get(ownerId, sessionId, operationId2);
+    if (intent && !["pending", "notifying"].includes(intent.status) && !(reconcileReserved && ["reserved", "paused"].includes(intent.status))) return key;
+    if (!chatGenerationNotified.has(key) && !chatGenerationResumes.has(key))
+      chatGenerationResumes.set(key, { ownerId, sessionId, operationId: operationId2, checking: false });
+    return key;
+  };
+  const checkChatGeneration = async (key) => {
+    const pending = chatGenerationResumes.get(key);
+    if (!pending || pending.checking || closed || nativeGenerationWaits.has(key) || connectedOwnerId() !== pending.ownerId) return;
     pending.checking = true;
     try {
-      const result = await service.dispatch("generation.status", { operationId: operationId2 }, { source: "agent", sessionId: pending.sessionId });
-      if (closed || chatGenerationResumes.get(operationId2) !== pending) return;
+      const result = await service.dispatch("generation.status", { operationId: pending.operationId }, { source: "agent", sessionId: pending.sessionId });
+      if (closed || chatGenerationResumes.get(key) !== pending || connectedOwnerId() !== pending.ownerId) return;
       const operation = result?.data;
-      if (!operation || ["quoted", "submitting", "submitted"].includes(operation.status)) return;
+      if (!operation) return;
+      const intent = completionTracker.get(pending.ownerId, pending.sessionId, pending.operationId);
+      if (intent?.status === "reserved") {
+        if (operation.status === "quoted" && typeof operation.approvedAt !== "string") {
+          await completionTracker.invalidated(pending.ownerId, pending.sessionId, pending.operationId);
+          chatGenerationResumes.delete(key);
+          return;
+        }
+        await completionTracker.activate(pending.ownerId, pending.sessionId, pending.operationId);
+      }
       if (operation.stoppedAt || operation.status === "cancelled") {
-        chatGenerationResumes.delete(operationId2);
-        chatGenerationNotified.add(operationId2);
+        await completionTracker.stopped(pending.ownerId, pending.sessionId, pending.operationId);
+        chatGenerationResumes.delete(key);
+        chatGenerationNotified.add(key);
         return;
       }
-      const localProcessing = await archives.operationProgress(operationId2, pending.sessionId);
-      if (closed || chatGenerationResumes.get(operationId2) !== pending || nativeGenerationWaits.has(operationId2) || localProcessing.pending) return;
+      const needsManualStatusRefresh = generationIsPaused(operation);
+      if (!needsManualStatusRefresh && intent?.status === "paused")
+        await completionTracker.resume(pending.ownerId, pending.sessionId, pending.operationId);
+      if (["quoted", "submitting", "submitted"].includes(operation.status) && !needsManualStatusRefresh) return;
+      const hasPendingCloudItem = Array.isArray(operation.items) && operation.items.some((item) => ["quoted", "submitting", "submitted"].includes(String(item?.status ?? "")));
+      const localProcessing = needsManualStatusRefresh ? { pending: false, status: "attention" } : ["submission_unknown", "partial_unknown"].includes(String(operation.status ?? "")) && !hasPendingCloudItem ? { pending: false, status: "attention" } : await archives.operationProgress(pending.operationId, pending.sessionId);
+      if (closed || chatGenerationResumes.get(key) !== pending || nativeGenerationWaits.has(key) || connectedOwnerId() !== pending.ownerId || localProcessing.pending) return;
       if (localProcessing.status === "stopped") {
-        chatGenerationResumes.delete(operationId2);
-        chatGenerationNotified.add(operationId2);
+        await completionTracker.stopped(pending.ownerId, pending.sessionId, pending.operationId);
+        chatGenerationResumes.delete(key);
+        chatGenerationNotified.add(key);
         return;
       }
       const agent = ctx.agents.get(pending.sessionId);
       if (!agent) return;
-      agent.followup({ id: randomUUID16(), role: "user", source: { kind: "user" }, content: [{
-        type: "text",
-        text: podploGenerationCompletionFollowup({
-          operationId: operationId2,
-          generationStatus: operation.status,
-          localProcessingStatus: localProcessing.status
-        })
-      }] });
-      chatGenerationResumes.delete(operationId2);
-      chatGenerationNotified.add(operationId2);
+      if (needsManualStatusRefresh) {
+        if (intent?.status !== "paused") await completionTracker.pause(pending.ownerId, pending.sessionId, pending.operationId);
+      }
+      const delivery = await deliverGenerationCompletion({
+        tracker: completionTracker,
+        ownerId: pending.ownerId,
+        sessionId: pending.sessionId,
+        operationId: pending.operationId,
+        kind: needsManualStatusRefresh ? "attention" : "final",
+        alreadyDurable: (followupId) => completionProjection.stateOf(agent.session).ids.includes(followupId),
+        send: (followupId) => {
+          if (closed || connectedOwnerId() !== pending.ownerId || ctx.agents.get(pending.sessionId) !== agent)
+            throw new PodploPluginError("NOTIFICATION_SCOPE_CHANGED", "\u5B8C\u6210\u901A\u77E5\u4F1A\u8BDD\u5DF2\u53D8\u5316");
+          agent.followup({ id: followupId, role: "user", source: { kind: "user" }, content: [{
+            type: "text",
+            text: podploGenerationCompletionFollowup({
+              operationId: pending.operationId,
+              generationStatus: operation.status,
+              localProcessingStatus: localProcessing.status
+            })
+          }] });
+        }
+      });
+      if (delivery !== "missing") {
+        chatGenerationResumes.delete(key);
+        if (!needsManualStatusRefresh) chatGenerationNotified.add(key);
+      }
     } catch (error101) {
       const code = error101 && typeof error101 === "object" && "code" in error101 ? String(error101.code ?? "") : "";
-      if (["OPERATION_NOT_FOUND", "SESSION_CHANGED"].includes(code)) chatGenerationResumes.delete(operationId2);
+      if (["OPERATION_NOT_FOUND", "SESSION_CHANGED"].includes(code)) {
+        await completionTracker.invalidated(pending.ownerId, pending.sessionId, pending.operationId).catch(() => void 0);
+        chatGenerationResumes.delete(key);
+      }
     } finally {
-      const current = chatGenerationResumes.get(operationId2);
+      const current = chatGenerationResumes.get(key);
       if (current) current.checking = false;
     }
   };
+  let activeCompletionOwnerId;
+  let restoringCompletionIntents;
+  const restoreCompletionIntents = (force = false) => restoringCompletionIntents ??= (async () => {
+    const ownerId = connectedOwnerId();
+    const ownerChanged = ownerId !== activeCompletionOwnerId;
+    if (ownerChanged) {
+      activeCompletionOwnerId = ownerId;
+      chatGenerationResumes.clear();
+      chatGenerationNotified.clear();
+    }
+    if (!ownerId || closed) return;
+    for (const intent of completionTracker.pending(ownerId)) {
+      if (!force && !ownerChanged && intent.status !== "paused") continue;
+      if (!ctx.agents.get(intent.sessionId)) continue;
+      const key = activateCompletionIntent(intent.ownerId, intent.sessionId, intent.operationId, true);
+      void checkChatGeneration(key);
+    }
+  })().finally(() => {
+    restoringCompletionIntents = void 0;
+  });
   let progressPoll, refreshing, progressActive = false;
   const generationChanged = () => {
-    for (const operationId2 of chatGenerationResumes.keys()) void checkChatGeneration(operationId2);
+    void restoreCompletionIntents();
+    for (const key of chatGenerationResumes.keys()) void checkChatGeneration(key);
     if (!refreshing && !progressActive && service.pendingGenerationIds().length) progressPoll?.wake();
   };
   service.on("change", generationChanged);
-  const resumeChatAfterApproval = (sessionId, operationId2) => {
-    if (chatGenerationNotified.has(operationId2) || chatGenerationResumes.has(operationId2)) return;
-    chatGenerationResumes.set(operationId2, { sessionId, checking: false });
-    void checkChatGeneration(operationId2);
+  const reserveCompletionForApproval = async (sessionId, operationId2) => {
+    const ownerId = connectedOwnerId();
+    if (!ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u6279\u51C6\u524D\u8D26\u53F7\u72B6\u6001\u5DF2\u53D8\u5316");
+    const key = intentKey(ownerId, sessionId, operationId2);
+    await reserveCompletionIntent(ownerId, sessionId, operationId2);
+    const binding = { ownerId, sessionId, key };
+    completionApprovalReservations.set(operationId2, binding);
+    return binding;
   };
-  const reserveNativeGenerationWait = (sessionId, operationId2) => {
-    nativeGenerationWaits.add(operationId2);
-    resumeChatAfterApproval(sessionId, operationId2);
-    nativeGenerationWaitReservations.set(operationId2, sessionId);
+  const resumeChatAfterApproval = async (sessionId, operationId2) => {
+    const reserved = completionApprovalReservations.get(operationId2);
+    const binding = reserved?.sessionId === sessionId ? reserved : await reserveCompletionForApproval(sessionId, operationId2);
+    await completionTracker.activate(binding.ownerId, sessionId, operationId2);
+    const key = activateCompletionIntent(binding.ownerId, sessionId, operationId2);
+    completionApprovalReservations.delete(operationId2);
+    void checkChatGeneration(key);
+    return binding;
   };
+  const discardCompletionApproval = async (sessionId, operationId2) => {
+    const binding = completionApprovalReservations.get(operationId2);
+    if (!binding || binding.sessionId !== sessionId) return;
+    completionApprovalReservations.delete(operationId2);
+    await completionTracker.invalidated(binding.ownerId, sessionId, operationId2);
+  };
+  const reserveNativeGenerationWait = async (sessionId, operationId2) => {
+    const binding = await resumeChatAfterApproval(sessionId, operationId2);
+    nativeGenerationWaits.add(binding.key);
+    nativeGenerationWaitReservations.set(operationId2, { ownerId: binding.ownerId, sessionId, key: binding.key });
+  };
+  const progressRefresh = new GenerationProgressRefresh({
+    refresh: async (operationId2) => {
+      await service.refreshPendingGeneration(operationId2);
+    },
+    syncArchives: () => archives.sync(),
+    warn: (scope) => ctx.logger.warn(scope === "operation" ? "PodPlo status refresh was deferred for one operation; other tasks continue." : "PodPlo archive sync was deferred; generation status tracking continues.")
+  });
   const refreshProgress = () => {
     if (refreshing) return refreshing;
-    if (closed || service.snapshot().account.status !== "connected") return Promise.resolve(IDLE_POLL_MS);
+    if (closed || service.snapshot().account.status !== "connected") {
+      progressRefresh.reset();
+      return Promise.resolve(IDLE_POLL_MS);
+    }
     return refreshing = (async () => {
       try {
-        for (const operationId2 of service.pendingGenerationIds()) {
-          if (closed) break;
-          await service.refreshPendingGeneration(operationId2);
-        }
-        await archives.sync();
-        for (const operationId2 of chatGenerationResumes.keys()) void checkChatGeneration(operationId2);
+        await progressRefresh.run(closed ? [] : service.pendingGenerationIds());
+        for (const key of chatGenerationResumes.keys()) void checkChatGeneration(key);
         progressActive = !!(service.pendingGenerationIds().length || archives.isBusy() || chatGenerationResumes.size);
         return progressActive ? ACTIVE_POLL_MS : IDLE_POLL_MS;
-      } catch (error101) {
-        progressActive = false;
-        throw error101;
+      } catch {
+        progressActive = !!(service.pendingGenerationIds().length || archives.isBusy() || chatGenerationResumes.size);
+        return progressActive ? ACTIVE_POLL_MS : IDLE_POLL_MS;
       } finally {
         refreshing = void 0;
       }
@@ -64710,7 +65712,11 @@ async function apply(ctx, config3 = {}) {
             };
           }
         }, settle),
+        onPrepared: async (operationId2) => {
+          await reserveCompletionForApproval(agent.id, operationId2);
+        },
         onApproved: (operationId2) => reserveNativeGenerationWait(agent.id, operationId2),
+        onUnapproved: (operationId2) => discardCompletionApproval(agent.id, operationId2),
         onDeclined: async (input) => {
           const result = await service.cancelGenerationFromNativeApproval(input, agent.id);
           const accepted = typeof result?.approvedAt === "string" || ["submitting", "submitted", "completed", "partial_unknown", "submission_unknown"].includes(String(result?.status ?? ""));
@@ -64790,28 +65796,41 @@ async function apply(ctx, config3 = {}) {
         ...nativeGenerationWaitTool,
         async call(args, execution) {
           const operationId2 = typeof args.operationId === "string" ? args.operationId.trim() : "";
-          nativeGenerationWaitReservations.delete(operationId2);
-          nativeGenerationWaits.add(operationId2);
+          const reserved = nativeGenerationWaitReservations.get(operationId2);
+          const reservation = reserved?.sessionId === agent.id ? reserved : void 0;
+          if (reservation) nativeGenerationWaitReservations.delete(operationId2);
+          const ownerId = reservation?.ownerId ?? connectedOwnerId();
+          const key = ownerId ? intentKey(ownerId, agent.id, operationId2) : "";
+          if (ownerId) {
+            await reserveCompletionIntent(ownerId, agent.id, operationId2);
+            await completionTracker.activate(ownerId, agent.id, operationId2);
+            activateCompletionIntent(ownerId, agent.id, operationId2);
+            nativeGenerationWaits.add(key);
+          }
           try {
             const result = await waitForNativeGeneration({
               operationId: operationId2,
               signal: execution.signal,
               read: (id2) => transport.callTool("podplo_generation_status", { operationId: id2, refresh: true }, agent.id)
             });
-            if (result.nativeWait.outcome === "terminal") {
-              chatGenerationResumes.delete(operationId2);
-              chatGenerationNotified.add(operationId2);
+            if (ownerId) {
+              const outcome = await settleNativeGenerationWait(completionTracker, { ownerId, sessionId: agent.id, operationId: operationId2 }, result);
+              if (outcome !== "timeout") chatGenerationResumes.delete(key);
+              if (outcome === "terminal") chatGenerationNotified.add(key);
             }
             return { content: [{ type: "text", text: JSON.stringify(result) }] };
           } finally {
-            nativeGenerationWaits.delete(operationId2);
-            void checkChatGeneration(operationId2);
+            if (key) {
+              nativeGenerationWaits.delete(key);
+              void checkChatGeneration(key);
+            }
           }
         }
       });
       const disposeWaitTool = agent.ctx.tools.register(waitTool);
       const disposeJevRouting = enableJevTestPreset && jevActiveSessionIds.has(agent.id) ? startJevRouting(agent) : void 0;
       bindings.set(agent.id, { dispose: session2.dispose, fiber, disposePrepareTool, disposeBatchTool, disposeWaitTool, disposeJevRouting });
+      await restoreCompletionIntents(true);
     } catch (error101) {
       const current = bindings.get(agent.id);
       current?.disposeJevRouting?.();
@@ -64829,6 +65848,7 @@ async function apply(ctx, config3 = {}) {
   const remove = async (agent) => {
     jevActiveSessionIds.delete(agent.id);
     observedPodploSessionIds.delete(agent.id);
+    for (const [key, pending] of chatGenerationResumes) if (pending.sessionId === agent.id) chatGenerationResumes.delete(key);
     const binding = bindings.get(agent.id);
     if (!binding) return;
     bindings.delete(agent.id);
@@ -64850,6 +65870,15 @@ async function apply(ctx, config3 = {}) {
   });
   const stopRemaining = async (sessionId) => {
     if (closed || !ctx.agents.get(sessionId)) return;
+    const ownerId = connectedOwnerId() ?? activeCompletionOwnerId;
+    if (ownerId) {
+      const stopped = await completionTracker.stopSession(ownerId, sessionId).catch(() => []);
+      for (const operationId2 of stopped) {
+        const key = intentKey(ownerId, sessionId, operationId2);
+        chatGenerationResumes.delete(key);
+        chatGenerationNotified.add(key);
+      }
+    }
     service.markSessionStopped(sessionId);
     try {
       await archives.stopSession(sessionId);
@@ -64892,11 +65921,11 @@ async function apply(ctx, config3 = {}) {
     if (event.type === "turn/end" && event.data?.reason?.kind === "aborted" && ["user", "parent"].includes(event.data.reason.reason?.kind))
       stopTurn(session2.id, event.data.turn);
     if (event.type === "turn/end") {
-      for (const [operationId2, sessionId] of nativeGenerationWaitReservations) {
-        if (sessionId !== session2.id) continue;
+      for (const [operationId2, binding] of nativeGenerationWaitReservations) {
+        if (binding.sessionId !== session2.id) continue;
         nativeGenerationWaitReservations.delete(operationId2);
-        nativeGenerationWaits.delete(operationId2);
-        void checkChatGeneration(operationId2);
+        nativeGenerationWaits.delete(binding.key);
+        void checkChatGeneration(binding.key);
       }
     }
     if (event.type === "turn/end") {
@@ -64910,10 +65939,18 @@ async function apply(ctx, config3 = {}) {
     async dispatch(action, args, caller) {
       const update = await updates.dispatch(action, args, caller);
       if (update) return update;
-      const value2 = await transport.dispatch(action, args, caller);
-      if (action === "generation.approve" && caller.source === "ui" && caller.sessionId && typeof value2?.data?.operationId === "string") {
-        resumeChatAfterApproval(caller.sessionId, value2.data.operationId);
-      }
+      const approvalOperationId = action === "generation.approve" && caller.source === "ui" && caller.sessionId && args && typeof args === "object" && !Array.isArray(args) && typeof args.operationId === "string" ? args.operationId : void 0;
+      const value2 = approvalOperationId && caller.sessionId ? await executeWithCompletionReservation({
+        reserve: () => reserveCompletionForApproval(caller.sessionId, approvalOperationId),
+        execute: () => transport.dispatch(action, args, caller),
+        accepted: async (result) => {
+          if (typeof result?.data?.operationId === "string") await resumeChatAfterApproval(caller.sessionId, result.data.operationId);
+        },
+        uncertain: async (_error, reservation) => {
+          const key = activateCompletionIntent(reservation.ownerId, reservation.sessionId, approvalOperationId, true);
+          void checkChatGeneration(key);
+        }
+      }) : await transport.dispatch(action, args, caller);
       return value2;
     }
   };
@@ -64947,6 +65984,7 @@ async function apply(ctx, config3 = {}) {
     service.off("change", generationChanged);
     chatGenerationResumes.clear();
     chatGenerationNotified.clear();
+    completionApprovalReservations.clear();
     nativeGenerationWaitReservations.clear();
     nativeGenerationWaits.clear();
     for (const current of signals.values()) current.signal.removeEventListener("abort", current.listener);
@@ -64957,16 +65995,20 @@ async function apply(ctx, config3 = {}) {
     jevRoutingStates.clear();
     progressPoll?.stop();
     await refreshing?.catch(() => void 0);
+    await Promise.allSettled([...completionTrackingWrites.values()]);
     for (const id2 of [...bindings.keys()]) await remove({ id: id2 });
+    await completionProjection.dispose();
     await unregisterPresets();
     await mcp.close();
     await archives.close();
     await outputs.close();
     await toolkit.close();
+    await completionTracker.close();
     await service.close();
   })();
   ctx.effect(() => stop, "PodPlo service and private MCP lifetime");
   for (const agent of ctx.agents.list()) await attach(agent);
+  await restoreCompletionIntents();
   ctx.logger.info("PodPlo native plugin ready: gallery, Skills, personal assets, session-scoped MCP");
   return stop;
 }
