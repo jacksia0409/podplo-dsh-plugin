@@ -22399,7 +22399,7 @@ var require_outline_core = __commonJS({
 });
 
 // plugins/podplo-dsh/src/index.ts
-import { createCipheriv, createDecipheriv, createHash as createHash17, randomBytes as randomBytes4 } from "node:crypto";
+import { createCipheriv, createDecipheriv, randomBytes as randomBytes4 } from "node:crypto";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir2 } from "node:os";
@@ -39799,8 +39799,8 @@ var DesktopWorkbench = class {
     const operation = transaction ? external_exports.object({ id: external_exports.string().min(1).max(240), rollback: external_exports.boolean() }).strict().parse(transaction) : void 0;
     const pairs = moves.map((move) => ({ from: external_exports.string().min(1).parse(move.from), to: external_exports.string().min(1).parse(move.to) }));
     if (new Set(pairs.map((move) => move.from)).size !== pairs.length || new Set(pairs.map((move) => move.to)).size !== pairs.length) throw new Error("\u6587\u4EF6\u6539\u540D\u6620\u5C04\u4E0D\u53EF\u91CD\u590D");
-    const digest = (rows) => createHash4("sha256").update(JSON.stringify(rows)).digest("hex");
-    const receipt = digest(pairs), reverseReceipt = digest(pairs.map((move) => ({ from: move.to, to: move.from })));
+    const digest2 = (rows) => createHash4("sha256").update(JSON.stringify(rows)).digest("hex");
+    const receipt = digest2(pairs), reverseReceipt = digest2(pairs.map((move) => ({ from: move.to, to: move.from })));
     const paths = new Map(pairs.map((move) => [move.from, move.to]));
     const affected = (plan) => plan.steps.some((step) => !!step.output && paths.has(step.output)) || !!plan.task?.artifacts?.some((artifact) => paths.has(artifact.path));
     const current = this.store.snapshot().owners[id2];
@@ -54618,7 +54618,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.18",
+  version: "0.1.19",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -56343,6 +56343,26 @@ var processingTools = {
   podplo_outline_images: "outline"
 };
 var processingToolNames = Object.freeze(Object.keys(processingTools));
+function processingAuthorizationTools(name2, options) {
+  const tools = [];
+  const add = (tool) => {
+    if (!tools.includes(tool)) tools.push(tool);
+  };
+  if (name2 === GRID_SPLIT_OPERATION_NAME) add(GRID_SPLIT_OPERATION_NAME);
+  else if (name2 === TOOLBOX_PIPELINE_NAME) {
+    const plan = ToolboxPlanSchema.parse(options);
+    if (plan.trimTransparent || plan.steps.some((step) => step.tool === "trim" || step.tool === "resize" && step.options.trimTransparent || step.tool === "outline" && step.trimTransparent)) add("trim");
+    for (const step of plan.steps) {
+      add(toolboxToolNames[step.tool]);
+      if (step.tool === "outline" && step.options.mirror) add("podplo_export_images");
+    }
+  } else {
+    add(name2);
+    if (name2 === "podplo_resize_images" && ResizeOptionsSchema.parse(options).trimTransparent) add("trim");
+    if (name2 === "podplo_outline_images" && OutlineSettingsSchema.parse(options).mirror) add("podplo_export_images");
+  }
+  return tools;
+}
 function normalizedProcessingOptions(name2, options) {
   if (name2 === TOOLBOX_PIPELINE_NAME) return ToolboxPlanSchema.parse(options);
   if (name2 === GRID_SPLIT_OPERATION_NAME) return GridSplitOptionsSchema.parse(options);
@@ -57004,15 +57024,15 @@ var NativeLocalToolkit = class {
   }
   async idempotent(name2, args, session2) {
     const identity2 = await this.identity("process"), sessionHash = sha256(session2);
-    const digest = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
+    const digest2 = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
     const key = `${identity2.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
-      if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      if (pending.digest !== digest2) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest);
-    this.inflight.set(key, { digest, promise: promise3 });
+    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest2);
+    this.inflight.set(key, { digest: digest2, promise: promise3 });
     try {
       return await promise3;
     } finally {
@@ -57021,25 +57041,25 @@ var NativeLocalToolkit = class {
   }
   async idempotentResolved(name2, args, session2, inputs) {
     const identity2 = await this.identity("process"), sessionHash = sha256(session2);
-    const digest = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
+    const digest2 = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
     const key = `${identity2.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
-      if (pending.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      if (pending.digest !== digest2) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest, inputs);
-    this.inflight.set(key, { digest, promise: promise3 });
+    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest2, inputs);
+    this.inflight.set(key, { digest: digest2, promise: promise3 });
     try {
       return await promise3;
     } finally {
       this.inflight.delete(key);
     }
   }
-  async execute(name2, args, sessionId, sessionHash, identity2, digest, archivedInputs) {
+  async execute(name2, args, sessionId, sessionHash, identity2, digest2, archivedInputs) {
     const existing = this.store.snapshot().operations.find((row) => row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId);
     if (existing) {
-      if (existing.digest !== digest) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      if (existing.digest !== digest2) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       const rows = existing.resultIds.map((id2) => this.ownedResult(id2, identity2.principal, sessionHash));
       for (const row of rows) await this.readStored(row);
       await this.assertIdentity(identity2, "process");
@@ -57082,7 +57102,7 @@ var NativeLocalToolkit = class {
       await this.assertOperationAuthorization(identity2, name2, args.options);
       await this.store.transaction((state) => {
         const prior = state.operations.find((row) => row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId);
-        if (prior) throw new Error(prior.digest === digest ? "\u540C\u4E00\u64CD\u4F5C\u6B63\u5728\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u8BFB\u53D6\u7ED3\u679C" : "\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+        if (prior) throw new Error(prior.digest === digest2 ? "\u540C\u4E00\u64CD\u4F5C\u6B63\u5728\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u8BFB\u53D6\u7ED3\u679C" : "\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
         if (state.results.filter((row) => row.principal === identity2.principal && row.session === sessionHash).length + stored.length > 2e3)
           throw new Error("\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u8FC7\u591A\uFF0C\u8BF7\u65B0\u5EFA\u4F1A\u8BDD");
         state.results.push(...stored);
@@ -57090,7 +57110,7 @@ var NativeLocalToolkit = class {
           principal: identity2.principal,
           session: sessionHash,
           operationId: args.operationId,
-          digest,
+          digest: digest2,
           resultIds: stored.map((row) => row.id),
           completedAt: this.timestamp(),
           nativeSessionId: sessionId,
@@ -57127,28 +57147,8 @@ var NativeLocalToolkit = class {
       files: visible.filter((row) => row.kind === "file")
     };
   }
-  operationAuthorizationTools(name2, options) {
-    const tools = [];
-    const add = (tool) => {
-      if (!tools.includes(tool)) tools.push(tool);
-    };
-    if (name2 === GRID_SPLIT_OPERATION_NAME) add(GRID_SPLIT_OPERATION_NAME);
-    else if (name2 === TOOLBOX_PIPELINE_NAME) {
-      const plan = ToolboxPlanSchema.parse(options);
-      if (plan.trimTransparent || plan.steps.some((step) => step.tool === "trim" || step.tool === "resize" && step.options.trimTransparent || step.tool === "outline" && step.trimTransparent)) add("trim");
-      for (const step of plan.steps) {
-        add(toolboxToolNames[step.tool]);
-        if (step.tool === "outline" && step.options.mirror) add("podplo_export_images");
-      }
-    } else {
-      add(name2);
-      if (name2 === "podplo_resize_images" && ResizeOptionsSchema.parse(options).trimTransparent) add("trim");
-      if (name2 === "podplo_outline_images" && OutlineSettingsSchema.parse(options).mirror) add("podplo_export_images");
-    }
-    return tools;
-  }
   async assertOperationAuthorization(identity2, name2, options) {
-    for (const tool of this.operationAuthorizationTools(name2, options)) await this.assertIdentity(identity2, "process", tool);
+    for (const tool of processingAuthorizationTools(name2, options)) await this.assertIdentity(identity2, "process", tool);
   }
   async resolveInputs(ids2, identity2, sessionId, sessionHash, purpose, toolName) {
     const inputs = [];
@@ -57357,29 +57357,39 @@ function parseProcessingPlan(value2, history = {}) {
     };
   });
 }
+function processingPlanAuthorizationTools(plan) {
+  const tools = [];
+  const add = (tool) => {
+    if (!tools.includes(tool)) tools.push(tool);
+  };
+  for (const step of plan ?? []) {
+    for (const tool of processingAuthorizationTools(step.toolName, step.options)) add(tool);
+  }
+  return tools;
+}
 
 // plugins/podplo-dsh/src/agent-call-policy.ts
 var PODPLO_TASK_GUIDANCE = `Act as an orchestrator for executable PodPlo public/personal Skills and PodPlo built-in tools or presets.
 
-ROUTING: Every AI image generation, AI edit or AI transformation must use a selected executable PodPlo Skill. Never substitute another image-generation service, a general vision/image tool, shell/PowerShell, filesystem scripting or custom code. DSH read_image is allowed only to create or reuse a session-bound image ID and satisfy explicit file authorization; do not use it to inspect aesthetics, critique an image or invent creative instructions. Deterministic local processing may use only the exact PodPlo built-in tool or preset the user requested.
+ROUTING: Every AI image generation, AI edit or AI transformation must use a selected executable PodPlo Skill. Never substitute another image-generation service, a general vision/image tool, shell/PowerShell, filesystem scripting or custom code. The Host registers user-authorized folders and existing session references; do not call read_image to obtain an ID or inspect, critique or invent instructions for an image. Deterministic local processing may use only the exact PodPlo built-in tool or preset the user requested.
 
 INTENT: Treat the user's words and the selected PodPlo Skill/tool/preset as authoritative. Do not create, rewrite, expand, translate or optimize prompts. Do not add composition, style, identity, dimensions, model, quality, processing steps or a different order. Reuse exact user instructions and Skill/Host-supplied prompt content. Apply only the named tools/preset, in the requested order.
 
 EXECUTE WHEN CLEAR: When the image range, one uniquely matching Skill, and any requested tools/preset/order are clear, resolve exact catalog bindings and call the PodPlo tool immediately. Do not ask for optional composition, dimensions, model, ratio or quality merely to fill fields. Use a parameter only when it came from the user, the selected Skill, the selected tool/preset, or an explicit default in the authoritative current schema. Never guess a required value or paid scope. Ask one consolidated question only when execution is genuinely blocked by a missing or conflicting image range, Skill identity, tool/preset identity, call order, or required parameter with no authoritative default. Resolve a unique exact catalog match without asking. Ask once for real duplicates, absence or conflicts; do not reconfirm clear information or a path already confirmed by an answered native question. Choices are neutral unless the user asks for a recommendation.
 
-LOCAL FOLDERS: Use podplo_prepare_skill_batch for user-supplied folders. Set skillSource="personal" for \u6211\u7684 Skill. Pass an exact processingPresetPath with processingPlan=[] so the Host reads the preset. Do not read/rewrite preset JSON, list folders, inspect individual images, invent IDs or reimplement the pipeline. Put multiple independent groups in groups. When an AI stage consumes an earlier stage, declare every stage and dependency in one workflow call; never wait for an intermediate image and wake the model to plan the next stage. The Host freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them or pass "" when the Skill already defines the task; never invent content to fill the field.
+LOCAL FOLDERS: Use podplo_prepare_task with source.folderPath for user-supplied folders. Set skill.source="personal" for \u6211\u7684 Skill. The Host resolves the folder and preset; do not call read_image, Bash/shell, list files, search source code, read/rewrite preset JSON, inspect individual images, invent IDs or reimplement the pipeline. Put every requested stage in stages, with source.fromStage for dependencies and local.presetPath for a saved preset. The Host freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them when the Skill already defines the task; never invent content to fill the field.
 
-FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For folder batches set skillSource="favorite" and skillFolder when given. Conflicting exact matches require one clarification.
-OTHER INPUTS: For non-folder work, resolve the exact PodPlo Skill and reuse returned bindings, capabilities, explicit defaults and session image IDs. Call podplo_prepare_generation once for the complete requested batch. Every item keeps its selected skillId. Register only the requested processingPlan; use [] when no processing was requested. Do not scan private storage.
+FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For random selection across independent Skills in one exact favorite folder, set skill.query and skill.favoriteFolder to that same exact folder name; otherwise query the exact Skill or family as before. Conflicting exact matches require one clarification.
+OTHER INPUTS: For current-chat or cloud images, reuse the existing session reference IDs in podplo_prepare_task source.referenceIds; do not inspect them again. Submit every requested stage once, preserving every user-supplied generation choice and local action. On a definitive nonretryable validation or policy failure, report it and stop until a new user message; do not drop parameters or stages, probe with a partial task, or try another entry point. Do not scan private storage.
 
 APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
 
 DELIVERY: New task folders contain only final selected production images/PDF in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt. Do not deliver source/reference copies, superseded AI originals, intermediate versions, review folders, proof images or JSON reports. For generation-only tasks, the generated image itself is the final deliverable. Recovery bytes remain in the private Host cache; historical tasks keep their recorded layout.`;
-var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u548C PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002read_image \u53EA\u7528\u4E8E\u4EA7\u751F\uFF0F\u590D\u7528\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u53CA\u5FC5\u8981\u6587\u4EF6\u6388\u6743\uFF0C\u4E0D\u7528\u4E8E\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
+var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u548C PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002\u7528\u6237\u6388\u6743\u6587\u4EF6\u5939\u548C\u5DF2\u6709\u4F1A\u8BDD\u5F15\u7528\u7531 Host \u767B\u8BB0\uFF1B\u4E0D\u8C03\u7528 read_image \u53D6 ID\u3001\u8BC6\u56FE\u3001\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
 
 \u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u552F\u4E00\u5339\u914D Skill \u53CA\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4F7F\u7528\u539F slug \u83B7\u53D6\u7ED1\u5B9A\uFF1B\u6587\u4EF6\u5939\u6279\u91CF\u53EF\u8BBE skillSource=favorite \u548C skillFolder\u3002\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u6587\u4EF6\u5939\u6279\u91CF\u7528 podplo_prepare_skill_batch\uFF1B\u6211\u7684 Skill \u7528 skillSource=personal\uFF1B\u591A\u4E2A\u72EC\u7ACB\u7EC4\u7528 groups\uFF0C\u540E\u7EED AI \u4F9D\u8D56\u524D\u5E8F\u7ED3\u679C\u65F6\u7528 workflow \u4E00\u6B21\u767B\u8BB0\u5168\u90E8\u9636\u6BB5\uFF0C\u4E0D\u7B49\u4E2D\u95F4\u7ED3\u679C\u518D\u5524\u9192\u6A21\u578B\u7EED\u505A\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9884\u8BBE\u4F20 processingPresetPath \u548C processingPlan=[] \u7531\u5BBF\u4E3B\u8BFB\u53D6\u3002\u975E\u6587\u4EF6\u5939\u4EFB\u52A1\u7684 podplo_prepare_generation \u6BCF\u9879\u5FC5\u987B\u4FDD\u7559\u6240\u9009 skillId\uFF0C\u4E00\u6B21\u63D0\u4EA4\u5B8C\u6574\u8303\u56F4\uFF0C\u53EA\u767B\u8BB0\u7528\u6237\u6307\u5B9A\u7684 processingPlan\uFF0C\u65E0\u52A0\u5DE5\u4E3A []\u3002\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9047\u5230\u660E\u786E\u4E0D\u53EF\u91CD\u8BD5\u7684\u6821\u9A8C\u6216\u7B56\u7565\u5931\u8D25\u65F6\u7ACB\u5373\u62A5\u544A\u5E76\u505C\u6B62\uFF0C\u7B49\u5F85\u65B0\u7684\u7528\u6237\u6D88\u606F\uFF1B\u4E0D\u5220\u53C2\u6570\u6216\u9636\u6BB5\u3001\u4E0D\u7F29\u6210\u5C40\u90E8\u4EFB\u52A1\u8BD5\u63A2\u3001\u4E0D\u6362\u5165\u53E3\u3002\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
 Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill or the lookup needed to resolve it; the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
@@ -58734,13 +58744,14 @@ var PodploPluginService = class extends EventEmitter2 {
     const expectedOutputCount = this.expectedOutputCount(input);
     const wholeOrderRequired = input.wholeOrderRequired === true;
     this.assertPlannedOutputCount(preparedItems, expectedOutputCount);
-    const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, preparedItems);
     let processingPlan;
     try {
       processingPlan = parseProcessingPlan(input.processingPlan);
     } catch {
       throw new PodploPluginError("INVALID_PROCESSING_PLAN", "\u52A0\u5DE5\u6B65\u9AA4\u65E0\u6548\uFF0C\u8BF7\u6838\u5BF9\u5DE5\u5177\u4E0E\u53C2\u6570\u3002");
     }
+    await this.assertProcessingPlanAuthorized(ownerId, processingPlan);
+    const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, preparedItems);
     const state = this.store.snapshot();
     if (operationId2) {
       const exact = state.operations.find((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.operationId === operationId2);
@@ -58750,6 +58761,7 @@ var PodploPluginService = class extends EventEmitter2 {
       if (processingPlan !== void 0 && !isDeepStrictEqual(exact.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
       if (wholeOrderRequired && !exact.pricingVersion) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u73B0\u6709\u65B9\u6848\u4E0D\u662F\u6574\u5355\u9884\u7559\u62A5\u4EF7\uFF0C\u8BF7\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u91CD\u8BD5\u3002");
       this.assertQuotedOutputCount(exact.items, expectedOutputCount);
+      await this.assertProcessingPlanAuthorized(ownerId, exact.processingPlan);
       return safeOperation(exact);
     }
     const previous = state.operations.find((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.intentId === intentId && row.planVersion === planVersion);
@@ -58758,6 +58770,7 @@ var PodploPluginService = class extends EventEmitter2 {
       if (processingPlan !== void 0 && !isDeepStrictEqual(previous.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
       if (wholeOrderRequired && !previous.pricingVersion) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u73B0\u6709\u65B9\u6848\u4E0D\u662F\u6574\u5355\u9884\u7559\u62A5\u4EF7\uFF0C\u8BF7\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u91CD\u8BD5\u3002");
       this.assertQuotedOutputCount(previous.items, expectedOutputCount);
+      await this.assertProcessingPlanAuthorized(ownerId, previous.processingPlan);
       return safeOperation(previous);
     }
     const key = `${ownerId}:${nativeSessionId}:${intentId}:${planVersion}`;
@@ -58768,13 +58781,12 @@ var PodploPluginService = class extends EventEmitter2 {
       if (active.expectedOutputCount !== void 0 && expectedOutputCount !== void 0 && active.expectedOutputCount !== expectedOutputCount) {
         throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u540C\u4E00\u65B9\u6848\u6B63\u5728\u6309 ${active.expectedOutputCount} \u5F20\u62A5\u4EF7\uFF0C\u4E0D\u80FD\u6539\u4E3A ${expectedOutputCount} \u5F20\u590D\u7528\u3002\u8BF7\u6536\u9F50\u5B8C\u6574\u6279\u6B21\u5E76\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u3002`);
       }
-      if (expectedOutputCount === void 0 || active.expectedOutputCount === expectedOutputCount) return active.promise;
-      return active.promise.then((operation2) => {
-        if (operation2.quote.outputCount !== expectedOutputCount) {
-          throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u5728\u9014\u62A5\u4EF7\u9884\u8BA1\u8F93\u51FA ${operation2.quote.outputCount} \u5F20\uFF0C\u4E0E\u7528\u6237\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684 ${expectedOutputCount} \u5F20\u4E0D\u4E00\u81F4\u3002\u672A\u590D\u7528\u8BE5\u79EF\u5206\u786E\u8BA4\u3002`);
-        }
-        return operation2;
-      });
+      const operation2 = await active.promise;
+      await this.assertProcessingPlanAuthorized(ownerId, active.processingPlan);
+      if (expectedOutputCount !== void 0 && active.expectedOutputCount !== expectedOutputCount && operation2.quote.outputCount !== expectedOutputCount) {
+        throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u5728\u9014\u62A5\u4EF7\u9884\u8BA1\u8F93\u51FA ${operation2.quote.outputCount} \u5F20\uFF0C\u4E0E\u7528\u6237\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684 ${expectedOutputCount} \u5F20\u4E0D\u4E00\u81F4\u3002\u672A\u590D\u7528\u8BE5\u79EF\u5206\u786E\u8BA4\u3002`);
+      }
+      return operation2;
     }
     const taskName = optionalText(input.taskName, "taskName", 100);
     const archiveProject = this.options.resolveArchiveProject?.(caller, input);
@@ -59008,6 +59020,7 @@ var PodploPluginService = class extends EventEmitter2 {
       }
     }
     this.assertQuotedOutputCount(savedItems, expectedOutputCount);
+    await this.assertProcessingPlanAuthorized(ownerId, processingPlan);
     const now = this.now().toISOString();
     const operationId2 = this.createId();
     const reservationToken = wholeOrder ? createGenerationOrderToken() : void 0;
@@ -59097,7 +59110,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (operation.balanceAtQuote && operation.balanceAtQuote.availableCredits < operationSummary(operation).totalCredits) {
       throw new PodploPluginError("INSUFFICIENT_CREDITS", "\u4F59\u989D\u4E0D\u8DB3\uFF0C\u6574\u5355\u672A\u9884\u7559\u4E5F\u672A\u63D0\u4EA4\u3002\u8BF7\u5145\u503C\u6216\u8C03\u6574\u65B9\u6848\u540E\u91CD\u65B0\u786E\u8BA4\u3002");
     }
-    await this.assertOwner(ownerId, true);
+    await this.assertProcessingPlanAuthorized(ownerId, operation.processingPlan);
     let reservation = operation.reservation;
     if (operation.pricingVersion) {
       const gateway = this.gateway();
@@ -59700,6 +59713,15 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async assertOwner(ownerId, write) {
     if (await this.owner(write) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
+  }
+  async assertProcessingPlanAuthorized(ownerId, processingPlan) {
+    const tools = processingPlanAuthorizationTools(processingPlan);
+    if (!tools.length) return this.assertOwner(ownerId, true);
+    for (const toolName of tools) {
+      if (await this.online.workspaceIdentity(true, toolName) !== ownerId) {
+        throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
+      }
+    }
   }
   scheduleAccountRefresh(ownerId) {
     const existing = this.accountRefreshJobs.get(ownerId);
@@ -62265,11 +62287,11 @@ var TaskArchiveManager = class {
   }
   async writeFresh(directory, name2, bytes, token) {
     await this.directory(directory);
-    const path = join11(directory, name2), digest = hash5(bytes);
+    const path = join11(directory, name2), digest2 = hash5(bytes);
     const current = await lstat5(path).catch(() => void 0);
     if (current) {
-      if (hash5(await this.readPath(path)) !== digest) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
-      return { path, stat: current, digest, created: false };
+      if (hash5(await this.readPath(path)) !== digest2) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
+      return { path, stat: current, digest: digest2, created: false };
     }
     const temporary = join11(directory, `.${token}.${randomUUID14()}.part`);
     const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
@@ -62283,7 +62305,7 @@ var TaskArchiveManager = class {
       await handle.close().catch(() => void 0);
       await unlink4(temporary).catch(() => void 0);
     }
-    return { path, stat: await lstat5(path), digest, created: true };
+    return { path, stat: await lstat5(path), digest: digest2, created: true };
   }
   sourceRoot(task, file3) {
     const seen = /* @__PURE__ */ new Set();
@@ -62532,11 +62554,11 @@ var TaskArchiveManager = class {
         const directory = this.groupDirectory(task, file3);
         if (file3.reviewRequired) await this.createDirectory(directory);
         await this.directory(directory);
-        const path = join11(directory, name2), digest = hash5(source.bytes);
+        const path = join11(directory, name2), digest2 = hash5(source.bytes);
         await this.same(identity2);
         if (await lstat5(path).catch(() => void 0)) {
           const bytes = await this.readPath(path);
-          if (hash5(bytes) !== digest) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
+          if (hash5(bytes) !== digest2) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
           const temporary = join11(directory, `.${file3.id}.${randomUUID14()}.part`);
           const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
@@ -62561,7 +62583,7 @@ var TaskArchiveManager = class {
         await this.store.transaction((state) => {
           const saved = state.tasks.find((row) => row.id === id2).files.find((row) => row.id === file3.id);
           delete saved.diagnostic;
-          Object.assign(saved, { name: name2, image, status: "saved", digest, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
+          Object.assign(saved, { name: name2, image, status: "saved", digest: digest2, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
         });
       } catch (error101) {
         if (published) await unlink4(published).catch(() => void 0);
@@ -62643,13 +62665,13 @@ var TaskArchiveManager = class {
         "\u672C\u6587\u4EF6\u7531\u4EFB\u52A1\u6210\u679C\u81EA\u52A8\u66F4\u65B0\uFF1B\u5982\u679C\u4F60\u624B\u52A8\u4FEE\u6539\uFF0C\u672C\u7A0B\u5E8F\u4F1A\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002",
         ""
       ];
-      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest = hash5(bytes), path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest2 = hash5(bytes), path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
       const stat = await lstat5(path).catch(() => void 0);
       if (stat) {
         const existing = await this.readPath(path), existingDigest = hash5(existing);
-        if (existingDigest === digest) {
-          if (latest.summaryDigest !== digest) await this.store.transaction((state) => {
-            state.tasks.find((row) => row.id === task.id).summaryDigest = digest;
+        if (existingDigest === digest2) {
+          if (latest.summaryDigest !== digest2) await this.store.transaction((state) => {
+            state.tasks.find((row) => row.id === task.id).summaryDigest = digest2;
           });
           return;
         }
@@ -62668,7 +62690,7 @@ var TaskArchiveManager = class {
           await rename5(temporary, path);
         } else await link(temporary, path);
         await this.store.transaction((state) => {
-          state.tasks.find((row) => row.id === task.id).summaryDigest = digest;
+          state.tasks.find((row) => row.id === task.id).summaryDigest = digest2;
         });
       } finally {
         await handle.close().catch(() => void 0);
@@ -64383,10 +64405,20 @@ function candidate(value2) {
 async function resolveFavoriteSkill(input, list) {
   const query = requiredText(input.query, "query", 160);
   const folder = input.folder === void 0 ? void 0 : requiredText(input.folder, "folder", 80);
-  const result = await list({ query, ...folder ? { folder } : {} });
+  const folderPool = input.strategy !== "single" && folder !== void 0 && normalized(query) === normalized(folder);
+  const result = await list(folderPool ? { folder } : { query, ...folder ? { folder } : {} });
   if (!result || typeof result !== "object" || !Array.isArray(result.items))
     return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
   const rows = [...new Map(result.items.map(candidate).map((row) => [row.slug, row])).values()].filter((row) => !folder || (normalized(folder) === "\u672A\u5206\u7C7B" ? row.folderId === null : row.folderName !== null && normalized(row.folderName) === normalized(folder)));
+  if (folderPool) {
+    const members = rows.filter((row) => row.executable && (row.kind === "skill" || row.kind === "member"));
+    const matchingFamilies = rows.filter((row) => row.kind === "family" && [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === normalized(query)));
+    if (matchingFamilies.length > 1 || matchingFamilies.length && members.length)
+      return fail4("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u65CF\u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
+    if (matchingFamilies.length === 1) return matchingFamilies[0];
+    if (!members.length) return fail4("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
+    return { kind: "folder-pool", folderName: folder, members };
+  }
   const exact = rows.filter((row) => [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === normalized(query)));
   if (exact.length > 1) return fail4("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF Skill \u5339\u914D\u8BE5\u540D\u79F0\u6216\u5907\u6CE8\uFF0C\u8BF7\u6307\u5B9A\u6536\u85CF\u6587\u4EF6\u5939\u6216\u7CBE\u786E Skill\u3002");
   if (!exact.length) return fail4("SKILL_NOT_FOUND", "\u6211\u7684\u6536\u85CF\u4E2D\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684 Skill\u3002");
@@ -64484,10 +64516,24 @@ function toolboxPresetPlan(raw) {
 // plugins/podplo-dsh/src/native-skill-batch.ts
 var nativeTaskToolName = "mcp__podplo__podplo_prepare_task";
 var nativeTaskRawName = "podplo_prepare_task";
+var generationFieldNames = ["model", "ratio", "quality", "ecoMode", "background", "instructions"];
+var generationFieldSet = new Set(generationFieldNames);
 var nativeTaskTool = {
   name: nativeTaskToolName,
   description: "Prepare one complete PodPlo task. Describe only ordered stages: source folder/previous stage and image scope, exact Skill/favorite selection strategy, generation choices explicitly supplied by the user, and either no local action, a validated grid split, or a user-supplied PodPlo preset path. The Host resolves files, Skills, fixed random assignments, defaults, dependencies, local plan and the exact whole-order credits; then it shows one native confirmation. Unknown local actions are rejected. Do not inspect folders, discover items one by one, invent IDs, write processingPlan, or calculate credits.",
-  inputSchema: { type: "object", additionalProperties: false, required: ["stages"], properties: {
+  inputSchema: { type: "object", additionalProperties: false, required: ["stages"], examples: [{ stages: [
+    {
+      id: "base",
+      source: { folderPath: "/user-supplied/folder", scope: "all" },
+      skill: { query: "exact-skill", source: "public", strategy: "single" },
+      generation: { model: "user-selected-model", ecoMode: false, background: "transparent" }
+    },
+    {
+      id: "next",
+      source: { fromStage: "base", scope: "first" },
+      skill: { query: "next-exact-skill", source: "public", strategy: "single" }
+    }
+  ] }], properties: {
     stages: { type: "array", minItems: 1, maxItems: 10, items: {
       type: "object",
       additionalProperties: false,
@@ -64553,32 +64599,36 @@ var fail5 = (code, message) => {
 };
 var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
 var record6 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
+var rejectUnknownField = (value2, allowed, path) => {
+  const key = Object.keys(value2).find((candidate2) => !allowed.has(candidate2));
+  if (key !== void 0) fail5("INVALID_ARGUMENT", `${path}.${key} \u662F\u672A\u77E5\u53C2\u6570\u3002`);
+};
 var text3 = (value2, name2, max) => {
   if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail5("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
   return value2.trim();
 };
-function parseInput(value2) {
+function parseInput(value2, path = "batch") {
   const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
-  if (Object.keys(value2).some((key) => !allowed.has(key))) fail5("INVALID_ARGUMENT", "\u6279\u91CF\u4EFB\u52A1\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+  rejectUnknownField(value2, allowed, path);
   const count2 = value2.expectedImageCount;
-  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail5("INVALID_ARGUMENT", "expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002");
-  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail5("INVALID_ARGUMENT", "skillStrategy \u65E0\u6548\u3002");
+  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail5("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
+  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail5("INVALID_ARGUMENT", `${path}.skillStrategy \u65E0\u6548\u3002`);
   let imageIndexes;
   if (value2.imageIndexes !== void 0) {
     const indexes = value2.imageIndexes;
     if (!Array.isArray(indexes) || !indexes.length || indexes.length > 100 || new Set(indexes).size !== indexes.length || indexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99))
-      fail5("INVALID_ARGUMENT", "\u56FE\u7247\u7D22\u5F15\u8303\u56F4\u65E0\u6548\u3002");
+      fail5("INVALID_ARGUMENT", `${path}.imageIndexes \u65E0\u6548\u3002`);
     imageIndexes = indexes.map(Number);
   }
-  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail5("INVALID_ARGUMENT", "ecoMode \u65E0\u6548\u3002");
-  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail5("INVALID_ARGUMENT", "background \u65E0\u6548\u3002");
-  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail5("INVALID_ARGUMENT", "skillSource \u65E0\u6548\u3002");
-  const skillFolder = value2.skillFolder === void 0 ? void 0 : text3(value2.skillFolder, "skillFolder", 80);
+  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail5("INVALID_ARGUMENT", `${path}.ecoMode \u65E0\u6548\u3002`);
+  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail5("INVALID_ARGUMENT", `${path}.background \u65E0\u6548\u3002`);
+  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail5("INVALID_ARGUMENT", `${path}.skillSource \u65E0\u6548\u3002`);
+  const skillFolder = value2.skillFolder === void 0 ? void 0 : text3(value2.skillFolder, `${path}.skillFolder`, 80);
   const skillSource = value2.skillSource ?? (skillFolder ? "favorite" : "auto");
-  if (skillFolder && skillSource !== "favorite") fail5("INVALID_ARGUMENT", "skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002");
+  if (skillFolder && skillSource !== "favorite") fail5("INVALID_ARGUMENT", `${path}.skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002`);
   if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
-    fail5("INVALID_ARGUMENT", "instructions \u65E0\u6548\u3002");
-  const folderPath = value2.folderPath === void 0 ? void 0 : text3(value2.folderPath, "folderPath", 4096);
+    fail5("INVALID_ARGUMENT", `${path}.instructions \u65E0\u6548\u3002`);
+  const folderPath = value2.folderPath === void 0 ? void 0 : text3(value2.folderPath, `${path}.folderPath`, 4096);
   const referenceAssetIds = value2.referenceAssetIds;
   if (folderPath !== void 0 === (referenceAssetIds !== void 0) || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))))
     fail5("INVALID_ARGUMENT", "\u5FC5\u987B\u63D0\u4F9B\u4E00\u4E2A\u56FE\u7247\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750 ID\u3002");
@@ -64586,17 +64636,17 @@ function parseInput(value2) {
     ...folderPath ? { folderPath } : { referenceAssetIds },
     ...imageIndexes ? { imageIndexes } : {},
     ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
-    skillQuery: text3(value2.skillQuery, "skillQuery", 160),
+    skillQuery: text3(value2.skillQuery, `${path}.skillQuery`, 160),
     skillStrategy: value2.skillStrategy,
-    ...value2.model === void 0 ? {} : { model: text3(value2.model, "model", 160) },
-    ...value2.ratio === void 0 ? {} : { ratio: text3(value2.ratio, "ratio", 8) },
-    ...value2.quality === void 0 ? {} : { quality: text3(value2.quality, "quality", 32) },
+    ...value2.model === void 0 ? {} : { model: text3(value2.model, `${path}.model`, 160) },
+    ...value2.ratio === void 0 ? {} : { ratio: text3(value2.ratio, `${path}.ratio`, 8) },
+    ...value2.quality === void 0 ? {} : { quality: text3(value2.quality, `${path}.quality`, 32) },
     ...value2.ecoMode === void 0 ? {} : { ecoMode: value2.ecoMode },
     ...value2.background === void 0 ? {} : { background: value2.background },
     processingPlan: value2.processingPlan,
     skillSource,
     ...skillFolder ? { skillFolder } : {},
-    ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text3(value2.processingPresetPath, "processingPresetPath", 4096) } : {},
+    ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text3(value2.processingPresetPath, `${path}.processingPresetPath`, 4096) } : {},
     instructions: typeof value2.instructions === "string" ? value2.instructions.trim() : ""
   };
 }
@@ -64773,7 +64823,7 @@ async function assertOwner(deps, ownerId, namespace) {
     fail5("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
 }
 function shuffledWithoutReplacement(values, count2, choose) {
-  if (count2 > values.length) fail5("SKILL_FAMILY_TOO_SMALL", `\u8BE5 Skill \u65CF\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+  if (count2 > values.length) fail5("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
   const pool = [...values], selected = [];
   while (selected.length < count2) {
     const index = choose(pool.length);
@@ -64790,30 +64840,30 @@ function expandNativeTaskInput(raw) {
   const stages2 = rawStages.map((value2, index) => {
     const stage = record6(value2), id2 = text3(stage.id, `stages[${index}].id`, 40);
     if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail5("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
-    if (Object.keys(stage).some((key) => !["id", "name", "source", "skill", "generation", "local"].includes(key)))
-      fail5("INVALID_ARGUMENT", "\u9636\u6BB5\u5305\u542B\u672A\u77E5\u9AD8\u5C42\u53C2\u6570\u3002");
+    rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "skill", "generation", "local"]), `stages[${index}]`);
     ids2.add(id2);
     const source = record6(stage.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
     const sourceChoices = [typeof folderPath === "string", typeof fromStage === "string", Array.isArray(referenceIds)].filter(Boolean).length;
-    if (Object.keys(source).some((key) => !["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"].includes(key)) || sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
+    rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"]), `stages[${index}].source`);
+    if (sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
       fail5("INVALID_ARGUMENT", "\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
     const scope = source.scope ?? "all";
     if (!["all", "first", "indexes"].includes(String(scope))) fail5("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
     if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail5("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
     const imageIndexes = scope === "first" ? [0] : scope === "indexes" ? source.indexes : void 0;
     const skill = record6(stage.skill);
-    if (Object.keys(skill).some((key) => !["query", "source", "favoriteFolder", "strategy"].includes(key))) fail5("INVALID_ARGUMENT", "Skill \u9009\u62E9\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    rejectUnknownField(skill, /* @__PURE__ */ new Set(["query", "source", "favoriteFolder", "strategy"]), `stages[${index}].skill`);
     const strategy = String(skill.strategy);
     if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail5("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
     const generation = stage.generation === void 0 ? {} : record6(stage.generation);
-    if (Object.keys(generation).some((key) => !["model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
-      fail5("INVALID_ARGUMENT", "\u751F\u56FE\u9009\u9879\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    rejectUnknownField(generation, generationFieldSet, `stages[${index}].generation`);
     const local = stage.local === void 0 ? void 0 : record6(stage.local);
     let processingPresetPath;
     const processingPlan = [];
     if (local) {
       const choices = [local.presetPath, local.actions, local.exactPlan].filter((value3) => value3 !== void 0).length;
-      if (Object.keys(local).some((key) => !["presetPath", "actions", "exactPlan"].includes(key)) || choices !== 1)
+      rejectUnknownField(local, /* @__PURE__ */ new Set(["presetPath", "actions", "exactPlan"]), `stages[${index}].local`);
+      if (choices !== 1)
         fail5("INVALID_ARGUMENT", "\u672C\u5730\u52A0\u5DE5\u5FC5\u987B\u9009\u62E9\u9884\u8BBE\u8DEF\u5F84\u6216\u660E\u786E\u52A8\u4F5C\u3002");
       if (local.presetPath !== void 0) processingPresetPath = text3(local.presetPath, "local.presetPath", 4096);
       else if (local.exactPlan !== void 0) processingPlan.push(...parseProcessingPlan(local.exactPlan) ?? []);
@@ -64822,7 +64872,8 @@ function expandNativeTaskInput(raw) {
         const actions = local.actions;
         for (const [actionIndex, value3] of actions.entries()) {
           const action = record6(value3);
-          if (Object.keys(action).some((key) => !["type", "rows", "columns"].includes(key)) || action.type !== "grid-split" || !Number.isInteger(action.rows) || Number(action.rows) < 1 || Number(action.rows) > 6 || !Number.isInteger(action.columns) || Number(action.columns) < 1 || Number(action.columns) > 6)
+          rejectUnknownField(action, /* @__PURE__ */ new Set(["type", "rows", "columns"]), `stages[${index}].local.actions[${actionIndex}]`);
+          if (action.type !== "grid-split" || !Number.isInteger(action.rows) || Number(action.rows) < 1 || Number(action.rows) > 6 || !Number.isInteger(action.columns) || Number(action.columns) < 1 || Number(action.columns) > 6)
             fail5("UNSUPPORTED_LOCAL_ACTION", "\u5F53\u524D\u9AD8\u5C42\u5165\u53E3\u53EA\u652F\u6301 grid-split\uFF1B\u5176\u4ED6\u52A8\u4F5C\u8BF7\u63D0\u4F9B\u5DF2\u4FDD\u5B58\u7684 PodPlo \u5DE5\u5177\u7BB1\u9884\u8BBE\u3002");
           processingPlan.push({
             id: `grid-${actionIndex + 1}`,
@@ -64872,12 +64923,15 @@ async function prepareNativeSkillBatch(raw, deps) {
   if (input.skillSource === "favorite" && !deps.favoriteSkills) fail5("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
   const favoriteStrategy = input.skillStrategy === "random-per-image-reuse" ? "random-per-image" : input.skillStrategy;
   const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: favoriteStrategy }, deps.favoriteSkills) : void 0;
+  const favoritePool = favorite?.kind === "folder-pool" ? favorite : void 0;
+  const favoriteItem = favorite && favorite.kind !== "folder-pool" ? favorite : void 0;
   if (input.skillSource !== "personal") await deps.online.refreshPublicSkills();
   await assertOwner(deps, ownerId, namespace);
   const catalog = deps.online.snapshot().publicDirectory?.catalog;
   if (personal && input.skillSource === "auto" && catalog?.skills.some((row) => row.executable && [row.slug, row.title].some((value2) => value2.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase())))
     fail5("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
-  const match = personal ? void 0 : catalogMatch(favorite ? { ...input, skillQuery: favorite.slug } : input, catalog);
+  if (favoritePool && !catalog) fail5("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+  const match = personal || favoritePool ? void 0 : catalogMatch(favoriteItem ? { ...input, skillQuery: favoriteItem.slug } : input, catalog);
   let title, members;
   if (input.skillStrategy === "single") {
     const skill = personal ?? boundSkill(await deps.online.skillDetails(match.slug));
@@ -64885,6 +64939,27 @@ async function prepareNativeSkillBatch(raw, deps) {
       fail5("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
     title = skill.details.title;
     members = [skill];
+  } else if (favoritePool) {
+    title = favoritePool.folderName;
+    members = [];
+    for (const candidate2 of favoritePool.members) {
+      const rows = (await deps.online.skills(candidate2.slug)).filter((row) => row.slug === candidate2.slug);
+      if (rows.length !== 1) continue;
+      const publicRow = catalog.skills.find((row) => row.slug === candidate2.slug && row.executable);
+      if (!publicRow) continue;
+      const member = boundSkill({ ...rows[0], details: {
+        slug: publicRow.slug,
+        title: publicRow.title,
+        summary: publicRow.summary,
+        description: publicRow.description,
+        inputs: publicRow.inputs,
+        keeps: publicRow.keeps,
+        changes: publicRow.changes,
+        output: publicRow.output
+      } });
+      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
+    }
+    if (!members.length) fail5("SKILL_FAVORITE_POOL_UNAVAILABLE", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879 Skill\u3002");
   } else {
     const family = match;
     title = family.title;
@@ -64999,14 +65074,26 @@ async function prepareWorkflowBatch(raw, deps) {
     const stage = record6(value2), id2 = text3(stage.id, `workflow.stages[${index}].id`, 40);
     if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     stageIds.add(id2);
-    if (Object.keys(stage).some((key) => !["id", "name", "source", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
-      fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
+    const workflowStageFields = /* @__PURE__ */ new Set([
+      "id",
+      "name",
+      "source",
+      "skillQuery",
+      "skillSource",
+      "skillFolder",
+      "skillStrategy",
+      "expectedImageCount",
+      "processingPresetPath",
+      "processingPlan",
+      ...generationFieldNames
+    ]);
+    rejectUnknownField(stage, workflowStageFields, `workflow.stages[${index}]`);
     const name2 = stage.name === void 0 ? id2 : text3(stage.name, `workflow.stages[${index}].name`, 80);
     const source = record6(stage.source);
-    if (Object.keys(source).some((key) => !["folderPath", "referenceAssetIds", "stageId", "imageIndexes"].includes(key))) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u6765\u6E90\u5305\u542B\u672A\u77E5\u53C2\u6570\u3002");
-    const folderPath = source.folderPath === void 0 ? void 0 : text3(source.folderPath, "folderPath", 4096);
+    rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "stageId", "imageIndexes"]), `workflow.stages[${index}].source`);
+    const folderPath = source.folderPath === void 0 ? void 0 : text3(source.folderPath, `workflow.stages[${index}].source.folderPath`, 4096);
     const referenceAssetIds = source.referenceAssetIds;
-    const sourceStageId = source.stageId === void 0 ? void 0 : text3(source.stageId, "stageId", 40);
+    const sourceStageId = source.stageId === void 0 ? void 0 : text3(source.stageId, `workflow.stages[${index}].source.stageId`, 40);
     const sourceChoices = [folderPath !== void 0, referenceAssetIds !== void 0, sourceStageId !== void 0].filter(Boolean).length;
     if (sourceChoices !== 1 || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((value3) => typeof value3 !== "string" || !value3 || value3.length > 240 || /[/\\\x00\r\n]/u.test(value3))))
       fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
@@ -65016,7 +65103,7 @@ async function prepareWorkflowBatch(raw, deps) {
       imageIndexes = source.imageIndexes;
     }
     const { id: _id, name: _name, source: _source, ...generationFields } = stage;
-    const parsedGeneration = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : referenceAssetIds ? { referenceAssetIds } : { referenceAssetIds: ["__deferred__"] } });
+    const parsedGeneration = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : referenceAssetIds ? { referenceAssetIds } : { referenceAssetIds: ["__deferred__"] } }, `workflow.stages[${index}]`);
     const { folderPath: _folderPath, referenceAssetIds: _referenceAssetIds, imageIndexes: _imageIndexes, ...generation } = parsedGeneration;
     return { id: id2, name: name2, folderPath, referenceAssetIds, sourceStageId, imageIndexes, generation };
   });
@@ -65102,11 +65189,11 @@ async function prepareGroupedBatch(raw, deps) {
     fail5("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
   const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const { groups: groups2, ...shared } = raw;
-  const parsed = groups2.map((group) => {
+  const parsed = groups2.map((group, index) => {
     const row = record6(group);
     if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
       fail5("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
-    return parseInput({ ...shared, ...row });
+    return parseInput({ ...shared, ...row }, `groups[${index}]`);
   });
   for (const input of parsed) {
     if (!input.folderPath || !deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
@@ -65730,6 +65817,90 @@ var GenerationProgressRefresh = class {
   }
 };
 
+// plugins/podplo-dsh/src/native-task-attempt-policy.ts
+import { createHash as createHash17 } from "node:crypto";
+var digest = (value2) => createHash17("sha256").update(canonical(value2)).digest("hex");
+function trustedUserMessages(events) {
+  return Array.isArray(events) ? events.filter((event) => !!event && typeof event === "object" && event.type === "user/message" && event.data?.source?.kind === "user") : [];
+}
+var transientPreparationCodes = /* @__PURE__ */ new Set([
+  "ACCOUNT_CHANGED",
+  "SESSION_CHANGED",
+  "SKILL_CATALOG_UNAVAILABLE",
+  "GENERATION_CAPABILITIES_UNAVAILABLE",
+  "FAVORITES_UNAVAILABLE",
+  "NATIVE_REFERENCE_IMPORT_UNAVAILABLE",
+  "ORDER_RESERVATION_UNAVAILABLE"
+]);
+function isDeterministicNativeTaskError(error101) {
+  return error101 instanceof PodploPluginError && !transientPreparationCodes.has(error101.code);
+}
+var NativeTaskAttemptPolicy = class {
+  boundaryKey;
+  entry;
+  clear() {
+    this.boundaryKey = void 0;
+    this.entry = void 0;
+  }
+  async run(input) {
+    const messages = trustedUserMessages(input.events);
+    const boundaryKey = digest({
+      namespace: input.namespace ?? null,
+      sessionId: input.sessionId,
+      messageCount: messages.length,
+      message: messages.at(-1) ?? null
+    });
+    if (this.boundaryKey !== boundaryKey) {
+      this.boundaryKey = boundaryKey;
+      this.entry = void 0;
+    }
+    const inputDigest = digest(input.candidate);
+    if (this.entry && this.entry.inputDigest !== inputDigest) {
+      throw new PodploPluginError(
+        "NATIVE_TASK_ATTEMPT_LOCKED",
+        "\u540C\u4E00\u6761\u7528\u6237\u6D88\u606F\u4E2D\u7684\u5B8C\u6574\u4EFB\u52A1\u65B9\u6848\u5DF2\u7ECF\u9501\u5B9A\uFF1B\u4E0D\u80FD\u901A\u8FC7\u5220\u51CF\u56FE\u7247\u3001\u9636\u6BB5\u3001Skill\u3001\u6A21\u578B\u3001Eco \u53C2\u6570\u3001\u6587\u4EF6\u5939\u6216\u53C2\u8003\u56FE\u91CD\u65B0\u8BD5\u5355\u3002\u8BF7\u8BA9\u7528\u6237\u53D1\u9001\u4E00\u6761\u65B0\u6D88\u606F\u660E\u786E\u4FEE\u6539\u5B8C\u6574\u65B9\u6848\u3002",
+        { retryable: false, requiresNewUserMessage: true }
+      );
+    }
+    const entry = this.entry ??= {
+      inputDigest,
+      attemptKey: digest({ boundaryKey, inputDigest })
+    };
+    if (entry.failure) {
+      throw new PodploPluginError(
+        "NATIVE_TASK_ATTEMPT_NON_RETRYABLE",
+        `\u672C\u8F6E\u5B8C\u6574\u4EFB\u52A1\u5DF2\u786E\u5B9A\u6027\u5931\u8D25\uFF08${entry.failure.code}\uFF09\uFF1A${entry.failure.message} \u8BF7\u4FEE\u6B63\u540E\u7531\u7528\u6237\u53D1\u9001\u65B0\u6D88\u606F\u518D\u8BD5\u3002`,
+        { retryable: false, requiresNewUserMessage: true, causeCode: entry.failure.code }
+      );
+    }
+    if (entry.promise) return entry.promise;
+    const attempt = Promise.resolve().then(() => input.execute(entry.attemptKey));
+    entry.promise = attempt;
+    try {
+      return await attempt;
+    } catch (error101) {
+      if (isDeterministicNativeTaskError(error101)) {
+        entry.failure = { code: error101.code, message: error101.message };
+      }
+      entry.promise = void 0;
+      throw error101;
+    }
+  }
+};
+var blockedToolName = (name2) => {
+  const normalized2 = name2.toLowerCase();
+  if (normalized2.startsWith("podplo_") || normalized2.startsWith("mcp__podplo__")) return false;
+  return /(^|__|_)(?:bash|pwsh|powershell|shell|terminal|run_code|read_image|web_search|search_query|image_query|list_mcp_resources|list_mcp_resource_templates|read_mcp_resource|read_file|view_file|list_files|list_directory|search_files|find_files|source_search|grep|rg|glob|working_directory|get_working_directory)(?:$|__|_)/u.test(normalized2);
+};
+function podploTaskAllowedRestrictableTools(names) {
+  return [...names].filter((name2) => typeof name2 === "string" && !blockedToolName(name2)).sort();
+}
+function installPodploTaskToolRestriction(agent) {
+  const names = agent.ctx.tools.view?.(agent)?.restrictableNames;
+  if (!(names instanceof Set)) throw new Error("PodPlo Task tool restriction is unavailable in this Host");
+  return agent.ctx.tools.restrict({ allow: podploTaskAllowedRestrictableTools(names) });
+}
+
 // plugins/podplo-dsh/src/index.ts
 var inject = ["connection", "credentials", "agents", "sessions", "sessionProjections", "tools", "attachments", "agentPresets", "approval", "pluginManager"];
 var Config = Schema.object({
@@ -65784,7 +65955,7 @@ function userAuthorizedFolder(events, folderPath) {
   };
   const desktopName = basename13(folderPath);
   const desktopPath = resolve2(homedir2(), "Desktop", desktopName);
-  const desktopMention = new RegExp(`(?:\u684C\u9762|Desktop)[\\s/\\\\:\uFF1A]+["\u201C'\u2018]?${desktopName.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}(?=$|[\\s"'\u201C\u201D\u2018\u2019\uFF0C\u3002\uFF1B\uFF1A\u3001\uFF01\uFF1F\uFF09)\\]}])`, "u");
+  const desktopMention = new RegExp(`(?:\u684C\u9762|Desktop)(?:[\\s/\\\\:\uFF1A]+|(?=["\u201C'\u2018]))["\u201C'\u2018]?${desktopName.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}(?=$|[\\s"'\u201C\u201D\u2018\u2019\uFF0C\u3002\uFF1B\uFF1A\u3001\uFF01\uFF1F\uFF09)\\]}])`, "u");
   const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute8(folderPath) && resolve2(folderPath) === desktopPath && desktopMention.test(value2);
   const questions = /* @__PURE__ */ new Map();
   for (const raw of events) {
@@ -65995,6 +66166,7 @@ async function apply(ctx, config3 = {}) {
     logger: ctx.logger
   }) : () => void 0;
   const bindings = /* @__PURE__ */ new Map();
+  let taskAttemptNamespace = online.auth.namespace;
   let closed = false;
   const nativeGenerationWaits = /* @__PURE__ */ new Set();
   const nativeGenerationWaitReservations = /* @__PURE__ */ new Map();
@@ -66123,6 +66295,10 @@ async function apply(ctx, config3 = {}) {
   });
   let progressPoll, refreshing, progressActive = false;
   const generationChanged = () => {
+    if (taskAttemptNamespace !== online.auth.namespace) {
+      taskAttemptNamespace = online.auth.namespace;
+      for (const binding of bindings.values()) binding.clearTaskAttempts?.();
+    }
     void restoreCompletionIntents();
     for (const key of chatGenerationResumes.keys()) void checkChatGeneration(key);
     if (!refreshing && !progressActive && service.pendingGenerationIds().length) progressPoll?.wake();
@@ -66213,6 +66389,15 @@ async function apply(ctx, config3 = {}) {
       }
     });
   };
+  const applyTaskPresetRestriction = (sessionId, presetId) => {
+    const binding = bindings.get(sessionId);
+    if (!binding?.disposeWaitTool) return;
+    binding.disposeTaskToolRestriction?.();
+    binding.disposeTaskToolRestriction = void 0;
+    if (presetId !== PODPLO_TASK_PRESET_ID) return;
+    const agent = ctx.agents.get(sessionId);
+    if (agent) binding.disposeTaskToolRestriction = installPodploTaskToolRestriction(agent);
+  };
   async function attach(agent) {
     if (closed || bindings.has(agent.id)) return;
     const initialPreset = presetForAgent(agent);
@@ -66264,53 +66449,49 @@ async function apply(ctx, config3 = {}) {
         }
       });
       bindings.set(agent.id, { dispose: session2.dispose, fiber });
-      const folderPreparations = /* @__PURE__ */ new Map();
+      const folderPreparations = new NativeTaskAttemptPolicy();
       const batchTool = NativeMcp.createMcpToolDefinition(agent.ctx, {
         ...nativeTaskTool,
         rawName: nativeTaskRawName,
         async call(args, execution) {
-          return approveGeneration(nativeTaskToolName, args, execution, async (input) => {
-            const events = agent.session?.snapshotEvents?.();
-            const messages = Array.isArray(events) ? events.filter((event) => event?.type === "user/message" && event?.data?.source?.kind === "user") : [];
-            const requestKey = createHash17("sha256").update(canonical({
-              namespace: online.auth.namespace,
-              turn: messages.length,
-              message: messages.at(-1),
-              input
-            })).digest("hex");
-            let preparation = folderPreparations.get(requestKey);
-            if (!preparation) {
-              preparation = prepareNativeTask(input, {
-                online,
-                cwd: ctx.sessions?.get(agent.id)?.header.cwd,
-                nativeSessionId: agent.id,
-                signal: execution.signal,
-                createId: () => `folder-${requestKey}`,
-                personalSkills: (query, cursor) => online.userSkills(query, cursor, execution.signal),
-                personalSkill: (id2) => online.userSkill(id2, { signal: execution.signal }),
-                favoriteSkills: async (query) => (await service.dispatch("favorites.skills.list", query, { source: "agent", sessionId: agent.id })).data,
-                isFolderAuthorized: (folderPath) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), folderPath),
-                generationCapabilities: () => service.callTool("podplo_generation_capabilities", { refresh: false }, agent.id),
-                verifySelectedSkill: async (slug2, id2) => {
-                  if (slug2 === null) {
-                    await service.callTool("podplo_get_my_skill", { id: id2 }, agent.id);
-                    return;
-                  }
-                  const detail = await service.callTool("podplo_get_skill", { slug: slug2 }, agent.id);
-                  const binding = detail?.binding && typeof detail.binding === "object" && !Array.isArray(detail.binding) ? detail.binding : void 0;
-                  if (detail?.slug !== slug2 || binding?.id !== id2)
-                    throw new PodploPluginError("SKILL_BINDING_CHANGED", `Skill ${slug2} \u7684\u6267\u884C\u7ED1\u5B9A\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u51C6\u5907\u6574\u6279\u3002`);
-                },
-                importReferences: importTrustedReferences
-              });
-              folderPreparations.set(requestKey, preparation);
-              void preparation.catch(() => {
-                if (folderPreparations.get(requestKey) === preparation) folderPreparations.delete(requestKey);
-              });
-            }
-            const prepared = await preparation;
-            execution.signal?.throwIfAborted?.();
-            return transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
+          return folderPreparations.run({
+            namespace: online.auth.namespace,
+            sessionId: agent.id,
+            events: agent.session?.snapshotEvents?.(),
+            candidate: args,
+            execute: (requestKey) => approveGeneration(
+              nativeTaskToolName,
+              args,
+              execution,
+              async (input) => {
+                const preparation = prepareNativeTask(input, {
+                  online,
+                  cwd: ctx.sessions?.get(agent.id)?.header.cwd,
+                  nativeSessionId: agent.id,
+                  signal: execution.signal,
+                  createId: () => `folder-${requestKey}`,
+                  personalSkills: (query, cursor) => online.userSkills(query, cursor, execution.signal),
+                  personalSkill: (id2) => online.userSkill(id2, { signal: execution.signal }),
+                  favoriteSkills: async (query) => (await service.dispatch("favorites.skills.list", query, { source: "agent", sessionId: agent.id })).data,
+                  isFolderAuthorized: (folderPath) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), folderPath),
+                  generationCapabilities: () => service.callTool("podplo_generation_capabilities", { refresh: false }, agent.id),
+                  verifySelectedSkill: async (slug2, id2) => {
+                    if (slug2 === null) {
+                      await service.callTool("podplo_get_my_skill", { id: id2 }, agent.id);
+                      return;
+                    }
+                    const detail = await service.callTool("podplo_get_skill", { slug: slug2 }, agent.id);
+                    const binding = detail?.binding && typeof detail.binding === "object" && !Array.isArray(detail.binding) ? detail.binding : void 0;
+                    if (detail?.slug !== slug2 || binding?.id !== id2)
+                      throw new PodploPluginError("SKILL_BINDING_CHANGED", `Skill ${slug2} \u7684\u6267\u884C\u7ED1\u5B9A\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u51C6\u5907\u6574\u6279\u3002`);
+                  },
+                  importReferences: importTrustedReferences
+                });
+                const prepared = await preparation;
+                execution.signal?.throwIfAborted?.();
+                return transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
+              }
+            )
           });
         }
       });
@@ -66353,13 +66534,24 @@ async function apply(ctx, config3 = {}) {
       });
       const disposeWaitTool = agent.ctx.tools.register(waitTool);
       const disposeJevRouting = enableJevTestPreset && jevActiveSessionIds.has(agent.id) ? startJevRouting(agent) : void 0;
-      bindings.set(agent.id, { dispose: session2.dispose, fiber, disposeBatchTool, disposeWaitTool, disposeJevRouting });
+      const disposeTaskToolRestriction = presetForAgent(agent) === PODPLO_TASK_PRESET_ID ? installPodploTaskToolRestriction(agent) : void 0;
+      bindings.set(agent.id, {
+        dispose: session2.dispose,
+        fiber,
+        disposeBatchTool,
+        disposeWaitTool,
+        disposeJevRouting,
+        disposeTaskToolRestriction,
+        clearTaskAttempts: () => folderPreparations.clear()
+      });
       await restoreCompletionIntents(true);
     } catch (error101) {
       const current = bindings.get(agent.id);
       current?.disposeJevRouting?.();
+      current?.disposeTaskToolRestriction?.();
       current?.disposeBatchTool?.();
       current?.disposeWaitTool?.();
+      current?.clearTaskAttempts?.();
       await current?.fiber?.dispose?.();
       session2.dispose();
       bindings.delete(agent.id);
@@ -66376,8 +66568,10 @@ async function apply(ctx, config3 = {}) {
     if (!binding) return;
     bindings.delete(agent.id);
     binding.disposeJevRouting?.();
+    binding.disposeTaskToolRestriction?.();
     binding.disposeBatchTool?.();
     binding.disposeWaitTool?.();
+    binding.clearTaskAttempts?.();
     binding.dispose();
     await binding.fiber?.dispose?.();
   };
@@ -66388,6 +66582,7 @@ async function apply(ctx, config3 = {}) {
     await remove(agent);
   });
   const presetSelected = ctx.on("agent-preset/selected", (sessionId, presetId) => {
+    applyTaskPresetRestriction(sessionId, presetId);
     if (enableJevTestPreset) applySelectedPreset(sessionId, presetId);
   });
   const stopRemaining = async (sessionId) => {
