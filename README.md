@@ -1,4 +1,4 @@
-# PodPlo Plugin v0.1.20
+# PodPlo Plugin v0.1.21
 
 本版保留并展示各阶段实际成果，明确标注失败与未执行；任务总结只列结果。
 
@@ -48,8 +48,11 @@
 https://github.com/jacksia0409/podplo-dsh-plugin
 
 已安装用户可使用本版标签地址升级：
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.20
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.21
 
 也可通过官方插件管理器选择本地 TGZ。生成或加工任务运行时不要更新；管理器支持热安装时无需重启。不修改 DSH 核心、账号或模型配置。
 
 插件默认尝试所有 DSH 版本（含预发布版），不代表所有版本已验收；宿主接口变化时仍需适配。Windows 使用通用 TGZ，尚未完成 Windows 实机验收。
+
+
+本版取消 Skill 生图文本模型融合：客户端仅传用户额外规则原文，无则留空，服务端按固定格式组装。保留 0.1.20 全阶段成果、失败/未执行标注、简短总结、整单确认、权限与幂等保护。

@@ -2438,7 +2438,7 @@ var argsForCapabilities = (caps, selected, values) => {
   const put = (key, value2) => {
     if (props[key] !== void 0 && value2 !== "" && value2 !== void 0) args[key] = value2;
   };
-  put("prompt", values.prompt.trim());
+  if (props.prompt !== void 0) args.prompt = values.prompt;
   put("modelId", values.model);
   put("referenceAssetIds", values.references);
   put("ratio", values.ratio.trim());
@@ -3107,7 +3107,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     if (selectedSkill?.available === false) return "\u8BE5 Skill \u5DF2\u4E0D\u5728\u5F53\u524D\u8D26\u53F7\u7684\u53EF\u7528\u5217\u8868\u4E2D\uFF0C\u8BF7\u5237\u65B0\u6216\u91CD\u65B0\u9009\u62E9\u3002";
     if (selectedSkill && skillLoading === selectedSkill.id) return "\u6B63\u5728\u6838\u5BF9 Skill \u7684\u6700\u65B0\u8BE6\u60C5\u3002";
     if (selectedSkill && (!selectedSkill.detail || !selectedSkill.generationId)) return "\u8BF7\u7B49\u5F85 Skill \u5B8C\u6574\u8BE6\u60C5\u3001\u7248\u672C\u548C\u751F\u56FE\u7ED1\u5B9A\u8BFB\u53D6\u5B8C\u6210\u3002";
-    if (properties.prompt && !prompt.trim()) return "\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002";
+    if (!skillId && properties.prompt && !prompt.trim()) return "\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002";
     if (properties.modelId && !model) return "\u8BF7\u9009\u62E9\u670D\u52A1\u7AEF\u5F53\u524D\u63D0\u4F9B\u7684\u6A21\u578B\u3002";
     if (selectedModel?.availableForCurrentPlan === false) return "\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u5F00\u901A\u8FD9\u4E2A\u6A21\u578B\uFF0C\u8BF7\u9009\u62E9\u5176\u4ED6\u6A21\u578B\u3002";
     if (properties.ratio && (!ratio.trim() || modelRatios.length && !modelRatios.includes(ratio))) return "\u8BF7\u9009\u62E9\u5F53\u524D\u6A21\u578B\u652F\u6301\u7684\u56FE\u7247\u6BD4\u4F8B\u3002";
@@ -3173,7 +3173,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         transparent: selectedValues.transparent
       };
       const latestProperties = latestCaps.quoteInputSchema?.properties ?? {};
-      if (latestProperties.prompt && !latestValues.prompt.trim()) throw new Error("\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002");
+      if (!skillId && latestProperties.prompt && !latestValues.prompt.trim()) throw new Error("\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002");
       if (latestProperties.ratio && stringList(latestModel.ratios).length && !stringList(latestModel.ratios).includes(latestValues.ratio)) throw new Error("\u6A21\u578B\u652F\u6301\u7684\u6BD4\u4F8B\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
       const modelReferenceLimit = latestValues.booleans.ecoMode === true && Number.isInteger(Number(latestModel.ecoMaximumReferenceImages)) ? Number(latestModel.ecoMaximumReferenceImages) : Number(latestModel.maximumReferenceImages);
       const schemaReferenceLimit = Number(latestProperties.referenceAssetIds?.maxItems);
@@ -32871,7 +32871,7 @@ var ModelSchema = external_exports2.object({
   supportsImageSearch: external_exports2.boolean()
 });
 var QuoteInputSchema = external_exports2.object({
-  prompt: external_exports2.string().trim().max(4e3),
+  prompt: external_exports2.string().max(4e3),
   modelId: external_exports2.string().uuid(),
   templateId: external_exports2.string().uuid(),
   referenceAssetIds: external_exports2.array(external_exports2.string().uuid()).max(14).default([]),
@@ -34632,7 +34632,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.20",
+  version: "0.1.21",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",

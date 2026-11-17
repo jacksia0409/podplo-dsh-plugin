@@ -37002,7 +37002,7 @@ function referenceImageLimit(model, ecoMode = false) {
   return ecoMode ? Math.min(ECO_REFERENCE_IMAGE_LIMIT, model.ecoMaximumReferenceImages) : model.maximumReferenceImages;
 }
 var QuoteInputSchema = external_exports.object({
-  prompt: external_exports.string().trim().max(4e3),
+  prompt: external_exports.string().max(4e3),
   modelId: external_exports.string().uuid(),
   templateId: external_exports.string().uuid(),
   referenceAssetIds: external_exports.array(external_exports.string().uuid()).max(14).default([]),
@@ -54618,7 +54618,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.20",
+  version: "0.1.21",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -57364,6 +57364,8 @@ EXECUTE WHEN CLEAR: When the image range, one uniquely matching Skill, and any r
 LOCAL FOLDERS: Use podplo_prepare_task with source.folderPath for user-supplied folders. Set skill.source="personal" for \u6211\u7684 Skill. The Host resolves the folder and preset; do not call read_image, Bash/shell, list files, search source code, read/rewrite preset JSON, inspect individual images, invent IDs or reimplement the pipeline. Put every requested stage in stages, with source.fromStage for dependencies and local.presetPath for a saved preset. The Host freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them when the Skill already defines the task; never invent content to fill the field.
 
 FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For random selection across independent Skills in one exact favorite folder, set skill.query and skill.favoriteFolder to that same exact folder name; otherwise query the exact Skill or family as before. Conflicting exact matches require one clarification.
+PROMPT BOUNDARY: Send only explicit user extra rules verbatim; use an empty prompt/instructions when absent. Public Skill metadata is for selection, never user rules. The server alone assembles Skill text.
+
 OTHER INPUTS: For current-chat or cloud images, reuse the existing session reference IDs in podplo_prepare_task source.referenceIds; do not inspect them again. Submit every requested stage once, preserving every user-supplied generation choice and local action. On a definitive nonretryable validation or policy failure, report it and stop until a new user message; do not drop parameters or stages, probe with a partial task, or try another entry point. Do not scan private storage.
 
 APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
@@ -57480,10 +57482,10 @@ function generationOrderDigest(value2) {
 function createGenerationOrderToken() {
   return `podplo_order_${randomBytes2(32).toString("base64url")}`;
 }
-function generationArgs(item) {
+function generationArgs(item, preservePrompt) {
   const args = structuredClone(item.args);
   delete args.visibility;
-  if (typeof args.prompt === "string") args.prompt = args.prompt.trim();
+  if (!preservePrompt && typeof args.prompt === "string") args.prompt = args.prompt.trim();
   const references = Array.isArray(args.referenceAssetIds) ? args.referenceAssetIds.filter((value2) => typeof value2 === "string") : [];
   if (item.dependsOn) references.splice(item.dependsOn.referenceIndex, 1);
   args.referenceAssetIds = references;
@@ -57495,7 +57497,7 @@ function generationArgs(item) {
 function buildGenerationOrder(input) {
   const items = input.items.map((item) => ({
     itemId: item.itemId,
-    generation: generationArgs(item),
+    generation: generationArgs(item, input.preservePrompt === true),
     referenceSlots: item.dependsOn ? [{
       itemId: input.items[item.dependsOn.itemIndex].itemId,
       outputIndex: item.dependsOn.outputIndex,
@@ -57555,8 +57557,8 @@ var TOOL_DEFINITIONS = [
   { name: "podplo_set_processing_plan", description: "\u4EC5\u767B\u8BB0\u7528\u6237\u5DF2\u660E\u786E\u6307\u5B9A\u7684 PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u53CA\u5176\u987A\u5E8F\uFF0C\u7528\u4E8E\u539F\u4EFB\u52A1\u6570\u91CF\u6838\u5BF9\u548C\u7EE7\u7EED\u5904\u7406\u3002\u4E0D\u8FFD\u52A0\u3001\u6539\u5199\u6216\u91CD\u6392\u6B65\u9AA4\uFF1B\u6CA1\u6709\u52A0\u5DE5\u8981\u6C42\u5FC5\u987B\u4F20\u7A7A\u6570\u7EC4\u3002\u4EC5\u66F4\u65B0\u5F53\u524D\u4F1A\u8BDD\u5DF2\u6709\u4EFB\u52A1\u7684\u672C\u5730\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u62A5\u4EF7\u6216\u751F\u56FE\uFF1B\u4E0D\u8981\u6839\u636E\u672A\u77E5\u5386\u53F2\u731C\u6D4B\u3002", inputSchema: objectSchema({ operationId: stringSchema, processingPlan: processingPlanSchema }, ["operationId", "processingPlan"]) },
   { name: "podplo_snapshot", description: "Read the safe PodPlo account and connection state.", inputSchema: objectSchema({}) },
   { name: "podplo_list_skills", description: "Search the public PodPlo executable Skill directory. Resolve one unique exact slug/title match without asking the user again; ask one consolidated question only for real duplicate, missing or conflicting Skill identity. Returns compact candidates plus catalog version and completeness; use podplo_get_skill or podplo_get_skill_family only for the selected candidate.", inputSchema: objectSchema({ query: stringSchema }) },
-  { name: "podplo_get_skill", description: "Get one exact executable PodPlo Skill by slug. Reuse its binding and supplied generation content without rewriting or expanding the prompt. Set includeGenerationContext=true when preparing generation to receive the safe account summary and cached capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
-  { name: "podplo_get_skill_family", description: "Get one PodPlo Skill family and every current executable member. Reuse the selected member bindings without rewriting their prompts. Set includeGenerationContext=true when preparing generation to receive the safe account summary and cached capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
+  { name: "podplo_get_skill", description: "Get one exact executable PodPlo Skill by slug. Reuse its binding. Send only the user\u2019s verbatim extra rules as prompt, or an empty string when absent; never turn public Skill descriptions into instructions. Set includeGenerationContext=true when preparing generation to receive the safe account summary and cached capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
+  { name: "podplo_get_skill_family", description: "Get one PodPlo Skill family and every current executable member. Reuse the selected member bindings. Send only the user\u2019s verbatim extra rules as prompt, or an empty string when absent; never copy public Skill descriptions. Set includeGenerationContext=true when preparing generation to receive the safe account summary and cached capabilities in the same call.", inputSchema: objectSchema({ slug: stringSchema, includeGenerationContext: { type: "boolean" } }, ["slug"]) },
   { name: "podplo_list_gallery", description: "Search the public PodPlo gallery with cursor pagination.", inputSchema: objectSchema({ query: stringSchema, category: stringSchema, cursor: stringSchema }) },
   { name: "podplo_get_gallery_item", description: "Get one exact public gallery item by opaque id.", inputSchema: objectSchema({ id: stringSchema }, ["id"]) },
   { name: "podplo_list_assets", description: "List the signed-in user uploads or generated assets with server cursor pagination. When nextCursor is non-null, continue with that exact cursor before treating the list as complete. paginationSupported=false means the connected legacy server can return only a limited first page.", inputSchema: objectSchema({
@@ -59041,6 +59043,7 @@ var PodploPluginService = class extends EventEmitter2 {
       ...archiveProject ? { archiveProject } : {},
       ...processingPlan !== void 0 ? { processingPlan } : {},
       ...wholeOrder && balance && reservationToken ? {
+        preservePrompt: true,
         pricingVersion: localGenerationPricingVersion,
         reservationToken,
         balanceAtQuote: balance
@@ -59053,7 +59056,8 @@ var PodploPluginService = class extends EventEmitter2 {
         expectedBillingContextId: balance.billingContextId,
         pricingVersion: localGenerationPricingVersion,
         items: savedItems,
-        processingPlan
+        processingPlan,
+        preservePrompt: true
       });
       row.planDigest = order2.planDigest;
       row.localQuoteDigest = order2.localQuoteDigest;
@@ -59125,7 +59129,8 @@ var PodploPluginService = class extends EventEmitter2 {
         expectedBillingContextId: operation.balanceAtQuote.billingContextId,
         pricingVersion: operation.pricingVersion,
         items: operation.items,
-        processingPlan: operation.processingPlan
+        processingPlan: operation.processingPlan,
+        preservePrompt: operation.preservePrompt === true
       });
       if (order2.planDigest !== operation.planDigest || order2.localQuoteDigest !== operation.localQuoteDigest)
         throw new PodploPluginError("CONFIRMATION_MISMATCH", "\u6574\u5355\u65B9\u6848\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u786E\u8BA4\u3002");
@@ -64747,7 +64752,7 @@ function parseInput(value2, path = "batch") {
     skillSource,
     ...skillFolder ? { skillFolder } : {},
     ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text3(value2.processingPresetPath, `${path}.processingPresetPath`, 4096) } : {},
-    instructions: typeof value2.instructions === "string" ? value2.instructions.trim() : ""
+    instructions: typeof value2.instructions === "string" ? value2.instructions : ""
   };
 }
 async function presetProcessing(input, deps) {
@@ -64903,19 +64908,6 @@ function resolveBatchParameters(input, value2) {
     ecoMode,
     background: input.background ?? "opaque"
   };
-}
-function publicPrompt(skill, instructions) {
-  if (skill.personal) return instructions || "\u6309\u6240\u9009 Skill \u5904\u7406\u53C2\u8003\u56FE\u7247\u3002";
-  const details = skill.details;
-  const value2 = [
-    `Apply the public PodPlo Skill "${details.title}" to the provided reference image.`,
-    details.keeps.length ? `Preserve: ${details.keeps.join("; ")}.` : "",
-    details.changes.length ? `Change: ${details.changes.join("; ")}.` : "",
-    details.output ? `Output: ${details.output}.` : "",
-    `User instructions: ${instructions}`
-  ].filter(Boolean).join(" ");
-  if (value2.length > 4e3) fail5("PROMPT_TOO_LONG", "\u516C\u5F00 Skill \u4FE1\u606F\u4E0E\u7528\u6237\u8981\u6C42\u5408\u5E76\u540E\u8D85\u8FC7\u63D0\u793A\u8BCD\u957F\u5EA6\u9650\u5236\u3002");
-  return value2;
 }
 async function assertOwner(deps, ownerId, namespace) {
   deps.signal?.throwIfAborted();
@@ -65119,7 +65111,6 @@ async function prepareNativeSkillBatch(raw, deps) {
     const selected = members[choose(members.length)];
     assignments = Array.from({ length: images.length }, () => selected);
   } else assignments = Array.from({ length: images.length }, () => members[0]);
-  const prompts = assignments.map((skill) => publicPrompt(skill, input.instructions));
   const verified = /* @__PURE__ */ new Set();
   for (const skill of assignments) {
     if (verified.has(skill.id)) continue;
@@ -65138,7 +65129,7 @@ async function prepareNativeSkillBatch(raw, deps) {
       sourceName: images[index].name,
       pricingReferenceCount: (skill.referenceCount ?? 0) + 1,
       args: {
-        prompt: prompts[index],
+        prompt: input.instructions,
         modelId: model.id,
         templateId: skill.id,
         referenceAssetIds: [referenceAssetId],
