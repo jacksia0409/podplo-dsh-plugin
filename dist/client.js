@@ -997,6 +997,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
   const images = task.files.filter((file3) => file3.group === "result" && file3.image && (file3.status === "saved" || !!file3.assetId)).slice(view === "list" ? -1 : -3);
   const running2 = ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status);
   const createdTime = Date.parse(task.createdAt);
+  const stageArchive = task.archiveFormat === 2 || task.archiveFormat === 3;
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-card", "data-task-folder": task.id, "data-batch-view": view, children: [
     view && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-batch-kind", children: task.saveStatus === "cloud" ? "\u5355\u5F20\u4E91\u7AEF\u5386\u53F2" : "\u4EFB\u52A1\u6279\u6B21" }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-title", children: [
@@ -1013,7 +1014,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
         task.resultCount,
         " \u4E2A",
-        task.archiveFormat === 2 ? "\u9636\u6BB5\u6210\u679C" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
+        stageArchive ? "\u9636\u6BB5\u6210\u679C" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
       ] })
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-meta", children: [
       task.projectName,
@@ -1022,7 +1023,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       " \xB7 ",
       task.resultCount,
       " \u4E2A",
-      task.archiveFormat === 2 ? "\u9636\u6BB5\u6210\u679C" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
+      stageArchive ? "\u9636\u6BB5\u6210\u679C" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
     ] }),
     task.audit && (view ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-batch-audit", "data-task-audit": true, children: task.audit.complete ? "\u6570\u91CF\u6838\u5BF9\u5DF2\u9F50\u5168" : "\u6709\u672A\u5B8C\u6210\u6216\u5F85\u6838\u5BF9\u9879\uFF0C\u67E5\u770B\u7ED3\u679C\u4E86\u89E3\u8BE6\u60C5" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-task-audit", role: "status", "data-task-audit": true, children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("strong", { children: [
@@ -1056,24 +1057,11 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
     task.summaryError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-error", role: "alert", children: task.summaryError })
   ] });
 }
-function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
-  const [error101, setError] = (0, import_react2.useState)(""), [busy, setBusy] = (0, import_react2.useState)("");
+function ArchiveDetail({ task, request, onBack, onDelete }) {
   const [selected, setSelected] = (0, import_react2.useState)();
-  const act = async (action, file3) => {
-    if (busy) return;
-    setBusy(file3.id);
-    setError("");
-    try {
-      const { data } = action === "archive.use" && file3.assetId && file3.status !== "saved" ? await request("selection.resolve", { kind: "asset", id: file3.assetId }) : await request(action, { taskId: task.id, fileId: file3.id });
-      if (action === "archive.use") await onUse?.(data);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210");
-    } finally {
-      setBusy("");
-    }
-  };
   const full = task.files.find((file3) => file3.id === selected);
-  const stageGroups = task.archiveFormat === 2 && task.stageResults?.length ? [...new Map(task.stageResults.map((result) => [result.stage?.id ?? "generation", result.stage ?? { id: "generation", label: "AI \u751F\u6210", order: 0 }])).values()].sort((a, b) => a.order - b.order).map((stage) => ({
+  const stageArchive = task.archiveFormat === 2 || task.archiveFormat === 3;
+  const stageGroups = stageArchive && task.stageResults?.length ? [...new Map(task.stageResults.map((result) => [result.stage?.id ?? "generation", result.stage ?? { id: "generation", label: "AI \u751F\u6210", order: 0 }])).values()].sort((a, b) => a.order - b.order).map((stage) => ({
     stage,
     files: task.files.filter((file3) => (file3.stage?.id ?? "generation") === stage.id),
     results: task.stageResults.filter((result) => (result.stage?.id ?? "generation") === stage.id)
@@ -1081,7 +1069,6 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "ppd-archive-detail", "data-archive-detail": task.id, children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE\u4EFB\u52A1\u6587\u4EF6\u5939" }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request, onDelete }),
-    error101 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 }),
     !task.processingResults?.length && !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u672C\u5730\u52A0\u5DE5\u7ED3\u679C" }),
       task.audit.processing.steps.filter((step) => step.missingIds.length).map((step) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
@@ -1096,7 +1083,7 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
         }) })
       ] }, step.id))
     ] }),
-    task.archiveFormat === 2 && stageGroups.length > 0 ? stageGroups.map(({ stage, files, results }, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-result-stage": stage.id, children: [
+    stageArchive && stageGroups.length > 0 ? stageGroups.map(({ stage, files, results }, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-result-stage": stage.id, children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h3", { children: [
         "\u9636\u6BB5 ",
         index + 1,
@@ -1119,13 +1106,9 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
         /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("small", { children: [
           file3.sourceName ? `${file3.sourceName} \xB7 ` : "",
           file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved", onClick: () => void act("archive.reveal", file3), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
-          onUse && file3.image && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved" && !file3.assetId, onClick: () => void act("archive.use", file3), children: "\u9009\u5165\u4F1A\u8BDD" })
         ] })
       ] }, file3.id)) })
-    ] }, stage.id)) : (task.archiveFormat === 2 ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
+    ] }, stage.id)) : (stageArchive ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
       const matches = (file3) => group === "final" ? file3.group === "result" : group === "reference" ? file3.group === "reference" : file3.group === "result" && (file3.variant ?? (file3.assetId ? "generated" : "processed")) === group;
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: group === "final" ? "\u6210\u54C1" : group === "generated" ? "\u751F\u6210\u56FE" : group === "processed" ? "\u52A0\u5DE5\u540E\u7684\u6210\u54C1" : "\u53C2\u8003\u56FE" }),
@@ -1133,15 +1116,11 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: task.files.filter(matches).map((file3) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file3.id, children: [
           /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file3.image || file3.status !== "saved" && !file3.assetId, onClick: () => setSelected(file3.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file3, request, fill: true }) }),
           /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file3.name, children: file3.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: task.saveStatus === "cloud" ? "\u5C1A\u672A\u4E0B\u8F7D\u5230\u7535\u8111" : file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved", onClick: () => void act("archive.reveal", file3), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
-            onUse && file3.image && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved" && !file3.assetId, onClick: () => void act("archive.use", file3), children: "\u9009\u5165\u4F1A\u8BDD" })
-          ] })
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: task.saveStatus === "cloud" ? "\u5C1A\u672A\u4E0B\u8F7D\u5230\u7535\u8111" : file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" })
         ] }, file3.id)) })
       ] }, group);
     }),
-    task.archiveFormat === 2 && !!task.stageResults?.length && task.processingResults?.map((result, index) => {
+    stageArchive && !!task.stageResults?.length && task.processingResults?.map((result, index) => {
       const stageId = `processing:${result.stepId}`, files = task.files.filter((file3) => file3.stage?.id === stageId);
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-processing-stage": result.stepId, children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h3", { children: [
@@ -1160,11 +1139,7 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: files.map((file3) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file3.id, children: [
           /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file3.image || file3.status !== "saved" && !file3.assetId, onClick: () => setSelected(file3.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file3, request, fill: true }) }),
           /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file3.name, children: file3.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved", onClick: () => void act("archive.reveal", file3), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
-            onUse && file3.image && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved" && !file3.assetId, onClick: () => void act("archive.use", file3), children: "\u9009\u5165\u4F1A\u8BDD" })
-          ] })
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" })
         ] }, file3.id)) })
       ] }, stageId);
     }),
@@ -1198,20 +1173,19 @@ function HistoryImagePreview({ item, request, priority = 0, allowRetry = false }
   });
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { ref: preview.ref, className: "ppd-archive-placeholder", children: preview.status === "ready" && preview.value ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("img", { src: preview.value, alt: item.name, loading: "lazy", onError: () => preview.markError(new Error("\u56FE\u7247\u89E3\u7801\u5931\u8D25")) }) : preview.status === "error" && allowRetry ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => preview.retry(), children: "\u91CD\u8BD5\u9884\u89C8" }) : preview.status === "error" ? "\u672C\u5730\u56FE\u7247\u5DF2\u4E0D\u53EF\u7528" : "\u6B63\u5728\u52A0\u8F7D\u2026" });
 }
-function HistoryImageCard({ item, request, onPreview, onUse, onRefresh }) {
-  const [busy, setBusy] = (0, import_react2.useState)(""), [error101, setError] = (0, import_react2.useState)("");
-  const act = async (action) => {
+function HistoryImageCard({ item, request, onPreview, onRefresh }) {
+  const [busy, setBusy] = (0, import_react2.useState)(false), [error101, setError] = (0, import_react2.useState)("");
+  const openTask = async () => {
     if (busy) return;
-    setBusy(action);
+    setBusy(true);
     setError("");
     try {
-      const { data } = await request(action, action === "archive.openTask" ? { taskId: item.taskId } : { taskId: item.taskId, fileId: item.fileId });
-      if (action === "archive.use") await onUse(data);
+      await request("archive.openTask", { taskId: item.taskId });
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210");
       onRefresh();
     } finally {
-      setBusy("");
+      setBusy(false);
     }
   };
   const createdTime = Date.parse(item.createdAt);
@@ -1222,15 +1196,11 @@ function HistoryImageCard({ item, request, onPreview, onUse, onRefresh }) {
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { title: item.projectName, children: item.projectName }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("time", { dateTime: Number.isFinite(createdTime) ? item.createdAt : void 0, children: Number.isFinite(createdTime) ? new Date(createdTime).toLocaleString(void 0, { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "\u65F6\u95F4\u672A\u63D0\u4F9B" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void act("archive.reveal"), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void act("archive.openTask"), children: "\u6253\u5F00\u6240\u5728\u6587\u4EF6\u5939" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void act("archive.use"), children: "\u9009\u5165\u4F1A\u8BDD" })
-    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-actions", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void openTask(), children: "\u6253\u5F00\u6240\u5728\u6587\u4EF6\u5939" }) }),
     error101 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 })
   ] });
 }
-function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
+function ArchiveBrowser({ request, targetId, navigation, uiLease }) {
   const cached3 = (0, import_react2.useMemo)(() => uiLease ? readPanelUiState(uiLease, "archive-history-images") : void 0, [uiLease]);
   const [items, setItems] = (0, import_react2.useState)((cached3?.items ?? []).slice(-VERIFIED_HISTORY_CACHE_LIMIT));
   const [headers, setHeaders] = (0, import_react2.useState)(cached3?.headers ?? []);
@@ -1428,7 +1398,7 @@ function ArchiveBrowser({ request, onUse, targetId, navigation, uiLease }) {
     (error101 || pageError) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || pageError }),
     loading && !merged.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u672C\u5730\u5386\u53F2\u2026" }) : !merged.length ? !dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u672C\u5730\u56FE\u7247" : "\u6682\u65E0\u672C\u5730\u5386\u53F2\u56FE\u7247" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
       pageLoading && visibleImages.length < visibleEntries.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u6838\u9A8C\u5F53\u524D\u9875\u672C\u5730\u56FE\u7247\u2026" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-history-grid", children: visibleImages.map((item) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImageCard, { item, request, onPreview: () => setSelected(item), onUse, onRefresh: refresh }, item.id)) })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-history-grid", children: visibleImages.map((item) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImageCard, { item, request, onPreview: () => setSelected(item), onRefresh: refresh }, item.id)) })
     ] }),
     merged.length > 20 && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage === 1, onClick: () => setPage(visiblePage - 1), children: "\u4E0A\u4E00\u9875" }),
@@ -34632,7 +34602,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.21",
+  version: "0.1.22",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -36235,10 +36205,10 @@ function ConfirmDialog({ title, description, confirmLabel, busy, error: error101
     ] })
   ] }) });
 }
-function LocalResults({ request, onUse, uiLease }) {
+function LocalResults({ request, uiLease }) {
   const archiveSelection = (0, import_react10.useSyncExternalStore)(archiveTarget.subscribe, archiveTarget.getSnapshot, archiveTarget.getSnapshot);
   (0, import_react10.useEffect)(() => () => archiveTarget.clear(), []);
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ArchiveBrowser, { request, onUse, targetId: archiveSelection?.id, uiLease });
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ArchiveBrowser, { request, targetId: archiveSelection?.id, uiLease });
 }
 function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
   const cached3 = (0, import_react10.useMemo)(() => readPanelUiState(uiLease, "assets"), [uiLease]);
@@ -36873,7 +36843,7 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       error101 && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-alert", role: "alert", children: error101 }),
       snapshot && section === "generation" && !historyOpen && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => setHistoryOpen(true), children: "\u5386\u53F2\u8BB0\u5F55" }) }),
       snapshot && historyOpen && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-content ppd-history-content", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationHistory, { request: stableComposerRequest, submission: submission?.ownerId === accountKey ? submission : void 0, onBack: () => setHistoryOpen(false), renderAsset: (id) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(PrivateAssetPreview, { id, alt: "\u751F\u6210\u7ED3\u679C", request: stableComposerRequest, revision: 0 }) }, accountUiScope) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Status, { loading: !error101, error: error101, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(LocalResults, { request: stableRequest, onUse: stableOnUse, uiLease }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AssetsPanel, { request: stableRequest, onUse: selectForComposer, refreshKey: pendingCount, uiLease }, accountUiScope) })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Status, { loading: !error101, error: error101, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(LocalResults, { request: stableRequest, uiLease }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(AssetsPanel, { request: stableRequest, onUse: selectForComposer, refreshKey: pendingCount, uiLease }, accountUiScope) })
     ] }),
     snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { hidden: historyOpen, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) })
   ] });

@@ -54618,7 +54618,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.21",
+  version: "0.1.22",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -54792,7 +54792,7 @@ function safeOperation(row) {
   const summary = operationSummary(row);
   const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
   const sufficientCredits = row.balanceAtQuote ? row.balanceAtQuote.availableCredits >= summary.totalCredits : void 0;
-  const stages2 = [...new Map(row.items.map((item, index) => [item.stage?.id ?? `item-${index}`, item.stage?.label ?? `\u9636\u6BB5 ${index + 1}`])).entries()].map(([id2, label]) => {
+  const stages = [...new Map(row.items.map((item, index) => [item.stage?.id ?? `item-${index}`, item.stage?.label ?? `\u9636\u6BB5 ${index + 1}`])).entries()].map(([id2, label]) => {
     const items = row.items.filter((item, index) => (item.stage?.id ?? `item-${index}`) === id2);
     const skills = /* @__PURE__ */ new Map();
     for (const item of items) skills.set(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill", (skills.get(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill") ?? 0) + 1);
@@ -54809,7 +54809,7 @@ function safeOperation(row) {
   });
   const processingSummary = row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
   const finalOutputCount = estimatedFinalOutputCount(row);
-  const stageText = stages2.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
+  const stageText = stages.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
   const confirmationText = `${stageText}\u3002\u6574\u5355\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0CAI \u8F93\u51FA ${summary.outputCount} \u5F20` + (processingSummary ? `\uFF1B\u672C\u5730\u52A0\u5DE5 ${processingSummary}\uFF0C\u9884\u8BA1\u6210\u54C1 ${finalOutputCount} \u5F20\uFF08\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1\u79EF\u5206\uFF09` : "") + "\u3002";
   return {
     operationId: row.operationId,
@@ -54834,7 +54834,7 @@ function safeOperation(row) {
     },
     approvalId: row.approvalId,
     summary,
-    stages: stages2,
+    stages,
     finalOutputCount,
     items: row.items.map((item) => ({
       itemId: item.itemId,
@@ -57758,6 +57758,18 @@ var PodploPluginService = class extends EventEmitter2 {
   async archiveGenerations() {
     const ownerId = await this.owner(false);
     const items = this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && row.approvedAt).map((row) => {
+      const sourceNameFor = (itemIndex, seen = /* @__PURE__ */ new Set()) => {
+        if (seen.has(itemIndex)) return;
+        seen.add(itemIndex);
+        const item = row.items[itemIndex];
+        if (!item) return;
+        if (item.sourceName) return item.sourceName;
+        return item.dependsOn ? sourceNameFor(item.dependsOn.itemIndex, seen) : void 0;
+      };
+      const skillFor = (item) => item.skillId ? {
+        id: item.skillId,
+        name: item.skillName ?? this.online.snapshot().skills.find((skill) => skill.id === item.skillId)?.name ?? item.skillId
+      } : void 0;
       const processingUsesItem = (itemIndex) => row.processingPlan?.some((step) => !step.sourceStepId && (step.generationItemIndexes === void 0 || step.generationItemIndexes.includes(itemIndex))) ?? false;
       const resultSourceIds = Object.fromEntries(row.items.flatMap((item) => {
         if (!item.dependsOn || processingUsesItem(item.dependsOn.itemIndex)) return [];
@@ -57765,7 +57777,7 @@ var PodploPluginService = class extends EventEmitter2 {
         if (!parent) return [];
         return (item.outputs ?? []).flatMap((output) => output.assetId ? [[output.assetId, parent]] : []);
       }));
-      const finalOutputs = row.items.flatMap((item, itemIndex) => (item.outputs ?? []).flatMap((output) => output.assetId ? [{ item, itemIndex, output }] : []));
+      const finalOutputs = row.items.flatMap((item, itemIndex) => (item.outputs ?? []).flatMap((output) => output.assetId ? [{ item, itemIndex, output, sourceName: sourceNameFor(itemIndex) }] : []));
       return {
         operationId: row.operationId,
         sessionId: row.nativeSessionId,
@@ -57799,10 +57811,12 @@ var PodploPluginService = class extends EventEmitter2 {
         resultIds: [...new Set(finalOutputs.map(({ output }) => output.assetId))],
         generationItems: row.items.map((item, index) => {
           const errorCode2 = item.errorCode ?? item.outputs?.find((output) => !output.assetId && output.failureCode)?.failureCode ?? void 0;
+          const sourceName = sourceNameFor(index), skill = skillFor(item);
           return {
             index,
             expectedOutputCount: item.approvedOutputCount ?? item.quote.outputCount,
-            ...item.sourceName ? { sourceName: item.sourceName } : {},
+            ...sourceName ? { sourceName } : {},
+            ...skill ? { skill } : {},
             ...item.stage ? { stage: structuredClone(item.stage) } : {},
             status: item.status,
             ...errorCode2 ? { errorCode: errorCode2 } : {},
@@ -57817,7 +57831,7 @@ var PodploPluginService = class extends EventEmitter2 {
         }),
         resultItemIndexes: Object.fromEntries(finalOutputs.map(({ itemIndex, output }) => [output.assetId, itemIndex])),
         resultSourceIds,
-        resultNames: Object.fromEntries(finalOutputs.flatMap(({ item, output }) => item.sourceName ? [[output.assetId, `${item.sourceName.replace(/\.[^.]+$/u, "")}-AI\u751F\u6210`]] : []))
+        resultNames: Object.fromEntries(finalOutputs.flatMap(({ sourceName, output }) => sourceName ? [[output.assetId, `${sourceName.replace(/\.[^.]+$/u, "")}-AI\u751F\u6210`]] : []))
       };
     });
     await this.assertOwner(ownerId, false);
@@ -61184,8 +61198,6 @@ async function nativeToolkitTransport(options) {
 
 // plugins/podplo-dsh/src/native-presets.ts
 var PODPLO_TASK_PRESET_ID = "podplo-task";
-var PODPLO_JEV_TEST_PRESET_ID = "podplo-jev-test";
-var expression = (value2) => ({ __jsExpr: value2 });
 function standardAgentPlugins() {
   return [
     { id: "persona", name: "@deepseek-ai/dsh-persona", config: { prefix: `You are the PodPlo assistant powered by the {{model}} model.
@@ -61193,16 +61205,6 @@ function standardAgentPlugins() {
 ${PODPLO_TASK_GUIDANCE}` } },
     { id: "agent-instructions", name: "@deepseek-ai/dsh-agent-instructions", config: { maxBytes: 65536 } },
     { id: "time-context", name: "@deepseek-ai/dsh-time-context" },
-    { id: "tool-bash", name: "@deepseek-ai/dsh-tool-bash", disabled: expression("process.platform === 'win32'") },
-    { id: "tool-pwsh", name: "@deepseek-ai/dsh-tool-pwsh", disabled: expression("process.platform !== 'win32'") },
-    { id: "tool-fs", name: "@deepseek-ai/dsh-tool-fs", config: { applyPatch: false } },
-    { id: "tool-fs-search", name: "@deepseek-ai/dsh-tool-fs-search", config: { sampleOverCapGlobResults: false } },
-    { id: "tool-jobs", name: "@deepseek-ai/dsh-tool-jobs" },
-    { id: "tool-schedule", name: "@deepseek-ai/dsh-tool-schedule" },
-    { id: "skill-filesystem", name: "@deepseek-ai/dsh-skill-filesystem" },
-    { id: "tool-skill", name: "@deepseek-ai/dsh-tool-skill" },
-    { id: "command-goal", name: "@deepseek-ai/dsh-command-goal" },
-    { id: "tool-goal", name: "@deepseek-ai/dsh-tool-goal" },
     {
       id: "planning",
       name: "cordis:group",
@@ -61223,28 +61225,11 @@ ${PODPLO_TASK_GUIDANCE}` } },
         { id: "tool-result-pruner", name: "@deepseek-ai/dsh-compaction-tool-result-pruner", config: { thresholdChars: 8192, headChars: 4096, tailChars: 1024 } }
       ]
     },
-    {
-      id: "delegation",
-      name: "cordis:group",
-      group: true,
-      isolate: { workflowEngine: true },
-      config: [
-        { id: "tool-subagent-control", name: "@deepseek-ai/dsh-tool-subagent-control" },
-        { id: "tool-subagent", name: "@deepseek-ai/dsh-tool-subagent", config: { provider: "spawn", toolName: "subagent", modelSelection: true, modelDiscovery: true } },
-        { id: "tool-subagent-fork", name: "@deepseek-ai/dsh-tool-subagent", config: { provider: "fork", toolName: "subagent_fork" } },
-        { id: "workflow-ptc", name: "@deepseek-ai/dsh-workflow-ptc", config: { provider: "spawn" } },
-        { id: "tool-workflow", name: "@deepseek-ai/dsh-tool-workflow" }
-      ]
-    },
     { id: "tool-ask-user", name: "@deepseek-ai/dsh-tool-ask-user" },
-    { id: "tool-todo", name: "@deepseek-ai/dsh-tool-todo", config: { allowParallelInProgress: true } },
-    { id: "tool-web", name: "@deepseek-ai/dsh-tool-web", config: { fetch: true, searchTimeoutMs: 6e4 } },
-    { id: "present", name: "@deepseek-ai/dsh-tool-present" },
-    { id: "tool-plugin-manager", name: "@deepseek-ai/dsh-plugin-manager/tools", disabled: expression("!ctx.get('profileContext')") },
-    { id: "tool-plugin-market", name: "@deepseek-ai/dsh-plugin-market/tools", disabled: true }
+    { id: "present", name: "@deepseek-ai/dsh-tool-present" }
   ];
 }
-async function registerPodploNativePresets(agentPresets, options = {}) {
+async function registerPodploNativePresets(agentPresets) {
   const unregister = [await agentPresets.register({
     id: PODPLO_TASK_PRESET_ID,
     name: "PodPlo Agent",
@@ -61252,13 +61237,6 @@ async function registerPodploNativePresets(agentPresets, options = {}) {
     order: 20,
     plugins: standardAgentPlugins()
   })];
-  if (options.enableJevTestPreset) unregister.push(await agentPresets.register({
-    id: PODPLO_JEV_TEST_PRESET_ID,
-    name: "PodPlo Agent \xB7 Jev \u6D4B\u8BD5",
-    description: "\u4EC5\u5728\u672C\u4F1A\u8BDD\u4E2D\u5148\u7528\u672C\u673A Jev broker \u5224\u65AD\u4E0B\u4E00\u9636\u6BB5\uFF0CFlash \u7EE7\u7EED\u6267\u884C\u5B8C\u6574 PodPlo \u5DE5\u5177\u94FE\u3002",
-    order: 21,
-    plugins: standardAgentPlugins()
-  }));
   let disposed = false;
   return async () => {
     if (disposed) return;
@@ -61267,461 +61245,23 @@ async function registerPodploNativePresets(agentPresets, options = {}) {
   };
 }
 
-// plugins/podplo-dsh/src/jev-routing.ts
-import { createHash as createHash12, randomUUID as randomUUID12 } from "node:crypto";
-var stages = ["discover_skill", "read_inputs", "prepare_generation", "wait_generation", "process_outputs", "deliver", "complete"];
-var groups = ["skill_discovery", "skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status", "image_processing", "delivery"];
-var workflows = ["podplo_generation", "image_processing", "other"];
-function reconcileJevPresetSelection(input) {
-  if (input.selected) input.activeSessionIds.add(input.sessionId);
-  else input.activeSessionIds.delete(input.sessionId);
-  if (!input.binding?.fiber) return;
-  if (!input.selected) {
-    input.binding.disposeJevRouting?.();
-    input.binding.disposeJevRouting = void 0;
-  } else if (!input.binding.disposeJevRouting && input.start) input.binding.disposeJevRouting = input.start();
-}
-var safeCount = (value2) => Number.isSafeInteger(value2) && Number(value2) >= 0;
-var probability = (value2) => Number.isFinite(value2) && Number(value2) >= 0 && Number(value2) <= 1;
-function parseJevBrokerUrl(value2) {
-  let url3;
-  try {
-    url3 = new URL(value2);
-  } catch {
-    return void 0;
-  }
-  if (url3.protocol !== "http:" || !["127.0.0.1", "::1", "localhost"].includes(url3.hostname) || url3.username || url3.password || url3.hash) return void 0;
-  return url3;
-}
-function parseTypedAnswer(value2) {
-  if (!value2 || typeof value2 !== "object") return void 0;
-  const row = value2;
-  if (row.type === "noul" && probability(row.noul)) return { type: "noul", noul: row.noul };
-  if (row.type !== "choice" || typeof row.choice !== "string" || !probability(row.confidence) || !row.probabilities || typeof row.probabilities !== "object") return void 0;
-  const entries = Object.entries(row.probabilities);
-  if (entries.length < 1 || entries.some(([key, score]) => !key || !probability(score))) return void 0;
-  return { type: "choice", choice: row.choice, confidence: row.confidence, probabilities: Object.fromEntries(entries) };
-}
-function parseJevRoute(value2) {
-  if (!value2 || typeof value2 !== "object") return void 0;
-  const row = value2;
-  if (row.schemaVersion !== 2 || !row.answers || typeof row.answers !== "object" || typeof row.model !== "string" || row.model.length < 1 || row.model.length > 100 || !safeCount(row.latencyMs) || !row.usage || !safeCount(row.usage.inputTokens) || !safeCount(row.usage.outputTokens) || row.usage.cacheReadTokens !== void 0 && !safeCount(row.usage.cacheReadTokens) || row.usage.cacheWriteTokens !== void 0 && !safeCount(row.usage.cacheWriteTokens)) return void 0;
-  const parsed = Object.fromEntries(Object.entries(row.answers).map(([id2, answer]) => [id2, parseTypedAnswer(answer)]));
-  if (Object.values(parsed).some((answer) => !answer)) return void 0;
-  const workflow = parsed.workflow, phase = parsed.phase;
-  if (workflow?.type !== "choice" || !workflows.includes(workflow.choice) || phase?.type !== "choice" || !stages.includes(phase.choice)) return void 0;
-  const groupScores = {};
-  for (const group of groups) {
-    const answer = parsed[`group_${group}`];
-    if (answer?.type !== "noul") return void 0;
-    groupScores[group] = answer.noul;
-  }
-  return {
-    schemaVersion: 2,
-    answers: parsed,
-    workflow: workflow.choice,
-    phase: phase.choice,
-    groupScores,
-    model: row.model,
-    latencyMs: row.latencyMs,
-    usage: {
-      inputTokens: row.usage.inputTokens,
-      outputTokens: row.usage.outputTokens,
-      ...row.usage.cacheReadTokens === void 0 ? {} : { cacheReadTokens: row.usage.cacheReadTokens },
-      ...row.usage.cacheWriteTokens === void 0 ? {} : { cacheWriteTokens: row.usage.cacheWriteTokens }
-    }
-  };
-}
-function messageSummary(messages) {
-  const text4 = [];
-  let attachmentCount = 0;
-  for (const message of messages) {
-    if (message.source.kind !== "user") continue;
-    for (const block of message.content) {
-      if (block.type === "text" && typeof block.text === "string") text4.push(block.text);
-      else if (block.type === "image" || block.type === "file") attachmentCount++;
-    }
-  }
-  return { text: text4.join("\n").slice(0, 12e3), attachmentCount };
-}
-var phaseGroups = {
-  discover_skill: ["skill_discovery", "skill_detail"],
-  read_inputs: ["skill_detail", "input_inspection", "reference_import"],
-  prepare_generation: ["skill_detail", "reference_import", "generation_quote"],
-  wait_generation: ["generation_status"],
-  process_outputs: ["input_inspection", "image_processing"],
-  deliver: ["delivery"],
-  complete: []
-};
-function neededGroups(route) {
-  const selected = new Set(groups.filter((group) => route.groupScores[group] >= 0.7));
-  if (route.answers.phase.confidence >= 0.55) for (const group of phaseGroups[route.phase]) selected.add(group);
-  else if (route.workflow === "podplo_generation") for (const group of ["skill_detail", "input_inspection", "reference_import", "generation_quote", "generation_status"]) selected.add(group);
-  else for (const group of ["input_inspection", "image_processing", "delivery"]) selected.add(group);
-  return selected;
-}
-function groupForGlobalTool(name2) {
-  const normalized2 = name2.toLowerCase();
-  if (/ask_user|todo|goal|present|(^|_)(bash|pwsh|glob|working_directory|job_(?:list|output|kill))($|_)/u.test(normalized2)) return "safe";
-  if (/read_image|selected_image|image_info/u.test(normalized2)) return "input_inspection";
-  if (/return_file|deliver|attachment/u.test(normalized2)) return "delivery";
-  if (/outline|resize|rotate|mirror|convert_image|export_image/u.test(normalized2)) return "image_processing";
-  if (/skill/u.test(normalized2)) return "skill_discovery";
-  return void 0;
-}
-function allowedRestrictableTools(route, restrictableNames2) {
-  const selected = neededGroups(route);
-  return restrictableNames2.filter((name2) => {
-    const group = groupForGlobalTool(name2);
-    return group === "safe" || group !== void 0 && selected.has(group);
-  }).sort();
-}
-function routeGuidance(route, application) {
-  return `Jev routed subsequent PodPlo steps: workflow=${route.workflow}; phase=${route.phase}; next-step groups=${[...neededGroups(route)].join(", ") || "none"}; inherited tools allowed=${application.allowedRestrictableTools.join(", ") || "none"}. Reuse established tool results and exact IDs. Routing never replaces capability checks, the trusted quote, or native approval.`;
-}
-function guidanceMessage(text4) {
-  return Object.freeze({
-    id: randomUUID12(),
-    role: "user",
-    content: Object.freeze([{ type: "text", text: text4 }]),
-    source: Object.freeze({ kind: "user" })
-  });
-}
-function logMetric(logger, level, value2) {
-  logger[level](`PODPLO_JEV_METRIC ${JSON.stringify(value2)}`);
-}
-function flashUsage(usage) {
-  return {
-    inputTokens: usage.inputTokens,
-    outputTokens: usage.outputTokens,
-    cacheReadTokens: usage.cacheReadTokens ?? 0,
-    cacheWriteTokens: usage.cacheWriteTokens ?? 0,
-    totalTokens: usage.totalTokens ?? usage.inputTokens + usage.outputTokens + (usage.cacheReadTokens ?? 0) + (usage.cacheWriteTokens ?? 0),
-    reasoningTokens: usage.reasoningTokens ?? 0
-  };
-}
-function restrictableNames(agent) {
-  const view = agent.ctx.tools.view?.(agent);
-  return view?.restrictableNames instanceof Set ? [...view.restrictableNames].filter((name2) => typeof name2 === "string" && name2 !== "run_code").sort() : [];
-}
-var fullApplication = (revision, reason) => ({
-  revision,
-  applied: false,
-  workflow: "full",
-  decisionReason: reason,
-  allowedRestrictableTools: []
-});
-function installJevRouting(options) {
-  const endpoint = parseJevBrokerUrl(options.brokerUrl);
-  if (!endpoint) {
-    logMetric(options.logger, "warn", { source: "jev", outcome: "disabled", fallback: true, reason: "invalid_loopback_url" });
-    return () => void 0;
-  }
-  const fetchImpl = options.fetchImpl ?? fetch, eventsEndpoint = new URL("/events", endpoint.origin);
-  const postEvent = async (value2) => {
-    try {
-      await fetchImpl(eventsEndpoint, {
-        method: "POST",
-        redirect: "error",
-        signal: AbortSignal.timeout(1e3),
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ schemaVersion: 2, sessionId: options.agent.id, ...value2 })
-      });
-    } catch {
-    }
-  };
-  let disposeRestriction;
-  let routeRevision = 0, factRevision = 0, lastRoutedFactRevision = -1;
-  let currentUser = { text: "", attachmentCount: 0 };
-  const completedTools = [];
-  options.routingStates.set(options.agent.id, { current: fullApplication(0, "baseline") });
-  const clearRestriction = (reason) => {
-    disposeRestriction?.();
-    disposeRestriction = void 0;
-    const state = options.routingStates.get(options.agent.id);
-    if (state) state.pending = fullApplication(++routeRevision, reason);
-  };
-  const disposeToolsResult = options.agent.ctx.on("tools/result", (execution, result) => {
-    if (typeof execution.name !== "string") return;
-    completedTools.push({ name: execution.name, status: result.isError ? "error" : "ok" });
-    if (completedTools.length > 40) completedTools.splice(0, completedTools.length - 40);
-    factRevision++;
-  });
-  const disposeRoute = options.agent.ctx.on("agent/pre-step", async ({ messages, signal, turn, step }, next) => {
-    const decision = await next();
-    if (decision.kind === "reject" || signal.aborted) return decision;
-    const incoming = messageSummary(messages);
-    if (incoming.text) {
-      currentUser = incoming;
-      factRevision++;
-    }
-    if (!currentUser.text || lastRoutedFactRevision === factRevision) return decision;
-    lastRoutedFactRevision = factRevision;
-    const requestId = randomUUID12(), actualRestrictableNames = restrictableNames(options.agent);
-    const account = options.snapshot().account;
-    const accountMatch = account.status === "connected" && account.userId === options.expectedUserId;
-    void postEvent({ kind: "account_check", requestId, accountStatus: account.status, accountMatch });
-    if (!accountMatch) {
-      logMetric(options.logger, "warn", {
-        source: "jev",
-        outcome: "blocked",
-        fallback: false,
-        reason: "account_mismatch",
-        accountStatus: account.status,
-        accountMatch: false
-      });
-      return { kind: "reject" };
-    }
-    try {
-      const response = await fetchImpl(endpoint, {
-        method: "POST",
-        redirect: "error",
-        signal: AbortSignal.any([signal, AbortSignal.timeout(Math.max(250, Math.min(3e4, options.timeoutMs ?? 25e3)))]),
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          schemaVersion: 2,
-          sessionId: options.agent.id,
-          agentId: options.agent.id,
-          requestId,
-          account: { status: "connected", match: true },
-          serviceOrigin: "https://podplo.app",
-          stage: { turn, step, kind: step === 1 ? "initial" : "continuation" },
-          user: currentUser,
-          facts: { revision: factRevision, completedTools: completedTools.slice(-20) },
-          restrictableToolNames: actualRestrictableNames,
-          publicToolGroups: {
-            skill_discovery: ["podplo_list_skills"],
-            skill_detail: ["podplo_get_skill", "podplo_get_skill_family"],
-            input_inspection: ["read_image", "podplo_selected_image_info"],
-            reference_import: ["podplo_import_reference_images"],
-            generation_quote: ["podplo_prepare_generation"],
-            generation_status: ["podplo_wait_generation", "podplo_generation_status"],
-            image_processing: ["podplo_outline_images"],
-            delivery: ["podplo_prepare_generation_delivery"]
-          }
-        })
-      });
-      if (!response.ok) throw new Error(`http_${response.status}`);
-      const raw = await response.text();
-      if (Buffer.byteLength(raw) > 65536) throw new Error("response_too_large");
-      const route = parseJevRoute(JSON.parse(raw));
-      if (!route) throw new Error("invalid_schema");
-      const workflowConfidence = route.answers.workflow.confidence, phaseConfidence = route.answers.phase.confidence;
-      void postEvent({
-        kind: "jev_usage",
-        requestId,
-        purpose: "route",
-        usage: route.usage,
-        model: route.model,
-        latencyMs: route.latencyMs,
-        answers: route.answers,
-        workflowConfidence,
-        phaseConfidence
-      });
-      if (route.workflow === "other") {
-        clearRestriction("workflow_other");
-        void postEvent({
-          kind: "routing_applied",
-          requestId,
-          applied: false,
-          workflow: route.workflow,
-          phase: route.phase,
-          decisionReason: "workflow_other",
-          effectiveFromNextStep: true
-        });
-        return decision;
-      }
-      if (workflowConfidence < 0.65) {
-        clearRestriction("decision_low_confidence");
-        void postEvent({ kind: "fallback", requestId, reason: "decision_low_confidence", workflowConfidence, phaseConfidence });
-        return decision;
-      }
-      disposeRestriction?.();
-      disposeRestriction = void 0;
-      const allow = allowedRestrictableTools(route, actualRestrictableNames);
-      disposeRestriction = options.agent.ctx.tools.restrict({ allow });
-      const decisionReason = phaseConfidence < 0.55 ? "phase_uncertain_conservative" : "workflow_and_phase_confident";
-      const application = {
-        revision: ++routeRevision,
-        applied: true,
-        workflow: route.workflow,
-        phase: route.phase,
-        decisionReason,
-        allowedRestrictableTools: allow
-      };
-      const state = options.routingStates.get(options.agent.id);
-      if (state) state.pending = application;
-      logMetric(options.logger, "info", {
-        source: "jev",
-        outcome: "routed",
-        fallback: false,
-        model: route.model,
-        workflow: route.workflow,
-        workflowConfidence,
-        phase: route.phase,
-        phaseConfidence,
-        decisionReason,
-        restrictableBefore: actualRestrictableNames.length,
-        restrictableAfter: allow.length,
-        ...route.usage
-      });
-      void postEvent({
-        kind: "routing_applied",
-        requestId,
-        applied: true,
-        workflow: route.workflow,
-        workflowConfidence,
-        phase: route.phase,
-        phaseConfidence,
-        groupScores: route.groupScores,
-        decisionReason,
-        restrictableBefore: actualRestrictableNames,
-        restrictableAfter: allow,
-        effectiveFromNextStep: true
-      });
-      return { ...decision, messages: [...decision.messages, guidanceMessage(routeGuidance(route, application))] };
-    } catch (error101) {
-      clearRestriction("broker_error");
-      const reason = error101 instanceof Error && /^[a-z0-9_]+$/u.test(error101.message) ? error101.message : "route_failed";
-      logMetric(options.logger, "warn", { source: "jev", outcome: "error", fallback: true, reason });
-      void postEvent({ kind: "fallback", requestId, reason: "broker_error", detail: reason });
-      return decision;
-    }
-  }, { prepend: true });
-  return () => {
-    disposeRoute();
-    disposeToolsResult();
-    disposeRestriction?.();
-    options.routingStates.delete(options.agent.id);
-  };
-}
-function installJevUsageObserver(options) {
-  const endpoint = parseJevBrokerUrl(options.brokerUrl);
-  if (!endpoint) return () => void 0;
-  const fetchImpl = options.fetchImpl ?? fetch, eventsEndpoint = new URL("/events", endpoint.origin);
-  const postEvent = async (value2) => {
-    try {
-      await fetchImpl(eventsEndpoint, {
-        method: "POST",
-        redirect: "error",
-        signal: AbortSignal.timeout(1e3),
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ schemaVersion: 2, ...value2 })
-      });
-    } catch {
-    }
-  };
-  return options.ctx.on("llm/stream", (request, next) => {
-    const sessionId = request.sessionId === void 0 ? "" : String(request.sessionId);
-    if (!options.activeSessionIds.has(sessionId)) return next();
-    const requestId = randomUUID12(), purpose = request.purpose ?? "conversation";
-    const schema2 = JSON.stringify(request.tools ?? []), toolNames = (request.tools ?? []).map((tool) => tool.name ?? "").filter(Boolean).sort();
-    const tools = {
-      names: toolNames,
-      count: toolNames.length,
-      schemaBytes: Buffer.byteLength(schema2),
-      schemaHash: createHash12("sha256").update(schema2).digest("hex")
-    };
-    const routingState = options.routingStates.get(sessionId);
-    const applied = routingState?.current ?? fullApplication(0, "baseline");
-    void postEvent({
-      kind: "flash_request",
-      sessionId,
-      requestId,
-      purpose,
-      requestClass: request.purpose ? "aux" : "main",
-      provider: request.provider,
-      model: request.model,
-      toolNames: tools.names,
-      toolCount: tools.count,
-      toolSchemaBytes: tools.schemaBytes,
-      toolSchemaHash: tools.schemaHash,
-      routingApplied: applied.applied,
-      routingRevision: applied.revision,
-      workflow: applied.workflow,
-      phase: applied.phase,
-      decisionReason: applied.decisionReason,
-      allowedRestrictableTools: applied.allowedRestrictableTools
-    });
-    const observed = async function* () {
-      let lastUsage, failure;
-      try {
-        for await (const chunk of next()) {
-          if (chunk.type === "usage") lastUsage = chunk.usage;
-          yield chunk;
-        }
-      } catch (error101) {
-        failure = error101 instanceof Error ? error101.name : "unknown";
-        throw error101;
-      } finally {
-        if (lastUsage) {
-          const usage = flashUsage(lastUsage);
-          logMetric(options.logger, "info", {
-            source: "flash",
-            outcome: "usage",
-            fallback: false,
-            requestClass: request.purpose ? "aux" : "main",
-            purpose,
-            provider: request.provider,
-            model: request.model,
-            ...usage
-          });
-          await postEvent({
-            kind: "flash_usage",
-            sessionId,
-            requestId,
-            purpose,
-            usage,
-            requestClass: request.purpose ? "aux" : "main",
-            provider: request.provider,
-            model: request.model
-          });
-        }
-        if (failure) {
-          logMetric(options.logger, "warn", {
-            source: "flash",
-            outcome: "error",
-            fallback: false,
-            requestClass: request.purpose ? "aux" : "main",
-            purpose,
-            reason: failure
-          });
-          await postEvent({
-            kind: "flash_error",
-            sessionId,
-            requestId,
-            purpose,
-            reason: failure,
-            requestClass: request.purpose ? "aux" : "main"
-          });
-        }
-        if (!request.purpose && routingState?.pending) {
-          routingState.current = routingState.pending;
-          routingState.pending = void 0;
-        }
-      }
-    };
-    return observed();
-  });
-}
-
 // plugins/podplo-dsh/src/task-archive-host.ts
-import { createHash as createHash16 } from "node:crypto";
-import { basename as basename11, extname as extname9, join as join12 } from "node:path";
+import { createHash as createHash15 } from "node:crypto";
+import { basename as basename11, extname as extname9 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash14, randomUUID as randomUUID14 } from "node:crypto";
+import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
 import { constants as constants5 } from "node:fs";
 import { link, lstat as lstat5, mkdir as mkdir8, open as open6, realpath as realpath6, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
 import { basename as basename10, dirname as dirname8, extname as extname8, isAbsolute as isAbsolute6, join as join11 } from "node:path";
 import sharp13 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
-import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
+import { createHash as createHash12, randomUUID as randomUUID12 } from "node:crypto";
 import { constants as constants4 } from "node:fs";
 import { lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
 import { isAbsolute as isAbsolute5, join as join10 } from "node:path";
-var hash4 = (value2) => createHash13("sha256").update(value2).digest("hex");
+var hash4 = (value2) => createHash12("sha256").update(value2).digest("hex");
 var archiveTaskKey = (ownerId, sessionId, key) => hash4(`${hash4(ownerId)}\0${sessionId}\0${key}`);
 var stageSchema = external_exports2.enum(["generation", "download", "processing", "archive", "connection"]);
 var statusSchema = external_exports2.enum(["running", "completed", "failed", "stopped", "unknown"]);
@@ -61840,20 +61380,20 @@ var OperationLog = class {
         const type = prior?.type ?? update.type ?? "local";
         const semantic = { type, stage: update.stage, status: update.status, counts, diagnostics };
         if (prior && JSON.stringify(semantic) === JSON.stringify({ type: prior.type, stage: prior.stage, status: prior.status, counts: prior.counts, diagnostics: prior.diagnostics })) continue;
-        const stages2 = [...(prior?.stages ?? []).filter((row2) => row2.stage !== update.stage), { stage: update.stage, status: update.status, at }];
+        const stages = [...(prior?.stages ?? []).filter((row2) => row2.stage !== update.stage), { stage: update.stage, status: update.status, at }];
         const row = entrySchema.parse({
           id: id2,
           startedAt,
           updatedAt: at,
           ...semantic,
-          stages: stages2,
+          stages,
           ...["completed", "failed", "stopped"].includes(update.status) ? { durationMs: Math.max(0, Date.parse(at) - Date.parse(startedAt)) } : {}
         });
         rows = [row, ...rows.filter((saved) => saved.id !== id2)].sort((a, b) => b.startedAt.localeCompare(a.startedAt)).slice(0, 10);
       }
       if (JSON.stringify(rows) === JSON.stringify(original)) return true;
       await this.same(identity2);
-      const temporary = join10(directory, `.${randomUUID13()}.tmp`);
+      const temporary = join10(directory, `.${randomUUID12()}.tmp`);
       try {
         const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
         try {
@@ -61886,17 +61426,26 @@ var OperationLog = class {
 };
 
 // plugins/podplo-dsh/src/task-archive.ts
-var hash5 = (value2) => createHash14("sha256").update(value2).digest("hex");
+var hash5 = (value2) => createHash13("sha256").update(value2).digest("hex");
 var safeLabel = (value2, fallback, limit = 48) => value2.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim().slice(0, limit) || fallback;
+var sourceStem = (value2, fallback = "\u56FE\u7247") => value2.replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/[. ]+$/u, "").trim() || fallback;
+var fitFilename = (stem, suffix, extension) => {
+  const budget = Math.max(1, 255 - Buffer.byteLength(suffix) - Buffer.byteLength(extension));
+  let fitted = "";
+  for (const character of stem) {
+    if (Buffer.byteLength(fitted) + Buffer.byteLength(character) > budget) break;
+    fitted += character;
+  }
+  return `${fitted || "\u56FE\u7247"}${suffix}${extension}`;
+};
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
 var finalTimestamp = (value2) => {
   const date9 = new Date(value2);
   return `${date9.getFullYear()}-${String(date9.getMonth() + 1).padStart(2, "0")}-${String(date9.getDate()).padStart(2, "0")}_${String(date9.getHours()).padStart(2, "0")}-${String(date9.getMinutes()).padStart(2, "0")}`;
 };
-var opaqueStem = (value2) => {
-  const clean = value2.replace(/[ _-]*(?:AI生成|生成图)$/u, "").trim();
-  return /^\d+$/u.test(clean) || /^[a-f0-9]{12,}$/iu.test(clean) || /^[a-f0-9]{8}-(?:[a-f0-9]{4}-){3}[a-f0-9]{12}$/iu.test(clean);
-};
+var archiveLayout = (task) => task.archiveFormat === 2 || task.archiveFormat === 3;
+var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename10(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
+var filesystemNameKey = (value2) => value2.normalize("NFC").toLocaleLowerCase("en-US");
 var sourceSchema = external_exports2.object({ kind: external_exports2.enum(["asset", "local", "input"]), id: external_exports2.string().min(1).max(240), sessionId: external_exports2.string().min(1).max(240) });
 var fileSchema = external_exports2.object({
   id: external_exports2.string().uuid(),
@@ -61917,6 +61466,7 @@ var fileSchema = external_exports2.object({
   cacheName: external_exports2.string().optional(),
   cacheFingerprint: external_exports2.string().optional(),
   publishedName: external_exports2.string().optional(),
+  publishedFolder: external_exports2.string().refine(safeFolder).optional(),
   publishedFingerprint: external_exports2.string().optional(),
   outputSlot: external_exports2.number().int().positive().optional(),
   referenceOnly: external_exports2.boolean().optional()
@@ -61944,7 +61494,7 @@ var taskSchema = external_exports2.object({
   processingResumedAt: external_exports2.string().datetime().optional(),
   directory: external_exports2.string().refine(isAbsolute6),
   stamp: external_exports2.string(),
-  archiveFormat: external_exports2.literal(2).optional(),
+  archiveFormat: external_exports2.union([external_exports2.literal(2), external_exports2.literal(3)]).optional(),
   files: external_exports2.array(fileSchema),
   generationCalls: external_exports2.array(external_exports2.object({
     prompt: external_exports2.string(),
@@ -61968,6 +61518,7 @@ var taskSchema = external_exports2.object({
     index: external_exports2.number().int().nonnegative(),
     expectedOutputCount: external_exports2.number().int().positive().optional(),
     sourceName: external_exports2.string().optional(),
+    skill: external_exports2.object({ id: external_exports2.string().min(1), name: external_exports2.string().min(1) }).optional(),
     stage: external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), order: external_exports2.number().int() }).optional(),
     status: external_exports2.enum(["quoted", "submitting", "submitted", "submission_unknown", "completed", "failed", "cancelled"]),
     errorCode: external_exports2.string().optional(),
@@ -61984,7 +61535,7 @@ var taskSchema = external_exports2.object({
     })).optional()
   })).optional(),
   processingPlan: external_exports2.array(external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.record(external_exports2.string(), external_exports2.unknown()), sourceStepId: external_exports2.string().optional(), generationItemIndexes: external_exports2.array(external_exports2.number().int().nonnegative()).optional() })).optional(),
-  processingRuns: external_exports2.array(external_exports2.object({ operationId: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.unknown().optional(), inputIds: external_exports2.array(external_exports2.string()), resultIds: external_exports2.array(external_exports2.string()) })).default([]),
+  processingRuns: external_exports2.array(external_exports2.object({ operationId: external_exports2.string(), toolName: external_exports2.string(), label: external_exports2.string().optional(), options: external_exports2.unknown().optional(), inputIds: external_exports2.array(external_exports2.string()), resultIds: external_exports2.array(external_exports2.string()) })).default([]),
   processingFailures: external_exports2.array(external_exports2.object({
     stepId: external_exports2.string(),
     inputId: external_exports2.string(),
@@ -62037,7 +61588,7 @@ function storedTaskAudit(task) {
   return auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
 }
 function storedTaskFinished(task) {
-  if (task.archiveFormat === 2 && storedPublishedOutputs(task).some((file3) => !file3.publishedName)) return false;
+  if (archiveLayout(task) && storedPublishedOutputs(task).some((file3) => !file3.publishedName)) return false;
   if (task.files.some((file3) => file3.reviewRequired)) return false;
   const audit = storedTaskAudit(task);
   return audit.complete || !audit.processing.registered && audit.generation.planned !== null && audit.generation.succeeded === audit.generation.planned && !audit.generation.failed && !audit.generation.pending && !audit.generation.cancelled && !audit.generation.unknown && !audit.download.remaining && !audit.download.failed && !audit.download.missing;
@@ -62075,7 +61626,7 @@ var TaskArchiveManager = class {
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true });
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join11(project.directory, basename10(task.directory)) !== task.directory || task.files.some((file3) => [file3.name, file3.cacheName, file3.publishedName].some((name2) => name2 && (basename10(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name2)))))
+        if (!project || join11(project.directory, basename10(task.directory)) !== task.directory || task.files.some((file3) => [file3.name, file3.cacheName, file3.publishedName].some((name2) => name2 && (basename10(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name2)))) || task.files.some((file3) => file3.publishedFolder !== void 0 && !safeFolder(file3.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file3) => file3.publishedName && !file3.publishedFolder))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
@@ -62197,11 +61748,10 @@ var TaskArchiveManager = class {
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity2.owner && row.key === key);
       const before = task ? canonical(task) : "";
       if (!task) {
-        const project = await this.project(identity2, input.project), id2 = randomUUID14();
+        const project = await this.project(identity2, input.project), id2 = randomUUID13();
         const name2 = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
         const allocated = await this.allocateDirectory(project.directory, `${finalTimestamp(input.createdAt)}_\u56FE\u7247\u52A0\u5DE5`);
         const directory = allocated.path, directoryStamp = allocated.stamp;
-        await this.createDirectory(join11(directory, "\u6210\u54C1"));
         await this.same(identity2);
         task = {
           id: id2,
@@ -62212,7 +61762,7 @@ var TaskArchiveManager = class {
           name: name2,
           directory,
           stamp: directoryStamp,
-          archiveFormat: 2,
+          archiveFormat: 3,
           createdAt: input.createdAt,
           status: input.status,
           operationIds: [],
@@ -62240,7 +61790,7 @@ var TaskArchiveManager = class {
         row.operationIds = [.../* @__PURE__ */ new Set([...row.operationIds, ...input.operationIds])];
         for (const value2 of input.files) {
           if (row.files.some((file3) => file3.source.kind === value2.source.kind && file3.source.id === value2.source.id && file3.group === value2.group)) continue;
-          row.files.push({ ...value2, id: randomUUID14(), status: "pending", image: true });
+          row.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
         }
         const operationStopped = input.stoppedAt && (!row.processingResumedAt || Date.parse(input.stoppedAt) > Date.parse(row.processingResumedAt)) && !storedTaskFinished(row);
         if (operationStopped) row.stoppedAt = input.stoppedAt;
@@ -62253,7 +61803,7 @@ var TaskArchiveManager = class {
     });
   }
   needsArchiveWork(task) {
-    return !!task && (task.files.some((file3) => file3.status === "pending") || task.archiveFormat === 2 && storedPublishedOutputs(task).some((file3) => !file3.publishedName));
+    return !!task && (task.files.some((file3) => file3.status === "pending") || archiveLayout(task) && storedPublishedOutputs(task).some((file3) => !file3.publishedName));
   }
   async observeTask(id2, identity2) {
     const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
@@ -62324,7 +61874,7 @@ var TaskArchiveManager = class {
       if (hash5(await this.readPath(path)) !== digest2) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
       return { path, stat: current, digest: digest2, created: false };
     }
-    const temporary = join11(directory, `.${token}.${randomUUID14()}.part`);
+    const temporary = join11(directory, `.${token}.${randomUUID13()}.part`);
     const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
     try {
       await handle.writeFile(bytes);
@@ -62369,15 +61919,43 @@ var TaskArchiveManager = class {
     if (!run) return;
     return task.processingPlan?.find((step) => run.operationId.includes(`:${step.id}:`) && step.toolName === run.toolName) ?? task.processingPlan?.find((step) => step.toolName === run.toolName && canonical(step.options) === canonical(run.options));
   }
+  processingRun(task, file3) {
+    return file3.source.kind === "asset" ? void 0 : task.processingRuns.find((row) => row.resultIds.includes(file3.source.id));
+  }
+  outputIdentity(task, file3) {
+    const run = this.processingRun(task, file3), step = this.processingStep(task, file3);
+    if (run) return { id: `tool:${run.toolName}`, label: run.label ?? step?.label ?? run.toolName };
+    const item = this.generationItem(task, file3);
+    if (item?.skill) return { id: `skill:${item.skill.id}`, label: item.skill.name };
+    return { id: `generation:${item?.stage?.id ?? "ordinary"}`, label: item?.stage?.label ?? "\u666E\u901A\u751F\u56FE" };
+  }
+  knownOutputIdentities(task) {
+    const values = [
+      ...(task.generationItems ?? []).map((item) => item.skill ? { id: `skill:${item.skill.id}`, label: item.skill.name } : { id: `generation:${item.stage?.id ?? "ordinary"}`, label: item.stage?.label ?? "\u666E\u901A\u751F\u56FE" }),
+      ...(task.processingPlan ?? []).map((step) => ({ id: `tool:${step.toolName}`, label: step.label })),
+      ...task.processingRuns.map((run) => ({ id: `tool:${run.toolName}`, label: run.label ?? run.toolName }))
+    ];
+    return [...new Map(values.map((value2) => [value2.id, value2])).values()];
+  }
+  outputFolder(task, file3) {
+    if (task.archiveFormat === 2) return "\u6210\u54C1";
+    if (file3.publishedFolder) return file3.publishedFolder;
+    const identity2 = this.outputIdentity(task, file3), base2 = safeLabel(identity2.label, identity2.id.startsWith("skill:") ? "Skill" : "\u5DE5\u5177", 72);
+    const existing = task.files.find((other) => other.id !== file3.id && other.publishedFolder && this.outputIdentity(task, other).id === identity2.id)?.publishedFolder;
+    if (existing) return existing;
+    const collision = this.knownOutputIdentities(task).some((other) => other.id !== identity2.id && filesystemNameKey(safeLabel(other.label, other.id.startsWith("skill:") ? "Skill" : "\u5DE5\u5177", 72)) === filesystemNameKey(base2));
+    return collision ? `${base2}\uFF08${hash5(identity2.id).slice(0, 8)}\uFF09` : base2;
+  }
+  publishedDirectory(task, file3) {
+    const folder = this.outputFolder(task, file3);
+    if (!safeFolder(folder)) throw new Error("\u6210\u679C\u76EE\u5F55\u540D\u79F0\u65E0\u6548");
+    return join11(task.directory, folder);
+  }
   outputStem(task, file3) {
     const item = this.generationItem(task, file3);
-    if (item) {
-      const stage = safeLabel(item.stage?.label ?? "\u751F\u6210\u56FE", "\u751F\u6210\u56FE", 48);
-      const stageItems = (task.generationItems ?? []).filter((row) => (row.stage?.id ?? "generation") === (item.stage?.id ?? "generation"));
-      const ordinal2 = Math.max(1, stageItems.findIndex((row) => row.index === item.index) + 1);
-      const raw = item.sourceName ? basename10(item.sourceName, extname8(item.sourceName)) : "";
-      const source = safeLabel(raw, "", 48);
-      return `${stage}_${source && !opaqueStem(source) ? source : String(ordinal2).padStart(2, "0")}`;
+    if (item?.sourceName) {
+      const raw = basename10(item.sourceName, extname8(item.sourceName));
+      return task.archiveFormat === 3 ? sourceStem(raw) : safeLabel(raw, "\u56FE\u7247", 72);
     }
     const root = this.sourceRoot(task, file3);
     const roots = [...new Map(task.files.filter((row) => row.group === "result").map((row) => {
@@ -62385,11 +61963,17 @@ var TaskArchiveManager = class {
       return [value2.source.id, value2];
     })).values()];
     const ordinal = Math.max(1, roots.findIndex((row) => row.source.id === root.source.id) + 1);
-    for (const value2 of [root.sourceName, root.label]) {
-      if (!value2) continue;
+    if (root.sourceName) {
+      const raw = basename10(root.sourceName, extname8(root.sourceName));
+      if (task.archiveFormat === 3) return sourceStem(raw);
+      const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
+      return safeLabel(clean, "\u56FE\u7247", 72);
+    }
+    for (const value2 of [root.label]) {
       const raw = basename10(value2, extname8(value2));
-      const cleaned = safeLabel(raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, ""), "", 72);
-      if (cleaned && !opaqueStem(cleaned) && !/^(?:原始生成|AI原图|参考(?:原图|图\d*)|图片|AI生成|成品|image|original|generated|result|source)$/iu.test(cleaned)) return cleaned;
+      const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
+      const cleaned = task.archiveFormat === 3 ? sourceStem(clean, "") : safeLabel(clean, "", 72);
+      if (cleaned && !/^(?:原始生成|AI原图|参考(?:原图|图\d*)|图片|AI生成|成品|image|original|generated|result|source)$/iu.test(cleaned)) return cleaned;
     }
     return `\u56FE\u7247${String(ordinal).padStart(2, "0")}`;
   }
@@ -62411,14 +61995,9 @@ var TaskArchiveManager = class {
     await this.store.transaction((state) => {
       const task = state.tasks.find((row) => row.id === taskId), file3 = task.files.find((row) => row.id === fileId);
       if (file3.outputSlot) return;
-      const parent = file3.sourceId ? task.files.find((row) => row.group === "result" && row.source.id === file3.sourceId) ?? task.files.find((row) => row.source.id === file3.sourceId) : void 0;
-      const siblings = task.files.filter((row) => row.group === "result" && row.sourceId === file3.sourceId && row.status === "saved" && row.cacheName && !row.reviewRequired);
-      if (!task.generationAudit?.planned && parent?.outputSlot && siblings[0]?.id === file3.id) {
-        file3.outputSlot = parent.outputSlot;
-        return;
-      }
-      const stem = this.outputStem(task, file3);
-      const used = new Set(task.files.filter((row) => row.outputSlot && this.outputStem(task, row) === stem).map((row) => row.outputSlot));
+      if (task.archiveFormat === 3 && !file3.publishedFolder) file3.publishedFolder = this.outputFolder(task, file3);
+      const stem = this.outputStem(task, file3), folder = this.outputFolder(task, file3);
+      const used = new Set(task.files.filter((row) => row.outputSlot && this.outputFolder(task, row) === folder && this.outputStem(task, row) === stem).map((row) => row.outputSlot));
       let slot = 1;
       while (used.has(slot)) slot++;
       file3.outputSlot = slot;
@@ -62426,12 +62005,16 @@ var TaskArchiveManager = class {
   }
   preferredOutputName(task, file3) {
     const slot = file3.outputSlot ?? 1, extension = extname8(file3.cacheName ?? file3.publishedName ?? "") || ".png";
-    return `${this.outputStem(task, file3)}_\u6210\u54C1${slot === 1 ? "" : `-${slot}`}${extension}`;
+    if (task.archiveFormat === 2) return `${this.outputStem(task, file3)}_\u6210\u54C1${slot === 1 ? "" : `-${slot}`}${extension}`;
+    const folder = this.outputFolder(task, file3), stem = this.outputStem(task, file3);
+    const siblings = this.finalLeaves(task).filter((row) => this.outputFolder(task, row) === folder && this.outputStem(task, row) === stem);
+    const numbered = siblings.length > 1 || this.processingRun(task, file3)?.toolName === GRID_SPLIT_OPERATION_NAME;
+    return fitFilename(stem, numbered ? `\uFF08${slot}\uFF09` : "", extension);
   }
   async publishedValid(task, file3, verifyDigest = true) {
     try {
       if (!file3.publishedName || !file3.publishedFingerprint) return false;
-      const output = join11(task.directory, "\u6210\u54C1");
+      const output = this.publishedDirectory(task, file3);
       await this.directory(output);
       const path = join11(output, file3.publishedName), stat = await lstat5(path).catch(() => void 0);
       return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath6(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file3.publishedFingerprint && (!verifyDigest || hash5(await this.readPath(path)) === file3.digest);
@@ -62441,10 +62024,9 @@ var TaskArchiveManager = class {
   }
   async reconcileFinalOutputs(id2, identity2, recoverPublished) {
     let task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
-    if (task?.archiveFormat !== 2) return;
+    if (!task || !archiveLayout(task)) return;
     await this.taskDirectory(task);
-    const output = join11(task.directory, "\u6210\u54C1");
-    await this.directory(output);
+    if (task.archiveFormat === 2) await this.directory(join11(task.directory, "\u6210\u54C1"));
     await this.same(identity2);
     for (const candidate2 of this.finalLeaves(task)) {
       await this.same(identity2);
@@ -62463,9 +62045,12 @@ var TaskArchiveManager = class {
       if (!file3.cacheName) continue;
       const bytes = await this.readPath(join11(cache, file3.cacheName));
       if (hash5(bytes) !== file3.digest) throw new Error("\u52A0\u5DE5\u7F13\u5B58\u5DF2\u53D8\u5316");
+      const output = this.publishedDirectory(task, file3);
+      if (task.archiveFormat === 3) await this.createDirectory(output);
+      await this.directory(output);
       const extension = extname8(file3.cacheName), preferred = this.preferredOutputName(task, file3), base2 = basename10(preferred, extension);
       let name2 = preferred, suffix = 2;
-      while (await lstat5(join11(output, name2)).catch(() => void 0)) name2 = `${base2}-\u526F\u672C${suffix++}${extension}`;
+      while (await lstat5(join11(output, name2)).catch(() => void 0)) name2 = task.archiveFormat === 3 ? fitFilename(this.outputStem(task, file3), `\uFF08\u526F\u672C${suffix++}\uFF09`, extension) : `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
       await this.same(identity2);
       const saved = await this.writeFresh(output, name2, bytes, file3.id);
@@ -62491,7 +62076,7 @@ var TaskArchiveManager = class {
       await this.same(identity2);
       if (await this.publishedValid(task, old)) {
         await this.same(identity2);
-        await unlink4(join11(output, old.publishedName));
+        await unlink4(join11(this.publishedDirectory(task, old), old.publishedName));
       }
       await this.same(identity2);
       await this.store.transaction((state) => {
@@ -62502,7 +62087,7 @@ var TaskArchiveManager = class {
     }
     task = this.store.snapshot().tasks.find((row) => row.id === id2);
     for (const leaf of this.finalLeaves(task).filter((row) => row.publishedName)) {
-      const preferred = this.preferredOutputName(task, leaf);
+      const output = this.publishedDirectory(task, leaf), preferred = this.preferredOutputName(task, leaf);
       if (leaf.publishedName === preferred || await lstat5(join11(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
       await this.taskDirectory(task);
       await this.same(identity2);
@@ -62524,7 +62109,7 @@ var TaskArchiveManager = class {
   }
   async savePendingFinalOnly(id2, identity2, recoverPublished) {
     const initial = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
-    if (initial?.archiveFormat !== 2) return;
+    if (!initial || !archiveLayout(initial)) return;
     for (const file3 of initial.files.filter((row) => row.status === "pending")) {
       let stage = "archive";
       try {
@@ -62586,7 +62171,7 @@ var TaskArchiveManager = class {
   async savePending(id2, identity2, recoverPublished = false) {
     const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (!task) return;
-    if (task.archiveFormat === 2) {
+    if (archiveLayout(task)) {
       await this.savePendingFinalOnly(id2, identity2, recoverPublished);
       return;
     }
@@ -62620,7 +62205,7 @@ var TaskArchiveManager = class {
           const bytes = await this.readPath(path);
           if (hash5(bytes) !== digest2) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
-          const temporary = join11(directory, `.${file3.id}.${randomUUID14()}.part`);
+          const temporary = join11(directory, `.${file3.id}.${randomUUID13()}.part`);
           const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
           try {
             await handle.writeFile(source.bytes);
@@ -62708,7 +62293,7 @@ var TaskArchiveManager = class {
         }
         if (!latest.summaryDigest || existingDigest !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
       }
-      const temporary = join11(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID14()}.tmp`);
+      const temporary = join11(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID13()}.tmp`);
       const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
       try {
         await handle.writeFile(bytes);
@@ -62758,7 +62343,7 @@ var TaskArchiveManager = class {
       if (existing) {
         await this.taskDirectory(task);
         await this.same(identity2);
-        const staged = join11(project.directory, `.delete-${task.id}-${randomUUID14()}`);
+        const staged = join11(project.directory, `.delete-${task.id}-${randomUUID13()}`);
         await rename5(task.directory, staged);
         try {
           await this.directory(project.directory, project.stamp);
@@ -62770,7 +62355,7 @@ var TaskArchiveManager = class {
           throw error101;
         }
       }
-      if (task.archiveFormat === 2) {
+      if (archiveLayout(task)) {
         await this.same(identity2);
         const cache = await this.cacheDirectory(task).catch((error101) => {
           if (error101.code === "ENOENT") return void 0;
@@ -62830,7 +62415,7 @@ var TaskArchiveManager = class {
     const values = [];
     await this.taskDirectory(task);
     for (const sourceId of ids2) {
-      if (task.archiveFormat === 2) {
+      if (archiveLayout(task)) {
         const file4 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.cacheName);
         if (!file4?.cacheName || !file4.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
         const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join11(cache, file4.cacheName));
@@ -63044,7 +62629,7 @@ var TaskArchiveManager = class {
         generationItemIndex: itemIndex,
         sourceName: item?.sourceName ?? file3.sourceName,
         stage,
-        ...file3.publishedName ? { relativePath: join11("\u6210\u54C1", file3.publishedName) } : {},
+        ...file3.publishedName ? { relativePath: join11(this.outputFolder(task, file3), file3.publishedName) } : {},
         ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
         variant: file3.source.kind === "asset" ? "generated" : "processed"
       });
@@ -63065,7 +62650,7 @@ var TaskArchiveManager = class {
     return {
       diagnostics: [...task.diagnostics ?? [], ...internalFiles.flatMap((file3) => file3.diagnostic ? [file3.diagnostic] : [])].slice(-20),
       id: task.id,
-      archiveFormat: 2,
+      archiveFormat: task.archiveFormat,
       name: "\u56FE\u7247\u52A0\u5DE5",
       projectId: task.projectId,
       projectName: this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === task.owner).name,
@@ -63139,7 +62724,7 @@ var TaskArchiveManager = class {
     } catch {
       available = false;
     }
-    return task.archiveFormat === 2 ? this.finalOnlyView(task, identity2, available, updateSummary) : this.legacyView(task, identity2, available, updateSummary);
+    return archiveLayout(task) ? this.finalOnlyView(task, identity2, available, updateSummary) : this.legacyView(task, identity2, available, updateSummary);
   }
   async list(sessionId) {
     const observedAt = (/* @__PURE__ */ new Date()).toISOString();
@@ -63169,7 +62754,7 @@ var TaskArchiveManager = class {
     const headers = state.tasks.filter((row) => row.owner === identity2.owner).flatMap((task) => {
       const projectName = projectNames.get(task.projectId);
       if (!projectName || filters.project && filters.project !== task.projectId) return [];
-      const name2 = task.archiveFormat === 2 ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
+      const name2 = archiveLayout(task) ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
       if (!`${name2} ${projectName}`.toLocaleLowerCase().includes(query)) return [];
       const createdAt = Date.parse(task.createdAt);
       if (!Number.isFinite(createdAt) || bounds.start !== void 0 && createdAt < bounds.start || bounds.end !== void 0 && createdAt >= bounds.end) return [];
@@ -63190,10 +62775,10 @@ var TaskArchiveManager = class {
     for (const file3 of task.files) {
       if (fileIds && !fileIds.has(file3.id)) continue;
       if (file3.group !== "result" || file3.status !== "saved" || !file3.image) continue;
-      const name2 = task.archiveFormat === 2 ? file3.publishedName : file3.name;
-      const fingerprint2 = task.archiveFormat === 2 ? file3.publishedFingerprint : file3.fingerprint;
+      const name2 = archiveLayout(task) ? file3.publishedName : file3.name;
+      const fingerprint2 = archiveLayout(task) ? file3.publishedFingerprint : file3.fingerprint;
       if (!name2 || !fingerprint2 || basename10(name2) !== name2) continue;
-      const directory = task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file3);
+      const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
       if (!directories.has(directory)) {
         try {
           await this.directory(directory);
@@ -63307,7 +62892,7 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const task = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
         for (const value2 of files) if (!task.files.some((file3) => file3.source.kind === value2.source.kind && file3.source.id === value2.source.id))
-          task.files.push({ ...value2, id: randomUUID14(), status: "pending", image: true });
+          task.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
         task.operationIds = [.../* @__PURE__ */ new Set([...task.operationIds, operationId2])];
         if (receipt && !task.processingRuns.some((run) => run.operationId === receipt.operationId))
           task.processingRuns.push({ ...receipt, resultIds: files.map((file3) => file3.source.id) });
@@ -63320,7 +62905,7 @@ var TaskArchiveManager = class {
     const { identity: identity2, task } = await this.owned(id2);
     await this.taskDirectory(task);
     const absent = /* @__PURE__ */ new Set();
-    if (task.archiveFormat === 2) {
+    if (archiveLayout(task)) {
       const cache = await this.cacheDirectory(task);
       for (const file3 of task.files.filter((file4) => file4.status === "saved" && file4.cacheName)) {
         const path = join11(cache, file3.cacheName), stat = await lstat5(path).catch(() => void 0);
@@ -63344,9 +62929,9 @@ var TaskArchiveManager = class {
   }
   async read(id2, fileId, preview = false) {
     const { identity: identity2, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId && row.status === "saved");
-    const name2 = task.archiveFormat === 2 ? file3?.publishedName : file3?.name;
+    const name2 = archiveLayout(task) ? file3?.publishedName : file3?.name;
     if (!file3 || !name2) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
-    const directory = task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file3);
+    const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
     await this.taskDirectory(task);
     await this.directory(directory);
     const bytes = await this.readPath(join11(directory, name2));
@@ -63379,13 +62964,26 @@ var TaskArchiveManager = class {
       await this.options.openPath(project.directory);
     });
   }
+  async deliveryPath(id2, fileId) {
+    const { identity: identity2, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId && row.status === "saved");
+    const name2 = archiveLayout(task) ? file3?.publishedName : file3?.name;
+    if (!file3 || !name2) throw new Error("\u672C\u5730\u6587\u4EF6\u5C1A\u672A\u4FDD\u5B58");
+    const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
+    await this.read(id2, fileId);
+    await this.same(identity2);
+    await this.directory(directory);
+    const path = join11(directory, name2);
+    if (await realpath6(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u8DEF\u5F84\u65E0\u6548");
+    return path;
+  }
+  /** Internal verified reveal used only by the standalone toolbox/splitter surfaces. */
   async reveal(id2, fileId) {
     const { identity: identity2, task } = await this.owned(id2), file3 = task.files.find((row) => row.id === fileId);
     await this.read(id2, fileId);
     await this.same(identity2);
-    const name2 = task.archiveFormat === 2 ? file3?.publishedName : file3?.name;
+    const name2 = archiveLayout(task) ? file3?.publishedName : file3?.name;
     if (!this.options.revealPath || !file3 || !name2) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
-    await this.options.revealPath(join11(task.archiveFormat === 2 ? join11(task.directory, "\u6210\u54C1") : this.groupDirectory(task, file3), name2));
+    await this.options.revealPath(join11(archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3), name2));
   }
   async wait() {
     while (this.jobs.size) await Promise.allSettled(this.jobs.values());
@@ -63397,7 +62995,7 @@ var TaskArchiveManager = class {
 };
 
 // plugins/podplo-dsh/src/archive-processing-pipeline.ts
-import { createHash as createHash15 } from "node:crypto";
+import { createHash as createHash14 } from "node:crypto";
 import sharp14 from "sharp";
 var automaticProcessingTools = /* @__PURE__ */ new Set([
   "podplo_outline_images",
@@ -63494,7 +63092,7 @@ var ArchiveProcessingPipeline = class {
       const beforeProcess = await this.deps.context(taskId);
       const latestStep = beforeProcess.plan?.find((row) => row.id === step.id);
       if (this.closed || beforeProcess.sessionId !== sessionId || !beforeProcess.approvedAt || beforeProcess.stoppedAt || !latestStep || processingStepDigest(latestStep) !== planDigest) return;
-      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash15("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
+      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash14("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
       await this.deps.process(
         step.toolName,
         { operationId: operationId2, ids: [inputId], options: step.options },
@@ -63709,23 +63307,23 @@ async function taskArchiveHost(options) {
           const label = labels[row.toolName] ?? "\u672C\u5730\u5904\u7406";
           const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && row.toolName === TOOLBOX_PIPELINE_NAME || row.sessionId === PODPLO_GRID_SPLIT_WORKSPACE_ID && row.toolName === GRID_SPLIT_OPERATION_NAME;
           const matches = independentBatch ? [] : await manager.findSource(row.sessionId, row.inputIds);
-          const groups2 = /* @__PURE__ */ new Map();
+          const groups = /* @__PURE__ */ new Map();
           const groupKeys = /* @__PURE__ */ new Map();
           for (const result of row.results) {
             const sourceMatches = independentBatch ? [] : result.sourceId ? await manager.findSource(row.sessionId, [result.sourceId]) : matches;
             const target = sourceMatches.length === 1 ? sourceMatches[0].id : "";
             if (target) groupKeys.set(target, sourceMatches[0].key);
-            groups2.set(target, [...groups2.get(target) ?? [], {
+            groups.set(target, [...groups.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
               group: "result",
               label: basename11(result.name, extname9(result.name)),
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
-          for (const [id2, files] of groups2) {
+          for (const [id2, files] of groups) {
             stage = "archive";
             if (groupKeys.has(id2)) logTarget.key = groupKeys.get(id2);
-            const receipt = { operationId: row.operationId, toolName: row.toolName, options: row.options, inputIds: row.inputIds, resultIds: files.map((file3) => file3.source.id) };
+            const receipt = { operationId: row.operationId, toolName: row.toolName, label, options: row.options, inputIds: row.inputIds, resultIds: files.map((file3) => file3.source.id) };
             if (id2) await manager.append(id2, files, row.operationId, receipt);
             else await manager.upsert({
               key: `local:${row.operationId}`,
@@ -63815,7 +63413,7 @@ async function taskArchiveHost(options) {
         if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(true)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
         for (let offset = 0; offset < pendingIds.length; offset += 100) {
           const ids2 = pendingIds.slice(offset, offset + 100);
-          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash16("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
+          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash15("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
           await toolkit.callTool(step.toolName, { operationId: operationId2, ids: ids2, options: step.options }, context.sessionId);
           await sync(context.sessionId);
         }
@@ -63954,13 +63552,7 @@ async function taskArchiveHost(options) {
           status: operation.status ?? task.status,
           complete,
           outcomes,
-          files: files.map((file3) => {
-            if (basename11(file3.name) !== file3.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            const expected = join12(task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE", file3.name);
-            const relative5 = file3.relativePath ?? expected;
-            if (relative5 !== expected) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u8DEF\u5F84\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
-            return { name: file3.name, path: join12(task.directory, relative5) };
-          })
+          files: await Promise.all(files.map(async (file3) => ({ name: file3.name, path: await manager.deliveryPath(task.id, file3.id) })))
         };
       }
       const run = () => options.transport.callTool(name2, args, sessionId);
@@ -64037,7 +63629,7 @@ async function taskArchiveHost(options) {
           return { ok: true, data: {
             ...await manager.catalog(filters),
             diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
-            currentProjectId: createHash16("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -64113,7 +63705,7 @@ async function taskArchiveHost(options) {
           return { ok: true, data: {
             ...await manager.list(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0),
             diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
-            currentProjectId: createHash16("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -64166,26 +63758,6 @@ async function taskArchiveHost(options) {
           const file3 = await manager.read(taskId, fileId, true);
           if (!file3.image) throw new Error("\u8BE5\u6587\u4EF6\u6CA1\u6709\u56FE\u7247\u9884\u89C8");
           return { ok: true, data: { name: file3.name, dataUrl: `data:${file3.contentType};base64,${file3.bytes.toString("base64")}` } };
-        }
-        if (action === "archive.reveal") {
-          await manager.reveal(taskId, fileId);
-          return { ok: true, data: { opened: true } };
-        }
-        if (action === "archive.use") {
-          if (!caller.sessionId) throw new Error("\u8BF7\u5148\u6253\u5F00\u63A5\u6536\u56FE\u7247\u7684\u4F1A\u8BDD");
-          const expected = { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
-          const file3 = await manager.read(taskId, fileId);
-          if (!file3.image) throw new Error("\u6B64\u6587\u4EF6\u4E0D\u80FD\u9009\u4F5C\u56FE\u7247");
-          const imported = await toolkit.importInput({ name: file3.name, contentType: file3.contentType === "image/jpg" ? "image/jpeg" : file3.contentType, base64: file3.bytes.toString("base64") }, caller.sessionId, expected);
-          return { ok: true, data: {
-            version: 1,
-            kind: "local",
-            id: imported.id,
-            label: imported.name,
-            locator: { localResultId: imported.id },
-            ownerId: expected.ownerId,
-            private: true
-          } };
         }
         throw new Error("\u672A\u77E5\u6210\u679C\u64CD\u4F5C");
       } catch (cause) {
@@ -64481,7 +64053,7 @@ async function waitForNativeGeneration(options) {
 
 // plugins/podplo-dsh/src/native-skill-batch.ts
 import { constants as constants6, open as open7, readdir, realpath as realpath7, lstat as lstat6 } from "node:fs/promises";
-import { randomInt, randomUUID as randomUUID15 } from "node:crypto";
+import { randomInt, randomUUID as randomUUID14 } from "node:crypto";
 import { homedir } from "node:os";
 import { basename as basename12, extname as extname10, isAbsolute as isAbsolute7, parse as parse6, relative as relative4, resolve, sep } from "node:path";
 
@@ -64507,30 +64079,81 @@ function candidate(value2) {
     return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
   return { id: id2, slug: slug2, originalTitle, note: note2, folderId, folderName, kind: row.kind, executable: row.executable };
 }
-async function resolveFavoriteSkill(input, list) {
-  const query = requiredText(input.query, "query", 160);
-  const folder = input.folder === void 0 ? void 0 : requiredText(input.folder, "folder", 80);
-  const folderPool = input.strategy !== "single" && folder !== void 0 && normalized(query) === normalized(folder);
-  const result = await list(folderPool ? { folder } : { query, ...folder ? { folder } : {} });
+function sameCandidate(left, right) {
+  return left.id === right.id && left.slug === right.slug && left.originalTitle === right.originalTitle && left.note === right.note && left.folderId === right.folderId && left.folderName === right.folderName && left.kind === right.kind && left.executable === right.executable;
+}
+function uniqueCandidates(rows) {
+  const unique = /* @__PURE__ */ new Map();
+  for (const row of rows) {
+    const existing = unique.get(row.slug);
+    if (existing && !sameCandidate(existing, row))
+      return fail4("SKILL_QUERY_AMBIGUOUS", "\u540C\u4E00\u6536\u85CF Skill \u51FA\u73B0\u4E86\u51B2\u7A81\u7684\u6587\u4EF6\u5939\u6216\u8EAB\u4EFD\uFF0C\u8BF7\u5237\u65B0\u6536\u85CF\u540E\u91CD\u8BD5\u3002");
+    unique.set(row.slug, existing ?? row);
+  }
+  return [...unique.values()];
+}
+function resultRows(result) {
   if (!result || typeof result !== "object" || !Array.isArray(result.items))
     return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
-  const rows = [...new Map(result.items.map(candidate).map((row) => [row.slug, row])).values()].filter((row) => !folder || (normalized(folder) === "\u672A\u5206\u7C7B" ? row.folderId === null : row.folderName !== null && normalized(row.folderName) === normalized(folder)));
-  if (folderPool) {
-    const members = rows.filter((row) => row.executable && (row.kind === "skill" || row.kind === "member"));
-    const matchingFamilies = rows.filter((row) => row.kind === "family" && [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === normalized(query)));
-    if (matchingFamilies.length > 1 || matchingFamilies.length && members.length)
-      return fail4("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u65CF\u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
-    if (matchingFamilies.length === 1) return matchingFamilies[0];
-    if (!members.length) return fail4("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
-    return { kind: "folder-pool", folderName: folder, members };
-  }
-  const exact = rows.filter((row) => [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === normalized(query)));
+  return uniqueCandidates(result.items.map(candidate));
+}
+function inFolder(rows, folder) {
+  const key = normalized(folder);
+  return rows.filter((row) => key === "\u672A\u5206\u7C7B" ? row.folderId === null : row.folderId !== null && row.folderName !== null && normalized(row.folderName) === key);
+}
+function exactMatches(rows, query) {
+  const key = normalized(query);
+  return rows.filter((row) => [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === key));
+}
+function resolveExact(rows, query, strategy) {
+  const exact = exactMatches(rows, query);
   if (exact.length > 1) return fail4("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF Skill \u5339\u914D\u8BE5\u540D\u79F0\u6216\u5907\u6CE8\uFF0C\u8BF7\u6307\u5B9A\u6536\u85CF\u6587\u4EF6\u5939\u6216\u7CBE\u786E Skill\u3002");
   if (!exact.length) return fail4("SKILL_NOT_FOUND", "\u6211\u7684\u6536\u85CF\u4E2D\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684 Skill\u3002");
   const resolved = exact[0];
-  if (input.strategy === "single" && resolved.kind === "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F Skill \u65CF\uFF0C\u8BF7\u4F7F\u7528\u968F\u673A\u6210\u5458\u7B56\u7565\u3002");
-  if (input.strategy !== "single" && resolved.kind !== "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F\u5355\u4E2A Skill\uFF0C\u4E0D\u80FD\u4F7F\u7528 Skill \u65CF\u968F\u673A\u7B56\u7565\u3002");
+  if (strategy === "single" && resolved.kind === "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F Skill \u65CF\uFF0C\u8BF7\u4F7F\u7528\u968F\u673A\u6210\u5458\u7B56\u7565\u3002");
+  if (strategy !== "single" && resolved.kind !== "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F\u5355\u4E2A Skill\uFF0C\u4E0D\u80FD\u4F7F\u7528 Skill \u65CF\u968F\u673A\u7B56\u7565\u3002");
   return resolved;
+}
+function folderMembers(rows) {
+  return rows.filter((row) => row.executable && (row.kind === "skill" || row.kind === "member"));
+}
+function assertOneFolder(rows) {
+  const ids2 = new Set(rows.flatMap((row) => row.folderId === null ? [] : [row.folderId]));
+  if (ids2.size > 1)
+    fail4("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF\u6587\u4EF6\u5939\u4F7F\u7528\u4E86\u540C\u4E00\u540D\u79F0\uFF0C\u8BF7\u91CD\u547D\u540D\u540E\u91CD\u8BD5\u3002");
+}
+function explicitFolderPool(rows, query, folder) {
+  assertOneFolder(rows);
+  const members = folderMembers(rows);
+  const matchingFamilies = exactMatches(rows, query).filter((row) => row.kind === "family");
+  if (matchingFamilies.length > 1 || matchingFamilies.length && members.length)
+    return fail4("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u65CF\u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
+  if (matchingFamilies.length === 1) return matchingFamilies[0];
+  if (!members.length) return fail4("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
+  return { kind: "folder-pool", folderName: folder, members };
+}
+async function resolveFavoriteSkill(input, list) {
+  const query = requiredText(input.query, "query", 160);
+  const folder = input.folder === void 0 ? void 0 : requiredText(input.folder, "folder", 80);
+  const random = input.strategy !== "single";
+  const usesExplicitFolderPool = random && folder !== void 0 && normalized(query) === normalized(folder);
+  if (usesExplicitFolderPool) {
+    const rows = inFolder(resultRows(await list({ folder })), folder);
+    return explicitFolderPool(rows, query, folder);
+  }
+  const queried = resultRows(await list({ query, ...folder ? { folder } : {} }));
+  const queryRows = folder === void 0 ? queried : inFolder(queried, folder);
+  if (folder !== void 0 || !random || query.length > 80 || normalized(query) === "\u672A\u5206\u7C7B")
+    return resolveExact(queryRows, query, input.strategy);
+  const folderRows = inFolder(resultRows(await list({ folder: query })), query);
+  assertOneFolder(folderRows);
+  const exact = exactMatches(uniqueCandidates([...queryRows, ...folderRows]), query);
+  const members = folderMembers(folderRows);
+  if (exact.length > 1 || exact.length && members.length)
+    return fail4("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u6216 Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
+  if (exact.length === 1) return resolveExact(exact, query, input.strategy);
+  if (!members.length) return fail4("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
+  return { kind: "folder-pool", folderName: query, members };
 }
 
 // plugins/podplo-dsh/src/toolbox-preset.ts
@@ -64929,7 +64552,7 @@ function expandNativeTaskInput(raw) {
     fail5("INVALID_ARGUMENT", "\u6574\u5355\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879\u3002");
   const rawStages = raw.stages;
   const ids2 = /* @__PURE__ */ new Set();
-  const stages2 = rawStages.map((value2, index) => {
+  const stages = rawStages.map((value2, index) => {
     const stage = record6(value2), id2 = text3(stage.id, `stages[${index}].id`, 40);
     if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail5("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "skill", "generation", "local"]), `stages[${index}]`);
@@ -64990,7 +64613,7 @@ function expandNativeTaskInput(raw) {
       processingPlan
     };
   });
-  return { workflow: { stages: stages2 } };
+  return { workflow: { stages } };
 }
 async function prepareNativeTask(raw, deps) {
   const expanded = expandNativeTaskInput(raw);
@@ -65145,7 +64768,7 @@ async function prepareNativeSkillBatch(raw, deps) {
   });
   deps.signal?.throwIfAborted();
   return {
-    intentId: (deps.createId ?? randomUUID15)(),
+    intentId: (deps.createId ?? randomUUID14)(),
     planVersion: 1,
     taskName: `${title} \xB7 ${items.length} \u5F20`,
     expectedOutputCount: items.length,
@@ -65206,7 +64829,7 @@ async function prepareWorkflowBatch(raw, deps) {
     await assertOwner(deps, ownerId, namespace);
   }
   const referencedStages = new Set(parsed.flatMap((stage) => stage.sourceStageId ? [stage.sourceStageId] : []));
-  const items = [], steps = [], stages2 = /* @__PURE__ */ new Map();
+  const items = [], steps = [], stages = /* @__PURE__ */ new Map();
   const names = [];
   for (const [stageIndex, stage] of parsed.entries()) {
     let rootSource, selectedSeedIndexes, parent;
@@ -65223,7 +64846,7 @@ async function prepareWorkflowBatch(raw, deps) {
       const childItems = preparedChild.items;
       selectedSeedIndexes = stage.imageIndexes ?? childItems.map((_, index) => index);
     } else {
-      const resolvedParent = stages2.get(stage.sourceStageId) ?? fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
+      const resolvedParent = stages.get(stage.sourceStageId) ?? fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
       parent = resolvedParent;
       rootSource = resolvedParent.rootSource;
       selectedParentPositions = stage.imageIndexes ?? resolvedParent.itemIndexes.map((_, index) => index);
@@ -65257,7 +64880,7 @@ async function prepareWorkflowBatch(raw, deps) {
       id: `w${stageIndex}-${step.id}`,
       ...step.sourceStepId ? { sourceStepId: `w${stageIndex}-${step.sourceStepId}` } : { generationItemIndexes: scope }
     });
-    stages2.set(stage.id, {
+    stages.set(stage.id, {
       id: stage.id,
       rootSource,
       seedIndexes: selectedSeedIndexes,
@@ -65267,7 +64890,7 @@ async function prepareWorkflowBatch(raw, deps) {
   }
   await assertOwner(deps, ownerId, namespace);
   return {
-    intentId: (deps.createId ?? randomUUID15)(),
+    intentId: (deps.createId ?? randomUUID14)(),
     planVersion: 1,
     taskName: names.join(" \u2192 ").slice(0, 100),
     expectedOutputCount: items.length,
@@ -65279,8 +64902,8 @@ async function prepareGroupedBatch(raw, deps) {
   if (!Array.isArray(raw.groups) || !raw.groups.length || raw.groups.length > 10 || Object.keys(raw).some((key) => !["groups", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
     fail5("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
   const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
-  const { groups: groups2, ...shared } = raw;
-  const parsed = groups2.map((group, index) => {
+  const { groups, ...shared } = raw;
+  const parsed = groups.map((group, index) => {
     const row = record6(group);
     if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
       fail5("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
@@ -65308,7 +64931,7 @@ async function prepareGroupedBatch(raw, deps) {
   }
   await assertOwner(deps, owner, namespace);
   return {
-    intentId: (deps.createId ?? randomUUID15)(),
+    intentId: (deps.createId ?? randomUUID14)(),
     planVersion: 1,
     taskName: `${names.join(" / ")}`.slice(0, 100),
     expectedOutputCount: items.length,
@@ -65634,8 +65257,8 @@ function startPolling(run, options = {}) {
 }
 
 // plugins/podplo-dsh/src/generation-completion-tracker.ts
-import { randomUUID as randomUUID16 } from "node:crypto";
-import { join as join13 } from "node:path";
+import { randomUUID as randomUUID15 } from "node:crypto";
+import { join as join12 } from "node:path";
 var validText = (value2, maximum = 180) => typeof value2 === "string" && value2.length > 0 && value2.length <= maximum && !/[\u0000\r\n]/u.test(value2);
 var validDate = (value2) => typeof value2 === "string" && Number.isFinite(Date.parse(value2));
 var validStatus = (value2) => ["reserved", "pending", "notifying", "paused", "delivered", "stopped", "invalidated"].includes(String(value2));
@@ -65661,9 +65284,9 @@ var GenerationCompletionTracker = class {
   now;
   createId;
   constructor(directory, options = {}) {
-    this.store = new AtomicStore(join13(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
+    this.store = new AtomicStore(join12(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
     this.now = options.now ?? (() => /* @__PURE__ */ new Date());
-    this.createId = options.createId ?? randomUUID16;
+    this.createId = options.createId ?? randomUUID15;
   }
   async init() {
     await this.store.load();
@@ -65909,8 +65532,8 @@ var GenerationProgressRefresh = class {
 };
 
 // plugins/podplo-dsh/src/native-task-attempt-policy.ts
-import { createHash as createHash17 } from "node:crypto";
-var digest = (value2) => createHash17("sha256").update(canonical(value2)).digest("hex");
+import { createHash as createHash16 } from "node:crypto";
+var digest = (value2) => createHash16("sha256").update(canonical(value2)).digest("hex");
 function trustedUserMessages(events) {
   return Array.isArray(events) ? events.filter((event) => !!event && typeof event === "object" && event.type === "user/message" && event.data?.source?.kind === "user") : [];
 }
@@ -65978,27 +65601,88 @@ var NativeTaskAttemptPolicy = class {
     }
   }
 };
-var blockedToolName = (name2) => {
-  const normalized2 = name2.toLowerCase();
-  if (normalized2.startsWith("podplo_") || normalized2.startsWith("mcp__podplo__")) return false;
-  return /(^|__|_)(?:bash|pwsh|powershell|shell|terminal|run_code|read_image|web_search|search_query|image_query|list_mcp_resources|list_mcp_resource_templates|read_mcp_resource|read_file|view_file|list_files|list_directory|search_files|find_files|source_search|grep|rg|glob|working_directory|get_working_directory)(?:$|__|_)/u.test(normalized2);
-};
+var PODPLO_TASK_TOOL_ALLOWLIST = Object.freeze([
+  "mcp__podplo__podplo_list_favorite_skills",
+  "mcp__podplo__podplo_set_processing_plan",
+  "mcp__podplo__podplo_snapshot",
+  "mcp__podplo__podplo_list_skills",
+  "mcp__podplo__podplo_get_skill",
+  "mcp__podplo__podplo_get_skill_family",
+  "mcp__podplo__podplo_list_gallery",
+  "mcp__podplo__podplo_get_gallery_item",
+  "mcp__podplo__podplo_list_assets",
+  "mcp__podplo__podplo_get_asset",
+  "mcp__podplo__podplo_request_asset_deletion",
+  "mcp__podplo__podplo_list_my_skills",
+  "mcp__podplo__podplo_get_my_skill",
+  "mcp__podplo__podplo_create_my_skill",
+  "mcp__podplo__podplo_update_my_skill",
+  "mcp__podplo__podplo_request_my_skill_deletion",
+  "mcp__podplo__podplo_resolve_selection",
+  "mcp__podplo__podplo_generation_capabilities",
+  "mcp__podplo__podplo_generation_status",
+  "mcp__podplo__podplo_list_generations",
+  "mcp__podplo__podplo_import_reference_images",
+  "mcp__podplo__podplo_selected_image_info",
+  "mcp__podplo__podplo_list_local_results",
+  "mcp__podplo__podplo_resize_images",
+  "mcp__podplo__podplo_rotate_flip_images",
+  "mcp__podplo__podplo_adjust_image_colors",
+  "mcp__podplo__podplo_export_images",
+  "mcp__podplo__podplo_prepare_print_files",
+  "mcp__podplo__podplo_outline_images",
+  "mcp__podplo__podplo_prepare_generation_delivery",
+  "mcp__podplo__podplo_prepare_task",
+  "mcp__podplo__podplo_wait_generation"
+]);
+var PODPLO_TASK_HOST_TOOL_ALLOWLIST = Object.freeze([
+  "ask_user_question",
+  "present",
+  "dsh_im_return_file"
+]);
+var allowedToolNames = /* @__PURE__ */ new Set([
+  ...PODPLO_TASK_TOOL_ALLOWLIST,
+  ...PODPLO_TASK_HOST_TOOL_ALLOWLIST
+]);
 function podploTaskAllowedRestrictableTools(names) {
-  return [...names].filter((name2) => typeof name2 === "string" && !blockedToolName(name2)).sort();
+  return [...names].filter((name2) => typeof name2 === "string" && allowedToolNames.has(name2)).sort();
 }
 function installPodploTaskToolRestriction(agent) {
   const names = agent.ctx.tools.view?.(agent)?.restrictableNames;
   if (!(names instanceof Set)) throw new Error("PodPlo Task tool restriction is unavailable in this Host");
   return agent.ctx.tools.restrict({ allow: podploTaskAllowedRestrictableTools(names) });
 }
+function reconcilePodploTaskToolRestriction(binding, agent, enabled) {
+  if (!enabled) {
+    const disposeRestriction = binding.disposeTaskToolRestriction;
+    const disposeGate = binding.disposeTaskToolRestrictionGate;
+    binding.disposeTaskToolRestriction = void 0;
+    binding.disposeTaskToolRestrictionGate = void 0;
+    try {
+      disposeRestriction?.();
+    } finally {
+      disposeGate?.();
+    }
+    return;
+  }
+  let nextRestriction;
+  try {
+    nextRestriction = installPodploTaskToolRestriction(agent);
+  } catch (error101) {
+    binding.disposeTaskToolRestrictionGate ??= agent.ctx.on("agent/pre-step", async () => ({ kind: "reject" }));
+    throw error101;
+  }
+  const previousRestriction = binding.disposeTaskToolRestriction;
+  binding.disposeTaskToolRestriction = nextRestriction;
+  previousRestriction?.();
+  binding.disposeTaskToolRestrictionGate?.();
+  binding.disposeTaskToolRestrictionGate = void 0;
+}
 
 // plugins/podplo-dsh/src/index.ts
 var inject = ["connection", "credentials", "agents", "sessions", "sessionProjections", "tools", "attachments", "agentPresets", "approval", "pluginManager"];
 var Config = Schema.object({
-  directory: Schema.string().description("\u53EF\u9009\u72EC\u7ACB\u6570\u636E\u76EE\u5F55\uFF1B\u9ED8\u8BA4\u4F7F\u7528 DSH home \u4E2D\u7684 PodPlo \u4E13\u7528\u76EE\u5F55\u3002"),
-  jevBrokerUrl: Schema.string().description("\u53EF\u9009\uFF1B\u4EC5 PodPlo Agent \xB7 Jev \u6D4B\u8BD5 preset \u4F7F\u7528\u7684\u672C\u673A loopback broker URL\u3002"),
-  jevExpectedUserId: Schema.string().description("\u53EF\u9009\uFF1BJev \u771F\u5B9E\u6D4B\u8BD5\u5FC5\u987B\u5339\u914D\u7684 PodPlo userId\uFF0C\u4EC5\u7528\u4E8E\u672C\u673A\u8FD0\u884C\u65F6\u6838\u5BF9\uFF0C\u4E0D\u53D1\u7ED9 broker\u3002"),
-  usageAudit: Schema.boolean().description("\u53EF\u9009\u4E14\u9ED8\u8BA4\u5173\u95ED\uFF1B\u4EC5\u6D4B\u8BD5\u65F6\u8BA9\u666E\u901A PodPlo preset \u5411\u5DF2\u914D\u7F6E\u7684\u672C\u673A /events \u7AEF\u70B9\u62A5\u544A\u8131\u654F token \u7528\u91CF\u3002")
+  directory: Schema.string().description("\u53EF\u9009\u72EC\u7ACB\u6570\u636E\u76EE\u5F55\uFF1B\u9ED8\u8BA4\u4F7F\u7528 DSH home \u4E2D\u7684 PodPlo \u4E13\u7528\u76EE\u5F55\u3002")
 });
 async function nativeCipher(ctx) {
   let key;
@@ -66231,11 +65915,7 @@ async function apply(ctx, config3 = {}) {
     await Promise.allSettled([outputs.close(), toolkit.close(), service.close()]);
     throw error101;
   });
-  const jevBrokerUrl = typeof config3.jevBrokerUrl === "string" && parseJevBrokerUrl(config3.jevBrokerUrl) ? config3.jevBrokerUrl : "";
-  const jevExpectedOwnerId = typeof config3.jevExpectedUserId === "string" && /^[a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/iu.test(config3.jevExpectedUserId) ? config3.jevExpectedUserId : "";
-  const enableJevTestPreset = !!jevBrokerUrl && !!jevExpectedOwnerId;
-  const enableUsageAudit = enableJevTestPreset && config3.usageAudit === true;
-  const unregisterPresets = await registerPodploNativePresets(ctx.agentPresets, { enableJevTestPreset }).catch(async (error101) => {
+  const unregisterPresets = await registerPodploNativePresets(ctx.agentPresets).catch(async (error101) => {
     await archives.close();
     await Promise.allSettled([mcp.close(), outputs.close(), toolkit.close(), service.close()]);
     throw error101;
@@ -66246,16 +65926,6 @@ async function apply(ctx, config3 = {}) {
     await Promise.allSettled([mcp.close(), outputs.close(), toolkit.close(), completionTracker.close(), service.close()]);
     throw error101;
   });
-  const jevActiveSessionIds = /* @__PURE__ */ new Set();
-  const observedPodploSessionIds = /* @__PURE__ */ new Set();
-  const jevRoutingStates = /* @__PURE__ */ new Map();
-  const disposeJevUsageObserver = enableJevTestPreset ? installJevUsageObserver({
-    ctx,
-    brokerUrl: jevBrokerUrl,
-    activeSessionIds: observedPodploSessionIds,
-    routingStates: jevRoutingStates,
-    logger: ctx.logger
-  }) : () => void 0;
   const bindings = /* @__PURE__ */ new Map();
   let taskAttemptNamespace = online.auth.namespace;
   let closed = false;
@@ -66456,47 +66126,26 @@ async function apply(ctx, config3 = {}) {
     const session2 = ctx.sessions?.get(agent.id);
     return ctx.agentPresets.composedPreset(agent.ctx) ?? (session2 ? ctx.agentPresets.presetForSession(session2) : null);
   };
-  const startJevRouting = (agent) => installJevRouting({
-    agent,
-    brokerUrl: jevBrokerUrl,
-    expectedUserId: jevExpectedOwnerId,
-    snapshot: () => service.snapshot(),
-    routingStates: jevRoutingStates,
-    logger: ctx.logger
-  });
-  const applySelectedPreset = (sessionId, presetId) => {
-    const selected = presetId === PODPLO_JEV_TEST_PRESET_ID;
-    if (selected || enableUsageAudit && presetId === PODPLO_TASK_PRESET_ID) observedPodploSessionIds.add(sessionId);
-    else observedPodploSessionIds.delete(sessionId);
-    const binding = bindings.get(sessionId);
-    reconcileJevPresetSelection({
-      sessionId,
-      selected,
-      activeSessionIds: jevActiveSessionIds,
-      binding,
-      start: () => {
-        const agent = ctx.agents.get(sessionId);
-        return agent ? startJevRouting(agent) : () => void 0;
-      }
-    });
-  };
   const applyTaskPresetRestriction = (sessionId, presetId) => {
     const binding = bindings.get(sessionId);
     if (!binding?.disposeWaitTool) return;
-    binding.disposeTaskToolRestriction?.();
-    binding.disposeTaskToolRestriction = void 0;
-    if (presetId !== PODPLO_TASK_PRESET_ID) return;
     const agent = ctx.agents.get(sessionId);
-    if (agent) binding.disposeTaskToolRestriction = installPodploTaskToolRestriction(agent);
+    if (agent) {
+      reconcilePodploTaskToolRestriction(binding, agent, presetId === PODPLO_TASK_PRESET_ID);
+      return;
+    }
+    const disposeRestriction = binding.disposeTaskToolRestriction;
+    const disposeGate = binding.disposeTaskToolRestrictionGate;
+    binding.disposeTaskToolRestriction = void 0;
+    binding.disposeTaskToolRestrictionGate = void 0;
+    try {
+      disposeRestriction?.();
+    } finally {
+      disposeGate?.();
+    }
   };
   async function attach(agent) {
     if (closed || bindings.has(agent.id)) return;
-    const initialPreset = presetForAgent(agent);
-    const jevTestSession = initialPreset === PODPLO_JEV_TEST_PRESET_ID;
-    if (jevTestSession) {
-      jevActiveSessionIds.add(agent.id);
-      observedPodploSessionIds.add(agent.id);
-    } else if (enableUsageAudit && initialPreset === PODPLO_TASK_PRESET_ID) observedPodploSessionIds.add(agent.id);
     const session2 = mcp.bind(agent.id);
     bindings.set(agent.id, session2);
     try {
@@ -66624,42 +66273,42 @@ async function apply(ctx, config3 = {}) {
         }
       });
       const disposeWaitTool = agent.ctx.tools.register(waitTool);
-      const disposeJevRouting = enableJevTestPreset && jevActiveSessionIds.has(agent.id) ? startJevRouting(agent) : void 0;
       const disposeTaskToolRestriction = presetForAgent(agent) === PODPLO_TASK_PRESET_ID ? installPodploTaskToolRestriction(agent) : void 0;
       bindings.set(agent.id, {
         dispose: session2.dispose,
         fiber,
         disposeBatchTool,
         disposeWaitTool,
-        disposeJevRouting,
         disposeTaskToolRestriction,
         clearTaskAttempts: () => folderPreparations.clear()
       });
       await restoreCompletionIntents(true);
     } catch (error101) {
       const current = bindings.get(agent.id);
-      current?.disposeJevRouting?.();
-      current?.disposeTaskToolRestriction?.();
+      try {
+        current?.disposeTaskToolRestriction?.();
+      } finally {
+        current?.disposeTaskToolRestrictionGate?.();
+      }
       current?.disposeBatchTool?.();
       current?.disposeWaitTool?.();
       current?.clearTaskAttempts?.();
       await current?.fiber?.dispose?.();
       session2.dispose();
       bindings.delete(agent.id);
-      jevActiveSessionIds.delete(agent.id);
-      observedPodploSessionIds.delete(agent.id);
       throw error101;
     }
   }
   const remove = async (agent) => {
-    jevActiveSessionIds.delete(agent.id);
-    observedPodploSessionIds.delete(agent.id);
     for (const [key, pending] of chatGenerationResumes) if (pending.sessionId === agent.id) chatGenerationResumes.delete(key);
     const binding = bindings.get(agent.id);
     if (!binding) return;
     bindings.delete(agent.id);
-    binding.disposeJevRouting?.();
-    binding.disposeTaskToolRestriction?.();
+    try {
+      binding.disposeTaskToolRestriction?.();
+    } finally {
+      binding.disposeTaskToolRestrictionGate?.();
+    }
     binding.disposeBatchTool?.();
     binding.disposeWaitTool?.();
     binding.clearTaskAttempts?.();
@@ -66674,7 +66323,6 @@ async function apply(ctx, config3 = {}) {
   });
   const presetSelected = ctx.on("agent-preset/selected", (sessionId, presetId) => {
     applyTaskPresetRestriction(sessionId, presetId);
-    if (enableJevTestPreset) applySelectedPreset(sessionId, presetId);
   });
   const stopRemaining = async (sessionId) => {
     if (closed || !ctx.agents.get(sessionId)) return;
@@ -66788,7 +66436,6 @@ async function apply(ctx, config3 = {}) {
     turnEnd();
     unregister();
     unregisterUpload();
-    disposeJevUsageObserver();
     service.off("change", generationChanged);
     chatGenerationResumes.clear();
     chatGenerationNotified.clear();
@@ -66798,9 +66445,6 @@ async function apply(ctx, config3 = {}) {
     for (const current of signals.values()) current.signal.removeEventListener("abort", current.listener);
     signals.clear();
     stoppedTurns.clear();
-    jevActiveSessionIds.clear();
-    observedPodploSessionIds.clear();
-    jevRoutingStates.clear();
     progressPoll?.stop();
     await refreshing?.catch(() => void 0);
     await Promise.allSettled([...completionTrackingWrites.values()]);
