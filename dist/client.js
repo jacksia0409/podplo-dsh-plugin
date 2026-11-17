@@ -239,6 +239,7 @@ function itemStatus(row) {
     return "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9\uFF0C\u4E0D\u91CD\u590D\u751F\u6210";
   if (row.retry || row.waitReason === "retry") return "\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528\uFF0C\u7A0D\u540E\u81EA\u52A8\u91CD\u8BD5";
   if (row.waitReason === "dependency") return "\u7B49\u5F85\u524D\u5E8F\u9636\u6BB5";
+  if (row.status === "failed" && (row.errorCode ?? row.lastStatusError?.code)?.startsWith("DEPENDENCY_")) return "\u672A\u6267\u884C\uFF08\u524D\u5E8F\u9636\u6BB5\u5931\u8D25\uFF09";
   if (row.status === "completed") return "AI \u751F\u6210\u5B8C\u6210";
   if (row.status === "submitted" || row.waitReason === "remote_generation") return "\u5DF2\u63D0\u4EA4\uFF0C\u8FDC\u7AEF\u751F\u6210\u4E2D";
   if (row.status === "submitting") return "\u6B63\u5728\u63D0\u4EA4";
@@ -253,7 +254,8 @@ function stageStatus(rows) {
   if (rows.every((row) => row.waitReason === "dependency")) return "\u7B49\u5F85\u524D\u5E8F\u9636\u6BB5";
   if (rows.some((row) => row.status === "submitted")) return "\u751F\u6210\u4E2D";
   if (rows.some((row) => ["submitting", "quoted"].includes(row.status))) return "\u5F85\u63D0\u4EA4";
-  if (rows.some((row) => row.status === "failed")) return "\u6709\u6B65\u9AA4\u672A\u5B8C\u6210";
+  if (rows.some((row) => row.status === "failed" && !(row.errorCode ?? row.lastStatusError?.code)?.startsWith("DEPENDENCY_"))) return "\u6709\u6B65\u9AA4\u5931\u8D25";
+  if (rows.some((row) => row.status === "failed")) return "\u6709\u9879\u76EE\u672A\u6267\u884C";
   if (rows.every((row) => row.status === "cancelled")) return "\u5DF2\u505C\u6B62";
   return "\u5904\u7406\u4E2D";
 }
@@ -307,6 +309,8 @@ function LocalPipeline({ item, archive }) {
 function ChatGenerationProgress({ item, archive, busy, onAction }) {
   const summary = item.summary;
   const settled = summary.completedCount + summary.failedCount + summary.cancelledCount;
+  const notExecutedCount = item.items.filter((row) => row.status === "failed" && (row.errorCode ?? row.lastStatusError?.code)?.startsWith("DEPENDENCY_")).length;
+  const failedCount = Math.max(0, summary.failedCount - notExecutedCount);
   const pendingCount = summary.pendingCount ?? item.items.filter((row) => ["quoted", "submitting"].includes(row.status)).length;
   const canStop = activeGenerationStatuses.has(item.status) && !item.stoppedAt;
   const stages = groupedStages(item.items), showStageHeadings = item.items.some((row) => !!row.stage);
@@ -322,7 +326,9 @@ function ChatGenerationProgress({ item, archive, busy, onAction }) {
       " \xB7 \u5F85\u6838\u5BF9 ",
       summary.unknownCount,
       " \xB7 \u5931\u8D25 ",
-      summary.failedCount,
+      failedCount,
+      " \xB7 \u672A\u6267\u884C ",
+      notExecutedCount,
       " \xB7 \u5DF2\u505C\u6B62 ",
       summary.cancelledCount
     ] }),
@@ -930,6 +936,7 @@ var archiveTarget = {
   }
 };
 var saveLabels = { saving: "\u6B63\u5728\u4FDD\u5B58\u5230\u7535\u8111\u2026", saved: "\u5DF2\u4FDD\u5B58\u5230\u7535\u8111", failed: "\u4FDD\u5B58\u672A\u5B8C\u6210", missing: "\u672C\u5730\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8", waiting: "\u7B49\u5F85\u751F\u6210\u7ED3\u679C", cloud: "\u4EC5\u4E91\u7AEF \xB7 \u5C1A\u672A\u4E0B\u8F7D" };
+var visibleResultCode = (value2) => value2 && /^[A-Z0-9_]{1,80}$/u.test(value2) ? value2 : void 0;
 function ArchiveStyles() {
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("style", { children: task_archive_default });
 }
@@ -1006,7 +1013,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
         task.resultCount,
         " \u4E2A",
-        task.archiveFormat === 2 ? "\u6210\u54C1" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
+        task.archiveFormat === 2 ? "\u9636\u6BB5\u6210\u679C" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
       ] })
     ] }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-meta", children: [
       task.projectName,
@@ -1015,7 +1022,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       " \xB7 ",
       task.resultCount,
       " \u4E2A",
-      task.archiveFormat === 2 ? "\u6210\u54C1" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
+      task.archiveFormat === 2 ? "\u9636\u6BB5\u6210\u679C" : `\u7ED3\u679C \xB7 ${task.referenceCount} \u5F20\u53C2\u8003\u56FE`
     ] }),
     task.audit && (view ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-batch-audit", "data-task-audit": true, children: task.audit.complete ? "\u6570\u91CF\u6838\u5BF9\u5DF2\u9F50\u5168" : "\u6709\u672A\u5B8C\u6210\u6216\u5F85\u6838\u5BF9\u9879\uFF0C\u67E5\u770B\u7ED3\u679C\u4E86\u89E3\u8BE6\u60C5" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-task-audit", role: "status", "data-task-audit": true, children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("strong", { children: [
@@ -1066,18 +1073,59 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
     }
   };
   const full = task.files.find((file3) => file3.id === selected);
+  const stageGroups = task.archiveFormat === 2 && task.stageResults?.length ? [...new Map(task.stageResults.map((result) => [result.stage?.id ?? "generation", result.stage ?? { id: "generation", label: "AI \u751F\u6210", order: 0 }])).values()].sort((a, b) => a.order - b.order).map((stage) => ({
+    stage,
+    files: task.files.filter((file3) => (file3.stage?.id ?? "generation") === stage.id),
+    results: task.stageResults.filter((result) => (result.stage?.id ?? "generation") === stage.id)
+  })) : [];
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "ppd-archive-detail", "data-archive-detail": task.id, children: [
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE\u4EFB\u52A1\u6587\u4EF6\u5939" }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request, onDelete }),
     error101 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 }),
-    !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u5C1A\u672A\u5904\u7406\u7684\u56FE\u7247" }),
+    !task.processingResults?.length && !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u672C\u5730\u52A0\u5DE5\u7ED3\u679C" }),
       task.audit.processing.steps.filter((step) => step.missingIds.length).map((step) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: step.label }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: step.missingIds.map((id) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("li", { children: task.files.find((file3) => file3.originId === id)?.name ?? "\u6765\u6E90\u56FE\u7247\uFF08\u5C1A\u672A\u5F52\u6863\uFF09" }, id)) })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { children: step.missingIds.map((id) => {
+          const failure = step.failures.find((row) => row.inputId === id);
+          return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { children: [
+            task.files.find((file3) => file3.originId === id)?.name ?? "\u6765\u6E90\u56FE\u7247\uFF08\u5C1A\u672A\u5F52\u6863\uFF09",
+            " \xB7 ",
+            failure ? `\u5931\u8D25 \xB7 ${failure.code}` : "\u672A\u6267\u884C"
+          ] }, id);
+        }) })
       ] }, step.id))
     ] }),
-    (task.archiveFormat === 2 ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
+    task.archiveFormat === 2 && stageGroups.length > 0 ? stageGroups.map(({ stage, files, results }, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-result-stage": stage.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h3", { children: [
+        "\u9636\u6BB5 ",
+        index + 1,
+        "/",
+        stageGroups.length,
+        " \xB7 ",
+        stage.label
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { className: "ppd-archive-stage-results", children: results.map((result) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { "data-stage-result": result.status, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: result.sourceName ?? `\u7B2C ${result.itemIndex + 1} \u9879` }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
+          result.status === "succeeded" ? "\u6210\u529F" : result.status === "failed" ? "\u5931\u8D25" : result.status === "not_executed" ? "\u672A\u6267\u884C" : result.status === "needs_review" ? "\u5F85\u6838\u5BF9" : "\u8FDB\u884C\u4E2D",
+          visibleResultCode(result.errorCode) ? ` \xB7 ${visibleResultCode(result.errorCode)}` : ""
+        ] })
+      ] }, result.itemIndex)) }),
+      !files.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u6B64\u9636\u6BB5\u6682\u65E0\u5DF2\u4FDD\u5B58\u6210\u679C\u3002" }),
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: files.map((file3) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file3.id, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file3.image || file3.status !== "saved" && !file3.assetId, onClick: () => setSelected(file3.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file3, request, fill: true }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file3.name, children: file3.name }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("small", { children: [
+          file3.sourceName ? `${file3.sourceName} \xB7 ` : "",
+          file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved", onClick: () => void act("archive.reveal", file3), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
+          onUse && file3.image && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved" && !file3.assetId, onClick: () => void act("archive.use", file3), children: "\u9009\u5165\u4F1A\u8BDD" })
+        ] })
+      ] }, file3.id)) })
+    ] }, stage.id)) : (task.archiveFormat === 2 ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
       const matches = (file3) => group === "final" ? file3.group === "result" : group === "reference" ? file3.group === "reference" : file3.group === "result" && (file3.variant ?? (file3.assetId ? "generated" : "processed")) === group;
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: group === "final" ? "\u6210\u54C1" : group === "generated" ? "\u751F\u6210\u56FE" : group === "processed" ? "\u52A0\u5DE5\u540E\u7684\u6210\u54C1" : "\u53C2\u8003\u56FE" }),
@@ -1092,6 +1140,33 @@ function ArchiveDetail({ task, request, onBack, onUse, onDelete }) {
           ] })
         ] }, file3.id)) })
       ] }, group);
+    }),
+    task.archiveFormat === 2 && !!task.stageResults?.length && task.processingResults?.map((result, index) => {
+      const stageId = `processing:${result.stepId}`, files = task.files.filter((file3) => file3.stage?.id === stageId);
+      return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-processing-stage": result.stepId, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h3", { children: [
+          "\u672C\u5730\u52A0\u5DE5 ",
+          index + 1,
+          "/",
+          task.processingResults.length,
+          " \xB7 ",
+          result.label
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { "data-processing-result": result.status, children: [
+          result.status === "succeeded" ? "\u6210\u529F" : result.status === "failed" ? "\u5931\u8D25" : result.status === "not_executed" ? "\u672A\u6267\u884C" : result.status === "needs_review" ? "\u5F85\u6838\u5BF9" : "\u8FDB\u884C\u4E2D",
+          ` \xB7 \u5DF2\u5B8C\u6210 ${result.completed}/${result.required} \u9879 \xB7 \u5DF2\u4FDD\u5B58 ${files.filter((file3) => file3.status === "saved").length} \u4E2A\u6210\u679C`
+        ] }),
+        !files.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u6B64\u52A0\u5DE5\u9636\u6BB5\u6682\u65E0\u5DF2\u4FDD\u5B58\u6210\u679C\u3002" }),
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: files.map((file3) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file3.id, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file3.image || file3.status !== "saved" && !file3.assetId, onClick: () => setSelected(file3.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file3, request, fill: true }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file3.name, children: file3.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: file3.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file3.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved", onClick: () => void act("archive.reveal", file3), children: "\u5B9A\u4F4D\u6587\u4EF6" }),
+            onUse && file3.image && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: !!busy || file3.status !== "saved" && !file3.assetId, onClick: () => void act("archive.use", file3), children: "\u9009\u5165\u4F1A\u8BDD" })
+          ] })
+        ] }, file3.id)) })
+      ] }, stageId);
     }),
     full && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-lightbox", role: "dialog", "aria-modal": "true", "aria-label": "\u7ED3\u679C\u56FE\u9884\u89C8", children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => setSelected(void 0), children: "\u5173\u95ED\u9884\u89C8" }),
@@ -34557,7 +34632,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.19",
+  version: "0.1.20",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",

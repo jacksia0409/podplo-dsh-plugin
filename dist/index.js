@@ -54618,7 +54618,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.19",
+  version: "0.1.20",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -55918,22 +55918,6 @@ function auditTask(files, generation, plan, receipts = [], failures = []) {
   };
   audit.complete = actualGeneration.planned !== null && actualGeneration.succeeded === actualGeneration.planned && !actualGeneration.failed && !actualGeneration.pending && !actualGeneration.cancelled && !actualGeneration.unknown && required3 !== null && required3 === processed && audit.download.remaining === 0 && !files.some((file3) => file3.status !== "saved" || file3.reviewRequired);
   return audit;
-}
-function auditLines(audit) {
-  const g = audit.generation, d = audit.download, p = audit.processing;
-  const lines = [
-    g.planned === 0 ? "\u751F\u6210\uFF1A\u672C\u4EFB\u52A1\u6CA1\u6709\u751F\u56FE\u6B65\u9AA4\u3002" : g.planned === null ? `\u751F\u6210\uFF1A\u5DF2\u77E5 ${g.succeeded} \u5F20\uFF0C\u539F\u4EFB\u52A1\u8BA1\u5212\u6570\u91CF\u672A\u767B\u8BB0\u3002` : `\u751F\u6210\uFF1A\u8BA1\u5212 ${g.planned} \u5F20\uFF0C\u6210\u529F ${g.succeeded} \u5F20${g.failed ? `\uFF0C\u5931\u8D25 ${g.failed} \u5F20` : ""}${g.pending ? `\uFF0C\u751F\u6210\u4E2D ${g.pending} \u5F20` : ""}${g.cancelled ? `\uFF0C\u5DF2\u505C\u6B62 ${g.cancelled} \u5F20` : ""}${g.unknown ? `\uFF0C\u5F85\u6838\u5BF9 ${g.unknown} \u5F20` : ""}\u3002`,
-    audit.delivery ? `\u6210\u54C1\uFF1A\u5DF2\u4FDD\u5B58 ${audit.delivery.saved}/${audit.delivery.expected} \u4E2A${audit.delivery.failed ? `\uFF1B\u4FDD\u5B58\u5931\u8D25 ${audit.delivery.failed} \u4E2A` : ""}${audit.delivery.missing ? `\uFF1B\u5DF2\u79FB\u52A8\u6216\u6539\u53D8 ${audit.delivery.missing} \u4E2A` : ""}\u3002` : `\u4E0B\u8F7D\uFF1A\u751F\u6210\u56FE\u5DF2\u5B58 ${d.generatedSaved}/${d.generated} \u5F20\uFF1B\u52A0\u5DE5\u6210\u54C1\u5DF2\u5B58 ${d.processedSaved}/${d.processed} \u4E2A\uFF1B\u8FD8\u6709 ${d.remaining} \u4E2A\u672A\u4FDD\u5B58${d.failed ? `\uFF08\u4FDD\u5B58\u5931\u8D25 ${d.failed} \u4E2A\uFF09` : ""}${d.missing ? `\uFF08\u5DF2\u79FB\u52A8\u6216\u6539\u53D8 ${d.missing} \u4E2A\uFF09` : ""}\u3002`
-  ];
-  if (!p.registered) lines.push(`\u5904\u7406\uFF1A\u539F\u4EFB\u52A1\u7684\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\uFF0C\u65E0\u6CD5\u5224\u65AD\u662F\u5426\u6F0F\u5904\u7406\uFF1B\u5DF2\u6709 ${p.outputs} \u4E2A\u52A0\u5DE5\u4EA7\u7269\u3002`);
-  else if (!p.steps.length) lines.push("\u5904\u7406\uFF1A\u672C\u4EFB\u52A1\u4E0D\u8981\u6C42\u540E\u7EED\u52A0\u5DE5\u3002");
-  else for (const step of p.steps) {
-    const transparencyFailures = step.failures.filter((row) => row.code === "TRANSPARENCY_REQUIRED").length;
-    lines.push(`\u5904\u7406\u300C${step.label}\u300D\uFF1A\u9700\u8981\u5904\u7406 ${step.required} \u5F20\uFF0C\u5DF2\u5904\u7406 ${step.completed} \u5F20\uFF0C\u8FD8\u6709 ${step.missingIds.length} \u5F20\u672A\u5904\u7406${step.failedIds.length ? `\uFF08\u5931\u8D25 ${step.failedIds.length} \u5F20${transparencyFailures ? `\uFF0C\u5176\u4E2D\u771F\u5B9E\u900F\u660E\u50CF\u7D20\u68C0\u67E5\u672A\u901A\u8FC7 ${transparencyFailures} \u5F20` : ""}\uFF09` : ""}\u3002`);
-  }
-  if (p.outputs && !audit.delivery) lines.push(`\u52A0\u5DE5\u4EA7\u7269\uFF1A${p.outputs} \u4E2A\uFF08\u539F\u56FE\u65B9\u5411\u3001\u955C\u50CF\u53CA\u5176\u4ED6\u7248\u672C\u5206\u522B\u8BA1\u4EA7\u7269\uFF0C\u4E0D\u91CD\u590D\u8BA1\u5904\u7406\u5F20\u6570\uFF09\u3002`);
-  lines.push(audit.complete ? "\u6838\u5BF9\u7ED3\u679C\uFF1A\u5DF2\u9F50\u5168\u3002" : "\u6838\u5BF9\u7ED3\u679C\uFF1A\u4ECD\u6709\u672A\u5B8C\u6210\u6216\u9700\u6838\u5BF9\u7684\u9879\u76EE\u3002");
-  return lines;
 }
 
 // plugins/podplo-dsh/src/toolbox-pipeline.ts
@@ -57384,12 +57368,12 @@ OTHER INPUTS: For current-chat or cloud images, reuse the existing session refer
 
 APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
 
-DELIVERY: New task folders contain only final selected production images/PDF in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt. Do not deliver source/reference copies, superseded AI originals, intermediate versions, review folders, proof images or JSON reports. For generation-only tasks, the generated image itself is the final deliverable. Recovery bytes remain in the private Host cache; historical tasks keep their recorded layout.`;
+DELIVERY: Keep verified outputs from every declared AI and local-processing stage in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt, including outputs used by later stages. Mark failed and unexecuted items separately; partial success is not complete success. Exclude source/reference copies, review/proof images and JSON reports. Summaries and final replies list only success/failure/not-executed results and a verified location when needed, without prompts, parameters, credits or execution steps. Preserve existing files and user edits.`;
 var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u548C PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002\u7528\u6237\u6388\u6743\u6587\u4EF6\u5939\u548C\u5DF2\u6709\u4F1A\u8BDD\u5F15\u7528\u7531 Host \u767B\u8BB0\uFF1B\u4E0D\u8C03\u7528 read_image \u53D6 ID\u3001\u8BC6\u56FE\u3001\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
 
 \u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u552F\u4E00\u5339\u914D Skill \u53CA\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9047\u5230\u660E\u786E\u4E0D\u53EF\u91CD\u8BD5\u7684\u6821\u9A8C\u6216\u7B56\u7565\u5931\u8D25\u65F6\u7ACB\u5373\u62A5\u544A\u5E76\u505C\u6B62\uFF0C\u7B49\u5F85\u65B0\u7684\u7528\u6237\u6D88\u606F\uFF1B\u4E0D\u5220\u53C2\u6570\u6216\u9636\u6BB5\u3001\u4E0D\u7F29\u6210\u5C40\u90E8\u4EFB\u52A1\u8BD5\u63A2\u3001\u4E0D\u6362\u5165\u53E3\u3002\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9047\u5230\u660E\u786E\u4E0D\u53EF\u91CD\u8BD5\u7684\u6821\u9A8C\u6216\u7B56\u7565\u5931\u8D25\u65F6\u7ACB\u5373\u62A5\u544A\u5E76\u505C\u6B62\uFF0C\u7B49\u5F85\u65B0\u7684\u7528\u6237\u6D88\u606F\uFF1B\u4E0D\u5220\u53C2\u6570\u6216\u9636\u6BB5\u3001\u4E0D\u7F29\u6210\u5C40\u90E8\u4EFB\u52A1\u8BD5\u63A2\u3001\u4E0D\u6362\u5165\u53E3\u3002\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF0C\u5305\u62EC\u540E\u7EED\u8FD8\u4F1A\u4F7F\u7528\u7684\u751F\u6210\u56FE\u548C\u52A0\u5DE5\u56FE\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u4EFB\u52A1\u603B\u7ED3\u548C\u6700\u7EC8\u56DE\u590D\u53EA\u5199\u7B80\u77ED\u7684\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
 Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill or the lookup needed to resolve it; the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
@@ -57399,7 +57383,7 @@ Use read-only PodPlo catalog lookups to resolve a unique exact match without ask
 When ready, call exit_plan_mode with the concise plan as the only and final tool call in that response. If review rejects it, revise the short call plan. If the review channel is unavailable, stay in plan mode and ask the user to switch modes manually.`;
 var PODPLO_PREPARE_GENERATION_GUIDANCE = `Agent calls are PodPlo-Skill-only: every item must keep the exact selected executable PodPlo skillId. Reuse only user, Skill, tool/preset or authoritative-schema values; do not invent or rewrite prompts, model, ratio, quality, dimensions or processing steps. Do not ask for optional fields. If a required field has no authoritative default, ask once together with any other genuine blocker before calling. Use only the exact requested processing plan, or [] when none was requested. Never replace this call with another image service, a general vision tool, shell or scripts.`;
 function podploGenerationCompletionFollowup(input) {
-  return `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${input.operationId} \u751F\u56FE\u72B6\u6001\u4E3A ${input.generationStatus}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${input.localProcessingStatus}\u3002\u8BF7\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u6267\u884C\u72B6\u6001\uFF0C\u53EA\u7B80\u77ED\u62A5\u544A\u5F20\u6570\u3001\u6210\u679C\u4F4D\u7F6E\u53CA\u5931\u8D25\u9879\u3002\u5BBF\u4E3B\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u4E0D\u8981\u770B\u56FE\u6216\u8BC4\u4EF7\u5BA1\u7F8E\uFF0C\u4E0D\u8981\u4FEE\u6539\u6216\u91CD\u5199\u63D0\u793A\u8BCD\u3001\u53C2\u6570\u6216\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u8981\u8FFD\u52A0\u5DE5\u5177\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3001\u91CD\u751F\u6210\u3001\u91CD\u590D\u52A0\u5DE5\u3001\u518D\u6B21\u62A5\u4EF7\u6216\u8FFD\u52A0\u63D0\u95EE\uFF0C\u4E0D\u8981\u6539\u7528\u5916\u90E8\u751F\u56FE\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell \u6216\u811A\u672C\u3002`;
+  return `PodPlo \u672C\u6B21\u751F\u56FE\u786E\u8BA4\u5DF2\u751F\u6548\u3002\u64CD\u4F5C ${input.operationId} \u751F\u56FE\u72B6\u6001\u4E3A ${input.generationStatus}\uFF0C\u672C\u5730\u4E0B\u8F7D\u4E0E\u52A0\u5DE5\u72B6\u6001\u4E3A ${input.localProcessingStatus}\u3002\u8BF7\u8C03\u7528 podplo_generation_status \u8BFB\u53D6\u6267\u884C\u72B6\u6001\uFF0C\u6700\u7EC8\u53EA\u62A5\u544A\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u590D\u8FF0\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002\u5404\u9636\u6BB5\u5B9E\u9645\u6210\u679C\u5747\u4FDD\u7559\uFF1B\u5931\u8D25\u548C\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u5BBF\u4E3B\u5DF2\u81EA\u52A8\u6267\u884C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u4E0D\u8981\u770B\u56FE\u6216\u8BC4\u4EF7\u5BA1\u7F8E\uFF0C\u4E0D\u8981\u4FEE\u6539\u6216\u91CD\u5199\u63D0\u793A\u8BCD\u3001\u53C2\u6570\u6216\u52A0\u5DE5\u8BA1\u5212\uFF0C\u4E0D\u8981\u8FFD\u52A0\u5DE5\u5177\uFF0C\u4E0D\u8981\u91CD\u8BD5\u3001\u91CD\u751F\u6210\u3001\u91CD\u590D\u52A0\u5DE5\u3001\u518D\u6B21\u62A5\u4EF7\u6216\u8FFD\u52A0\u63D0\u95EE\uFF0C\u4E0D\u8981\u6539\u7528\u5916\u90E8\u751F\u56FE\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell \u6216\u811A\u672C\u3002`;
 }
 
 // packages/online/generation-credit-pricing.ts
@@ -57811,6 +57795,24 @@ var PodploPluginService = class extends EventEmitter2 {
           return Array.isArray(ids2) ? ids2.filter((id2) => typeof id2 === "string") : [];
         }))],
         resultIds: [...new Set(finalOutputs.map(({ output }) => output.assetId))],
+        generationItems: row.items.map((item, index) => {
+          const errorCode2 = item.errorCode ?? item.outputs?.find((output) => !output.assetId && output.failureCode)?.failureCode ?? void 0;
+          return {
+            index,
+            expectedOutputCount: item.approvedOutputCount ?? item.quote.outputCount,
+            ...item.sourceName ? { sourceName: item.sourceName } : {},
+            ...item.stage ? { stage: structuredClone(item.stage) } : {},
+            status: item.status,
+            ...errorCode2 ? { errorCode: errorCode2 } : {},
+            ...item.dependsOn ? { dependsOn: structuredClone(item.dependsOn) } : {},
+            ...item.outputs ? { outputs: item.outputs.map((output) => ({
+              index: output.index,
+              status: output.status,
+              ...output.assetId ? { assetId: output.assetId } : {},
+              ...output.failureCode ? { failureCode: output.failureCode } : {}
+            })) } : {}
+          };
+        }),
         resultItemIndexes: Object.fromEntries(finalOutputs.map(({ itemIndex, output }) => [output.assetId, itemIndex])),
         resultSourceIds,
         resultNames: Object.fromEntries(finalOutputs.flatMap(({ item, output }) => item.sourceName ? [[output.assetId, `${item.sourceName.replace(/\.[^.]+$/u, "")}-AI\u751F\u6210`]] : []))
@@ -61957,6 +61959,25 @@ var taskSchema = external_exports2.object({
     cancelled: external_exports2.number().int().nonnegative(),
     unknown: external_exports2.number().int().nonnegative()
   }).optional(),
+  generationItems: external_exports2.array(external_exports2.object({
+    index: external_exports2.number().int().nonnegative(),
+    expectedOutputCount: external_exports2.number().int().positive().optional(),
+    sourceName: external_exports2.string().optional(),
+    stage: external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), order: external_exports2.number().int() }).optional(),
+    status: external_exports2.enum(["quoted", "submitting", "submitted", "submission_unknown", "completed", "failed", "cancelled"]),
+    errorCode: external_exports2.string().optional(),
+    dependsOn: external_exports2.object({
+      itemIndex: external_exports2.number().int().nonnegative(),
+      outputIndex: external_exports2.number().int().nonnegative().optional(),
+      referenceIndex: external_exports2.number().int().nonnegative().optional()
+    }).optional(),
+    outputs: external_exports2.array(external_exports2.object({
+      index: external_exports2.number().int().nonnegative(),
+      status: external_exports2.string(),
+      assetId: external_exports2.string().optional(),
+      failureCode: external_exports2.string().optional()
+    })).optional()
+  })).optional(),
   processingPlan: external_exports2.array(external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.record(external_exports2.string(), external_exports2.unknown()), sourceStepId: external_exports2.string().optional(), generationItemIndexes: external_exports2.array(external_exports2.number().int().nonnegative()).optional() })).optional(),
   processingRuns: external_exports2.array(external_exports2.object({ operationId: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.unknown().optional(), inputIds: external_exports2.array(external_exports2.string()), resultIds: external_exports2.array(external_exports2.string()) })).default([]),
   processingFailures: external_exports2.array(external_exports2.object({
@@ -61990,6 +62011,10 @@ function storedFinalLeaves(task) {
   const parents = new Set(saved.map((row) => row.sourceId).filter((value2) => !!value2));
   return saved.filter((row) => !parents.has(row.source.id) && !/\.(?:zip|json)$/iu.test(row.cacheName) && !(row.source.kind === "asset" && (task.processingPlan ?? []).some((step) => !step.generationItemIndexes || row.generationItemIndex !== void 0 && step.generationItemIndexes.includes(row.generationItemIndex))));
 }
+function storedPublishedOutputs(task) {
+  if (!task.generationAudit?.planned) return storedFinalLeaves(task);
+  return task.files.filter((row) => row.group === "result" && row.status === "saved" && row.cacheName && !row.reviewRequired && !/\.(?:zip|json)$/iu.test(row.cacheName));
+}
 function storedTaskAudit(task) {
   const files = task.files.map((file3) => ({
     id: file3.id,
@@ -62007,7 +62032,7 @@ function storedTaskAudit(task) {
   return auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
 }
 function storedTaskFinished(task) {
-  if (task.archiveFormat === 2 && storedFinalLeaves(task).some((file3) => !file3.publishedName)) return false;
+  if (task.archiveFormat === 2 && storedPublishedOutputs(task).some((file3) => !file3.publishedName)) return false;
   if (task.files.some((file3) => file3.reviewRequired)) return false;
   const audit = storedTaskAudit(task);
   return audit.complete || !audit.processing.registered && audit.generation.planned !== null && audit.generation.succeeded === audit.generation.planned && !audit.generation.failed && !audit.generation.pending && !audit.generation.cancelled && !audit.generation.unknown && !audit.download.remaining && !audit.download.failed && !audit.download.missing;
@@ -62203,6 +62228,7 @@ var TaskArchiveManager = class {
         if (input.approvedAt) row.approvedAt = input.approvedAt;
         row.summaryName = safeLabel(input.name, "\u4EFB\u52A1\u6210\u679C");
         if (input.generationAudit) row.generationAudit = input.generationAudit;
+        if (input.generationItems) row.generationItems = input.generationItems;
         if (input.generationCalls) row.generationCalls = input.generationCalls;
         if (input.processingPlan !== void 0) row.processingPlan = input.processingPlan;
         for (const run of input.processingRuns ?? []) if (!row.processingRuns.some((saved) => saved.operationId === run.operationId)) row.processingRuns.push(run);
@@ -62222,7 +62248,7 @@ var TaskArchiveManager = class {
     });
   }
   needsArchiveWork(task) {
-    return !!task && (task.files.some((file3) => file3.status === "pending") || task.archiveFormat === 2 && storedFinalLeaves(task).some((file3) => !file3.publishedName));
+    return !!task && (task.files.some((file3) => file3.status === "pending") || task.archiveFormat === 2 && storedPublishedOutputs(task).some((file3) => !file3.publishedName));
   }
   async observeTask(id2, identity2) {
     const task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
@@ -62318,7 +62344,36 @@ var TaskArchiveManager = class {
     }
     return current;
   }
+  generationItemIndex(task, file3) {
+    const seen = /* @__PURE__ */ new Set();
+    let current = file3;
+    while (current && current.generationItemIndex === void 0 && current.sourceId && !seen.has(current.source.id)) {
+      seen.add(current.source.id);
+      const parentId = current.sourceId;
+      current = task.files.find((row) => row.group === "result" && row.source.id === parentId) ?? task.files.find((row) => row.source.id === parentId);
+    }
+    return current?.generationItemIndex;
+  }
+  generationItem(task, file3) {
+    const index = this.generationItemIndex(task, file3);
+    return index === void 0 ? void 0 : task.generationItems?.find((item) => item.index === index);
+  }
+  processingStep(task, file3) {
+    if (file3.source.kind === "asset") return;
+    const run = task.processingRuns.find((row) => row.resultIds.includes(file3.source.id));
+    if (!run) return;
+    return task.processingPlan?.find((step) => run.operationId.includes(`:${step.id}:`) && step.toolName === run.toolName) ?? task.processingPlan?.find((step) => step.toolName === run.toolName && canonical(step.options) === canonical(run.options));
+  }
   outputStem(task, file3) {
+    const item = this.generationItem(task, file3);
+    if (item) {
+      const stage = safeLabel(item.stage?.label ?? "\u751F\u6210\u56FE", "\u751F\u6210\u56FE", 48);
+      const stageItems = (task.generationItems ?? []).filter((row) => (row.stage?.id ?? "generation") === (item.stage?.id ?? "generation"));
+      const ordinal2 = Math.max(1, stageItems.findIndex((row) => row.index === item.index) + 1);
+      const raw = item.sourceName ? basename10(item.sourceName, extname8(item.sourceName)) : "";
+      const source = safeLabel(raw, "", 48);
+      return `${stage}_${source && !opaqueStem(source) ? source : String(ordinal2).padStart(2, "0")}`;
+    }
     const root = this.sourceRoot(task, file3);
     const roots = [...new Map(task.files.filter((row) => row.group === "result").map((row) => {
       const value2 = this.sourceRoot(task, row);
@@ -62345,7 +62400,7 @@ var TaskArchiveManager = class {
     return false;
   }
   finalLeaves(task) {
-    return storedFinalLeaves(task);
+    return storedPublishedOutputs(task);
   }
   async ensureOutputSlot(taskId, fileId) {
     await this.store.transaction((state) => {
@@ -62353,7 +62408,7 @@ var TaskArchiveManager = class {
       if (file3.outputSlot) return;
       const parent = file3.sourceId ? task.files.find((row) => row.group === "result" && row.source.id === file3.sourceId) ?? task.files.find((row) => row.source.id === file3.sourceId) : void 0;
       const siblings = task.files.filter((row) => row.group === "result" && row.sourceId === file3.sourceId && row.status === "saved" && row.cacheName && !row.reviewRequired);
-      if (parent?.outputSlot && siblings[0]?.id === file3.id) {
+      if (!task.generationAudit?.planned && parent?.outputSlot && siblings[0]?.id === file3.id) {
         file3.outputSlot = parent.outputSlot;
         return;
       }
@@ -62621,48 +62676,19 @@ var TaskArchiveManager = class {
       if (canonical({ ...latest, summaryDigest: void 0 }) !== canonical({ ...task, summaryDigest: void 0 })) return;
       await this.taskDirectory(task);
       await this.same(identity2);
-      const project = this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === task.owner);
-      const calls = task.generationCalls ?? [];
+      const terminal = ["completed", "partial_failure", "partial_cancelled", "failed", "cancelled"].includes(task.status);
+      const failedItemIndexes = new Set((task.generationItems ?? []).filter((item) => item.status === "failed" && !item.errorCode?.startsWith("DEPENDENCY_")).map((item) => item.index));
+      const failedItems = failedItemIndexes.size;
+      const notExecutedItems = (task.generationItems ?? []).filter((item) => item.status === "cancelled" || item.errorCode?.startsWith("DEPENDENCY_") || terminal && item.status === "quoted").length;
+      const stopped = !!task.stoppedAt && (!task.processingResumedAt || Date.parse(task.stoppedAt) > Date.parse(task.processingResumedAt));
+      const notExecutedProcessing = audit.processing.steps.filter((step) => !step.failedIds.length && (step.required === 0 && terminal || stopped && step.completed < step.required)).length;
+      const failedFiles = files.filter((file3) => file3.status === "failed" && (file3.generationItemIndex === void 0 || !failedItemIndexes.has(file3.generationItemIndex))).length;
+      const processingFailures = new Set(task.processingFailures.map((row) => `${row.stepId}:${row.inputId}`)).size;
       const lines = [
         "\u4EFB\u52A1\u603B\u7ED3",
-        `\u4EFB\u52A1\uFF1A${task.summaryName ?? "\u4EFB\u52A1\u6210\u679C"}`,
-        `\u9879\u76EE\uFF1A${project.name}`,
-        `\u521B\u5EFA\u65F6\u95F4\uFF1A${task.createdAt}`,
-        `\u5B9E\u9645\u751F\u6210\uFF1A${audit.generation.succeeded} \u5F20\uFF1B\u8BA1\u5212\uFF1A${audit.generation.planned ?? "\u672A\u77E5"} \u5F20`,
-        "",
-        "\u4EFB\u52A1\u63D0\u793A\u8BCD\u4E0E\u751F\u6210\u8C03\u7528\uFF1A",
-        ...calls.flatMap((call, index) => [
-          `${index + 1}. Skill\uFF1A${call.skill}\uFF1B\u6A21\u578B\uFF1A${call.model}\uFF1B\u6570\u91CF\uFF1A${call.count}`,
-          `\u6BD4\u4F8B\uFF1A${call.ratio}\uFF1B\u8D28\u91CF\uFF1A${call.quality}\uFF1BEco\uFF1A${call.ecoMode ? "\u5F00\u542F" : "\u5173\u95ED"}\uFF1B\u80CC\u666F\uFF1A${call.background}`,
-          `\u63D0\u4EA4\u63D0\u793A\u8BCD\uFF1A${call.prompt}`,
-          ""
-        ]),
-        ...!calls.length ? ["\u65E0\u751F\u6210\u8C03\u7528\uFF08\u6216\u5386\u53F2\u4EFB\u52A1\u672A\u8BB0\u5F55\uFF09\u3002"] : [],
-        "\u5DE5\u5177\u8C03\u7528\uFF1A",
-        ...task.processingRuns.map((run) => `${run.toolName}\uFF1B\u8F93\u5165 ${run.inputIds.length} \u5F20\uFF1B\u8F93\u51FA ${run.resultIds.length} \u4E2A\uFF1B\u53C2\u6570\uFF1A${JSON.stringify(run.options ?? {})}`),
-        ...!task.processingRuns.length ? ["\u6682\u65E0\u5DF2\u5B8C\u6210\u7684\u5DE5\u5177\u8C03\u7528\u3002"] : [],
-        "",
-        ...auditLines(audit),
-        "",
-        ...task.archiveFormat === 2 ? [
-          "\u6587\u4EF6\u4F4D\u7F6E\uFF1A\u6210\u54C1/\u3002",
-          "\u539F\u6587\u4EF6\u4E0E\u6210\u54C1\u5BF9\u5E94\uFF1A",
-          ...task.files.filter((file3) => file3.publishedName).map((file3) => `${this.sourceRoot(task, file3).sourceName ?? this.sourceRoot(task, file3).label} \u2192 ${file3.publishedName}`)
-        ] : [
-          `\u53C2\u8003\u56FE\uFF1A${files.filter((file3) => file3.group === "reference" && file3.status === "saved").length} / ${files.filter((file3) => file3.group === "reference").length} \u5F20\u5DF2\u4FDD\u5B58\u3002`,
-          `\u6587\u4EF6\u4F4D\u7F6E\uFF1A\u53C2\u8003\u56FE/\uFF1B\u7ED3\u679C\u56FE/${files.some((file3) => file3.reviewRequired) ? "\uFF1B\u5F85\u590D\u6838/\uFF08\u7591\u70B9\u56FE\u7247\u53CA\u8BF4\u660E\uFF0C\u540E\u7EED\u52A0\u5DE5\u5DF2\u6682\u505C\uFF09" : ""}\u3002`
-        ],
-        "",
-        "\u5C1A\u672A\u4FDD\u5B58\u7684\u6587\u4EF6\uFF1A",
-        ...files.filter((file3) => file3.status !== "saved").map((file3) => `- ${file3.group === "reference" ? "\u53C2\u8003\u56FE" : task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE"}\uFF1A${file3.name}\uFF08${file3.status === "pending" ? "\u4FDD\u5B58\u4E2D" : file3.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25"}\uFF09`),
-        ...!files.some((file3) => file3.status !== "saved") ? ["\u65E0\u3002"] : [],
-        "",
-        "\u5C1A\u672A\u5904\u7406\u7684\u56FE\u7247\uFF1A",
-        ...audit.processing.steps.flatMap((step) => step.missingIds.map((id2) => `- ${step.label}\uFF1A${files.find((file3) => file3.originId === id2)?.name ?? "\u6765\u6E90\u56FE\u7247\uFF08\u5C1A\u672A\u5F52\u6863\uFF09"}`)),
-        ...audit.processing.remaining === null ? ["\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\uFF0C\u9700\u6838\u5BF9\u539F\u4EFB\u52A1\u3002"] : audit.processing.remaining === 0 ? ["\u65E0\u3002"] : [],
-        "",
-        "\u63D0\u793A\uFF1A\u751F\u6210\u5931\u8D25\u6216\u63D0\u4EA4\u5F85\u6838\u5BF9\u65F6\uFF0C\u8BF7\u5148\u6838\u5BF9\u539F\u4EFB\u52A1\uFF1B\u8865\u4FDD\u5B58\u4E0D\u4F1A\u91CD\u65B0\u751F\u56FE\u3002\u5904\u7406\u8981\u6C42\u672A\u767B\u8BB0\u65F6\uFF0C\u4E0D\u80FD\u636E\u6B64\u5224\u65AD\u662F\u5426\u6F0F\u5904\u7406\u3002",
-        "\u672C\u6587\u4EF6\u7531\u4EFB\u52A1\u6210\u679C\u81EA\u52A8\u66F4\u65B0\uFF1B\u5982\u679C\u4F60\u624B\u52A8\u4FEE\u6539\uFF0C\u672C\u7A0B\u5E8F\u4F1A\u4FDD\u7559\u4F60\u7684\u5185\u5BB9\u3002",
+        `\u6210\u529F\uFF1A${files.filter((file3) => file3.group === "result" && file3.status === "saved").length}`,
+        `\u5931\u8D25\uFF1A${failedItems + failedFiles + processingFailures}`,
+        `\u672A\u6267\u884C\uFF1A${notExecutedItems + notExecutedProcessing}`,
         ""
       ];
       const bytes = Buffer.from(lines.join("\n"), "utf8"), digest2 = hash5(bytes), path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
@@ -62906,9 +62932,61 @@ var TaskArchiveManager = class {
       return { summaryStatus: "failed", summaryError: "\u4EFB\u52A1\u603B\u7ED3\u6682\u4E0D\u53EF\u7528\uFF1B\u6253\u5F00\u65F6\u4F1A\u518D\u6B21\u4E25\u683C\u6838\u9A8C\u3002" };
     }
   }
+  stageResults(task, files) {
+    const terminal = ["completed", "partial_failure", "partial_cancelled", "failed", "cancelled"].includes(task.status);
+    return (task.generationItems ?? []).map((item) => {
+      const errorCode2 = item.errorCode;
+      const itemFiles = files.filter((file3) => file3.generationItemIndex === item.index && file3.group === "result" && file3.variant === "generated");
+      const expected = item.expectedOutputCount;
+      const outputSlots = item.outputs ?? [], failedOutput = outputSlots.some((output) => !output.assetId && (!!output.failureCode || output.status === "failed"));
+      const successfulIds = [...new Set(outputSlots.flatMap((output) => output.assetId ? [output.assetId] : []))];
+      const allExpectedSaved = expected !== void 0 && successfulIds.length === expected && successfulIds.every((id2) => itemFiles.some((file3) => file3.originId === id2 && file3.status === "saved"));
+      const legacyAllSaved = expected === void 0 && itemFiles.length > 0 && itemFiles.every((file3) => file3.status === "saved");
+      const hasFileFailure = itemFiles.some((file3) => ["failed", "missing"].includes(file3.status));
+      const hasPendingFile = itemFiles.some((file3) => file3.status === "pending");
+      const status = errorCode2?.startsWith("DEPENDENCY_") || item.status === "cancelled" || terminal && item.status === "quoted" ? "not_executed" : item.status === "failed" || !!errorCode2 || failedOutput || hasFileFailure ? "failed" : item.status === "completed" ? allExpectedSaved || legacyAllSaved ? "succeeded" : hasPendingFile ? "pending" : "needs_review" : item.status === "submission_unknown" ? "needs_review" : "pending";
+      return {
+        itemIndex: item.index,
+        sourceName: item.sourceName,
+        stage: item.stage,
+        status,
+        errorCode: errorCode2,
+        fileIds: itemFiles.map((file3) => file3.id)
+      };
+    });
+  }
+  processingResults(task, files, audit) {
+    const terminal = ["completed", "partial_failure", "partial_cancelled", "failed", "cancelled"].includes(task.status);
+    const stopped = !!task.stoppedAt && (!task.processingResumedAt || Date.parse(task.stoppedAt) > Date.parse(task.processingResumedAt));
+    return audit.processing.steps.map((row, order2) => {
+      const step = task.processingPlan?.find((value2) => value2.id === row.id);
+      const resultIds = [...new Set(task.processingRuns.filter((run) => run.toolName === step.toolName && canonical(run.options) === canonical(step.options)).flatMap((run) => run.resultIds))];
+      const resultFiles = files.filter((file3) => resultIds.includes(file3.originId ?? ""));
+      const hasFileFailure = resultFiles.some((file3) => ["failed", "missing"].includes(file3.status));
+      const hasPendingFile = resultFiles.some((file3) => file3.status === "pending");
+      const allOutputsSaved = resultIds.length > 0 && resultIds.every((id2) => resultFiles.some((file3) => file3.originId === id2 && file3.status === "saved"));
+      const status = row.failedIds.length || hasFileFailure ? "failed" : row.required === 0 ? terminal ? "not_executed" : "pending" : row.completed === row.required ? allOutputsSaved ? "succeeded" : hasPendingFile ? "pending" : "needs_review" : stopped ? "not_executed" : "pending";
+      return {
+        stepId: row.id,
+        label: row.label,
+        order: order2,
+        status,
+        required: row.required,
+        completed: row.completed,
+        failed: row.failedIds.length,
+        fileIds: resultFiles.map((file3) => file3.id)
+      };
+    });
+  }
   async finalOnlyView(task, identity2, available, updateSummary = true) {
     const internalFiles = [];
     for (const file3 of task.files) {
+      const itemIndex = this.generationItemIndex(task, file3), item = this.generationItem(task, file3), step = this.processingStep(task, file3);
+      const stage = step ? {
+        id: `processing:${step.id}`,
+        label: step.label,
+        order: 100 + Math.max(0, task.processingPlan?.findIndex((row) => row.id === step.id) ?? 0)
+      } : item?.stage;
       let status = file3.status;
       if (status === "saved" && !file3.referenceOnly) {
         try {
@@ -62928,7 +63006,9 @@ var TaskArchiveManager = class {
         image: file3.image,
         originId: file3.source.id,
         sourceId: file3.sourceId,
-        generationItemIndex: file3.generationItemIndex,
+        generationItemIndex: itemIndex,
+        sourceName: item?.sourceName ?? file3.sourceName,
+        stage,
         ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
         ...file3.group === "result" ? { variant: file3.source.kind === "asset" ? "generated" : "processed" } : {}
       });
@@ -62936,7 +63016,13 @@ var TaskArchiveManager = class {
     const leafIds = new Set(this.finalLeaves(task).map((file3) => file3.id));
     const files = [];
     for (const file3 of task.files) {
-      const failedOrPendingLeaf = file3.group === "result" && file3.status !== "saved" && !file3.reviewRequired && !(file3.source.kind === "asset" && (task.processingPlan?.length ?? 0) > 0) && !task.files.some((child) => child.sourceId === file3.source.id && child.status === "saved");
+      const itemIndex = this.generationItemIndex(task, file3), item = this.generationItem(task, file3), step = this.processingStep(task, file3);
+      const stage = step ? {
+        id: `processing:${step.id}`,
+        label: step.label,
+        order: 100 + Math.max(0, task.processingPlan?.findIndex((row) => row.id === step.id) ?? 0)
+      } : item?.stage;
+      const failedOrPendingLeaf = file3.group === "result" && file3.status !== "saved" && !file3.reviewRequired && (!!task.generationAudit?.planned || !(file3.source.kind === "asset" && (task.processingPlan?.length ?? 0) > 0)) && !task.files.some((child) => child.sourceId === file3.source.id && child.status === "saved");
       if (!file3.publishedName && !leafIds.has(file3.id) && !failedOrPendingLeaf) continue;
       let status = file3.status;
       if (file3.status === "saved") status = file3.publishedName ? available && await this.publishedValid(task, file3, false) ? "saved" : "missing" : "failed";
@@ -62950,13 +63036,17 @@ var TaskArchiveManager = class {
         status,
         originId: file3.source.id,
         sourceId: file3.sourceId,
-        generationItemIndex: file3.generationItemIndex,
+        generationItemIndex: itemIndex,
+        sourceName: item?.sourceName ?? file3.sourceName,
+        stage,
         ...file3.publishedName ? { relativePath: join11("\u6210\u54C1", file3.publishedName) } : {},
         ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
         variant: file3.source.kind === "asset" ? "generated" : "processed"
       });
     }
     const audit = auditTask(internalFiles, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+    const stageResults = this.stageResults(task, internalFiles);
+    const processingResults = this.processingResults(task, internalFiles, audit);
     audit.delivery = {
       expected: files.length,
       saved: files.filter((file3) => file3.status === "saved").length,
@@ -62983,6 +63073,8 @@ var TaskArchiveManager = class {
       savedCount: audit.delivery.saved,
       operationIds: task.operationIds,
       files,
+      stageResults,
+      processingResults,
       audit,
       ...summary,
       ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6210\u54C1\u4FDD\u5B58\u6216\u52A0\u5DE5\u5931\u8D25\uFF0C\u53EF\u5237\u65B0\u72B6\u6001\u6838\u5BF9\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
@@ -63467,7 +63559,7 @@ var labels = {
 };
 var deliveryTool = {
   name: "podplo_prepare_generation_delivery",
-  description: "Prepare the verified result images from one completed generation operation for delivery in the current native conversation. Returns only owner- and session-bound local result paths. In an IM conversation, call dsh_im_return_file once for each returned path; do not scan PodPlo storage or invent paths.",
+  description: "Prepare every verified stage-result image from one terminal generation operation for delivery in the current native conversation, including preserved outputs from a partial failure. Returns owner- and session-bound local paths plus complete and outcome counts. When complete=false, report the successful, failed, and not-executed counts without claiming full success. In an IM conversation, call dsh_im_return_file once for each returned path; do not scan PodPlo storage or invent paths.",
   inputSchema: { type: "object", additionalProperties: false, properties: { operationId: { type: "string", minLength: 1, maxLength: 180 } }, required: ["operationId"] }
 };
 async function taskArchiveHost(options) {
@@ -63575,6 +63667,7 @@ async function taskArchiveHost(options) {
             ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
             ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
             generationAudit: row.generationAudit,
+            generationItems: row.generationItems,
             generationCalls: row.generationCalls,
             processingPlan: row.processingPlan,
             files: [
@@ -63832,10 +63925,6 @@ async function taskArchiveHost(options) {
         await manager.wait();
         const localProcessing = await operationProgress(operationId2, sessionId);
         if (localProcessing.pending) throw new PodploPluginError("GENERATION_NOT_READY", "\u7ED3\u679C\u6B63\u5728\u4E0B\u8F7D\u6216\u672C\u5730\u52A0\u5DE5\uFF0C\u8BF7\u7B49\u5F85\u5B8C\u6210\u901A\u77E5\u540E\u518D\u51C6\u5907\u56DE\u4F20\u3002");
-        if (!["completed", "unregistered"].includes(localProcessing.status)) throw new PodploPluginError(
-          "GENERATION_RESULTS_UNAVAILABLE",
-          "\u672C\u5730\u52A0\u5DE5\u672A\u9F50\u5168\u6216\u5DF2\u505C\u6B62\uFF0C\u5DF2\u62D2\u7EDD\u628A\u672A\u5B8C\u6210\u7684\u539F\u56FE\u5F53\u4F5C\u6700\u7EC8\u4EA4\u4ED8\u3002"
-        );
         const tasks = await manager.list(sessionId);
         const task = tasks.items.find((row) => row.operationIds.includes(operationId2));
         const files = task?.files.filter((file3) => file3.group === "result" && file3.image && file3.status === "saved") ?? [];
@@ -63846,9 +63935,20 @@ async function taskArchiveHost(options) {
             pending2 ? "\u751F\u56FE\u5C1A\u672A\u5B8C\u6210\uFF0C\u8BF7\u7B49\u5F85\u5B8C\u6210\u901A\u77E5\u540E\u518D\u51C6\u5907\u56DE\u4F20\u3002" : "\u5F53\u524D\u64CD\u4F5C\u6CA1\u6709\u53EF\u56DE\u4F20\u7684\u7ED3\u679C\u56FE\uFF0C\u8BF7\u68C0\u67E5\u751F\u6210\u72B6\u6001\u6216\u6210\u679C\u4FDD\u5B58\u72B6\u6001\u3002"
           );
         }
+        const partialAllowed = ["failed", "stopped"].includes(localProcessing.status) || ["partial_failure", "partial_cancelled", "failed", "cancelled"].includes(operation.status ?? task.status);
+        if (!["completed", "unregistered"].includes(localProcessing.status) && !partialAllowed)
+          throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u4EFB\u52A1\u5C1A\u672A\u5F62\u6210\u53EF\u4EA4\u4ED8\u7684\u7A33\u5B9A\u7ED3\u679C\u3002");
+        const complete = ["completed", "unregistered"].includes(localProcessing.status) && task.audit?.complete !== false;
+        const outcomes = {
+          succeeded: files.length,
+          failed: (task.stageResults?.filter((result2) => result2.status === "failed").length ?? 0) + (task.audit?.processing.failed ?? 0) + (task.audit?.delivery?.failed ?? 0),
+          notExecuted: (task.stageResults?.filter((result2) => result2.status === "not_executed").length ?? 0) + (task.processingResults?.filter((result2) => result2.status === "not_executed").length ?? 0)
+        };
         return {
           operationId: operationId2,
           status: operation.status ?? task.status,
+          complete,
+          outcomes,
           files: files.map((file3) => {
             if (basename11(file3.name) !== file3.name) throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u7ED3\u679C\u6587\u4EF6\u540D\u65E0\u6548\uFF0C\u5DF2\u62D2\u7EDD\u56DE\u4F20\u3002");
             const expected = join12(task.archiveFormat === 2 ? "\u6210\u54C1" : "\u7ED3\u679C\u56FE", file3.name);
