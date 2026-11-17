@@ -103,11 +103,11 @@ function __metadata(metadataKey, metadataValue) {
 }
 function __awaiter(thisArg, _arguments, P, generator) {
   function adopt(value2) {
-    return value2 instanceof P ? value2 : new P(function(resolve3) {
-      resolve3(value2);
+    return value2 instanceof P ? value2 : new P(function(resolve4) {
+      resolve4(value2);
     });
   }
-  return new (P || (P = Promise))(function(resolve3, reject) {
+  return new (P || (P = Promise))(function(resolve4, reject) {
     function fulfilled(value2) {
       try {
         step(generator.next(value2));
@@ -123,7 +123,7 @@ function __awaiter(thisArg, _arguments, P, generator) {
       }
     }
     function step(result) {
-      result.done ? resolve3(result.value) : adopt(result.value).then(fulfilled, rejected);
+      result.done ? resolve4(result.value) : adopt(result.value).then(fulfilled, rejected);
     }
     step((generator = generator.apply(thisArg, _arguments || [])).next());
   });
@@ -301,14 +301,14 @@ function __asyncValues(o) {
   }, i);
   function verb(n) {
     i[n] = o[n] && function(v) {
-      return new Promise(function(resolve3, reject) {
-        v = o[n](v), settle(resolve3, reject, v.done, v.value);
+      return new Promise(function(resolve4, reject) {
+        v = o[n](v), settle(resolve4, reject, v.done, v.value);
       });
     };
   }
-  function settle(resolve3, reject, d, v) {
+  function settle(resolve4, reject, d, v) {
     Promise.resolve(v).then(function(v2) {
-      resolve3({ value: v2, done: d });
+      resolve4({ value: v2, done: d });
     }, reject);
   }
 }
@@ -727,9 +727,9 @@ var require_async = __commonJS({
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.waitForTick = void 0;
     exports.waitForTick = function() {
-      return new Promise(function(resolve3) {
+      return new Promise(function(resolve4) {
         setTimeout(function() {
-          return resolve3();
+          return resolve4();
         }, 0);
       });
     };
@@ -5148,9 +5148,9 @@ var require_pako = __commonJS({
     var assign = require_common().assign;
     var deflate = require_deflate2();
     var inflate = require_inflate2();
-    var constants7 = require_constants();
+    var constants8 = require_constants();
     var pako = {};
-    assign(pako, deflate, inflate, constants7);
+    assign(pako, deflate, inflate, constants8);
     module.exports = pako;
   }
 });
@@ -6437,21 +6437,21 @@ var require_PDFArray = __commonJS({
         PDFArray2.prototype.size = function() {
           return this.array.length;
         };
-        PDFArray2.prototype.push = function(object6) {
-          this.array.push(object6);
+        PDFArray2.prototype.push = function(object7) {
+          this.array.push(object7);
         };
-        PDFArray2.prototype.insert = function(index, object6) {
-          this.array.splice(index, 0, object6);
+        PDFArray2.prototype.insert = function(index, object7) {
+          this.array.splice(index, 0, object7);
         };
-        PDFArray2.prototype.indexOf = function(object6) {
-          var index = this.array.indexOf(object6);
+        PDFArray2.prototype.indexOf = function(object7) {
+          var index = this.array.indexOf(object7);
           return index === -1 ? void 0 : index;
         };
         PDFArray2.prototype.remove = function(index) {
           this.array.splice(index, 1);
         };
-        PDFArray2.prototype.set = function(idx, object6) {
-          this.array[idx] = object6;
+        PDFArray2.prototype.set = function(idx, object7) {
+          this.array[idx] = object7;
         };
         PDFArray2.prototype.get = function(index) {
           return this.array[index];
@@ -7491,8 +7491,8 @@ var require_PDFContext = __commonJS({
           this.indirectObjects = /* @__PURE__ */ new Map();
           this.rng = rng_1.SimpleRNG.withSeed(1);
         }
-        PDFContext2.prototype.assign = function(ref, object6) {
-          this.indirectObjects.set(ref, object6);
+        PDFContext2.prototype.assign = function(ref, object7) {
+          this.indirectObjects.set(ref, object7);
           if (ref.objectNumber > this.largestObjectNumber) {
             this.largestObjectNumber = ref.objectNumber;
           }
@@ -7501,9 +7501,9 @@ var require_PDFContext = __commonJS({
           this.largestObjectNumber += 1;
           return PDFRef_1.default.of(this.largestObjectNumber);
         };
-        PDFContext2.prototype.register = function(object6) {
+        PDFContext2.prototype.register = function(object7) {
           var ref = this.nextRef();
-          this.assign(ref, object6);
+          this.assign(ref, object7);
           return ref;
         };
         PDFContext2.prototype.delete = function(ref) {
@@ -7553,8 +7553,8 @@ var require_PDFContext = __commonJS({
         PDFContext2.prototype.getObjectRef = function(pdfObject) {
           var entries = Array.from(this.indirectObjects.entries());
           for (var idx = 0, len = entries.length; idx < len; idx++) {
-            var _a5 = entries[idx], ref = _a5[0], object6 = _a5[1];
-            if (object6 === pdfObject) {
+            var _a5 = entries[idx], ref = _a5[0], object7 = _a5[1];
+            if (object7 === pdfObject) {
               return ref;
             }
           }
@@ -7884,8 +7884,8 @@ var require_PDFObjectCopier = __commonJS({
         function PDFObjectCopier2(src, dest) {
           var _this = this;
           this.traversedObjects = /* @__PURE__ */ new Map();
-          this.copy = function(object6) {
-            return object6 instanceof PDFPageLeaf_1.default ? _this.copyPDFPage(object6) : object6 instanceof PDFDict_1.default ? _this.copyPDFDict(object6) : object6 instanceof PDFArray_1.default ? _this.copyPDFArray(object6) : object6 instanceof PDFStream_1.default ? _this.copyPDFStream(object6) : object6 instanceof PDFRef_1.default ? _this.copyPDFIndirectObject(object6) : object6.clone();
+          this.copy = function(object7) {
+            return object7 instanceof PDFPageLeaf_1.default ? _this.copyPDFPage(object7) : object7 instanceof PDFDict_1.default ? _this.copyPDFDict(object7) : object7 instanceof PDFArray_1.default ? _this.copyPDFArray(object7) : object7 instanceof PDFStream_1.default ? _this.copyPDFStream(object7) : object7 instanceof PDFRef_1.default ? _this.copyPDFIndirectObject(object7) : object7.clone();
           };
           this.copyPDFPage = function(originalPage) {
             var clonedPage = originalPage.clone();
@@ -8222,8 +8222,8 @@ var require_PDFObjectStream = __commonJS({
         PDFObjectStream2.prototype.getContentsString = function() {
           var value2 = this.offsetsString;
           for (var idx = 0, len = this.objects.length; idx < len; idx++) {
-            var _a5 = this.objects[idx], object6 = _a5[1];
-            value2 += object6 + "\n";
+            var _a5 = this.objects[idx], object7 = _a5[1];
+            value2 += object7 + "\n";
           }
           return value2;
         };
@@ -8231,8 +8231,8 @@ var require_PDFObjectStream = __commonJS({
           var buffer = new Uint8Array(this.getUnencodedContentsSize());
           var offset = utils_1.copyStringIntoBuffer(this.offsetsString, buffer, 0);
           for (var idx = 0, len = this.objects.length; idx < len; idx++) {
-            var _a5 = this.objects[idx], object6 = _a5[1];
-            offset += object6.copyBytesInto(buffer, offset);
+            var _a5 = this.objects[idx], object7 = _a5[1];
+            offset += object7.copyBytesInto(buffer, offset);
             buffer[offset++] = CharCodes_1.default.Newline;
           }
           return buffer;
@@ -8252,9 +8252,9 @@ var require_PDFObjectStream = __commonJS({
           var offset = 0;
           var offsets = new Array(this.objects.length);
           for (var idx = 0, len = this.objects.length; idx < len; idx++) {
-            var _a5 = this.objects[idx], ref = _a5[0], object6 = _a5[1];
+            var _a5 = this.objects[idx], ref = _a5[0], object7 = _a5[1];
             offsets[idx] = [ref.objectNumber, offset];
-            offset += object6.sizeInBytes() + 1;
+            offset += object7.sizeInBytes() + 1;
           }
           return offsets;
         };
@@ -8299,7 +8299,7 @@ var require_PDFWriter = __commonJS({
         }
         PDFWriter2.prototype.serializeToBuffer = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var _a5, size2, header, indirectObjects, xref, trailerDict, trailer, offset, buffer, idx, len, _b, ref, object6, objectNumber, generationNumber, n;
+            var _a5, size2, header, indirectObjects, xref, trailerDict, trailer, offset, buffer, idx, len, _b, ref, object7, objectNumber, generationNumber, n;
             return tslib_1.__generator(this, function(_c) {
               switch (_c.label) {
                 case 0:
@@ -8315,7 +8315,7 @@ var require_PDFWriter = __commonJS({
                   _c.label = 2;
                 case 2:
                   if (!(idx < len)) return [3, 5];
-                  _b = indirectObjects[idx], ref = _b[0], object6 = _b[1];
+                  _b = indirectObjects[idx], ref = _b[0], object7 = _b[1];
                   objectNumber = String(ref.objectNumber);
                   offset += utils_1.copyStringIntoBuffer(objectNumber, buffer, offset);
                   buffer[offset++] = CharCodes_1.default.Space;
@@ -8326,7 +8326,7 @@ var require_PDFWriter = __commonJS({
                   buffer[offset++] = CharCodes_1.default.b;
                   buffer[offset++] = CharCodes_1.default.j;
                   buffer[offset++] = CharCodes_1.default.Newline;
-                  offset += object6.copyBytesInto(buffer, offset);
+                  offset += object7.copyBytesInto(buffer, offset);
                   buffer[offset++] = CharCodes_1.default.Newline;
                   buffer[offset++] = CharCodes_1.default.e;
                   buffer[offset++] = CharCodes_1.default.n;
@@ -8336,7 +8336,7 @@ var require_PDFWriter = __commonJS({
                   buffer[offset++] = CharCodes_1.default.j;
                   buffer[offset++] = CharCodes_1.default.Newline;
                   buffer[offset++] = CharCodes_1.default.Newline;
-                  n = object6 instanceof PDFObjectStream_1.default ? object6.getObjectsCount() : 1;
+                  n = object7 instanceof PDFObjectStream_1.default ? object7.getObjectsCount() : 1;
                   if (!this.shouldWaitForTick(n)) return [3, 4];
                   return [4, utils_1.waitForTick()];
                 case 3:
@@ -8362,9 +8362,9 @@ var require_PDFWriter = __commonJS({
           });
         };
         PDFWriter2.prototype.computeIndirectObjectSize = function(_a5) {
-          var ref = _a5[0], object6 = _a5[1];
+          var ref = _a5[0], object7 = _a5[1];
           var refSize = ref.sizeInBytes() + 3;
-          var objectSize = object6.sizeInBytes() + 9;
+          var objectSize = object7.sizeInBytes() + 9;
           return refSize + objectSize;
         };
         PDFWriter2.prototype.createTrailerDict = function() {
@@ -8687,7 +8687,7 @@ var require_PDFStreamWriter = __commonJS({
         }
         PDFStreamWriter2.prototype.computeBufferSize = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var objectNumber, header, size2, xrefStream, uncompressedObjects, compressedObjects, objectStreamRefs, indirectObjects, idx, len, indirectObject, ref, object6, shouldNotCompress, chunk, objectStreamRef, idx, len, chunk, ref, objectStream, xrefStreamRef, xrefOffset, trailer;
+            var objectNumber, header, size2, xrefStream, uncompressedObjects, compressedObjects, objectStreamRefs, indirectObjects, idx, len, indirectObject, ref, object7, shouldNotCompress, chunk, objectStreamRef, idx, len, chunk, ref, objectStream, xrefStreamRef, xrefOffset, trailer;
             return tslib_1.__generator(this, function(_a5) {
               switch (_a5.label) {
                 case 0:
@@ -8704,8 +8704,8 @@ var require_PDFStreamWriter = __commonJS({
                 case 1:
                   if (!(idx < len)) return [3, 6];
                   indirectObject = indirectObjects[idx];
-                  ref = indirectObject[0], object6 = indirectObject[1];
-                  shouldNotCompress = ref === this.context.trailerInfo.Encrypt || object6 instanceof PDFStream_1.default || object6 instanceof PDFInvalidObject_1.default || ref.generationNumber !== 0;
+                  ref = indirectObject[0], object7 = indirectObject[1];
+                  shouldNotCompress = ref === this.context.trailerInfo.Encrypt || object7 instanceof PDFStream_1.default || object7 instanceof PDFInvalidObject_1.default || ref.generationNumber !== 0;
                   if (!shouldNotCompress) return [3, 4];
                   uncompressedObjects.push(indirectObject);
                   xrefStream.addUncompressedEntry(ref, size2);
@@ -9472,12 +9472,12 @@ var require_CustomFontSubsetEmbedder = __commonJS({
         };
         CustomFontSubsetEmbedder2.prototype.serializeFont = function() {
           var _this = this;
-          return new Promise(function(resolve3, reject) {
+          return new Promise(function(resolve4, reject) {
             var parts = [];
             _this.subset.encodeStream().on("data", function(bytes) {
               return parts.push(bytes);
             }).on("end", function() {
-              return resolve3(utils_1.mergeUint8Arrays(parts));
+              return resolve4(utils_1.mergeUint8Arrays(parts));
             }).on("error", function(err) {
               return reject(err);
             });
@@ -15506,7 +15506,7 @@ var require_PDFObjectStreamParser = __commonJS({
         }
         PDFObjectStreamParser2.prototype.parseIntoContext = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var offsetsAndObjectNumbers, idx, len, _a5, objectNumber, offset, object6, ref;
+            var offsetsAndObjectNumbers, idx, len, _a5, objectNumber, offset, object7, ref;
             return tslib_1.__generator(this, function(_b) {
               switch (_b.label) {
                 case 0:
@@ -15521,9 +15521,9 @@ var require_PDFObjectStreamParser = __commonJS({
                   if (!(idx < len)) return [3, 4];
                   _a5 = offsetsAndObjectNumbers[idx], objectNumber = _a5.objectNumber, offset = _a5.offset;
                   this.bytes.moveTo(this.firstOffset + offset);
-                  object6 = this.parseObject();
+                  object7 = this.parseObject();
                   ref = PDFRef_1.default.of(objectNumber, 0);
-                  this.context.assign(ref, object6);
+                  this.context.assign(ref, object7);
                   if (!this.shouldWaitForTick()) return [3, 3];
                   return [4, utils_1.waitForTick()];
                 case 2:
@@ -15747,8 +15747,8 @@ var require_PDFParser = __commonJS({
           if (!isValidCatalog(catalog)) {
             var indirectObjects = this.context.enumerateIndirectObjects();
             for (var idx = 0, len = indirectObjects.length; idx < len; idx++) {
-              var _a5 = indirectObjects[idx], ref = _a5[0], object6 = _a5[1];
-              if (isValidCatalog(object6)) {
+              var _a5 = indirectObjects[idx], ref = _a5[0], object7 = _a5[1];
+              if (isValidCatalog(object7)) {
                 this.context.trailerInfo.Root = ref;
               }
             }
@@ -15791,25 +15791,25 @@ var require_PDFParser = __commonJS({
         };
         PDFParser2.prototype.parseIndirectObject = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
-            var ref, object6;
+            var ref, object7;
             return tslib_1.__generator(this, function(_a5) {
               switch (_a5.label) {
                 case 0:
                   ref = this.parseIndirectObjectHeader();
                   this.skipWhitespaceAndComments();
-                  object6 = this.parseObject();
+                  object7 = this.parseObject();
                   this.skipWhitespaceAndComments();
                   this.matchKeyword(Keywords_1.Keywords.endobj);
-                  if (!(object6 instanceof PDFRawStream_1.default && object6.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("ObjStm"))) return [3, 2];
-                  return [4, PDFObjectStreamParser_1.default.forStream(object6, this.shouldWaitForTick).parseIntoContext()];
+                  if (!(object7 instanceof PDFRawStream_1.default && object7.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("ObjStm"))) return [3, 2];
+                  return [4, PDFObjectStreamParser_1.default.forStream(object7, this.shouldWaitForTick).parseIntoContext()];
                 case 1:
                   _a5.sent();
                   return [3, 3];
                 case 2:
-                  if (object6 instanceof PDFRawStream_1.default && object6.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("XRef")) {
-                    PDFXRefStreamParser_1.default.forStream(object6).parseIntoContext();
+                  if (object7 instanceof PDFRawStream_1.default && object7.dict.lookup(PDFName_1.default.of("Type")) === PDFName_1.default.of("XRef")) {
+                    PDFXRefStreamParser_1.default.forStream(object7).parseIntoContext();
                   } else {
-                    this.context.assign(ref, object6);
+                    this.context.assign(ref, object7);
                   }
                   _a5.label = 3;
                 case 3:
@@ -15840,8 +15840,8 @@ var require_PDFParser = __commonJS({
           if (failed)
             throw new errors_1.PDFInvalidObjectParsingError(startPos);
           var end = this.bytes.offset() - Keywords_1.Keywords.endobj.length;
-          var object6 = PDFInvalidObject_1.default.of(this.bytes.slice(start, end));
-          this.context.assign(ref, object6);
+          var object7 = PDFInvalidObject_1.default.of(this.bytes.slice(start, end));
+          this.context.assign(ref, object7);
           return ref;
         };
         PDFParser2.prototype.parseIndirectObjects = function() {
@@ -16679,7 +16679,7 @@ var require_svgPath = __commonJS({
       ["Z", 0],
       ["z", 0]
     ]);
-    var parse7 = function(path) {
+    var parse8 = function(path) {
       var cmd;
       var ret = [];
       var args = [];
@@ -17001,7 +17001,7 @@ var require_svgPath = __commonJS({
       return result;
     };
     exports.svgPathToOperators = function(path) {
-      return apply2(parse7(path));
+      return apply2(parse8(path));
     };
   }
 });
@@ -22403,7 +22403,7 @@ import { createCipheriv, createDecipheriv, randomBytes as randomBytes4 } from "n
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir2 } from "node:os";
-import { basename as basename13, isAbsolute as isAbsolute8, resolve as resolve2 } from "node:path";
+import { basename as basename13, isAbsolute as isAbsolute9, resolve as resolve3 } from "node:path";
 import { dshHomePath } from "@deepseek-ai/dsh-home-paths";
 import { credentialKey } from "@deepseek-ai/dsh-credentials";
 import * as NativeMcp from "@deepseek-ai/dsh-mcp-client";
@@ -23134,9 +23134,9 @@ function floatSafeRemainder(val, step) {
   return ratio - roundedRatio;
 }
 var EVALUATING = /* @__PURE__ */ Symbol("evaluating");
-function defineLazy(object6, key, getter) {
+function defineLazy(object7, key, getter) {
   let value2 = void 0;
-  Object.defineProperty(object6, key, {
+  Object.defineProperty(object7, key, {
     get() {
       if (value2 === EVALUATING) {
         return void 0;
@@ -23148,7 +23148,7 @@ function defineLazy(object6, key, getter) {
       return value2;
     },
     set(v) {
-      Object.defineProperty(object6, key, {
+      Object.defineProperty(object7, key, {
         value: v
         // configurable: true,
       });
@@ -37538,7 +37538,7 @@ var OAuthSession = class {
     let cancel = () => {
     };
     let settled = false;
-    const promise3 = new Promise((resolve3, reject) => {
+    const promise3 = new Promise((resolve4, reject) => {
       const fail6 = (error101) => {
         if (settled) return;
         settled = true;
@@ -37616,7 +37616,7 @@ var OAuthSession = class {
             this.grant = grant;
             settled = true;
             response.end("\u6388\u6743\u6210\u529F\u3002\u8BF7\u8FD4\u56DE PodPlo \u684C\u9762\u5BA2\u6237\u7AEF\u3002");
-            resolve3(grant);
+            resolve4(grant);
           }).catch((error101) => {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
             fail6(error101);
@@ -38105,26 +38105,26 @@ function parsePublicCatalog(value2) {
   const catalog = CatalogSchema.parse(value2);
   const bySlug = new Map(catalog.skills.map((skill) => [skill.slug, skill]));
   const families = new Map(catalog.families.map((family) => [family.slug, family]));
-  const invalid = () => {
+  const invalid2 = () => {
     throw new Error("Invalid public Skill relationships");
   };
-  if (bySlug.size !== catalog.skills.length || families.size !== catalog.families.length || new Set(catalog.categories.map((row) => row.id)).size !== catalog.categories.length) invalid();
+  if (bySlug.size !== catalog.skills.length || families.size !== catalog.families.length || new Set(catalog.categories.map((row) => row.id)).size !== catalog.categories.length) invalid2();
   for (const family of catalog.families) {
     const parent = bySlug.get(family.parentSlug);
-    if (family.slug !== family.parentSlug || parent?.kind !== "family" || JSON.stringify(parent.memberSlugs) !== JSON.stringify(family.memberSlugs) || new Set(family.memberSlugs).size !== family.memberSlugs.length) invalid();
+    if (family.slug !== family.parentSlug || parent?.kind !== "family" || JSON.stringify(parent.memberSlugs) !== JSON.stringify(family.memberSlugs) || new Set(family.memberSlugs).size !== family.memberSlugs.length) invalid2();
     family.memberSlugs.forEach((memberSlug, index) => {
       const member = bySlug.get(memberSlug);
-      if (member?.kind !== "member" || member.familySlug !== family.slug || member.parentSlug !== family.parentSlug || member.memberOrder !== index) invalid();
+      if (member?.kind !== "member" || member.familySlug !== family.slug || member.parentSlug !== family.parentSlug || member.memberOrder !== index) invalid2();
     });
   }
   for (const skill of catalog.skills) {
     if (skill.kind === "family") {
-      if (skill.executable || skill.executionSlug !== null || skill.parentSlug !== null || skill.familySlug !== skill.slug || !families.has(skill.slug) || !skill.directoryVisible || skill.memberOrder !== null) invalid();
+      if (skill.executable || skill.executionSlug !== null || skill.parentSlug !== null || skill.familySlug !== skill.slug || !families.has(skill.slug) || !skill.directoryVisible || skill.memberOrder !== null) invalid2();
     } else {
-      if (!skill.executable || skill.executionSlug !== skill.slug || skill.memberSlugs.length) invalid();
+      if (!skill.executable || skill.executionSlug !== skill.slug || skill.memberSlugs.length) invalid2();
       if (skill.kind === "member") {
-        if (!skill.familySlug || !families.get(skill.familySlug)?.memberSlugs.includes(skill.slug) || skill.directoryVisible) invalid();
-      } else if (skill.familySlug !== null || skill.parentSlug !== null || skill.memberOrder !== null) invalid();
+        if (!skill.familySlug || !families.get(skill.familySlug)?.memberSlugs.includes(skill.slug) || skill.directoryVisible) invalid2();
+      } else if (skill.familySlug !== null || skill.parentSlug !== null || skill.memberOrder !== null) invalid2();
     }
   }
   return catalog;
@@ -39116,7 +39116,7 @@ var OnlineService = class extends EventEmitter {
     let detail = completed?.status === "ready" && completed.reference?.id === prepared.assetId && completed.reference.status === "ready" ? completed.reference : await this.mcp.reference(prepared.assetId, assertSession);
     assertSession();
     for (let attempt = 1; detail.status === "processing" && attempt < this.uploadPollAttempts; attempt++) {
-      await new Promise((resolve3) => setTimeout(resolve3, this.uploadPollIntervalMs));
+      await new Promise((resolve4) => setTimeout(resolve4, this.uploadPollIntervalMs));
       assertSession();
       detail = await this.mcp.reference(prepared.assetId, assertSession);
       assertSession();
@@ -39548,14 +39548,14 @@ var DesktopWorkbench = class {
       signal.throwIfAborted();
       const plan = this.get(id2, planId);
       if (plan.status !== "running") return plan;
-      await new Promise((resolve3, reject) => {
+      await new Promise((resolve4, reject) => {
         const abort = () => {
           clearTimeout(timer);
           reject(new Error("\u5DF2\u505C\u6B62\u7B49\u5F85\uFF1B\u5DF2\u63A5\u7EB3\u7684\u4EFB\u52A1\u4FDD\u7559\uFF0C\u53EF\u7EE7\u7EED\u67E5\u8BE2\u5DF2\u6709\u4EFB\u52A1"));
         };
         const timer = setTimeout(() => {
           signal.removeEventListener("abort", abort);
-          resolve3();
+          resolve4();
         }, 100);
         signal.addEventListener("abort", abort, { once: true });
         if (signal.aborted) abort();
@@ -39567,14 +39567,14 @@ var DesktopWorkbench = class {
       signal.throwIfAborted();
       const plan = this.get(id2, planId);
       if (plan.generation?.taskId || plan.status !== "running") return plan;
-      await new Promise((resolve3, reject) => {
+      await new Promise((resolve4, reject) => {
         const abort = () => {
           clearTimeout(timer);
           reject(new Error("\u5DF2\u505C\u6B62\u7B49\u5F85\u63A5\u7EB3\u7ED3\u679C\uFF1B\u539F\u8BF7\u6C42\u4FDD\u7559\uFF0C\u4E0D\u80FD\u91CD\u590D\u63D0\u4EA4"));
         };
         const timer = setTimeout(() => {
           signal.removeEventListener("abort", abort);
-          resolve3();
+          resolve4();
         }, 25);
         signal.addEventListener("abort", abort, { once: true });
         if (signal.aborted) abort();
@@ -39757,7 +39757,7 @@ var DesktopWorkbench = class {
         });
         return;
       }
-      await new Promise((resolve3) => setTimeout(resolve3, transport.intervalMs ?? 3e3));
+      await new Promise((resolve4) => setTimeout(resolve4, transport.intervalMs ?? 3e3));
     }
     throw new Error("\u4EFB\u52A1\u67E5\u8BE2\u5DF2\u6682\u505C");
   }
@@ -39799,8 +39799,8 @@ var DesktopWorkbench = class {
     const operation = transaction ? external_exports.object({ id: external_exports.string().min(1).max(240), rollback: external_exports.boolean() }).strict().parse(transaction) : void 0;
     const pairs = moves.map((move) => ({ from: external_exports.string().min(1).parse(move.from), to: external_exports.string().min(1).parse(move.to) }));
     if (new Set(pairs.map((move) => move.from)).size !== pairs.length || new Set(pairs.map((move) => move.to)).size !== pairs.length) throw new Error("\u6587\u4EF6\u6539\u540D\u6620\u5C04\u4E0D\u53EF\u91CD\u590D");
-    const digest2 = (rows) => createHash4("sha256").update(JSON.stringify(rows)).digest("hex");
-    const receipt = digest2(pairs), reverseReceipt = digest2(pairs.map((move) => ({ from: move.to, to: move.from })));
+    const digest4 = (rows) => createHash4("sha256").update(JSON.stringify(rows)).digest("hex");
+    const receipt = digest4(pairs), reverseReceipt = digest4(pairs.map((move) => ({ from: move.to, to: move.from })));
     const paths = new Map(pairs.map((move) => [move.from, move.to]));
     const affected = (plan) => plan.steps.some((step) => !!step.output && paths.has(step.output)) || !!plan.task?.artifacts?.some((artifact) => paths.has(artifact.path));
     const current = this.store.snapshot().owners[id2];
@@ -39912,37 +39912,9 @@ var DesktopWorkbench = class {
   }
 };
 
-// plugins/podplo-dsh/src/generation-progress-state.ts
-function generationStatusAttention(value2) {
-  const items = Array.isArray(value2) ? value2 : [];
-  const directlyBlocked = (item) => !!item && (!!item.statusBlocked || item.requiresManualStatusRefresh === true);
-  const blockedByDependency = (index, visiting = /* @__PURE__ */ new Set()) => {
-    const item = items[index];
-    if (!item || directlyBlocked(item)) return !!item;
-    if (item.status !== "quoted" || !item.dependsOn || typeof item.dependsOn !== "object") return false;
-    const parentIndex = Number(item.dependsOn.itemIndex);
-    if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
-    visiting.add(parentIndex);
-    return blockedByDependency(parentIndex, visiting);
-  };
-  const blocked = items.filter(directlyBlocked);
-  const hasRunnablePending = items.some((item, index) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? "")) && !blockedByDependency(index));
-  const authorization = blocked.some((item) => item.statusBlocked && typeof item.statusBlocked === "object" && item.statusBlocked.kind === "authorization");
-  return {
-    hasBlocked: blocked.length > 0,
-    hasRunnablePending,
-    attentionKind: authorization ? "authorization" : "manual_check"
-  };
-}
-function generationIsPaused(operation) {
-  if (operation.stoppedAt || !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(String(operation.status))) return false;
-  const attention = generationStatusAttention(operation.items);
-  return !attention.hasRunnablePending && (attention.hasBlocked || ["submission_unknown", "partial_unknown"].includes(String(operation.status)));
-}
-
-// plugins/podplo-dsh/src/local-favorite-organization.ts
-import { randomUUID as randomUUID8 } from "node:crypto";
-import { join as join4 } from "node:path";
+// plugins/podplo-dsh/src/native-mixed-task.ts
+import { createHash as createHash9, randomUUID as randomUUID10 } from "node:crypto";
+import { join as join7 } from "node:path";
 
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/classic/external.js
 var external_exports2 = {};
@@ -40666,9 +40638,9 @@ function floatSafeRemainder2(val, step) {
   return ratio - roundedRatio;
 }
 var EVALUATING2 = /* @__PURE__ */ Symbol("evaluating");
-function defineLazy2(object6, key, getter) {
+function defineLazy2(object7, key, getter) {
   let value2 = void 0;
-  Object.defineProperty(object6, key, {
+  Object.defineProperty(object7, key, {
     get() {
       if (value2 === EVALUATING2) {
         return void 0;
@@ -40680,7 +40652,7 @@ function defineLazy2(object6, key, getter) {
       return value2;
     },
     set(v) {
-      Object.defineProperty(object6, key, {
+      Object.defineProperty(object7, key, {
         value: v
         // configurable: true,
       });
@@ -54458,6 +54430,71 @@ function date8(params) {
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/classic/external.js
 config2(en_default2());
 
+// packages/tools/grid-split.ts
+import { basename as basename3, extname } from "node:path";
+import sharp3 from "sharp";
+var GRID_SPLIT_OPERATION_NAME = "podplo_grid_split";
+var GridSplitOptionsSchema = external_exports.object({
+  rows: external_exports.number().int().min(1).max(6),
+  cols: external_exports.number().int().min(1).max(6)
+}).strict();
+function gridSplitFrames(width2, height2, raw) {
+  const options = GridSplitOptionsSchema.parse(raw);
+  if (!Number.isInteger(width2) || !Number.isInteger(height2) || width2 < 1 || height2 < 1)
+    throw new Error("\u56FE\u7247\u5C3A\u5BF8\u65E0\u6548");
+  if (options.cols > width2 || options.rows > height2)
+    throw new Error("\u884C\u5217\u6570\u4E0D\u80FD\u8D85\u8FC7\u56FE\u7247\u7684\u50CF\u7D20\u5BBD\u9AD8");
+  const frames = [];
+  for (let row = 0; row < options.rows; row += 1) {
+    const top = Math.floor(row * height2 / options.rows);
+    const bottom = Math.floor((row + 1) * height2 / options.rows);
+    for (let col = 0; col < options.cols; col += 1) {
+      const left = Math.floor(col * width2 / options.cols);
+      const right = Math.floor((col + 1) * width2 / options.cols);
+      frames.push({ row, col, left, top, width: right - left, height: bottom - top });
+    }
+  }
+  return frames;
+}
+async function splitGridImages(inputs, raw, signal) {
+  const options = GridSplitOptionsSchema.parse(raw);
+  if (!inputs.length || inputs.length > 10) throw new Error("\u4E00\u6B21\u6700\u591A\u5206\u5272 10 \u5F20\u56FE\u7247");
+  if (inputs.length * options.rows * options.cols > 400)
+    throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
+  if (inputs.reduce((sum, input) => sum + input.bytes.length, 0) > 250 * 1024 * 1024)
+    throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
+  const outputs = [];
+  let outputBytes = 0;
+  for (const input of inputs) {
+    signal?.throwIfAborted();
+    if (input.kind === "file") throw new Error("\u56FE\u7247\u5206\u5272\u53EA\u63A5\u53D7\u56FE\u7247");
+    const metadata = await sharp3(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    if (!metadata.width || !metadata.height || (metadata.pages ?? 1) > 1)
+      throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
+    const normalized2 = await sharp3(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+    const density = metadata.density ?? 300;
+    const stem = basename3(input.name, extname(input.name));
+    for (const frame of gridSplitFrames(normalized2.info.width, normalized2.info.height, options)) {
+      signal?.throwIfAborted();
+      const bytes = await sharp3(normalized2.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).withMetadata({ density }).png().toBuffer();
+      outputBytes += bytes.length;
+      if (outputBytes > 250 * 1024 * 1024) throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
+      outputs.push({
+        stem: `${stem}-\u5206\u5272-${frame.row + 1}-${frame.col + 1}`,
+        extension: "png",
+        bytes,
+        width: frame.width,
+        height: frame.height,
+        density,
+        format: "png",
+        kind: "image",
+        sourceId: input.id
+      });
+    }
+  }
+  return outputs;
+}
+
 // plugins/podplo-dsh/src/contracts.ts
 var PODPLO_MANUAL_SESSION_ID = "podplo-manual";
 var PODPLO_TOOLBOX_WORKSPACE_ID = "podplo-toolbox-v1";
@@ -54473,467 +54510,148 @@ var PodploPluginError = class extends Error {
   details;
 };
 
-// plugins/podplo-dsh/src/local-favorite-organization.ts
-var name = external_exports2.string().trim().min(1).max(80).refine((value2) => value2 !== "\u672A\u5206\u7C7B" && !new RegExp("\\p{Cc}", "u").test(value2));
-var note = external_exports2.string().trim().min(1).max(160).refine((value2) => !new RegExp("\\p{Cc}", "u").test(value2));
-var id = external_exports2.string().min(1).max(180).refine((value2) => !/[\/\\\u0000\r\n]/u.test(value2));
-var favoriteType = external_exports2.enum(["skill", "gallery"]);
-var folderSchema = external_exports2.object({ id: external_exports2.string().uuid(), name }).strict();
-var updateFields = { note: note.nullable().optional(), folderId: external_exports2.string().uuid().nullable().optional() };
-var LocalFavoriteItemUpdateSchema = external_exports2.object({ type: favoriteType, id, ...updateFields }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0);
-var LocalFavoriteUpdateSchema = external_exports2.object({ id, ...updateFields }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0).transform((value2) => ({ type: "skill", ...value2 }));
-var compatibleUpdate = external_exports2.union([LocalFavoriteItemUpdateSchema, LocalFavoriteUpdateSchema]);
-var itemSchema = external_exports2.object({ type: favoriteType, id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict();
-var accountV2 = external_exports2.object({
-  ownerId: external_exports2.string().min(1).max(180),
-  folders: external_exports2.array(folderSchema).max(100),
-  items: external_exports2.array(itemSchema)
-}).strict().superRefine((value2, context) => {
-  const ids2 = new Set(value2.folders.map((row) => row.id));
-  if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.items.map((row) => `${row.type}:${row.id}`)).size !== value2.items.length || value2.items.some((row) => row.folderId && !ids2.has(row.folderId)))
-    context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
-});
-var stateV2 = external_exports2.object({ schemaVersion: external_exports2.literal(2), accounts: external_exports2.array(accountV2) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
-var legacySkill = external_exports2.object({ id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict();
-var accountV1 = external_exports2.object({
-  ownerId: external_exports2.string().min(1).max(180),
-  folders: external_exports2.array(folderSchema).max(100),
-  skills: external_exports2.array(legacySkill)
-}).strict().superRefine((value2, context) => {
-  const ids2 = new Set(value2.folders.map((row) => row.id));
-  if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.skills.map((row) => row.id)).size !== value2.skills.length || value2.skills.some((row) => row.folderId && !ids2.has(row.folderId)))
-    context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
-});
-var stateV1 = external_exports2.object({ schemaVersion: external_exports2.literal(1), accounts: external_exports2.array(accountV1) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
-var schema = external_exports2.union([stateV2, stateV1]).transform((value2) => value2.schemaVersion === 2 ? value2 : {
-  schemaVersion: 2,
-  accounts: value2.accounts.map((row) => ({
-    ownerId: row.ownerId,
-    folders: row.folders,
-    items: row.skills.map((skill) => ({ type: "skill", ...skill }))
-  }))
-});
+// plugins/podplo-dsh/src/native-skill-batch.ts
+import { constants as constants3, open as open4, readdir, realpath as realpath4, lstat as lstat3 } from "node:fs/promises";
+import { randomInt, randomUUID as randomUUID9 } from "node:crypto";
+import { homedir } from "node:os";
+import { basename as basename7, extname as extname5, isAbsolute as isAbsolute4, parse as parse5, relative as relative3, resolve, sep } from "node:path";
+
+// plugins/podplo-dsh/src/favorite-skill-resolution.ts
 var fail = (code, message) => {
   throw new PodploPluginError(code, message);
 };
-function parse5(type, input) {
-  const result = type.safeParse(input);
-  return result.success ? result.data : fail("INVALID_ARGUMENT", "\u6536\u85CF\u6587\u4EF6\u5939\u6216\u5907\u6CE8\u53C2\u6570\u65E0\u6548\u3002");
+var normalized = (value2) => value2.trim().toLocaleLowerCase();
+function requiredText(value2, field, maximum) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > maximum || /[\u0000-\u001f\u007f]/u.test(value2))
+    return fail("SKILL_QUERY_INVALID", `\u6536\u85CF Skill \u7684 ${field} \u65E0\u6548\u3002`);
+  return value2.trim();
 }
-var LocalFavoriteOrganization = class {
-  store;
-  constructor(directory) {
-    this.store = new AtomicStore(join4(directory, "favorite-organization.json"), () => ({ schemaVersion: 2, accounts: [] }), (value2) => schema.parse(value2));
-  }
-  async init() {
-    await this.store.load();
-  }
-  async flush() {
-    await this.store.flush();
-  }
-  folders(ownerId) {
-    return { items: this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.folders ?? [] };
-  }
-  decorate(ownerId, rows) {
-    const metadata = new Map(this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.items.map((row) => [`${row.type}:${row.id}`, row]) ?? []);
-    return rows.map((row) => ({
-      ...row,
-      note: metadata.get(`${row.type}:${row.id}`)?.note ?? null,
-      folderId: metadata.get(`${row.type}:${row.id}`)?.folderId ?? null
-    }));
-  }
-  change(ownerId, update, guard) {
-    return this.store.transaction((state) => {
-      guard?.();
-      let row = state.accounts.find((row2) => row2.ownerId === ownerId);
-      if (!row) {
-        row = { ownerId, folders: [], items: [] };
-        state.accounts.push(row);
-      }
-      return update(row);
-    });
-  }
-  create(ownerId, rawName, guard) {
-    const value2 = parse5(name, rawName);
-    return this.change(ownerId, (row) => {
-      if (row.folders.some((folder2) => folder2.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      if (row.folders.length >= 100) fail("FAVORITE_FOLDER_LIMIT", "\u6536\u85CF\u6587\u4EF6\u5939\u6570\u91CF\u5DF2\u8FBE\u4E0A\u9650\u3002");
-      const folder = { id: randomUUID8(), name: value2 };
-      row.folders.push(folder);
-      return { folder };
-    }, guard);
-  }
-  rename(ownerId, rawId, rawName, guard) {
-    const folderId = parse5(external_exports2.string().uuid(), rawId), value2 = parse5(name, rawName);
-    return this.change(ownerId, (row) => {
-      const folder = row.folders.find((item) => item.id === folderId);
-      if (!folder) return fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      if (row.folders.some((item) => item.id !== folderId && item.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      folder.name = value2;
-      return { folder };
-    }, guard);
-  }
-  delete(ownerId, rawId, guard) {
-    const folderId = parse5(external_exports2.string().uuid(), rawId);
-    return this.change(ownerId, (row) => {
-      if (!row.folders.some((item) => item.id === folderId)) return fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      let movedItemCount = 0, movedSkillCount = 0;
-      for (const item of row.items) if (item.folderId === folderId) {
-        item.folderId = null;
-        movedItemCount++;
-        if (item.type === "skill") movedSkillCount++;
-      }
-      row.items = row.items.filter((item) => item.note !== null || item.folderId !== null);
-      row.folders = row.folders.filter((item) => item.id !== folderId);
-      return { deleted: true, movedItemCount, movedSkillCount };
-    }, guard);
-  }
-  update(ownerId, input, guard) {
-    const value2 = parse5(compatibleUpdate, input);
-    return this.change(ownerId, (row) => {
-      if (value2.folderId && !row.folders.some((item) => item.id === value2.folderId)) fail("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      const previous = row.items.find((item) => item.type === value2.type && item.id === value2.id);
-      const updated = {
-        type: value2.type,
-        id: value2.id,
-        note: value2.note === void 0 ? previous?.note ?? null : value2.note,
-        folderId: value2.folderId === void 0 ? previous?.folderId ?? null : value2.folderId
-      };
-      row.items = row.items.filter((item) => item.type !== value2.type || item.id !== value2.id);
-      if (updated.note !== null || updated.folderId !== null) row.items.push(updated);
-      return updated;
-    }, guard);
-  }
-  async forget(ownerId, type, itemId, guard) {
-    if (!this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.items.some((row) => row.type === type && row.id === itemId)) return;
-    await this.change(ownerId, (row) => {
-      row.items = row.items.filter((item) => item.type !== type || item.id !== itemId);
-    }, guard);
-  }
-};
-
-// plugins/podplo-dsh/src/service.ts
-import { EventEmitter as EventEmitter2 } from "node:events";
-
-// plugins/podplo-dsh/package.json
-var package_default = {
-  name: "@podplo/dsh-plugin",
-  version: "0.1.22",
-  private: true,
-  license: "UNLICENSED",
-  description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
-  type: "module",
-  main: "dist/index.js",
-  exports: {
-    ".": "./dist/index.js",
-    "./client": "./dist/client.js",
-    "./package.json": "./package.json",
-    "./tool-registry.json": "./tool-registry.json",
-    "./locale/en.json": "./locale/en.json"
-  },
-  files: [
-    "dist",
-    "tool-registry.json",
-    "cordis.patch.yml",
-    "README.md",
-    "locale"
-  ],
-  dsh: {
-    bundle: {
-      patch: "./cordis.patch.yml"
-    },
-    client: {
-      platform: "web",
-      immediately: true,
-      inject: [
-        "@deepseek-ai/dsh-client-connection",
-        "@deepseek-ai/dsh-client-ui-sidebar",
-        "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-workspace",
-        "@deepseek-ai/dsh-client-ui-session"
-      ]
-    }
-  },
-  dependencies: {
-    sharp: "0.35.5"
-  },
-  peerDependencies: {
-    "@deepseek-ai/cordis": "*",
-    "@deepseek-ai/dsh-mcp-client": "*",
-    "@deepseek-ai/dsh-home-paths": "*",
-    "@deepseek-ai/dsh-llm": "*",
-    "@deepseek-ai/dsh-credentials": "*",
-    "@deepseek-ai/schemastery": "*"
-  },
-  engines: {
-    node: ">=24.9.0",
-    dsh: "*"
-  }
-};
-
-// plugins/podplo-dsh/src/version.ts
-var PLUGIN_VERSION = package_default.version;
-
-// plugins/podplo-dsh/src/task-diagnostics.ts
-var advice = {
-  AUTH_REQUIRED: ["\u9700\u8981\u91CD\u65B0\u8FDE\u63A5\u8D26\u53F7", "\u767B\u5F55\u540E\u5237\u65B0\u72B6\u6001\uFF0C\u4E0D\u8981\u91CD\u65B0\u63D0\u4EA4\u751F\u56FE\u3002"],
-  SESSION_CHANGED: ["\u8D26\u53F7\u6216\u767B\u5F55\u6388\u6743\u5DF2\u53D8\u5316", "\u786E\u8BA4\u5F53\u524D\u8D26\u53F7\u540E\u91CD\u65B0\u67E5\u770B\u539F\u4EFB\u52A1\u3002"],
-  PERMISSION_DENIED: ["\u5F53\u524D\u6743\u9650\u4E0D\u8DB3", "\u6838\u5BF9\u8D26\u53F7\u6743\u76CA\u6216\u76EE\u5F55\u8BBF\u95EE\u6743\u9650\u3002"],
-  INSUFFICIENT_CREDITS: ["\u79EF\u5206\u4E0D\u8DB3", "\u6838\u5BF9\u539F\u4EFB\u52A1\u62A5\u4EF7\u53CA\u79EF\u5206\u72B6\u6001\uFF0C\u4E0D\u81EA\u52A8\u91CD\u505A\u3002"],
-  SOURCE_UNAVAILABLE: ["\u6765\u6E90\u6587\u4EF6\u4E0D\u53EF\u7528", "\u786E\u8BA4\u6E90\u6587\u4EF6\u4ECD\u5B58\u5728\u4E14\u53EF\u8BFB\u53D6\u3002"],
-  LOCAL_FILE_CHANGED: ["\u672C\u5730\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8", "\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u6838\u5BF9\u6587\u4EF6\uFF0C\u4FDD\u7559\u7528\u6237\u4FEE\u6539\u3002"],
-  LOCAL_FILE_UNAVAILABLE: ["\u672C\u5730\u6210\u679C\u6682\u4E0D\u53EF\u7528", "\u6838\u5BF9\u4EFB\u52A1\u6587\u4EF6\u5939\u548C\u6587\u4EF6\u72B6\u6001\uFF0C\u518D\u5237\u65B0\u539F\u4EFB\u52A1\uFF1B\u4FDD\u7559\u624B\u52A8\u4FEE\u6539\u7684\u6587\u4EF6\u3002"],
-  DISK_FULL: ["\u78C1\u76D8\u7A7A\u95F4\u4E0D\u8DB3", "\u91CA\u653E\u7A7A\u95F4\u540E\u624B\u52A8\u91CD\u8BD5\u672C\u5730\u4FDD\u5B58\u3002"],
-  TRANSPARENCY_REQUIRED: ["\u56FE\u7247\u6CA1\u6709\u6240\u9700\u7684\u771F\u5B9E\u900F\u660E\u50CF\u7D20", "\u6838\u5BF9\u8F93\u5165\u56FE\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u65B0\u751F\u56FE\u3002"],
-  SUBMISSION_RESULT_UNKNOWN: ["\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9", "\u5237\u65B0\u539F\u4EFB\u52A1\u72B6\u6001\uFF0C\u4E0D\u8981\u518D\u6B21\u4ED8\u8D39\u63D0\u4EA4\u3002"],
-  GENERATION_FAILED: ["\u751F\u6210\u9636\u6BB5\u672A\u5B8C\u6210", "\u6838\u5BF9\u539F\u4EFB\u52A1\u72B6\u6001\uFF1B\u5982\u9700\u91CD\u505A\u5E94\u91CD\u65B0\u786E\u8BA4\u3002"],
-  DOWNLOAD_FAILED: ["\u7ED3\u679C\u4E0B\u8F7D\u672A\u5B8C\u6210", "\u7F51\u7EDC\u6062\u590D\u540E\u624B\u52A8\u5237\u65B0\u539F\u4EFB\u52A1\u4FDD\u5B58\uFF0C\u4E0D\u91CD\u65B0\u751F\u56FE\u3002"],
-  PROCESSING_FAILED: ["\u672C\u5730\u52A0\u5DE5\u672A\u5B8C\u6210", "\u6838\u5BF9\u5DE5\u5177\u53C2\u6570\u540E\u4EC5\u7EE7\u7EED\u672C\u5730\u52A0\u5DE5\u3002"],
-  ARCHIVE_FAILED: ["\u6210\u679C\u5F52\u6863\u672A\u5B8C\u6210", "\u6838\u5BF9\u8F93\u51FA\u76EE\u5F55\u540E\u624B\u52A8\u5237\u65B0\u539F\u4EFB\u52A1\u3002"],
-  CONNECTION_FAILED: ["\u72B6\u6001\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528", "\u8FDE\u63A5\u6062\u590D\u540E\u5237\u65B0\u539F\u4EFB\u52A1\u72B6\u6001\u3002"],
-  SUMMARY_UPDATE_FAILED: ["\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0", "\u6838\u5BF9\u76EE\u5F55\u6743\u9650\uFF1B\u624B\u52A8\u4FEE\u6539\u8FC7\u7684\u603B\u7ED3\u4F1A\u4FDD\u7559\u3002"]
-};
-var TaskDiagnosticSchema = external_exports2.object({
-  stage: external_exports2.enum(["generation", "download", "processing", "archive", "connection"]),
-  code: external_exports2.enum(Object.keys(advice)),
-  at: external_exports2.string().datetime().optional()
-});
-function diagnose(stage, error101, at) {
-  const raw = error101 && typeof error101 === "object" ? error101.code : void 0;
-  const aliases = {
-    SIGN_IN_REQUIRED: "AUTH_REQUIRED",
-    SESSION_REPLACED: "SESSION_CHANGED",
-    EACCES: "PERMISSION_DENIED",
-    EPERM: "PERMISSION_DENIED",
-    SUBSCRIPTION_REQUIRED: "PERMISSION_DENIED",
-    TOOL_NOT_AUTHORIZED: "PERMISSION_DENIED",
-    ENOENT: "SOURCE_UNAVAILABLE",
-    REFERENCE_UNAVAILABLE: "SOURCE_UNAVAILABLE",
-    ENOSPC: "DISK_FULL"
-  };
-  const fallback = {
-    generation: "GENERATION_FAILED",
-    download: "DOWNLOAD_FAILED",
-    processing: "PROCESSING_FAILED",
-    archive: "ARCHIVE_FAILED",
-    connection: "CONNECTION_FAILED"
-  };
-  const code = typeof raw === "string" ? Object.hasOwn(advice, raw) ? raw : Object.hasOwn(aliases, raw) ? aliases[raw] : fallback[stage] : fallback[stage];
-  return { stage, code, ...at && Number.isFinite(Date.parse(at)) ? { at: new Date(at).toISOString() } : {} };
+function candidate(value2) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) return fail("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
+  const row = value2;
+  const id2 = requiredText(row.id, "id", 180), slug2 = requiredText(row.slug, "slug", 180);
+  const originalTitle = requiredText(row.originalTitle, "originalTitle", 255);
+  const note2 = row.note === null ? null : requiredText(row.note, "note", 160);
+  const folderId = row.folderId === null ? null : requiredText(row.folderId, "folderId", 180);
+  const folderName = row.folderName === null ? null : requiredText(row.folderName, "folderName", 80);
+  if (id2 !== slug2 || folderId === null !== (folderName === null) || !["skill", "family", "member"].includes(String(row.kind)) || typeof row.executable !== "boolean")
+    return fail("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
+  return { id: id2, slug: slug2, originalTitle, note: note2, folderId, folderName, kind: row.kind, executable: row.executable };
 }
-function taskDiagnostics(task) {
-  const rows = [...task.diagnostics ?? [], ...task.files.flatMap((file3) => file3.diagnostic ? [file3.diagnostic] : [])];
-  for (const step of task.audit?.processing.steps ?? []) for (const failure of step.failures)
-    rows.push(diagnose("processing", { code: failure.code }));
-  if (task.saveStatus === "missing") rows.push({ stage: "archive", code: "LOCAL_FILE_UNAVAILABLE" });
-  if (task.saveStatus === "failed" && !rows.length) rows.push(diagnose("archive"));
-  if (task.status === "failed" && !rows.some((row) => row.stage === "generation")) rows.push(diagnose("generation"));
-  if (task.summaryStatus === "failed") rows.push({ stage: "archive", code: "SUMMARY_UPDATE_FAILED" });
-  const safe = rows.flatMap((row) => {
-    const parsed = TaskDiagnosticSchema.safeParse(row);
-    return parsed.success ? [parsed.data] : [];
-  });
-  return [...new Map(safe.map((row) => [`${row.stage}:${row.code}`, row])).values()].slice(0, 20);
+function sameCandidate(left, right) {
+  return left.id === right.id && left.slug === right.slug && left.originalTitle === right.originalTitle && left.note === right.note && left.folderId === right.folderId && left.folderName === right.folderName && left.kind === right.kind && left.executable === right.executable;
+}
+function uniqueCandidates(rows) {
+  const unique = /* @__PURE__ */ new Map();
+  for (const row of rows) {
+    const existing = unique.get(row.slug);
+    if (existing && !sameCandidate(existing, row))
+      return fail("SKILL_QUERY_AMBIGUOUS", "\u540C\u4E00\u6536\u85CF Skill \u51FA\u73B0\u4E86\u51B2\u7A81\u7684\u6587\u4EF6\u5939\u6216\u8EAB\u4EFD\uFF0C\u8BF7\u5237\u65B0\u6536\u85CF\u540E\u91CD\u8BD5\u3002");
+    unique.set(row.slug, existing ?? row);
+  }
+  return [...unique.values()];
+}
+function resultRows(result) {
+  if (!result || typeof result !== "object" || !Array.isArray(result.items))
+    return fail("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
+  return uniqueCandidates(result.items.map(candidate));
+}
+function inFolder(rows, folder) {
+  const key = normalized(folder);
+  return rows.filter((row) => key === "\u672A\u5206\u7C7B" ? row.folderId === null : row.folderId !== null && row.folderName !== null && normalized(row.folderName) === key);
+}
+function exactMatches(rows, query) {
+  const key = normalized(query);
+  return rows.filter((row) => [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === key));
+}
+function resolveExact(rows, query, strategy) {
+  const exact = exactMatches(rows, query);
+  if (exact.length > 1) return fail("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF Skill \u5339\u914D\u8BE5\u540D\u79F0\u6216\u5907\u6CE8\uFF0C\u8BF7\u6307\u5B9A\u6536\u85CF\u6587\u4EF6\u5939\u6216\u7CBE\u786E Skill\u3002");
+  if (!exact.length) return fail("SKILL_NOT_FOUND", "\u6211\u7684\u6536\u85CF\u4E2D\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684 Skill\u3002");
+  const resolved = exact[0];
+  if (strategy === "single" && resolved.kind === "family") return fail("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F Skill \u65CF\uFF0C\u8BF7\u4F7F\u7528\u968F\u673A\u6210\u5458\u7B56\u7565\u3002");
+  if (strategy !== "single" && resolved.kind !== "family") return fail("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F\u5355\u4E2A Skill\uFF0C\u4E0D\u80FD\u4F7F\u7528 Skill \u65CF\u968F\u673A\u7B56\u7565\u3002");
+  return resolved;
+}
+function folderMembers(rows) {
+  return rows.filter((row) => row.executable && (row.kind === "skill" || row.kind === "member"));
+}
+function assertOneFolder(rows) {
+  const ids2 = new Set(rows.flatMap((row) => row.folderId === null ? [] : [row.folderId]));
+  if (ids2.size > 1)
+    fail("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF\u6587\u4EF6\u5939\u4F7F\u7528\u4E86\u540C\u4E00\u540D\u79F0\uFF0C\u8BF7\u91CD\u547D\u540D\u540E\u91CD\u8BD5\u3002");
+}
+function explicitFolderPool(rows, query, folder) {
+  assertOneFolder(rows);
+  const members = folderMembers(rows);
+  const matchingFamilies = exactMatches(rows, query).filter((row) => row.kind === "family");
+  if (matchingFamilies.length > 1 || matchingFamilies.length && members.length)
+    return fail("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u65CF\u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
+  if (matchingFamilies.length === 1) return matchingFamilies[0];
+  if (!members.length) return fail("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
+  return { kind: "folder-pool", folderName: folder, members };
+}
+async function resolveFavoriteSkill(input, list) {
+  const query = requiredText(input.query, "query", 160);
+  const folder = input.folder === void 0 ? void 0 : requiredText(input.folder, "folder", 80);
+  const random = input.strategy !== "single";
+  const usesExplicitFolderPool = random && folder !== void 0 && normalized(query) === normalized(folder);
+  if (usesExplicitFolderPool) {
+    const rows = inFolder(resultRows(await list({ folder })), folder);
+    return explicitFolderPool(rows, query, folder);
+  }
+  const queried = resultRows(await list({ query, ...folder ? { folder } : {} }));
+  const queryRows = folder === void 0 ? queried : inFolder(queried, folder);
+  if (folder !== void 0 || !random || query.length > 80 || normalized(query) === "\u672A\u5206\u7C7B")
+    return resolveExact(queryRows, query, input.strategy);
+  const folderRows = inFolder(resultRows(await list({ folder: query })), query);
+  assertOneFolder(folderRows);
+  const exact = exactMatches(uniqueCandidates([...queryRows, ...folderRows]), query);
+  const members = folderMembers(folderRows);
+  if (exact.length > 1 || exact.length && members.length)
+    return fail("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u6216 Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
+  if (exact.length === 1) return resolveExact(exact, query, input.strategy);
+  if (!members.length) return fail("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
+  return { kind: "folder-pool", folderName: query, members };
 }
 
-// plugins/podplo-dsh/src/generation-state.ts
-var comparableGenerationItems = (items) => items.map((item) => ({
-  ...item.skillId ? { skillId: item.skillId } : {},
-  ...item.sourceName ? { sourceName: item.sourceName } : {},
-  ...item.pricingReferenceCount !== void 0 ? { pricingReferenceCount: item.pricingReferenceCount } : {},
-  ...item.stage ? { stage: item.stage } : {},
-  ...item.dependsOn ? { dependsOn: item.dependsOn } : {},
-  args: item.args
-}));
-function record3(value2, label) {
-  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u5FC5\u987B\u662F\u5BF9\u8C61`);
-  return value2;
-}
-function generationAudit(row) {
-  const audit = { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
-  for (const item of row.items) {
-    const planned = item.approvedOutputCount ?? item.quote.outputCount, succeeded = new Set(item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []).size;
-    const remaining = Math.max(0, planned - succeeded);
-    audit.planned += planned;
-    audit.succeeded += succeeded;
-    if (item.status === "failed") audit.failed += remaining;
-    else if (item.status === "cancelled") audit.cancelled += remaining;
-    else {
-      const failed = Math.min(remaining, item.outputs?.filter((output) => !output.assetId && (output.failureCode || output.status === "failed")).length ?? 0);
-      audit.failed += failed;
-      if (item.status === "submission_unknown" || item.status === "completed") audit.unknown += remaining - failed;
-      else audit.pending += remaining - failed;
-    }
+// plugins/podplo-dsh/src/generation-background.ts
+var allows = (schema2, value2) => schema2?.type === "string" && (!schema2.enum || schema2.enum.includes(value2));
+function transparentControl(properties, model) {
+  const parameters = model?.parameterSchema?.properties ?? {};
+  const declared = model?.supportsTransparentMode === true || Array.isArray(model?.backgroundModes) && model.backgroundModes.includes("transparent");
+  if (model?.supportsTransparentMode === false) return void 0;
+  if (allows(properties.background, "transparent") && (declared || allows(parameters.background, "transparent"))) {
+    const format2 = ["png", "webp"].find((value2) => allows(properties.output_format, value2) && (!parameters.output_format || allows(parameters.output_format, value2)));
+    return format2 ? { key: "background", format: format2 } : void 0;
   }
-  audit.succeeded = new Set(row.items.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? [])).size;
-  audit.unknown += Math.max(0, audit.planned - audit.succeeded - audit.failed - audit.pending - audit.cancelled - audit.unknown);
-  return audit;
+  const key = Object.keys(properties).find((key2) => /transparent/i.test(key2) && properties[key2]?.type === "boolean");
+  return key && (declared || parameters[key]?.type === "boolean") ? { key } : void 0;
 }
-function estimatedFinalOutputCount(row) {
-  const dependedOn = new Set(row.items.flatMap((item) => item.dependsOn ? [item.dependsOn.itemIndex] : []));
-  const leafItems = new Set(row.items.map((_, index) => index).filter((index) => !dependedOn.has(index)));
-  if (!row.processingPlan?.length) return [...leafItems].reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
-  const stepCounts = /* @__PURE__ */ new Map(), consumedItems = /* @__PURE__ */ new Set();
-  const referencedSteps = new Set(row.processingPlan.flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
-  for (const step of row.processingPlan) {
-    const indexes = step.generationItemIndexes ?? [...leafItems];
-    let count2 = step.sourceStepId ? stepCounts.get(step.sourceStepId) ?? 0 : indexes.reduce((sum, index) => sum + (row.items[index]?.quote.outputCount ?? 0), 0);
-    if (!step.sourceStepId) for (const index of indexes) consumedItems.add(index);
-    if (step.toolName === "podplo_grid_split" && step.options && typeof step.options === "object") {
-      const options = step.options;
-      if (Number.isSafeInteger(options.rows) && Number.isSafeInteger(options.cols)) count2 *= Number(options.rows) * Number(options.cols);
-    }
-    stepCounts.set(step.id, count2);
+function backgroundArgs(properties, model, transparent) {
+  const control = transparentControl(properties, model);
+  if (!control) {
+    if (transparent) throw new Error("\u5F53\u524D\u6A21\u578B\u6216\u670D\u52A1\u7AEF\u5C1A\u672A\u5F00\u653E\u900F\u660E\u80CC\u666F\u53CA PNG/WebP \u53C2\u6570\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u6216\u66F4\u6362\u6A21\u578B\u3002");
+    return {};
   }
-  const untouched = [...leafItems].filter((index) => !consumedItems.has(index)).reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
-  return untouched + row.processingPlan.filter((step) => !referencedSteps.has(step.id)).reduce((sum, step) => sum + (stepCounts.get(step.id) ?? 0), 0);
+  if (control.key !== "background") return { [control.key]: transparent };
+  if (transparent) return { background: "transparent", output_format: control.format };
+  return allows(properties.background, "opaque") ? { background: "opaque" } : {};
 }
-function safeOperation(row) {
-  const summary = operationSummary(row);
-  const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
-  const sufficientCredits = row.balanceAtQuote ? row.balanceAtQuote.availableCredits >= summary.totalCredits : void 0;
-  const stages = [...new Map(row.items.map((item, index) => [item.stage?.id ?? `item-${index}`, item.stage?.label ?? `\u9636\u6BB5 ${index + 1}`])).entries()].map(([id2, label]) => {
-    const items = row.items.filter((item, index) => (item.stage?.id ?? `item-${index}`) === id2);
-    const skills = /* @__PURE__ */ new Map();
-    for (const item of items) skills.set(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill", (skills.get(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill") ?? 0) + 1);
-    const skillSummary = [...skills].slice(0, 5).map(([name2, count2]) => `${name2}\xD7${count2}`).join("\u3001") + (skills.size > 5 ? `\u7B49 ${skills.size} \u4E2A Skill` : "");
-    return {
-      id: id2,
-      label,
-      skillSummary,
-      aiOutputCount: items.reduce((sum, item) => sum + item.quote.outputCount, 0),
-      credits: items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
-      models: [...new Set(items.flatMap((item) => item.modelName ? [item.modelName] : []))],
-      ecoMode: items.some((item) => item.args.ecoMode === true)
-    };
-  });
-  const processingSummary = row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
-  const finalOutputCount = estimatedFinalOutputCount(row);
-  const stageText = stages.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
-  const confirmationText = `${stageText}\u3002\u6574\u5355\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0CAI \u8F93\u51FA ${summary.outputCount} \u5F20` + (processingSummary ? `\uFF1B\u672C\u5730\u52A0\u5DE5 ${processingSummary}\uFF0C\u9884\u8BA1\u6210\u54C1 ${finalOutputCount} \u5F20\uFF08\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1\u79EF\u5206\uFF09` : "") + "\u3002";
-  return {
-    operationId: row.operationId,
-    intentId: row.intentId,
-    planVersion: row.planVersion,
-    status: operationStatus(row),
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
-    quote: {
-      expiresAt,
-      totalCredits: summary.totalCredits,
-      outputCount: summary.outputCount,
-      confirmationText,
-      ...row.pricingVersion ? { pricingVersion: row.pricingVersion } : {},
-      ...row.planDigest ? { planDigest: row.planDigest } : {},
-      ...row.balanceAtQuote ? {
-        availableCredits: row.balanceAtQuote.availableCredits,
-        reservedCredits: row.balanceAtQuote.reservedCredits,
-        billingContextId: row.balanceAtQuote.billingContextId,
-        sufficientCredits
-      } : {}
-    },
-    approvalId: row.approvalId,
-    summary,
-    stages,
-    finalOutputCount,
-    items: row.items.map((item) => ({
-      itemId: item.itemId,
-      ...item.skillId ? { skillId: item.skillId } : {},
-      ...item.skillName ? { skillName: item.skillName } : {},
-      ...item.sourceName ? { sourceName: item.sourceName } : {},
-      ...item.modelName ? { modelName: item.modelName } : {},
-      ...item.stage ? { stage: structuredClone(item.stage) } : {},
-      ...item.dependsOn ? { dependsOn: structuredClone(item.dependsOn) } : {},
-      status: item.status,
-      totalCredits: item.approvedCredits ?? item.quote.totalCredits,
-      outputCount: item.approvedOutputCount ?? item.quote.outputCount,
-      parameters: Object.fromEntries(["ratio", "quality", "resolution", "thinkingLevel", "ecoMode", "webSearch", "imageSearch", "background", "count"].flatMap((key) => item.args[key] === void 0 ? [] : [[key, item.args[key]]])),
-      ...item.retry ? { retry: structuredClone(item.retry), waitReason: "retry" } : {},
-      ...item.statusBlocked ? {
-        statusBlocked: structuredClone(item.statusBlocked),
-        waitReason: item.statusBlocked.kind === "authorization" ? "authorization" : "manual_status_check",
-        requiresManualStatusRefresh: true,
-        userAction: item.statusBlocked.kind === "authorization" ? "\u8BF7\u91CD\u65B0\u767B\u5F55\u6216\u6062\u590D\u751F\u56FE\u6743\u9650\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" : "\u8BF7\u6838\u5BF9 PodPlo \u8FDE\u63A5\u6216\u66F4\u65B0\u670D\u52A1\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
-      } : {},
-      ...!item.retry && item.status === "quoted" && item.dependsOn && ["quoted", "submitting", "submitted"].includes(row.items[item.dependsOn.itemIndex]?.status ?? "") ? { waitReason: "dependency" } : {},
-      ...!item.retry && !item.statusBlocked && item.status === "submitted" ? { waitReason: "remote_generation" } : {},
-      ...item.status === "submission_unknown" ? {
-        waitReason: "manual_reconciliation",
-        requiresManualReconciliation: true,
-        userAction: "\u8BF7\u5728 PodPlo \u4E3B\u7AD9\u751F\u6210\u8BB0\u5F55\u4E2D\u6838\u5BF9\u8BE5\u9879\u662F\u5426\u5DF2\u521B\u5EFA\uFF1B\u6838\u5BF9\u524D\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
-      } : {},
-      ...item.lastStatusSucceededAt ? { lastStatusSucceededAt: item.lastStatusSucceededAt } : {},
-      ...item.lastStatusError ? { lastStatusError: structuredClone(item.lastStatusError) } : {},
-      ...item.generationId ? { generationId: item.generationId } : {},
-      ...item.remoteStatus ? { remoteStatus: item.remoteStatus } : {},
-      ...item.errorCode ? { errorCode: item.errorCode } : {},
-      ...item.outputs ? { outputs: structuredClone(item.outputs) } : {}
-    })),
-    ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
-    ...row.replacedBy ? { replacedBy: row.replacedBy } : {},
-    ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
-    ...row.processingPlan ? { processingPlan: structuredClone(row.processingPlan) } : {}
-  };
+function normalizeBackground(input) {
+  if (input.background === void 0) return input;
+  if (input.background !== "transparent" && input.background !== "opaque") throw new Error("INVALID_BACKGROUND");
+  if (input.background !== "transparent") return input;
+  const format2 = input.output_format ?? "png";
+  if (format2 !== "png" && format2 !== "webp") throw new Error("TRANSPARENT_OUTPUT_FORMAT_REQUIRED");
+  return { ...input, output_format: format2 };
 }
-function operationSummary(row) {
-  const count2 = (status) => row.items.filter((item) => item.status === status).length;
-  return {
-    itemCount: row.items.length,
-    totalCredits: row.items.reduce((sum, item) => sum + (item.approvedCredits ?? item.quote.totalCredits), 0),
-    outputCount: row.items.reduce((sum, item) => sum + (item.approvedOutputCount ?? item.quote.outputCount), 0),
-    acceptedCount: row.items.filter((item) => !!item.generationId).length,
-    completedCount: count2("completed"),
-    unknownCount: count2("submission_unknown"),
-    failedCount: count2("failed"),
-    cancelledCount: count2("cancelled"),
-    pendingCount: count2("quoted") + count2("submitting"),
-    submittedCount: count2("submitted")
-  };
-}
-function operationStatus(row) {
-  const statuses = row.items.map((item) => item.status);
-  if (statuses.every((status) => status === "cancelled")) return "cancelled";
-  if (statuses.every((status) => status === "quoted") && !row.approvedAt) return "quoted";
-  if (statuses.includes("submitting") || row.approvedAt && statuses.includes("quoted")) return "submitting";
-  if (statuses.every((status) => status === "completed")) return "completed";
-  if (statuses.includes("submission_unknown")) return statuses.some((status) => ["submitted", "completed", "failed"].includes(status)) ? "partial_unknown" : "submission_unknown";
-  if (statuses.some((status) => status === "submitted")) return "submitted";
-  if (statuses.includes("cancelled") && statuses.includes("completed")) return "partial_cancelled";
-  if (statuses.some((status) => status === "failed")) return statuses.every((status) => ["failed", "completed", "cancelled"].includes(status)) && statuses.some((status) => status === "completed") ? "partial_failure" : "failed";
-  if (statuses.includes("cancelled")) return "cancelled";
-  return "submitted";
-}
-function safeGenerationOutputs(value2) {
-  if (value2 === void 0) return [];
-  if (!Array.isArray(value2) || value2.length > 100) throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
-  const uuid8 = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
-  const code = /^[A-Za-z0-9_-]{1,80}$/u;
-  const outputs = value2.map((raw, index) => {
-    const row = record3(raw, `outputs[${index}]`);
-    if (typeof row.slotId !== "string" || !uuid8.test(row.slotId) || !Number.isInteger(row.index) || row.index < 0 || row.index > 1e3 || typeof row.status !== "string" || !code.test(row.status) || !(row.assetId === null || typeof row.assetId === "string" && uuid8.test(row.assetId)) || !(row.failureCode === null || typeof row.failureCode === "string" && code.test(row.failureCode))) {
-      throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
-    }
-    return { slotId: row.slotId, index: row.index, status: row.status, assetId: row.assetId, failureCode: row.failureCode };
-  });
-  if (new Set(outputs.map((row) => row.slotId)).size !== outputs.length || new Set(outputs.map((row) => row.index)).size !== outputs.length) {
-    throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u69FD\u4F4D\u91CD\u590D");
-  }
-  return outputs;
-}
-function definiteSubmissionFailure(code) {
-  return ["QUOTE_EXPIRED", "CONFIRMATION_MISMATCH", "USER_SKILL_CHANGED", "REFERENCE_UNAVAILABLE", "INSUFFICIENT_CREDITS"].includes(code);
-}
-
-// plugins/podplo-dsh/src/service.ts
-import { randomUUID as randomUUID10 } from "node:crypto";
-import { join as join7 } from "node:path";
-import { isDeepStrictEqual } from "node:util";
 
 // plugins/podplo-dsh/src/local-toolkit.ts
-import { createHash as createHash7, randomUUID as randomUUID9 } from "node:crypto";
+import { createHash as createHash7, randomUUID as randomUUID8 } from "node:crypto";
 import { constants as constants2 } from "node:fs";
 import { lstat as lstat2, mkdir as mkdir5, open as open3, realpath as realpath3, unlink } from "node:fs/promises";
-import { basename as basename6, extname as extname4, isAbsolute as isAbsolute3, join as join6, relative as relative2 } from "node:path";
+import { basename as basename6, extname as extname4, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
 import sharp10 from "sharp";
 
 // packages/tools/toolkit-contracts.ts
@@ -55168,10 +54886,10 @@ var CallSchema = external_exports.discriminatedUnion("method", [
 ]);
 
 // packages/tools/images.ts
-import sharp4 from "sharp";
+import sharp5 from "sharp";
 
 // packages/tools/transparent-crop.ts
-import sharp3 from "sharp";
+import sharp4 from "sharp";
 import { createHash as createHash5 } from "node:crypto";
 var rectangle = external_exports.object({
   left: external_exports.number().int().nonnegative(),
@@ -55202,13 +54920,13 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   if (!CropAlphaThresholdSchema.safeParse(threshold).success) throw new Error("\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u5FC5\u987B\u662F 0\uFF5E254 \u7684\u6574\u6570");
   signal?.throwIfAborted();
   const thresholdReport = threshold ? { threshold } : {};
-  const image = sharp3(input, { limitInputPixels, failOn: "error" }).autoOrient();
+  const image = sharp4(input, { limitInputPixels, failOn: "error" }).autoOrient();
   const metadata = await image.metadata();
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
     throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
   const normalized2 = await image.withMetadata({ density: metadata.density ?? 300 }).png().toBuffer({ resolveWithObject: true });
   const { width: width2, height: height2 } = normalized2.info;
-  const base2 = () => sharp3(normalized2.data, { limitInputPixels, failOn: "error" });
+  const base2 = () => sharp4(normalized2.data, { limitInputPixels, failOn: "error" });
   const alpha = await base2().ensureAlpha().extractChannel("alpha").raw().toBuffer();
   const columns = new Uint32Array(width2), rows = new Uint32Array(height2);
   let left = width2, right = -1, top = height2, bottom = -1, count2 = 0, nonzeroCount = 0, transparent = false;
@@ -55263,7 +54981,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   };
   const bytes = await base2().extract(bounds).withMetadata({ density: metadata.density ?? 300 }).png().toBuffer();
   const expected = await pixelDigest(base2().extract(bounds), signal);
-  const actual = await pixelDigest(sharp3(bytes, { limitInputPixels }), signal);
+  const actual = await pixelDigest(sharp4(bytes, { limitInputPixels }), signal);
   if (expected !== actual) throw new Error("\u900F\u660E\u88C1\u8FB9\u50CF\u7D20\u6821\u9A8C\u5931\u8D25\uFF0C\u5DF2\u505C\u6B62\u4FDD\u5B58\uFF0C\u539F\u56FE\u4FDD\u6301\u4E0D\u53D8");
   return { bytes, width: bounds.width, height: bounds.height, report: {
     version: 1,
@@ -55293,7 +55011,7 @@ function targetPixels(options, source) {
 }
 async function prepareResizeImage(source, raw) {
   const options = ResizeOptionsSchema.parse(raw);
-  let image = sharp4(source, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
+  let image = sharp5(source, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
   const metadata = await image.metadata();
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
     throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
@@ -55307,7 +55025,7 @@ async function prepareResizeImage(source, raw) {
     const cropped = await cropTransparentImage(source);
     transparentCrop = cropped.report;
     sourceSize = { width: cropped.width, height: cropped.height };
-    image = sharp4(cropped.bytes, { limitInputPixels: 1e8, failOn: "error" });
+    image = sharp5(cropped.bytes, { limitInputPixels: 1e8, failOn: "error" });
   }
   const size2 = targetPixels(options, sourceSize);
   if (options.format === "jpeg") image = image.flatten({ background: "#ffffff" });
@@ -55321,16 +55039,16 @@ async function prepareResizeImage(source, raw) {
 
 // packages/tools/toolkit.ts
 var import_pdf_lib = __toESM(require_cjs(), 1);
-import sharp6 from "sharp";
+import sharp7 from "sharp";
 import { Worker as Worker2 } from "node:worker_threads";
 import { existsSync } from "node:fs";
-import { basename as basename3, dirname as dirname6, extname, join as join5 } from "node:path";
+import { basename as basename4, dirname as dirname6, extname as extname2, join as join4 } from "node:path";
 import { fileURLToPath } from "node:url";
 
 // packages/tools/outline.ts
 var import_outline_core = __toESM(require_outline_core(), 1);
 var import_outline_curves = __toESM(require_outline_curves(), 1);
-import sharp5 from "sharp";
+import sharp6 from "sharp";
 import { Worker } from "node:worker_threads";
 
 // packages/tools/outline-mask.ts
@@ -55390,7 +55108,7 @@ try { const r = core.build(workerData.input, workerData.options); parentPort.pos
 catch (e) { parentPort.postMessage({ error: e.message }); }`;
 function analyze(input, options, signal) {
   signal?.throwIfAborted();
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve4, reject) => {
     const worker = new Worker(workerCode, { eval: true, execArgv: [], workerData: { input, options }, resourceLimits: { maxOldGenerationSizeMb: 256 } });
     let done = false;
     const abort = () => finish(new Error("\u4EFB\u52A1\u5DF2\u505C\u6B62"));
@@ -55402,7 +55120,7 @@ function analyze(input, options, signal) {
       signal?.removeEventListener("abort", abort);
       void worker.terminate();
       if (error101) reject(error101);
-      else resolve3(value2);
+      else resolve4(value2);
     };
     worker.once("message", (value2) => value2.error ? finish(new Error(value2.error)) : finish(void 0, value2));
     worker.once("error", (error101) => finish(error101));
@@ -55414,7 +55132,7 @@ function analyze(input, options, signal) {
   });
 }
 async function decodeSubject(input) {
-  const original = sharp5(input, { limitInputPixels: 36e6, failOn: "error" }).autoOrient();
+  const original = sharp6(input, { limitInputPixels: 36e6, failOn: "error" }).autoOrient();
   const metadata = await original.metadata();
   if (!metadata.hasAlpha) throw new Error("\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u900F\u660E\u80CC\u666F\u56FE\u7247\uFF0C\u8BF7\u5148\u62A0\u56FE");
   const decoded = await original.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
@@ -55434,9 +55152,9 @@ async function decodeSubject(input) {
   if (!transparent) throw new Error("\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u900F\u660E\u80CC\u666F\u56FE\u7247\uFF0C\u8BF7\u5148\u62A0\u56FE");
   if (maxX < 0) throw new Error("\u6CA1\u6709\u627E\u5230\u53EF\u63CF\u8FB9\u7684\u4E3B\u4F53");
   const box = { left: minX, top: minY, width: maxX - minX + 1, height: maxY - minY + 1 };
-  const data = await sharp5(decoded.data, { raw: decoded.info }).extract(box).png().toBuffer();
+  const data = await sharp6(decoded.data, { raw: decoded.info }).extract(box).png().toBuffer();
   const analysisPixels = outlineAnalysisPixels(decoded.data, decoded.info.width, decoded.info.height);
-  const analysisData = analysisPixels === decoded.data ? data : await sharp5(analysisPixels, { raw: decoded.info }).extract(box).png().toBuffer();
+  const analysisData = analysisPixels === decoded.data ? data : await sharp6(analysisPixels, { raw: decoded.info }).extract(box).png().toBuffer();
   return { box, data, analysisData, density: metadata.density ?? 300, longEdge: Math.max(box.width, box.height) };
 }
 function svgPath(contour, origin, sx, sy) {
@@ -55446,7 +55164,7 @@ function svgPath(contour, origin, sx, sy) {
 }
 async function patternLayer(pattern, path, width2, height2, scalePercent, rotation, signal) {
   signal?.throwIfAborted();
-  const normalized2 = await sharp5(pattern, { limitInputPixels: 16e6, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
+  const normalized2 = await sharp6(pattern, { limitInputPixels: 16e6, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
   signal?.throwIfAborted();
   if (normalized2.info.width > 4096 || normalized2.info.height > 4096)
     throw new Error("\u56FE\u6848\u8FC7\u5927\uFF1A\u957F\u8FB9\u6700\u591A 4096 px\uFF0C\u603B\u50CF\u7D20\u6700\u591A 1600 \u4E07");
@@ -55462,24 +55180,24 @@ async function patternLayer(pattern, path, width2, height2, scalePercent, rotati
   const rotatedHeight = Math.ceil(imageWidth * sine + imageHeight * cosine);
   if (imageWidth * imageHeight > 4e7 || rotatedWidth * rotatedHeight > 6e7)
     throw new Error("\u56FE\u6848\u7F29\u653E\u540E\u7684\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u964D\u4F4E\u56FE\u6848\u5927\u5C0F");
-  const rotated = await sharp5(normalized2.data).resize(imageWidth, imageHeight, { fit: "fill" }).rotate(rotation, { background: "#00000000" }).png().toBuffer({ resolveWithObject: true });
+  const rotated = await sharp6(normalized2.data).resize(imageWidth, imageHeight, { fit: "fill" }).rotate(rotation, { background: "#00000000" }).png().toBuffer({ resolveWithObject: true });
   signal?.throwIfAborted();
   const cropWidth = Math.min(width2, rotated.info.width), cropHeight = Math.min(height2, rotated.info.height);
-  const centered = await sharp5(rotated.data).extract({
+  const centered = await sharp6(rotated.data).extract({
     left: Math.floor((rotated.info.width - cropWidth) / 2),
     top: Math.floor((rotated.info.height - cropHeight) / 2),
     width: cropWidth,
     height: cropHeight
   }).png().toBuffer();
   signal?.throwIfAborted();
-  const plane = await sharp5({ create: { width: width2, height: height2, channels: 4, background: "#00000000" } }).composite([{
+  const plane = await sharp6({ create: { width: width2, height: height2, channels: 4, background: "#00000000" } }).composite([{
     input: centered,
     left: Math.floor((width2 - cropWidth) / 2),
     top: Math.floor((height2 - cropHeight) / 2)
   }]).png().toBuffer();
   signal?.throwIfAborted();
   const mask = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="${width2}" height="${height2}"><path d="${path}" fill="white" fill-rule="evenodd"/></svg>`);
-  return sharp5(plane).composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
+  return sharp6(plane).composite([{ input: mask, blend: "dest-in" }]).png().toBuffer();
 }
 async function renderOutline(input, options, pattern, fullSize, signal) {
   signal?.throwIfAborted();
@@ -55495,7 +55213,7 @@ async function renderOutline(input, options, pattern, fullSize, signal) {
   const analysisScale = Math.min(1, Math.min(fullSize ? 1400 : 850, maskLimit) / subject.longEdge);
   const analysisWidth = Math.max(1, Math.round(subject.box.width * analysisScale));
   const analysisHeight = Math.max(1, Math.round(subject.box.height * analysisScale));
-  const analysisPixels = await sharp5(subject.analysisData).resize(analysisWidth, analysisHeight, { fit: "fill" }).ensureAlpha().raw().toBuffer();
+  const analysisPixels = await sharp6(subject.analysisData).resize(analysisWidth, analysisHeight, { fit: "fill" }).ensureAlpha().raw().toBuffer();
   const alpha = new Uint8Array(analysisWidth * analysisHeight);
   for (let i = 0; i < alpha.length; i++) alpha[i] = analysisPixels[i * 4 + 3];
   const nativePadding = import_outline_core.default.paddingFor(
@@ -55532,9 +55250,9 @@ async function renderOutline(input, options, pattern, fullSize, signal) {
   const strokeWidth = (fullSize ? subject.longEdge : analysisLongEdge) * options.strokePercent / 100;
   const line = `<path d="${path}" fill="${options.fill === "solid" ? options.fillColor : "none"}" fill-rule="evenodd"` + (strokeWidth > 0 ? ` stroke="${options.strokeColor}" stroke-width="${strokeWidth}" stroke-linejoin="round" stroke-linecap="round"` : "") + "/>";
   layers.push({ input: svg(line) });
-  const renderedSubject = fullSize ? subject.data : await sharp5(subject.data).resize(analysisWidth, analysisHeight, { fit: "fill" }).png().toBuffer();
+  const renderedSubject = fullSize ? subject.data : await sharp6(subject.data).resize(analysisWidth, analysisHeight, { fit: "fill" }).png().toBuffer();
   layers.push({ input: renderedSubject, left: origin, top: origin });
-  const png = await sharp5({ create: { width: width2, height: height2, channels: 4, background: "#00000000" } }).composite(layers).withMetadata({ density: subject.density }).png().toBuffer();
+  const png = await sharp6({ create: { width: width2, height: height2, channels: 4, background: "#00000000" } }).composite(layers).withMetadata({ density: subject.density }).png().toBuffer();
   signal?.throwIfAborted();
   return { png, width: width2, height: height2, exportWidth, exportHeight, pendingPattern, subjectLongEdge: subject.longEdge };
 }
@@ -55543,7 +55261,7 @@ async function outlineImage(input, raw, pattern, signal) {
   const result = await renderOutline(input, options, pattern, true, signal);
   if (!options.mirror) return [result.png];
   signal?.throwIfAborted();
-  const mirrored = await sharp5(result.png).flop().withMetadata({ density: (await sharp5(result.png).metadata()).density ?? 300 }).png().toBuffer();
+  const mirrored = await sharp6(result.png).flop().withMetadata({ density: (await sharp6(result.png).metadata()).density ?? 300 }).png().toBuffer();
   signal?.throwIfAborted();
   return [result.png, mirrored];
 }
@@ -55591,7 +55309,7 @@ if (parentPort) parentPort.once("message", (message) => {
 var limitInputPixels2 = 1e8;
 function colorWorkerPath() {
   const here = dirname6(fileURLToPath(import.meta.url));
-  const candidate2 = basename3(here) === "dist" ? join5(here, "tool-worker.cjs") : join5(here, "../../dist/tool-worker.cjs");
+  const candidate2 = basename4(here) === "dist" ? join4(here, "tool-worker.cjs") : join4(here, "../../dist/tool-worker.cjs");
   return existsSync(candidate2) ? candidate2 : void 0;
 }
 function adjustColors(data, options, signal) {
@@ -55601,7 +55319,7 @@ function adjustColors(data, options, signal) {
   const worker = path ? new Worker2(path, { execArgv: [], resourceLimits: { maxOldGenerationSizeMb: 256 } }) : new Worker2(`const { parentPort } = require('node:worker_threads'); const adjustPixels = (${adjustPixels.toString()});
 parentPort.once('message', message => { try { const data = adjustPixels(message.data, message.options); parentPort.postMessage({ data }, [data.buffer]); }
 catch (error) { parentPort.postMessage({ error: error instanceof Error ? error.message : '\u8C03\u8272\u5904\u7406\u5931\u8D25' }); } });`, { eval: true, execArgv: [], resourceLimits: { maxOldGenerationSizeMb: 256 } });
-  return new Promise((resolve3, reject) => {
+  return new Promise((resolve4, reject) => {
     let settled = false;
     const finish = (error101, value2) => {
       if (settled) return;
@@ -55610,7 +55328,7 @@ catch (error) { parentPort.postMessage({ error: error instanceof Error ? error.m
       signal?.removeEventListener("abort", abort);
       void worker.terminate();
       if (error101) reject(error101);
-      else resolve3(Buffer.from(value2));
+      else resolve4(Buffer.from(value2));
     };
     const abort = () => finish(new Error("\u4EFB\u52A1\u5DF2\u505C\u6B62"));
     const timer = setTimeout(() => finish(new Error("\u8C03\u8272\u5904\u7406\u8D85\u65F6\uFF0C\u8BF7\u7F29\u5C0F\u56FE\u7247\u540E\u91CD\u8BD5")), 6e4);
@@ -55625,7 +55343,7 @@ catch (error) { parentPort.postMessage({ error: error instanceof Error ? error.m
   });
 }
 var pngResult = async (stem, bytes, sourceId) => {
-  const m = await sharp6(bytes, { limitInputPixels: limitInputPixels2 }).metadata();
+  const m = await sharp7(bytes, { limitInputPixels: limitInputPixels2 }).metadata();
   return { stem, bytes, extension: "png", width: m.width, height: m.height, density: m.density, format: "png", kind: "image", sourceId };
 };
 function sizeLimit(width2, height2) {
@@ -55664,8 +55382,8 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
   const results = [];
   for (const input of inputs) {
     signal?.throwIfAborted();
-    const stem = basename3(input.name, extname(input.name));
-    const image = sharp6(input.bytes, { limitInputPixels: limitInputPixels2, failOn: "error" }).autoOrient();
+    const stem = basename4(input.name, extname2(input.name));
+    const image = sharp7(input.bytes, { limitInputPixels: limitInputPixels2, failOn: "error" }).autoOrient();
     const metadata = await image.metadata(), density = metadata.density ?? 300;
     if (metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\uFF0C\u8BF7\u5148\u8F6C\u4E3A\u5355\u5F20\u9759\u6001\u56FE\u7247");
     if (operation.tool === "outline") {
@@ -55673,7 +55391,7 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
       for (const [index, bytes] of images.entries()) results.push(await pngResult(`${stem}-\u63CF\u8FB9${index ? "-\u955C\u50CF" : ""}`, bytes, input.id));
     } else if (operation.tool === "rotate-flip") {
       const rotated = await image.rotate(operation.options.angle, { background: "#00000000" }).png().toBuffer();
-      let transformed = sharp6(rotated);
+      let transformed = sharp7(rotated);
       if (operation.options.flipHorizontal) transformed = transformed.flop();
       if (operation.options.flipVertical) transformed = transformed.flip();
       results.push(await pngResult(`${stem}-\u65CB\u8F6C\u7FFB\u8F6C`, await transformed.withMetadata({ density }).png().toBuffer(), input.id));
@@ -55681,7 +55399,7 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
       const options = operation.options;
       const rawImage = await image.toColourspace("srgb").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
       const adjusted = await adjustColors(rawImage.data, options, signal);
-      results.push(await pngResult(`${stem}-\u8C03\u8272`, await sharp6(adjusted, { raw: rawImage.info }).withMetadata({ density }).png().toBuffer(), input.id));
+      results.push(await pngResult(`${stem}-\u8C03\u8272`, await sharp7(adjusted, { raw: rawImage.info }).withMetadata({ density }).png().toBuffer(), input.id));
     } else if (operation.tool === "export") {
       const options = operation.options;
       let bytes;
@@ -55700,7 +55418,7 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
         let output = image.withMetadata({ density: options.ppi });
         if (options.format === "jpeg") output = output.flatten({ background: options.background });
         bytes = await output.toFormat(options.format, { quality: options.quality }).toBuffer();
-        const m = await sharp6(bytes).metadata();
+        const m = await sharp7(bytes).metadata();
         results.push({
           stem: `${stem}-\u8F6C\u6362`,
           extension: options.format === "jpeg" ? "jpg" : options.format,
@@ -55726,7 +55444,7 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
       };
       const background = options.bleedMode === "transparent" ? "#00000000" : options.background;
       const trimmed = await image.resize(renderWidth, renderHeight, { fit: options.fit, background }).png().toBuffer();
-      const canvas = options.bleedMode === "transparent" ? sharp6(trimmed).ensureAlpha() : sharp6(trimmed);
+      const canvas = options.bleedMode === "transparent" ? sharp7(trimmed).ensureAlpha() : sharp7(trimmed);
       const bytes = await canvas.extend({
         ...renderBleed,
         extendWith: options.bleedMode === "extend" ? "copy" : "background",
@@ -55741,8 +55459,8 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
 }
 
 // plugins/podplo-dsh/src/toolbox-pipeline.ts
-import sharp8 from "sharp";
-import { basename as basename4, extname as extname2 } from "node:path";
+import sharp9 from "sharp";
+import { basename as basename5, extname as extname3 } from "node:path";
 
 // plugins/podplo-dsh/src/toolbox-resize.ts
 var base = ResizeOptionsSchema.omit({ width: true, height: true, sizing: true, format: true, fit: true }).extend({ trimTransparent: external_exports2.boolean().default(false) });
@@ -55754,7 +55472,7 @@ var ToolboxResizeOptionsSchema = external_exports2.discriminatedUnion("sizing", 
 ]).transform((options) => ({ ...options, width: options.width ?? 1, height: options.height ?? 1 }));
 
 // packages/tools/mirror-join.ts
-import sharp7 from "sharp";
+import sharp8 from "sharp";
 function mirrorJoinSize(width2, height2, direction, format2) {
   const size2 = {
     width: direction === "horizontal" ? width2 * 2 : width2,
@@ -55768,13 +55486,13 @@ function mirrorJoinSize(width2, height2, direction, format2) {
 }
 async function joinMirror(bytes, direction, ppi, format2, signal) {
   signal?.throwIfAborted();
-  const image = sharp7(bytes, { limitInputPixels: 1e8, failOn: "error" });
+  const image = sharp8(bytes, { limitInputPixels: 1e8, failOn: "error" });
   const metadata = await image.metadata();
   const size2 = mirrorJoinSize(metadata.width, metadata.height, direction, format2);
   const { data, info } = await image.toColourspace("srgb").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const stride = info.width * 4, outputStride = size2.width * 4;
   const joined = Buffer.alloc(size2.width * size2.height * 4);
-  const reflected = direction === "horizontal" ? await sharp7(data, { raw: info }).flop().raw().toBuffer() : void 0;
+  const reflected = direction === "horizontal" ? await sharp8(data, { raw: info }).flop().raw().toBuffer() : void 0;
   for (let y = 0; y < info.height; y++) {
     signal?.throwIfAborted();
     data.copy(joined, y * outputStride, y * stride, (y + 1) * stride);
@@ -55782,7 +55500,7 @@ async function joinMirror(bytes, direction, ppi, format2, signal) {
     else data.copy(joined, (size2.height - 1 - y) * outputStride, y * stride, (y + 1) * stride);
   }
   signal?.throwIfAborted();
-  const output = await sharp7(joined, { raw: { ...size2, channels: 4 } }).withMetadata({ density: ppi }).png().toBuffer();
+  const output = await sharp8(joined, { raw: { ...size2, channels: 4 } }).withMetadata({ density: ppi }).png().toBuffer();
   signal?.throwIfAborted();
   return { ...size2, bytes: output };
 }
@@ -55862,7 +55580,7 @@ function canonical(value2) {
   return JSON.stringify(value2) ?? "null";
 }
 function processingStepDigest(step) {
-  return canonical({ toolName: step.toolName, options: step.options, sourceStepId: step.sourceStepId, generationItemIndexes: step.generationItemIndexes });
+  return canonical({ toolName: step.toolName, options: step.options, sourceStepId: step.sourceStepId, generationItemIndexes: step.generationItemIndexes, inputIds: step.inputIds });
 }
 function auditTask(files, generation, plan, receipts = [], failures = []) {
   const results = files.filter((file3) => file3.group === "result");
@@ -55872,7 +55590,7 @@ function auditTask(files, generation, plan, receipts = [], failures = []) {
   const steps = [];
   const outputsByStep = /* @__PURE__ */ new Map();
   for (const step of plan ?? []) {
-    const ids2 = step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file3) => file3.group === "reference") : originals).filter((file3) => !step.generationItemIndexes || file3.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file3.generationItemIndex)).map((file3) => file3.originId).filter((id2) => !!id2);
+    const ids2 = step.inputIds ?? (step.sourceStepId ? outputsByStep.get(step.sourceStepId) ?? [] : (actualGeneration.planned === 0 ? files.filter((file3) => file3.group === "reference") : originals).filter((file3) => !step.generationItemIndexes || file3.generationItemIndex !== void 0 && step.generationItemIndexes.includes(file3.generationItemIndex)).map((file3) => file3.originId).filter((id2) => !!id2));
     const inputs = [...new Set(ids2)];
     const runs = receipts.filter((run) => run.toolName === step.toolName && run.options !== void 0 && canonical(run.options) === canonical(step.options) && run.resultIds.length > 0);
     const completed = new Set(runs.flatMap((run) => run.inputIds).filter((id2) => inputs.includes(id2)));
@@ -55956,7 +55674,7 @@ var toolboxToolNames = {
 };
 var createToolboxFrameCache = (maxBytes, maxEntries) => new ImageMemoryCache(maxBytes, maxEntries);
 var limitInputPixels3 = 1e8;
-var stemOf = (name2) => basename4(name2, extname2(name2));
+var stemOf = (name2) => basename5(name2, extname3(name2));
 function bounded(outputs) {
   if (outputs.length > 400 || outputs.reduce((sum, row) => sum + row.bytes.length, 0) > 250 * 1024 * 1024)
     throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
@@ -55987,7 +55705,7 @@ async function renderToolbox(inputs, plan, options) {
       if (plan.trimTransparent || plan.steps.some((step) => step.tool === "resize" && step.options.trimTransparent)) await options.authorize("trim");
       ({ ppi, frames, final, raster, sidecars, transparentCrop, hints } = normalized2);
     } else {
-      const source = sharp8(original.bytes, { limitInputPixels: limitInputPixels3, failOn: "error" }).autoOrient();
+      const source = sharp9(original.bytes, { limitInputPixels: limitInputPixels3, failOn: "error" }).autoOrient();
       const metadata = await source.metadata();
       if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247");
       const resizeStep = plan.steps.find((step) => step.tool === "resize");
@@ -56034,7 +55752,7 @@ async function renderToolbox(inputs, plan, options) {
         options.signal?.throwIfAborted();
         let outputs;
         if (step.tool === "resize") {
-          let base2 = sharp8(frame.bytes, { limitInputPixels: limitInputPixels3 });
+          let base2 = sharp9(frame.bytes, { limitInputPixels: limitInputPixels3 });
           const size2 = await base2.png().toBuffer({ resolveWithObject: true });
           hints.resizeSource ??= {
             id: original.id,
@@ -56070,7 +55788,7 @@ async function renderToolbox(inputs, plan, options) {
             transparentCrop: cropped.report
           }];
         } else if (step.tool === "outline") {
-          const image = sharp8(frame.bytes, { limitInputPixels: limitInputPixels3 }), info = await image.metadata();
+          const image = sharp9(frame.bytes, { limitInputPixels: limitInputPixels3 }), info = await image.metadata();
           let outlineInput = frame;
           if (!info.hasAlpha || (await image.stats()).isOpaque) {
             if (plan.trimTransparent && transparentCrop?.status === "passed" && transparentCrop.verified) {
@@ -56109,7 +55827,7 @@ async function renderToolbox(inputs, plan, options) {
             outputs = croppedOutputs;
           }
         } else if (step.tool === "print") {
-          const info = await sharp8(frame.bytes, { limitInputPixels: limitInputPixels3 }).metadata();
+          const info = await sharp9(frame.bytes, { limitInputPixels: limitInputPixels3 }).metadata();
           outputs = await processToolkit([frame], { tool: "print-bleed", options: {
             ...step.options,
             width: info.width * 25.4 / ppi,
@@ -56125,12 +55843,12 @@ async function renderToolbox(inputs, plan, options) {
             const joined = await joinMirror(frame.bytes, mirrorJoin, ppi, formatOptions.format, options.signal);
             composed = { ...frame, name: `${stemOf(frame.name)}-${mirrorJoin === "horizontal" ? "\u5DE6\u53F3" : "\u4E0A\u4E0B"}\u955C\u50CF\u62FC\u63A5.png`, bytes: joined.bytes };
           }
-          const info = await sharp8(composed.bytes, { limitInputPixels: limitInputPixels3 }).metadata();
+          const info = await sharp9(composed.bytes, { limitInputPixels: limitInputPixels3 }).metadata();
           const variants = [composed];
           if (mirror) variants.push({
             ...composed,
             name: `${stemOf(composed.name)}-\u955C\u50CF.png`,
-            bytes: await sharp8(composed.bytes, { limitInputPixels: limitInputPixels3 }).flop().withMetadata({ density: ppi }).png().toBuffer()
+            bytes: await sharp9(composed.bytes, { limitInputPixels: limitInputPixels3 }).flop().withMetadata({ density: ppi }).png().toBuffer()
           });
           outputs = [];
           for (const variant of variants) {
@@ -56154,7 +55872,7 @@ async function renderToolbox(inputs, plan, options) {
           output.sourceId = original.id;
           output.transparentCrop ??= frame.transparentCrop;
           if (output.kind === "image") {
-            if (output.density !== ppi) output.bytes = await sharp8(output.bytes, { limitInputPixels: limitInputPixels3 }).withMetadata({ density: ppi }).toFormat(output.format).toBuffer();
+            if (output.density !== ppi) output.bytes = await sharp9(output.bytes, { limitInputPixels: limitInputPixels3 }).withMetadata({ density: ppi }).toFormat(output.format).toBuffer();
             output.density = ppi;
             next.push(output);
           } else if (output.format === "pdf") next.push(output);
@@ -56182,71 +55900,6 @@ async function renderToolbox(inputs, plan, options) {
     options.signal?.throwIfAborted();
   }
   return result;
-}
-
-// packages/tools/grid-split.ts
-import { basename as basename5, extname as extname3 } from "node:path";
-import sharp9 from "sharp";
-var GRID_SPLIT_OPERATION_NAME = "podplo_grid_split";
-var GridSplitOptionsSchema = external_exports.object({
-  rows: external_exports.number().int().min(1).max(6),
-  cols: external_exports.number().int().min(1).max(6)
-}).strict();
-function gridSplitFrames(width2, height2, raw) {
-  const options = GridSplitOptionsSchema.parse(raw);
-  if (!Number.isInteger(width2) || !Number.isInteger(height2) || width2 < 1 || height2 < 1)
-    throw new Error("\u56FE\u7247\u5C3A\u5BF8\u65E0\u6548");
-  if (options.cols > width2 || options.rows > height2)
-    throw new Error("\u884C\u5217\u6570\u4E0D\u80FD\u8D85\u8FC7\u56FE\u7247\u7684\u50CF\u7D20\u5BBD\u9AD8");
-  const frames = [];
-  for (let row = 0; row < options.rows; row += 1) {
-    const top = Math.floor(row * height2 / options.rows);
-    const bottom = Math.floor((row + 1) * height2 / options.rows);
-    for (let col = 0; col < options.cols; col += 1) {
-      const left = Math.floor(col * width2 / options.cols);
-      const right = Math.floor((col + 1) * width2 / options.cols);
-      frames.push({ row, col, left, top, width: right - left, height: bottom - top });
-    }
-  }
-  return frames;
-}
-async function splitGridImages(inputs, raw, signal) {
-  const options = GridSplitOptionsSchema.parse(raw);
-  if (!inputs.length || inputs.length > 10) throw new Error("\u4E00\u6B21\u6700\u591A\u5206\u5272 10 \u5F20\u56FE\u7247");
-  if (inputs.length * options.rows * options.cols > 400)
-    throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
-  if (inputs.reduce((sum, input) => sum + input.bytes.length, 0) > 250 * 1024 * 1024)
-    throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
-  const outputs = [];
-  let outputBytes = 0;
-  for (const input of inputs) {
-    signal?.throwIfAborted();
-    if (input.kind === "file") throw new Error("\u56FE\u7247\u5206\u5272\u53EA\u63A5\u53D7\u56FE\u7247");
-    const metadata = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
-    if (!metadata.width || !metadata.height || (metadata.pages ?? 1) > 1)
-      throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
-    const normalized2 = await sharp9(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().png().toBuffer({ resolveWithObject: true });
-    const density = metadata.density ?? 300;
-    const stem = basename5(input.name, extname3(input.name));
-    for (const frame of gridSplitFrames(normalized2.info.width, normalized2.info.height, options)) {
-      signal?.throwIfAborted();
-      const bytes = await sharp9(normalized2.data, { limitInputPixels: 1e8, failOn: "error" }).extract(frame).withMetadata({ density }).png().toBuffer();
-      outputBytes += bytes.length;
-      if (outputBytes > 250 * 1024 * 1024) throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
-      outputs.push({
-        stem: `${stem}-\u5206\u5272-${frame.row + 1}-${frame.col + 1}`,
-        extension: "png",
-        bytes,
-        width: frame.width,
-        height: frame.height,
-        density,
-        format: "png",
-        kind: "image",
-        sourceId: input.id
-      });
-    }
-  }
-  return outputs;
 }
 
 // plugins/podplo-dsh/src/local-toolkit.ts
@@ -56368,7 +56021,7 @@ function jsonSchema(schema2) {
 function processingSchema(options) {
   return jsonSchema(external_exports2.object({ operationId, ids: uniqueIds, options }).strict());
 }
-var localInputGuidance = "ids \u53EF\u76F4\u63A5\u4F7F\u7528\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u672C\u5730\u5904\u7406\u7ED3\u679C\u6216\u79C1\u6709\u4E91\u7D20\u6750\u7684\u4E0D\u900F\u660E\u7F16\u53F7\uFF1B\u672C\u673A\u56FE\u7247\u987B\u5148\u7528 DSH read_image \u6216\u539F\u751F\u9009\u56FE\u63A5\u5165\u5F53\u524D\u4F1A\u8BDD\uFF0C\u4E0D\u80FD\u4F20\u6587\u4EF6\u8DEF\u5F84\u3002";
+var localInputGuidance = "ids \u53EF\u76F4\u63A5\u4F7F\u7528\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u672C\u5730\u5904\u7406\u7ED3\u679C\u6216\u79C1\u6709\u4E91\u7D20\u6750\u7684\u4E0D\u900F\u660E\u7F16\u53F7\uFF1B\u7528\u6237\u6307\u5B9A\u7684\u672C\u673A\u6587\u4EF6\u5939\u6216\u9884\u8BBE\u987B\u7528 podplo_prepare_task \u7684 source.folderPath \u548C local \u767B\u8BB0\uFF0C\u7531 Host \u63A5\u5165\uFF1B\u7EAF\u5DE5\u5177\u4E0D\u4F20 skill/generation\u3002\u6B64\u4F4E\u5C42\u5DE5\u5177\u4E0D\u63A5\u53D7\u6587\u4EF6\u8DEF\u5F84\uFF0C\u4E0D\u8981\u4E3A\u53D6\u5F97\u7F16\u53F7\u8C03\u7528 read_image\u3002";
 var definitions = Object.freeze([
   { name: "podplo_selected_image_info", description: `\u67E5\u8BE2\u7528\u6237\u6307\u5B9A\u56FE\u7247\u7684\u50CF\u7D20\u4FE1\u606F\u3002${localInputGuidance}\u771F\u5B9E\u8BFB\u53D6\u50CF\u7D20\uFF0C\u533A\u5206 Alpha \u901A\u9053\u4E0E\u5B9E\u9645\u900F\u660E\u50CF\u7D20\u3002\u4EFB\u52A1\u786E\u8BA4\u540E\u7684\u6280\u672F\u6821\u9A8C\u7531\u5BBF\u4E3B\u81EA\u52A8\u6267\u884C\uFF1BAgent \u4E0D\u5F97\u4E3A\u8BC4\u4EF7\u6216\u9A8C\u6536\u6210\u679C\u8D28\u91CF\u989D\u5916\u8C03\u7528\u672C\u5DE5\u5177\u3002`, inputSchema: jsonSchema(infoArgs) },
   { name: "podplo_list_local_results", description: "\u5217\u51FA\u5F53\u524D\u8D26\u53F7\u3001\u5F53\u524D\u539F\u751F\u4F1A\u8BDD\u5DF2\u7ECF\u4EA7\u751F\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u7ED3\u679C\u3002\u53EA\u8FD4\u56DE\u7ED3\u679C ID \u548C\u6587\u4EF6\u5143\u6570\u636E\uFF0C\u4E0D\u8FD4\u56DE\u5BBF\u4E3B\u8DEF\u5F84\u3002", inputSchema: jsonSchema(listArgs) },
@@ -56423,9 +56076,9 @@ var NativeLocalToolkit = class {
   constructor(options) {
     this.options = options;
     if (!isAbsolute3(options.directory)) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
-    this.rootCandidate = join6(options.directory, "local-toolkit-v1");
+    this.rootCandidate = join5(options.directory, "local-toolkit-v1");
     this.store = new AtomicStore(
-      join6(this.rootCandidate, "state.json"),
+      join5(this.rootCandidate, "state.json"),
       () => ({ schemaVersion: 1, results: [], operations: [] }),
       validateState
     );
@@ -57008,15 +56661,15 @@ var NativeLocalToolkit = class {
   }
   async idempotent(name2, args, session2) {
     const identity2 = await this.identity("process"), sessionHash = sha256(session2);
-    const digest2 = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
+    const digest4 = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
     const key = `${identity2.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
-      if (pending.digest !== digest2) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      if (pending.digest !== digest4) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest2);
-    this.inflight.set(key, { digest: digest2, promise: promise3 });
+    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest4);
+    this.inflight.set(key, { digest: digest4, promise: promise3 });
     try {
       return await promise3;
     } finally {
@@ -57025,25 +56678,25 @@ var NativeLocalToolkit = class {
   }
   async idempotentResolved(name2, args, session2, inputs) {
     const identity2 = await this.identity("process"), sessionHash = sha256(session2);
-    const digest2 = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
+    const digest4 = sha256(canonical2({ name: name2, ids: args.ids, options: args.options }));
     const key = `${identity2.principal}:${sessionHash}:${args.operationId}`;
     const pending = this.inflight.get(key);
     if (pending) {
-      if (pending.digest !== digest2) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      if (pending.digest !== digest4) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       return pending.promise;
     }
-    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest2, inputs);
-    this.inflight.set(key, { digest: digest2, promise: promise3 });
+    const promise3 = this.execute(name2, args, session2, sessionHash, identity2, digest4, inputs);
+    this.inflight.set(key, { digest: digest4, promise: promise3 });
     try {
       return await promise3;
     } finally {
       this.inflight.delete(key);
     }
   }
-  async execute(name2, args, sessionId, sessionHash, identity2, digest2, archivedInputs) {
+  async execute(name2, args, sessionId, sessionHash, identity2, digest4, archivedInputs) {
     const existing = this.store.snapshot().operations.find((row) => row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId);
     if (existing) {
-      if (existing.digest !== digest2) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+      if (existing.digest !== digest4) throw new Error("\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
       const rows = existing.resultIds.map((id2) => this.ownedResult(id2, identity2.principal, sessionHash));
       for (const row of rows) await this.readStored(row);
       await this.assertIdentity(identity2, "process");
@@ -57086,7 +56739,7 @@ var NativeLocalToolkit = class {
       await this.assertOperationAuthorization(identity2, name2, args.options);
       await this.store.transaction((state) => {
         const prior = state.operations.find((row) => row.principal === identity2.principal && row.session === sessionHash && row.operationId === args.operationId);
-        if (prior) throw new Error(prior.digest === digest2 ? "\u540C\u4E00\u64CD\u4F5C\u6B63\u5728\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u8BFB\u53D6\u7ED3\u679C" : "\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
+        if (prior) throw new Error(prior.digest === digest4 ? "\u540C\u4E00\u64CD\u4F5C\u6B63\u5728\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u8BFB\u53D6\u7ED3\u679C" : "\u540C\u4E00\u64CD\u4F5C\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u56FE\u7247\u5904\u7406\u53C2\u6570");
         if (state.results.filter((row) => row.principal === identity2.principal && row.session === sessionHash).length + stored.length > 2e3)
           throw new Error("\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u8FC7\u591A\uFF0C\u8BF7\u65B0\u5EFA\u4F1A\u8BDD");
         state.results.push(...stored);
@@ -57094,7 +56747,7 @@ var NativeLocalToolkit = class {
           principal: identity2.principal,
           session: sessionHash,
           operationId: args.operationId,
-          digest: digest2,
+          digest: digest4,
           resultIds: stored.map((row) => row.id),
           completedAt: this.timestamp(),
           nativeSessionId: sessionId,
@@ -57219,12 +56872,12 @@ var NativeLocalToolkit = class {
   async publish(output, principal, session2) {
     const extension = output.extension.toLowerCase();
     if (!/^(?:png|jpe?g|webp|pdf|zip|json)$/u.test(extension)) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u4EA7\u751F\u4E86\u4E0D\u53D7\u652F\u6301\u7684\u6587\u4EF6\u7C7B\u578B");
-    const id2 = this.options.id?.() ?? randomUUID9();
+    const id2 = this.options.id?.() ?? randomUUID8();
     external_exports2.string().uuid().parse(id2);
     const parts = ["results", principal, session2];
     const relativeFile = `${parts.join("/")}/${id2}.${extension}`;
     const directory = await this.ensureDirectory(parts);
-    const path = join6(directory, `${id2}.${extension}`);
+    const path = join5(directory, `${id2}.${extension}`);
     const handle = await open3(path, constants2.O_WRONLY | constants2.O_CREAT | constants2.O_EXCL | constants2.O_NOFOLLOW, 384);
     let fingerprint2 = "";
     try {
@@ -57262,7 +56915,7 @@ var NativeLocalToolkit = class {
     let current = this.root;
     for (const part of parts) {
       if (!/^[a-f0-9]{64}$/u.test(part) && part !== "results" && part !== "\u5F85\u590D\u6838") throw new Error("\u672C\u5730\u7ED3\u679C\u76EE\u5F55\u6807\u8BC6\u65E0\u6548");
-      current = join6(current, part);
+      current = join5(current, part);
       await mkdir5(current, { recursive: true, mode: 448 });
       const stat = await lstat2(current);
       if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error("\u672C\u5730\u7ED3\u679C\u76EE\u5F55\u5DF2\u88AB\u66FF\u6362");
@@ -57273,7 +56926,7 @@ var NativeLocalToolkit = class {
     return current;
   }
   absoluteFile(row) {
-    return join6(this.root, ...row.relativeFile.split("/"));
+    return join5(this.root, ...row.relativeFile.split("/"));
   }
   async readStored(row) {
     const path = this.absoluteFile(row);
@@ -57321,15 +56974,18 @@ var processingPlanSchema = { type: "array", maxItems: 10, description: "\u672C\u
 } };
 function parseProcessingPlan(value2, history = {}) {
   if (value2 === void 0) return;
-  if (!Array.isArray(value2) || value2.length > 10) throw new Error("\u52A0\u5DE5\u6B65\u9AA4\u65E0\u6548");
+  if (!Array.isArray(value2) || value2.length > (history.allowHostInputs ? 100 : 10)) throw new Error("\u52A0\u5DE5\u6B65\u9AA4\u65E0\u6548");
   const ids2 = /* @__PURE__ */ new Set();
   return value2.map((raw) => {
     if (!raw || typeof raw !== "object" || Array.isArray(raw)) throw new Error("\u52A0\u5DE5\u6B65\u9AA4\u65E0\u6548");
     const row = raw;
-    if (Object.keys(row).some((key) => !["id", "label", "toolName", "options", "sourceStepId", "generationItemIndexes"].includes(key)) || typeof row.id !== "string" || !/^[A-Za-z0-9_-]{1,60}$/u.test(row.id) || ids2.has(row.id) || typeof row.label !== "string" || !row.label.trim() || row.label.length > 60 || /[\x00-\x1f]/u.test(row.label) || typeof row.toolName !== "string" || row.sourceStepId !== void 0 && (typeof row.sourceStepId !== "string" || !ids2.has(row.sourceStepId))) throw new Error("\u52A0\u5DE5\u6B65\u9AA4\u987A\u5E8F\u6216\u53C2\u6570\u65E0\u6548");
+    if (Object.keys(row).some((key) => !["id", "label", "toolName", "options", "sourceStepId", "generationItemIndexes", "inputIds"].includes(key)) || typeof row.id !== "string" || !/^[A-Za-z0-9_-]{1,60}$/u.test(row.id) || ids2.has(row.id) || typeof row.label !== "string" || !row.label.trim() || row.label.length > 60 || /[\x00-\x1f]/u.test(row.label) || typeof row.toolName !== "string" || row.sourceStepId !== void 0 && (typeof row.sourceStepId !== "string" || !ids2.has(row.sourceStepId))) throw new Error("\u52A0\u5DE5\u6B65\u9AA4\u987A\u5E8F\u6216\u53C2\u6570\u65E0\u6548");
     const options = history.allowRemovedTools && row.toolName === "podplo_package_delivery" ? PackageOptionsSchema.parse(row.options) : normalizedProcessingOptions(row.toolName, row.options);
     const scope = row.generationItemIndexes;
     if (scope !== void 0 && (!Array.isArray(scope) || !scope.length || scope.length > 100 || new Set(scope).size !== scope.length || scope.some((index) => !Number.isInteger(index) || index < 0 || index > 99) || row.sourceStepId !== void 0)) throw new Error("\u52A0\u5DE5\u5206\u7EC4\u8303\u56F4\u65E0\u6548");
+    const inputs = row.inputIds;
+    if (inputs !== void 0 && (!history.allowHostInputs || !Array.isArray(inputs) || !inputs.length || inputs.length > 100 || new Set(inputs).size !== inputs.length || row.generationItemIndexes !== void 0 || inputs.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))))
+      throw new Error("\u672C\u5730\u52A0\u5DE5\u8F93\u5165\u8303\u56F4\u65E0\u6548");
     ids2.add(row.id);
     return {
       id: row.id,
@@ -57337,7 +56993,8 @@ function parseProcessingPlan(value2, history = {}) {
       toolName: row.toolName,
       options,
       ...typeof row.sourceStepId === "string" ? { sourceStepId: row.sourceStepId } : {},
-      ...Array.isArray(scope) ? { generationItemIndexes: scope } : {}
+      ...Array.isArray(scope) ? { generationItemIndexes: scope } : {},
+      ...Array.isArray(inputs) ? { inputIds: [...inputs] } : {}
     };
   });
 }
@@ -57352,33 +57009,2311 @@ function processingPlanAuthorizationTools(plan) {
   return tools;
 }
 
+// plugins/podplo-dsh/src/toolbox-preset.ts
+var edge = external_exports2.number().min(0).max(1e3);
+var validators = {
+  rotate: RotateOptionsSchema,
+  color: ColorOptionsSchema,
+  outline: OutlineSettingsSchema.omit({ patternId: true, mirror: true }),
+  print: PrintOptionsSchema.omit({ width: true, height: true, unit: true, ppi: true, fit: true, bleedEdges: true }).extend({
+    bleedSetup: external_exports2.enum(["uniform", "edges"]),
+    bleedTop: edge,
+    bleedRight: edge,
+    bleedBottom: edge,
+    bleedLeft: edge
+  }).strict(),
+  export: ExportOptionsSchema.omit({ ppi: true }).extend({ mirror: external_exports2.boolean(), mirrorJoin: external_exports2.enum(["none", "horizontal", "vertical"]) }).strict()
+};
+var value = external_exports2.record(external_exports2.string(), external_exports2.unknown());
+var toolboxPresetSchema = external_exports2.object({
+  type: external_exports2.literal("podplo-toolbox-preset"),
+  schemaVersion: external_exports2.union([external_exports2.literal(1), external_exports2.literal(2)]),
+  orderVersion: external_exports2.union([external_exports2.literal(1), external_exports2.literal(2)]).optional(),
+  enabled: external_exports2.object({
+    trimTransparent: external_exports2.boolean(),
+    rotate: external_exports2.boolean(),
+    color: external_exports2.boolean(),
+    outline: external_exports2.boolean(),
+    resize: external_exports2.boolean(),
+    print: external_exports2.boolean(),
+    export: external_exports2.boolean()
+  }).strict(),
+  parameters: external_exports2.object({
+    resize: value,
+    rotate: value,
+    color: value,
+    outline: value,
+    print: value,
+    export: value,
+    trim: external_exports2.object({ threshold: external_exports2.number().int().min(0).max(254) }).strict().optional()
+  }).strict(),
+  requiredAssets: external_exports2.array(external_exports2.literal("outlinePattern")).optional()
+}).strict().refine((preset) => preset.schemaVersion !== 2 || preset.orderVersion === 2, "schemaVersion 2 \u5FC5\u987B\u58F0\u660E orderVersion 2");
+
+// plugins/podplo-dsh/src/toolbox-preset-plan.ts
+function toolboxPresetPlan(raw) {
+  const preset = toolboxPresetSchema.parse(raw);
+  if (preset.enabled.outline && preset.parameters.outline.fill === "pattern")
+    throw new Error("\u8BE5\u9884\u8BBE\u9700\u8981\u91CD\u65B0\u9009\u62E9\u63CF\u8FB9\u56FE\u6848\u56FE\u7247\uFF0C\u8BF7\u5148\u5728\u5DE5\u5177\u7BB1\u9009\u62E9\u56FE\u7247\u3002");
+  const steps = [];
+  const order2 = preset.orderVersion === 2 ? TOOLBOX_ORDER : ["resize", "rotate", "color", "outline", "trim", "print", "export"];
+  for (const tool of order2) {
+    if (tool === "trim") {
+      if (preset.enabled.trimTransparent) steps.push({ tool, ...preset.parameters.trim?.threshold ? { threshold: preset.parameters.trim.threshold } : {} });
+      continue;
+    }
+    if (!preset.enabled[tool]) continue;
+    let options = { ...preset.parameters[tool] };
+    if (tool === "resize") {
+      if (options.lockAspect !== void 0) {
+        options.sizing = options.lockAspect ? options.resizeAxis : "fixed";
+        delete options.lockAspect;
+        delete options.resizeAxis;
+      }
+      options.sizing ??= "fixed";
+      if (options.sizing === "height") delete options.width;
+      if (options.sizing === "width") delete options.height;
+      delete options.format;
+      delete options.fit;
+      options.trimTransparent = false;
+    } else if (tool === "outline") {
+      options.mirror ??= false;
+    } else if (tool === "print") {
+      if (options.bleedSetup !== void 0 && options.bleedSetup !== "uniform" && options.bleedSetup !== "edges")
+        throw new Error("\u9884\u8BBE\u7684\u51FA\u8840\u8BBE\u7F6E\u65E0\u6548\u3002");
+      if (options.bleedSetup === "edges") options.bleedEdges = {
+        top: options.bleedTop,
+        right: options.bleedRight,
+        bottom: options.bleedBottom,
+        left: options.bleedLeft
+      };
+      for (const key of ["bleedSetup", "bleedTop", "bleedRight", "bleedBottom", "bleedLeft"]) delete options[key];
+    }
+    steps.push({ tool, options });
+  }
+  return ToolboxPlanSchema.parse({ ...preset.orderVersion === 2 ? { orderVersion: 2 } : {}, steps });
+}
+
+// plugins/podplo-dsh/src/native-skill-batch.ts
+var nativeTaskToolName = "mcp__podplo__podplo_prepare_task";
+var nativeTaskRawName = "podplo_prepare_task";
+var generationFieldNames = ["model", "ratio", "quality", "ecoMode", "background", "instructions"];
+var generationFieldSet = new Set(generationFieldNames);
+var nativeTaskTool = {
+  name: nativeTaskToolName,
+  description: "Prepare one complete task: AI stages use skill and optional generation; local tool/preset stages use local and OMIT skill/generation. Ordered AI/tool stages share one task. Host resolves folders/presets and validates actions. Local-only work runs directly without AI, quotes or credits; AI work gets one complete quote and approval. Do not inspect files, invent IDs, write processingPlan or calculate credits.",
+  inputSchema: { type: "object", additionalProperties: false, required: ["stages"], examples: [{ stages: [
+    {
+      id: "base",
+      source: { folderPath: "/user-supplied/folder", scope: "all" },
+      skill: { query: "exact-skill", source: "public", strategy: "single" },
+      generation: { model: "user-selected-model", ecoMode: false, background: "transparent" }
+    }
+  ] }, { stages: [{
+    id: "preset",
+    source: { folderPath: "/user-supplied/folder", scope: "all" },
+    local: { presetPath: "/user-supplied/preset.json" }
+  }] }], properties: {
+    taskName: { type: "string", minLength: 1, maxLength: 100, description: "User task/plan name for History and the output folder." },
+    stages: { type: "array", minItems: 1, maxItems: 10, items: {
+      type: "object",
+      additionalProperties: false,
+      required: ["id", "source"],
+      anyOf: [{ required: ["skill"] }, { required: ["local"], not: { required: ["generation"] } }],
+      properties: {
+        id: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
+        name: { type: "string", minLength: 1, maxLength: 80 },
+        source: { type: "object", additionalProperties: false, oneOf: [
+          { required: ["folderPath"], not: { required: ["fromStage"] } },
+          { required: ["fromStage"], not: { required: ["folderPath"] } },
+          { required: ["referenceIds"], not: { anyOf: [{ required: ["folderPath"] }, { required: ["fromStage"] }] } }
+        ], properties: {
+          folderPath: { type: "string", minLength: 1, maxLength: 4096 },
+          fromStage: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
+          referenceIds: { type: "array", minItems: 1, maxItems: 100, uniqueItems: true, items: { type: "string", minLength: 1, maxLength: 240 } },
+          scope: { type: "string", enum: ["all", "first", "indexes"] },
+          indexes: {
+            type: "array",
+            minItems: 1,
+            maxItems: 100,
+            uniqueItems: true,
+            items: { type: "integer", minimum: 0, maximum: 99 }
+          },
+          expectedImageCount: { type: "integer", minimum: 1, maximum: 100 }
+        } },
+        skill: { type: "object", additionalProperties: false, required: ["query", "strategy"], properties: {
+          query: { type: "string", minLength: 1, maxLength: 160 },
+          source: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
+          favoriteFolder: { type: "string", minLength: 1, maxLength: 80 },
+          strategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] }
+        } },
+        generation: { type: "object", additionalProperties: false, properties: {
+          model: { type: "string", maxLength: 160 },
+          ratio: { type: "string", maxLength: 8 },
+          quality: { type: "string", maxLength: 32 },
+          ecoMode: { type: "boolean" },
+          background: { type: "string", enum: ["opaque", "transparent"] },
+          instructions: { type: "string", maxLength: 3e3 }
+        } },
+        local: { type: "object", additionalProperties: false, oneOf: [
+          { required: ["presetPath"], not: { anyOf: [{ required: ["actions"] }, { required: ["exactPlan"] }] } },
+          { required: ["actions"], not: { anyOf: [{ required: ["presetPath"] }, { required: ["exactPlan"] }] } },
+          { required: ["exactPlan"], not: { anyOf: [{ required: ["presetPath"] }, { required: ["actions"] }] } }
+        ], properties: {
+          presetPath: { type: "string", minLength: 1, maxLength: 4096 },
+          actions: {
+            type: "array",
+            maxItems: 10,
+            items: { type: "object", additionalProperties: false, required: ["type", "rows", "columns"], properties: {
+              type: { const: "grid-split" },
+              rows: { type: "integer", minimum: 1, maximum: 6 },
+              columns: { type: "integer", minimum: 1, maximum: 6 }
+            } }
+          },
+          exactPlan: { ...processingPlanSchema, description: "Exact PodPlo tool plan; copy options from its schema. Host validates them." }
+        } }
+      }
+    } }
+  } }
+};
+var fail2 = (code, message) => {
+  throw new PodploPluginError(code, message);
+};
+var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
+var record3 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
+var rejectUnknownField = (value2, allowed, path) => {
+  const key = Object.keys(value2).find((candidate2) => !allowed.has(candidate2));
+  if (key !== void 0) fail2("INVALID_ARGUMENT", `${path}.${key} \u662F\u672A\u77E5\u53C2\u6570\u3002`);
+};
+var text2 = (value2, name2, max) => {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail2("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
+  return value2.trim();
+};
+function parseInput(value2, path = "batch") {
+  const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
+  rejectUnknownField(value2, allowed, path);
+  const count2 = value2.expectedImageCount;
+  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail2("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
+  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail2("INVALID_ARGUMENT", `${path}.skillStrategy \u65E0\u6548\u3002`);
+  let imageIndexes;
+  if (value2.imageIndexes !== void 0) {
+    const indexes = value2.imageIndexes;
+    if (!Array.isArray(indexes) || !indexes.length || indexes.length > 100 || new Set(indexes).size !== indexes.length || indexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99))
+      fail2("INVALID_ARGUMENT", `${path}.imageIndexes \u65E0\u6548\u3002`);
+    imageIndexes = indexes.map(Number);
+  }
+  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail2("INVALID_ARGUMENT", `${path}.ecoMode \u65E0\u6548\u3002`);
+  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail2("INVALID_ARGUMENT", `${path}.background \u65E0\u6548\u3002`);
+  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail2("INVALID_ARGUMENT", `${path}.skillSource \u65E0\u6548\u3002`);
+  const skillFolder = value2.skillFolder === void 0 ? void 0 : text2(value2.skillFolder, `${path}.skillFolder`, 80);
+  const skillSource = value2.skillSource ?? (skillFolder ? "favorite" : "auto");
+  if (skillFolder && skillSource !== "favorite") fail2("INVALID_ARGUMENT", `${path}.skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002`);
+  if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
+    fail2("INVALID_ARGUMENT", `${path}.instructions \u65E0\u6548\u3002`);
+  const folderPath = value2.folderPath === void 0 ? void 0 : text2(value2.folderPath, `${path}.folderPath`, 4096);
+  const referenceAssetIds = value2.referenceAssetIds;
+  if (folderPath !== void 0 === (referenceAssetIds !== void 0) || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))))
+    fail2("INVALID_ARGUMENT", "\u5FC5\u987B\u63D0\u4F9B\u4E00\u4E2A\u56FE\u7247\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750 ID\u3002");
+  return {
+    ...folderPath ? { folderPath } : { referenceAssetIds },
+    ...imageIndexes ? { imageIndexes } : {},
+    ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
+    skillQuery: text2(value2.skillQuery, `${path}.skillQuery`, 160),
+    skillStrategy: value2.skillStrategy,
+    ...value2.model === void 0 ? {} : { model: text2(value2.model, `${path}.model`, 160) },
+    ...value2.ratio === void 0 ? {} : { ratio: text2(value2.ratio, `${path}.ratio`, 8) },
+    ...value2.quality === void 0 ? {} : { quality: text2(value2.quality, `${path}.quality`, 32) },
+    ...value2.ecoMode === void 0 ? {} : { ecoMode: value2.ecoMode },
+    ...value2.background === void 0 ? {} : { background: value2.background },
+    processingPlan: value2.processingPlan,
+    skillSource,
+    ...skillFolder ? { skillFolder } : {},
+    ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text2(value2.processingPresetPath, `${path}.processingPresetPath`, 4096) } : {},
+    instructions: typeof value2.instructions === "string" ? value2.instructions : ""
+  };
+}
+async function presetProcessing(input, deps) {
+  if (!input.processingPresetPath) return parseProcessingPlan(input.processingPlan) ?? [];
+  if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail2("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
+  return readNativeProcessingPreset(input.processingPresetPath, deps);
+}
+async function readNativeProcessingPreset(path, deps) {
+  if (!deps.isFolderAuthorized(path)) fail2("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
+  if (!isAbsolute4(path) || extname5(path).toLowerCase() !== ".json") fail2("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
+  const handle = await open4(path, constants3.O_RDONLY | (constants3.O_NOFOLLOW ?? 0));
+  try {
+    const before = await handle.stat();
+    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail2("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
+    const bytes = await handle.readFile();
+    const after = await handle.stat();
+    if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
+      fail2("LOCAL_PRESET_CHANGED", "\u9884\u8BBE\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u5C1A\u672A\u63D0\u4EA4\u4EFB\u52A1\u3002");
+    deps.signal?.throwIfAborted();
+    return parseProcessingPlan([{
+      id: "toolbox-preset",
+      label: "\u5DE5\u5177\u7BB1\u9884\u8BBE",
+      toolName: TOOLBOX_PIPELINE_NAME,
+      options: toolboxPresetPlan(JSON.parse(bytes.toString("utf8").replace(/^\uFEFF/u, "")))
+    }]);
+  } finally {
+    await handle.close();
+  }
+}
+async function personalMatch(input, deps) {
+  if (input.skillStrategy !== "single" || ["public", "favorite"].includes(input.skillSource) || !deps.personalSkills || !deps.personalSkill) return;
+  const found = [];
+  let cursor;
+  const seen = /* @__PURE__ */ new Set();
+  do {
+    const page = await deps.personalSkills(/^[0-9a-f-]{36}$/iu.test(input.skillQuery) ? "" : input.skillQuery, cursor);
+    found.push(...page.items.filter((row) => row.id === input.skillQuery || row.name.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase()));
+    cursor = page.nextCursor ?? void 0;
+    if (cursor && seen.has(cursor)) fail2("SKILL_QUERY_INVALID", "\u4E2A\u4EBA Skill \u5206\u9875\u7ED3\u679C\u65E0\u6548\u3002");
+    if (cursor) seen.add(cursor);
+    if (seen.size > 100) fail2("SKILL_QUERY_AMBIGUOUS", "\u8BF7\u4F7F\u7528\u4E2A\u4EBA Skill \u7684\u7CBE\u786E ID\u3002");
+  } while (cursor);
+  if (found.length > 1) fail2("SKILL_QUERY_AMBIGUOUS", "\u6709\u591A\u4E2A\u540C\u540D\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6307\u5B9A\u7CBE\u786E ID\u3002");
+  if (!found.length) return;
+  const skill = await deps.personalSkill(found[0].id);
+  return {
+    id: skill.id,
+    name: skill.name,
+    slug: null,
+    personal: true,
+    referenceCount: skill.referenceAssetIds.length,
+    availableForCurrentPlan: true,
+    minimumReferenceImages: 0,
+    details: { slug: "", title: skill.name, inputs: [], keeps: [], changes: [], output: "" }
+  };
+}
+function isInside(parent, child) {
+  const value2 = relative3(parent, child);
+  return value2 === "" || value2 !== ".." && !value2.startsWith(`..${sep}`) && !isAbsolute4(value2);
+}
+async function readTrustedImageFolder(input) {
+  input.signal?.throwIfAborted();
+  let trustedRoot;
+  if (!isAbsolute4(input.folderPath)) {
+    if (!input.cwd || !isAbsolute4(input.cwd)) fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
+    trustedRoot = await realpath4(input.cwd).catch(() => fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
+  }
+  const requested = isAbsolute4(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
+  const before = await lstat3(requested).catch(() => fail2("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
+  if (before.isSymbolicLink() || !before.isDirectory()) fail2("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
+  const directory = await realpath4(requested);
+  if (trustedRoot && !isInside(trustedRoot, directory)) fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
+  const root = parse5(directory).root, home = await realpath4(homedir()).catch(() => homedir());
+  const pathParts = relative3(root, directory).split(sep);
+  if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
+    fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
+  const entries = await readdir(directory, { withFileTypes: true });
+  const imageEntries = entries.filter((entry) => imageExtensions.has(extname5(entry.name).toLocaleLowerCase()));
+  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail2("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
+  imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
+  if (!imageEntries.length) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
+  if (imageEntries.length > 100) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
+  if (input.expectedImageCount !== void 0 && imageEntries.length !== input.expectedImageCount)
+    fail2("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
+  const images = [];
+  for (const [index, entry] of imageEntries.entries()) {
+    input.signal?.throwIfAborted();
+    const handle = await open4(resolve(directory, entry.name), constants3.O_RDONLY | (constants3.O_NOFOLLOW ?? 0)).catch(() => fail2("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
+    try {
+      const first = await handle.stat();
+      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail2("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
+      const bytes = await handle.readFile();
+      const second = await handle.stat();
+      if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
+        fail2("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
+      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename7(entry.name), bytes });
+    } finally {
+      await handle.close();
+    }
+  }
+  return images;
+}
+function catalogMatch(input, catalog) {
+  if (!catalog) return fail2("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+  const query = input.skillQuery.toLocaleLowerCase();
+  const rows = input.skillStrategy === "single" ? catalog.skills.filter((row) => row.executable) : catalog.families;
+  const exact = rows.filter((row) => row.slug.toLocaleLowerCase() === query || row.title.toLocaleLowerCase() === query);
+  if (exact.length === 1) return exact[0];
+  const partial3 = rows.filter((row) => `${row.slug} ${row.title}`.toLocaleLowerCase().includes(query));
+  if (exact.length > 1 || partial3.length > 1) fail2("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
+  if (partial3.length === 1) return partial3[0];
+  return fail2("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
+}
+function boundSkill(value2) {
+  const row = record3(value2), details = record3(row.details);
+  if (typeof row.id !== "string" || typeof row.name !== "string" || typeof row.availableForCurrentPlan !== "boolean" || !Number.isInteger(row.minimumReferenceImages) || typeof details.slug !== "string" || typeof details.title !== "string" || !Array.isArray(details.inputs) || !Array.isArray(details.keeps) || !Array.isArray(details.changes) || typeof details.output !== "string")
+    fail2("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
+  return row;
+}
+function capabilities(value2) {
+  const row = record3(value2), schema2 = record3(row.quoteInputSchema);
+  if (row.available !== true || !Array.isArray(row.models) || !schema2.properties) fail2("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
+  return row;
+}
+function modelMatch(value2, query) {
+  const normalized2 = (text4) => text4.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
+  const target = normalized2(query);
+  const exact = value2.models.filter((model2) => normalized2(model2.id) === target || normalized2(model2.name) === target);
+  if (exact.length > 1) fail2("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
+  const partial3 = exact.length ? exact : value2.models.filter((model2) => normalized2(model2.name).includes(target));
+  if (partial3.length !== 1) fail2(partial3.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial3.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
+  const model = partial3[0];
+  if (!model.availableForCurrentPlan) fail2("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  return model;
+}
+function resolveBatchParameters(input, value2) {
+  const properties = value2.quoteInputSchema.properties ?? {};
+  const selectedModel = input.model ? modelMatch(value2, input.model) : value2.models.find((row) => row.availableForCurrentPlan === true);
+  const model = selectedModel ?? fail2("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
+  if (model.availableForCurrentPlan === false) fail2("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  const ratio = input.ratio ?? (model.ratios.includes("1:1") ? "1:1" : model.ratios[0]);
+  const modelQuality = typeof model.defaultQuality === "string" && model.qualities.includes(model.defaultQuality) ? model.defaultQuality : void 0;
+  const quality = input.quality ?? modelQuality ?? model.qualities[0];
+  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail2("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
+  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail2("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
+  const required3 = new Set(value2.quoteInputSchema.required ?? []), missing = [];
+  if (!ratio && required3.has("ratio")) missing.push("ratio");
+  if (!quality && required3.has("quality")) missing.push("quality");
+  if (missing.length) fail2("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
+  const ecoMode = input.ecoMode ?? false;
+  return {
+    model,
+    ...ratio ? { ratio } : {},
+    ...quality ? { quality } : {},
+    ecoMode,
+    background: input.background ?? "opaque"
+  };
+}
+async function assertOwner(deps, ownerId, namespace) {
+  deps.signal?.throwIfAborted();
+  if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
+    fail2("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+}
+function shuffledWithoutReplacement(values, count2, choose) {
+  if (count2 > values.length) fail2("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+  const pool = [...values], selected = [];
+  while (selected.length < count2) {
+    const index = choose(pool.length);
+    if (!Number.isInteger(index) || index < 0 || index >= pool.length) throw new Error("Invalid random index");
+    selected.push(pool.splice(index, 1)[0]);
+  }
+  return selected;
+}
+function expandNativeTaskInput(raw) {
+  if (Object.keys(raw).some((key) => !["stages", "taskName"].includes(key)) || !Array.isArray(raw.stages) || !raw.stages.length || raw.stages.length > 10)
+    fail2("INVALID_ARGUMENT", "\u6574\u5355\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879\u3002");
+  const rawStages = raw.stages;
+  const ids2 = /* @__PURE__ */ new Set();
+  const stages = rawStages.map((value2, index) => {
+    const stage = record3(value2), id2 = text2(stage.id, `stages[${index}].id`, 40);
+    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail2("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "skill", "generation", "local"]), `stages[${index}]`);
+    ids2.add(id2);
+    const source = record3(stage.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
+    const sourceChoices = [typeof folderPath === "string", typeof fromStage === "string", Array.isArray(referenceIds)].filter(Boolean).length;
+    rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"]), `stages[${index}].source`);
+    if (sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
+      fail2("INVALID_ARGUMENT", "\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+    const scope = source.scope ?? "all";
+    if (!["all", "first", "indexes"].includes(String(scope))) fail2("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
+    if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail2("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
+    const imageIndexes = scope === "first" ? [0] : scope === "indexes" ? source.indexes : void 0;
+    const skill = record3(stage.skill);
+    rejectUnknownField(skill, /* @__PURE__ */ new Set(["query", "source", "favoriteFolder", "strategy"]), `stages[${index}].skill`);
+    const strategy = String(skill.strategy);
+    if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail2("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
+    const generation = stage.generation === void 0 ? {} : record3(stage.generation);
+    rejectUnknownField(generation, generationFieldSet, `stages[${index}].generation`);
+    const local = stage.local === void 0 ? void 0 : record3(stage.local);
+    let processingPresetPath;
+    const processingPlan = [];
+    if (local) {
+      const choices = [local.presetPath, local.actions, local.exactPlan].filter((value3) => value3 !== void 0).length;
+      rejectUnknownField(local, /* @__PURE__ */ new Set(["presetPath", "actions", "exactPlan"]), `stages[${index}].local`);
+      if (choices !== 1)
+        fail2("INVALID_ARGUMENT", "\u672C\u5730\u52A0\u5DE5\u5FC5\u987B\u9009\u62E9\u9884\u8BBE\u8DEF\u5F84\u6216\u660E\u786E\u52A8\u4F5C\u3002");
+      if (local.presetPath !== void 0) processingPresetPath = text2(local.presetPath, "local.presetPath", 4096);
+      else if (local.exactPlan !== void 0) processingPlan.push(...parseProcessingPlan(local.exactPlan) ?? []);
+      else {
+        if (!Array.isArray(local.actions) || local.actions.length > 10) fail2("INVALID_ARGUMENT", "\u672C\u5730\u52A8\u4F5C\u65E0\u6548\u3002");
+        const actions = local.actions;
+        for (const [actionIndex, value3] of actions.entries()) {
+          const action = record3(value3);
+          rejectUnknownField(action, /* @__PURE__ */ new Set(["type", "rows", "columns"]), `stages[${index}].local.actions[${actionIndex}]`);
+          if (action.type !== "grid-split" || !Number.isInteger(action.rows) || Number(action.rows) < 1 || Number(action.rows) > 6 || !Number.isInteger(action.columns) || Number(action.columns) < 1 || Number(action.columns) > 6)
+            fail2("UNSUPPORTED_LOCAL_ACTION", "\u5F53\u524D\u9AD8\u5C42\u5165\u53E3\u53EA\u652F\u6301 grid-split\uFF1B\u5176\u4ED6\u52A8\u4F5C\u8BF7\u63D0\u4F9B\u5DF2\u4FDD\u5B58\u7684 PodPlo \u5DE5\u5177\u7BB1\u9884\u8BBE\u3002");
+          processingPlan.push({
+            id: `grid-${actionIndex + 1}`,
+            label: `${String(action.rows)}\xD7${String(action.columns)} \u5207\u56FE`,
+            toolName: GRID_SPLIT_OPERATION_NAME,
+            options: { rows: action.rows, cols: action.columns }
+          });
+        }
+      }
+    }
+    return {
+      id: id2,
+      ...stage.name === void 0 ? {} : { name: text2(stage.name, "stage.name", 80) },
+      source: { ...typeof folderPath === "string" ? { folderPath: text2(folderPath, "source.folderPath", 4096) } : Array.isArray(referenceIds) ? { referenceAssetIds: referenceIds } : { stageId: text2(fromStage, "source.fromStage", 40) }, ...imageIndexes ? { imageIndexes } : {} },
+      ...source.expectedImageCount === void 0 ? {} : { expectedImageCount: source.expectedImageCount },
+      skillQuery: text2(skill.query, "skill.query", 160),
+      skillStrategy: strategy,
+      ...skill.source === void 0 ? {} : { skillSource: skill.source },
+      ...skill.favoriteFolder === void 0 ? {} : { skillFolder: text2(skill.favoriteFolder, "skill.favoriteFolder", 80) },
+      ...generation,
+      ...processingPresetPath ? { processingPresetPath } : {},
+      processingPlan
+    };
+  });
+  return { workflow: { stages } };
+}
+async function prepareNativeTask(raw, deps) {
+  const expanded = expandNativeTaskInput(raw);
+  const prepared = await prepareNativeSkillBatch(expanded, deps);
+  if (raw.taskName !== void 0) prepared.taskName = text2(raw.taskName, "taskName", 100);
+  if (expanded.workflow === void 0 && Array.isArray(prepared.items)) {
+    const source = record3(raw.stages[0]), id2 = text2(source.id, "stage.id", 40);
+    const label = source.name === void 0 ? id2 : text2(source.name, "stage.name", 80);
+    prepared.items = prepared.items.map((item) => ({ ...item, stage: { id: id2, label, order: 0 } }));
+  }
+  return prepared;
+}
+async function prepareNativeSkillBatch(raw, deps) {
+  if (raw.workflow !== void 0) return prepareWorkflowBatch(raw, deps);
+  if (raw.groups !== void 0) return prepareGroupedBatch(raw, deps);
+  const input = parseInput(raw);
+  if (input.folderPath && !deps.isFolderAuthorized(input.folderPath)) fail2("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
+  deps.signal?.throwIfAborted();
+  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
+  const processingPlan = await presetProcessing(input, deps);
+  const personal = await personalMatch(input, deps);
+  if (input.skillSource === "personal" && !personal) fail2("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
+  if (input.skillSource === "favorite" && !deps.favoriteSkills) fail2("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
+  const favoriteStrategy = input.skillStrategy === "random-per-image-reuse" ? "random-per-image" : input.skillStrategy;
+  const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: favoriteStrategy }, deps.favoriteSkills) : void 0;
+  const favoritePool = favorite?.kind === "folder-pool" ? favorite : void 0;
+  const favoriteItem = favorite && favorite.kind !== "folder-pool" ? favorite : void 0;
+  if (input.skillSource !== "personal") await deps.online.refreshPublicSkills();
+  await assertOwner(deps, ownerId, namespace);
+  const catalog = deps.online.snapshot().publicDirectory?.catalog;
+  if (personal && input.skillSource === "auto" && catalog?.skills.some((row) => row.executable && [row.slug, row.title].some((value2) => value2.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase())))
+    fail2("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
+  if (favoritePool && !catalog) fail2("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+  const match = personal || favoritePool ? void 0 : catalogMatch(favoriteItem ? { ...input, skillQuery: favoriteItem.slug } : input, catalog);
+  let title, members;
+  if (input.skillStrategy === "single") {
+    const skill = personal ?? boundSkill(await deps.online.skillDetails(match.slug));
+    if (!skill.availableForCurrentPlan || skill.minimumReferenceImages > 1)
+      fail2("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
+    title = skill.details.title;
+    members = [skill];
+  } else if (favoritePool) {
+    title = favoritePool.folderName;
+    members = [];
+    for (const candidate2 of favoritePool.members) {
+      const rows = (await deps.online.skills(candidate2.slug)).filter((row) => row.slug === candidate2.slug);
+      if (rows.length !== 1) continue;
+      const publicRow = catalog.skills.find((row) => row.slug === candidate2.slug && row.executable);
+      if (!publicRow) continue;
+      const member = boundSkill({ ...rows[0], details: {
+        slug: publicRow.slug,
+        title: publicRow.title,
+        summary: publicRow.summary,
+        description: publicRow.description,
+        inputs: publicRow.inputs,
+        keeps: publicRow.keeps,
+        changes: publicRow.changes,
+        output: publicRow.output
+      } });
+      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
+    }
+    if (!members.length) fail2("SKILL_FAVORITE_POOL_UNAVAILABLE", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879 Skill\u3002");
+  } else {
+    const family = match;
+    title = family.title;
+    members = [];
+    for (const slug2 of family.memberSlugs) {
+      const rows = (await deps.online.skills(slug2)).filter((row) => row.slug === slug2);
+      if (rows.length !== 1) continue;
+      const publicRow = catalog.skills.find((row) => row.slug === slug2 && row.executable);
+      if (!publicRow) continue;
+      const member = boundSkill({ ...rows[0], details: {
+        slug: publicRow.slug,
+        title: publicRow.title,
+        summary: publicRow.summary,
+        description: publicRow.description,
+        inputs: publicRow.inputs,
+        keeps: publicRow.keeps,
+        changes: publicRow.changes,
+        output: publicRow.output
+      } });
+      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
+    }
+    if (!members.length) fail2("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879\u6210\u5458\u3002");
+  }
+  if (!personal && deps.online.snapshot().publicDirectory?.catalog?.contentVersion !== catalog.contentVersion)
+    fail2("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+  await assertOwner(deps, ownerId, namespace);
+  const currentCapabilities = capabilities(await deps.generationCapabilities());
+  const parameters = resolveBatchParameters(input, currentCapabilities), { model } = parameters;
+  const referenceLimit = parameters.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
+  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail2("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
+  const background = backgroundArgs(
+    currentCapabilities.quoteInputSchema.properties ?? {},
+    model,
+    parameters.background === "transparent"
+  );
+  if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail2("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
+  const allImages = deps.sourceOccurrences ? deps.sourceOccurrences.map((row, index) => {
+    if (!row || typeof row.id !== "string" || !row.id || row.id.length > 240 || /[/\\\x00\r\n]/u.test(row.id) || typeof row.name !== "string" || !row.name.trim() || row.name.length > 255) fail2("INVALID_ARGUMENT", `Host \u865A\u62DF\u56FE\u7247 ${index + 1} \u65E0\u6548\u3002`);
+    return { id: row.id, name: row.name, bytes: new Uint8Array() };
+  }) : input.folderPath ? await readTrustedImageFolder({
+    folderPath: input.folderPath,
+    cwd: deps.cwd,
+    expectedImageCount: input.imageIndexes ? void 0 : input.expectedImageCount,
+    signal: deps.signal
+  }) : input.referenceAssetIds.map((id2, index) => ({ id: id2, name: `\u4F1A\u8BDD\u56FE\u7247-${index + 1}`, bytes: new Uint8Array() }));
+  if (input.imageIndexes?.some((index) => index >= allImages.length))
+    fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9009\u62E9\u4E86\u6587\u4EF6\u5939\u4E2D\u4E0D\u5B58\u5728\u7684\u56FE\u7247\u3002");
+  const images = input.imageIndexes ? input.imageIndexes.map((index) => allImages[index]) : allImages;
+  if (input.expectedImageCount !== void 0 && images.length !== input.expectedImageCount)
+    fail2("LOCAL_IMAGE_COUNT_MISMATCH", `\u5DE5\u4F5C\u6D41\u9009\u4E2D ${images.length} \u5F20\u56FE\u7247\uFF0C\u4E0E\u58F0\u660E\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
+  const choose = deps.randomIndex ?? randomInt;
+  let assignments;
+  if (input.skillStrategy === "random-per-image") assignments = shuffledWithoutReplacement(members, images.length, choose);
+  else if (input.skillStrategy === "random-per-image-reuse") assignments = images.map(() => {
+    const index = choose(members.length);
+    if (!Number.isInteger(index) || index < 0 || index >= members.length) throw new Error("Invalid random index");
+    return members[index];
+  });
+  else if (input.skillStrategy === "random-shared") {
+    const selected = members[choose(members.length)];
+    assignments = Array.from({ length: images.length }, () => selected);
+  } else assignments = Array.from({ length: images.length }, () => members[0]);
+  const verified = /* @__PURE__ */ new Set();
+  for (const skill of assignments) {
+    if (verified.has(skill.id)) continue;
+    await deps.verifySelectedSkill(skill.personal ? null : skill.details.slug, skill.id);
+    verified.add(skill.id);
+  }
+  await assertOwner(deps, ownerId, namespace);
+  const referenceAssetIds = deps.sourceOccurrences ? images.map((image) => image.id) : input.folderPath ? await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images }) : images.map((image) => image.id);
+  if (referenceAssetIds.length !== images.length || input.folderPath && referenceAssetIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
+    fail2("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
+  await assertOwner(deps, ownerId, namespace);
+  const items = referenceAssetIds.map((referenceAssetId, index) => {
+    const skill = assignments[index];
+    return {
+      skillId: skill.id,
+      sourceName: images[index].name,
+      pricingReferenceCount: (skill.referenceCount ?? 0) + 1,
+      args: {
+        prompt: input.instructions,
+        modelId: model.id,
+        templateId: skill.id,
+        referenceAssetIds: [referenceAssetId],
+        ...parameters.ratio ? { ratio: parameters.ratio } : {},
+        ...parameters.quality ? { quality: parameters.quality } : {},
+        webSearch: false,
+        imageSearch: false,
+        ecoMode: parameters.ecoMode,
+        count: 1,
+        ...background
+      }
+    };
+  });
+  deps.signal?.throwIfAborted();
+  return {
+    intentId: (deps.createId ?? randomUUID9)(),
+    planVersion: 1,
+    taskName: `${title} \xB7 ${items.length} \u5F20`,
+    expectedOutputCount: items.length,
+    processingPlan,
+    items
+  };
+}
+async function prepareWorkflowBatch(raw, deps) {
+  if (Object.keys(raw).some((key) => !["workflow", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
+    fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u6307\u5B9A\u9636\u6BB5\u53CA\u5171\u4EAB\u751F\u56FE\u53C2\u6570\u3002");
+  const workflow = record3(raw.workflow), rawStages = workflow.stages;
+  const { workflow: _workflow, ...shared } = raw;
+  if (Object.keys(workflow).some((key) => key !== "stages") || !Array.isArray(rawStages) || !rawStages.length || rawStages.length > 10)
+    fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u65E0\u6548\u3002");
+  const stageIds = /* @__PURE__ */ new Set();
+  const parsed = rawStages.map((value2, index) => {
+    const stage = record3(value2), id2 = text2(stage.id, `workflow.stages[${index}].id`, 40);
+    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    stageIds.add(id2);
+    const workflowStageFields = /* @__PURE__ */ new Set([
+      "id",
+      "name",
+      "source",
+      "skillQuery",
+      "skillSource",
+      "skillFolder",
+      "skillStrategy",
+      "expectedImageCount",
+      "processingPresetPath",
+      "processingPlan",
+      ...generationFieldNames
+    ]);
+    rejectUnknownField(stage, workflowStageFields, `workflow.stages[${index}]`);
+    const name2 = stage.name === void 0 ? id2 : text2(stage.name, `workflow.stages[${index}].name`, 80);
+    const source = record3(stage.source);
+    rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "stageId", "imageIndexes"]), `workflow.stages[${index}].source`);
+    const folderPath = source.folderPath === void 0 ? void 0 : text2(source.folderPath, `workflow.stages[${index}].source.folderPath`, 4096);
+    const referenceAssetIds = source.referenceAssetIds;
+    const sourceStageId = source.stageId === void 0 ? void 0 : text2(source.stageId, `workflow.stages[${index}].source.stageId`, 40);
+    const sourceChoices = [folderPath !== void 0, referenceAssetIds !== void 0, sourceStageId !== void 0].filter(Boolean).length;
+    if (sourceChoices !== 1 || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((value3) => typeof value3 !== "string" || !value3 || value3.length > 240 || /[/\\\x00\r\n]/u.test(value3))))
+      fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+    let imageIndexes;
+    if (source.imageIndexes !== void 0) {
+      if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
+      imageIndexes = source.imageIndexes;
+    }
+    const { id: _id, name: _name, source: _source, ...generationFields } = stage;
+    const parsedGeneration = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : referenceAssetIds ? { referenceAssetIds } : { referenceAssetIds: ["__deferred__"] } }, `workflow.stages[${index}]`);
+    const { folderPath: _folderPath, referenceAssetIds: _referenceAssetIds, imageIndexes: _imageIndexes, ...generation } = parsedGeneration;
+    return { id: id2, name: name2, folderPath, referenceAssetIds, sourceStageId, imageIndexes, generation };
+  });
+  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
+  for (const stage of parsed) {
+    if (stage.folderPath && !deps.isFolderAuthorized(stage.folderPath))
+      fail2("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u5DE5\u4F5C\u6D41\u4E2D\u7684\u6BCF\u4E2A\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+    await presetProcessing(stage.generation, deps);
+    await assertOwner(deps, ownerId, namespace);
+  }
+  const referencedStages = new Set(parsed.flatMap((stage) => stage.sourceStageId ? [stage.sourceStageId] : []));
+  const items = [], steps = [], stages = /* @__PURE__ */ new Map();
+  const names = [];
+  for (const [stageIndex, stage] of parsed.entries()) {
+    let rootSource, selectedSeedIndexes, parent;
+    let selectedParentPositions = [];
+    let preparedChild;
+    if (stage.folderPath || stage.referenceAssetIds) {
+      rootSource = stage.folderPath ? { folderPath: stage.folderPath } : { referenceAssetIds: stage.referenceAssetIds };
+      preparedChild = await prepareNativeSkillBatch({
+        ...shared,
+        ...stage.generation,
+        ...rootSource,
+        ...stage.imageIndexes ? { imageIndexes: stage.imageIndexes, expectedImageCount: stage.generation.expectedImageCount ?? stage.imageIndexes.length } : {}
+      }, deps);
+      const childItems = preparedChild.items;
+      selectedSeedIndexes = stage.imageIndexes ?? childItems.map((_, index) => index);
+    } else {
+      const resolvedParent = stages.get(stage.sourceStageId) ?? fail2("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
+      parent = resolvedParent;
+      rootSource = resolvedParent.rootSource;
+      selectedParentPositions = stage.imageIndexes ?? resolvedParent.itemIndexes.map((_, index) => index);
+      if (selectedParentPositions.some((index) => index >= resolvedParent.itemIndexes.length)) fail2("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
+      selectedSeedIndexes = selectedParentPositions.map((index) => resolvedParent.seedIndexes[index]);
+    }
+    const child = preparedChild ?? await prepareNativeSkillBatch({
+      ...shared,
+      ...stage.generation,
+      ...rootSource,
+      imageIndexes: selectedSeedIndexes,
+      expectedImageCount: stage.generation.expectedImageCount ?? selectedSeedIndexes.length,
+      processingPlan: stage.generation.processingPlan
+    }, deps);
+    await assertOwner(deps, ownerId, namespace);
+    const allChildItems = child.items;
+    if (allChildItems.length !== selectedSeedIndexes.length) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u7684\u5B9A\u4EF7\u53C2\u8003\u8303\u56F4\u53D1\u751F\u53D8\u5316\u3002");
+    const selectedItems = allChildItems.map((item) => structuredClone(item));
+    const offset = items.length;
+    if (offset + selectedItems.length > 100) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u5DE5\u4F5C\u6D41\u8D85\u8FC7 100 \u4E2A AI \u751F\u6210\u9879\uFF0C\u8BF7\u5206\u6279\u3002");
+    for (const [position, item] of selectedItems.entries()) {
+      if (parent) item.dependsOn = { itemIndex: parent.itemIndexes[selectedParentPositions[position]], outputIndex: 0, referenceIndex: 0 };
+      item.stage = { id: stage.id, label: stage.name, order: stageIndex };
+      items.push(item);
+    }
+    const scope = selectedItems.map((_, index) => offset + index);
+    const childSteps = child.processingPlan;
+    if (referencedStages.has(stage.id) && childSteps.length) fail2("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u53F6\u5B50\u9636\u6BB5\u3002");
+    for (const step of childSteps) steps.push({
+      ...step,
+      id: `w${stageIndex}-${step.id}`,
+      ...step.sourceStepId ? { sourceStepId: `w${stageIndex}-${step.sourceStepId}` } : { generationItemIndexes: scope }
+    });
+    stages.set(stage.id, {
+      id: stage.id,
+      rootSource,
+      seedIndexes: selectedSeedIndexes,
+      itemIndexes: scope
+    });
+    names.push(String(child.taskName));
+  }
+  await assertOwner(deps, ownerId, namespace);
+  return {
+    intentId: (deps.createId ?? randomUUID9)(),
+    planVersion: 1,
+    taskName: names.join(" \u2192 ").slice(0, 100),
+    expectedOutputCount: items.length,
+    processingPlan: parseProcessingPlan(steps),
+    items
+  };
+}
+async function prepareGroupedBatch(raw, deps) {
+  if (!Array.isArray(raw.groups) || !raw.groups.length || raw.groups.length > 10 || Object.keys(raw).some((key) => !["groups", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
+    fail2("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
+  const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
+  const { groups, ...shared } = raw;
+  const parsed = groups.map((group, index) => {
+    const row = record3(group);
+    if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
+      fail2("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
+    return parseInput({ ...shared, ...row }, `groups[${index}]`);
+  });
+  for (const input of parsed) {
+    if (!input.folderPath || !deps.isFolderAuthorized(input.folderPath)) fail2("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+    await presetProcessing(input, deps);
+  }
+  const items = [], steps = [], names = [];
+  for (const [index, input] of parsed.entries()) {
+    await assertOwner(deps, owner, namespace);
+    const child = await prepareNativeSkillBatch(input, deps);
+    const childItems = child.items, offset = items.length;
+    if (offset + childItems.length > 100) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u4EFB\u52A1\u8D85\u8FC7 100 \u5F20\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u5206\u6279\u3002");
+    const scope = childItems.map((_, i) => offset + i);
+    const childSteps = child.processingPlan;
+    for (const step of childSteps) steps.push({
+      ...step,
+      id: `g${index}-${step.id}`,
+      ...step.sourceStepId ? { sourceStepId: `g${index}-${step.sourceStepId}` } : { generationItemIndexes: scope }
+    });
+    items.push(...childItems);
+    names.push(String(child.taskName));
+  }
+  await assertOwner(deps, owner, namespace);
+  return {
+    intentId: (deps.createId ?? randomUUID9)(),
+    planVersion: 1,
+    taskName: `${names.join(" / ")}`.slice(0, 100),
+    expectedOutputCount: items.length,
+    processingPlan: parseProcessingPlan(steps),
+    items
+  };
+}
+
+// plugins/podplo-dsh/src/native-local-task.ts
+import { createHash as createHash8 } from "node:crypto";
+import { constants as constants4 } from "node:fs";
+import { lstat as lstat4, open as open5, readdir as readdir2, realpath as realpath5 } from "node:fs/promises";
+import { extname as extname6, isAbsolute as isAbsolute5, join as join6, resolve as resolve2 } from "node:path";
+var imageExtensions2 = /* @__PURE__ */ new Set([".png", ".jpg", ".jpeg", ".webp"]);
+var contentTypes = {
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".webp": "image/webp"
+};
+var identifier = /^[A-Za-z0-9_-]{1,60}$/u;
+var opaque = /^[^/\\\x00\r\n]{1,240}$/u;
+var safeOperation = /^[^/\\\x00\r\n]{1,100}$/u;
+var standalone = { key: "podplo:standalone", name: "\u72EC\u7ACB\u4EFB\u52A1" };
+function record4(value2, label) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new Error(`${label}\u65E0\u6548`);
+  return value2;
+}
+function cleanText(value2, label, max) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /[\x00-\x1f]/u.test(value2)) throw new Error(`${label}\u65E0\u6548`);
+  return value2.trim();
+}
+function rejectUnknown(value2, allowed, label) {
+  if (Object.keys(value2).some((key) => !allowed.includes(key))) throw new Error(`${label}\u5305\u542B\u672A\u77E5\u5B57\u6BB5`);
+}
+function stable(value2) {
+  if (Array.isArray(value2)) return `[${value2.map(stable).join(",")}]`;
+  if (value2 && typeof value2 === "object") return `{${Object.entries(value2).sort(([a], [b]) => a.localeCompare(b)).map(([key, current]) => `${JSON.stringify(key)}:${stable(current)}`).join(",")}}`;
+  return JSON.stringify(value2);
+}
+function digest(value2) {
+  return createHash8("sha256").update(stable(value2)).digest("hex");
+}
+function archiveStepId(stageId, stepId) {
+  return `local-${digest(`${stageId}\0${stepId}`).slice(0, 24)}`;
+}
+function archiveStepLabel(stage, step) {
+  return [...`${stage}\xB7${step}`].slice(0, 60).join("");
+}
+function inputContent(inputs) {
+  return digest(inputs.map((input) => ({
+    name: input.name,
+    kind: input.kind,
+    bytes: createHash8("sha256").update(input.bytes).digest("hex")
+  })));
+}
+function parseSource(raw, index) {
+  const source = record4(raw, `stages[${index}].source`);
+  rejectUnknown(source, ["folderPath", "referenceIds", "fromStage", "scope", "indexes", "expectedImageCount"], `stages[${index}].source`);
+  const choices = [typeof source.folderPath === "string", Array.isArray(source.referenceIds), typeof source.fromStage === "string"].filter(Boolean).length;
+  if (choices !== 1) throw new Error(`stages[${index}].source\u5FC5\u987B\u4E14\u53EA\u80FD\u6307\u5B9A\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247\u6216\u524D\u5E8F\u9636\u6BB5`);
+  const scope = source.scope === void 0 ? "all" : source.scope;
+  if (!["all", "first", "indexes"].includes(String(scope))) throw new Error(`stages[${index}].source.scope\u65E0\u6548`);
+  const indexes = source.indexes;
+  if (scope === "indexes") {
+    if (!Array.isArray(indexes) || !indexes.length || indexes.length > 100 || new Set(indexes).size !== indexes.length || indexes.some((value2) => !Number.isInteger(value2) || Number(value2) < 0 || Number(value2) > 99)) throw new Error(`stages[${index}].source.indexes\u65E0\u6548`);
+  } else if (indexes !== void 0) throw new Error(`stages[${index}].source.indexes\u4EC5\u80FD\u4E0E indexes \u8303\u56F4\u4E00\u8D77\u4F7F\u7528`);
+  let expectedImageCount;
+  if (source.expectedImageCount !== void 0) {
+    if (!Number.isInteger(source.expectedImageCount) || Number(source.expectedImageCount) < 1 || Number(source.expectedImageCount) > 100)
+      throw new Error(`stages[${index}].source.expectedImageCount\u65E0\u6548`);
+    expectedImageCount = Number(source.expectedImageCount);
+  }
+  let referenceIds;
+  if (Array.isArray(source.referenceIds)) {
+    if (!source.referenceIds.length || source.referenceIds.length > 100 || new Set(source.referenceIds).size !== source.referenceIds.length || source.referenceIds.some((value2) => typeof value2 !== "string" || !opaque.test(value2))) throw new Error(`stages[${index}].source.referenceIds\u65E0\u6548`);
+    referenceIds = source.referenceIds;
+  }
+  return {
+    ...typeof source.folderPath === "string" ? { folderPath: cleanText(source.folderPath, "\u6587\u4EF6\u5939\u8DEF\u5F84", 4096) } : {},
+    ...referenceIds ? { referenceIds } : {},
+    ...typeof source.fromStage === "string" ? { fromStage: cleanText(source.fromStage, "\u524D\u5E8F\u9636\u6BB5", 60) } : {},
+    scope,
+    ...Array.isArray(indexes) ? { indexes } : {},
+    ...expectedImageCount ? { expectedImageCount } : {}
+  };
+}
+function parseLocal(raw, stageId) {
+  const local = record4(raw, `stage ${stageId}.local`);
+  rejectUnknown(local, ["presetPath", "exactPlan", "actions"], `stage ${stageId}.local`);
+  const choices = [local.presetPath, local.exactPlan, local.actions].filter((value2) => value2 !== void 0).length;
+  if (choices !== 1) throw new Error(`stage ${stageId}.local\u5FC5\u987B\u4E14\u53EA\u80FD\u6307\u5B9A presetPath\u3001exactPlan \u6216 actions`);
+  if (local.exactPlan !== void 0) {
+    const plan = parseProcessingPlan(local.exactPlan);
+    if (!plan?.length) throw new Error(`stage ${stageId}\u6CA1\u6709\u53EF\u6267\u884C\u7684\u672C\u5730\u52A0\u5DE5\u6B65\u9AA4`);
+    return plan;
+  }
+  if (local.actions !== void 0) {
+    if (!Array.isArray(local.actions) || !local.actions.length || local.actions.length > 10) throw new Error(`stage ${stageId}.local.actions\u65E0\u6548`);
+    return local.actions.map((value2, index) => {
+      const action = record4(value2, `stage ${stageId}.local.actions[${index}]`);
+      rejectUnknown(action, ["type", "rows", "columns"], `stage ${stageId}.local.actions[${index}]`);
+      if (action.type !== "grid-split" || !Number.isInteger(action.rows) || !Number.isInteger(action.columns)) throw new Error("\u672C\u5730\u52A8\u4F5C\u65E0\u6548");
+      return {
+        id: `action-${index + 1}`,
+        label: "\u56FE\u7247\u5206\u5272",
+        toolName: GRID_SPLIT_OPERATION_NAME,
+        options: { rows: Number(action.rows), cols: Number(action.columns) },
+        ...index ? { sourceStepId: `action-${index}` } : {}
+      };
+    });
+  }
+  return [{
+    id: "preset",
+    label: "\u5DE5\u5177\u7BB1\u9884\u8BBE",
+    toolName: TOOLBOX_PIPELINE_NAME,
+    options: { __presetPath: cleanText(local.presetPath, "\u9884\u8BBE\u8DEF\u5F84", 4096) }
+  }];
+}
+function parseNativeLocalTask(raw) {
+  const input = record4(raw, "\u672C\u5730\u4EFB\u52A1");
+  rejectUnknown(input, ["operationId", "taskName", "stages"], "\u672C\u5730\u4EFB\u52A1");
+  if (!Array.isArray(input.stages) || !input.stages.length || input.stages.length > 10) throw new Error("\u672C\u5730\u4EFB\u52A1\u9636\u6BB5\u65E0\u6548");
+  const ids2 = /* @__PURE__ */ new Set();
+  const stages = input.stages.map((value2, index) => {
+    const stage = record4(value2, `stages[${index}]`);
+    rejectUnknown(stage, ["id", "name", "source", "local"], `stages[${index}]`);
+    const id2 = cleanText(stage.id, `stages[${index}].id`, 60);
+    if (!identifier.test(id2) || ids2.has(id2)) throw new Error(`stages[${index}].id\u65E0\u6548\u6216\u91CD\u590D`);
+    const source = parseSource(stage.source, index);
+    if (source.fromStage && !ids2.has(source.fromStage)) throw new Error(`stage ${id2}\u53EA\u80FD\u5F15\u7528\u524D\u5E8F\u9636\u6BB5`);
+    ids2.add(id2);
+    return {
+      id: id2,
+      name: stage.name === void 0 ? id2 : cleanText(stage.name, `stages[${index}].name`, 80),
+      source,
+      steps: parseLocal(stage.local, id2)
+    };
+  });
+  const requestedOperationId = input.operationId === void 0 ? void 0 : cleanText(input.operationId, "operationId", 100);
+  if (requestedOperationId && !safeOperation.test(requestedOperationId)) throw new Error("operationId\u65E0\u6548");
+  return {
+    taskName: input.taskName === void 0 ? stages.map((stage) => stage.name).join(" \u2192 ") : cleanText(input.taskName, "taskName", 120),
+    ...requestedOperationId ? { requestedOperationId } : {},
+    stages
+  };
+}
+function selectScope(inputs, source) {
+  let selected = inputs;
+  if (source.scope === "first") selected = inputs.slice(0, 1);
+  if (source.scope === "indexes") {
+    if (source.indexes.some((index) => index >= inputs.length)) throw new Error("\u56FE\u7247\u8303\u56F4\u8D85\u51FA\u5B9E\u9645\u8F93\u5165\u6570\u91CF");
+    selected = source.indexes.map((index) => inputs[index]);
+  }
+  if (!selected.length) throw new Error("\u672C\u5730\u9636\u6BB5\u6CA1\u6709\u53EF\u6267\u884C\u7684\u56FE\u7247");
+  return selected;
+}
+async function assertSameIdentity(deps, expected) {
+  const current = await deps.authorize();
+  if (current.ownerId !== expected.ownerId || current.namespace !== expected.namespace) throw new Error("\u5F53\u524D\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316");
+}
+async function authorizedFile(path, deps, label) {
+  if (!isAbsolute5(path) || !await deps.isPathAuthorized(path)) throw new Error(`${label}\u672A\u83B7\u7528\u6237\u6388\u6743`);
+  const requested = resolve2(path), stat = await lstat4(requested).catch(() => void 0);
+  if (!stat?.isFile() || stat.isSymbolicLink()) throw new Error(`${label}\u4E0D\u662F\u53EF\u7528\u6587\u4EF6`);
+  const resolved = await realpath5(requested);
+  if (resolved !== requested) throw new Error(`${label}\u4E0D\u5F97\u7ECF\u8FC7\u7B26\u53F7\u94FE\u63A5`);
+  return resolved;
+}
+async function readPreset(path, deps) {
+  deps.signal?.throwIfAborted();
+  const resolved = await authorizedFile(path, deps, "\u5DE5\u5177\u9884\u8BBE");
+  const handle = await open5(resolved, constants4.O_RDONLY | constants4.O_NOFOLLOW);
+  let bytes;
+  try {
+    const before = await handle.stat();
+    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) throw new Error("\u5DE5\u5177\u9884\u8BBE\u6587\u4EF6\u4E3A\u7A7A\u6216\u8D85\u8FC7 1 MB");
+    bytes = await handle.readFile();
+    const after = await handle.stat();
+    if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
+      throw new Error("\u5DE5\u5177\u9884\u8BBE\u5728\u8BFB\u53D6\u671F\u95F4\u53D1\u751F\u53D8\u5316");
+  } finally {
+    await handle.close();
+  }
+  let value2;
+  try {
+    value2 = JSON.parse(bytes.toString("utf8").replace(/^\uFEFF/u, ""));
+  } catch {
+    throw new Error("\u5DE5\u5177\u9884\u8BBE JSON \u65E0\u6548");
+  }
+  return toolboxPresetPlan(value2);
+}
+async function readAuthorizedLocalFolder(path, deps) {
+  deps.signal?.throwIfAborted();
+  if (!isAbsolute5(path) || !await deps.isPathAuthorized(path)) throw new Error("\u56FE\u7247\u6587\u4EF6\u5939\u672A\u83B7\u7528\u6237\u6388\u6743");
+  const requested = resolve2(path), stat = await lstat4(requested).catch(() => void 0), directory = await realpath5(requested).catch(() => "");
+  if (!stat?.isDirectory() || stat.isSymbolicLink() || directory !== requested) throw new Error("\u56FE\u7247\u6587\u4EF6\u5939\u65E0\u6548\u6216\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
+  const candidates = (await readdir2(directory, { withFileTypes: true })).filter((entry) => !entry.name.startsWith(".") && imageExtensions2.has(extname6(entry.name).toLowerCase()));
+  if (candidates.some((entry) => entry.isSymbolicLink() || !entry.isFile())) throw new Error("\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6");
+  const entries = candidates.sort((left, right) => left.name.localeCompare(right.name, "en", { numeric: true, sensitivity: "base" }));
+  if (!entries.length || entries.length > 100) throw new Error("\u6587\u4EF6\u5939\u5FC5\u987B\u76F4\u63A5\u5305\u542B 1\uFF5E100 \u5F20 JPEG\u3001PNG \u6216 WebP \u56FE\u7247");
+  const inputs = [];
+  let total = 0;
+  for (const entry of entries) {
+    deps.signal?.throwIfAborted();
+    const file3 = join6(directory, entry.name), handle = await open5(file3, constants4.O_RDONLY | constants4.O_NOFOLLOW);
+    try {
+      const before = await handle.stat();
+      if (!before.isFile() || before.size < 1 || before.size > 50 * 1024 * 1024) throw new Error(`\u56FE\u7247 ${entry.name} \u4E3A\u7A7A\u6216\u8D85\u8FC7 50 MB`);
+      const bytes = await handle.readFile(), after = await handle.stat();
+      if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
+        throw new Error(`\u56FE\u7247 ${entry.name} \u5728\u8BFB\u53D6\u671F\u95F4\u53D1\u751F\u53D8\u5316`);
+      total += bytes.length;
+      if (total > 250 * 1024 * 1024) throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
+      inputs.push({
+        id: `folder-${digest({ file: entry.name, bytes: createHash8("sha256").update(bytes).digest("hex") }).slice(0, 48)}`,
+        name: entry.name,
+        bytes,
+        kind: "image"
+      });
+    } finally {
+      await handle.close();
+    }
+  }
+  return inputs;
+}
+function replyOf(value2) {
+  const images = Array.isArray(value2.images) ? value2.images : [];
+  const files = Array.isArray(value2.files) ? value2.files : [];
+  if (typeof value2.operationId !== "string" || typeof value2.idempotent !== "boolean" || !images.length && !files.length || [...images, ...files].some((row) => !row || typeof row.id !== "string" || typeof row.name !== "string")) throw new Error("\u672C\u5730\u5DE5\u5177\u8FD4\u56DE\u7684\u7ED3\u679C\u65E0\u6548");
+  return { operationId: value2.operationId, idempotent: value2.idempotent, images, files };
+}
+async function asInputs(results, sessionId, deps) {
+  const values = [];
+  for (const result of results) {
+    deps.signal?.throwIfAborted();
+    values.push(await deps.toolkit.archiveInput(result.id, sessionId));
+  }
+  return values;
+}
+async function prepareNativeLocalTask(raw, sessionId, deps) {
+  try {
+    return await executeNativeLocalTask(raw, sessionId, deps);
+  } catch (cause) {
+    if (cause instanceof PodploPluginError) throw cause;
+    if (deps.signal?.aborted) throw new PodploPluginError("LOCAL_TASK_ABORTED", "\u672C\u5730\u56FE\u7247\u5904\u7406\u5DF2\u505C\u6B62\u3002");
+    const message = cause instanceof Error ? cause.message : "\u672C\u5730\u56FE\u7247\u5904\u7406\u5931\u8D25";
+    const code = /账号|登录态|所有权/u.test(message) ? "SESSION_CHANGED" : /未获用户授权/u.test(message) ? "LOCAL_PATH_NOT_AUTHORIZED" : "LOCAL_TASK_FAILED";
+    throw new PodploPluginError(code, message);
+  }
+}
+async function executeNativeLocalTask(raw, sessionId, deps) {
+  deps.signal?.throwIfAborted();
+  if (!opaque.test(sessionId)) throw new Error("\u539F\u751F\u4F1A\u8BDD\u7F16\u53F7\u65E0\u6548");
+  const parsed = parseNativeLocalTask(raw), identity2 = await deps.authorize();
+  const resolvedPlans = /* @__PURE__ */ new Map();
+  for (const stage of parsed.stages) {
+    deps.signal?.throwIfAborted();
+    const steps = [];
+    for (const step of stage.steps) {
+      if (step.toolName === TOOLBOX_PIPELINE_NAME && "__presetPath" in step.options) {
+        const plan = await readPreset(String(step.options.__presetPath), deps);
+        steps.push({ ...step, options: ToolboxPlanSchema.parse(plan) });
+      } else steps.push(step);
+    }
+    resolvedPlans.set(stage.id, steps);
+  }
+  await assertSameIdentity(deps, identity2);
+  const sourceCache = /* @__PURE__ */ new Map(), stages = /* @__PURE__ */ new Map();
+  for (const stage of parsed.stages) {
+    let inputs = [];
+    if (stage.source.folderPath) {
+      inputs = await readAuthorizedLocalFolder(stage.source.folderPath, deps);
+    } else if (stage.source.referenceIds) {
+      for (const id2 of stage.source.referenceIds) inputs.push(await deps.toolkit.archiveInput(id2, sessionId));
+    }
+    if (!stage.source.fromStage && stage.source.expectedImageCount !== void 0 && inputs.length !== stage.source.expectedImageCount)
+      throw new Error(`stage ${stage.id}\u5B9E\u9645\u8F93\u5165 ${inputs.length} \u5F20\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${stage.source.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4`);
+    sourceCache.set(stage.id, stage.source.fromStage ? [] : selectScope(inputs, stage.source));
+    stages.set(stage.id, { inputs: sourceCache.get(stage.id), outputs: [], resultIds: [] });
+  }
+  const contentSignature = parsed.stages.map((stage) => ({
+    id: stage.id,
+    fromStage: stage.source.fromStage,
+    source: sourceCache.get(stage.id).map((input) => ({ name: input.name, digest: createHash8("sha256").update(input.bytes).digest("hex") })),
+    scope: stage.source.scope,
+    indexes: stage.source.indexes,
+    steps: resolvedPlans.get(stage.id)
+  }));
+  const rootOperationId = parsed.requestedOperationId ?? `local-${digest({ sessionId, taskName: parsed.taskName, contentSignature }).slice(0, 48)}`;
+  const existing = new Map((await deps.toolkit.archiveOperations(sessionId)).items.filter((item) => item.sessionId === sessionId).map((item) => [item.operationId, item]));
+  const receipts = [];
+  const resultFiles = [];
+  const referenceFiles = [];
+  let allIdempotent = true;
+  let taskId = "";
+  const boundInputs = /* @__PURE__ */ new Map();
+  const createdAt = (deps.now ?? (() => /* @__PURE__ */ new Date()))().toISOString();
+  const archivePlan = () => parsed.stages.flatMap((stage) => resolvedPlans.get(stage.id).map((step) => {
+    const operationId2 = `${rootOperationId}:${stage.id}:${step.id}`;
+    const receipt = receipts.find((row) => row.operationId === operationId2);
+    const inputs = receipt?.inputIds ?? boundInputs.get(operationId2);
+    return {
+      ...step,
+      id: archiveStepId(stage.id, step.id),
+      label: archiveStepLabel(stage.name, step.label),
+      ...step.sourceStepId ? { sourceStepId: archiveStepId(stage.id, step.sourceStepId) } : {},
+      ...inputs ? { inputIds: [...inputs] } : {}
+    };
+  }));
+  const plannedOperationIds = parsed.stages.flatMap((stage) => resolvedPlans.get(stage.id).map((step) => `${rootOperationId}:${stage.id}:${step.id}`));
+  const checkpoint = async (status2, allowAborted = false) => {
+    if (!allowAborted) deps.signal?.throwIfAborted();
+    await assertSameIdentity(deps, identity2);
+    const saved = await deps.archive.upsert({
+      localTask: true,
+      key: `local-task:${rootOperationId}`,
+      sessionId,
+      project: deps.projectForSession(sessionId) ?? standalone,
+      name: parsed.taskName,
+      createdAt,
+      status: status2,
+      operationIds: plannedOperationIds,
+      generationAudit: { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
+      processingPlan: archivePlan(),
+      processingRuns: receipts,
+      files: [...referenceFiles, ...resultFiles]
+    }, identity2.ownerId);
+    if (!saved) throw new Error("\u8BE5\u672C\u5730\u4EFB\u52A1\u7684\u5386\u53F2\u8BB0\u5F55\u5DF2\u5220\u9664");
+    taskId = saved;
+    await deps.archive.wait();
+  };
+  for (const stage of parsed.stages.filter((value2) => !value2.source.fromStage)) {
+    deps.signal?.throwIfAborted();
+    const state = stages.get(stage.id);
+    if (stage.source.folderPath) {
+      const firstStep = resolvedPlans.get(stage.id)[0], prior = existing.get(`${rootOperationId}:${stage.id}:${firstStep.id}`);
+      const imported = [];
+      if (prior) {
+        for (const id2 of prior.inputIds) imported.push(await deps.toolkit.archiveInput(id2, sessionId));
+        if (inputContent(imported) !== inputContent(state.inputs)) throw new Error("\u540C\u4E00\u672C\u5730\u4EFB\u52A1\u7F16\u53F7\u7684\u6765\u6E90\u56FE\u7247\u5DF2\u53D8\u5316");
+      } else for (const input of state.inputs) {
+        deps.signal?.throwIfAborted();
+        const admitted = await deps.toolkit.importInput({
+          name: input.name,
+          contentType: contentTypes[extname6(input.name).toLowerCase()],
+          base64: input.bytes.toString("base64")
+        }, sessionId, identity2);
+        imported.push(await deps.toolkit.archiveInput(admitted.id, sessionId));
+      }
+      state.inputs = imported;
+    } else {
+      const firstStep = resolvedPlans.get(stage.id)[0], prior = existing.get(`${rootOperationId}:${stage.id}:${firstStep.id}`);
+      if (prior && stable(prior.inputIds) !== stable(state.inputs.map((input) => input.id)))
+        throw new Error("\u540C\u4E00\u672C\u5730\u4EFB\u52A1\u7F16\u53F7\u7684\u8F93\u5165\u6765\u6E90\u5DF2\u53D8\u5316");
+    }
+    for (const input of state.inputs) referenceFiles.push({ source: { kind: "input", id: input.id, sessionId }, group: "reference", label: input.name });
+  }
+  await checkpoint("processing");
+  let active;
+  try {
+    for (const [stageIndex, stage] of parsed.stages.entries()) {
+      deps.signal?.throwIfAborted();
+      const state = stages.get(stage.id);
+      if (stage.source.fromStage) {
+        const parent = stages.get(stage.source.fromStage);
+        if (stage.source.expectedImageCount !== void 0 && parent.outputs.length !== stage.source.expectedImageCount)
+          throw new Error(`stage ${stage.id}\u5B9E\u9645\u8F93\u5165 ${parent.outputs.length} \u5F20\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${stage.source.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4`);
+        state.inputs = selectScope(parent.outputs, stage.source);
+      }
+      const stepOutputs = /* @__PURE__ */ new Map();
+      for (const step of resolvedPlans.get(stage.id)) {
+        deps.signal?.throwIfAborted();
+        const stepInputs = step.sourceStepId ? stepOutputs.get(step.sourceStepId) ?? [] : state.inputs;
+        if (!stepInputs.length) throw new Error(`stage ${stage.id} \u7684\u6B65\u9AA4 ${step.id} \u6CA1\u6709\u8F93\u5165`);
+        active = { stage, step, inputs: stepInputs };
+        const operationId2 = `${rootOperationId}:${stage.id}:${step.id}`;
+        boundInputs.set(operationId2, stepInputs.map((input) => input.id));
+        let reply;
+        const prior = existing.get(operationId2);
+        if (prior) {
+          if (prior.toolName !== step.toolName || stable(prior.options) !== stable(step.options)) throw new Error("\u540C\u4E00\u672C\u5730\u4EFB\u52A1\u7F16\u53F7\u4E0D\u80FD\u7528\u4E8E\u4E0D\u540C\u7684\u52A0\u5DE5\u8BA1\u5212");
+          if (stable(prior.inputIds) !== stable(stepInputs.map((input) => input.id))) throw new Error("\u540C\u4E00\u672C\u5730\u4EFB\u52A1\u7F16\u53F7\u7684\u8F93\u5165\u6765\u6E90\u5DF2\u53D8\u5316");
+          const results = prior.results;
+          reply = { operationId: operationId2, idempotent: true, images: results.filter((row) => row.kind === "image"), files: results.filter((row) => row.kind === "file") };
+        } else {
+          await assertSameIdentity(deps, identity2);
+          deps.signal?.throwIfAborted();
+          reply = replyOf(await deps.toolkit.processArchived(
+            step.toolName,
+            { operationId: operationId2, ids: stepInputs.map((input) => input.id), options: step.options },
+            sessionId,
+            stepInputs
+          ));
+        }
+        allIdempotent &&= reply.idempotent;
+        const visible = [...reply.images, ...reply.files], outputs = await asInputs(visible, sessionId, deps);
+        stepOutputs.set(step.id, outputs);
+        receipts.push({
+          operationId: operationId2,
+          toolName: step.toolName,
+          label: `${stage.name}\xB7${step.label}`,
+          options: step.options,
+          inputIds: stepInputs.map((input) => input.id),
+          resultIds: visible.map((row) => row.id)
+        });
+        if (taskId) await deps.archive.clearProcessingFailures(taskId, archiveStepId(stage.id, step.id), stepInputs.map((input) => input.id));
+        active = void 0;
+      }
+      const referencedSteps = new Set(resolvedPlans.get(stage.id).flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
+      state.outputs = resolvedPlans.get(stage.id).filter((step) => !referencedSteps.has(step.id)).flatMap((step) => stepOutputs.get(step.id) ?? []);
+      state.resultIds = state.outputs.map((output) => output.id);
+      const finalStep = resolvedPlans.get(stage.id).at(-1);
+      for (const output of state.outputs) resultFiles.push({
+        source: { kind: "local", id: output.id, sessionId },
+        group: "result",
+        label: `${stage.name}\xB7${finalStep.label}`
+      });
+      await checkpoint(stageIndex === parsed.stages.length - 1 ? "completed" : "processing");
+    }
+  } catch (cause) {
+    try {
+      await assertSameIdentity(deps, identity2);
+      if (taskId && active) {
+        const plan = {
+          ...active.step,
+          id: archiveStepId(active.stage.id, active.step.id),
+          label: archiveStepLabel(active.stage.name, active.step.label),
+          ...active.step.sourceStepId ? { sourceStepId: archiveStepId(active.stage.id, active.step.sourceStepId) } : {},
+          inputIds: active.inputs.map((input) => input.id)
+        };
+        const failedAt = (deps.now ?? (() => /* @__PURE__ */ new Date()))().toISOString();
+        const code = cause instanceof PodploPluginError ? cause.code : "LOCAL_PROCESSING_FAILED";
+        for (const input of active.inputs) await deps.archive.recordProcessingFailure(taskId, {
+          stepId: plan.id,
+          inputId: input.id,
+          toolName: active.step.toolName,
+          code,
+          failedAt,
+          planDigest: processingStepDigest(plan)
+        });
+      }
+      if (taskId) await checkpoint(deps.signal?.aborted ? "cancelled" : "failed", true);
+    } catch {
+    }
+    throw cause;
+  }
+  await assertSameIdentity(deps, identity2);
+  const archived = await deps.archive.detail(taskId), complete = archived.audit?.complete === true;
+  const status = complete ? "completed" : archived.saveStatus === "failed" || archived.saveStatus === "missing" ? "failed" : "incomplete";
+  return {
+    taskId,
+    operationId: rootOperationId,
+    idempotent: allIdempotent,
+    complete,
+    status,
+    archive: { saveStatus: archived.saveStatus, resultCount: archived.resultCount, savedCount: archived.savedCount },
+    originalFilesPreserved: true,
+    stages: parsed.stages.map((stage) => ({
+      id: stage.id,
+      name: stage.name,
+      inputCount: stages.get(stage.id).inputs.length,
+      outputCount: stages.get(stage.id).outputs.length,
+      resultIds: stages.get(stage.id).resultIds
+    }))
+  };
+}
+
+// plugins/podplo-dsh/src/native-mixed-task.ts
+function resolveMixedOutput(snapshot, stageId, index) {
+  const stage = snapshot.stages.find((row) => row.id === stageId), output = stage?.outputs.find((row) => row.index === index);
+  if (!stage || !output || output.status === "waiting") return { status: "waiting" };
+  if (output.status === "failed") return { status: "failed", errorCode: output.errorCode ?? stage.errorCode ?? "MIXED_STAGE_FAILED" };
+  return output.assetId ? { status: "ready", assetId: output.assetId } : { status: "waiting" };
+}
+var canonical3 = (value2) => Array.isArray(value2) ? `[${value2.map(canonical3).join(",")}]` : value2 && typeof value2 === "object" ? `{${Object.entries(value2).filter(([, item]) => item !== void 0).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical3(item)}`).join(",")}}` : JSON.stringify(value2) ?? "null";
+var digest2 = (value2) => createHash9("sha256").update(canonical3(value2)).digest("hex");
+var opaqueAssetId = (value2) => typeof value2 === "string" && /^[^/\\\x00\r\n]{1,240}$/u.test(value2);
+function mixedFail(message) {
+  throw new PodploPluginError("INVALID_MIXED_TASK_PLAN", message);
+}
+function object4(value2, label) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) return mixedFail(`${label}\u65E0\u6548\u3002`);
+  return value2;
+}
+function exactKeys(value2, allowed, label) {
+  if (Object.keys(value2).some((key) => !allowed.includes(key))) mixedFail(`${label}\u5305\u542B\u672A\u77E5\u5B57\u6BB5\u3002`);
+}
+function mixedText(value2, label, max, pattern) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /[\x00-\x1f]/u.test(value2) || pattern && !pattern.test(value2)) return mixedFail(`${label}\u65E0\u6548\u3002`);
+  return value2.trim();
+}
+function validateNativeMixedTaskPlan(raw) {
+  const value2 = object4(raw, "\u6DF7\u5408\u4EFB\u52A1\u8BA1\u5212");
+  exactKeys(value2, ["version", "id", "taskName", "digest", "stages"], "\u6DF7\u5408\u4EFB\u52A1\u8BA1\u5212");
+  if (value2.version !== 1 || !Array.isArray(value2.stages) || !value2.stages.length || value2.stages.length > 20) mixedFail("\u6DF7\u5408\u4EFB\u52A1\u8BA1\u5212\u7248\u672C\u6216\u9636\u6BB5\u65E0\u6548\u3002");
+  const id2 = mixedText(value2.id, "plan.id", 100, /^[A-Za-z0-9_-]+$/u), taskName = mixedText(value2.taskName, "plan.taskName", 100);
+  const seen = /* @__PURE__ */ new Map(), itemIndexes = /* @__PURE__ */ new Set();
+  const stages = value2.stages.map((rawStage, order2) => {
+    const stage = object4(rawStage, `stages[${order2}]`), kind = stage.kind;
+    exactKeys(stage, kind === "ai" ? ["id", "label", "order", "kind", "sourceBindings", "itemIndexes", "outputCount"] : ["id", "label", "order", "kind", "sourceBindings", "processingSteps", "outputCount", "outputSources"], `stages[${order2}]`);
+    const stageId = mixedText(stage.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
+    if (seen.has(stageId) || stage.order !== order2 || kind !== "ai" && kind !== "local") mixedFail("\u6DF7\u5408\u9636\u6BB5\u987A\u5E8F\u3001ID \u6216\u7C7B\u578B\u65E0\u6548\u3002");
+    const label = mixedText(stage.label, `stages[${order2}].label`, 80);
+    if (!Array.isArray(stage.sourceBindings) || !stage.sourceBindings.length || stage.sourceBindings.length > 100) mixedFail("\u6DF7\u5408\u9636\u6BB5\u6765\u6E90\u65E0\u6548\u3002");
+    const sourceBindings = stage.sourceBindings.map((rawBinding, bindingIndex) => {
+      const binding = object4(rawBinding, `stages[${order2}].sourceBindings[${bindingIndex}]`);
+      if (binding.kind === "root") {
+        exactKeys(binding, ["kind", "assetId", "name"], "\u6839\u56FE\u6765\u6E90");
+        const assetId = mixedText(binding.assetId, "root.assetId", 240, /^[^/\\\x00\r\n]+$/u);
+        if (!external_exports2.string().uuid().safeParse(assetId).success) mixedFail("\u6839\u56FE\u5FC5\u987B\u662F\u5DF2\u5F52\u5C5E\u5F53\u524D\u8D26\u53F7\u7684\u4E91\u7AEF\u7D20\u6750 UUID\u3002");
+        return { kind: "root", assetId, name: mixedText(binding.name, "root.name", 255) };
+      }
+      if (binding.kind !== "ai" && binding.kind !== "local") mixedFail("\u9636\u6BB5\u6765\u6E90\u7C7B\u578B\u65E0\u6548\u3002");
+      exactKeys(binding, ["kind", "stageId", "itemIndex", "outputIndex", "name"].filter((key) => binding.kind === "ai" || key !== "itemIndex"), "\u9636\u6BB5\u6765\u6E90");
+      const parentId = mixedText(binding.stageId, "binding.stageId", 40, /^[A-Za-z0-9_-]+$/u), parent = seen.get(parentId);
+      if (!parent || parent.kind !== binding.kind) mixedFail("\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u5F15\u7528\u540C\u7C7B\u578B\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
+      if (!Number.isInteger(binding.outputIndex) || Number(binding.outputIndex) < 0 || Number(binding.outputIndex) >= parent.outputCount) mixedFail("\u9636\u6BB5\u8F93\u51FA\u7D22\u5F15\u65E0\u6548\u3002");
+      const name2 = mixedText(binding.name, "binding.name", 255);
+      if (binding.kind === "ai") {
+        if (!Number.isInteger(binding.itemIndex) || !parent.itemIndexes.includes(Number(binding.itemIndex))) mixedFail("AI \u6765\u6E90\u9879\u65E0\u6548\u3002");
+        return { kind: "ai", stageId: parentId, itemIndex: Number(binding.itemIndex), outputIndex: Number(binding.outputIndex), name: name2 };
+      }
+      if (localOutputKinds(parent)[Number(binding.outputIndex)] === "file")
+        mixedFail("PDF \u6216\u5176\u4ED6\u6587\u4EF6\u8F93\u51FA\u4E0D\u80FD\u4F5C\u4E3A\u540E\u7EED AI \u6216\u56FE\u7247\u5DE5\u5177\u8F93\u5165\u3002");
+      return { kind: "local", stageId: parentId, outputIndex: Number(binding.outputIndex), name: name2 };
+    });
+    if (!Number.isInteger(stage.outputCount) || Number(stage.outputCount) < 1 || Number(stage.outputCount) > 400) mixedFail("\u9636\u6BB5\u8F93\u51FA\u6570\u65E0\u6548\u3002");
+    let parsed;
+    if (kind === "ai") {
+      if (!Array.isArray(stage.itemIndexes) || stage.itemIndexes.length !== sourceBindings.length || stage.outputCount !== sourceBindings.length || new Set(stage.itemIndexes).size !== stage.itemIndexes.length || stage.itemIndexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99 || itemIndexes.has(Number(index))))
+        mixedFail("AI \u9636\u6BB5\u751F\u6210\u9879\u7D22\u5F15\u65E0\u6548\u3002");
+      for (const index of stage.itemIndexes) itemIndexes.add(Number(index));
+      parsed = { id: stageId, label, order: order2, kind, sourceBindings, itemIndexes: stage.itemIndexes.map(Number), outputCount: Number(stage.outputCount) };
+    } else {
+      let processingSteps;
+      try {
+        processingSteps = parseProcessingPlan(stage.processingSteps, { allowHostInputs: true }) ?? [];
+      } catch {
+        return mixedFail("\u672C\u5730\u9636\u6BB5\u51BB\u7ED3\u52A0\u5DE5\u8BA1\u5212\u65E0\u6548\u3002");
+      }
+      if (!processingSteps.length || processingSteps.some((step) => step.inputIds || step.generationItemIndexes)) mixedFail("\u672C\u5730\u9636\u6BB5\u4E0D\u5F97\u643A\u5E26\u8FD0\u884C\u65F6\u8F93\u5165\u3002");
+      if (!Array.isArray(stage.outputSources) || stage.outputSources.length !== Number(stage.outputCount) || stage.outputSources.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) >= sourceBindings.length))
+        mixedFail("\u672C\u5730\u9636\u6BB5\u8F93\u51FA\u6765\u6E90\u6620\u5C04\u65E0\u6548\u3002");
+      parsed = {
+        id: stageId,
+        label,
+        order: order2,
+        kind,
+        sourceBindings,
+        processingSteps,
+        outputCount: Number(stage.outputCount),
+        outputSources: stage.outputSources.map(Number)
+      };
+    }
+    seen.set(stageId, parsed);
+    return parsed;
+  });
+  const plan = { version: 1, id: id2, taskName, digest: mixedText(value2.digest, "plan.digest", 64, /^[a-f0-9]{64}$/u), stages };
+  if (plan.digest !== digest2({ version: plan.version, id: plan.id, taskName: plan.taskName, stages: plan.stages })) mixedFail("\u6DF7\u5408\u4EFB\u52A1\u8BA1\u5212\u6458\u8981\u4E0D\u5339\u914D\u3002");
+  return plan;
+}
+function selectedOccurrences(values, source, label) {
+  const scope = source.scope ?? "all";
+  if (!["all", "first", "indexes"].includes(String(scope))) mixedFail(`${label}\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002`);
+  let selected = values;
+  if (scope === "first") selected = values.slice(0, 1);
+  else if (scope === "indexes") {
+    if (!Array.isArray(source.indexes) || !source.indexes.length || source.indexes.length > 100 || new Set(source.indexes).size !== source.indexes.length || source.indexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) >= values.length)) mixedFail(`${label}indexes \u65E0\u6548\u3002`);
+    selected = source.indexes.map((index) => values[index]);
+  } else if (source.indexes !== void 0) mixedFail(`${label}indexes \u4EC5\u80FD\u7528\u4E8E indexes \u8303\u56F4\u3002`);
+  if (!selected.length) mixedFail(`${label}\u6CA1\u6709\u53EF\u6267\u884C\u7684\u56FE\u7247\u3002`);
+  return selected;
+}
+async function frozenLocalPlan(raw, deps) {
+  const local = object4(raw, "local");
+  exactKeys(local, ["presetPath", "exactPlan", "actions"], "local");
+  const choices = [local.presetPath, local.exactPlan, local.actions].filter((value2) => value2 !== void 0).length;
+  if (choices !== 1) mixedFail("\u672C\u5730\u9636\u6BB5\u5FC5\u987B\u4E14\u53EA\u80FD\u6307\u5B9A\u4E00\u79CD\u52A0\u5DE5\u65B9\u5F0F\u3002");
+  let plan;
+  if (local.presetPath !== void 0) plan = await readNativeProcessingPreset(mixedText(local.presetPath, "local.presetPath", 4096), deps);
+  else if (local.exactPlan !== void 0) {
+    try {
+      plan = parseProcessingPlan(local.exactPlan) ?? [];
+    } catch {
+      return mixedFail("\u672C\u5730\u9636\u6BB5 exactPlan \u65E0\u6548\u3002");
+    }
+  } else {
+    if (!Array.isArray(local.actions) || !local.actions.length || local.actions.length > 10) mixedFail("\u672C\u5730\u52A8\u4F5C\u65E0\u6548\u3002");
+    plan = local.actions.map((rawAction, index) => {
+      const action = object4(rawAction, `local.actions[${index}]`);
+      exactKeys(action, ["type", "rows", "columns"], `local.actions[${index}]`);
+      if (action.type !== "grid-split") mixedFail("\u5F53\u524D\u672C\u5730\u52A8\u4F5C\u53EA\u652F\u6301 grid-split\u3002");
+      const options = GridSplitOptionsSchema.parse({ rows: action.rows, cols: action.columns });
+      return {
+        id: `grid-${index + 1}`,
+        label: `${options.rows}\xD7${options.cols} \u5207\u56FE`,
+        toolName: GRID_SPLIT_OPERATION_NAME,
+        options,
+        ...index ? { sourceStepId: `grid-${index}` } : {}
+      };
+    });
+  }
+  if (!plan.length) mixedFail("\u672C\u5730\u9636\u6BB5\u6CA1\u6709\u53EF\u6267\u884C\u6B65\u9AA4\u3002");
+  if (plan.some((step) => step.inputIds || step.generationItemIndexes)) mixedFail("\u672C\u5730\u9636\u6BB5\u4E0D\u5F97\u6307\u5B9A Host \u8FD0\u884C\u65F6\u8F93\u5165\u3002");
+  await deps.authorizeLocalTools(processingPlanAuthorizationTools(plan));
+  return plan;
+}
+function toolMultiplicity(step) {
+  if (step.toolName === GRID_SPLIT_OPERATION_NAME) {
+    const options = GridSplitOptionsSchema.parse(step.options);
+    return options.rows * options.cols;
+  }
+  if (step.toolName === "podplo_outline_images" && step.options.mirror === true) return 2;
+  if (step.toolName === TOOLBOX_PIPELINE_NAME) {
+    const plan = ToolboxPlanSchema.parse(step.options), output = plan.steps.find((row) => row.tool === "export");
+    return output?.tool === "export" && output.options.mirror ? 2 : 1;
+  }
+  return 1;
+}
+function localTerminalOutputs(plan) {
+  const values = /* @__PURE__ */ new Map(), referenced = new Set(plan.flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
+  for (const step of plan) values.set(step.id, (step.sourceStepId ? values.get(step.sourceStepId) ?? 0 : 1) * toolMultiplicity(step));
+  const outputs = plan.filter((step) => !referenced.has(step.id)).map((step) => {
+    const pdf = step.toolName === "podplo_export_images" && step.options.format === "pdf" || step.toolName === TOOLBOX_PIPELINE_NAME && ToolboxPlanSchema.parse(step.options).steps.some((row) => row.tool === "export" && row.options.format === "pdf");
+    return { factor: values.get(step.id) ?? 0, mediaKind: pdf ? "file" : "image" };
+  });
+  const total = outputs.reduce((sum, value2) => sum + value2.factor, 0);
+  if (!total || total > 400) mixedFail("\u672C\u5730\u9636\u6BB5\u5355\u5F20\u8F93\u51FA\u6570\u65E0\u6548\u3002");
+  return outputs;
+}
+function localOutputKinds(stage) {
+  return localTerminalOutputs(stage.processingSteps).flatMap((output) => stage.sourceBindings.flatMap(() => Array.from({ length: output.factor }, () => output.mediaKind)));
+}
+function normalizeMixedStages(rawStages) {
+  const normalized2 = [], reserved = /* @__PURE__ */ new Set();
+  for (const rawStage of rawStages) {
+    const stage = object4(rawStage, "\u6DF7\u5408\u9636\u6BB5"), id2 = mixedText(stage.id, "stage.id", 40, /^[A-Za-z0-9_-]+$/u);
+    if (reserved.has(id2)) mixedFail("\u6DF7\u5408\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    reserved.add(id2);
+  }
+  for (const rawStage of rawStages) {
+    const stage = structuredClone(object4(rawStage, "\u6DF7\u5408\u9636\u6BB5")), id2 = String(stage.id);
+    if (stage.skill === void 0 || stage.local === void 0) {
+      normalized2.push(stage);
+      continue;
+    }
+    let aiId = `__mixed_ai_${digest2(id2).slice(0, 16)}`, suffix = 1;
+    while (reserved.has(aiId)) aiId = `__mixed_ai_${digest2(`${id2}:${suffix++}`).slice(0, 16)}`;
+    reserved.add(aiId);
+    const label = stage.name === void 0 ? id2 : mixedText(stage.name, `stage ${id2}.name`, 80);
+    const local = stage.local;
+    normalized2.push({ ...stage, id: aiId, name: [...`${label}\xB7AI`].slice(0, 80).join(""), local: void 0 });
+    normalized2.push({ id: id2, name: [...`${label}\xB7\u52A0\u5DE5`].slice(0, 80).join(""), source: { fromStage: aiId, scope: "all" }, local });
+  }
+  return normalized2;
+}
+async function compileNativeMixedTask(raw, deps) {
+  exactKeys(raw, ["taskName", "stages"], "\u6DF7\u5408\u4EFB\u52A1");
+  if (!Array.isArray(raw.stages) || !raw.stages.length || raw.stages.length > 10) mixedFail("\u6DF7\u5408\u4EFB\u52A1\u9636\u6BB5\u65E0\u6548\u3002");
+  const capabilityValue = await deps.generationCapabilities(), capabilityRecord = object4(capabilityValue, "\u751F\u56FE\u80FD\u529B");
+  if (capabilityRecord.supportsLocalGenerationOrderReferences !== true)
+    throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u5F53\u524D\u540E\u7AEF\u5C1A\u4E0D\u652F\u6301\u672C\u5730\u5DE5\u5177\u4E0E AI \u751F\u56FE\u4E32\u8054\u6574\u5355\u3002");
+  const compileDeps = { ...deps, generationCapabilities: async () => capabilityValue };
+  const normalizedStages = normalizeMixedStages(raw.stages);
+  const frozenPlans = /* @__PURE__ */ new Map();
+  for (const [index, rawStage] of normalizedStages.entries()) {
+    const stage = object4(rawStage, `stages[${index}]`);
+    if (stage.skill === void 0 === (stage.local === void 0)) mixedFail(`stages[${index}] \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI Skill \u6216\u672C\u5730\u5DE5\u5177\u3002`);
+    if (stage.local !== void 0) frozenPlans.set(index, await frozenLocalPlan(stage.local, deps));
+  }
+  const taskName = raw.taskName === void 0 ? "\u56FE\u7247\u6DF7\u5408\u4EFB\u52A1" : mixedText(raw.taskName, "taskName", 100);
+  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
+  const assertOwner2 = async () => {
+    if (namespace !== deps.online.auth.namespace || ownerId !== await deps.online.workspaceIdentity(true)) throw new PodploPluginError("ACCOUNT_CHANGED", "\u6DF7\u5408\u4EFB\u52A1\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u5316\u3002");
+  };
+  const stages = [], occurrences = /* @__PURE__ */ new Map(), ids2 = /* @__PURE__ */ new Set();
+  const deferredReferenceIds = /* @__PURE__ */ new Set();
+  const items = [];
+  for (const [order2, rawStage] of normalizedStages.entries()) {
+    deps.signal?.throwIfAborted();
+    const stage = object4(rawStage, `stages[${order2}]`);
+    exactKeys(stage, ["id", "name", "source", "skill", "generation", "local"], `stages[${order2}]`);
+    const id3 = mixedText(stage.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
+    if (ids2.has(id3)) mixedFail("\u6DF7\u5408\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    ids2.add(id3);
+    const label = stage.name === void 0 ? id3 : mixedText(stage.name, `stages[${order2}].name`, 80);
+    if (stage.skill === void 0 === (stage.local === void 0)) mixedFail(`\u9636\u6BB5 ${id3} \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI Skill \u6216\u672C\u5730\u5DE5\u5177\u3002`);
+    const source = object4(stage.source, `stages[${order2}].source`);
+    exactKeys(source, ["folderPath", "referenceIds", "fromStage", "scope", "indexes", "expectedImageCount"], `stages[${order2}].source`);
+    const choices = [typeof source.folderPath === "string", Array.isArray(source.referenceIds), typeof source.fromStage === "string"].filter(Boolean).length;
+    if (choices !== 1) mixedFail(`\u9636\u6BB5 ${id3} \u6765\u6E90\u65E0\u6548\u3002`);
+    let available;
+    if (typeof source.folderPath === "string") {
+      const path = mixedText(source.folderPath, "source.folderPath", 4096);
+      const files = await readAuthorizedLocalFolder(path, { isPathAuthorized: deps.isFolderAuthorized, signal: deps.signal });
+      if (source.expectedImageCount !== void 0 && source.expectedImageCount !== files.length) mixedFail(`\u9636\u6BB5 ${id3} \u6587\u4EF6\u5939\u56FE\u7247\u6570\u4E0D\u5339\u914D\u3002`);
+      const assetIds = await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: files });
+      if (assetIds.length !== files.length) mixedFail("\u6839\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\u3002");
+      available = assetIds.map((assetId, index) => ({ binding: { kind: "root", assetId, name: files[index].name }, pricingAssetId: assetId, name: files[index].name, mediaKind: "image" }));
+    } else if (Array.isArray(source.referenceIds)) {
+      if (!source.referenceIds.length || source.referenceIds.length > 100 || new Set(source.referenceIds).size !== source.referenceIds.length || source.referenceIds.some((value2) => typeof value2 !== "string" || !value2 || value2.length > 240 || /[/\\\x00\r\n]/u.test(value2))) mixedFail(`\u9636\u6BB5 ${id3} \u5F15\u7528\u56FE\u7247\u65E0\u6548\u3002`);
+      if (source.expectedImageCount !== void 0 && source.expectedImageCount !== source.referenceIds.length) mixedFail(`\u9636\u6BB5 ${id3} \u5F15\u7528\u56FE\u7247\u6570\u4E0D\u5339\u914D\u3002`);
+      for (const assetId of source.referenceIds) deferredReferenceIds.add(assetId);
+      available = source.referenceIds.map((assetId, index) => ({ binding: { kind: "root", assetId, name: `\u4F1A\u8BDD\u56FE\u7247-${index + 1}` }, pricingAssetId: assetId, name: `\u4F1A\u8BDD\u56FE\u7247-${index + 1}`, mediaKind: "image" }));
+    } else {
+      const parentId = mixedText(source.fromStage, "source.fromStage", 40, /^[A-Za-z0-9_-]+$/u);
+      available = occurrences.get(parentId) ?? mixedFail(`\u9636\u6BB5 ${id3} \u53EA\u80FD\u5F15\u7528\u524D\u5E8F\u9636\u6BB5\u3002`);
+      if (source.expectedImageCount !== void 0 && source.expectedImageCount !== available.length) mixedFail(`\u9636\u6BB5 ${id3} \u524D\u5E8F\u8F93\u51FA\u6570\u4E0D\u5339\u914D\u3002`);
+    }
+    const selected = selectedOccurrences(available, source, `\u9636\u6BB5 ${id3} `);
+    if (stage.skill !== void 0) {
+      if (selected.some((row) => row.mediaKind === "file")) mixedFail(`\u9636\u6BB5 ${id3} \u4E0D\u80FD\u628A PDF \u6216\u5176\u4ED6\u6587\u4EF6\u4F5C\u4E3A AI \u751F\u56FE\u53C2\u8003\u3002`);
+      const skill = object4(stage.skill, `stages[${order2}].skill`), generation = stage.generation === void 0 ? {} : object4(stage.generation, `stages[${order2}].generation`);
+      exactKeys(skill, ["query", "source", "favoriteFolder", "strategy"], `stages[${order2}].skill`);
+      exactKeys(generation, ["model", "ratio", "quality", "ecoMode", "background", "instructions"], `stages[${order2}].generation`);
+      const seeds = [...new Set(selected.map((row) => row.pricingAssetId))];
+      const child = await prepareNativeSkillBatch({
+        referenceAssetIds: seeds,
+        expectedImageCount: selected.length,
+        skillQuery: skill.query,
+        skillSource: skill.source,
+        skillFolder: skill.favoriteFolder,
+        skillStrategy: skill.strategy,
+        processingPlan: [],
+        ...generation
+      }, { ...compileDeps, sourceOccurrences: selected.map((row) => ({ id: row.pricingAssetId, name: row.name })) });
+      const childItems = child.items;
+      if (childItems.length !== selected.length || items.length + childItems.length > 100) mixedFail("\u6DF7\u5408\u4EFB\u52A1 AI \u751F\u6210\u9879\u6570\u65E0\u6548\u3002");
+      const itemIndexes = [];
+      for (const [position, childItem] of childItems.entries()) {
+        const itemIndex = items.length, binding = selected[position].binding;
+        const item = { ...structuredClone(childItem), stage: { id: id3, label, order: order2 } };
+        if (binding.kind === "ai") item.dependsOn = { itemIndex: binding.itemIndex, outputIndex: binding.outputIndex, referenceIndex: 0 };
+        if (binding.kind === "local") item.localDependency = { stageId: binding.stageId, outputIndex: binding.outputIndex, referenceIndex: 0 };
+        items.push(item);
+        itemIndexes.push(itemIndex);
+      }
+      const planStage = { id: id3, label, order: order2, kind: "ai", sourceBindings: selected.map((row) => row.binding), itemIndexes, outputCount: childItems.length };
+      stages.push(planStage);
+      occurrences.set(id3, selected.map((row, position) => ({ binding: { kind: "ai", stageId: id3, itemIndex: itemIndexes[position], outputIndex: 0, name: row.name }, pricingAssetId: row.pricingAssetId, name: row.name, mediaKind: "image" })));
+    } else {
+      if (selected.some((row) => row.mediaKind === "file")) mixedFail(`\u9636\u6BB5 ${id3} \u4E0D\u80FD\u628A PDF \u6216\u5176\u4ED6\u6587\u4EF6\u4F5C\u4E3A\u56FE\u7247\u5DE5\u5177\u8F93\u5165\u3002`);
+      const processingSteps = frozenPlans.get(order2), terminalOutputs = localTerminalOutputs(processingSteps);
+      const multiplier = terminalOutputs.reduce((sum, value2) => sum + value2.factor, 0);
+      if (selected.length * multiplier > 400) mixedFail(`\u9636\u6BB5 ${id3} \u672C\u5730\u8F93\u51FA\u8D85\u8FC7 400 \u4E2A\u3002`);
+      const outputDescriptors = terminalOutputs.flatMap((output) => selected.flatMap((_, sourceIndex) => Array.from({ length: output.factor }, () => ({ sourceIndex, mediaKind: output.mediaKind }))));
+      const outputSources = outputDescriptors.map((row) => row.sourceIndex);
+      const planStage = {
+        id: id3,
+        label,
+        order: order2,
+        kind: "local",
+        sourceBindings: selected.map((row) => row.binding),
+        processingSteps,
+        outputCount: outputSources.length,
+        outputSources
+      };
+      stages.push(planStage);
+      occurrences.set(id3, outputDescriptors.map(({ sourceIndex, mediaKind }, outputIndex) => ({
+        binding: {
+          kind: "local",
+          stageId: id3,
+          outputIndex,
+          name: `${selected[sourceIndex].name}-${outputIndex + 1}`
+        },
+        pricingAssetId: selected[sourceIndex].pricingAssetId,
+        name: `${selected[sourceIndex].name}-${outputIndex + 1}`,
+        mediaKind
+      })));
+    }
+    await assertOwner2();
+  }
+  if (!items.length) mixedFail("\u6DF7\u5408\u7F16\u8BD1\u5668\u9700\u8981\u81F3\u5C11\u4E00\u4E2A AI \u9636\u6BB5\uFF1B\u7EAF\u672C\u5730\u4EFB\u52A1\u4F7F\u7528\u672C\u5730\u5F15\u64CE\u3002");
+  if (deferredReferenceIds.size) {
+    const sourceIds = [...deferredReferenceIds], resolved = await deps.resolveSourceReferences(sourceIds);
+    if (resolved.length !== sourceIds.length || resolved.some((value2) => !external_exports2.string().uuid().safeParse(value2).success))
+      throw new PodploPluginError("MIXED_SOURCE_IMPORT_FAILED", "\u6DF7\u5408\u4EFB\u52A1\u6839\u56FE\u672A\u80FD\u6309\u539F\u987A\u5E8F\u8F6C\u4E3A\u4E91\u7AEF\u7D20\u6750\u3002");
+    const replacements = new Map(sourceIds.map((sourceId, index) => [sourceId, resolved[index]]));
+    for (const stage of stages) for (const binding of stage.sourceBindings) {
+      if (binding.kind === "root" && replacements.has(binding.assetId)) binding.assetId = replacements.get(binding.assetId);
+    }
+    for (const item of items) {
+      const args = item.args, references = args?.referenceAssetIds;
+      if (Array.isArray(references)) args.referenceAssetIds = references.map((value2) => typeof value2 === "string" ? replacements.get(value2) ?? value2 : value2);
+    }
+    await assertOwner2();
+  }
+  const id2 = (deps.createId ?? randomUUID10)(), base2 = { version: 1, id: id2, taskName, stages };
+  const mixedPlan = { ...base2, digest: digest2(base2) };
+  validateNativeMixedTaskPlan(mixedPlan);
+  const prepared = {
+    intentId: (deps.createId ?? randomUUID10)(),
+    planVersion: 1,
+    taskName,
+    expectedOutputCount: items.length,
+    processingPlan: [],
+    items,
+    mixedPlan
+  };
+  return { prepared, mixedPlan };
+}
+async function advanceNativeMixedTask(_plan, _operation, _deps) {
+  const plan = validateNativeMixedTaskPlan(_plan), operation = _operation, deps = _deps;
+  deps.signal?.throwIfAborted();
+  const identity2 = await deps.authorize();
+  if (operation.ownerId !== identity2.ownerId || operation.nativeSessionId !== deps.sessionId)
+    throw new PodploPluginError("SESSION_CHANGED", "\u6DF7\u5408\u4EFB\u52A1\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD\u3002");
+  const owner = digest2(`${identity2.ownerId}\0${identity2.namespace ?? ""}`), session2 = digest2(deps.sessionId);
+  const store = await mixedStore(deps.directory);
+  const existing = store.snapshot().records.find((row) => row.owner === owner && row.session === session2 && row.operationId === operation.operationId);
+  if (existing && existing.planDigest !== plan.digest) throw new PodploPluginError("MIXED_TASK_PLAN_CHANGED", "\u5DF2\u5F00\u59CB\u7684\u6DF7\u5408\u4EFB\u52A1\u4E0D\u80FD\u66F4\u6362\u8BA1\u5212\u3002");
+  let snapshot = existing?.snapshot ?? {
+    version: 1,
+    operationId: operation.operationId,
+    planDigest: plan.digest,
+    status: "pending",
+    stages: plan.stages.map((stage) => ({
+      id: stage.id,
+      kind: stage.kind,
+      status: "waiting",
+      outputs: Array.from({ length: stage.outputCount }, (_, index) => ({ index, status: "waiting" }))
+    }))
+  };
+  const cloudOutputs = new Set(plan.stages.filter((stage) => stage.kind === "ai").flatMap((stage) => stage.sourceBindings.flatMap((binding) => binding.kind === "local" ? [`${binding.stageId}\0${binding.outputIndex}`] : [])));
+  const persist = async () => {
+    await assertRuntimeIdentity(deps, identity2);
+    await store.transaction((state) => {
+      const row = state.records.find((value2) => value2.owner === owner && value2.session === session2 && value2.operationId === operation.operationId);
+      if (row) {
+        row.planDigest = plan.digest;
+        row.snapshot = structuredClone(snapshot);
+      } else state.records.push({ owner, session: session2, operationId: operation.operationId, planDigest: plan.digest, snapshot: structuredClone(snapshot) });
+    });
+  };
+  for (const stage of plan.stages) {
+    deps.signal?.throwIfAborted();
+    const state = snapshot.stages.find((row) => row.id === stage.id);
+    if (stage.kind === "ai") {
+      const outputs2 = stage.itemIndexes.map((itemIndex, index) => {
+        const item = operation.items[itemIndex];
+        if (!item) return { index, status: "failed", errorCode: "MIXED_AI_ITEM_MISSING" };
+        const output = item.outputs?.find((row) => row.index === 0);
+        if (item.status === "submission_unknown") return { index, status: "failed", errorCode: "DEPENDENCY_RESULT_UNKNOWN" };
+        if (item.status === "failed" || item.status === "cancelled") return { index, status: "failed", errorCode: item.errorCode ?? output?.failureCode ?? "MIXED_AI_FAILED" };
+        if (item.status === "completed") return opaqueAssetId(output?.assetId) && ["completed", "succeeded", "ready"].includes(output.status) ? { index, status: "ready", assetId: output.assetId } : { index, status: "failed", errorCode: output?.failureCode ?? "DEPENDENCY_OUTPUT_UNAVAILABLE" };
+        return { index, status: "waiting" };
+      });
+      state.outputs = outputs2;
+      state.status = outputs2.some((row) => row.status === "waiting") ? "running" : outputs2.some((row) => row.status === "failed") ? "failed" : "completed";
+      state.errorCode = state.status === "failed" ? "MIXED_AI_PARTIAL_FAILURE" : void 0;
+      continue;
+    }
+    if (state.outputs.some((row) => row.status === "ready") || state.status === "failed" && !state.outputs.some((row) => row.status === "waiting")) continue;
+    const sources = stage.sourceBindings.map((binding) => resolveBinding(binding, snapshot, operation, plan));
+    if (sources.some((row) => row.status === "waiting")) {
+      state.status = "waiting";
+      continue;
+    }
+    const healthy = sources.map((row, index) => ({ row, index })).filter((value2) => value2.row.status === "ready");
+    const outputs = stage.outputSources.map((sourceIndex, index) => sources[sourceIndex].status === "failed" ? { index, status: "failed", errorCode: "DEPENDENCY_FAILED" } : { index, status: "waiting" });
+    if (healthy.length) {
+      state.status = "running";
+      await persist();
+      try {
+        const local = await deps.runLocal({
+          operationId: `mixed-${digest2({ operationId: operation.operationId, stageId: stage.id }).slice(0, 48)}`,
+          taskName: `${plan.taskName}\xB7${stage.label}`.slice(0, 100),
+          stageId: stage.id,
+          stageLabel: stage.label,
+          referenceIds: healthy.map((value2) => value2.row.referenceId),
+          processingSteps: stage.processingSteps,
+          expectedOutputCount: stage.outputCount,
+          failedInputCount: sources.length - healthy.length,
+          signal: deps.signal
+        });
+        const healthyIndexes = new Set(healthy.map((value2) => value2.index));
+        const healthyOutputSlots = stage.outputSources.map((sourceIndex, outputIndex) => ({ sourceIndex, outputIndex })).filter((value2) => healthyIndexes.has(value2.sourceIndex));
+        if (local.stages.length !== 1 || local.stages[0].resultIds.length !== healthyOutputSlots.length)
+          throw new PodploPluginError("MIXED_LOCAL_OUTPUT_MISMATCH", "\u672C\u5730\u9636\u6BB5\u8F93\u51FA\u6570\u4E0E\u51BB\u7ED3\u8BA1\u5212\u4E0D\u4E00\u81F4\u3002");
+        if (!local.complete) throw new PodploPluginError("MIXED_LOCAL_ARCHIVE_INCOMPLETE", "\u672C\u5730\u9636\u6BB5\u6210\u679C\u5C1A\u672A\u5B8C\u6574\u5F52\u6863\u3002");
+        for (const [resultPosition, { outputIndex }] of healthyOutputSlots.entries()) {
+          const resultId = local.stages[0].resultIds[resultPosition];
+          if (!cloudOutputs.has(`${stage.id}\0${outputIndex}`)) {
+            outputs[outputIndex] = { index: outputIndex, status: "ready", localResultId: resultId };
+            continue;
+          }
+          try {
+            const assetId = await deps.uploadLocalResult({
+              resultId,
+              sessionId: deps.sessionId,
+              idempotencyKey: `mixed-${digest2({ operationId: operation.operationId, stageId: stage.id, outputIndex }).slice(0, 48)}`
+            });
+            if (!opaqueAssetId(assetId)) throw new Error("\u672C\u5730\u7ED3\u679C\u4E0A\u4F20\u8FD4\u56DE\u4E86\u65E0\u6548\u7D20\u6750 ID");
+            outputs[outputIndex] = { index: outputIndex, status: "ready", assetId, localResultId: resultId };
+          } catch {
+            outputs[outputIndex] = { index: outputIndex, status: "failed", localResultId: resultId, errorCode: "MIXED_LOCAL_UPLOAD_FAILED" };
+          }
+        }
+      } catch (cause) {
+        const code = cause instanceof PodploPluginError ? cause.code : "MIXED_LOCAL_FAILED";
+        for (const output of outputs) if (output.status === "waiting") {
+          output.status = "failed";
+          output.errorCode = code;
+        }
+      }
+    }
+    state.outputs = outputs;
+    state.status = outputs.some((row) => row.status === "waiting") ? "waiting" : outputs.some((row) => row.status === "failed") ? "failed" : "completed";
+    state.errorCode = state.status === "failed" ? "MIXED_LOCAL_PARTIAL_FAILURE" : void 0;
+    await persist();
+  }
+  snapshot.status = snapshot.stages.some((stage) => stage.status === "waiting" || stage.status === "running") ? "pending" : snapshot.stages.some((stage) => stage.status === "failed") ? "failed" : "completed";
+  await persist();
+  return snapshot;
+}
+function resolveBinding(binding, snapshot, operation, plan) {
+  if (binding.kind === "root") return { status: "ready", referenceId: binding.assetId };
+  if (binding.kind === "local") {
+    const stage2 = snapshot.stages.find((row) => row.id === binding.stageId), output2 = stage2?.outputs.find((row) => row.index === binding.outputIndex);
+    if (!output2 || output2.status === "waiting") return { status: "waiting" };
+    if (output2.status === "failed") return { status: "failed", errorCode: output2.errorCode ?? stage2?.errorCode ?? "MIXED_STAGE_FAILED" };
+    const referenceId = output2.localResultId ?? output2.assetId;
+    return referenceId ? { status: "ready", referenceId } : { status: "failed", errorCode: "MIXED_LOCAL_RESULT_MISSING" };
+  }
+  const stage = plan.stages.find((row) => row.id === binding.stageId);
+  if (!stage || stage.kind !== "ai" || !stage.itemIndexes.includes(binding.itemIndex)) return { status: "failed", errorCode: "MIXED_AI_BINDING_INVALID" };
+  const item = operation.items[binding.itemIndex], output = item?.outputs?.find((row) => row.index === binding.outputIndex);
+  if (item?.status === "submission_unknown") return { status: "failed", errorCode: "DEPENDENCY_RESULT_UNKNOWN" };
+  if (!item || item.status === "failed" || item.status === "cancelled") return { status: "failed", errorCode: item?.errorCode ?? output?.failureCode ?? "MIXED_AI_FAILED" };
+  if (item.status === "completed") return opaqueAssetId(output?.assetId) && ["completed", "succeeded", "ready"].includes(output.status) ? { status: "ready", referenceId: output.assetId } : { status: "failed", errorCode: output?.failureCode ?? "DEPENDENCY_OUTPUT_UNAVAILABLE" };
+  return { status: "waiting" };
+}
+async function assertRuntimeIdentity(deps, expected) {
+  const actual = await deps.authorize();
+  if (actual.ownerId !== expected.ownerId || actual.namespace !== expected.namespace) throw new PodploPluginError("SESSION_CHANGED", "\u6DF7\u5408\u4EFB\u52A1\u6267\u884C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u5316\u3002");
+}
+var outputSchema = external_exports2.object({
+  index: external_exports2.number().int().nonnegative(),
+  status: external_exports2.enum(["waiting", "ready", "failed"]),
+  assetId: external_exports2.string().optional(),
+  localResultId: external_exports2.string().optional(),
+  errorCode: external_exports2.string().optional()
+}).strict();
+var snapshotSchema = external_exports2.object({
+  version: external_exports2.literal(1),
+  operationId: external_exports2.string(),
+  planDigest: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  status: external_exports2.enum(["pending", "completed", "failed"]),
+  stages: external_exports2.array(external_exports2.object({
+    id: external_exports2.string(),
+    kind: external_exports2.enum(["ai", "local"]),
+    status: external_exports2.enum(["waiting", "running", "completed", "failed"]),
+    outputs: external_exports2.array(outputSchema),
+    errorCode: external_exports2.string().optional()
+  }).strict())
+}).strict();
+var mixedStoreState = external_exports2.object({ schemaVersion: external_exports2.literal(1), records: external_exports2.array(external_exports2.object({
+  owner: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  session: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  operationId: external_exports2.string(),
+  planDigest: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
+  snapshot: snapshotSchema
+}).strict()).max(1e4) }).strict();
+var mixedStores = /* @__PURE__ */ new Map();
+function mixedStore(directory) {
+  const path = join7(directory, "mixed-tasks-v1", "state.json"), current = mixedStores.get(path);
+  if (current) return current;
+  const loading = (async () => {
+    const store = new AtomicStore(
+      path,
+      () => ({ schemaVersion: 1, records: [] }),
+      (value2) => mixedStoreState.parse(value2)
+    );
+    await store.load();
+    return store;
+  })();
+  mixedStores.set(path, loading);
+  return loading;
+}
+async function closeNativeMixedTasks(directory) {
+  const path = join7(directory, "mixed-tasks-v1", "state.json"), loading = mixedStores.get(path);
+  if (!loading) return;
+  try {
+    await (await loading).flush();
+  } finally {
+    if (mixedStores.get(path) === loading) mixedStores.delete(path);
+  }
+}
+
+// plugins/podplo-dsh/src/generation-progress-state.ts
+function generationStatusAttention(value2) {
+  const items = Array.isArray(value2) ? value2 : [];
+  const directlyBlocked = (item) => !!item && (!!item.statusBlocked || item.requiresManualStatusRefresh === true);
+  const blockedByDependency = (index, visiting = /* @__PURE__ */ new Set()) => {
+    const item = items[index];
+    if (!item || directlyBlocked(item)) return !!item;
+    if (item.status !== "quoted" || !item.dependsOn || typeof item.dependsOn !== "object") return false;
+    const parentIndex = Number(item.dependsOn.itemIndex);
+    if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
+    visiting.add(parentIndex);
+    return blockedByDependency(parentIndex, visiting);
+  };
+  const blocked = items.filter(directlyBlocked);
+  const hasRunnablePending = items.some((item, index) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? "")) && !blockedByDependency(index));
+  const authorization = blocked.some((item) => item.statusBlocked && typeof item.statusBlocked === "object" && item.statusBlocked.kind === "authorization");
+  return {
+    hasBlocked: blocked.length > 0,
+    hasRunnablePending,
+    attentionKind: authorization ? "authorization" : "manual_check"
+  };
+}
+function generationIsPaused(operation) {
+  if (operation.stoppedAt || !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(String(operation.status))) return false;
+  const attention = generationStatusAttention(operation.items);
+  return !attention.hasRunnablePending && (attention.hasBlocked || ["submission_unknown", "partial_unknown"].includes(String(operation.status)));
+}
+
+// plugins/podplo-dsh/src/local-favorite-organization.ts
+import { randomUUID as randomUUID11 } from "node:crypto";
+import { join as join8 } from "node:path";
+var name = external_exports2.string().trim().min(1).max(80).refine((value2) => value2 !== "\u672A\u5206\u7C7B" && !new RegExp("\\p{Cc}", "u").test(value2));
+var note = external_exports2.string().trim().min(1).max(160).refine((value2) => !new RegExp("\\p{Cc}", "u").test(value2));
+var id = external_exports2.string().min(1).max(180).refine((value2) => !/[\/\\\u0000\r\n]/u.test(value2));
+var favoriteType = external_exports2.enum(["skill", "gallery"]);
+var folderSchema = external_exports2.object({ id: external_exports2.string().uuid(), name }).strict();
+var updateFields = { note: note.nullable().optional(), folderId: external_exports2.string().uuid().nullable().optional() };
+var LocalFavoriteItemUpdateSchema = external_exports2.object({ type: favoriteType, id, ...updateFields }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0);
+var LocalFavoriteUpdateSchema = external_exports2.object({ id, ...updateFields }).strict().refine((value2) => value2.note !== void 0 || value2.folderId !== void 0).transform((value2) => ({ type: "skill", ...value2 }));
+var compatibleUpdate = external_exports2.union([LocalFavoriteItemUpdateSchema, LocalFavoriteUpdateSchema]);
+var itemSchema = external_exports2.object({ type: favoriteType, id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict();
+var accountV2 = external_exports2.object({
+  ownerId: external_exports2.string().min(1).max(180),
+  folders: external_exports2.array(folderSchema).max(100),
+  items: external_exports2.array(itemSchema)
+}).strict().superRefine((value2, context) => {
+  const ids2 = new Set(value2.folders.map((row) => row.id));
+  if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.items.map((row) => `${row.type}:${row.id}`)).size !== value2.items.length || value2.items.some((row) => row.folderId && !ids2.has(row.folderId)))
+    context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
+});
+var stateV2 = external_exports2.object({ schemaVersion: external_exports2.literal(2), accounts: external_exports2.array(accountV2) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
+var legacySkill = external_exports2.object({ id, note: note.nullable(), folderId: external_exports2.string().uuid().nullable() }).strict();
+var accountV1 = external_exports2.object({
+  ownerId: external_exports2.string().min(1).max(180),
+  folders: external_exports2.array(folderSchema).max(100),
+  skills: external_exports2.array(legacySkill)
+}).strict().superRefine((value2, context) => {
+  const ids2 = new Set(value2.folders.map((row) => row.id));
+  if (ids2.size !== value2.folders.length || new Set(value2.folders.map((row) => row.name.toLocaleLowerCase())).size !== value2.folders.length || new Set(value2.skills.map((row) => row.id)).size !== value2.skills.length || value2.skills.some((row) => row.folderId && !ids2.has(row.folderId)))
+    context.addIssue({ code: "custom", message: "\u6536\u85CF\u7EC4\u7EC7\u8BB0\u5F55\u4E0D\u4E00\u81F4" });
+});
+var stateV1 = external_exports2.object({ schemaVersion: external_exports2.literal(1), accounts: external_exports2.array(accountV1) }).strict().refine((value2) => new Set(value2.accounts.map((row) => row.ownerId)).size === value2.accounts.length);
+var schema = external_exports2.union([stateV2, stateV1]).transform((value2) => value2.schemaVersion === 2 ? value2 : {
+  schemaVersion: 2,
+  accounts: value2.accounts.map((row) => ({
+    ownerId: row.ownerId,
+    folders: row.folders,
+    items: row.skills.map((skill) => ({ type: "skill", ...skill }))
+  }))
+});
+var fail3 = (code, message) => {
+  throw new PodploPluginError(code, message);
+};
+function parse6(type, input) {
+  const result = type.safeParse(input);
+  return result.success ? result.data : fail3("INVALID_ARGUMENT", "\u6536\u85CF\u6587\u4EF6\u5939\u6216\u5907\u6CE8\u53C2\u6570\u65E0\u6548\u3002");
+}
+var LocalFavoriteOrganization = class {
+  store;
+  constructor(directory) {
+    this.store = new AtomicStore(join8(directory, "favorite-organization.json"), () => ({ schemaVersion: 2, accounts: [] }), (value2) => schema.parse(value2));
+  }
+  async init() {
+    await this.store.load();
+  }
+  async flush() {
+    await this.store.flush();
+  }
+  folders(ownerId) {
+    return { items: this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.folders ?? [] };
+  }
+  decorate(ownerId, rows) {
+    const metadata = new Map(this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.items.map((row) => [`${row.type}:${row.id}`, row]) ?? []);
+    return rows.map((row) => ({
+      ...row,
+      note: metadata.get(`${row.type}:${row.id}`)?.note ?? null,
+      folderId: metadata.get(`${row.type}:${row.id}`)?.folderId ?? null
+    }));
+  }
+  change(ownerId, update, guard) {
+    return this.store.transaction((state) => {
+      guard?.();
+      let row = state.accounts.find((row2) => row2.ownerId === ownerId);
+      if (!row) {
+        row = { ownerId, folders: [], items: [] };
+        state.accounts.push(row);
+      }
+      return update(row);
+    });
+  }
+  create(ownerId, rawName, guard) {
+    const value2 = parse6(name, rawName);
+    return this.change(ownerId, (row) => {
+      if (row.folders.some((folder2) => folder2.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail3("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (row.folders.length >= 100) fail3("FAVORITE_FOLDER_LIMIT", "\u6536\u85CF\u6587\u4EF6\u5939\u6570\u91CF\u5DF2\u8FBE\u4E0A\u9650\u3002");
+      const folder = { id: randomUUID11(), name: value2 };
+      row.folders.push(folder);
+      return { folder };
+    }, guard);
+  }
+  rename(ownerId, rawId, rawName, guard) {
+    const folderId = parse6(external_exports2.string().uuid(), rawId), value2 = parse6(name, rawName);
+    return this.change(ownerId, (row) => {
+      const folder = row.folders.find((item) => item.id === folderId);
+      if (!folder) return fail3("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (row.folders.some((item) => item.id !== folderId && item.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail3("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      folder.name = value2;
+      return { folder };
+    }, guard);
+  }
+  delete(ownerId, rawId, guard) {
+    const folderId = parse6(external_exports2.string().uuid(), rawId);
+    return this.change(ownerId, (row) => {
+      if (!row.folders.some((item) => item.id === folderId)) return fail3("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      let movedItemCount = 0, movedSkillCount = 0;
+      for (const item of row.items) if (item.folderId === folderId) {
+        item.folderId = null;
+        movedItemCount++;
+        if (item.type === "skill") movedSkillCount++;
+      }
+      row.items = row.items.filter((item) => item.note !== null || item.folderId !== null);
+      row.folders = row.folders.filter((item) => item.id !== folderId);
+      return { deleted: true, movedItemCount, movedSkillCount };
+    }, guard);
+  }
+  update(ownerId, input, guard) {
+    const value2 = parse6(compatibleUpdate, input);
+    return this.change(ownerId, (row) => {
+      if (value2.folderId && !row.folders.some((item) => item.id === value2.folderId)) fail3("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      const previous = row.items.find((item) => item.type === value2.type && item.id === value2.id);
+      const updated = {
+        type: value2.type,
+        id: value2.id,
+        note: value2.note === void 0 ? previous?.note ?? null : value2.note,
+        folderId: value2.folderId === void 0 ? previous?.folderId ?? null : value2.folderId
+      };
+      row.items = row.items.filter((item) => item.type !== value2.type || item.id !== value2.id);
+      if (updated.note !== null || updated.folderId !== null) row.items.push(updated);
+      return updated;
+    }, guard);
+  }
+  async forget(ownerId, type, itemId, guard) {
+    if (!this.store.snapshot().accounts.find((row) => row.ownerId === ownerId)?.items.some((row) => row.type === type && row.id === itemId)) return;
+    await this.change(ownerId, (row) => {
+      row.items = row.items.filter((item) => item.type !== type || item.id !== itemId);
+    }, guard);
+  }
+};
+
+// plugins/podplo-dsh/src/service.ts
+import { EventEmitter as EventEmitter2 } from "node:events";
+
+// plugins/podplo-dsh/package.json
+var package_default = {
+  name: "@podplo/dsh-plugin",
+  version: "0.1.23",
+  private: true,
+  license: "UNLICENSED",
+  description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
+  type: "module",
+  main: "dist/index.js",
+  exports: {
+    ".": "./dist/index.js",
+    "./client": "./dist/client.js",
+    "./package.json": "./package.json",
+    "./tool-registry.json": "./tool-registry.json",
+    "./locale/en.json": "./locale/en.json"
+  },
+  files: [
+    "dist",
+    "tool-registry.json",
+    "cordis.patch.yml",
+    "README.md",
+    "locale"
+  ],
+  dsh: {
+    bundle: {
+      patch: "./cordis.patch.yml"
+    },
+    client: {
+      platform: "web",
+      immediately: true,
+      inject: [
+        "@deepseek-ai/dsh-client-connection",
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-layout",
+        "@deepseek-ai/dsh-client-ui-workspace",
+        "@deepseek-ai/dsh-client-ui-session"
+      ]
+    }
+  },
+  dependencies: {
+    sharp: "0.35.5"
+  },
+  peerDependencies: {
+    "@deepseek-ai/cordis": "*",
+    "@deepseek-ai/dsh-mcp-client": "*",
+    "@deepseek-ai/dsh-home-paths": "*",
+    "@deepseek-ai/dsh-llm": "*",
+    "@deepseek-ai/dsh-credentials": "*",
+    "@deepseek-ai/schemastery": "*"
+  },
+  engines: {
+    node: ">=24.9.0",
+    dsh: "*"
+  }
+};
+
+// plugins/podplo-dsh/src/version.ts
+var PLUGIN_VERSION = package_default.version;
+
+// plugins/podplo-dsh/src/task-diagnostics.ts
+var advice = {
+  AUTH_REQUIRED: ["\u9700\u8981\u91CD\u65B0\u8FDE\u63A5\u8D26\u53F7", "\u767B\u5F55\u540E\u5237\u65B0\u72B6\u6001\uFF0C\u4E0D\u8981\u91CD\u65B0\u63D0\u4EA4\u751F\u56FE\u3002"],
+  SESSION_CHANGED: ["\u8D26\u53F7\u6216\u767B\u5F55\u6388\u6743\u5DF2\u53D8\u5316", "\u786E\u8BA4\u5F53\u524D\u8D26\u53F7\u540E\u91CD\u65B0\u67E5\u770B\u539F\u4EFB\u52A1\u3002"],
+  PERMISSION_DENIED: ["\u5F53\u524D\u6743\u9650\u4E0D\u8DB3", "\u6838\u5BF9\u8D26\u53F7\u6743\u76CA\u6216\u76EE\u5F55\u8BBF\u95EE\u6743\u9650\u3002"],
+  INSUFFICIENT_CREDITS: ["\u79EF\u5206\u4E0D\u8DB3", "\u6838\u5BF9\u539F\u4EFB\u52A1\u62A5\u4EF7\u53CA\u79EF\u5206\u72B6\u6001\uFF0C\u4E0D\u81EA\u52A8\u91CD\u505A\u3002"],
+  SOURCE_UNAVAILABLE: ["\u6765\u6E90\u6587\u4EF6\u4E0D\u53EF\u7528", "\u786E\u8BA4\u6E90\u6587\u4EF6\u4ECD\u5B58\u5728\u4E14\u53EF\u8BFB\u53D6\u3002"],
+  LOCAL_FILE_CHANGED: ["\u672C\u5730\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8", "\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u6838\u5BF9\u6587\u4EF6\uFF0C\u4FDD\u7559\u7528\u6237\u4FEE\u6539\u3002"],
+  LOCAL_FILE_UNAVAILABLE: ["\u672C\u5730\u6210\u679C\u6682\u4E0D\u53EF\u7528", "\u6838\u5BF9\u4EFB\u52A1\u6587\u4EF6\u5939\u548C\u6587\u4EF6\u72B6\u6001\uFF0C\u518D\u5237\u65B0\u539F\u4EFB\u52A1\uFF1B\u4FDD\u7559\u624B\u52A8\u4FEE\u6539\u7684\u6587\u4EF6\u3002"],
+  DISK_FULL: ["\u78C1\u76D8\u7A7A\u95F4\u4E0D\u8DB3", "\u91CA\u653E\u7A7A\u95F4\u540E\u624B\u52A8\u91CD\u8BD5\u672C\u5730\u4FDD\u5B58\u3002"],
+  TRANSPARENCY_REQUIRED: ["\u56FE\u7247\u6CA1\u6709\u6240\u9700\u7684\u771F\u5B9E\u900F\u660E\u50CF\u7D20", "\u6838\u5BF9\u8F93\u5165\u56FE\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u65B0\u751F\u56FE\u3002"],
+  SUBMISSION_RESULT_UNKNOWN: ["\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9", "\u5237\u65B0\u539F\u4EFB\u52A1\u72B6\u6001\uFF0C\u4E0D\u8981\u518D\u6B21\u4ED8\u8D39\u63D0\u4EA4\u3002"],
+  GENERATION_FAILED: ["\u751F\u6210\u9636\u6BB5\u672A\u5B8C\u6210", "\u6838\u5BF9\u539F\u4EFB\u52A1\u72B6\u6001\uFF1B\u5982\u9700\u91CD\u505A\u5E94\u91CD\u65B0\u786E\u8BA4\u3002"],
+  DOWNLOAD_FAILED: ["\u7ED3\u679C\u4E0B\u8F7D\u672A\u5B8C\u6210", "\u7F51\u7EDC\u6062\u590D\u540E\u624B\u52A8\u5237\u65B0\u539F\u4EFB\u52A1\u4FDD\u5B58\uFF0C\u4E0D\u91CD\u65B0\u751F\u56FE\u3002"],
+  PROCESSING_FAILED: ["\u672C\u5730\u52A0\u5DE5\u672A\u5B8C\u6210", "\u6838\u5BF9\u5DE5\u5177\u53C2\u6570\u540E\u4EC5\u7EE7\u7EED\u672C\u5730\u52A0\u5DE5\u3002"],
+  ARCHIVE_FAILED: ["\u6210\u679C\u5F52\u6863\u672A\u5B8C\u6210", "\u6838\u5BF9\u8F93\u51FA\u76EE\u5F55\u540E\u624B\u52A8\u5237\u65B0\u539F\u4EFB\u52A1\u3002"],
+  CONNECTION_FAILED: ["\u72B6\u6001\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528", "\u8FDE\u63A5\u6062\u590D\u540E\u5237\u65B0\u539F\u4EFB\u52A1\u72B6\u6001\u3002"],
+  SUMMARY_UPDATE_FAILED: ["\u4EFB\u52A1\u603B\u7ED3\u672A\u80FD\u66F4\u65B0", "\u6838\u5BF9\u76EE\u5F55\u6743\u9650\uFF1B\u624B\u52A8\u4FEE\u6539\u8FC7\u7684\u603B\u7ED3\u4F1A\u4FDD\u7559\u3002"]
+};
+var TaskDiagnosticSchema = external_exports2.object({
+  stage: external_exports2.enum(["generation", "download", "processing", "archive", "connection"]),
+  code: external_exports2.enum(Object.keys(advice)),
+  at: external_exports2.string().datetime().optional()
+});
+function diagnose(stage, error101, at) {
+  const raw = error101 && typeof error101 === "object" ? error101.code : void 0;
+  const aliases = {
+    SIGN_IN_REQUIRED: "AUTH_REQUIRED",
+    SESSION_REPLACED: "SESSION_CHANGED",
+    EACCES: "PERMISSION_DENIED",
+    EPERM: "PERMISSION_DENIED",
+    SUBSCRIPTION_REQUIRED: "PERMISSION_DENIED",
+    TOOL_NOT_AUTHORIZED: "PERMISSION_DENIED",
+    ENOENT: "SOURCE_UNAVAILABLE",
+    REFERENCE_UNAVAILABLE: "SOURCE_UNAVAILABLE",
+    ENOSPC: "DISK_FULL"
+  };
+  const fallback = {
+    generation: "GENERATION_FAILED",
+    download: "DOWNLOAD_FAILED",
+    processing: "PROCESSING_FAILED",
+    archive: "ARCHIVE_FAILED",
+    connection: "CONNECTION_FAILED"
+  };
+  const code = typeof raw === "string" ? Object.hasOwn(advice, raw) ? raw : Object.hasOwn(aliases, raw) ? aliases[raw] : fallback[stage] : fallback[stage];
+  return { stage, code, ...at && Number.isFinite(Date.parse(at)) ? { at: new Date(at).toISOString() } : {} };
+}
+function taskDiagnostics(task) {
+  const rows = [...task.diagnostics ?? [], ...task.files.flatMap((file3) => file3.diagnostic ? [file3.diagnostic] : [])];
+  for (const step of task.audit?.processing.steps ?? []) for (const failure of step.failures)
+    rows.push(diagnose("processing", { code: failure.code }));
+  if (task.saveStatus === "missing") rows.push({ stage: "archive", code: "LOCAL_FILE_UNAVAILABLE" });
+  if (task.saveStatus === "failed" && !rows.length) rows.push(diagnose("archive"));
+  if (task.status === "failed" && !rows.some((row) => row.stage === "generation")) rows.push(diagnose("generation"));
+  if (task.summaryStatus === "failed") rows.push({ stage: "archive", code: "SUMMARY_UPDATE_FAILED" });
+  const safe = rows.flatMap((row) => {
+    const parsed = TaskDiagnosticSchema.safeParse(row);
+    return parsed.success ? [parsed.data] : [];
+  });
+  return [...new Map(safe.map((row) => [`${row.stage}:${row.code}`, row])).values()].slice(0, 20);
+}
+
+// plugins/podplo-dsh/src/generation-state.ts
+var comparableGenerationItems = (items) => items.map((item) => ({
+  ...item.skillId ? { skillId: item.skillId } : {},
+  ...item.sourceName ? { sourceName: item.sourceName } : {},
+  ...item.pricingReferenceCount !== void 0 ? { pricingReferenceCount: item.pricingReferenceCount } : {},
+  ...item.stage ? { stage: item.stage } : {},
+  ...item.dependsOn ? { dependsOn: item.dependsOn } : {},
+  ...item.localDependency ? { localDependency: item.localDependency } : {},
+  args: item.args
+}));
+function record5(value2, label) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u5FC5\u987B\u662F\u5BF9\u8C61`);
+  return value2;
+}
+function generationAudit(row) {
+  const audit = { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 };
+  for (const item of row.items) {
+    const planned = item.approvedOutputCount ?? item.quote.outputCount, succeeded = new Set(item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []).size;
+    const remaining = Math.max(0, planned - succeeded);
+    audit.planned += planned;
+    audit.succeeded += succeeded;
+    if (item.status === "failed") audit.failed += remaining;
+    else if (item.status === "cancelled") audit.cancelled += remaining;
+    else {
+      const failed = Math.min(remaining, item.outputs?.filter((output) => !output.assetId && (output.failureCode || output.status === "failed")).length ?? 0);
+      audit.failed += failed;
+      if (item.status === "submission_unknown" || item.status === "completed") audit.unknown += remaining - failed;
+      else audit.pending += remaining - failed;
+    }
+  }
+  audit.succeeded = new Set(row.items.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? [])).size;
+  audit.unknown += Math.max(0, audit.planned - audit.succeeded - audit.failed - audit.pending - audit.cancelled - audit.unknown);
+  return audit;
+}
+function estimatedFinalOutputCount(row) {
+  const dependedOn = new Set(row.items.flatMap((item) => item.dependsOn ? [item.dependsOn.itemIndex] : []));
+  const leafItems = new Set(row.items.map((_, index) => index).filter((index) => !dependedOn.has(index)));
+  if (!row.processingPlan?.length) return [...leafItems].reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
+  const stepCounts = /* @__PURE__ */ new Map(), consumedItems = /* @__PURE__ */ new Set();
+  const referencedSteps = new Set(row.processingPlan.flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
+  for (const step of row.processingPlan) {
+    const indexes = step.generationItemIndexes ?? [...leafItems];
+    let count2 = step.sourceStepId ? stepCounts.get(step.sourceStepId) ?? 0 : indexes.reduce((sum, index) => sum + (row.items[index]?.quote.outputCount ?? 0), 0);
+    if (!step.sourceStepId) for (const index of indexes) consumedItems.add(index);
+    if (step.toolName === "podplo_grid_split" && step.options && typeof step.options === "object") {
+      const options = step.options;
+      if (Number.isSafeInteger(options.rows) && Number.isSafeInteger(options.cols)) count2 *= Number(options.rows) * Number(options.cols);
+    }
+    stepCounts.set(step.id, count2);
+  }
+  const untouched = [...leafItems].filter((index) => !consumedItems.has(index)).reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
+  return untouched + row.processingPlan.filter((step) => !referencedSteps.has(step.id)).reduce((sum, step) => sum + (stepCounts.get(step.id) ?? 0), 0);
+}
+function safeOperation2(row) {
+  const summary = operationSummary(row);
+  const expiresAt = row.items.map((item) => item.quote.expiresAt).sort()[0];
+  const sufficientCredits = row.balanceAtQuote ? row.balanceAtQuote.availableCredits >= summary.totalCredits : void 0;
+  const stages = [...new Map(row.items.map((item, index) => [item.stage?.id ?? `item-${index}`, item.stage?.label ?? `\u9636\u6BB5 ${index + 1}`])).entries()].map(([id2, label]) => {
+    const items = row.items.filter((item, index) => (item.stage?.id ?? `item-${index}`) === id2);
+    const skills = /* @__PURE__ */ new Map();
+    for (const item of items) skills.set(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill", (skills.get(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill") ?? 0) + 1);
+    const skillSummary = [...skills].slice(0, 5).map(([name2, count2]) => `${name2}\xD7${count2}`).join("\u3001") + (skills.size > 5 ? `\u7B49 ${skills.size} \u4E2A Skill` : "");
+    return {
+      id: id2,
+      label,
+      skillSummary,
+      aiOutputCount: items.reduce((sum, item) => sum + item.quote.outputCount, 0),
+      credits: items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
+      models: [...new Set(items.flatMap((item) => item.modelName ? [item.modelName] : []))],
+      ecoMode: items.some((item) => item.args.ecoMode === true)
+    };
+  });
+  const processingSummary = row.mixedPlan ? row.mixedPlan.stages.filter((stage) => stage.kind === "local").map((stage) => stage.label).join(" \u2192 ") : row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
+  const referenced = new Set(row.mixedPlan?.stages.flatMap((stage) => stage.sourceBindings.flatMap((source) => source.kind === "root" ? [] : [source.stageId])) ?? []);
+  const finalOutputCount = row.mixedPlan ? row.mixedPlan.stages.filter((stage) => !referenced.has(stage.id)).reduce((sum, stage) => sum + stage.outputCount, 0) : estimatedFinalOutputCount(row);
+  const stageText = stages.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
+  const workflowText = row.mixedPlan ? row.mixedPlan.stages.map((stage) => stage.kind === "local" ? `${stage.label}\uFF1A\u672C\u5730\u52A0\u5DE5\uFF0C\u9884\u8BA1 ${stage.outputCount} \u4E2A\u4EA7\u7269` : stages.find((value2) => value2.id === stage.id) ? `${stage.label}\uFF1AAI ${stage.outputCount} \u5F20` : stage.label).join(" \u2192 ") + "\uFF1B" : "";
+  const confirmationText = `${workflowText}${stageText}\u3002\u6574\u5355\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0CAI \u8F93\u51FA ${summary.outputCount} \u5F20` + (processingSummary ? `\uFF1B\u672C\u5730\u52A0\u5DE5 ${processingSummary}\uFF0C\u9884\u8BA1\u6210\u54C1 ${finalOutputCount} \u5F20\uFF08\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1\u79EF\u5206\uFF09` : "") + "\u3002";
+  return {
+    operationId: row.operationId,
+    intentId: row.intentId,
+    planVersion: row.planVersion,
+    status: operationStatus(row),
+    createdAt: row.createdAt,
+    updatedAt: row.updatedAt,
+    quote: {
+      expiresAt,
+      totalCredits: summary.totalCredits,
+      outputCount: summary.outputCount,
+      confirmationText,
+      ...row.pricingVersion ? { pricingVersion: row.pricingVersion } : {},
+      ...row.planDigest ? { planDigest: row.planDigest } : {},
+      ...row.balanceAtQuote ? {
+        availableCredits: row.balanceAtQuote.availableCredits,
+        reservedCredits: row.balanceAtQuote.reservedCredits,
+        billingContextId: row.balanceAtQuote.billingContextId,
+        sufficientCredits
+      } : {}
+    },
+    approvalId: row.approvalId,
+    summary,
+    stages,
+    finalOutputCount,
+    items: row.items.map((item) => ({
+      itemId: item.itemId,
+      ...item.skillId ? { skillId: item.skillId } : {},
+      ...item.skillName ? { skillName: item.skillName } : {},
+      ...item.sourceName ? { sourceName: item.sourceName } : {},
+      ...item.modelName ? { modelName: item.modelName } : {},
+      ...item.stage ? { stage: structuredClone(item.stage) } : {},
+      ...item.dependsOn ? { dependsOn: structuredClone(item.dependsOn) } : {},
+      status: item.status,
+      totalCredits: item.approvedCredits ?? item.quote.totalCredits,
+      outputCount: item.approvedOutputCount ?? item.quote.outputCount,
+      parameters: Object.fromEntries(["ratio", "quality", "resolution", "thinkingLevel", "ecoMode", "webSearch", "imageSearch", "background", "count"].flatMap((key) => item.args[key] === void 0 ? [] : [[key, item.args[key]]])),
+      ...item.retry ? { retry: structuredClone(item.retry), waitReason: "retry" } : {},
+      ...item.statusBlocked ? {
+        statusBlocked: structuredClone(item.statusBlocked),
+        waitReason: item.statusBlocked.kind === "authorization" ? "authorization" : "manual_status_check",
+        requiresManualStatusRefresh: true,
+        userAction: item.statusBlocked.kind === "authorization" ? "\u8BF7\u91CD\u65B0\u767B\u5F55\u6216\u6062\u590D\u751F\u56FE\u6743\u9650\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" : "\u8BF7\u6838\u5BF9 PodPlo \u8FDE\u63A5\u6216\u66F4\u65B0\u670D\u52A1\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
+      } : {},
+      ...!item.retry && item.status === "quoted" && item.dependsOn && ["quoted", "submitting", "submitted"].includes(row.items[item.dependsOn.itemIndex]?.status ?? "") ? { waitReason: "dependency" } : {},
+      ...!item.retry && !item.statusBlocked && item.status === "submitted" ? { waitReason: "remote_generation" } : {},
+      ...item.status === "submission_unknown" ? {
+        waitReason: "manual_reconciliation",
+        requiresManualReconciliation: true,
+        userAction: "\u8BF7\u5728 PodPlo \u4E3B\u7AD9\u751F\u6210\u8BB0\u5F55\u4E2D\u6838\u5BF9\u8BE5\u9879\u662F\u5426\u5DF2\u521B\u5EFA\uFF1B\u6838\u5BF9\u524D\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
+      } : {},
+      ...item.lastStatusSucceededAt ? { lastStatusSucceededAt: item.lastStatusSucceededAt } : {},
+      ...item.lastStatusError ? { lastStatusError: structuredClone(item.lastStatusError) } : {},
+      ...item.generationId ? { generationId: item.generationId } : {},
+      ...item.remoteStatus ? { remoteStatus: item.remoteStatus } : {},
+      ...item.errorCode ? { errorCode: item.errorCode } : {},
+      ...item.outputs ? { outputs: structuredClone(item.outputs) } : {}
+    })),
+    ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
+    ...row.replacedBy ? { replacedBy: row.replacedBy } : {},
+    ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
+    ...row.mixedPlan ? { localStages: row.mixedPlan.stages.filter((stage) => stage.kind === "local").map((stage) => ({
+      id: stage.id,
+      label: stage.label,
+      outputCount: stage.outputCount,
+      status: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.status ?? (row.mixedFailure ? "failed" : "waiting"),
+      succeededCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.outputs.filter((output) => output.status === "ready").length ?? 0,
+      failedCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.outputs.filter((output) => output.status === "failed" && output.errorCode !== "DEPENDENCY_FAILED").length ?? 0,
+      notExecutedCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.outputs.filter((output) => output.status === "failed" && output.errorCode === "DEPENDENCY_FAILED").length ?? 0
+    })) } : {},
+    ...row.processingPlan ? { processingPlan: structuredClone(row.processingPlan) } : {}
+  };
+}
+function operationSummary(row) {
+  const count2 = (status) => row.items.filter((item) => item.status === status).length;
+  return {
+    itemCount: row.items.length,
+    totalCredits: row.items.reduce((sum, item) => sum + (item.approvedCredits ?? item.quote.totalCredits), 0),
+    outputCount: row.items.reduce((sum, item) => sum + (item.approvedOutputCount ?? item.quote.outputCount), 0),
+    acceptedCount: row.items.filter((item) => !!item.generationId).length,
+    completedCount: count2("completed"),
+    unknownCount: count2("submission_unknown"),
+    failedCount: count2("failed"),
+    cancelledCount: count2("cancelled"),
+    pendingCount: count2("quoted") + count2("submitting"),
+    submittedCount: count2("submitted")
+  };
+}
+function operationStatus(row) {
+  const statuses = row.items.map((item) => item.status);
+  if (row.mixedPlan && row.stoppedAt && row.mixedRuntime?.status !== "completed" && statuses.every((status) => ["completed", "failed", "cancelled"].includes(status)))
+    return statuses.some((status) => status === "completed") ? "partial_cancelled" : "cancelled";
+  if (statuses.every((status) => status === "cancelled")) return "cancelled";
+  if (statuses.every((status) => status === "quoted") && !row.approvedAt) return "quoted";
+  if (row.mixedPlan && row.approvedAt && !row.stoppedAt && !row.mixedFailure && statuses.every((status) => ["completed", "failed", "cancelled"].includes(status)) && (!row.mixedRuntime || row.mixedRuntime.status === "pending")) return "submitted";
+  if (statuses.includes("submitting") || row.approvedAt && statuses.includes("quoted")) return "submitting";
+  if (statuses.every((status) => status === "completed")) {
+    if (row.mixedPlan && row.mixedRuntime?.status !== "completed")
+      return row.mixedFailure || row.mixedRuntime?.status === "failed" ? "partial_failure" : "submitted";
+    return "completed";
+  }
+  if (statuses.includes("submission_unknown")) return statuses.some((status) => ["submitted", "completed", "failed"].includes(status)) ? "partial_unknown" : "submission_unknown";
+  if (statuses.some((status) => status === "submitted")) return "submitted";
+  if (statuses.includes("cancelled") && statuses.includes("completed")) return "partial_cancelled";
+  if (statuses.some((status) => status === "failed")) return statuses.every((status) => ["failed", "completed", "cancelled"].includes(status)) && statuses.some((status) => status === "completed") ? "partial_failure" : "failed";
+  if (statuses.includes("cancelled")) return "cancelled";
+  return "submitted";
+}
+function safeGenerationOutputs(value2) {
+  if (value2 === void 0) return [];
+  if (!Array.isArray(value2) || value2.length > 100) throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
+  const uuid8 = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
+  const code = /^[A-Za-z0-9_-]{1,80}$/u;
+  const outputs = value2.map((raw, index) => {
+    const row = record5(raw, `outputs[${index}]`);
+    if (typeof row.slotId !== "string" || !uuid8.test(row.slotId) || !Number.isInteger(row.index) || row.index < 0 || row.index > 1e3 || typeof row.status !== "string" || !code.test(row.status) || !(row.assetId === null || typeof row.assetId === "string" && uuid8.test(row.assetId)) || !(row.failureCode === null || typeof row.failureCode === "string" && code.test(row.failureCode))) {
+      throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u5143\u6570\u636E\u65E0\u6548");
+    }
+    return { slotId: row.slotId, index: row.index, status: row.status, assetId: row.assetId, failureCode: row.failureCode };
+  });
+  if (new Set(outputs.map((row) => row.slotId)).size !== outputs.length || new Set(outputs.map((row) => row.index)).size !== outputs.length) {
+    throw new PodploPluginError("INVALID_GENERATION_OUTPUTS", "\u751F\u56FE\u8F93\u51FA\u69FD\u4F4D\u91CD\u590D");
+  }
+  return outputs;
+}
+function definiteSubmissionFailure(code) {
+  return ["QUOTE_EXPIRED", "CONFIRMATION_MISMATCH", "USER_SKILL_CHANGED", "REFERENCE_UNAVAILABLE", "INSUFFICIENT_CREDITS"].includes(code);
+}
+
+// plugins/podplo-dsh/src/service.ts
+import { randomUUID as randomUUID12 } from "node:crypto";
+import { join as join9 } from "node:path";
+import { isDeepStrictEqual } from "node:util";
+
 // plugins/podplo-dsh/src/agent-call-policy.ts
 var PODPLO_TASK_GUIDANCE = `Act as an orchestrator for executable PodPlo public/personal Skills and PodPlo built-in tools or presets.
 
-ROUTING: Every AI image generation, AI edit or AI transformation must use a selected executable PodPlo Skill. Never substitute another image-generation service, a general vision/image tool, shell/PowerShell, filesystem scripting or custom code. The Host registers user-authorized folders and existing session references; do not call read_image to obtain an ID or inspect, critique or invent instructions for an image. Deterministic local processing may use only the exact PodPlo built-in tool or preset the user requested.
+ROUTING: AI Skill work and deterministic local tool/preset processing are equal task modes. Local-only work needs no Skill, model, quote or credits. Never look up a tool group (\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9) as a Skill or ask for a Skill for presets. Every AI image generation, AI edit or AI transformation must use a selected executable PodPlo Skill. Never substitute another image-generation service, a general vision/image tool, shell/PowerShell, filesystem scripting or custom code. The Host registers user-authorized folders and existing session references; do not call read_image to obtain an ID or inspect, critique or invent instructions for an image. Deterministic local processing may use only the exact PodPlo built-in tool or preset the user requested.
 
 INTENT: Treat the user's words and the selected PodPlo Skill/tool/preset as authoritative. Do not create, rewrite, expand, translate or optimize prompts. Do not add composition, style, identity, dimensions, model, quality, processing steps or a different order. Reuse exact user instructions and Skill/Host-supplied prompt content. Apply only the named tools/preset, in the requested order.
 
-EXECUTE WHEN CLEAR: When the image range, one uniquely matching Skill, and any requested tools/preset/order are clear, resolve exact catalog bindings and call the PodPlo tool immediately. Do not ask for optional composition, dimensions, model, ratio or quality merely to fill fields. Use a parameter only when it came from the user, the selected Skill, the selected tool/preset, or an explicit default in the authoritative current schema. Never guess a required value or paid scope. Ask one consolidated question only when execution is genuinely blocked by a missing or conflicting image range, Skill identity, tool/preset identity, call order, or required parameter with no authoritative default. Resolve a unique exact catalog match without asking. Ask once for real duplicates, absence or conflicts; do not reconfirm clear information or a path already confirmed by an answered native question. Choices are neutral unless the user asks for a recommendation.
+EXECUTE WHEN CLEAR: When the image range and requested tool/preset/order are clear (plus one uniquely matching Skill only for an AI stage), resolve exact catalog bindings and call the PodPlo tool immediately. Do not ask for optional composition, dimensions, model, ratio or quality merely to fill fields. Use a parameter only when it came from the user, the selected Skill, the selected tool/preset, or an explicit default in the authoritative current schema. Never guess a required value or paid scope. Ask one consolidated question only when execution is genuinely blocked by a missing or conflicting image range, Skill identity, tool/preset identity, call order, or required parameter with no authoritative default. Resolve a unique exact catalog match without asking. Ask once for real duplicates, absence or conflicts; do not reconfirm clear information or a path already confirmed by an answered native question. Choices are neutral unless the user asks for a recommendation.
 
-LOCAL FOLDERS: Use podplo_prepare_task with source.folderPath for user-supplied folders. Set skill.source="personal" for \u6211\u7684 Skill. The Host resolves the folder and preset; do not call read_image, Bash/shell, list files, search source code, read/rewrite preset JSON, inspect individual images, invent IDs or reimplement the pipeline. Put every requested stage in stages, with source.fromStage for dependencies and local.presetPath for a saved preset. The Host freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them when the Skill already defines the task; never invent content to fill the field.
+LOCAL FOLDERS: Use podplo_prepare_task with source.folderPath for user-supplied folders. For local-only processing, pass local.presetPath or exact local actions and OMIT skill and generation; do not search the Skill catalog or request an AI stage. Use the plan\u2019s taskName and stage name for History and folders. Set skill.source="personal" for \u6211\u7684 Skill. The Host resolves the folder and preset; do not call read_image, Bash/shell, list files, search source code, read/rewrite preset JSON, inspect individual images, invent IDs or reimplement the pipeline. Put every requested stage in stages, with source.fromStage for dependencies and local.presetPath for a saved preset. The Host executes a local-only task directly, with no AI quote, model call, generation or credit charge. For AI work it freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them when the Skill already defines the task; never invent content to fill the field.
 
 FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For random selection across independent Skills in one exact favorite folder, set skill.query and skill.favoriteFolder to that same exact folder name; otherwise query the exact Skill or family as before. Conflicting exact matches require one clarification.
 PROMPT BOUNDARY: Send only explicit user extra rules verbatim; use an empty prompt/instructions when absent. Public Skill metadata is for selection, never user rules. The server alone assembles Skill text.
 
 OTHER INPUTS: For current-chat or cloud images, reuse the existing session reference IDs in podplo_prepare_task source.referenceIds; do not inspect them again. Submit every requested stage once, preserving every user-supplied generation choice and local action. On a definitive nonretryable validation or policy failure, report it and stop until a new user message; do not drop parameters or stages, probe with a partial task, or try another entry point. Do not scan private storage.
 
-APPROVAL AND COMPLETION: Necessary file authorization, the one native credit approval and explicit deletion confirmation remain required. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
+APPROVAL AND COMPLETION: Necessary file authorization and explicit deletion confirmation remain required. The one native credit approval is required only when the task includes AI generation. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
 
 DELIVERY: Keep verified outputs from every declared AI and local-processing stage in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt, including outputs used by later stages. Mark failed and unexecuted items separately; partial success is not complete success. Exclude source/reference copies, review/proof images and JSON reports. Summaries and final replies list only success/failure/not-executed results and a verified location when needed, without prompts, parameters, credits or execution steps. Preserve existing files and user edits.`;
-var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u53EA\u7F16\u6392 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u548C PodPlo \u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002\u7528\u6237\u6388\u6743\u6587\u4EF6\u5939\u548C\u5DF2\u6709\u4F1A\u8BDD\u5F15\u7528\u7531 Host \u767B\u8BB0\uFF1B\u4E0D\u8C03\u7528 read_image \u53D6 ID\u3001\u8BC6\u56FE\u3001\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
+var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u7F16\u6392\u4E24\u79CD\u5E73\u7EA7\u4EFB\u52A1\uFF1A\u8C03\u7528 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u8FDB\u884C AI \u751F\u56FE\uFF0C\u4EE5\u53CA\u4E0D\u8C03\u7528 Skill \u7684\u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u672C\u5730\u52A0\u5DE5\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u4E0D\u9700\u8981 Skill\u3001AI \u6A21\u578B\u3001\u751F\u56FE\u53C2\u6570\u3001\u62A5\u4EF7\u6216\u79EF\u5206\u786E\u8BA4\u3002\u201C\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9\u201D\u7B49\u5DE5\u5177\u7EC4\u4E0D\u80FD\u5F53\u4F5C Skill \u67E5\u627E\uFF0C\u66F4\u4E0D\u80FD\u8981\u6C42\u7528\u6237\u4E3A\u9884\u8BBE\u52A0\u5DE5\u9009\u62E9 Skill\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002\u7528\u6237\u6388\u6743\u6587\u4EF6\u5939\u548C\u5DF2\u6709\u4F1A\u8BDD\u5F15\u7528\u7531 Host \u767B\u8BB0\uFF1B\u4E0D\u8C03\u7528 read_image \u53D6 ID\u3001\u8BC6\u56FE\u3001\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
 
-\u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u552F\u4E00\u5339\u914D Skill \u53CA\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
+\u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u53EA\u6709 AI \u9636\u6BB5\u624D\u8981\u6C42\u552F\u4E00\u5339\u914D\u7684 Skill\u3002\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9047\u5230\u660E\u786E\u4E0D\u53EF\u91CD\u8BD5\u7684\u6821\u9A8C\u6216\u7B56\u7565\u5931\u8D25\u65F6\u7ACB\u5373\u62A5\u544A\u5E76\u505C\u6B62\uFF0C\u7B49\u5F85\u65B0\u7684\u7528\u6237\u6D88\u606F\uFF1B\u4E0D\u5220\u53C2\u6570\u6216\u9636\u6BB5\u3001\u4E0D\u7F29\u6210\u5C40\u90E8\u4EFB\u52A1\u8BD5\u63A2\u3001\u4E0D\u6362\u5165\u53E3\u3002\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF0C\u5305\u62EC\u540E\u7EED\u8FD8\u4F1A\u4F7F\u7528\u7684\u751F\u6210\u56FE\u548C\u52A0\u5DE5\u56FE\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u4EFB\u52A1\u603B\u7ED3\u548C\u6700\u7EC8\u56DE\u590D\u53EA\u5199\u7B80\u77ED\u7684\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u7EAF\u5DE5\u5177\u9636\u6BB5\u53EA\u4F20 local\uFF0C\u4E0D\u4F20 skill \u6216 generation\uFF1B\u7528 taskName \u548C\u9636\u6BB5 name \u6807\u660E\u4EFB\u52A1\u89C4\u5212\u540D\u79F0\u3002\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9047\u5230\u660E\u786E\u4E0D\u53EF\u91CD\u8BD5\u7684\u6821\u9A8C\u6216\u7B56\u7565\u5931\u8D25\u65F6\u7ACB\u5373\u62A5\u544A\u5E76\u505C\u6B62\uFF0C\u7B49\u5F85\u65B0\u7684\u7528\u6237\u6D88\u606F\uFF1B\u4E0D\u5220\u53C2\u6570\u6216\u9636\u6BB5\u3001\u4E0D\u7F29\u6210\u5C40\u90E8\u4EFB\u52A1\u8BD5\u63A2\u3001\u4E0D\u6362\u5165\u53E3\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u76F4\u63A5\u672C\u5730\u6267\u884C\uFF0C\u4E0D\u62A5\u4EF7\u3001\u4E0D\u751F\u56FE\u3001\u4E0D\u8C03\u7528\u6A21\u578B\u3001\u4E0D\u6263 AI \u79EF\u5206\uFF1B\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF0C\u5305\u62EC\u540E\u7EED\u8FD8\u4F1A\u4F7F\u7528\u7684\u751F\u6210\u56FE\u548C\u52A0\u5DE5\u56FE\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u4EFB\u52A1\u603B\u7ED3\u548C\u6700\u7EC8\u56DE\u590D\u53EA\u5199\u7B80\u77ED\u7684\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
-Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill or the lookup needed to resolve it; the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
+Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill only for AI stages, or the lookup needed to resolve it (a local tool/preset requires no Skill); the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary only when AI generation is included. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
 
 Use read-only PodPlo catalog lookups to resolve a unique exact match without asking. Ask one consolidated question only for a genuine blocker: duplicate/missing Skill, unclear image range, ambiguous tool/preset, conflicting order, or a required parameter with no user/Skill/tool/preset/schema default. Do not ask about optional model, ratio, quality, dimensions or composition, and do not reconfirm information already clear.
 
@@ -57389,14 +59324,14 @@ function podploGenerationCompletionFollowup(input) {
 }
 
 // packages/online/generation-credit-pricing.ts
-var object4 = (v) => !!v && typeof v === "object" && !Array.isArray(v);
+var object5 = (v) => !!v && typeof v === "object" && !Array.isArray(v);
 var integer4 = (v) => Number.isSafeInteger(v) && Number(v) >= 0;
 var keys = (v, k) => Object.keys(v).length === k.length && k.every((x) => Object.hasOwn(v, x));
 function isGenerationCreditPricingRule(value2) {
-  if (!object4(value2) || !keys(value2, ["version", "unit", "maxPromptCharacters", "prices"]) || value2.version !== 2 || value2.unit !== "credits" || !integer4(value2.maxPromptCharacters) || !Array.isArray(value2.prices) || !value2.prices.length) return false;
+  if (!object5(value2) || !keys(value2, ["version", "unit", "maxPromptCharacters", "prices"]) || value2.version !== 2 || value2.unit !== "credits" || !integer4(value2.maxPromptCharacters) || !Array.isArray(value2.prices) || !value2.prices.length) return false;
   const seen = /* @__PURE__ */ new Set();
   return value2.prices.every((row) => {
-    if (!object4(row) || !keys(row, ["quality", "resolution", "referenceImages", "ecoMode", "webSearch", "imageSearch", "promptBands"]) || !(row.quality === null || typeof row.quality === "string") || typeof row.resolution !== "string" || !row.resolution || !integer4(row.referenceImages) || typeof row.ecoMode !== "boolean" || typeof row.webSearch !== "boolean" || typeof row.imageSearch !== "boolean" || !Array.isArray(row.promptBands) || !row.promptBands.length) return false;
+    if (!object5(row) || !keys(row, ["quality", "resolution", "referenceImages", "ecoMode", "webSearch", "imageSearch", "promptBands"]) || !(row.quality === null || typeof row.quality === "string") || typeof row.resolution !== "string" || !row.resolution || !integer4(row.referenceImages) || typeof row.ecoMode !== "boolean" || typeof row.webSearch !== "boolean" || typeof row.imageSearch !== "boolean" || !Array.isArray(row.promptBands) || !row.promptBands.length) return false;
     const key = JSON.stringify([row.quality, row.resolution, row.referenceImages, row.ecoMode, row.webSearch, row.imageSearch]);
     if (seen.has(key)) return false;
     seen.add(key);
@@ -57469,15 +59404,15 @@ function calculateLocalGenerationQuote(model, input) {
 }
 
 // plugins/podplo-dsh/src/generation-order-plan.ts
-import { createHash as createHash8, randomBytes as randomBytes2 } from "node:crypto";
-function stable(value2) {
-  if (Array.isArray(value2)) return value2.map(stable);
+import { createHash as createHash10, randomBytes as randomBytes2 } from "node:crypto";
+function stable2(value2) {
+  if (Array.isArray(value2)) return value2.map(stable2);
   if (!value2 || typeof value2 !== "object") return value2;
-  const record7 = value2;
-  return Object.fromEntries(Object.keys(record7).sort().map((key) => [key, stable(record7[key])]));
+  const record9 = value2;
+  return Object.fromEntries(Object.keys(record9).sort().map((key) => [key, stable2(record9[key])]));
 }
 function generationOrderDigest(value2) {
-  return createHash8("sha256").update(JSON.stringify(stable(value2))).digest("hex");
+  return createHash10("sha256").update(JSON.stringify(stable2(value2))).digest("hex");
 }
 function createGenerationOrderToken() {
   return `podplo_order_${randomBytes2(32).toString("base64url")}`;
@@ -57487,7 +59422,8 @@ function generationArgs(item, preservePrompt) {
   delete args.visibility;
   if (!preservePrompt && typeof args.prompt === "string") args.prompt = args.prompt.trim();
   const references = Array.isArray(args.referenceAssetIds) ? args.referenceAssetIds.filter((value2) => typeof value2 === "string") : [];
-  if (item.dependsOn) references.splice(item.dependsOn.referenceIndex, 1);
+  const dependency = item.localDependency ?? item.dependsOn;
+  if (dependency) references.splice(dependency.referenceIndex, 1);
   args.referenceAssetIds = references;
   args.webSearch = args.webSearch === true;
   args.imageSearch = args.imageSearch === true;
@@ -57495,6 +59431,29 @@ function generationArgs(item, preservePrompt) {
   return args;
 }
 function buildGenerationOrder(input) {
+  const processing = input.mixedPlan ? { version: 2, mixedPlan: input.mixedPlan } : structuredClone(input.processingPlan ?? []);
+  const localSlots = (item) => {
+    const dependency = item.localDependency;
+    if (!dependency || !input.mixedPlan) return [];
+    const sourceItems = [], sourceAssetIds = [];
+    const visit = (stageId, outputIndex, seen = /* @__PURE__ */ new Set()) => {
+      const key = `${stageId}:${outputIndex}`;
+      if (seen.has(key)) throw new Error("Invalid local task dependency cycle");
+      seen.add(key);
+      const stage = input.mixedPlan.stages.find((stage2) => stage2.id === stageId);
+      if (!stage || stage.kind !== "local") throw new Error("Invalid local task source");
+      const binding = stage.sourceBindings[stage.outputSources[outputIndex]];
+      if (!binding) throw new Error("Invalid local output source");
+      if (binding.kind === "root") sourceAssetIds.push(binding.assetId);
+      else if (binding.kind === "ai") {
+        const source = input.items[binding.itemIndex];
+        if (!source) throw new Error("Invalid local AI dependency");
+        sourceItems.push({ itemId: source.itemId, outputIndex: binding.outputIndex });
+      } else visit(binding.stageId, binding.outputIndex, seen);
+    };
+    visit(dependency.stageId, dependency.outputIndex);
+    return [{ kind: "local", ...dependency, planDigest: generationOrderDigest(processing), sourceItems, sourceAssetIds }];
+  };
   const items = input.items.map((item) => ({
     itemId: item.itemId,
     generation: generationArgs(item, input.preservePrompt === true),
@@ -57502,8 +59461,8 @@ function buildGenerationOrder(input) {
       itemId: input.items[item.dependsOn.itemIndex].itemId,
       outputIndex: item.dependsOn.outputIndex,
       referenceIndex: item.dependsOn.referenceIndex
-    }] : [],
-    processingPlan: structuredClone(input.processingPlan ?? []),
+    }] : localSlots(item),
+    processingPlan: structuredClone(processing),
     localCredits: item.approvedCredits ?? item.quote.totalCredits
   }));
   const approvedTotalCredits = items.reduce((sum, item) => sum + item.localCredits, 0);
@@ -57606,11 +59565,11 @@ var MCP_ACTIONS = {
   podplo_generation_status: "generation.status",
   podplo_list_generations: "generation.list"
 };
-function record4(value2, label = "\u53C2\u6570") {
+function record6(value2, label = "\u53C2\u6570") {
   if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u5FC5\u987B\u662F\u5BF9\u8C61`);
   return value2;
 }
-function text2(value2, label, max = 5e3) {
+function text3(value2, label, max = 5e3) {
   if (typeof value2 !== "string" || !value2.trim() || value2.length > max) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u65E0\u6548`);
   return value2.trim();
 }
@@ -57637,7 +59596,7 @@ function stringArray(value2, label, maximum = 200) {
   return [...value2];
 }
 function jsonObject(value2, label) {
-  const input = record4(value2, label);
+  const input = record6(value2, label);
   try {
     return structuredClone(input);
   } catch {
@@ -57672,10 +59631,10 @@ var PodploPluginService = class extends EventEmitter2 {
   constructor(options) {
     super();
     this.options = options;
-    this.online = options.online ?? new OnlineService(join7(options.directory, "online"), options.cipher, options.openBrowser, options.http);
+    this.online = options.online ?? new OnlineService(join9(options.directory, "online"), options.cipher, options.openBrowser, options.http);
     this.favoriteOrganization = new LocalFavoriteOrganization(options.directory);
-    this.workbench = options.workbench ?? new DesktopWorkbench(join7(options.directory, "workbench.json"));
-    this.store = new AtomicStore(join7(options.directory, "plugin-state.json"), () => ({ schemaVersion: 3, operations: [], confirmations: [], sessionStops: [], favoriteMigrations: [] }), (value2) => {
+    this.workbench = options.workbench ?? new DesktopWorkbench(join9(options.directory, "workbench.json"));
+    this.store = new AtomicStore(join9(options.directory, "plugin-state.json"), () => ({ schemaVersion: 3, operations: [], confirmations: [], sessionStops: [], favoriteMigrations: [] }), (value2) => {
       const state = value2;
       if (state?.schemaVersion !== 3 || !Array.isArray(state.operations) || !Array.isArray(state.confirmations) || !Array.isArray(state.sessionStops) || state.operations.some((row) => !Array.isArray(row.items) || typeof row.nativeSessionId !== "string" || !row.nativeSessionId)) throw new Error("PodPlo \u63D2\u4EF6\u8BB0\u5F55\u683C\u5F0F\u65E0\u6548");
       state.favoriteMigrations ??= [];
@@ -57683,7 +59642,7 @@ var PodploPluginService = class extends EventEmitter2 {
       return state;
     });
     this.now = options.now ?? (() => /* @__PURE__ */ new Date());
-    this.createId = options.id ?? randomUUID10;
+    this.createId = options.id ?? randomUUID12;
   }
   options;
   online;
@@ -57697,6 +59656,7 @@ var PodploPluginService = class extends EventEmitter2 {
   catalogRefresh;
   personalSkillVersions = /* @__PURE__ */ new Map();
   personalSkillNames = /* @__PURE__ */ new Map();
+  mixedJobs = /* @__PURE__ */ new Map();
   preparing = /* @__PURE__ */ new Map();
   submissionJobs = /* @__PURE__ */ new Map();
   accountRefreshJobs = /* @__PURE__ */ new Map();
@@ -57739,7 +59699,9 @@ var PodploPluginService = class extends EventEmitter2 {
     if (this.closed) return;
     this.closed = true;
     this.online.off?.("change", this.onlineChanged);
+    for (const operationId2 of this.mixedJobs.keys()) this.options.stopMixedTask?.(operationId2);
     await Promise.allSettled(this.submissionJobs.values());
+    await Promise.allSettled([...this.mixedJobs.values()].map((entry) => entry.promise));
     await Promise.allSettled([...this.accountRefreshJobs.values()].map((state) => state.job));
     await Promise.allSettled(this.favoriteMigrationJobs.values());
     await Promise.allSettled(this.favoriteWriteJobs.values());
@@ -57789,6 +59751,11 @@ var PodploPluginService = class extends EventEmitter2 {
         ],
         name: row.taskName || "\u751F\u56FE\u4EFB\u52A1",
         createdAt: row.createdAt,
+        ...row.mixedPlan ? { workflow: {
+          status: row.stoppedAt ? "cancelled" : row.mixedFailure ? "failed" : row.mixedRuntime?.status ?? "pending",
+          failed: row.mixedRuntime?.stages.filter((stage) => stage.kind === "local").reduce((sum, stage) => sum + stage.outputs.filter((output) => output.status === "failed" && output.errorCode !== "DEPENDENCY_FAILED").length, 0) ?? (row.mixedFailure ? 1 : 0),
+          notExecuted: row.mixedRuntime?.stages.filter((stage) => stage.kind === "local").reduce((sum, stage) => sum + stage.outputs.filter((output) => output.status === "failed" && output.errorCode === "DEPENDENCY_FAILED").length, 0) ?? 0
+        } } : {},
         status: operationStatus(row),
         ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
         ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
@@ -57848,7 +59815,7 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async setProcessingPlan(input, caller) {
     const sessionId = this.nativeSessionFor(caller), ownerId = await this.owner(true);
-    const operationId2 = text2(input.operationId, "operationId", 180);
+    const operationId2 = text3(input.operationId, "operationId", 180);
     let plan;
     try {
       plan = parseProcessingPlan(input.processingPlan);
@@ -57885,11 +59852,14 @@ var PodploPluginService = class extends EventEmitter2 {
     const pending = this.pendingSessionStops.get(key);
     if (pending && !forceNewEpoch) return pending.epoch;
     const epoch = (this.sessionStopEpochs.get(key) ?? 0) + 1;
-    const operationIds = new Set(this.initialized ? this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.items.some((item) => item.status === "quoted" || item.status === "submitting")).map((row) => row.operationId) : []);
+    const operationIds = new Set(this.initialized ? this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && (row.items.some((item) => item.status === "quoted" || item.status === "submitting") || row.mixedPlan && (!row.mixedRuntime || row.mixedRuntime.status === "pending") && !row.mixedFailure && !row.stoppedAt)).map((row) => row.operationId) : []);
     const stoppedAt = this.now().toISOString();
     this.sessionStopEpochs.set(key, epoch);
     this.pendingSessionStops.set(key, { ownerId, nativeSessionId, epoch, stoppedAt, operationIds });
-    for (const operationId2 of operationIds) this.stoppedOperationIds.add(operationId2);
+    for (const operationId2 of operationIds) {
+      this.stoppedOperationIds.add(operationId2);
+      this.options.stopMixedTask?.(operationId2);
+    }
     return epoch;
   }
   publish() {
@@ -57943,8 +59913,8 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   /** Host-only rejection paired with the exact native approval request. */
   async cancelGenerationFromNativeApproval(input, sessionId) {
-    const operationId2 = text2(input.operationId, "operationId", 180);
-    const approvalId = text2(input.approvalId, "approvalId", 180);
+    const operationId2 = text3(input.operationId, "operationId", 180);
+    const approvalId = text3(input.approvalId, "approvalId", 180);
     const nativeSessionId = this.nativeSessionFor({ source: "agent", sessionId });
     const found = this.store.snapshot().operations.find((row) => row.operationId === operationId2 && row.approvalId === approvalId && row.nativeSessionId === nativeSessionId);
     if (!found) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u5BF9\u8BDD");
@@ -57959,12 +59929,12 @@ var PodploPluginService = class extends EventEmitter2 {
     });
     this.publish();
     const operation = this.store.snapshot().operations.find((row) => row.ownerId === found.ownerId && row.operationId === operationId2);
-    return safeOperation(operation);
+    return safeOperation2(operation);
   }
   async dispatch(action, args, caller) {
     if (!this.initialized) throw new PodploPluginError("NOT_INITIALIZED", "\u670D\u52A1\u5C1A\u672A\u521D\u59CB\u5316");
     if (this.closed) throw new PodploPluginError("SERVICE_CLOSED", "\u670D\u52A1\u5DF2\u5173\u95ED");
-    const input = args === void 0 ? {} : record4(args);
+    const input = args === void 0 ? {} : record6(args);
     let data;
     switch (action) {
       case "snapshot":
@@ -58027,15 +59997,15 @@ var PodploPluginService = class extends EventEmitter2 {
         break;
       case "favorites.folders.create":
         this.requireUi(caller);
-        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.create(owner, text2(input.name, "\u6587\u4EF6\u5939\u540D\u79F0", 80), guard));
+        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.create(owner, text3(input.name, "\u6587\u4EF6\u5939\u540D\u79F0", 80), guard));
         break;
       case "favorites.folders.rename":
         this.requireUi(caller);
-        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.rename(owner, text2(input.id, "\u6587\u4EF6\u5939 ID", 180), text2(input.name, "\u6587\u4EF6\u5939\u540D\u79F0", 80), guard));
+        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.rename(owner, text3(input.id, "\u6587\u4EF6\u5939 ID", 180), text3(input.name, "\u6587\u4EF6\u5939\u540D\u79F0", 80), guard));
         break;
       case "favorites.folders.delete":
         this.requireUi(caller);
-        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.delete(owner, text2(input.id, "\u6587\u4EF6\u5939 ID", 180), guard));
+        data = await this.favoriteWrite((owner, guard) => this.favoriteOrganization.delete(owner, text3(input.id, "\u6587\u4EF6\u5939 ID", 180), guard));
         break;
       case "favorites.item.update":
         this.requireUi(caller);
@@ -58137,16 +60107,16 @@ var PodploPluginService = class extends EventEmitter2 {
       source: directory?.source ?? "bundled"
     };
   }
-  async skillDetail(input, resolveBinding = true, includeGenerationContext = false) {
-    const slug2 = text2(input.slug, "slug", 160);
+  async skillDetail(input, resolveBinding2 = true, includeGenerationContext = false) {
+    const slug2 = text3(input.slug, "slug", 160);
     const publicSkill = this.online.snapshot().publicDirectory?.catalog?.skills.find((row) => row.slug === slug2 && row.executable);
     if (!publicSkill) throw new PodploPluginError("SKILL_NOT_FOUND", "\u6240\u9009 Skill \u4E0D\u5B58\u5728");
     const state = this.online.snapshot();
     const expectedContextOwner = includeGenerationContext && state.status === "connected" ? await this.owner(false) : void 0;
     let result = publicSkill;
-    if (resolveBinding && state.status === "connected") {
-      const resolved = record4(await this.online.skillDetails(slug2), "Skill \u8BE6\u60C5");
-      const details = record4(resolved.details ?? {}, "Skill \u516C\u5F00\u8BE6\u60C5");
+    if (resolveBinding2 && state.status === "connected") {
+      const resolved = record6(await this.online.skillDetails(slug2), "Skill \u8BE6\u60C5");
+      const details = record6(resolved.details ?? {}, "Skill \u516C\u5F00\u8BE6\u60C5");
       const binding = { ...resolved };
       delete binding.details;
       if (typeof binding.id === "string") this.skillBindings.set(binding.id, { slug: slug2, label: publicSkill.title });
@@ -58155,7 +60125,7 @@ var PodploPluginService = class extends EventEmitter2 {
     return includeGenerationContext ? { ...result, generationContext: await this.generationReadContext(expectedContextOwner) } : result;
   }
   async skillFamily(input, resolveBindings = true, includeGenerationContext = false) {
-    const slug2 = text2(input.slug, "slug", 160);
+    const slug2 = text3(input.slug, "slug", 160);
     const catalog = this.online.snapshot().publicDirectory?.catalog;
     const family = catalog?.families.find((row) => row.slug === slug2);
     if (!catalog || !family) throw new PodploPluginError("SKILL_FAMILY_NOT_FOUND", "\u6240\u9009 Skill \u65CF\u4E0D\u5B58\u5728");
@@ -58164,11 +60134,11 @@ var PodploPluginService = class extends EventEmitter2 {
     const expectedContextOwner = includeGenerationContext && state.status === "connected" ? await this.owner(false) : void 0;
     let bindings = [];
     if (resolveBindings && state.status === "connected") {
-      const resolved = record4(await this.online.resolveSkillFamily(slug2), "Skill \u65CF\u8BE6\u60C5");
+      const resolved = record6(await this.online.resolveSkillFamily(slug2), "Skill \u65CF\u8BE6\u60C5");
       bindings = Array.isArray(resolved.members) ? resolved.members : [];
     }
     const members = publicMembers.map((member) => {
-      const binding = bindings.find((value2) => record4(value2).slug === member.slug);
+      const binding = bindings.find((value2) => record6(value2).slug === member.slug);
       if (binding && typeof binding.id === "string") this.skillBindings.set(binding.id, { slug: member.slug, label: member.title });
       if (!resolveBindings) return member;
       return {
@@ -58196,7 +60166,7 @@ var PodploPluginService = class extends EventEmitter2 {
     return caller.source === "ui" ? page : structuredClone(page);
   }
   async galleryDetail(input, _caller) {
-    const id2 = text2(input.id, "id", 180);
+    const id2 = text3(input.id, "id", 180);
     let item = this.gallery.get(id2);
     if (!item) {
       const page = await this.online.elements(id2, "");
@@ -58209,8 +60179,8 @@ var PodploPluginService = class extends EventEmitter2 {
   async galleryImportReference(input, caller) {
     this.requireUi(caller);
     const ownerId = await this.owner(true);
-    const galleryId = text2(input.id, "id", 180);
-    const item = record4(await this.galleryDetail({ id: galleryId }, caller), "\u56FE\u5E93\u9879");
+    const galleryId = text3(input.id, "id", 180);
+    const item = record6(await this.galleryDetail({ id: galleryId }, caller), "\u56FE\u5E93\u9879");
     if (item.id !== galleryId || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/iu.test(galleryId))
       throw new PodploPluginError("GALLERY_REFERENCE_UNAVAILABLE", "\u8BE5\u56FE\u5E93\u56FE\u7247\u6CA1\u6709\u53EF\u7528\u7684\u8D44\u4EA7 ID");
     const publicUrl = (value2) => {
@@ -58243,7 +60213,7 @@ var PodploPluginService = class extends EventEmitter2 {
     const kind = optionalText(input.kind, "kind", 20);
     if (kind !== void 0 && !["upload", "generated"].includes(kind)) throw new PodploPluginError("INVALID_ARGUMENT", "kind\u65E0\u6548");
     const query = (optionalText(input.query, "query", 120) ?? "").trim();
-    const cursor = input.cursor === void 0 ? void 0 : text2(input.cursor, "cursor", 2e3);
+    const cursor = input.cursor === void 0 ? void 0 : text3(input.cursor, "cursor", 2e3);
     const limit = boundedInteger(input.limit, "limit", 50, 1, 50);
     let page;
     if (this.online.referencesPage) {
@@ -58368,7 +60338,7 @@ var PodploPluginService = class extends EventEmitter2 {
     }
   }
   async favoritesList(input) {
-    const ownerId = await this.owner(false), cursor = input.cursor === void 0 ? void 0 : text2(input.cursor, "cursor", 2e3);
+    const ownerId = await this.owner(false), cursor = input.cursor === void 0 ? void 0 : text3(input.cursor, "cursor", 2e3);
     const limit = boundedInteger(input.limit, "limit", 50, 1, 100);
     const migration = await this.migrateFavorites(false);
     if (await this.owner(false) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316");
@@ -58449,8 +60419,8 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async favoriteSkillsList(input) {
     const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
-    const query = input.query === void 0 ? void 0 : text2(input.query, "\u5907\u6CE8\u6216\u539F\u540D", 160).toLocaleLowerCase();
-    const folder = input.folder === void 0 ? void 0 : text2(input.folder, "\u6536\u85CF\u6587\u4EF6\u5939", 80).toLocaleLowerCase();
+    const query = input.query === void 0 ? void 0 : text3(input.query, "\u5907\u6CE8\u6216\u539F\u540D", 160).toLocaleLowerCase();
+    const folder = input.folder === void 0 ? void 0 : text3(input.folder, "\u6536\u85CF\u6587\u4EF6\u5939", 80).toLocaleLowerCase();
     const check3 = async () => {
       await this.assertOwner(ownerId, false);
       if (scope !== this.online.uiAuthorizationScope?.()) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u6388\u6743\u5DF2\u53D8\u5316");
@@ -58483,7 +60453,7 @@ var PodploPluginService = class extends EventEmitter2 {
     return { items };
   }
   async assetDetail(input, caller) {
-    const detail = await this.online.reference(text2(input.id, "id", 180));
+    const detail = await this.online.reference(text3(input.id, "id", 180));
     if (caller.source === "ui") return detail;
     const { previewUrl: _preview, downloadUrl: _download, ...safe } = detail;
     return safe;
@@ -58491,9 +60461,9 @@ var PodploPluginService = class extends EventEmitter2 {
   async assetFavorite(input, caller) {
     this.requireUi(caller);
     const ownerId = await this.owner(false), scope = this.online.uiAuthorizationScope?.();
-    const kind = text2(input.kind, "kind", 20);
+    const kind = text3(input.kind, "kind", 20);
     if (!["skill", "gallery"].includes(kind)) throw new PodploPluginError("INVALID_ARGUMENT", "\u4EC5\u516C\u5F00 Skill \u548C\u516C\u5F00\u7D20\u6750\u53EF\u4EE5\u6536\u85CF");
-    const id2 = text2(input.id, "id", 180);
+    const id2 = text3(input.id, "id", 180);
     if (typeof input.favorite !== "boolean") throw new PodploPluginError("INVALID_ARGUMENT", "\u5FC5\u987B\u660E\u786E\u6307\u5B9A\u6536\u85CF\u6216\u53D6\u6D88\u6536\u85CF");
     const favorite = input.favorite;
     const previous = this.favoriteWriteJobs.get(ownerId) ?? Promise.resolve();
@@ -58540,10 +60510,10 @@ var PodploPluginService = class extends EventEmitter2 {
   async assetUpload(input, caller) {
     this.requireUi(caller);
     const ownerId = await this.owner(true);
-    const filename = text2(input.filename, "filename", 255);
-    const contentType = text2(input.contentType, "contentType", 40);
+    const filename = text3(input.filename, "filename", 255);
+    const contentType = text3(input.contentType, "contentType", 40);
     if (!["image/jpeg", "image/png", "image/webp"].includes(contentType)) throw new PodploPluginError("INVALID_ARGUMENT", "\u4E0D\u652F\u6301\u7684\u56FE\u7247\u683C\u5F0F");
-    if (text2(input.expectedOwnerId, "expectedOwnerId", 180) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20");
+    if (text3(input.expectedOwnerId, "expectedOwnerId", 180) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u4E0A\u4F20");
     if (!(input.bytes instanceof Uint8Array) || !input.bytes.length || input.bytes.length > 1e7 || input.base64 !== void 0)
       throw new PodploPluginError("INVALID_ARGUMENT", "\u8BF7\u901A\u8FC7\u4E8C\u8FDB\u5236\u4E0A\u4F20\u901A\u9053\u63D0\u4EA4\u56FE\u7247");
     const detail = await this.online.uploadReference({ filename, contentType, bytes: input.bytes }, ownerId);
@@ -58594,7 +60564,7 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async mySkillCreate(input, caller) {
     const ownerId = await this.owner(true);
-    const prepared = await this.resolveMySkillInput(record4(input.input, "input"), caller, ownerId, UserSkillCreateSchema);
+    const prepared = await this.resolveMySkillInput(record6(input.input, "input"), caller, ownerId, UserSkillCreateSchema);
     await this.assertOwner(ownerId, true);
     const skill = await this.online.createUserSkill(prepared);
     await this.assertOwner(ownerId, true);
@@ -58602,9 +60572,9 @@ var PodploPluginService = class extends EventEmitter2 {
     return skill;
   }
   async mySkillUpdate(input, caller) {
-    const id2 = text2(input.id, "id", 180);
+    const id2 = text3(input.id, "id", 180);
     const ownerId = await this.owner(true);
-    const prepared = await this.resolveMySkillInput(record4(input.input, "input"), caller, ownerId, UserSkillUpdateSchema);
+    const prepared = await this.resolveMySkillInput(record6(input.input, "input"), caller, ownerId, UserSkillUpdateSchema);
     await this.assertOwner(ownerId, true);
     const skill = await this.online.updateUserSkill(id2, prepared);
     await this.assertOwner(ownerId, true);
@@ -58620,7 +60590,7 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async mySkillsGet(input) {
     const ownerId = await this.owner(false);
-    const skill = await this.online.userSkill(text2(input.id, "id", 180));
+    const skill = await this.online.userSkill(text3(input.id, "id", 180));
     await this.assertOwner(ownerId, false);
     this.personalSkillVersions.set(this.personalSkillKey(ownerId, skill.id), skill.updatedAt);
     return skill;
@@ -58628,24 +60598,24 @@ var PodploPluginService = class extends EventEmitter2 {
   async mySkillDelete(input, caller) {
     const confirmationId = optionalText(input.confirmationId, "confirmationId", 180);
     if (!confirmationId) {
-      const id3 = text2(input.id, "id", 180);
-      const expectedUpdatedAt = text2(input.expectedUpdatedAt, "expectedUpdatedAt", 80);
+      const id3 = text3(input.id, "id", 180);
+      const expectedUpdatedAt = text3(input.expectedUpdatedAt, "expectedUpdatedAt", 80);
       return this.createConfirmation("mySkills.delete", { id: id3, expectedUpdatedAt }, "\u5220\u9664\u8FD9\u4E2A\u81EA\u5EFA Skill");
     }
     this.requireUi(caller);
     const confirmation = await this.consumeConfirmation(confirmationId, "mySkills.delete");
-    const id2 = text2(confirmation.payload.id, "id", 180);
-    await this.online.deleteUserSkill(id2, text2(confirmation.payload.expectedUpdatedAt, "expectedUpdatedAt", 80));
+    const id2 = text3(confirmation.payload.id, "id", 180);
+    await this.online.deleteUserSkill(id2, text3(confirmation.payload.expectedUpdatedAt, "expectedUpdatedAt", 80));
     this.personalSkillVersions.delete(this.personalSkillKey(confirmation.ownerId, id2));
     this.publish();
     return { deleted: true, id: id2 };
   }
   async resolveSelection(input, caller) {
-    const kind = text2(input.kind, "kind", 20);
-    const id2 = text2(input.id, "id", 180);
+    const kind = text3(input.kind, "kind", 20);
+    const id2 = text3(input.id, "id", 180);
     const nativeSessionId = caller.source === "ui" && caller.sessionId === void 0 ? void 0 : this.options.resolveNativeSessionId?.(caller);
     if (kind === "gallery") {
-      const item = record4(await this.galleryDetail({ id: id2 }, caller));
+      const item = record6(await this.galleryDetail({ id: id2 }, caller));
       return {
         version: 1,
         kind: "gallery",
@@ -58677,9 +60647,9 @@ var PodploPluginService = class extends EventEmitter2 {
       const publicSkill = catalog?.skills.find((row) => row.slug === slug2 && row.executable);
       if (publicSkill) {
         const ownerId2 = await this.owner(true);
-        const detail = record4(await this.skillDetail({ slug: slug2 }));
+        const detail = record6(await this.skillDetail({ slug: slug2 }));
         await this.assertOwner(ownerId2, true);
-        const detailBinding = detail.binding ? record4(detail.binding) : void 0;
+        const detailBinding = detail.binding ? record6(detail.binding) : void 0;
         if (typeof detailBinding?.id !== "string" || detailBinding.availableForCurrentPlan !== true)
           throw new PodploPluginError("SKILL_UNAVAILABLE", "\u8BE5 Skill \u5F53\u524D\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u6743\u9650\u540E\u91CD\u8BD5");
         return {
@@ -58743,22 +60713,92 @@ var PodploPluginService = class extends EventEmitter2 {
       version: result.version,
       ...result.pricingVersion ? { pricingVersion: result.pricingVersion } : {},
       ...result.supportsGenerationOrders !== void 0 ? { supportsGenerationOrders: result.supportsGenerationOrders } : {},
+      ...result.supportsLocalGenerationOrderReferences === true ? { supportsLocalGenerationOrderReferences: true } : {},
       quoteInputSchema: structuredClone(result.quoteInputSchema),
       ...result.refreshedAt ? { refreshedAt: result.refreshedAt } : {},
       models,
       ...strippedFields.length ? { modelDiagnostics: { strippedFields } } : {}
     };
   }
+  assertMixedItems(plan, items) {
+    if (!plan) {
+      if (items.some((item) => item.localDependency)) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u672C\u5730\u4F9D\u8D56\u7F3A\u5C11\u5B8C\u6574\u51BB\u7ED3\u65B9\u6848\u3002");
+      return;
+    }
+    const covered = /* @__PURE__ */ new Set();
+    for (const stage of plan.stages.filter((stage2) => stage2.kind === "ai")) {
+      if (stage.kind !== "ai" || stage.itemIndexes.length !== stage.sourceBindings.length) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u9636\u6BB5\u6570\u91CF\u4E0E\u6765\u6E90\u4E0D\u4E00\u81F4\u3002");
+      for (const [position, index] of stage.itemIndexes.entries()) {
+        const item = items[index], source = stage.sourceBindings[position];
+        if (!item || covered.has(index) || item.stage?.id !== stage.id || item.args.count !== 1)
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u9636\u6BB5\u4E0E\u6574\u5355\u9879\u76EE\u4E0D\u4E00\u81F4\u3002");
+        covered.add(index);
+        if (source.kind === "local" && (!item.localDependency || item.localDependency.stageId !== source.stageId || item.localDependency.outputIndex !== source.outputIndex) || source.kind !== "local" && item.localDependency)
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u672C\u5730\u7ED3\u679C\u5F15\u7528\u4E0E\u51BB\u7ED3\u65B9\u6848\u4E0D\u4E00\u81F4\u3002");
+        if (source.kind === "ai" && (!item.dependsOn || item.dependsOn.itemIndex !== source.itemIndex || item.dependsOn.outputIndex !== source.outputIndex) || source.kind !== "ai" && item.dependsOn)
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u7ED3\u679C\u5F15\u7528\u4E0E\u51BB\u7ED3\u65B9\u6848\u4E0D\u4E00\u81F4\u3002");
+      }
+    }
+    if (covered.size !== items.length) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u6DF7\u5408\u4EFB\u52A1\u6F0F\u8BB0\u4E86 AI \u9879\u76EE\u3002");
+  }
+  async reconcileMixed(operationId2, ownerId) {
+    const initial = this.store.snapshot().operations.find((row) => row.operationId === operationId2 && row.ownerId === ownerId);
+    if (!initial?.mixedPlan || !initial.approvedAt || initial.stoppedAt || initial.mixedFailure || this.closed) return;
+    const existing = this.mixedJobs.get(operationId2);
+    if (existing) {
+      existing.rerun = true;
+      return existing.promise;
+    }
+    const entry = { rerun: false, promise: Promise.resolve() };
+    entry.promise = (async () => {
+      do {
+        entry.rerun = false;
+        const operation = this.store.snapshot().operations.find((row) => row.operationId === operationId2 && row.ownerId === ownerId);
+        if (!operation?.mixedPlan || operation.stoppedAt || operation.mixedFailure || this.closed) break;
+        try {
+          if (operation.reservation && Date.parse(operation.reservation.expiresAt) <= this.now().getTime())
+            throw new PodploPluginError("ORDER_EXPIRED", "\u6574\u5355\u9884\u7559\u5DF2\u8FC7\u671F\uFF0C\u672A\u7EE7\u7EED\u672C\u5730\u52A0\u5DE5\u6216\u4E0A\u4F20\u3002");
+          await this.assertOwner(ownerId, true);
+          await this.assertProcessingPlanAuthorized(ownerId, operation.mixedPlan.stages.flatMap((stage) => stage.kind === "local" ? stage.processingSteps : []));
+          const runtime = await this.options.reconcileMixedTask(structuredClone(operation));
+          await this.assertOwner(ownerId, true);
+          await this.store.transaction((saved) => {
+            const row = saved.operations.find((row2) => row2.operationId === operationId2 && row2.ownerId === ownerId);
+            row.mixedRuntime = structuredClone(runtime);
+            row.status = operationStatus(row);
+            row.updatedAt = this.now().toISOString();
+          });
+        } catch (error101) {
+          await this.store.transaction((saved) => {
+            const row = saved.operations.find((row2) => row2.operationId === operationId2 && row2.ownerId === ownerId);
+            row.mixedFailure = this.errorCode(error101);
+            row.status = operationStatus(row);
+            row.updatedAt = this.now().toISOString();
+          });
+        }
+      } while (entry.rerun && !this.closed);
+    })();
+    this.mixedJobs.set(operationId2, entry);
+    try {
+      await entry.promise;
+    } finally {
+      if (this.mixedJobs.get(operationId2) === entry) this.mixedJobs.delete(operationId2);
+    }
+  }
   async generationPrepare(input, caller) {
     const nativeSessionId = this.nativeSessionFor(caller);
     const ownerId = await this.owner(true);
     const stopEpoch = this.currentSessionStopEpoch(ownerId, nativeSessionId);
-    const intentId = text2(input.intentId, "intentId", 180);
+    const intentId = text3(input.intentId, "intentId", 180);
     const planVersion = input.planVersion;
     if (!Number.isInteger(planVersion) || planVersion < 1 || planVersion > 1e6) throw new PodploPluginError("INVALID_ARGUMENT", "planVersion \u65E0\u6548");
     const operationId2 = optionalText(input.operationId, "operationId", 180);
     const manualOrdinary = caller.source === "ui" && caller.sessionId === void 0 && nativeSessionId === PODPLO_MANUAL_SESSION_ID;
     const preparedItems = this.preparedItems(input.items, manualOrdinary);
+    const mixedPlan = input.mixedPlan === void 0 ? void 0 : validateNativeMixedTaskPlan(input.mixedPlan);
+    this.assertMixedItems(mixedPlan, preparedItems);
+    if (mixedPlan && !this.options.reconcileMixedTask) throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u5F53\u524D Host \u4E0D\u652F\u6301\u6DF7\u5408\u4EFB\u52A1\u6267\u884C\u3002");
+    if (mixedPlan) await this.assertProcessingPlanAuthorized(ownerId, mixedPlan.stages.flatMap((stage) => stage.kind === "local" ? stage.processingSteps : []));
     const expectedOutputCount = this.expectedOutputCount(input);
     const wholeOrderRequired = input.wholeOrderRequired === true;
     this.assertPlannedOutputCount(preparedItems, expectedOutputCount);
@@ -58776,25 +60816,28 @@ var PodploPluginService = class extends EventEmitter2 {
       if (!exact) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
       if (exact.intentId !== intentId || exact.planVersion !== planVersion) throw new PodploPluginError("OPERATION_MISMATCH", "\u65B0\u610F\u56FE\u6216\u65B9\u6848\u7248\u672C\u5FC5\u987B\u65B0\u5EFA\u64CD\u4F5C");
       if (!isDeepStrictEqual(comparableGenerationItems(exact.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
+      if (!isDeepStrictEqual(exact.mixedPlan, mixedPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u6DF7\u5408\u4EFB\u52A1\u5B8C\u6574\u65B9\u6848\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u4F7F\u7528\u65B0\u7248\u672C\u91CD\u65B0\u786E\u8BA4\u3002");
       if (processingPlan !== void 0 && !isDeepStrictEqual(exact.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
       if (wholeOrderRequired && !exact.pricingVersion) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u73B0\u6709\u65B9\u6848\u4E0D\u662F\u6574\u5355\u9884\u7559\u62A5\u4EF7\uFF0C\u8BF7\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u91CD\u8BD5\u3002");
       this.assertQuotedOutputCount(exact.items, expectedOutputCount);
       await this.assertProcessingPlanAuthorized(ownerId, exact.processingPlan);
-      return safeOperation(exact);
+      return safeOperation2(exact);
     }
     const previous = state.operations.find((row) => row.ownerId === ownerId && row.nativeSessionId === nativeSessionId && row.intentId === intentId && row.planVersion === planVersion);
     if (previous) {
       if (!isDeepStrictEqual(comparableGenerationItems(previous.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
+      if (!isDeepStrictEqual(previous.mixedPlan, mixedPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u6DF7\u5408\u4EFB\u52A1\u5B8C\u6574\u65B9\u6848\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u4F7F\u7528\u65B0\u7248\u672C\u91CD\u65B0\u786E\u8BA4\u3002");
       if (processingPlan !== void 0 && !isDeepStrictEqual(previous.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u52A0\u5DE5\u8981\u6C42\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u767B\u8BB0\u539F\u4EFB\u52A1\u52A0\u5DE5\u8BA1\u5212\u6216\u4F7F\u7528\u65B0\u65B9\u6848\u3002");
       if (wholeOrderRequired && !previous.pricingVersion) throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u73B0\u6709\u65B9\u6848\u4E0D\u662F\u6574\u5355\u9884\u7559\u62A5\u4EF7\uFF0C\u8BF7\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u91CD\u8BD5\u3002");
       this.assertQuotedOutputCount(previous.items, expectedOutputCount);
       await this.assertProcessingPlanAuthorized(ownerId, previous.processingPlan);
-      return safeOperation(previous);
+      return safeOperation2(previous);
     }
     const key = `${ownerId}:${nativeSessionId}:${intentId}:${planVersion}`;
     const active = this.preparing.get(key);
     if (active) {
       if (!isDeepStrictEqual(comparableGenerationItems(active.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
+      if (!isDeepStrictEqual(active.mixedPlan, mixedPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u6DF7\u5408\u4EFB\u52A1\u5B8C\u6574\u65B9\u6848\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u4F7F\u7528\u65B0\u7248\u672C\u91CD\u65B0\u786E\u8BA4\u3002");
       if (processingPlan !== void 0 && !isDeepStrictEqual(active.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u540C\u4E00\u65B9\u6848\u7684\u52A0\u5DE5\u8981\u6C42\u4E0D\u4E00\u81F4\u3002");
       if (active.expectedOutputCount !== void 0 && expectedOutputCount !== void 0 && active.expectedOutputCount !== expectedOutputCount) {
         throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u540C\u4E00\u65B9\u6848\u6B63\u5728\u6309 ${active.expectedOutputCount} \u5F20\u62A5\u4EF7\uFF0C\u4E0D\u80FD\u6539\u4E3A ${expectedOutputCount} \u5F20\u590D\u7528\u3002\u8BF7\u6536\u9F50\u5B8C\u6574\u6279\u6B21\u5E76\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u3002`);
@@ -58808,32 +60851,38 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     const taskName = optionalText(input.taskName, "taskName", 100);
     const archiveProject = this.options.resolveArchiveProject?.(caller, input);
-    const operation = this.prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan, wholeOrderRequired).finally(() => this.preparing.delete(key));
-    this.preparing.set(key, { items, ...expectedOutputCount !== void 0 ? { expectedOutputCount } : {}, processingPlan, promise: operation });
+    const operation = this.prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan, wholeOrderRequired, mixedPlan).finally(() => this.preparing.delete(key));
+    this.preparing.set(key, { mixedPlan, items, ...expectedOutputCount !== void 0 ? { expectedOutputCount } : {}, processingPlan, promise: operation });
     return operation;
   }
   preparedItems(value2, allowOrdinary = false) {
     if (!Array.isArray(value2) || value2.length < 1 || value2.length > 100) throw new PodploPluginError("INVALID_ARGUMENT", "items \u5FC5\u987B\u5305\u542B 1-100 \u9879");
     return value2.map((raw, index) => {
-      const item = record4(raw, `items[${index}]`);
+      const item = record6(raw, `items[${index}]`);
       const args = jsonObject(item.args, `items[${index}].args`);
-      const sourceName = item.sourceName === void 0 ? {} : { sourceName: text2(item.sourceName, "sourceName", 255) };
+      const sourceName = item.sourceName === void 0 ? {} : { sourceName: text3(item.sourceName, "sourceName", 255) };
       const pricingReferenceCount = item.pricingReferenceCount === void 0 ? void 0 : Number(item.pricingReferenceCount);
       if (pricingReferenceCount !== void 0 && (!Number.isSafeInteger(pricingReferenceCount) || pricingReferenceCount < 0 || pricingReferenceCount > 14))
         throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].pricingReferenceCount \u65E0\u6548`);
       let stage;
       if (item.stage !== void 0) {
-        const rawStage = record4(item.stage, `items[${index}].stage`);
+        const rawStage = record6(item.stage, `items[${index}].stage`);
         if (Object.keys(rawStage).some((key) => !["id", "label", "order"].includes(key)) || !Number.isSafeInteger(rawStage.order) || Number(rawStage.order) < 0 || Number(rawStage.order) > 99) {
           throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].stage \u65E0\u6548`);
         }
-        const id2 = text2(rawStage.id, "stage.id", 40);
+        const id2 = text3(rawStage.id, "stage.id", 40);
         if (!/^[A-Za-z0-9_-]+$/u.test(id2)) throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].stage.id \u65E0\u6548`);
-        stage = { id: id2, label: text2(rawStage.label, "stage.label", 80), order: Number(rawStage.order) };
+        stage = { id: id2, label: text3(rawStage.label, "stage.label", 80), order: Number(rawStage.order) };
+      }
+      let localDependency;
+      if (item.localDependency !== void 0) {
+        const dependency = record6(item.localDependency, `items[${index}].localDependency`);
+        if (Object.keys(dependency).some((key) => !["stageId", "outputIndex", "referenceIndex"].includes(key)) || typeof dependency.stageId !== "string" || !/^[A-Za-z0-9_-]{1,40}$/u.test(dependency.stageId) || !Number.isSafeInteger(dependency.outputIndex) || Number(dependency.outputIndex) < 0 || !Number.isSafeInteger(dependency.referenceIndex) || Number(dependency.referenceIndex) < 0 || !Array.isArray(args.referenceAssetIds) || Number(dependency.referenceIndex) >= args.referenceAssetIds.length || item.dependsOn !== void 0) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u672C\u5730\u7ED3\u679C\u4F9D\u8D56\u65E0\u6548\u3002");
+        localDependency = { stageId: dependency.stageId, outputIndex: Number(dependency.outputIndex), referenceIndex: Number(dependency.referenceIndex) };
       }
       let dependsOn;
       if (item.dependsOn !== void 0) {
-        const dependency = record4(item.dependsOn, `items[${index}].dependsOn`);
+        const dependency = record6(item.dependsOn, `items[${index}].dependsOn`);
         if (Object.keys(dependency).some((key) => !["itemIndex", "outputIndex", "referenceIndex"].includes(key)) || !Number.isSafeInteger(dependency.itemIndex) || Number(dependency.itemIndex) < 0 || Number(dependency.itemIndex) >= index || dependency.outputIndex !== void 0 && (!Number.isSafeInteger(dependency.outputIndex) || Number(dependency.outputIndex) < 0 || Number(dependency.outputIndex) > 99) || dependency.referenceIndex !== void 0 && (!Number.isSafeInteger(dependency.referenceIndex) || Number(dependency.referenceIndex) < 0 || Number(dependency.referenceIndex) > 13)) {
           throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", `items[${index}] \u5FC5\u987B\u5F15\u7528\u4E00\u4E2A\u66F4\u65E9\u7684\u751F\u6210\u9879\u53CA\u6709\u6548\u8F93\u51FA\u4F4D\u7F6E`);
         }
@@ -58850,17 +60899,19 @@ var PodploPluginService = class extends EventEmitter2 {
           ...sourceName,
           ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
           ...stage ? { stage } : {},
+          ...localDependency ? { localDependency } : {},
           ...dependsOn ? { dependsOn } : {},
           args: { ...args }
         };
       }
-      const skillId = text2(item.skillId, `items[${index}].skillId`, 180);
+      const skillId = text3(item.skillId, `items[${index}].skillId`, 180);
       if (args.templateId !== void 0 && args.templateId !== skillId) throw new PodploPluginError("SKILL_BINDING_MISMATCH", `items[${index}] \u7684 Skill \u4E0E\u62A5\u4EF7\u53C2\u6570\u4E0D\u4E00\u81F4`);
       return {
         skillId,
         ...sourceName,
         ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
         ...stage ? { stage } : {},
+        ...localDependency ? { localDependency } : {},
         ...dependsOn ? { dependsOn } : {},
         args: { ...args, templateId: skillId }
       };
@@ -58905,13 +60956,13 @@ var PodploPluginService = class extends EventEmitter2 {
         output.push({ ...item, args });
         continue;
       }
-      const parse7 = (value2, label) => {
+      const parse8 = (value2, label) => {
         if (value2 === void 0) return [];
         if (!Array.isArray(value2) || value2.length > 14 || value2.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2)))
           throw new PodploPluginError("INVALID_REFERENCE_ID", `${label} \u5FC5\u987B\u5305\u542B\u4E0D\u8D85\u8FC7 14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID \u6216\u4E91\u7D20\u6750 UUID`);
         return value2;
       };
-      const rawIds = [...parse7(primary, "referenceAssetIds"), ...parse7(compatibility, "imageIds")];
+      const rawIds = [...parse8(primary, "referenceAssetIds"), ...parse8(compatibility, "imageIds")];
       if (item.dependsOn && new Set(rawIds).size !== rawIds.length)
         throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u7684\u5B9A\u4EF7\u53C2\u8003\u56FE\u4E0D\u80FD\u91CD\u590D\uFF0C\u4EE5\u514D\u4F9D\u8D56\u63D2\u69FD\u53D1\u751F\u504F\u79FB");
       const ids2 = item.dependsOn ? rawIds : [...new Set(rawIds)];
@@ -58936,7 +60987,7 @@ var PodploPluginService = class extends EventEmitter2 {
     if (resolvedByHost) await this.assertOwner(ownerId, true);
     return output;
   }
-  async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan, wholeOrderRequired = false) {
+  async prepareNewGeneration(ownerId, nativeSessionId, intentId, planVersion, items, stopEpoch, expectedOutputCount, taskName, archiveProject, processingPlan, wholeOrderRequired = false, mixedPlan) {
     const gateway = this.gateway();
     let capabilities2 = await gateway.capabilities(false);
     if (capabilities2.supportsGenerationOrders === true && (!capabilities2.refreshedAt || this.now().getTime() - Date.parse(capabilities2.refreshedAt) > 3e4)) {
@@ -58950,6 +61001,8 @@ var PodploPluginService = class extends EventEmitter2 {
     if (wholeOrder && capabilities2.pricingVersion !== localGenerationPricingVersion) {
       throw new PodploPluginError("PRICING_VERSION_CHANGED", "\u4E3B\u7AD9\u79EF\u5206\u89C4\u5219\u5DF2\u66F4\u65B0\uFF0C\u5F53\u524D\u63D2\u4EF6\u672A\u521B\u5EFA\u786E\u8BA4\u3002\u8BF7\u66F4\u65B0\u63D2\u4EF6\u540E\u91CD\u8BD5\u3002");
     }
+    if (mixedPlan && (!wholeOrder || capabilities2.supportsLocalGenerationOrderReferences !== true))
+      throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u53D7\u6279\u51C6\u7684\u672C\u5730\u7ED3\u679C\u4F9D\u8D56\u5408\u540C\uFF0C\u672A\u9884\u7559\u6216\u6267\u884C\u3002");
     const balance = wholeOrder ? await gateway.balance() : void 0;
     if (balance) await this.assertOwner(ownerId, true);
     const savedItems = [];
@@ -59056,6 +61109,7 @@ var PodploPluginService = class extends EventEmitter2 {
       ...taskName ? { taskName } : {},
       ...archiveProject ? { archiveProject } : {},
       ...processingPlan !== void 0 ? { processingPlan } : {},
+      ...mixedPlan ? { mixedPlan: structuredClone(mixedPlan) } : {},
       ...wholeOrder && balance && reservationToken ? {
         preservePrompt: true,
         pricingVersion: localGenerationPricingVersion,
@@ -59071,7 +61125,8 @@ var PodploPluginService = class extends EventEmitter2 {
         pricingVersion: localGenerationPricingVersion,
         items: savedItems,
         processingPlan,
-        preservePrompt: true
+        preservePrompt: true,
+        mixedPlan
       });
       row.planDigest = order2.planDigest;
       row.localQuoteDigest = order2.localQuoteDigest;
@@ -59106,14 +61161,14 @@ var PodploPluginService = class extends EventEmitter2 {
     });
     this.publish();
     const persisted = this.store.snapshot().operations.find((value2) => value2.ownerId === ownerId && value2.nativeSessionId === nativeSessionId && value2.intentId === intentId && value2.planVersion === planVersion);
-    return safeOperation(persisted);
+    return safeOperation2(persisted);
   }
   async generationApprove(input, caller, nativeApproval = false) {
     if (!nativeApproval) this.requireUi(caller);
     const ownerId = await this.owner(true);
     const nativeSessionId = caller.sessionId === void 0 ? void 0 : this.nativeSessionFor(caller);
-    const operationId2 = text2(input.operationId, "operationId", 180);
-    const approvalId = text2(input.approvalId, "approvalId", 180);
+    const operationId2 = text3(input.operationId, "operationId", 180);
+    const approvalId = text3(input.approvalId, "approvalId", 180);
     let operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
     if (!operation) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
     if (nativeSessionId !== void 0 && operation.nativeSessionId !== nativeSessionId) {
@@ -59122,15 +61177,16 @@ var PodploPluginService = class extends EventEmitter2 {
     if (operation.approvalId !== approvalId) throw new PodploPluginError("CONFIRMATION_MISMATCH", "\u62A5\u4EF7\u786E\u8BA4\u4E0D\u5339\u914D");
     if (operation.approvedAt) {
       this.startSubmission(operationId2, ownerId);
-      return safeOperation(operation);
+      return safeOperation2(operation);
     }
     const pending = operation.items.filter((item) => item.status === "quoted");
-    if (!pending.length) return safeOperation(operation);
+    if (!pending.length) return safeOperation2(operation);
     if (pending.some((item) => Date.parse(item.quote.expiresAt) <= this.now().getTime())) throw new PodploPluginError("QUOTE_EXPIRED", "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u4EE5\u65B0\u65B9\u6848\u7248\u672C\u91CD\u65B0\u62A5\u4EF7");
     if (operation.balanceAtQuote && operation.balanceAtQuote.availableCredits < operationSummary(operation).totalCredits) {
       throw new PodploPluginError("INSUFFICIENT_CREDITS", "\u4F59\u989D\u4E0D\u8DB3\uFF0C\u6574\u5355\u672A\u9884\u7559\u4E5F\u672A\u63D0\u4EA4\u3002\u8BF7\u5145\u503C\u6216\u8C03\u6574\u65B9\u6848\u540E\u91CD\u65B0\u786E\u8BA4\u3002");
     }
     await this.assertProcessingPlanAuthorized(ownerId, operation.processingPlan);
+    if (operation.mixedPlan) await this.assertProcessingPlanAuthorized(ownerId, operation.mixedPlan.stages.flatMap((stage) => stage.kind === "local" ? stage.processingSteps : []));
     let reservation = operation.reservation;
     if (operation.pricingVersion) {
       const gateway = this.gateway();
@@ -59144,7 +61200,8 @@ var PodploPluginService = class extends EventEmitter2 {
         pricingVersion: operation.pricingVersion,
         items: operation.items,
         processingPlan: operation.processingPlan,
-        preservePrompt: operation.preservePrompt === true
+        preservePrompt: operation.preservePrompt === true,
+        mixedPlan: operation.mixedPlan
       });
       if (order2.planDigest !== operation.planDigest || order2.localQuoteDigest !== operation.localQuoteDigest)
         throw new PodploPluginError("CONFIRMATION_MISMATCH", "\u6574\u5355\u65B9\u6848\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u786E\u8BA4\u3002");
@@ -59165,7 +61222,7 @@ var PodploPluginService = class extends EventEmitter2 {
     operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
     this.startSubmission(operationId2, ownerId);
     this.publish();
-    return safeOperation(operation);
+    return safeOperation2(operation);
   }
   startSubmission(operationId2, ownerId) {
     if (this.submissionJobs.has(operationId2)) return;
@@ -59187,7 +61244,26 @@ var PodploPluginService = class extends EventEmitter2 {
         await this.cancelRemainingItems(operationId2, ownerId, "NATIVE_SESSION_STOPPED");
         break;
       }
-      if (item.dependsOn) {
+      if (item.localDependency) {
+        try {
+          await this.reconcileMixed(operationId2, ownerId);
+          operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
+          if (operation.mixedFailure) {
+            await this.failUnsubmittedItem(operationId2, ownerId, itemId, operation.mixedFailure);
+            continue;
+          }
+          const resolved = operation.mixedRuntime && resolveMixedOutput(operation.mixedRuntime, item.localDependency.stageId, item.localDependency.outputIndex);
+          if (!resolved || resolved.status === "waiting") continue;
+          if (resolved.status === "failed") {
+            await this.failUnsubmittedItem(operationId2, ownerId, itemId, resolved.errorCode);
+            continue;
+          }
+          dependencyAssetId = resolved.assetId;
+        } catch (error101) {
+          await this.failUnsubmittedItem(operationId2, ownerId, itemId, this.errorCode(error101));
+          continue;
+        }
+      } else if (item.dependsOn) {
         const dependency = this.dependencyResult(operation, item);
         if (dependency.status === "waiting") continue;
         if (dependency.status === "failed") {
@@ -59295,7 +61371,8 @@ var PodploPluginService = class extends EventEmitter2 {
           let resolvedReferenceAssetIds;
           if (Array.isArray(item.args.referenceAssetIds)) {
             resolvedReferenceAssetIds = item.args.referenceAssetIds.filter((value2) => typeof value2 === "string");
-            if (item.dependsOn && dependencyAssetId) resolvedReferenceAssetIds[item.dependsOn.referenceIndex] = dependencyAssetId;
+            const dependency = item.localDependency ?? item.dependsOn;
+            if (dependency && dependencyAssetId) resolvedReferenceAssetIds[dependency.referenceIndex] = dependencyAssetId;
           }
           result = await gateway.submitOrderItem({
             orderId: operation.reservation.orderId,
@@ -59645,7 +61722,7 @@ var PodploPluginService = class extends EventEmitter2 {
   async generationCancel(input, caller) {
     this.requireUi(caller);
     const ownerId = await this.owner(false);
-    const operationId2 = text2(input.operationId, "operationId", 180);
+    const operationId2 = text3(input.operationId, "operationId", 180);
     await this.store.transaction((saved) => {
       const row = saved.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === operationId2);
       if (!row) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
@@ -59656,15 +61733,15 @@ var PodploPluginService = class extends EventEmitter2 {
     });
     this.publish();
     const operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
-    return safeOperation(operation);
+    return safeOperation2(operation);
   }
   async generationStatus(input, caller, pendingOnly = false) {
     const ownerId = await this.owner(false);
-    const operationId2 = text2(input.operationId, "operationId", 180);
+    const operationId2 = text3(input.operationId, "operationId", 180);
     const nativeSessionId = caller.source === "agent" ? this.nativeSessionFor(caller) : void 0;
     let operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2 && (caller.source === "ui" || row.nativeSessionId === nativeSessionId));
     if (!operation) throw new PodploPluginError("OPERATION_NOT_FOUND", "\u751F\u56FE\u64CD\u4F5C\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
-    if (pendingOnly && generationIsPaused(operation)) return safeOperation(operation);
+    if (pendingOnly && generationIsPaused(operation)) return safeOperation2(operation);
     const refresh = bool(input.refresh);
     if (refresh) {
       if (operation.reservation && operation.items.some((item) => ["submitting", "submission_unknown"].includes(item.status))) {
@@ -59720,17 +61797,18 @@ var PodploPluginService = class extends EventEmitter2 {
         row.status = operationStatus(row);
         row.updatedAt = this.now().toISOString();
       });
+      await this.reconcileMixed(operationId2, ownerId);
       operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
       if (operation.approvedAt && operation.items.some((item) => item.status === "quoted")) this.startSubmission(operationId2, ownerId);
     }
     if (refresh) this.publish();
-    return safeOperation(operation);
+    return safeOperation2(operation);
   }
   async generationList(caller, input) {
     const ownerId = await this.owner(false);
     if (input.scope === "manual") this.requireUi(caller);
     const nativeSessionId = input.scope === "manual" ? PODPLO_MANUAL_SESSION_ID : caller.source === "agent" || caller.sessionId !== void 0 ? this.nativeSessionFor(caller) : void 0;
-    return { items: this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && (nativeSessionId === void 0 || row.nativeSessionId === nativeSessionId)).map((row) => safeOperation(row)) };
+    return { items: this.store.snapshot().operations.filter((row) => row.ownerId === ownerId && (nativeSessionId === void 0 || row.nativeSessionId === nativeSessionId)).map((row) => safeOperation2(row)) };
   }
   async assertOwner(ownerId, write) {
     if (await this.owner(write) !== ownerId) throw new PodploPluginError("SESSION_CHANGED", "\u64CD\u4F5C\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u66F4");
@@ -59906,7 +61984,7 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   async cancelConfirmation(input, caller) {
     this.requireUi(caller);
-    const id2 = text2(input.confirmationId, "confirmationId", 180);
+    const id2 = text3(input.confirmationId, "confirmationId", 180);
     const ownerId = await this.owner(true);
     const result = await this.store.transaction((saved) => {
       const row = saved.confirmations.find((value2) => value2.id === id2 && value2.ownerId === ownerId);
@@ -59931,47 +62009,13 @@ var PodploPluginService = class extends EventEmitter2 {
 };
 
 // plugins/podplo-dsh/src/generation-gateway.ts
-import { createHash as createHash9 } from "node:crypto";
-
-// plugins/podplo-dsh/src/generation-background.ts
-var allows = (schema2, value2) => schema2?.type === "string" && (!schema2.enum || schema2.enum.includes(value2));
-function transparentControl(properties, model) {
-  const parameters = model?.parameterSchema?.properties ?? {};
-  const declared = model?.supportsTransparentMode === true || Array.isArray(model?.backgroundModes) && model.backgroundModes.includes("transparent");
-  if (model?.supportsTransparentMode === false) return void 0;
-  if (allows(properties.background, "transparent") && (declared || allows(parameters.background, "transparent"))) {
-    const format2 = ["png", "webp"].find((value2) => allows(properties.output_format, value2) && (!parameters.output_format || allows(parameters.output_format, value2)));
-    return format2 ? { key: "background", format: format2 } : void 0;
-  }
-  const key = Object.keys(properties).find((key2) => /transparent/i.test(key2) && properties[key2]?.type === "boolean");
-  return key && (declared || parameters[key]?.type === "boolean") ? { key } : void 0;
-}
-function backgroundArgs(properties, model, transparent) {
-  const control = transparentControl(properties, model);
-  if (!control) {
-    if (transparent) throw new Error("\u5F53\u524D\u6A21\u578B\u6216\u670D\u52A1\u7AEF\u5C1A\u672A\u5F00\u653E\u900F\u660E\u80CC\u666F\u53CA PNG/WebP \u53C2\u6570\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u6216\u66F4\u6362\u6A21\u578B\u3002");
-    return {};
-  }
-  if (control.key !== "background") return { [control.key]: transparent };
-  if (transparent) return { background: "transparent", output_format: control.format };
-  return allows(properties.background, "opaque") ? { background: "opaque" } : {};
-}
-function normalizeBackground(input) {
-  if (input.background === void 0) return input;
-  if (input.background !== "transparent" && input.background !== "opaque") throw new Error("INVALID_BACKGROUND");
-  if (input.background !== "transparent") return input;
-  const format2 = input.output_format ?? "png";
-  if (format2 !== "png" && format2 !== "webp") throw new Error("TRANSPARENT_OUTPUT_FORMAT_REQUIRED");
-  return { ...input, output_format: format2 };
-}
-
-// plugins/podplo-dsh/src/generation-gateway.ts
-var object5 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
+import { createHash as createHash11 } from "node:crypto";
+var object6 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
 var SAFE_ERROR_CODE = /^[A-Z_]{1,80}$/u;
 var ORDINARY_KEYS = /* @__PURE__ */ new Set(["prompt", "modelId", "referenceAssetIds", "ratio", "quality", "resolution", "thinkingLevel", "webSearch", "imageSearch", "ecoMode", "count", "background", "output_format"]);
 function safeErrorCode(value2) {
-  if (!object5(value2)) return void 0;
-  const nested = object5(value2.error) ? value2.error.code : void 0;
+  if (!object6(value2)) return void 0;
+  const nested = object6(value2.error) ? value2.error.code : void 0;
   const candidate2 = typeof nested === "string" ? nested : value2.code;
   return typeof candidate2 === "string" && SAFE_ERROR_CODE.test(candidate2) ? candidate2 : void 0;
 }
@@ -59980,7 +62024,7 @@ function mcpToolErrorCode(result) {
   if (structured) return structured;
   if (!Array.isArray(result.content)) return void 0;
   for (const item of result.content) {
-    if (!object5(item) || item.type !== "text" || typeof item.text !== "string" || item.text.length > 1e4) continue;
+    if (!object6(item) || item.type !== "text" || typeof item.text !== "string" || item.text.length > 1e4) continue;
     try {
       const code = safeErrorCode(JSON.parse(item.text));
       if (code) return code;
@@ -60006,7 +62050,7 @@ var NativeGenerationGateway = class {
         capabilities: {},
         clientInfo: { name: "PodPlo Native DSH", version: PLUGIN_VERSION }
       }, false);
-      if (!object5(result) || typeof result.protocolVersion !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
+      if (!object6(result) || typeof result.protocolVersion !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
       this.initializedFor = namespace;
     }
     const id2 = ++this.sequence;
@@ -60025,7 +62069,7 @@ var NativeGenerationGateway = class {
           body: JSON.stringify({ jsonrpc: "2.0", id: id2, method, params })
         });
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
-        if (!object5(response) || response.id !== id2 || response.jsonrpc !== "2.0") throw new OnlineError("MCP_TOOL_REJECTED");
+        if (!object6(response) || response.id !== id2 || response.jsonrpc !== "2.0") throw new OnlineError("MCP_TOOL_REJECTED");
         if (response.error) throw new OnlineError(safeErrorCode(response.error) ?? "MCP_TOOL_REJECTED");
         return response.result;
       } catch (error101) {
@@ -60041,19 +62085,19 @@ var NativeGenerationGateway = class {
   }
   async call(name2, args) {
     const result = await this.rpc("tools/call", { name: name2, arguments: args });
-    if (!object5(result)) throw new OnlineError("MCP_TOOL_REJECTED");
+    if (!object6(result)) throw new OnlineError("MCP_TOOL_REJECTED");
     if (result.isError) throw new OnlineError(mcpToolErrorCode(result) ?? "MCP_TOOL_REJECTED");
     let output = result.structuredContent;
     if (output === void 0 && Array.isArray(result.content)) {
-      const text4 = result.content.find((value2) => object5(value2) && value2.type === "text" && typeof value2.text === "string");
-      if (object5(text4)) {
+      const text4 = result.content.find((value2) => object6(value2) && value2.type === "text" && typeof value2.text === "string");
+      if (object6(text4)) {
         try {
           output = JSON.parse(text4.text);
         } catch {
         }
       }
     }
-    if (!object5(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    if (!object6(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
     return output;
   }
   async desktop(path, body) {
@@ -60065,7 +62109,7 @@ var NativeGenerationGateway = class {
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
         const output = await this.online.auth.http.json(path, { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` }, body: JSON.stringify(body) });
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
-        if (!object5(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+        if (!object6(output)) throw new OnlineError("INVALID_TOOL_RESPONSE");
         return output;
       } catch (error101) {
         if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
@@ -60088,25 +62132,26 @@ var NativeGenerationGateway = class {
     const orderNames = /* @__PURE__ */ new Set();
     do {
       const page = await this.rpc("tools/list", cursor ? { cursor } : {});
-      if (!object5(page) || !Array.isArray(page.tools)) throw new OnlineError("INVALID_TOOL_RESPONSE");
-      quote ??= page.tools.find((value3) => object5(value3) && value3.name === "quote_skill_generation");
-      create ??= page.tools.find((value3) => object5(value3) && value3.name === "create_skill_generation");
-      for (const value3 of page.tools) if (object5(value3) && typeof value3.name === "string" && ["reserve_generation_order", "create_generation_order_item", "get_generation_order", "cancel_generation_order"].includes(value3.name)) orderNames.add(value3.name);
+      if (!object6(page) || !Array.isArray(page.tools)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+      quote ??= page.tools.find((value3) => object6(value3) && value3.name === "quote_skill_generation");
+      create ??= page.tools.find((value3) => object6(value3) && value3.name === "create_skill_generation");
+      for (const value3 of page.tools) if (object6(value3) && typeof value3.name === "string" && ["reserve_generation_order", "create_generation_order_item", "get_generation_order", "cancel_generation_order"].includes(value3.name)) orderNames.add(value3.name);
       const next = page.nextCursor;
       if (next !== void 0 && next !== null && (typeof next !== "string" || !next || seen.has(next) || seen.size >= 100)) throw new OnlineError("INVALID_TOOL_RESPONSE");
       cursor = typeof next === "string" ? next : void 0;
       if (cursor) seen.add(cursor);
     } while (cursor);
-    if (!quote || !object5(quote.inputSchema) || quote.inputSchema.type !== "object") throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
+    if (!quote || !object6(quote.inputSchema) || quote.inputSchema.type !== "object") throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
     if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
     const quoteInputSchema = structuredClone(quote.inputSchema);
     const modelResult = await this.call("get_models", { includePricing: false });
-    if (!Array.isArray(modelResult.models) || modelResult.models.some((value3) => !object5(value3)) || orderNames.size === 4 && (typeof modelResult.pricingVersion !== "string" || !/^[a-f0-9]{64}$/u.test(modelResult.pricingVersion))) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    if (!Array.isArray(modelResult.models) || modelResult.models.some((value3) => !object6(value3)) || orderNames.size === 4 && (typeof modelResult.pricingVersion !== "string" || !/^[a-f0-9]{64}$/u.test(modelResult.pricingVersion))) throw new OnlineError("INVALID_TOOL_RESPONSE");
     if (this.online.auth.namespace !== namespace) throw new OnlineError("SESSION_CHANGED");
     const value2 = {
-      version: `sha256:${createHash9("sha256").update(JSON.stringify(quoteInputSchema)).digest("hex")}`,
+      version: `sha256:${createHash11("sha256").update(JSON.stringify(quoteInputSchema)).digest("hex")}`,
       ...typeof modelResult.pricingVersion === "string" ? { pricingVersion: modelResult.pricingVersion } : {},
       supportsGenerationOrders: orderNames.size === 4,
+      supportsLocalGenerationOrderReferences: orderNames.size === 4 && modelResult.supportsLocalGenerationOrderReferences === true,
       quoteInputSchema,
       refreshedAt: (/* @__PURE__ */ new Date()).toISOString(),
       models: modelResult.models
@@ -60114,7 +62159,7 @@ var NativeGenerationGateway = class {
     this.cached = {
       namespace,
       value: value2,
-      ...object5(create?.inputSchema) ? { createSchema: create.inputSchema } : {},
+      ...object6(create?.inputSchema) ? { createSchema: create.inputSchema } : {},
       orderTools: orderNames.size === 4
     };
     return structuredClone(value2);
@@ -60140,7 +62185,7 @@ var NativeGenerationGateway = class {
   }
   async getOrder(input) {
     const output = await this.call("get_generation_order", input);
-    if (output.orderId !== input.orderId || typeof output.status !== "string" || !Array.isArray(output.items) || output.items.some((item) => !object5(item) || typeof item.itemId !== "string" || typeof item.status !== "string" || !(item.generationId === null || typeof item.generationId === "string") || !Number.isSafeInteger(item.approvedCredits) || !Number.isSafeInteger(item.outputCount) || !(item.failureCode === null || typeof item.failureCode === "string"))) {
+    if (output.orderId !== input.orderId || typeof output.status !== "string" || !Array.isArray(output.items) || output.items.some((item) => !object6(item) || typeof item.itemId !== "string" || typeof item.status !== "string" || !(item.generationId === null || typeof item.generationId === "string") || !Number.isSafeInteger(item.approvedCredits) || !Number.isSafeInteger(item.outputCount) || !(item.failureCode === null || typeof item.failureCode === "string"))) {
       throw new OnlineError("INVALID_TOOL_RESPONSE");
     }
     return output;
@@ -60155,7 +62200,7 @@ var NativeGenerationGateway = class {
     input = this.backgroundInput(input);
     if (input.background === "transparent") {
       const { quoteInputSchema } = await this.capabilities();
-      const properties = object5(quoteInputSchema.properties) ? quoteInputSchema.properties : {};
+      const properties = object6(quoteInputSchema.properties) ? quoteInputSchema.properties : {};
       if (!properties.background || !properties.output_format) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
     }
     const output = await this.call("quote_skill_generation", input);
@@ -60172,7 +62217,7 @@ var NativeGenerationGateway = class {
       else if (value2 !== void 0 && value2 !== null && value2 !== false) throw new OnlineError("ORDINARY_PARAMETER_UNAVAILABLE");
     }
     const output = await this.desktop("/api/desktop/generations/quote", ordinary);
-    if (typeof output.quoteToken !== "string" || !output.quoteToken || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) < 0 || !Number.isSafeInteger(output.outputCount) || Number(output.outputCount) < 1 || typeof output.confirmationText !== "string" || !object5(output.parameters) || output.parameters.templateId !== void 0 && output.parameters.templateId !== null) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    if (typeof output.quoteToken !== "string" || !output.quoteToken || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) < 0 || !Number.isSafeInteger(output.outputCount) || Number(output.outputCount) < 1 || typeof output.confirmationText !== "string" || !object6(output.parameters) || output.parameters.templateId !== void 0 && output.parameters.templateId !== null) throw new OnlineError("INVALID_TOOL_RESPONSE");
     this.assertBackgroundQuote(input, output);
     return output;
   }
@@ -60184,19 +62229,19 @@ var NativeGenerationGateway = class {
     }
   }
   assertBackgroundQuote(input, output) {
-    if (input.background === "transparent" && (!object5(output.parameters) || output.parameters.background !== "transparent" || output.parameters.output_format !== input.output_format)) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
+    if (input.background === "transparent" && (!object6(output.parameters) || output.parameters.background !== "transparent" || output.parameters.output_format !== input.output_format)) throw new OnlineError("TRANSPARENT_PARAMETER_UNAVAILABLE");
   }
   async submit(input) {
     if (input.quote.totalCredits !== input.approvedCredits) throw new OnlineError("CONFIRMATION_MISMATCH");
     if (Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED_BEFORE_SUBMIT");
     await this.capabilities();
     const schema2 = this.cached?.createSchema;
-    if (!schema2 || !object5(schema2.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
+    if (!schema2 || !object6(schema2.properties)) throw new OnlineError("GENERATION_CAPABILITY_UNAVAILABLE");
     const args = { quoteToken: input.quote.quoteToken, clientRequestId: input.clientRequestId };
     if ("confirmed" in schema2.properties) args.confirmed = true;
     if ("approvedCredits" in schema2.properties) args.approvedCredits = input.approvedCredits;
     if ("quoteDigest" in schema2.properties) {
-      if (!object5(input.quote.parameters)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+      if (!object6(input.quote.parameters)) throw new OnlineError("INVALID_TOOL_RESPONSE");
       args.quoteDigest = typeof input.quote.quoteDigest === "string" ? input.quote.quoteDigest : quoteDigest(input.quote);
     }
     const output = await this.call("create_skill_generation", args);
@@ -60204,7 +62249,7 @@ var NativeGenerationGateway = class {
     return output;
   }
   async submitOrdinary(input) {
-    if (input.quote.totalCredits !== input.approvedCredits || !object5(input.quote.parameters)) throw new OnlineError("CONFIRMATION_MISMATCH");
+    if (input.quote.totalCredits !== input.approvedCredits || !object6(input.quote.parameters)) throw new OnlineError("CONFIRMATION_MISMATCH");
     if (Date.parse(input.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED_BEFORE_SUBMIT");
     const output = await this.desktop("/api/desktop/generations", { ...input.quote.parameters, clientRequestId: input.clientRequestId, approvedCredits: input.approvedCredits });
     if (typeof output.id !== "string" || typeof output.status !== "string") throw new OnlineError("INVALID_TOOL_RESPONSE");
@@ -60223,7 +62268,7 @@ import { randomBytes as randomBytes3, timingSafeEqual as timingSafeEqual2 } from
 var mcpServerInstructions = PODPLO_MCP_SERVER_GUIDANCE;
 var MAX_UI_BODY = 72 * 1024 * 1024;
 var MAX_MCP_BODY = 32 * 1024 * 1024;
-var record5 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
+var record7 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
 function publicError(error101) {
   if (error101 instanceof PrintSizeError) return { code: error101.code, message: PRINT_SIZE_ERRORS[error101.code], details: {} };
   if (error101 instanceof OnlineError && /^[A-Z_]{1,80}$/.test(error101.code)) {
@@ -60265,12 +62310,12 @@ function pluginUploadHandler(service, validSession = () => false) {
     const reply = (value2) => Response.json(value2, { headers: { "Cache-Control": "no-store" } });
     try {
       const principal = peer.principal;
-      if (!(principal === "owner" || record5(principal) && principal.kind === "owner"))
+      if (!(principal === "owner" || record7(principal) && principal.kind === "owner"))
         return reply({ ok: false, error: { code: "PODPLO_OWNER_REQUIRED", message: "\u6B64 PodPlo \u8FDE\u63A5\u53EA\u5411\u5F53\u524D DSH \u6240\u6709\u8005\u5F00\u653E\u3002", details: {} } });
       const metadata = request.headers.get("X-Podplo-Upload");
       if (request.method !== "POST" || !metadata || metadata.length > 6e3) throw new Error("invalid upload");
       const input = JSON.parse(decodeURIComponent(metadata));
-      if (!record5(input) || typeof input.filename !== "string" || input.filename.length > 255 || !input.filename.trim() || typeof input.ownerId !== "string" || !input.ownerId || input.ownerId.length > 180) throw new Error("invalid upload");
+      if (!record7(input) || typeof input.filename !== "string" || input.filename.length > 255 || !input.filename.trim() || typeof input.ownerId !== "string" || !input.ownerId || input.ownerId.length > 180) throw new Error("invalid upload");
       const sessionId = input.sessionId;
       if (sessionId !== void 0 && (typeof sessionId !== "string" || !validSession(sessionId))) throw new Error("unknown native session");
       const contentType = request.headers.get("Content-Type");
@@ -60314,13 +62359,13 @@ function pluginRpcHandler(service, validSession = () => false) {
     const reply = (result) => Response.json({ type: "server-response", rpcId, result }, { headers: { "Cache-Control": "no-store" } });
     try {
       const principal = peer.principal;
-      if (!(principal === "owner" || record5(principal) && principal.kind === "owner")) return reply({
+      if (!(principal === "owner" || record7(principal) && principal.kind === "owner")) return reply({
         ok: false,
         error: { code: "PODPLO_OWNER_REQUIRED", message: "\u6B64 PodPlo \u8FDE\u63A5\u53EA\u5411\u5F53\u524D DSH \u6240\u6709\u8005\u5F00\u653E\u3002", details: {} }
       });
       if (request.method !== "POST") throw new Error("POST required");
       const message = await requestJson(request);
-      if (!record5(message) || message.type !== "client-request" || typeof message.rpcId !== "string" || message.rpcId.length > 200 || message.method !== "podplo/request" || !record5(message.payload) || typeof message.payload.action !== "string") throw new Error("invalid request");
+      if (!record7(message) || message.type !== "client-request" || typeof message.rpcId !== "string" || message.rpcId.length > 200 || message.method !== "podplo/request" || !record7(message.payload) || typeof message.payload.action !== "string") throw new Error("invalid request");
       rpcId = message.rpcId;
       const { action, args, sessionId } = message.payload;
       if (action === "assets.upload") throw new Error("binary upload route required");
@@ -60376,14 +62421,14 @@ async function startPluginMcp(service) {
       let id2 = null;
       try {
         const message = await nodeJson(request);
-        if (!record5(message) || message.jsonrpc !== "2.0" || typeof message.method !== "string") throw new Error("invalid JSON RPC");
+        if (!record7(message) || message.jsonrpc !== "2.0" || typeof message.method !== "string") throw new Error("invalid JSON RPC");
         if (message.id === void 0) {
           response.writeHead(202).end();
           return;
         }
         if (typeof message.id !== "string" && typeof message.id !== "number") throw new Error("invalid RPC ID");
         id2 = message.id;
-        const params = record5(message.params) ? message.params : {};
+        const params = record7(message.params) ? message.params : {};
         let result;
         switch (message.method) {
           case "initialize":
@@ -60428,9 +62473,9 @@ async function startPluginMcp(service) {
       if (!response.writableEnded) response.writeHead(500).end("{}");
     });
   });
-  await new Promise((resolve3, reject) => {
+  await new Promise((resolve4, reject) => {
     server.once("error", reject);
-    server.listen(0, "127.0.0.1", resolve3);
+    server.listen(0, "127.0.0.1", resolve4);
   });
   const address = server.address();
   if (!address || typeof address === "string") throw new Error("MCP loopback unavailable");
@@ -60446,18 +62491,18 @@ async function startPluginMcp(service) {
     async close() {
       sessions.clear();
       server.closeAllConnections();
-      await new Promise((resolve3) => server.close(() => resolve3()));
+      await new Promise((resolve4) => server.close(() => resolve4()));
     }
   };
 }
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
 import sharp12 from "sharp";
-import { basename as basename9, extname as extname7 } from "node:path";
+import { basename as basename10, extname as extname9 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
-import { createHash as createHash10 } from "node:crypto";
-import { basename as basename7, extname as extname5, join as join8 } from "node:path";
+import { createHash as createHash12 } from "node:crypto";
+import { basename as basename8, extname as extname7, join as join10 } from "node:path";
 import sharp11 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
@@ -60473,27 +62518,27 @@ var MappingSchema = external_exports2.object({
   status: external_exports2.enum(["uploading", "ready", "unknown"]),
   updatedAt: external_exports2.string().datetime()
 }).strict();
-var hash3 = (value2) => createHash10("sha256").update(value2).digest("hex");
-var fail2 = (code, message) => {
+var hash3 = (value2) => createHash12("sha256").update(value2).digest("hex");
+var fail4 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var authorizationHash = (identity2) => hash3(`${identity2.ownerId}\0${identity2.namespace ?? ""}`);
 function safeWebpName(value2) {
-  const leaf = basename7(value2.replace(/\\/gu, "/"));
-  const stem = basename7(leaf, extname5(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
+  const leaf = basename8(value2.replace(/\\/gu, "/"));
+  const stem = basename8(leaf, extname7(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
   return `${stem}.webp`;
 }
 async function normalizeNativeReference(input) {
   const source = Buffer.from(input.bytes);
-  if (!source.length || source.length > MAX_INPUT_BYTES) fail2("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
+  if (!source.length || source.length > MAX_INPUT_BYTES) fail4("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
   let metadata;
   try {
     metadata = await sharp11(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
   } catch {
-    return fail2("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
+    return fail4("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
   }
   if (!metadata.width || !metadata.height || !["jpeg", "png", "webp"].includes(metadata.format ?? "") || metadata.width * metadata.height > MAX_INPUT_PIXELS || metadata.pages && metadata.pages > 1)
-    fail2("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
+    fail4("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
   const swaps = metadata.orientation !== void 0 && [5, 6, 7, 8].includes(metadata.orientation);
   const orientedWidth = swaps ? metadata.height : metadata.width;
   const orientedHeight = swaps ? metadata.width : metadata.height;
@@ -60512,16 +62557,16 @@ async function normalizeNativeReference(input) {
     scale *= Math.max(0.42, Math.min(0.88, ratio));
     quality = Math.max(38, quality - 7);
   }
-  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail2("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
+  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail4("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
   const verified = await sharp11(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
   if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)
-    fail2("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
+    fail4("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
   return { name: safeWebpName(input.name), bytes: output, fingerprint: hash3(output) };
 }
 var NativeReferenceBridge = class {
   constructor(directory, deps) {
     this.deps = deps;
-    this.store = new AtomicStore(join8(directory, "native-reference-bridge.json"), () => ({ schemaVersion: 1, mappings: [] }), (value2) => external_exports2.object({ schemaVersion: external_exports2.literal(1), mappings: external_exports2.array(MappingSchema).max(5e3) }).strict().parse(value2));
+    this.store = new AtomicStore(join10(directory, "native-reference-bridge.json"), () => ({ schemaVersion: 1, mappings: [] }), (value2) => external_exports2.object({ schemaVersion: external_exports2.literal(1), mappings: external_exports2.array(MappingSchema).max(5e3) }).strict().parse(value2));
   }
   deps;
   store;
@@ -60538,18 +62583,18 @@ var NativeReferenceBridge = class {
   async resolveReferences(expectedOwnerId, sessionId, rawIds) {
     const ids2 = external_exports2.array(external_exports2.string().min(1).max(240).regex(OPAQUE_ID, "\u53C2\u8003\u56FE\u5FC5\u987B\u662F\u4F1A\u8BDD\u4E2D\u7684\u4E0D\u900F\u660E ID\uFF0C\u4E0D\u80FD\u662F\u6587\u4EF6\u8DEF\u5F84")).min(1).max(14).parse(rawIds);
     const identity2 = await this.deps.authorize(true);
-    if (identity2.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (identity2.ownerId !== expectedOwnerId) fail4("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
     const expectedAuthorization = authorizationHash(identity2);
     const resolved = [];
     for (const id2 of ids2) {
       const local = await this.deps.resolveLocal(sessionId, id2);
       await this.assertIdentity(identity2, true);
       if (!local) {
-        if (!CLOUD_ID.test(id2)) fail2("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!CLOUD_ID.test(id2)) fail4("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         resolved.push(id2);
         continue;
       }
-      if (local.id !== id2) fail2("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
+      if (local.id !== id2) fail4("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
       const normalized2 = await normalizeNativeReference(local);
       await this.assertIdentity(identity2, true);
       resolved.push(await this.resolveLocal(identity2, expectedAuthorization, sessionId, normalized2));
@@ -60559,14 +62604,14 @@ var NativeReferenceBridge = class {
   }
   /** Import bytes read by a trusted Host path without exposing paths or pixels to the model. */
   async resolveTrustedInputs(expectedOwnerId, sessionId, inputs) {
-    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail2("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
+    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail4("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
     const identity2 = await this.deps.authorize(true);
-    if (identity2.ownerId !== expectedOwnerId) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (identity2.ownerId !== expectedOwnerId) fail4("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
     const expectedAuthorization = authorizationHash(identity2);
     const normalizedInputs = [];
     for (const [index, input] of inputs.entries()) {
       if (!input || typeof input.id !== "string" || !input.id || input.id.length > 240 || typeof input.name !== "string" || !input.name || input.name.length > 255 || !(input.bytes instanceof Uint8Array))
-        fail2("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
+        fail4("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
       normalizedInputs.push(await normalizeNativeReference(input));
       await this.assertIdentity(identity2, true);
     }
@@ -60580,7 +62625,7 @@ var NativeReferenceBridge = class {
   }
   async assertIdentity(expected, write) {
     const current = await this.deps.authorize(write);
-    if (authorizationHash(current) !== authorizationHash(expected)) fail2("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (authorizationHash(current) !== authorizationHash(expected)) fail4("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
   }
   mappingKey(authorization, sessionId, fingerprint2) {
     return `${authorization}:${hash3(sessionId)}:${fingerprint2}`;
@@ -60617,7 +62662,7 @@ var NativeReferenceBridge = class {
           if (error101 instanceof PodploPluginError && error101.code === "ACCOUNT_CHANGED") throw error101;
         }
       }
-      return fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail4("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
     await this.assertIdentity(identity2, true);
     await this.store.transaction((state) => {
@@ -60636,7 +62681,7 @@ var NativeReferenceBridge = class {
       if (!CLOUD_ID.test(detail.id)) throw new Error("Invalid uploaded reference id");
       if (detail.status !== "ready") {
         await this.update(mapping, { status: "unknown", cloudAssetId: detail.id });
-        fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+        fail4("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
       }
       await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
       await this.assertIdentity(identity2, true);
@@ -60645,7 +62690,7 @@ var NativeReferenceBridge = class {
       const latest = this.find(authorization, sessionId, input.fingerprint);
       if (latest?.status === "uploading") await this.update(latest, { status: "unknown" });
       if (error101 instanceof PodploPluginError) throw error101;
-      return fail2("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail4("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
   }
   async update(mapping, patch) {
@@ -60660,15 +62705,15 @@ var NativeReferenceBridge = class {
 };
 
 // plugins/podplo-dsh/src/output-directory.ts
-import { createHash as createHash11, randomUUID as randomUUID11 } from "node:crypto";
-import { constants as constants3 } from "node:fs";
-import { lstat as lstat3, mkdir as mkdir6, open as open4, realpath as realpath4, unlink as unlink2 } from "node:fs/promises";
-import { basename as basename8, dirname as dirname7, extname as extname6, isAbsolute as isAbsolute4, join as join9, relative as relative3 } from "node:path";
+import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
+import { constants as constants5 } from "node:fs";
+import { lstat as lstat5, mkdir as mkdir6, open as open6, realpath as realpath6, unlink as unlink2 } from "node:fs/promises";
+import { basename as basename9, dirname as dirname7, extname as extname8, isAbsolute as isAbsolute6, join as join11, relative as relative4 } from "node:path";
 var hashPattern2 = /^[a-f0-9]{64}$/u;
 var opaqueSession = external_exports2.string().min(1).max(240).regex(/^[^/\\\0\r\n]+$/u);
 var directoryRowSchema = external_exports2.object({
   principal: external_exports2.string().regex(hashPattern2),
-  path: external_exports2.string().min(1).max(4096).refine(isAbsolute4, "\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84"),
+  path: external_exports2.string().min(1).max(4096).refine(isAbsolute6, "\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84"),
   configuredAt: external_exports2.string().datetime()
 }).strict();
 var stateSchema2 = external_exports2.object({ schemaVersion: external_exports2.literal(1), directories: external_exports2.array(directoryRowSchema).max(1e4) }).strict();
@@ -60681,14 +62726,14 @@ function validateState2(value2) {
   return state;
 }
 function sha2562(value2) {
-  return createHash11("sha256").update(value2).digest("hex");
+  return createHash13("sha256").update(value2).digest("hex");
 }
 function fingerprint(stat) {
   return `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}`;
 }
 function safeName(value2) {
-  const extension = extname6(basename8(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
-  const rawStem = basename8(value2, extname6(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
+  const extension = extname8(basename9(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
+  const rawStem = basename9(value2, extname8(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
   const stem = Array.from(rawStem || "result").slice(0, 160).join("");
   return `${stem}${extension || ".bin"}`;
 }
@@ -60699,9 +62744,9 @@ function assertAllowedFileName(value2) {
 var OutputDirectoryManager = class {
   constructor(options) {
     this.options = options;
-    if (!isAbsolute4(options.directory)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5B58\u50A8\u4F4D\u7F6E\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
-    this.rootCandidate = join9(options.directory, "output-settings-v1");
-    this.store = new AtomicStore(join9(this.rootCandidate, "state.json"), () => ({ schemaVersion: 1, directories: [] }), validateState2);
+    if (!isAbsolute6(options.directory)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5B58\u50A8\u4F4D\u7F6E\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
+    this.rootCandidate = join11(options.directory, "output-settings-v1");
+    this.store = new AtomicStore(join11(this.rootCandidate, "state.json"), () => ({ schemaVersion: 1, directories: [] }), validateState2);
   }
   options;
   rootCandidate;
@@ -60711,7 +62756,7 @@ var OutputDirectoryManager = class {
   async init() {
     if (this.initialized) return;
     await mkdir6(this.rootCandidate, { recursive: true, mode: 448 });
-    const stat = await lstat3(this.rootCandidate);
+    const stat = await lstat5(this.rootCandidate);
     if (!stat.isDirectory() || stat.isSymbolicLink()) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u4F4D\u7F6E\u5DF2\u88AB\u66FF\u6362");
     await this.store.load();
     this.initialized = true;
@@ -60734,7 +62779,7 @@ var OutputDirectoryManager = class {
     if (confirmed !== true) throw new Error("\u8BF7\u660E\u786E\u786E\u8BA4\u8FD9\u4E2A\u8F93\u51FA\u76EE\u5F55\u540E\u518D\u4FDD\u5B58");
     const identity2 = await this.identity("export");
     const requested = external_exports2.string().trim().min(1).max(4096).parse(pathValue);
-    if (!isAbsolute4(requested)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u73B0\u5B58\u7684\u7EDD\u5BF9\u8DEF\u5F84");
+    if (!isAbsolute6(requested)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u73B0\u5B58\u7684\u7EDD\u5BF9\u8DEF\u5F84");
     const path = await this.verifyRoot(requested);
     await this.assertIdentity(identity2, "export");
     const previous = this.store.snapshot().directories.find((row) => row.principal === identity2.principal);
@@ -60772,15 +62817,15 @@ var OutputDirectoryManager = class {
     const base2 = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base2, true) : base2;
     const requested = safeName(external_exports2.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
-    const extension = extname6(requested), stem = basename8(requested, extension);
+    const extension = extname8(requested), stem = basename9(requested, extension);
     let published, publishedName = "", publishedFingerprint = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
         const name2 = index === 1 ? requested : `${stem}-${index}${extension}`;
-        const candidate2 = join9(root, name2);
+        const candidate2 = join11(root, name2);
         let handle;
         try {
-          handle = await open4(candidate2, constants3.O_WRONLY | constants3.O_CREAT | constants3.O_EXCL | constants3.O_NOFOLLOW, 384);
+          handle = await open6(candidate2, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
         } catch (error101) {
           if (error101.code === "EEXIST") continue;
           throw error101;
@@ -60794,8 +62839,8 @@ var OutputDirectoryManager = class {
         } finally {
           await handle.close();
         }
-        const actual = await realpath4(candidate2), boundary = relative3(root, actual);
-        if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute4(boundary)) {
+        const actual = await realpath6(candidate2), boundary = relative4(root, actual);
+        if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute6(boundary)) {
           await unlink2(candidate2).catch(() => void 0);
           throw new Error("\u8F93\u51FA\u6587\u4EF6\u8DEF\u5F84\u8D8A\u754C");
         }
@@ -60805,7 +62850,7 @@ var OutputDirectoryManager = class {
       }
       if (!published) throw new Error("\u8F93\u51FA\u76EE\u5F55\u4E2D\u5B58\u5728\u8FC7\u591A\u540C\u540D\u6587\u4EF6\uFF0C\u8BF7\u8C03\u6574\u6587\u4EF6\u540D\u6216\u76EE\u5F55");
       await this.assertIdentity(identity2, "export");
-      const exportId = randomUUID11();
+      const exportId = randomUUID13();
       this.sessionExports.set(exportId, {
         owner: identity2.principal,
         authorization: identity2.authorization,
@@ -60823,14 +62868,14 @@ var OutputDirectoryManager = class {
   }
   async open(exportId, sessionId) {
     if (!this.options.openPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6");
-    const { identity: identity2, record: record7 } = await this.ownedExport(exportId, sessionId);
-    await this.options.openPath(record7.path);
+    const { identity: identity2, record: record9 } = await this.ownedExport(exportId, sessionId);
+    await this.options.openPath(record9.path);
     await this.assertIdentity(identity2, "export");
   }
   async reveal(exportId, sessionId) {
     if (!this.options.revealPath) throw new Error("\u5F53\u524D DSH \u7248\u672C\u4E0D\u652F\u6301\u4ECE\u63D2\u4EF6\u6253\u5F00\u6587\u4EF6\u6240\u5728\u4F4D\u7F6E");
-    const { identity: identity2, record: record7 } = await this.ownedExport(exportId, sessionId);
-    await this.options.revealPath(record7.path);
+    const { identity: identity2, record: record9 } = await this.ownedExport(exportId, sessionId);
+    await this.options.revealPath(record9.path);
     await this.assertIdentity(identity2, "export");
   }
   async openDirectory() {
@@ -60861,16 +62906,16 @@ var OutputDirectoryManager = class {
     if (actual.authorization !== expected.authorization) throw new Error("\u5F53\u524D\u8D26\u53F7\u3001\u8BA2\u9605\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u672C\u6B21\u64CD\u4F5C\u5DF2\u53D6\u6D88");
   }
   async verifyRoot(path) {
-    const stat = await lstat3(path).catch(() => void 0);
+    const stat = await lstat5(path).catch(() => void 0);
     if (!stat?.isDirectory() || stat.isSymbolicLink()) throw new Error("\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u73B0\u5B58\u7684\u771F\u5B9E\u6587\u4EF6\u5939\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5");
-    const actual = await realpath4(path);
-    if (!isAbsolute4(actual)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u89E3\u6790\u5931\u8D25");
-    const actualStat = await lstat3(actual);
+    const actual = await realpath6(path);
+    if (!isAbsolute6(actual)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u89E3\u6790\u5931\u8D25");
+    const actualStat = await lstat5(actual);
     if (!actualStat.isDirectory() || actualStat.isSymbolicLink()) throw new Error("\u8F93\u51FA\u76EE\u5F55\u5DF2\u88AB\u66FF\u6362");
     return actual;
   }
   async reviewDirectory(root, create = false) {
-    const path = join9(root, "\u5F85\u590D\u6838");
+    const path = join11(root, "\u5F85\u590D\u6838");
     if (create) await mkdir6(path, { mode: 448 }).catch((error101) => {
       if (error101.code !== "EEXIST") throw error101;
     });
@@ -60881,23 +62926,23 @@ var OutputDirectoryManager = class {
   async ownedExport(exportIdValue, sessionId) {
     this.ready();
     const exportId = external_exports2.string().uuid().parse(exportIdValue), session2 = sha2562(opaqueSession.parse(sessionId));
-    const identity2 = await this.identity("export"), record7 = this.sessionExports.get(exportId);
-    if (!record7 || record7.owner !== identity2.principal || record7.session !== session2 || record7.authorization !== identity2.authorization)
+    const identity2 = await this.identity("export"), record9 = this.sessionExports.get(exportId);
+    if (!record9 || record9.owner !== identity2.principal || record9.session !== session2 || record9.authorization !== identity2.authorization)
       throw new Error("\u8BE5\u5BFC\u51FA\u8BB0\u5F55\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\u6216\u539F\u751F\u4F1A\u8BDD");
-    assertAllowedFileName(record7.name);
+    assertAllowedFileName(record9.name);
     const rootRow = this.store.snapshot().directories.find((item) => item.principal === identity2.principal);
     if (!rootRow) throw new Error("\u8F93\u51FA\u76EE\u5F55\u8BBE\u7F6E\u5DF2\u6E05\u9664");
-    const base2 = await this.verifyRoot(rootRow.path), root = record7.reviewRequired ? await this.reviewDirectory(base2) : base2;
-    const stat = await lstat3(record7.path).catch(() => void 0);
-    if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record7.fingerprint)
+    const base2 = await this.verifyRoot(rootRow.path), root = record9.reviewRequired ? await this.reviewDirectory(base2) : base2;
+    const stat = await lstat5(record9.path).catch(() => void 0);
+    if (!stat?.isFile() || stat.isSymbolicLink() || fingerprint(stat) !== record9.fingerprint)
       throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u6539\u53D8");
-    const actual = await realpath4(record7.path);
-    const boundary = relative3(root, actual);
-    if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute4(boundary)) throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u4E0D\u518D\u53EF\u4FE1");
-    return { identity: identity2, record: { ...record7, path: actual } };
+    const actual = await realpath6(record9.path);
+    const boundary = relative4(root, actual);
+    if (dirname7(actual) !== root || boundary.startsWith("..") || isAbsolute6(boundary)) throw new Error("\u5BFC\u51FA\u6587\u4EF6\u5DF2\u7ECF\u79FB\u52A8\u6216\u4E0D\u518D\u53EF\u4FE1");
+    return { identity: identity2, record: { ...record9, path: actual } };
   }
   dropOwnerExports(principal) {
-    for (const [id2, record7] of this.sessionExports) if (record7.owner === principal) this.sessionExports.delete(id2);
+    for (const [id2, record9] of this.sessionExports) if (record9.owner === principal) this.sessionExports.delete(id2);
   }
   timestamp() {
     return (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString();
@@ -60905,7 +62950,7 @@ var OutputDirectoryManager = class {
 };
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
-var fail3 = (code, message) => {
+var fail5 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var cloudAssetId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -60925,29 +62970,29 @@ var importReferenceDefinition = {
 };
 function session(ctx, id2) {
   if (id2 === PODPLO_TOOLBOX_WORKSPACE_ID || id2 === PODPLO_GRID_SPLIT_WORKSPACE_ID)
-    return fail3("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
-  return id2 && ctx.agents.get(id2) || fail3("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
+    return fail5("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
+  return id2 && ctx.agents.get(id2) || fail5("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
 }
 function imageReceipt(events, id2) {
   if (!events || typeof events !== "object") return;
-  const object6 = events;
-  if (object6.attachmentId === id2 && typeof object6.mediaType === "string" && object6.mediaType.startsWith("image/")) return object6;
-  for (const value2 of Object.values(object6)) {
+  const object7 = events;
+  if (object7.attachmentId === id2 && typeof object7.mediaType === "string" && object7.mediaType.startsWith("image/")) return object7;
+  for (const value2 of Object.values(object7)) {
     const found = imageReceipt(value2, id2);
     if (found) return found;
   }
 }
 async function downloadOriginal(value2, assetId, fetcher = fetch) {
-  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail3("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
+  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail5("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
   const url3 = new URL(value2);
   if (url3.protocol !== "https:" || !/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url3.hostname) || url3.port || url3.username || url3.password || url3.hash || !new RegExp(`^/podplo-assets/(?:upload|generated)/${assetId}/original\\.(?:png|jpg|jpeg|webp)$`, "u").test(url3.pathname))
-    fail3("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
+    fail5("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
   const response = await fetcher(url3, { redirect: "error", credentials: "omit", signal: AbortSignal.timeout(6e4) });
   const limit = 1e8;
-  if (!response.ok || !response.body) fail3("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+  if (!response.ok || !response.body) fail5("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
   if (Number(response.headers.get("content-length")) > limit) {
     await response.body.cancel();
-    fail3("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+    fail5("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
   }
   const reader = response.body.getReader(), chunks = [];
   let length = 0;
@@ -60958,7 +63003,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
       length += part.value.length;
       if (length > limit) {
         await reader.cancel();
-        fail3("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+        fail5("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
       }
       chunks.push(part.value);
     }
@@ -60966,7 +63011,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
     reader.releaseLock();
   }
   const bytes = Buffer.concat(chunks), meta5 = await sharp12(bytes, { limitInputPixels: 1e8 }).metadata();
-  if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail3("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+  if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail5("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
   return bytes;
 }
 async function nativeToolkitTransport(options) {
@@ -60983,17 +63028,17 @@ async function nativeToolkitTransport(options) {
       if (attachmentId) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
-        if (!receipt) return fail3("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail5("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
         return { id: id2, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data), kind: "image" };
       }
       const namespace = online.auth.namespace;
-      if (await online.workspaceIdentity(false) !== ownerId) return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+      if (await online.workspaceIdentity(false) !== ownerId) return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
       const detail = await online.reference(id2);
-      if (!detail.downloadUrl || detail.status !== "ready") return fail3("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+      if (!detail.downloadUrl || detail.status !== "ready") return fail5("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
       const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
       if (namespace !== online.auth.namespace || await online.workspaceIdentity(false) !== ownerId)
-        return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+        return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
       return { id: id2, name: detail.filename ?? `\u7D20\u6750-${id2}.png`, bytes, kind: "image" };
     }
   });
@@ -61018,7 +63063,7 @@ async function nativeToolkitTransport(options) {
       if (attachmentId) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
-        if (!receipt) return fail3("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail5("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
         return { id: id2, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data) };
       }
@@ -61027,10 +63072,10 @@ async function nativeToolkitTransport(options) {
       if (!index) throw new Error("Native reference lookup is not active");
       const known = await index.promise;
       if (known.other.has(id2))
-        return fail3("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
+        return fail5("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
       if (!known.current.has(id2)) return void 0;
       const result = await toolkit.readResult(id2, sessionId, "read");
-      if (result.kind !== "image") return fail3("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
+      if (result.kind !== "image") return fail5("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
       return { id: id2, name: result.name, bytes: result.bytes };
     },
     uploadReference: (input, expectedOwnerId) => online.uploadReference(input, expectedOwnerId),
@@ -61073,7 +63118,7 @@ async function nativeToolkitTransport(options) {
         session(ctx, sessionId);
         const input = args && typeof args === "object" && !Array.isArray(args) ? args : {};
         if (Object.keys(input).some((key) => key !== "imageIds") || !Array.isArray(input.imageIds) || input.imageIds.length < 1 || input.imageIds.length > 14 || new Set(input.imageIds).size !== input.imageIds.length || input.imageIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2)))
-          return fail3("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
+          return fail5("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
         const ownerId = await online.workspaceIdentity(true);
         const sourceIds = input.imageIds;
         const referenceAssetIds = await resolveGenerationReferences({ ownerId, nativeSessionId: sessionId, ids: sourceIds });
@@ -61085,18 +63130,18 @@ async function nativeToolkitTransport(options) {
         return await toolkit.callTool(name2, args, sessionId);
       } catch (error101) {
         if (error101 instanceof PodploPluginError) throw error101;
-        if (error101 instanceof PrintSizeError) return fail3(error101.code, PRINT_SIZE_ERRORS[error101.code]);
-        return fail3("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
+        if (error101 instanceof PrintSizeError) return fail5(error101.code, PRINT_SIZE_ERRORS[error101.code]);
+        return fail5("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
       }
     },
     async dispatch(action, args, caller) {
       const toolboxStandalone = action.startsWith("toolbox.");
       const gridSplitStandalone = action.startsWith("splitter.");
-      const standalone2 = toolboxStandalone || gridSplitStandalone;
-      if (!standalone2 && !action.startsWith("local.")) return service.dispatch(action, args, caller);
-      if (caller.source !== "ui") return fail3("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
-      if (!standalone2) session(ctx, caller.sessionId);
-      const scope = gridSplitStandalone ? PODPLO_GRID_SPLIT_WORKSPACE_ID : standalone2 ? PODPLO_TOOLBOX_WORKSPACE_ID : caller.sessionId;
+      const standalone3 = toolboxStandalone || gridSplitStandalone;
+      if (!standalone3 && !action.startsWith("local.")) return service.dispatch(action, args, caller);
+      if (caller.source !== "ui") return fail5("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
+      if (!standalone3) session(ctx, caller.sessionId);
+      const scope = gridSplitStandalone ? PODPLO_GRID_SPLIT_WORKSPACE_ID : standalone3 ? PODPLO_TOOLBOX_WORKSPACE_ID : caller.sessionId;
       if (toolboxStandalone) action = `local.${action.slice("toolbox.".length)}`;
       if (gridSplitStandalone) action = `local.${action.slice("splitter.".length)}`;
       if (toolboxStandalone && action === "local.save") return { ok: true, data: await toolkit.runPipeline(args, scope) };
@@ -61105,13 +63150,13 @@ async function nativeToolkitTransport(options) {
       if (gridSplitStandalone && action === "local.preview") return { ok: true, data: await toolkit.gridSplitPreview(args, scope) };
       if (action === "local.list") return { ok: true, data: gridSplitStandalone ? await toolkit.listGridSplitInputs(scope) : await toolkit.list(scope) };
       if (action === "local.importInput") return { ok: true, data: await toolkit.importInput(args, scope) };
-      if (standalone2 && action === "local.use") {
+      if (standalone3 && action === "local.use") {
         session(ctx, caller.sessionId);
         const id3 = args?.id;
-        if (typeof id3 !== "string") return fail3("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+        if (typeof id3 !== "string") return fail5("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
         const expected = { ownerId: await online.workspaceIdentity(true), namespace: online.auth.namespace };
         const result = await toolkit.readResult(id3, scope);
-        if (result.kind !== "image") return fail3("INVALID_REFERENCE_IMAGE", "\u8BE5\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\u3002");
+        if (result.kind !== "image") return fail5("INVALID_REFERENCE_IMAGE", "\u8BE5\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\u3002");
         const contentType = result.contentType === "image/jpg" ? "image/jpeg" : result.contentType;
         const copied = await toolkit.importInput({ name: result.name, contentType, base64: result.bytes.toString("base64") }, caller.sessionId, expected);
         return { ok: true, data: copied };
@@ -61120,7 +63165,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail3("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail5("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.callTool(toolName, {
           operationId: input.operationId,
           ids: input.ids,
@@ -61131,7 +63176,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail3("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail5("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.toolPreview(toolName, {
           ids: input.ids,
           options: input.options
@@ -61154,18 +63199,18 @@ async function nativeToolkitTransport(options) {
         return { ok: true, data: { opened: true } };
       }
       const id2 = args?.id;
-      if (typeof id2 !== "string") return fail3("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+      if (typeof id2 !== "string") return fail5("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
       if (action === "local.output.exportAsset") {
         const namespace = online.auth.namespace, owner = await online.workspaceIdentity(true);
         const detail = await online.reference(id2);
-        if (!detail.downloadUrl || detail.status !== "ready") return fail3("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+        if (!detail.downloadUrl || detail.status !== "ready") return fail5("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
         const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
+          return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
         const format2 = (await sharp12(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
-        if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail3("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+        if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail5("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id2}`;
-        const stem = basename9(originalName, extname7(originalName));
+        const stem = basename10(originalName, extname9(originalName));
         const trustedName = `${stem || `\u7D20\u6750-${id2}`}.${format2 === "jpeg" ? "jpg" : format2}`;
         return { ok: true, data: await outputs.export(bytes, trustedName, scope) };
       }
@@ -61182,7 +63227,7 @@ async function nativeToolkitTransport(options) {
         const result = await toolkit.readResult(id2, scope, "export");
         const attachment = await ctx.attachments.saveFile({ data: result.bytes, name: result.name });
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail3("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
+          return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
         return { ok: true, data: {
           attachment,
           name: result.name,
@@ -61190,7 +63235,7 @@ async function nativeToolkitTransport(options) {
           dataUrl: `data:${result.contentType};base64,${result.bytes.toString("base64")}`
         } };
       }
-      return fail3("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
+      return fail5("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
     }
   };
   return { transport, toolkit, outputs, resolveGenerationReferences, importTrustedReferences };
@@ -61246,22 +63291,22 @@ async function registerPodploNativePresets(agentPresets) {
 }
 
 // plugins/podplo-dsh/src/task-archive-host.ts
-import { createHash as createHash15 } from "node:crypto";
-import { basename as basename11, extname as extname9 } from "node:path";
+import { createHash as createHash17 } from "node:crypto";
+import { basename as basename12, extname as extname11 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
-import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
-import { constants as constants5 } from "node:fs";
-import { link, lstat as lstat5, mkdir as mkdir8, open as open6, realpath as realpath6, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
-import { basename as basename10, dirname as dirname8, extname as extname8, isAbsolute as isAbsolute6, join as join11 } from "node:path";
+import { createHash as createHash15, randomUUID as randomUUID15 } from "node:crypto";
+import { constants as constants7 } from "node:fs";
+import { link, lstat as lstat7, mkdir as mkdir8, open as open8, realpath as realpath8, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
+import { basename as basename11, dirname as dirname8, extname as extname10, isAbsolute as isAbsolute8, join as join13 } from "node:path";
 import sharp13 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
-import { createHash as createHash12, randomUUID as randomUUID12 } from "node:crypto";
-import { constants as constants4 } from "node:fs";
-import { lstat as lstat4, mkdir as mkdir7, open as open5, realpath as realpath5, rename as rename4, unlink as unlink3 } from "node:fs/promises";
-import { isAbsolute as isAbsolute5, join as join10 } from "node:path";
-var hash4 = (value2) => createHash12("sha256").update(value2).digest("hex");
+import { createHash as createHash14, randomUUID as randomUUID14 } from "node:crypto";
+import { constants as constants6 } from "node:fs";
+import { lstat as lstat6, mkdir as mkdir7, open as open7, realpath as realpath7, rename as rename4, unlink as unlink3 } from "node:fs/promises";
+import { isAbsolute as isAbsolute7, join as join12 } from "node:path";
+var hash4 = (value2) => createHash14("sha256").update(value2).digest("hex");
 var archiveTaskKey = (ownerId, sessionId, key) => hash4(`${hash4(ownerId)}\0${sessionId}\0${key}`);
 var stageSchema = external_exports2.enum(["generation", "download", "processing", "archive", "connection"]);
 var statusSchema = external_exports2.enum(["running", "completed", "failed", "stopped", "unknown"]);
@@ -61319,7 +63364,7 @@ var documentSchema = external_exports2.object({ schemaVersion: external_exports2
 var OperationLog = class {
   constructor(options) {
     this.options = options;
-    if (!isAbsolute5(options.directory)) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
+    if (!isAbsolute7(options.directory)) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5FC5\u987B\u662F\u7EDD\u5BF9\u8DEF\u5F84");
   }
   options;
   tail = Promise.resolve();
@@ -61330,20 +63375,20 @@ var OperationLog = class {
   }
   async directory(owner) {
     await mkdir7(this.options.directory, { recursive: true, mode: 448 });
-    const base2 = await lstat4(this.options.directory);
+    const base2 = await lstat6(this.options.directory);
     if (!base2.isDirectory() || base2.isSymbolicLink()) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u4E0D\u53EF\u7528");
-    const root = join10(await realpath5(this.options.directory), "operation-logs"), directory = join10(root, hash4(owner));
+    const root = join12(await realpath7(this.options.directory), "operation-logs"), directory = join12(root, hash4(owner));
     for (const path of [root, directory]) {
       await mkdir7(path, { recursive: true, mode: 448 });
-      const stat = await lstat4(path);
-      if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath5(path) !== path) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u4E0D\u53EF\u7528");
+      const stat = await lstat6(path);
+      if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath7(path) !== path) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u4E0D\u53EF\u7528");
     }
     return directory;
   }
   async load(directory) {
-    const path = join10(directory, "operations.json");
+    const path = join12(directory, "operations.json");
     try {
-      const handle = await open5(path, constants4.O_RDONLY | constants4.O_NOFOLLOW);
+      const handle = await open7(path, constants6.O_RDONLY | constants6.O_NOFOLLOW);
       try {
         const stat = await handle.stat();
         if (!stat.isFile() || stat.size > 128 * 1024) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u683C\u5F0F\u65E0\u6548");
@@ -61393,9 +63438,9 @@ var OperationLog = class {
       }
       if (JSON.stringify(rows) === JSON.stringify(original)) return true;
       await this.same(identity2);
-      const temporary = join10(directory, `.${randomUUID12()}.tmp`);
+      const temporary = join12(directory, `.${randomUUID14()}.tmp`);
       try {
-        const handle = await open5(temporary, constants4.O_WRONLY | constants4.O_CREAT | constants4.O_EXCL | constants4.O_NOFOLLOW, 384);
+        const handle = await open7(temporary, constants6.O_WRONLY | constants6.O_CREAT | constants6.O_EXCL | constants6.O_NOFOLLOW, 384);
         try {
           await handle.writeFile(JSON.stringify({ schemaVersion: 1, pluginVersion: PLUGIN_VERSION, operations: rows }, null, 2) + "\n");
           await handle.sync();
@@ -61403,8 +63448,8 @@ var OperationLog = class {
           await handle.close();
         }
         await this.same(identity2);
-        if (await realpath5(directory) !== directory) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5DF2\u53D8\u5316");
-        await rename4(temporary, join10(directory, "operations.json"));
+        if (await realpath7(directory) !== directory) throw Error("\u64CD\u4F5C\u65E5\u5FD7\u76EE\u5F55\u5DF2\u53D8\u5316");
+        await rename4(temporary, join12(directory, "operations.json"));
       } finally {
         await unlink3(temporary).catch(() => void 0);
       }
@@ -61426,7 +63471,7 @@ var OperationLog = class {
 };
 
 // plugins/podplo-dsh/src/task-archive.ts
-var hash5 = (value2) => createHash13("sha256").update(value2).digest("hex");
+var hash5 = (value2) => createHash15("sha256").update(value2).digest("hex");
 var safeLabel = (value2, fallback, limit = 48) => value2.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim().slice(0, limit) || fallback;
 var sourceStem = (value2, fallback = "\u56FE\u7247") => value2.replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/[. ]+$/u, "").trim() || fallback;
 var fitFilename = (stem, suffix, extension) => {
@@ -61438,13 +63483,26 @@ var fitFilename = (stem, suffix, extension) => {
   }
   return `${fitted || "\u56FE\u7247"}${suffix}${extension}`;
 };
+var taskFolderLabel = (value2) => {
+  const cleaned = value2.normalize("NFKC").replace(/[<>:"/\\|?*\x00-\x1f\x7f]/gu, " ").replace(/\s+/gu, " ").replace(/[. ]+$/u, "").trim();
+  return [...cleaned].slice(0, 240).join("") || "\u56FE\u7247\u4EFB\u52A1";
+};
+var fitFolderComponent = (base2, suffix = "") => {
+  const budget = Math.max(1, 255 - Buffer.byteLength(suffix));
+  let fitted = "";
+  for (const character of base2) {
+    if (Buffer.byteLength(fitted) + Buffer.byteLength(character) > budget) break;
+    fitted += character;
+  }
+  return `${fitted || "\u56FE\u7247\u4EFB\u52A1"}${suffix}`;
+};
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
 var finalTimestamp = (value2) => {
   const date9 = new Date(value2);
   return `${date9.getFullYear()}-${String(date9.getMonth() + 1).padStart(2, "0")}-${String(date9.getDate()).padStart(2, "0")}_${String(date9.getHours()).padStart(2, "0")}-${String(date9.getMinutes()).padStart(2, "0")}`;
 };
 var archiveLayout = (task) => task.archiveFormat === 2 || task.archiveFormat === 3;
-var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename10(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
+var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename11(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
 var filesystemNameKey = (value2) => value2.normalize("NFC").toLocaleLowerCase("en-US");
 var sourceSchema = external_exports2.object({ kind: external_exports2.enum(["asset", "local", "input"]), id: external_exports2.string().min(1).max(240), sessionId: external_exports2.string().min(1).max(240) });
 var fileSchema = external_exports2.object({
@@ -61475,10 +63533,12 @@ var projectSchema = external_exports2.object({
   id: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
   owner: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
   name: external_exports2.string(),
-  directory: external_exports2.string().refine(isAbsolute6),
+  directory: external_exports2.string().refine(isAbsolute8),
   stamp: external_exports2.string()
 });
 var taskSchema = external_exports2.object({
+  workflow: external_exports2.object({ status: external_exports2.enum(["pending", "completed", "failed", "cancelled"]), failed: external_exports2.number().int().nonnegative(), notExecuted: external_exports2.number().int().nonnegative() }).optional(),
+  localTask: external_exports2.literal(true).optional(),
   id: external_exports2.string().uuid(),
   owner: external_exports2.string().regex(/^[a-f0-9]{64}$/u),
   key: external_exports2.string(),
@@ -61492,7 +63552,7 @@ var taskSchema = external_exports2.object({
   approvedAt: external_exports2.string().datetime().optional(),
   stoppedAt: external_exports2.string().datetime().optional(),
   processingResumedAt: external_exports2.string().datetime().optional(),
-  directory: external_exports2.string().refine(isAbsolute6),
+  directory: external_exports2.string().refine(isAbsolute8),
   stamp: external_exports2.string(),
   archiveFormat: external_exports2.union([external_exports2.literal(2), external_exports2.literal(3)]).optional(),
   files: external_exports2.array(fileSchema),
@@ -61534,7 +63594,7 @@ var taskSchema = external_exports2.object({
       failureCode: external_exports2.string().optional()
     })).optional()
   })).optional(),
-  processingPlan: external_exports2.array(external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.record(external_exports2.string(), external_exports2.unknown()), sourceStepId: external_exports2.string().optional(), generationItemIndexes: external_exports2.array(external_exports2.number().int().nonnegative()).optional() })).optional(),
+  processingPlan: external_exports2.array(external_exports2.object({ id: external_exports2.string(), label: external_exports2.string(), toolName: external_exports2.string(), options: external_exports2.record(external_exports2.string(), external_exports2.unknown()), sourceStepId: external_exports2.string().optional(), generationItemIndexes: external_exports2.array(external_exports2.number().int().nonnegative()).optional(), inputIds: external_exports2.array(external_exports2.string().min(1).max(240)).max(100).optional() })).optional(),
   processingRuns: external_exports2.array(external_exports2.object({ operationId: external_exports2.string(), toolName: external_exports2.string(), label: external_exports2.string().optional(), options: external_exports2.unknown().optional(), inputIds: external_exports2.array(external_exports2.string()), resultIds: external_exports2.array(external_exports2.string()) })).default([]),
   processingFailures: external_exports2.array(external_exports2.object({
     stepId: external_exports2.string(),
@@ -61585,7 +63645,17 @@ function storedTaskAudit(task) {
     ...file3.group === "result" ? { variant: file3.source.kind === "asset" ? "generated" : "processed" } : {},
     ...file3.sourceId ? { sourceId: file3.sourceId } : {}
   }));
-  return auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+  return taskAudit(task, files);
+}
+function taskAudit(task, files) {
+  const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+  if (task.workflow && task.workflow.status !== "completed") audit.complete = false;
+  if (task.localTask !== true) return audit;
+  const referenced = new Set((task.processingPlan ?? []).flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
+  const terminalResultIds = (task.processingPlan ?? []).flatMap((step, index) => referenced.has(step.id) ? [] : task.processingRuns.find((run) => run.operationId === task.operationIds[index])?.resultIds ?? []);
+  const published = new Set(files.filter((file3) => file3.group === "result" && file3.status === "saved").map((file3) => file3.originId).filter(Boolean));
+  if (task.status !== "completed" || terminalResultIds.some((id2) => !published.has(id2))) audit.complete = false;
+  return audit;
 }
 function storedTaskFinished(task) {
   if (archiveLayout(task) && storedPublishedOutputs(task).some((file3) => !file3.publishedName)) return false;
@@ -61621,12 +63691,12 @@ function archiveDateBounds(filters, now = /* @__PURE__ */ new Date()) {
 var TaskArchiveManager = class {
   constructor(options) {
     this.options = options;
-    this.store = new AtomicStore(join11(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
+    this.store = new AtomicStore(join13(options.directory, "task-archives.json"), () => ({ version: 1, projects: [], tasks: [], deleted: [], sessionStops: [] }), (raw) => {
       const state = stateSchema3.parse(raw);
       for (const task of state.tasks) {
-        if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true });
+        if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true, allowHostInputs: true });
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join11(project.directory, basename10(task.directory)) !== task.directory || task.files.some((file3) => [file3.name, file3.cacheName, file3.publishedName].some((name2) => name2 && (basename10(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name2)))) || task.files.some((file3) => file3.publishedFolder !== void 0 && !safeFolder(file3.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file3) => file3.publishedName && !file3.publishedFolder))
+        if (!project || join13(project.directory, basename11(task.directory)) !== task.directory || task.files.some((file3) => [file3.name, file3.cacheName, file3.publishedName].some((name2) => name2 && (basename11(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name2)))) || task.files.some((file3) => file3.publishedFolder !== void 0 && !safeFolder(file3.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file3) => file3.publishedName && !file3.publishedFolder))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
@@ -61644,7 +63714,7 @@ var TaskArchiveManager = class {
   root = "";
   async init() {
     await mkdir8(this.options.directory, { recursive: true, mode: 448 });
-    this.root = await realpath6(this.options.directory);
+    this.root = await realpath8(this.options.directory);
     await this.store.load();
   }
   async close() {
@@ -61672,8 +63742,8 @@ var TaskArchiveManager = class {
     if ((await this.identity()).grant !== expected.grant) throw new Error("\u5F53\u524D\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u67E5\u770B\u6210\u679C");
   }
   async directory(path, expected) {
-    const stat = await lstat5(path);
-    if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath6(path) !== path || expected && stamp(stat) !== expected)
+    const stat = await lstat7(path);
+    if (!stat.isDirectory() || stat.isSymbolicLink() || await realpath8(path) !== path || expected && stamp(stat) !== expected)
       throw new Error("\u6210\u679C\u6587\u4EF6\u5939\u5DF2\u79FB\u52A8\u6216\u6539\u53D8\uFF0C\u8BF7\u6062\u590D\u539F\u4F4D\u7F6E\u540E\u91CD\u8BD5");
     return stamp(stat);
   }
@@ -61686,7 +63756,7 @@ var TaskArchiveManager = class {
   async allocateDirectory(parent, base2) {
     await this.directory(parent);
     for (let index = 1; index < 1e4; index++) {
-      const path = join11(parent, index === 1 ? base2 : `${base2}-${index}`);
+      const path = join13(parent, fitFolderComponent(base2, index === 1 ? "" : `-${index}`));
       try {
         await mkdir8(path, { mode: 448 });
         return { path, stamp: await this.directory(path) };
@@ -61698,9 +63768,9 @@ var TaskArchiveManager = class {
   }
   async cacheDirectory(task, create = false) {
     const parts = [
-      join11(this.root, ".task-cache-v2"),
-      join11(this.root, ".task-cache-v2", task.owner),
-      join11(this.root, ".task-cache-v2", task.owner, task.id)
+      join13(this.root, ".task-cache-v2"),
+      join13(this.root, ".task-cache-v2", task.owner),
+      join13(this.root, ".task-cache-v2", task.owner, task.id)
     ];
     for (const path of parts) {
       if (create) await this.createDirectory(path);
@@ -61715,14 +63785,14 @@ var TaskArchiveManager = class {
       return existing;
     }
     const chosen = await this.options.outputDirectory();
-    const base2 = chosen ? await realpath6(chosen) : this.root;
+    const base2 = chosen ? await realpath8(chosen) : this.root;
     await this.directory(base2);
-    const collection = join11(base2, "PodPlo\u6210\u679C");
+    const collection = join13(base2, "PodPlo\u6210\u679C");
     await this.createDirectory(collection);
-    const ownerDirectory = join11(collection, identity2.owner.slice(0, 16));
+    const ownerDirectory = join13(collection, identity2.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
     const name2 = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
-    const directory = join11(ownerDirectory, `${name2}_${id2.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
+    const directory = join13(ownerDirectory, `${name2}_${id2.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
     await this.same(identity2);
     const project = { id: id2, owner: identity2.owner, name: name2, directory, stamp: directoryStamp };
     await this.store.transaction((state) => {
@@ -61748,9 +63818,9 @@ var TaskArchiveManager = class {
       let task = this.store.snapshot().tasks.find((row) => row.owner === identity2.owner && row.key === key);
       const before = task ? canonical(task) : "";
       if (!task) {
-        const project = await this.project(identity2, input.project), id2 = randomUUID13();
+        const project = await this.project(identity2, input.project), id2 = randomUUID15();
         const name2 = safeLabel(input.name, "\u56FE\u7247\u4EFB\u52A1");
-        const allocated = await this.allocateDirectory(project.directory, `${finalTimestamp(input.createdAt)}_\u56FE\u7247\u52A0\u5DE5`);
+        const allocated = await this.allocateDirectory(project.directory, `${finalTimestamp(input.createdAt)}_${taskFolderLabel(input.name)}`);
         const directory = allocated.path, directoryStamp = allocated.stamp;
         await this.same(identity2);
         task = {
@@ -61779,6 +63849,8 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const row = state.tasks.find((row2) => row2.id === task.id);
         row.status = input.status;
+        if (input.workflow) row.workflow = structuredClone(input.workflow);
+        if (input.localTask === true) row.localTask = true;
         if (input.diagnostics) row.diagnostics = [...(row.diagnostics ?? []).filter((item) => !["generation", "connection"].includes(item.stage)), ...input.diagnostics].slice(-20);
         if (input.approvedAt) row.approvedAt = input.approvedAt;
         row.summaryName = safeLabel(input.name, "\u4EFB\u52A1\u6210\u679C");
@@ -61790,7 +63862,7 @@ var TaskArchiveManager = class {
         row.operationIds = [.../* @__PURE__ */ new Set([...row.operationIds, ...input.operationIds])];
         for (const value2 of input.files) {
           if (row.files.some((file3) => file3.source.kind === value2.source.kind && file3.source.id === value2.source.id && file3.group === value2.group)) continue;
-          row.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
+          row.files.push({ ...value2, id: randomUUID15(), status: "pending", image: true });
         }
         const operationStopped = input.stoppedAt && (!row.processingResumedAt || Date.parse(input.stoppedAt) > Date.parse(row.processingResumedAt)) && !storedTaskFinished(row);
         if (operationStopped) row.stoppedAt = input.stoppedAt;
@@ -61864,18 +63936,18 @@ var TaskArchiveManager = class {
     await this.directory(task.directory, task.stamp);
   }
   groupDirectory(task, file3) {
-    return join11(task.directory, file3.reviewRequired ? "\u5F85\u590D\u6838" : file3.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
+    return join13(task.directory, file3.reviewRequired ? "\u5F85\u590D\u6838" : file3.group === "reference" ? "\u53C2\u8003\u56FE" : "\u7ED3\u679C\u56FE");
   }
   async writeFresh(directory, name2, bytes, token) {
     await this.directory(directory);
-    const path = join11(directory, name2), digest2 = hash5(bytes);
-    const current = await lstat5(path).catch(() => void 0);
+    const path = join13(directory, name2), digest4 = hash5(bytes);
+    const current = await lstat7(path).catch(() => void 0);
     if (current) {
-      if (hash5(await this.readPath(path)) !== digest2) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
-      return { path, stat: current, digest: digest2, created: false };
+      if (hash5(await this.readPath(path)) !== digest4) throw new Error("\u540C\u540D\u6587\u4EF6\u5DF2\u53D8\u5316");
+      return { path, stat: current, digest: digest4, created: false };
     }
-    const temporary = join11(directory, `.${token}.${randomUUID13()}.part`);
-    const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
+    const temporary = join13(directory, `.${token}.${randomUUID15()}.part`);
+    const handle = await open8(temporary, constants7.O_WRONLY | constants7.O_CREAT | constants7.O_EXCL | constants7.O_NOFOLLOW, 384);
     try {
       await handle.writeFile(bytes);
       await handle.sync();
@@ -61886,7 +63958,7 @@ var TaskArchiveManager = class {
       await handle.close().catch(() => void 0);
       await unlink4(temporary).catch(() => void 0);
     }
-    return { path, stat: await lstat5(path), digest: digest2, created: true };
+    return { path, stat: await lstat7(path), digest: digest4, created: true };
   }
   sourceRoot(task, file3) {
     const seen = /* @__PURE__ */ new Set();
@@ -61949,12 +64021,12 @@ var TaskArchiveManager = class {
   publishedDirectory(task, file3) {
     const folder = this.outputFolder(task, file3);
     if (!safeFolder(folder)) throw new Error("\u6210\u679C\u76EE\u5F55\u540D\u79F0\u65E0\u6548");
-    return join11(task.directory, folder);
+    return join13(task.directory, folder);
   }
   outputStem(task, file3) {
     const item = this.generationItem(task, file3);
     if (item?.sourceName) {
-      const raw = basename10(item.sourceName, extname8(item.sourceName));
+      const raw = basename11(item.sourceName, extname10(item.sourceName));
       return task.archiveFormat === 3 ? sourceStem(raw) : safeLabel(raw, "\u56FE\u7247", 72);
     }
     const root = this.sourceRoot(task, file3);
@@ -61964,13 +64036,13 @@ var TaskArchiveManager = class {
     })).values()];
     const ordinal = Math.max(1, roots.findIndex((row) => row.source.id === root.source.id) + 1);
     if (root.sourceName) {
-      const raw = basename10(root.sourceName, extname8(root.sourceName));
+      const raw = basename11(root.sourceName, extname10(root.sourceName));
       if (task.archiveFormat === 3) return sourceStem(raw);
       const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
       return safeLabel(clean, "\u56FE\u7247", 72);
     }
     for (const value2 of [root.label]) {
-      const raw = basename10(value2, extname8(value2));
+      const raw = basename11(value2, extname10(value2));
       const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
       const cleaned = task.archiveFormat === 3 ? sourceStem(clean, "") : safeLabel(clean, "", 72);
       if (cleaned && !/^(?:原始生成|AI原图|参考(?:原图|图\d*)|图片|AI生成|成品|image|original|generated|result|source)$/iu.test(cleaned)) return cleaned;
@@ -62004,7 +64076,7 @@ var TaskArchiveManager = class {
     });
   }
   preferredOutputName(task, file3) {
-    const slot = file3.outputSlot ?? 1, extension = extname8(file3.cacheName ?? file3.publishedName ?? "") || ".png";
+    const slot = file3.outputSlot ?? 1, extension = extname10(file3.cacheName ?? file3.publishedName ?? "") || ".png";
     if (task.archiveFormat === 2) return `${this.outputStem(task, file3)}_\u6210\u54C1${slot === 1 ? "" : `-${slot}`}${extension}`;
     const folder = this.outputFolder(task, file3), stem = this.outputStem(task, file3);
     const siblings = this.finalLeaves(task).filter((row) => this.outputFolder(task, row) === folder && this.outputStem(task, row) === stem);
@@ -62016,8 +64088,8 @@ var TaskArchiveManager = class {
       if (!file3.publishedName || !file3.publishedFingerprint) return false;
       const output = this.publishedDirectory(task, file3);
       await this.directory(output);
-      const path = join11(output, file3.publishedName), stat = await lstat5(path).catch(() => void 0);
-      return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath6(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file3.publishedFingerprint && (!verifyDigest || hash5(await this.readPath(path)) === file3.digest);
+      const path = join13(output, file3.publishedName), stat = await lstat7(path).catch(() => void 0);
+      return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath8(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file3.publishedFingerprint && (!verifyDigest || hash5(await this.readPath(path)) === file3.digest);
     } catch {
       return false;
     }
@@ -62026,7 +64098,7 @@ var TaskArchiveManager = class {
     let task = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (!task || !archiveLayout(task)) return;
     await this.taskDirectory(task);
-    if (task.archiveFormat === 2) await this.directory(join11(task.directory, "\u6210\u54C1"));
+    if (task.archiveFormat === 2) await this.directory(join13(task.directory, "\u6210\u54C1"));
     await this.same(identity2);
     for (const candidate2 of this.finalLeaves(task)) {
       await this.same(identity2);
@@ -62043,14 +64115,14 @@ var TaskArchiveManager = class {
       task = this.store.snapshot().tasks.find((row) => row.id === id2);
       const cache = await this.cacheDirectory(task), file3 = task.files.find((row) => row.id === candidate2.id);
       if (!file3.cacheName) continue;
-      const bytes = await this.readPath(join11(cache, file3.cacheName));
+      const bytes = await this.readPath(join13(cache, file3.cacheName));
       if (hash5(bytes) !== file3.digest) throw new Error("\u52A0\u5DE5\u7F13\u5B58\u5DF2\u53D8\u5316");
       const output = this.publishedDirectory(task, file3);
       if (task.archiveFormat === 3) await this.createDirectory(output);
       await this.directory(output);
-      const extension = extname8(file3.cacheName), preferred = this.preferredOutputName(task, file3), base2 = basename10(preferred, extension);
+      const extension = extname10(file3.cacheName), preferred = this.preferredOutputName(task, file3), base2 = basename11(preferred, extension);
       let name2 = preferred, suffix = 2;
-      while (await lstat5(join11(output, name2)).catch(() => void 0)) name2 = task.archiveFormat === 3 ? fitFilename(this.outputStem(task, file3), `\uFF08\u526F\u672C${suffix++}\uFF09`, extension) : `${base2}-\u526F\u672C${suffix++}${extension}`;
+      while (await lstat7(join13(output, name2)).catch(() => void 0)) name2 = task.archiveFormat === 3 ? fitFilename(this.outputStem(task, file3), `\uFF08\u526F\u672C${suffix++}\uFF09`, extension) : `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
       await this.same(identity2);
       const saved = await this.writeFresh(output, name2, bytes, file3.id);
@@ -62063,7 +64135,7 @@ var TaskArchiveManager = class {
           row.publishedFingerprint = `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`;
         });
       } catch (error101) {
-        const current2 = await lstat5(saved.path).catch(() => void 0);
+        const current2 = await lstat7(saved.path).catch(() => void 0);
         if (saved.created && current2 && `${stamp(current2)}:${current2.size}:${current2.mtimeMs}:${current2.ctimeMs}` === `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`) await unlink4(saved.path).catch(() => void 0);
         throw error101;
       }
@@ -62076,7 +64148,7 @@ var TaskArchiveManager = class {
       await this.same(identity2);
       if (await this.publishedValid(task, old)) {
         await this.same(identity2);
-        await unlink4(join11(this.publishedDirectory(task, old), old.publishedName));
+        await unlink4(join13(this.publishedDirectory(task, old), old.publishedName));
       }
       await this.same(identity2);
       await this.store.transaction((state) => {
@@ -62088,18 +64160,18 @@ var TaskArchiveManager = class {
     task = this.store.snapshot().tasks.find((row) => row.id === id2);
     for (const leaf of this.finalLeaves(task).filter((row) => row.publishedName)) {
       const output = this.publishedDirectory(task, leaf), preferred = this.preferredOutputName(task, leaf);
-      if (leaf.publishedName === preferred || await lstat5(join11(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
+      if (leaf.publishedName === preferred || await lstat7(join13(output, preferred)).catch(() => void 0) || !await this.publishedValid(task, leaf)) continue;
       await this.taskDirectory(task);
       await this.same(identity2);
       await this.directory(output);
       try {
-        await link(join11(output, leaf.publishedName), join11(output, preferred));
+        await link(join13(output, leaf.publishedName), join13(output, preferred));
       } catch (error101) {
         if (error101.code === "EEXIST") continue;
         throw error101;
       }
-      await unlink4(join11(output, leaf.publishedName));
-      const stat = await lstat5(join11(output, preferred));
+      await unlink4(join13(output, leaf.publishedName));
+      const stat = await lstat7(join13(output, preferred));
       await this.store.transaction((state) => {
         const row = state.tasks.find((t) => t.id === id2).files.find((f) => f.id === leaf.id);
         row.publishedName = preferred;
@@ -62117,7 +64189,7 @@ var TaskArchiveManager = class {
         await this.taskDirectory(initial);
         if (file3.group === "reference") {
           let sourceName;
-          if (file3.source.kind !== "asset") sourceName = await this.options.read(file3.source).then((value2) => basename10(value2.name)).catch(() => void 0);
+          if (file3.source.kind !== "asset") sourceName = await this.options.read(file3.source).then((value2) => basename11(value2.name)).catch(() => void 0);
           await this.same(identity2);
           await this.store.transaction((state) => {
             const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file3.id);
@@ -62129,7 +64201,7 @@ var TaskArchiveManager = class {
         const source = await this.options.read(file3.source);
         stage = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname8(source.name).toLowerCase().slice(1);
+        let extension = extname10(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
           const meta5 = await sharp13(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
@@ -62146,7 +64218,7 @@ var TaskArchiveManager = class {
           const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file3.id);
           delete row.diagnostic;
           Object.assign(row, {
-            sourceName: basename10(source.name),
+            sourceName: basename11(source.name),
             cacheName,
             image,
             status: "saved",
@@ -62185,28 +64257,28 @@ var TaskArchiveManager = class {
         const source = await this.options.read(file3.source);
         stage = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname8(source.name).toLowerCase().slice(1);
+        let extension = extname10(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
           const meta5 = await sharp13(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta5.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta5.format === "jpeg" ? "jpg" : meta5.format;
         }
-        const label = safeLabel(file3.group === "reference" ? basename10(source.name, extname8(source.name)) : (file3.label || basename10(source.name, extname8(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
+        const label = safeLabel(file3.group === "reference" ? basename11(source.name, extname10(source.name)) : (file3.label || basename11(source.name, extname10(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
         const used = new Set(this.store.snapshot().tasks.find((row) => row.id === id2).files.filter((row) => row.group === file3.group && row.id !== file3.id).map((row) => row.name));
         let name2 = file3.name ?? `${label}.${extension}`, suffix = 2;
         while (used.has(name2)) name2 = `${label}-${suffix++}.${extension}`;
         const directory = this.groupDirectory(task, file3);
         if (file3.reviewRequired) await this.createDirectory(directory);
         await this.directory(directory);
-        const path = join11(directory, name2), digest2 = hash5(source.bytes);
+        const path = join13(directory, name2), digest4 = hash5(source.bytes);
         await this.same(identity2);
-        if (await lstat5(path).catch(() => void 0)) {
+        if (await lstat7(path).catch(() => void 0)) {
           const bytes = await this.readPath(path);
-          if (hash5(bytes) !== digest2) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
+          if (hash5(bytes) !== digest4) throw new Error("\u540C\u540D\u6210\u679C\u6587\u4EF6\u5DF2\u53D8\u5316");
         } else {
-          const temporary = join11(directory, `.${file3.id}.${randomUUID13()}.part`);
-          const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
+          const temporary = join13(directory, `.${file3.id}.${randomUUID15()}.part`);
+          const handle = await open8(temporary, constants7.O_WRONLY | constants7.O_CREAT | constants7.O_EXCL | constants7.O_NOFOLLOW, 384);
           try {
             await handle.writeFile(source.bytes);
             await handle.sync();
@@ -62224,11 +64296,11 @@ var TaskArchiveManager = class {
         await this.taskDirectory(task);
         await this.directory(directory);
         await this.same(identity2);
-        const stat = await lstat5(path);
+        const stat = await lstat7(path);
         await this.store.transaction((state) => {
           const saved = state.tasks.find((row) => row.id === id2).files.find((row) => row.id === file3.id);
           delete saved.diagnostic;
-          Object.assign(saved, { name: name2, image, status: "saved", digest: digest2, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
+          Object.assign(saved, { name: name2, image, status: "saved", digest: digest4, size: source.bytes.length, fingerprint: `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` });
         });
       } catch (error101) {
         if (published) await unlink4(published).catch(() => void 0);
@@ -62244,8 +64316,8 @@ var TaskArchiveManager = class {
     }
   }
   async readPath(path) {
-    if (await realpath6(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8");
-    const handle = await open6(path, constants5.O_RDONLY | constants5.O_NOFOLLOW);
+    if (await realpath8(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8");
+    const handle = await open8(path, constants7.O_RDONLY | constants7.O_NOFOLLOW);
     try {
       const stat = await handle.stat();
       if (!stat.isFile() || stat.size > 250 * 1024 * 1024) throw new Error("\u6210\u679C\u6587\u4EF6\u65E0\u6548");
@@ -62277,24 +64349,24 @@ var TaskArchiveManager = class {
       const lines = [
         "\u4EFB\u52A1\u603B\u7ED3",
         `\u6210\u529F\uFF1A${files.filter((file3) => file3.group === "result" && file3.status === "saved").length}`,
-        `\u5931\u8D25\uFF1A${failedItems + failedFiles + processingFailures}`,
-        `\u672A\u6267\u884C\uFF1A${notExecutedItems + notExecutedProcessing}`,
+        `\u5931\u8D25\uFF1A${failedItems + failedFiles + processingFailures + (task.workflow?.failed ?? 0)}`,
+        `\u672A\u6267\u884C\uFF1A${notExecutedItems + notExecutedProcessing + (task.workflow?.notExecuted ?? 0)}`,
         ""
       ];
-      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest2 = hash5(bytes), path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
-      const stat = await lstat5(path).catch(() => void 0);
+      const bytes = Buffer.from(lines.join("\n"), "utf8"), digest4 = hash5(bytes), path = join13(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+      const stat = await lstat7(path).catch(() => void 0);
       if (stat) {
         const existing = await this.readPath(path), existingDigest = hash5(existing);
-        if (existingDigest === digest2) {
-          if (latest.summaryDigest !== digest2) await this.store.transaction((state) => {
-            state.tasks.find((row) => row.id === task.id).summaryDigest = digest2;
+        if (existingDigest === digest4) {
+          if (latest.summaryDigest !== digest4) await this.store.transaction((state) => {
+            state.tasks.find((row) => row.id === task.id).summaryDigest = digest4;
           });
           return;
         }
         if (!latest.summaryDigest || existingDigest !== latest.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u88AB\u624B\u52A8\u4FEE\u6539");
       }
-      const temporary = join11(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID13()}.tmp`);
-      const handle = await open6(temporary, constants5.O_WRONLY | constants5.O_CREAT | constants5.O_EXCL | constants5.O_NOFOLLOW, 384);
+      const temporary = join13(task.directory, `.\u4EFB\u52A1\u603B\u7ED3.${randomUUID15()}.tmp`);
+      const handle = await open8(temporary, constants7.O_WRONLY | constants7.O_CREAT | constants7.O_EXCL | constants7.O_NOFOLLOW, 384);
       try {
         await handle.writeFile(bytes);
         await handle.sync();
@@ -62306,7 +64378,7 @@ var TaskArchiveManager = class {
           await rename5(temporary, path);
         } else await link(temporary, path);
         await this.store.transaction((state) => {
-          state.tasks.find((row) => row.id === task.id).summaryDigest = digest2;
+          state.tasks.find((row) => row.id === task.id).summaryDigest = digest4;
         });
       } finally {
         await handle.close().catch(() => void 0);
@@ -62336,14 +64408,14 @@ var TaskArchiveManager = class {
         throw new Error("\u4EFB\u52A1\u4ECD\u5728\u751F\u6210\u6216\u4FDD\u5B58\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F");
       const project = this.store.snapshot().projects.find((row) => row.owner === identity2.owner && row.id === task.projectId);
       await this.directory(project.directory, project.stamp);
-      const existing = await lstat5(task.directory).catch((error101) => {
+      const existing = await lstat7(task.directory).catch((error101) => {
         if (error101.code !== "ENOENT") throw error101;
         return void 0;
       });
       if (existing) {
         await this.taskDirectory(task);
         await this.same(identity2);
-        const staged = join11(project.directory, `.delete-${task.id}-${randomUUID13()}`);
+        const staged = join13(project.directory, `.delete-${task.id}-${randomUUID15()}`);
         await rename5(task.directory, staged);
         try {
           await this.directory(project.directory, project.stamp);
@@ -62418,7 +64490,7 @@ var TaskArchiveManager = class {
       if (archiveLayout(task)) {
         const file4 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.cacheName);
         if (!file4?.cacheName || !file4.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
-        const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join11(cache, file4.cacheName));
+        const cache = await this.cacheDirectory(task), bytes2 = await this.readPath(join13(cache, file4.cacheName));
         if (hash5(bytes2) !== file4.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
         values.push({ id: sourceId, name: file4.sourceName ?? file4.cacheName, bytes: bytes2, kind: "image" });
         continue;
@@ -62426,7 +64498,7 @@ var TaskArchiveManager = class {
       const file3 = task.files.find((row) => row.group === "result" && row.source.id === sourceId && row.status === "saved" && row.name);
       if (!file3?.name || !file3.image) throw new Error("\u52A0\u5DE5\u8F93\u5165\u5C1A\u672A\u4FDD\u5B58\u4E3A\u672C\u5730\u56FE\u7247");
       await this.directory(this.groupDirectory(task, file3));
-      const bytes = await this.readPath(join11(this.groupDirectory(task, file3), file3.name));
+      const bytes = await this.readPath(join13(this.groupDirectory(task, file3), file3.name));
       if (hash5(bytes) !== file3.digest) throw new Error("\u52A0\u5DE5\u8F93\u5165\u6587\u4EF6\u5DF2\u53D8\u5316");
       values.push({ id: sourceId, name: file3.name, bytes, kind: "image" });
     }
@@ -62497,7 +64569,7 @@ var TaskArchiveManager = class {
   async openSummary(id2) {
     const { identity: identity2, task } = await this.owned(id2);
     await this.taskDirectory(task);
-    const path = join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
+    const path = join13(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt");
     await this.readPath(path);
     await this.same(identity2);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3");
@@ -62514,7 +64586,7 @@ var TaskArchiveManager = class {
     }
     if (!task.summaryDigest) return {};
     try {
-      const bytes = await this.readPath(join11(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt"));
+      const bytes = await this.readPath(join13(task.directory, "\u4EFB\u52A1\u603B\u7ED3.txt"));
       await this.same(identity2);
       if (hash5(bytes) !== task.summaryDigest) throw new Error("\u4EFB\u52A1\u603B\u7ED3\u5DF2\u6539\u53D8");
       return { summaryStatus: "saved" };
@@ -62580,9 +64652,9 @@ var TaskArchiveManager = class {
       let status = file3.status;
       if (status === "saved" && !file3.referenceOnly) {
         try {
-          const cache = await this.cacheDirectory(task), path = join11(cache, file3.cacheName ?? "");
-          const stat = await lstat5(path);
-          if (!file3.cacheName || !stat.isFile() || stat.isSymbolicLink() || await realpath6(path) !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.cacheFingerprint) status = "missing";
+          const cache = await this.cacheDirectory(task), path = join13(cache, file3.cacheName ?? "");
+          const stat = await lstat7(path);
+          if (!file3.cacheName || !stat.isFile() || stat.isSymbolicLink() || await realpath8(path) !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.cacheFingerprint) status = "missing";
         } catch {
           status = "missing";
         }
@@ -62629,12 +64701,12 @@ var TaskArchiveManager = class {
         generationItemIndex: itemIndex,
         sourceName: item?.sourceName ?? file3.sourceName,
         stage,
-        ...file3.publishedName ? { relativePath: join11(this.outputFolder(task, file3), file3.publishedName) } : {},
+        ...file3.publishedName ? { relativePath: join13(this.outputFolder(task, file3), file3.publishedName) } : {},
         ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
         variant: file3.source.kind === "asset" ? "generated" : "processed"
       });
     }
-    const audit = auditTask(internalFiles, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+    const audit = taskAudit(task, internalFiles);
     const stageResults = this.stageResults(task, internalFiles);
     const processingResults = this.processingResults(task, internalFiles, audit);
     audit.delivery = {
@@ -62648,6 +64720,7 @@ var TaskArchiveManager = class {
     const saveStatus = !available || audit.delivery.missing || internalFiles.some((file3) => file3.status === "missing") ? "missing" : internalFiles.some((file3) => file3.status === "failed") || audit.delivery.failed || audit.processing.failed ? "failed" : internalFiles.some((file3) => file3.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
     const summary = await this.summaryView(task, files, audit, identity2, updateSummary);
     return {
+      workflow: task.workflow,
       diagnostics: [...task.diagnostics ?? [], ...internalFiles.flatMap((file3) => file3.diagnostic ? [file3.diagnostic] : [])].slice(-20),
       id: task.id,
       archiveFormat: task.archiveFormat,
@@ -62675,9 +64748,9 @@ var TaskArchiveManager = class {
     for (const file3 of task.files) {
       let status = file3.status;
       if (status === "saved") {
-        const path = join11(this.groupDirectory(task, file3), file3.name);
-        const stat = available ? await lstat5(path).catch(() => void 0) : void 0;
-        if (!stat?.isFile() || stat.isSymbolicLink() || stat.size !== file3.size || await realpath6(path).catch(() => "") !== path || file3.fingerprint && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.fingerprint) status = "missing";
+        const path = join13(this.groupDirectory(task, file3), file3.name);
+        const stat = available ? await lstat7(path).catch(() => void 0) : void 0;
+        if (!stat?.isFile() || stat.isSymbolicLink() || stat.size !== file3.size || await realpath8(path).catch(() => "") !== path || file3.fingerprint && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.fingerprint) status = "missing";
       }
       files.push({
         diagnostic: file3.diagnostic,
@@ -62695,9 +64768,10 @@ var TaskArchiveManager = class {
       });
     }
     const saveStatus = !available || files.some((file3) => file3.status === "missing") ? "missing" : files.some((file3) => file3.status === "failed") ? "failed" : files.some((file3) => file3.status === "pending") ? "saving" : files.length ? "saved" : "waiting";
-    const audit = auditTask(files, task.generationAudit, task.processingPlan, task.processingRuns, task.processingFailures);
+    const audit = taskAudit(task, files);
     const summary = await this.summaryView(task, files, audit, identity2, updateSummary);
     return {
+      workflow: task.workflow,
       diagnostics: task.diagnostics,
       id: task.id,
       name: task.name,
@@ -62777,7 +64851,7 @@ var TaskArchiveManager = class {
       if (file3.group !== "result" || file3.status !== "saved" || !file3.image) continue;
       const name2 = archiveLayout(task) ? file3.publishedName : file3.name;
       const fingerprint2 = archiveLayout(task) ? file3.publishedFingerprint : file3.fingerprint;
-      if (!name2 || !fingerprint2 || basename10(name2) !== name2) continue;
+      if (!name2 || !fingerprint2 || basename11(name2) !== name2) continue;
       const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
       if (!directories.has(directory)) {
         try {
@@ -62788,8 +64862,8 @@ var TaskArchiveManager = class {
         }
       }
       if (!directories.get(directory)) continue;
-      const path = join11(directory, name2), stat = await lstat5(path).catch(() => void 0);
-      if (!stat?.isFile() || stat.isSymbolicLink() || await realpath6(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== fingerprint2) continue;
+      const path = join13(directory, name2), stat = await lstat7(path).catch(() => void 0);
+      if (!stat?.isFile() || stat.isSymbolicLink() || await realpath8(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== fingerprint2) continue;
       const fileTime = new Date(stat.mtimeMs);
       const createdAt = Number.isFinite(fileTime.getTime()) ? fileTime.toISOString() : task.createdAt;
       items.push({
@@ -62883,6 +64957,33 @@ var TaskArchiveManager = class {
     await this.same(identity2);
     return tasks.map((task) => ({ id: task.id, key: task.key, sessionId: task.sessionId, projectId: task.projectId, name: task.name, createdAt: task.createdAt }));
   }
+  /** Merge a completed receipt into one task that registered the operation before execution, without publishing internal step outputs. */
+  async mergeRegisteredProcessingRun(sessionId, receipt) {
+    const identity2 = await this.identity();
+    return this.serial(async () => {
+      const matches = this.store.snapshot().tasks.filter((task2) => task2.localTask === true && task2.owner === identity2.owner && task2.sessionId === sessionId && task2.operationIds.includes(receipt.operationId));
+      if (!matches.length) {
+        await this.same(identity2);
+        return false;
+      }
+      if (matches.length !== 1) throw new Error("\u672C\u5730\u52A0\u5DE5\u64CD\u4F5C\u5F52\u5C5E\u4E0D\u552F\u4E00");
+      const task = matches[0], existing = task.processingRuns.find((run) => run.operationId === receipt.operationId);
+      if (existing) {
+        await this.same(identity2);
+        return true;
+      }
+      const operationIndex = task.operationIds.indexOf(receipt.operationId), planned = task.processingPlan?.[operationIndex];
+      const durable = planned ? { ...receipt, toolName: planned.toolName, label: planned.label, options: planned.options } : receipt;
+      await this.same(identity2);
+      await this.store.transaction((state) => {
+        const row = state.tasks.find((value2) => value2.id === task.id && value2.owner === identity2.owner);
+        if (!row.processingRuns.some((run) => run.operationId === receipt.operationId)) row.processingRuns.push(durable);
+      });
+      await this.same(identity2);
+      this.schedule(task.id, identity2);
+      return true;
+    });
+  }
   /** Append local processing versions to the exact source task, never by filename. */
   async append(id2, files, operationId2, receipt) {
     const { identity: identity2 } = await this.owned(id2);
@@ -62892,7 +64993,7 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const task = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
         for (const value2 of files) if (!task.files.some((file3) => file3.source.kind === value2.source.kind && file3.source.id === value2.source.id))
-          task.files.push({ ...value2, id: randomUUID13(), status: "pending", image: true });
+          task.files.push({ ...value2, id: randomUUID15(), status: "pending", image: true });
         task.operationIds = [.../* @__PURE__ */ new Set([...task.operationIds, operationId2])];
         if (receipt && !task.processingRuns.some((run) => run.operationId === receipt.operationId))
           task.processingRuns.push({ ...receipt, resultIds: files.map((file3) => file3.source.id) });
@@ -62908,8 +65009,8 @@ var TaskArchiveManager = class {
     if (archiveLayout(task)) {
       const cache = await this.cacheDirectory(task);
       for (const file3 of task.files.filter((file4) => file4.status === "saved" && file4.cacheName)) {
-        const path = join11(cache, file3.cacheName), stat = await lstat5(path).catch(() => void 0);
-        if (!stat?.isFile() || stat.isSymbolicLink() || await realpath6(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.cacheFingerprint) absent.add(file3.id);
+        const path = join13(cache, file3.cacheName), stat = await lstat7(path).catch(() => void 0);
+        if (!stat?.isFile() || stat.isSymbolicLink() || await realpath8(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== file3.cacheFingerprint) absent.add(file3.id);
       }
       await this.same(identity2);
       await this.store.transaction((state) => {
@@ -62920,7 +65021,7 @@ var TaskArchiveManager = class {
       return;
     }
     for (const file3 of task.files.filter((file4) => file4.status === "saved" && file4.name))
-      if (!await lstat5(join11(this.groupDirectory(task, file3), file3.name)).catch(() => void 0)) absent.add(file3.id);
+      if (!await lstat7(join13(this.groupDirectory(task, file3), file3.name)).catch(() => void 0)) absent.add(file3.id);
     await this.store.transaction((state) => {
       for (const file3 of state.tasks.find((row) => row.id === id2).files)
         if (file3.status === "failed" || absent.has(file3.id)) file3.status = "pending";
@@ -62934,14 +65035,14 @@ var TaskArchiveManager = class {
     const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
     await this.taskDirectory(task);
     await this.directory(directory);
-    const bytes = await this.readPath(join11(directory, name2));
+    const bytes = await this.readPath(join13(directory, name2));
     if (hash5(bytes) !== file3.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
     const key = `${identity2.grant}:${task.sessionId}:${task.id}:${file3.id}:${file3.digest}:640:82`, epoch = this.previewCache.revision();
     const cached3 = preview && file3.image ? this.previewCache.get(key) : void 0;
     const result = cached3 ?? (preview && file3.image ? await sharp13(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
     await this.same(identity2);
     if (preview && file3.image && !cached3) this.previewCache.set(key, result, epoch);
-    return { bytes: result, name: name2, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname8(name2).slice(1)}` };
+    return { bytes: result, name: name2, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname10(name2).slice(1)}` };
   }
   async openTask(id2) {
     const { identity: identity2, task } = await this.owned(id2);
@@ -62972,8 +65073,8 @@ var TaskArchiveManager = class {
     await this.read(id2, fileId);
     await this.same(identity2);
     await this.directory(directory);
-    const path = join11(directory, name2);
-    if (await realpath6(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u8DEF\u5F84\u65E0\u6548");
+    const path = join13(directory, name2);
+    if (await realpath8(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u8DEF\u5F84\u65E0\u6548");
     return path;
   }
   /** Internal verified reveal used only by the standalone toolbox/splitter surfaces. */
@@ -62983,7 +65084,7 @@ var TaskArchiveManager = class {
     await this.same(identity2);
     const name2 = archiveLayout(task) ? file3?.publishedName : file3?.name;
     if (!this.options.revealPath || !file3 || !name2) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u5B9A\u4F4D\u672C\u5730\u6587\u4EF6");
-    await this.options.revealPath(join11(archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3), name2));
+    await this.options.revealPath(join13(archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3), name2));
   }
   async wait() {
     while (this.jobs.size) await Promise.allSettled(this.jobs.values());
@@ -62995,7 +65096,7 @@ var TaskArchiveManager = class {
 };
 
 // plugins/podplo-dsh/src/archive-processing-pipeline.ts
-import { createHash as createHash14 } from "node:crypto";
+import { createHash as createHash16 } from "node:crypto";
 import sharp14 from "sharp";
 var automaticProcessingTools = /* @__PURE__ */ new Set([
   "podplo_outline_images",
@@ -63015,7 +65116,7 @@ var GlobalPool = class {
   active = 0;
   waiting = [];
   async run(work) {
-    if (this.active >= this.maximum) await new Promise((resolve3) => this.waiting.push(resolve3));
+    if (this.active >= this.maximum) await new Promise((resolve4) => this.waiting.push(resolve4));
     else this.active++;
     try {
       return await work();
@@ -63092,7 +65193,7 @@ var ArchiveProcessingPipeline = class {
       const beforeProcess = await this.deps.context(taskId);
       const latestStep = beforeProcess.plan?.find((row) => row.id === step.id);
       if (this.closed || beforeProcess.sessionId !== sessionId || !beforeProcess.approvedAt || beforeProcess.stoppedAt || !latestStep || processingStepDigest(latestStep) !== planDigest) return;
-      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash14("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
+      const operationId2 = `archive-auto:${taskId}:${step.id}:${createHash16("sha256").update(canonical({ inputId, planDigest })).digest("hex").slice(0, 24)}`;
       await this.deps.process(
         step.toolName,
         { operationId: operationId2, ids: [inputId], options: step.options },
@@ -63127,7 +65228,7 @@ async function hasRealTransparency(input) {
 }
 
 // plugins/podplo-dsh/src/task-archive-host.ts
-var standalone = { key: "podplo:standalone", name: "\u72EC\u7ACB\u4EFB\u52A1" };
+var standalone2 = { key: "podplo:standalone", name: "\u72EC\u7ACB\u4EFB\u52A1" };
 var archivePeriods = /* @__PURE__ */ new Set(["all", "today", "7days", "30days", "custom"]);
 function archiveFilters(value2) {
   if (!value2 || typeof value2 !== "object" || Array.isArray(value2))
@@ -63262,8 +65363,9 @@ async function taskArchiveHost(options) {
             key: `generation:${row.intentId}`,
             sessionId: row.sessionId,
             diagnostics: row.diagnostics,
-            project: row.project ?? options.projectForSession(row.sessionId) ?? standalone,
+            project: row.project ?? options.projectForSession(row.sessionId) ?? standalone2,
             name: row.name,
+            workflow: row.workflow,
             createdAt: row.createdAt,
             status: row.status,
             operationIds: [row.operationId],
@@ -63305,6 +65407,18 @@ async function taskArchiveHost(options) {
             continue;
           }
           const label = labels[row.toolName] ?? "\u672C\u5730\u5904\u7406";
+          const registeredReceipt = {
+            operationId: row.operationId,
+            toolName: row.toolName,
+            label,
+            options: row.options,
+            inputIds: row.inputIds,
+            resultIds: row.results.map((result) => result.id)
+          };
+          if (await manager.mergeRegisteredProcessingRun(row.sessionId, registeredReceipt)) {
+            signatures.set(key, row.operationId);
+            continue;
+          }
           const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && row.toolName === TOOLBOX_PIPELINE_NAME || row.sessionId === PODPLO_GRID_SPLIT_WORKSPACE_ID && row.toolName === GRID_SPLIT_OPERATION_NAME;
           const matches = independentBatch ? [] : await manager.findSource(row.sessionId, row.inputIds);
           const groups = /* @__PURE__ */ new Map();
@@ -63316,7 +65430,7 @@ async function taskArchiveHost(options) {
             groups.set(target, [...groups.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
               group: "result",
-              label: basename11(result.name, extname9(result.name)),
+              label: basename12(result.name, extname11(result.name)),
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
@@ -63328,7 +65442,7 @@ async function taskArchiveHost(options) {
             else await manager.upsert({
               key: `local:${row.operationId}`,
               sessionId: row.sessionId,
-              project: row.project ?? options.projectForSession(row.sessionId) ?? standalone,
+              project: row.project ?? options.projectForSession(row.sessionId) ?? standalone2,
               name: label,
               createdAt: row.createdAt,
               status: "completed",
@@ -63413,7 +65527,7 @@ async function taskArchiveHost(options) {
         if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(true)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
         for (let offset = 0; offset < pendingIds.length; offset += 100) {
           const ids2 = pendingIds.slice(offset, offset + 100);
-          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash15("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
+          const operationId2 = `task-resume:${taskId}:${step.id}:${createHash17("sha256").update(canonical({ ids: ids2, options: step.options })).digest("hex").slice(0, 24)}`;
           await toolkit.callTool(step.toolName, { operationId: operationId2, ids: ids2, options: step.options }, context.sessionId);
           await sync(context.sessionId);
         }
@@ -63436,16 +65550,16 @@ async function taskArchiveHost(options) {
     processingJobs.set(key, job);
     return job;
   };
-  const operationProgress = async (operationId2, sessionId) => {
-    await sync(sessionId);
-    const found = await manager.operationView(operationId2, sessionId);
-    if (!found) return { pending: true, status: "pending" };
-    const { task, context } = found, audit = task.audit;
+  const taskProgress = async (task, context) => {
+    const audit = task.audit;
     if (!audit) return { pending: true, status: "pending" };
     if (context.stoppedAt || audit.generation.cancelled) return { pending: false, status: "stopped", audit };
     if (task.saveStatus === "saving" || audit.generation.pending || pipeline.has(task.id))
       return { pending: true, status: "pending", audit };
     if (task.saveStatus === "failed" || task.saveStatus === "missing" || audit.download.failed || audit.download.missing || audit.generation.failed) return { pending: false, status: "failed", audit };
+    if (task.workflow?.status === "pending") return { pending: true, status: "pending", audit };
+    if (task.workflow?.status === "failed") return { pending: false, status: "failed", audit };
+    if (task.workflow?.status === "cancelled") return { pending: false, status: "stopped", audit };
     if (!audit.processing.registered) return { pending: false, status: "unregistered", audit };
     if (audit.processing.failed) return { pending: false, status: "failed", audit };
     const saved = new Set(context.files.filter((file3) => file3.group === "result" && file3.status === "saved" && file3.image).map((file3) => file3.source.id));
@@ -63454,6 +65568,17 @@ async function taskArchiveHost(options) {
     if (hasRunnableAutomaticWork) return { pending: true, status: "pending", audit };
     if (audit.generation.unknown || audit.processing.remaining) return { pending: false, status: "blocked", audit };
     return { pending: false, status: audit.complete ? "completed" : "blocked", audit };
+  };
+  const operationProgress = async (operationId2, sessionId) => {
+    await sync(sessionId);
+    const found = await manager.operationView(operationId2, sessionId);
+    if (!found) return { pending: true, status: "pending" };
+    const related = (await manager.list(sessionId)).items.filter((task) => task.operationIds.includes(operationId2));
+    if (related.length <= 1) return taskProgress(found.task, found.context);
+    const states = await Promise.all(related.map(async (task) => taskProgress(task, await manager.processingContext(task.id))));
+    const pending2 = states.find((state) => state.pending);
+    if (pending2) return pending2;
+    return states.find((state) => state.status === "stopped") ?? states.find((state) => state.status === "failed") ?? states.find((state) => state.status === "blocked") ?? states[0];
   };
   const stopSession = async (sessionId) => {
     await sync(sessionId).catch(() => void 0);
@@ -63529,8 +65654,9 @@ async function taskArchiveHost(options) {
         const localProcessing = await operationProgress(operationId2, sessionId);
         if (localProcessing.pending) throw new PodploPluginError("GENERATION_NOT_READY", "\u7ED3\u679C\u6B63\u5728\u4E0B\u8F7D\u6216\u672C\u5730\u52A0\u5DE5\uFF0C\u8BF7\u7B49\u5F85\u5B8C\u6210\u901A\u77E5\u540E\u518D\u51C6\u5907\u56DE\u4F20\u3002");
         const tasks = await manager.list(sessionId);
-        const task = tasks.items.find((row) => row.operationIds.includes(operationId2));
-        const files = task?.files.filter((file3) => file3.group === "result" && file3.image && file3.status === "saved") ?? [];
+        const related = tasks.items.filter((row) => row.operationIds.includes(operationId2));
+        const task = related.find((row) => row.audit?.generation.planned !== 0) ?? related[0];
+        const files = related.flatMap((task2) => task2.files.filter((file3) => file3.group === "result" && file3.image && file3.status === "saved").map((file3) => ({ file: file3, taskId: task2.id })));
         if (!task?.directory || !files.length) {
           const pending2 = operation.status && ["quoted", "submitting", "submitted"].includes(operation.status);
           throw new PodploPluginError(
@@ -63541,18 +65667,21 @@ async function taskArchiveHost(options) {
         const partialAllowed = ["failed", "stopped"].includes(localProcessing.status) || ["partial_failure", "partial_cancelled", "failed", "cancelled"].includes(operation.status ?? task.status);
         if (!["completed", "unregistered"].includes(localProcessing.status) && !partialAllowed)
           throw new PodploPluginError("GENERATION_RESULTS_UNAVAILABLE", "\u4EFB\u52A1\u5C1A\u672A\u5F62\u6210\u53EF\u4EA4\u4ED8\u7684\u7A33\u5B9A\u7ED3\u679C\u3002");
-        const complete = ["completed", "unregistered"].includes(localProcessing.status) && task.audit?.complete !== false;
+        const complete = ["completed", "unregistered"].includes(localProcessing.status) && related.every((task2) => task2.audit?.complete !== false) && (!operation.localStages || operation.status === "completed");
         const outcomes = {
           succeeded: files.length,
-          failed: (task.stageResults?.filter((result2) => result2.status === "failed").length ?? 0) + (task.audit?.processing.failed ?? 0) + (task.audit?.delivery?.failed ?? 0),
-          notExecuted: (task.stageResults?.filter((result2) => result2.status === "not_executed").length ?? 0) + (task.processingResults?.filter((result2) => result2.status === "not_executed").length ?? 0)
+          failed: (task.stageResults?.filter((result2) => result2.status === "failed").length ?? 0) + Math.max(
+            related.reduce((sum, value2) => sum + (value2.audit?.processing.failed ?? 0), 0),
+            operation.localStages?.reduce((sum, value2) => sum + (value2.failedCount ?? 0), 0) ?? 0
+          ) + related.reduce((sum, value2) => sum + (value2.audit?.delivery?.failed ?? 0), 0),
+          notExecuted: (task.stageResults?.filter((result2) => result2.status === "not_executed").length ?? 0) + (task.processingResults?.filter((result2) => result2.status === "not_executed").length ?? 0) + (operation.localStages?.reduce((sum, value2) => sum + (value2.notExecutedCount ?? 0), 0) ?? 0)
         };
         return {
           operationId: operationId2,
           status: operation.status ?? task.status,
           complete,
           outcomes,
-          files: await Promise.all(files.map(async (file3) => ({ name: file3.name, path: await manager.deliveryPath(task.id, file3.id) })))
+          files: await Promise.all(files.map(async ({ file: file3, taskId }) => ({ name: file3.name, path: await manager.deliveryPath(taskId, file3.id) })))
         };
       }
       const run = () => options.transport.callTool(name2, args, sessionId);
@@ -63629,7 +65758,7 @@ async function taskArchiveHost(options) {
           return { ok: true, data: {
             ...await manager.catalog(filters),
             diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
-            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash17("sha256").update((options.projectForSession(caller.sessionId) ?? standalone2).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
@@ -63705,12 +65834,12 @@ async function taskArchiveHost(options) {
           return { ok: true, data: {
             ...await manager.list(input.scope === "session" ? caller.sessionId ?? "podplo-manual" : void 0),
             diagnostics: syncDiagnostic?.scope === `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}` ? [syncDiagnostic.value] : [],
-            currentProjectId: createHash15("sha256").update((options.projectForSession(caller.sessionId) ?? standalone).key).digest("hex"),
+            currentProjectId: createHash17("sha256").update((options.projectForSession(caller.sessionId) ?? standalone2).key).digest("hex"),
             ...error101 ? { error: error101 } : {}
           } };
         }
         if (action === "archive.openProject") {
-          await manager.openProject(typeof input.projectId === "string" ? input.projectId : options.projectForSession(caller.sessionId) ?? standalone);
+          await manager.openProject(typeof input.projectId === "string" ? input.projectId : options.projectForSession(caller.sessionId) ?? standalone2);
           return { ok: true, data: { opened: true } };
         }
         const taskId = typeof input.taskId === "string" ? input.taskId : "";
@@ -63918,7 +66047,7 @@ var nativeGenerationWaitTool = {
     required: ["operationId"]
   }
 };
-var delay = (ms, signal) => new Promise((resolve3, reject) => {
+var delay = (ms, signal) => new Promise((resolve4, reject) => {
   if (signal.aborted) return reject(signal.reason ?? new DOMException("Aborted", "AbortError"));
   const timer = setTimeout(done, ms);
   const aborted3 = () => {
@@ -63928,7 +66057,7 @@ var delay = (ms, signal) => new Promise((resolve3, reject) => {
   };
   function done() {
     signal.removeEventListener("abort", aborted3);
-    resolve3();
+    resolve4();
   }
   signal.addEventListener("abort", aborted3, { once: true });
 });
@@ -64051,893 +66180,64 @@ async function waitForNativeGeneration(options) {
   }
 }
 
-// plugins/podplo-dsh/src/native-skill-batch.ts
-import { constants as constants6, open as open7, readdir, realpath as realpath7, lstat as lstat6 } from "node:fs/promises";
-import { randomInt, randomUUID as randomUUID14 } from "node:crypto";
-import { homedir } from "node:os";
-import { basename as basename12, extname as extname10, isAbsolute as isAbsolute7, parse as parse6, relative as relative4, resolve, sep } from "node:path";
-
-// plugins/podplo-dsh/src/favorite-skill-resolution.ts
-var fail4 = (code, message) => {
-  throw new PodploPluginError(code, message);
+// plugins/podplo-dsh/src/native-task-router.ts
+var identifier2 = /^[A-Za-z0-9_-]{1,40}$/u;
+var invalid = (message) => {
+  throw new PodploPluginError("INVALID_ARGUMENT", message);
 };
-var normalized = (value2) => value2.trim().toLocaleLowerCase();
-function requiredText(value2, field, maximum) {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > maximum || /[\u0000-\u001f\u007f]/u.test(value2))
-    return fail4("SKILL_QUERY_INVALID", `\u6536\u85CF Skill \u7684 ${field} \u65E0\u6548\u3002`);
-  return value2.trim();
+function record8(value2, label) {
+  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) invalid(`${label}\u65E0\u6548`);
+  return value2;
 }
-function candidate(value2) {
-  if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
-  const row = value2;
-  const id2 = requiredText(row.id, "id", 180), slug2 = requiredText(row.slug, "slug", 180);
-  const originalTitle = requiredText(row.originalTitle, "originalTitle", 255);
-  const note2 = row.note === null ? null : requiredText(row.note, "note", 160);
-  const folderId = row.folderId === null ? null : requiredText(row.folderId, "folderId", 180);
-  const folderName = row.folderName === null ? null : requiredText(row.folderName, "folderName", 80);
-  if (id2 !== slug2 || folderId === null !== (folderName === null) || !["skill", "family", "member"].includes(String(row.kind)) || typeof row.executable !== "boolean")
-    return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
-  return { id: id2, slug: slug2, originalTitle, note: note2, folderId, folderName, kind: row.kind, executable: row.executable };
+function owns(value2, key) {
+  return Object.prototype.hasOwnProperty.call(value2, key);
 }
-function sameCandidate(left, right) {
-  return left.id === right.id && left.slug === right.slug && left.originalTitle === right.originalTitle && left.note === right.note && left.folderId === right.folderId && left.folderName === right.folderName && left.kind === right.kind && left.executable === right.executable;
-}
-function uniqueCandidates(rows) {
-  const unique = /* @__PURE__ */ new Map();
-  for (const row of rows) {
-    const existing = unique.get(row.slug);
-    if (existing && !sameCandidate(existing, row))
-      return fail4("SKILL_QUERY_AMBIGUOUS", "\u540C\u4E00\u6536\u85CF Skill \u51FA\u73B0\u4E86\u51B2\u7A81\u7684\u6587\u4EF6\u5939\u6216\u8EAB\u4EFD\uFF0C\u8BF7\u5237\u65B0\u6536\u85CF\u540E\u91CD\u8BD5\u3002");
-    unique.set(row.slug, existing ?? row);
-  }
-  return [...unique.values()];
-}
-function resultRows(result) {
-  if (!result || typeof result !== "object" || !Array.isArray(result.items))
-    return fail4("SKILL_QUERY_INVALID", "\u6536\u85CF Skill \u67E5\u8BE2\u7ED3\u679C\u65E0\u6548\u3002");
-  return uniqueCandidates(result.items.map(candidate));
-}
-function inFolder(rows, folder) {
-  const key = normalized(folder);
-  return rows.filter((row) => key === "\u672A\u5206\u7C7B" ? row.folderId === null : row.folderId !== null && row.folderName !== null && normalized(row.folderName) === key);
-}
-function exactMatches(rows, query) {
-  const key = normalized(query);
-  return rows.filter((row) => [row.slug, row.originalTitle, row.note].some((value2) => value2 !== null && normalized(value2) === key));
-}
-function resolveExact(rows, query, strategy) {
-  const exact = exactMatches(rows, query);
-  if (exact.length > 1) return fail4("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF Skill \u5339\u914D\u8BE5\u540D\u79F0\u6216\u5907\u6CE8\uFF0C\u8BF7\u6307\u5B9A\u6536\u85CF\u6587\u4EF6\u5939\u6216\u7CBE\u786E Skill\u3002");
-  if (!exact.length) return fail4("SKILL_NOT_FOUND", "\u6211\u7684\u6536\u85CF\u4E2D\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684 Skill\u3002");
-  const resolved = exact[0];
-  if (strategy === "single" && resolved.kind === "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F Skill \u65CF\uFF0C\u8BF7\u4F7F\u7528\u968F\u673A\u6210\u5458\u7B56\u7565\u3002");
-  if (strategy !== "single" && resolved.kind !== "family") return fail4("SKILL_STRATEGY_MISMATCH", "\u8BE5\u6536\u85CF\u9879\u662F\u5355\u4E2A Skill\uFF0C\u4E0D\u80FD\u4F7F\u7528 Skill \u65CF\u968F\u673A\u7B56\u7565\u3002");
-  return resolved;
-}
-function folderMembers(rows) {
-  return rows.filter((row) => row.executable && (row.kind === "skill" || row.kind === "member"));
-}
-function assertOneFolder(rows) {
-  const ids2 = new Set(rows.flatMap((row) => row.folderId === null ? [] : [row.folderId]));
-  if (ids2.size > 1)
-    fail4("SKILL_QUERY_AMBIGUOUS", "\u591A\u4E2A\u6536\u85CF\u6587\u4EF6\u5939\u4F7F\u7528\u4E86\u540C\u4E00\u540D\u79F0\uFF0C\u8BF7\u91CD\u547D\u540D\u540E\u91CD\u8BD5\u3002");
-}
-function explicitFolderPool(rows, query, folder) {
-  assertOneFolder(rows);
-  const members = folderMembers(rows);
-  const matchingFamilies = exactMatches(rows, query).filter((row) => row.kind === "family");
-  if (matchingFamilies.length > 1 || matchingFamilies.length && members.length)
-    return fail4("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u65CF\u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
-  if (matchingFamilies.length === 1) return matchingFamilies[0];
-  if (!members.length) return fail4("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
-  return { kind: "folder-pool", folderName: folder, members };
-}
-async function resolveFavoriteSkill(input, list) {
-  const query = requiredText(input.query, "query", 160);
-  const folder = input.folder === void 0 ? void 0 : requiredText(input.folder, "folder", 80);
-  const random = input.strategy !== "single";
-  const usesExplicitFolderPool = random && folder !== void 0 && normalized(query) === normalized(folder);
-  if (usesExplicitFolderPool) {
-    const rows = inFolder(resultRows(await list({ folder })), folder);
-    return explicitFolderPool(rows, query, folder);
-  }
-  const queried = resultRows(await list({ query, ...folder ? { folder } : {} }));
-  const queryRows = folder === void 0 ? queried : inFolder(queried, folder);
-  if (folder !== void 0 || !random || query.length > 80 || normalized(query) === "\u672A\u5206\u7C7B")
-    return resolveExact(queryRows, query, input.strategy);
-  const folderRows = inFolder(resultRows(await list({ folder: query })), query);
-  assertOneFolder(folderRows);
-  const exact = exactMatches(uniqueCandidates([...queryRows, ...folderRows]), query);
-  const members = folderMembers(folderRows);
-  if (exact.length > 1 || exact.length && members.length)
-    return fail4("SKILL_QUERY_AMBIGUOUS", "\u6536\u85CF\u6587\u4EF6\u5939\u968F\u673A\u6C60\u4E0E\u540C\u540D Skill \u6216 Skill \u65CF\u51B2\u7A81\uFF0C\u8BF7\u6307\u5B9A\u5177\u4F53 Skill \u6216\u8C03\u6574\u6536\u85CF\u6587\u4EF6\u5939\u540D\u79F0\u3002");
-  if (exact.length === 1) return resolveExact(exact, query, input.strategy);
-  if (!members.length) return fail4("SKILL_NOT_FOUND", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u6267\u884C\u7684\u72EC\u7ACB Skill\u3002");
-  return { kind: "folder-pool", folderName: query, members };
-}
-
-// plugins/podplo-dsh/src/toolbox-preset.ts
-var edge = external_exports2.number().min(0).max(1e3);
-var validators = {
-  rotate: RotateOptionsSchema,
-  color: ColorOptionsSchema,
-  outline: OutlineSettingsSchema.omit({ patternId: true, mirror: true }),
-  print: PrintOptionsSchema.omit({ width: true, height: true, unit: true, ppi: true, fit: true, bleedEdges: true }).extend({
-    bleedSetup: external_exports2.enum(["uniform", "edges"]),
-    bleedTop: edge,
-    bleedRight: edge,
-    bleedBottom: edge,
-    bleedLeft: edge
-  }).strict(),
-  export: ExportOptionsSchema.omit({ ppi: true }).extend({ mirror: external_exports2.boolean(), mirrorJoin: external_exports2.enum(["none", "horizontal", "vertical"]) }).strict()
-};
-var value = external_exports2.record(external_exports2.string(), external_exports2.unknown());
-var toolboxPresetSchema = external_exports2.object({
-  type: external_exports2.literal("podplo-toolbox-preset"),
-  schemaVersion: external_exports2.union([external_exports2.literal(1), external_exports2.literal(2)]),
-  orderVersion: external_exports2.union([external_exports2.literal(1), external_exports2.literal(2)]).optional(),
-  enabled: external_exports2.object({
-    trimTransparent: external_exports2.boolean(),
-    rotate: external_exports2.boolean(),
-    color: external_exports2.boolean(),
-    outline: external_exports2.boolean(),
-    resize: external_exports2.boolean(),
-    print: external_exports2.boolean(),
-    export: external_exports2.boolean()
-  }).strict(),
-  parameters: external_exports2.object({
-    resize: value,
-    rotate: value,
-    color: value,
-    outline: value,
-    print: value,
-    export: value,
-    trim: external_exports2.object({ threshold: external_exports2.number().int().min(0).max(254) }).strict().optional()
-  }).strict(),
-  requiredAssets: external_exports2.array(external_exports2.literal("outlinePattern")).optional()
-}).strict().refine((preset) => preset.schemaVersion !== 2 || preset.orderVersion === 2, "schemaVersion 2 \u5FC5\u987B\u58F0\u660E orderVersion 2");
-
-// plugins/podplo-dsh/src/toolbox-preset-plan.ts
-function toolboxPresetPlan(raw) {
-  const preset = toolboxPresetSchema.parse(raw);
-  if (preset.enabled.outline && preset.parameters.outline.fill === "pattern")
-    throw new Error("\u8BE5\u9884\u8BBE\u9700\u8981\u91CD\u65B0\u9009\u62E9\u63CF\u8FB9\u56FE\u6848\u56FE\u7247\uFF0C\u8BF7\u5148\u5728\u5DE5\u5177\u7BB1\u9009\u62E9\u56FE\u7247\u3002");
-  const steps = [];
-  const order2 = preset.orderVersion === 2 ? TOOLBOX_ORDER : ["resize", "rotate", "color", "outline", "trim", "print", "export"];
-  for (const tool of order2) {
-    if (tool === "trim") {
-      if (preset.enabled.trimTransparent) steps.push({ tool, ...preset.parameters.trim?.threshold ? { threshold: preset.parameters.trim.threshold } : {} });
-      continue;
-    }
-    if (!preset.enabled[tool]) continue;
-    let options = { ...preset.parameters[tool] };
-    if (tool === "resize") {
-      if (options.lockAspect !== void 0) {
-        options.sizing = options.lockAspect ? options.resizeAxis : "fixed";
-        delete options.lockAspect;
-        delete options.resizeAxis;
-      }
-      options.sizing ??= "fixed";
-      if (options.sizing === "height") delete options.width;
-      if (options.sizing === "width") delete options.height;
-      delete options.format;
-      delete options.fit;
-      options.trimTransparent = false;
-    } else if (tool === "outline") {
-      options.mirror ??= false;
-    } else if (tool === "print") {
-      if (options.bleedSetup !== void 0 && options.bleedSetup !== "uniform" && options.bleedSetup !== "edges")
-        throw new Error("\u9884\u8BBE\u7684\u51FA\u8840\u8BBE\u7F6E\u65E0\u6548\u3002");
-      if (options.bleedSetup === "edges") options.bleedEdges = {
-        top: options.bleedTop,
-        right: options.bleedRight,
-        bottom: options.bleedBottom,
-        left: options.bleedLeft
-      };
-      for (const key of ["bleedSetup", "bleedTop", "bleedRight", "bleedBottom", "bleedLeft"]) delete options[key];
-    }
-    steps.push({ tool, options });
-  }
-  return ToolboxPlanSchema.parse({ ...preset.orderVersion === 2 ? { orderVersion: 2 } : {}, steps });
-}
-
-// plugins/podplo-dsh/src/native-skill-batch.ts
-var nativeTaskToolName = "mcp__podplo__podplo_prepare_task";
-var nativeTaskRawName = "podplo_prepare_task";
-var generationFieldNames = ["model", "ratio", "quality", "ecoMode", "background", "instructions"];
-var generationFieldSet = new Set(generationFieldNames);
-var nativeTaskTool = {
-  name: nativeTaskToolName,
-  description: "Prepare one complete PodPlo task. Describe only ordered stages: source folder/previous stage and image scope, exact Skill/favorite selection strategy, generation choices explicitly supplied by the user, and either no local action, a validated grid split, or a user-supplied PodPlo preset path. The Host resolves files, Skills, fixed random assignments, defaults, dependencies, local plan and the exact whole-order credits; then it shows one native confirmation. Unknown local actions are rejected. Do not inspect folders, discover items one by one, invent IDs, write processingPlan, or calculate credits.",
-  inputSchema: { type: "object", additionalProperties: false, required: ["stages"], examples: [{ stages: [
-    {
-      id: "base",
-      source: { folderPath: "/user-supplied/folder", scope: "all" },
-      skill: { query: "exact-skill", source: "public", strategy: "single" },
-      generation: { model: "user-selected-model", ecoMode: false, background: "transparent" }
-    },
-    {
-      id: "next",
-      source: { fromStage: "base", scope: "first" },
-      skill: { query: "next-exact-skill", source: "public", strategy: "single" }
-    }
-  ] }], properties: {
-    stages: { type: "array", minItems: 1, maxItems: 10, items: {
-      type: "object",
-      additionalProperties: false,
-      required: ["id", "source", "skill"],
-      properties: {
-        id: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
-        name: { type: "string", minLength: 1, maxLength: 80 },
-        source: { type: "object", additionalProperties: false, oneOf: [
-          { required: ["folderPath"], not: { required: ["fromStage"] } },
-          { required: ["fromStage"], not: { required: ["folderPath"] } },
-          { required: ["referenceIds"], not: { anyOf: [{ required: ["folderPath"] }, { required: ["fromStage"] }] } }
-        ], properties: {
-          folderPath: { type: "string", minLength: 1, maxLength: 4096 },
-          fromStage: { type: "string", pattern: "^[A-Za-z0-9_-]{1,40}$" },
-          referenceIds: { type: "array", minItems: 1, maxItems: 100, uniqueItems: true, items: { type: "string", minLength: 1, maxLength: 240 } },
-          scope: { type: "string", enum: ["all", "first", "indexes"] },
-          indexes: {
-            type: "array",
-            minItems: 1,
-            maxItems: 100,
-            uniqueItems: true,
-            items: { type: "integer", minimum: 0, maximum: 99 }
-          },
-          expectedImageCount: { type: "integer", minimum: 1, maximum: 100 }
-        } },
-        skill: { type: "object", additionalProperties: false, required: ["query", "strategy"], properties: {
-          query: { type: "string", minLength: 1, maxLength: 160 },
-          source: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
-          favoriteFolder: { type: "string", minLength: 1, maxLength: 80 },
-          strategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] }
-        } },
-        generation: { type: "object", additionalProperties: false, properties: {
-          model: { type: "string", maxLength: 160 },
-          ratio: { type: "string", maxLength: 8 },
-          quality: { type: "string", maxLength: 32 },
-          ecoMode: { type: "boolean" },
-          background: { type: "string", enum: ["opaque", "transparent"] },
-          instructions: { type: "string", maxLength: 3e3 }
-        } },
-        local: { type: "object", additionalProperties: false, oneOf: [
-          { required: ["presetPath"], not: { anyOf: [{ required: ["actions"] }, { required: ["exactPlan"] }] } },
-          { required: ["actions"], not: { anyOf: [{ required: ["presetPath"] }, { required: ["exactPlan"] }] } },
-          { required: ["exactPlan"], not: { anyOf: [{ required: ["presetPath"] }, { required: ["actions"] }] } }
-        ], properties: {
-          presetPath: { type: "string", minLength: 1, maxLength: 4096 },
-          actions: {
-            type: "array",
-            maxItems: 10,
-            items: { type: "object", additionalProperties: false, required: ["type", "rows", "columns"], properties: {
-              type: { const: "grid-split" },
-              rows: { type: "integer", minimum: 1, maximum: 6 },
-              columns: { type: "integer", minimum: 1, maximum: 6 }
-            } }
-          },
-          exactPlan: { ...processingPlanSchema, description: "Exact validated plan for existing PodPlo resize, rotate/flip, color, export, print, outline, grid-split or toolbox tools. Copy options from that tool schema; the Host rejects invalid options." }
-        } }
-      }
-    } }
-  } }
-};
-var fail5 = (code, message) => {
-  throw new PodploPluginError(code, message);
-};
-var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
-var record6 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
-var rejectUnknownField = (value2, allowed, path) => {
-  const key = Object.keys(value2).find((candidate2) => !allowed.has(candidate2));
-  if (key !== void 0) fail5("INVALID_ARGUMENT", `${path}.${key} \u662F\u672A\u77E5\u53C2\u6570\u3002`);
-};
-var text3 = (value2, name2, max) => {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail5("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
-  return value2.trim();
-};
-function parseInput(value2, path = "batch") {
-  const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
-  rejectUnknownField(value2, allowed, path);
-  const count2 = value2.expectedImageCount;
-  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail5("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
-  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail5("INVALID_ARGUMENT", `${path}.skillStrategy \u65E0\u6548\u3002`);
-  let imageIndexes;
-  if (value2.imageIndexes !== void 0) {
-    const indexes = value2.imageIndexes;
-    if (!Array.isArray(indexes) || !indexes.length || indexes.length > 100 || new Set(indexes).size !== indexes.length || indexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99))
-      fail5("INVALID_ARGUMENT", `${path}.imageIndexes \u65E0\u6548\u3002`);
-    imageIndexes = indexes.map(Number);
-  }
-  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail5("INVALID_ARGUMENT", `${path}.ecoMode \u65E0\u6548\u3002`);
-  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail5("INVALID_ARGUMENT", `${path}.background \u65E0\u6548\u3002`);
-  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail5("INVALID_ARGUMENT", `${path}.skillSource \u65E0\u6548\u3002`);
-  const skillFolder = value2.skillFolder === void 0 ? void 0 : text3(value2.skillFolder, `${path}.skillFolder`, 80);
-  const skillSource = value2.skillSource ?? (skillFolder ? "favorite" : "auto");
-  if (skillFolder && skillSource !== "favorite") fail5("INVALID_ARGUMENT", `${path}.skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002`);
-  if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
-    fail5("INVALID_ARGUMENT", `${path}.instructions \u65E0\u6548\u3002`);
-  const folderPath = value2.folderPath === void 0 ? void 0 : text3(value2.folderPath, `${path}.folderPath`, 4096);
-  const referenceAssetIds = value2.referenceAssetIds;
-  if (folderPath !== void 0 === (referenceAssetIds !== void 0) || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))))
-    fail5("INVALID_ARGUMENT", "\u5FC5\u987B\u63D0\u4F9B\u4E00\u4E2A\u56FE\u7247\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750 ID\u3002");
-  return {
-    ...folderPath ? { folderPath } : { referenceAssetIds },
-    ...imageIndexes ? { imageIndexes } : {},
-    ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
-    skillQuery: text3(value2.skillQuery, `${path}.skillQuery`, 160),
-    skillStrategy: value2.skillStrategy,
-    ...value2.model === void 0 ? {} : { model: text3(value2.model, `${path}.model`, 160) },
-    ...value2.ratio === void 0 ? {} : { ratio: text3(value2.ratio, `${path}.ratio`, 8) },
-    ...value2.quality === void 0 ? {} : { quality: text3(value2.quality, `${path}.quality`, 32) },
-    ...value2.ecoMode === void 0 ? {} : { ecoMode: value2.ecoMode },
-    ...value2.background === void 0 ? {} : { background: value2.background },
-    processingPlan: value2.processingPlan,
-    skillSource,
-    ...skillFolder ? { skillFolder } : {},
-    ...value2.processingPresetPath !== void 0 ? { processingPresetPath: text3(value2.processingPresetPath, `${path}.processingPresetPath`, 4096) } : {},
-    instructions: typeof value2.instructions === "string" ? value2.instructions : ""
-  };
-}
-async function presetProcessing(input, deps) {
-  if (!input.processingPresetPath) return parseProcessingPlan(input.processingPlan) ?? [];
-  if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail5("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
-  if (!deps.isFolderAuthorized(input.processingPresetPath)) fail5("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
-  const path = input.processingPresetPath;
-  if (!isAbsolute7(path) || extname10(path).toLowerCase() !== ".json") fail5("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
-  const handle = await open7(path, constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0));
-  try {
-    const before = await handle.stat();
-    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail5("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
-    const bytes = await handle.readFile();
-    const after = await handle.stat();
-    if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
-      fail5("LOCAL_PRESET_CHANGED", "\u9884\u8BBE\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u5C1A\u672A\u63D0\u4EA4\u4EFB\u52A1\u3002");
-    deps.signal?.throwIfAborted();
-    return parseProcessingPlan([{
-      id: "toolbox-preset",
-      label: "\u5DE5\u5177\u7BB1\u9884\u8BBE",
-      toolName: TOOLBOX_PIPELINE_NAME,
-      options: toolboxPresetPlan(JSON.parse(bytes.toString("utf8").replace(/^\uFEFF/u, "")))
-    }]);
-  } finally {
-    await handle.close();
-  }
-}
-async function personalMatch(input, deps) {
-  if (input.skillStrategy !== "single" || ["public", "favorite"].includes(input.skillSource) || !deps.personalSkills || !deps.personalSkill) return;
-  const found = [];
-  let cursor;
-  const seen = /* @__PURE__ */ new Set();
-  do {
-    const page = await deps.personalSkills(/^[0-9a-f-]{36}$/iu.test(input.skillQuery) ? "" : input.skillQuery, cursor);
-    found.push(...page.items.filter((row) => row.id === input.skillQuery || row.name.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase()));
-    cursor = page.nextCursor ?? void 0;
-    if (cursor && seen.has(cursor)) fail5("SKILL_QUERY_INVALID", "\u4E2A\u4EBA Skill \u5206\u9875\u7ED3\u679C\u65E0\u6548\u3002");
-    if (cursor) seen.add(cursor);
-    if (seen.size > 100) fail5("SKILL_QUERY_AMBIGUOUS", "\u8BF7\u4F7F\u7528\u4E2A\u4EBA Skill \u7684\u7CBE\u786E ID\u3002");
-  } while (cursor);
-  if (found.length > 1) fail5("SKILL_QUERY_AMBIGUOUS", "\u6709\u591A\u4E2A\u540C\u540D\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6307\u5B9A\u7CBE\u786E ID\u3002");
-  if (!found.length) return;
-  const skill = await deps.personalSkill(found[0].id);
-  return {
-    id: skill.id,
-    name: skill.name,
-    slug: null,
-    personal: true,
-    referenceCount: skill.referenceAssetIds.length,
-    availableForCurrentPlan: true,
-    minimumReferenceImages: 0,
-    details: { slug: "", title: skill.name, inputs: [], keeps: [], changes: [], output: "" }
-  };
-}
-function isInside(parent, child) {
-  const value2 = relative4(parent, child);
-  return value2 === "" || value2 !== ".." && !value2.startsWith(`..${sep}`) && !isAbsolute7(value2);
-}
-async function readTrustedImageFolder(input) {
-  input.signal?.throwIfAborted();
-  let trustedRoot;
-  if (!isAbsolute7(input.folderPath)) {
-    if (!input.cwd || !isAbsolute7(input.cwd)) fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
-    trustedRoot = await realpath7(input.cwd).catch(() => fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
-  }
-  const requested = isAbsolute7(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
-  const before = await lstat6(requested).catch(() => fail5("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
-  if (before.isSymbolicLink() || !before.isDirectory()) fail5("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
-  const directory = await realpath7(requested);
-  if (trustedRoot && !isInside(trustedRoot, directory)) fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
-  const root = parse6(directory).root, home = await realpath7(homedir()).catch(() => homedir());
-  const pathParts = relative4(root, directory).split(sep);
-  if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
-    fail5("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
-  const entries = await readdir(directory, { withFileTypes: true });
-  const imageEntries = entries.filter((entry) => imageExtensions.has(extname10(entry.name).toLocaleLowerCase()));
-  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail5("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
-  imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
-  if (!imageEntries.length) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
-  if (imageEntries.length > 100) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
-  if (input.expectedImageCount !== void 0 && imageEntries.length !== input.expectedImageCount)
-    fail5("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
-  const images = [];
-  for (const [index, entry] of imageEntries.entries()) {
-    input.signal?.throwIfAborted();
-    const handle = await open7(resolve(directory, entry.name), constants6.O_RDONLY | (constants6.O_NOFOLLOW ?? 0)).catch(() => fail5("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
-    try {
-      const first = await handle.stat();
-      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail5("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
-      const bytes = await handle.readFile();
-      const second = await handle.stat();
-      if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
-        fail5("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
-      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename12(entry.name), bytes });
-    } finally {
-      await handle.close();
-    }
-  }
-  return images;
-}
-function catalogMatch(input, catalog) {
-  if (!catalog) return fail5("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
-  const query = input.skillQuery.toLocaleLowerCase();
-  const rows = input.skillStrategy === "single" ? catalog.skills.filter((row) => row.executable) : catalog.families;
-  const exact = rows.filter((row) => row.slug.toLocaleLowerCase() === query || row.title.toLocaleLowerCase() === query);
-  if (exact.length === 1) return exact[0];
-  const partial3 = rows.filter((row) => `${row.slug} ${row.title}`.toLocaleLowerCase().includes(query));
-  if (exact.length > 1 || partial3.length > 1) fail5("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
-  if (partial3.length === 1) return partial3[0];
-  return fail5("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
-}
-function boundSkill(value2) {
-  const row = record6(value2), details = record6(row.details);
-  if (typeof row.id !== "string" || typeof row.name !== "string" || typeof row.availableForCurrentPlan !== "boolean" || !Number.isInteger(row.minimumReferenceImages) || typeof details.slug !== "string" || typeof details.title !== "string" || !Array.isArray(details.inputs) || !Array.isArray(details.keeps) || !Array.isArray(details.changes) || typeof details.output !== "string")
-    fail5("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
-  return row;
-}
-function capabilities(value2) {
-  const row = record6(value2), schema2 = record6(row.quoteInputSchema);
-  if (row.available !== true || !Array.isArray(row.models) || !schema2.properties) fail5("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
-  return row;
-}
-function modelMatch(value2, query) {
-  const normalized2 = (text4) => text4.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
-  const target = normalized2(query);
-  const exact = value2.models.filter((model2) => normalized2(model2.id) === target || normalized2(model2.name) === target);
-  if (exact.length > 1) fail5("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
-  const partial3 = exact.length ? exact : value2.models.filter((model2) => normalized2(model2.name).includes(target));
-  if (partial3.length !== 1) fail5(partial3.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial3.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
-  const model = partial3[0];
-  if (!model.availableForCurrentPlan) fail5("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
-  return model;
-}
-function resolveBatchParameters(input, value2) {
-  const properties = value2.quoteInputSchema.properties ?? {};
-  const selectedModel = input.model ? modelMatch(value2, input.model) : value2.models.find((row) => row.availableForCurrentPlan === true);
-  const model = selectedModel ?? fail5("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
-  if (model.availableForCurrentPlan === false) fail5("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
-  const ratio = input.ratio ?? (model.ratios.includes("1:1") ? "1:1" : model.ratios[0]);
-  const modelQuality = typeof model.defaultQuality === "string" && model.qualities.includes(model.defaultQuality) ? model.defaultQuality : void 0;
-  const quality = input.quality ?? modelQuality ?? model.qualities[0];
-  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail5("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
-  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail5("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
-  const required3 = new Set(value2.quoteInputSchema.required ?? []), missing = [];
-  if (!ratio && required3.has("ratio")) missing.push("ratio");
-  if (!quality && required3.has("quality")) missing.push("quality");
-  if (missing.length) fail5("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
-  const ecoMode = input.ecoMode ?? false;
-  return {
-    model,
-    ...ratio ? { ratio } : {},
-    ...quality ? { quality } : {},
-    ecoMode,
-    background: input.background ?? "opaque"
-  };
-}
-async function assertOwner(deps, ownerId, namespace) {
-  deps.signal?.throwIfAborted();
-  if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
-    fail5("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
-}
-function shuffledWithoutReplacement(values, count2, choose) {
-  if (count2 > values.length) fail5("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
-  const pool = [...values], selected = [];
-  while (selected.length < count2) {
-    const index = choose(pool.length);
-    if (!Number.isInteger(index) || index < 0 || index >= pool.length) throw new Error("Invalid random index");
-    selected.push(pool.splice(index, 1)[0]);
-  }
-  return selected;
-}
-function expandNativeTaskInput(raw) {
-  if (Object.keys(raw).some((key) => key !== "stages") || !Array.isArray(raw.stages) || !raw.stages.length || raw.stages.length > 10)
-    fail5("INVALID_ARGUMENT", "\u6574\u5355\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879\u3002");
-  const rawStages = raw.stages;
-  const ids2 = /* @__PURE__ */ new Set();
+function parse7(raw) {
+  const input = record8(raw, "\u539F\u751F\u4EFB\u52A1");
+  if (input.taskName !== void 0 && (typeof input.taskName !== "string" || !input.taskName.trim() || input.taskName.length > 100))
+    invalid("taskName\u65E0\u6548");
+  const rawStages = input.stages;
+  if (!Array.isArray(rawStages) || rawStages.length < 1 || rawStages.length > 10)
+    invalid("\u539F\u751F\u4EFB\u52A1\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879");
+  const prior = /* @__PURE__ */ new Set();
   const stages = rawStages.map((value2, index) => {
-    const stage = record6(value2), id2 = text3(stage.id, `stages[${index}].id`, 40);
-    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail5("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
-    rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "skill", "generation", "local"]), `stages[${index}]`);
-    ids2.add(id2);
-    const source = record6(stage.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
-    const sourceChoices = [typeof folderPath === "string", typeof fromStage === "string", Array.isArray(referenceIds)].filter(Boolean).length;
-    rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"]), `stages[${index}].source`);
-    if (sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
-      fail5("INVALID_ARGUMENT", "\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
-    const scope = source.scope ?? "all";
-    if (!["all", "first", "indexes"].includes(String(scope))) fail5("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
-    if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail5("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
-    const imageIndexes = scope === "first" ? [0] : scope === "indexes" ? source.indexes : void 0;
-    const skill = record6(stage.skill);
-    rejectUnknownField(skill, /* @__PURE__ */ new Set(["query", "source", "favoriteFolder", "strategy"]), `stages[${index}].skill`);
-    const strategy = String(skill.strategy);
-    if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail5("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
-    const generation = stage.generation === void 0 ? {} : record6(stage.generation);
-    rejectUnknownField(generation, generationFieldSet, `stages[${index}].generation`);
-    const local = stage.local === void 0 ? void 0 : record6(stage.local);
-    let processingPresetPath;
-    const processingPlan = [];
-    if (local) {
-      const choices = [local.presetPath, local.actions, local.exactPlan].filter((value3) => value3 !== void 0).length;
-      rejectUnknownField(local, /* @__PURE__ */ new Set(["presetPath", "actions", "exactPlan"]), `stages[${index}].local`);
-      if (choices !== 1)
-        fail5("INVALID_ARGUMENT", "\u672C\u5730\u52A0\u5DE5\u5FC5\u987B\u9009\u62E9\u9884\u8BBE\u8DEF\u5F84\u6216\u660E\u786E\u52A8\u4F5C\u3002");
-      if (local.presetPath !== void 0) processingPresetPath = text3(local.presetPath, "local.presetPath", 4096);
-      else if (local.exactPlan !== void 0) processingPlan.push(...parseProcessingPlan(local.exactPlan) ?? []);
-      else {
-        if (!Array.isArray(local.actions) || local.actions.length > 10) fail5("INVALID_ARGUMENT", "\u672C\u5730\u52A8\u4F5C\u65E0\u6548\u3002");
-        const actions = local.actions;
-        for (const [actionIndex, value3] of actions.entries()) {
-          const action = record6(value3);
-          rejectUnknownField(action, /* @__PURE__ */ new Set(["type", "rows", "columns"]), `stages[${index}].local.actions[${actionIndex}]`);
-          if (action.type !== "grid-split" || !Number.isInteger(action.rows) || Number(action.rows) < 1 || Number(action.rows) > 6 || !Number.isInteger(action.columns) || Number(action.columns) < 1 || Number(action.columns) > 6)
-            fail5("UNSUPPORTED_LOCAL_ACTION", "\u5F53\u524D\u9AD8\u5C42\u5165\u53E3\u53EA\u652F\u6301 grid-split\uFF1B\u5176\u4ED6\u52A8\u4F5C\u8BF7\u63D0\u4F9B\u5DF2\u4FDD\u5B58\u7684 PodPlo \u5DE5\u5177\u7BB1\u9884\u8BBE\u3002");
-          processingPlan.push({
-            id: `grid-${actionIndex + 1}`,
-            label: `${String(action.rows)}\xD7${String(action.columns)} \u5207\u56FE`,
-            toolName: GRID_SPLIT_OPERATION_NAME,
-            options: { rows: action.rows, cols: action.columns }
-          });
-        }
-      }
-    }
-    return {
-      id: id2,
-      ...stage.name === void 0 ? {} : { name: text3(stage.name, "stage.name", 80) },
-      source: { ...typeof folderPath === "string" ? { folderPath: text3(folderPath, "source.folderPath", 4096) } : Array.isArray(referenceIds) ? { referenceAssetIds: referenceIds } : { stageId: text3(fromStage, "source.fromStage", 40) }, ...imageIndexes ? { imageIndexes } : {} },
-      ...source.expectedImageCount === void 0 ? {} : { expectedImageCount: source.expectedImageCount },
-      skillQuery: text3(skill.query, "skill.query", 160),
-      skillStrategy: strategy,
-      ...skill.source === void 0 ? {} : { skillSource: skill.source },
-      ...skill.favoriteFolder === void 0 ? {} : { skillFolder: text3(skill.favoriteFolder, "skill.favoriteFolder", 80) },
-      ...generation,
-      ...processingPresetPath ? { processingPresetPath } : {},
-      processingPlan
-    };
+    const stage = record8(value2, `stages[${index}]`);
+    if (typeof stage.id !== "string" || !identifier2.test(stage.id) || prior.has(stage.id))
+      invalid(`stages[${index}].id\u65E0\u6548\u6216\u91CD\u590D`);
+    const id2 = stage.id;
+    const source = record8(stage.source, `stages[${index}].source`);
+    const folder = typeof source.folderPath === "string" && !!source.folderPath.trim();
+    const referenceIds = Array.isArray(source.referenceIds) ? source.referenceIds : void 0;
+    const references = !!referenceIds?.length;
+    const parent = typeof source.fromStage === "string" && !!source.fromStage;
+    if ([folder, references, parent].filter(Boolean).length !== 1)
+      invalid(`stages[${index}].source\u5FC5\u987B\u4E14\u53EA\u80FD\u6307\u5B9A\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247\u6216\u524D\u5E8F\u9636\u6BB5`);
+    if (references && (new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3))) invalid(`stages[${index}].source.referenceIds\u65E0\u6548`);
+    if (parent && !prior.has(source.fromStage)) invalid(`stages[${index}]\u53EA\u80FD\u5F15\u7528\u524D\u5E8F\u9636\u6BB5`);
+    const hasSkill = owns(stage, "skill");
+    const hasLocal = owns(stage, "local");
+    const hasGeneration = owns(stage, "generation");
+    if (!hasSkill && !hasLocal) invalid(`stages[${index}]\u5FC5\u987B\u6307\u5B9A skill \u6216 local`);
+    if (hasSkill) record8(stage.skill, `stages[${index}].skill`);
+    if (hasLocal) record8(stage.local, `stages[${index}].local`);
+    if (hasGeneration) record8(stage.generation, `stages[${index}].generation`);
+    if (!hasSkill && hasGeneration) invalid(`stages[${index}]\u7684\u7EAF\u672C\u5730\u9636\u6BB5\u4E0D\u80FD\u643A\u5E26 generation`);
+    prior.add(id2);
+    return { id: id2, raw: stage, source, kind: hasSkill ? "ai" : "local" };
   });
-  return { workflow: { stages } };
+  return { input, stages };
 }
-async function prepareNativeTask(raw, deps) {
-  const expanded = expandNativeTaskInput(raw);
-  const prepared = await prepareNativeSkillBatch(expanded, deps);
-  if (expanded.workflow === void 0 && Array.isArray(prepared.items)) {
-    const source = record6(raw.stages[0]), id2 = text3(source.id, "stage.id", 40);
-    const label = source.name === void 0 ? id2 : text3(source.name, "stage.name", 80);
-    prepared.items = prepared.items.map((item) => ({ ...item, stage: { id: id2, label, order: 0 } }));
-  }
-  return prepared;
-}
-async function prepareNativeSkillBatch(raw, deps) {
-  if (raw.workflow !== void 0) return prepareWorkflowBatch(raw, deps);
-  if (raw.groups !== void 0) return prepareGroupedBatch(raw, deps);
-  const input = parseInput(raw);
-  if (input.folderPath && !deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
-  deps.signal?.throwIfAborted();
-  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
-  const processingPlan = await presetProcessing(input, deps);
-  const personal = await personalMatch(input, deps);
-  if (input.skillSource === "personal" && !personal) fail5("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
-  if (input.skillSource === "favorite" && !deps.favoriteSkills) fail5("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
-  const favoriteStrategy = input.skillStrategy === "random-per-image-reuse" ? "random-per-image" : input.skillStrategy;
-  const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: favoriteStrategy }, deps.favoriteSkills) : void 0;
-  const favoritePool = favorite?.kind === "folder-pool" ? favorite : void 0;
-  const favoriteItem = favorite && favorite.kind !== "folder-pool" ? favorite : void 0;
-  if (input.skillSource !== "personal") await deps.online.refreshPublicSkills();
-  await assertOwner(deps, ownerId, namespace);
-  const catalog = deps.online.snapshot().publicDirectory?.catalog;
-  if (personal && input.skillSource === "auto" && catalog?.skills.some((row) => row.executable && [row.slug, row.title].some((value2) => value2.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase())))
-    fail5("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
-  if (favoritePool && !catalog) fail5("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
-  const match = personal || favoritePool ? void 0 : catalogMatch(favoriteItem ? { ...input, skillQuery: favoriteItem.slug } : input, catalog);
-  let title, members;
-  if (input.skillStrategy === "single") {
-    const skill = personal ?? boundSkill(await deps.online.skillDetails(match.slug));
-    if (!skill.availableForCurrentPlan || skill.minimumReferenceImages > 1)
-      fail5("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
-    title = skill.details.title;
-    members = [skill];
-  } else if (favoritePool) {
-    title = favoritePool.folderName;
-    members = [];
-    for (const candidate2 of favoritePool.members) {
-      const rows = (await deps.online.skills(candidate2.slug)).filter((row) => row.slug === candidate2.slug);
-      if (rows.length !== 1) continue;
-      const publicRow = catalog.skills.find((row) => row.slug === candidate2.slug && row.executable);
-      if (!publicRow) continue;
-      const member = boundSkill({ ...rows[0], details: {
-        slug: publicRow.slug,
-        title: publicRow.title,
-        summary: publicRow.summary,
-        description: publicRow.description,
-        inputs: publicRow.inputs,
-        keeps: publicRow.keeps,
-        changes: publicRow.changes,
-        output: publicRow.output
-      } });
-      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
-    }
-    if (!members.length) fail5("SKILL_FAVORITE_POOL_UNAVAILABLE", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879 Skill\u3002");
-  } else {
-    const family = match;
-    title = family.title;
-    members = [];
-    for (const slug2 of family.memberSlugs) {
-      const rows = (await deps.online.skills(slug2)).filter((row) => row.slug === slug2);
-      if (rows.length !== 1) continue;
-      const publicRow = catalog.skills.find((row) => row.slug === slug2 && row.executable);
-      if (!publicRow) continue;
-      const member = boundSkill({ ...rows[0], details: {
-        slug: publicRow.slug,
-        title: publicRow.title,
-        summary: publicRow.summary,
-        description: publicRow.description,
-        inputs: publicRow.inputs,
-        keeps: publicRow.keeps,
-        changes: publicRow.changes,
-        output: publicRow.output
-      } });
-      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
-    }
-    if (!members.length) fail5("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879\u6210\u5458\u3002");
-  }
-  if (!personal && deps.online.snapshot().publicDirectory?.catalog?.contentVersion !== catalog.contentVersion)
-    fail5("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
-  await assertOwner(deps, ownerId, namespace);
-  const currentCapabilities = capabilities(await deps.generationCapabilities());
-  const parameters = resolveBatchParameters(input, currentCapabilities), { model } = parameters;
-  const referenceLimit = parameters.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
-  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail5("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
-  const background = backgroundArgs(
-    currentCapabilities.quoteInputSchema.properties ?? {},
-    model,
-    parameters.background === "transparent"
+async function runNativeTask(raw, deps) {
+  const parsed = parse7(raw);
+  if (parsed.stages.every((stage) => stage.kind === "local")) return deps.local(parsed.input);
+  const referenced = new Set(parsed.stages.flatMap((stage) => typeof stage.source.fromStage === "string" ? [stage.source.fromStage] : []));
+  const consumesLocalPostprocessing = parsed.stages.some((stage) => stage.kind === "ai" && owns(stage.raw, "local") && referenced.has(stage.id));
+  if (parsed.stages.every((stage) => stage.kind === "ai") && !consumesLocalPostprocessing) return deps.ai(parsed.input);
+  if (deps.mixed) return deps.mixed(parsed.input);
+  throw new PodploPluginError(
+    "UNSUPPORTED_MIXED_TASK",
+    "\u5F53\u524D\u6574\u5355\u5408\u540C\u4E0D\u652F\u6301\u72EC\u7ACB\u672C\u5730\u5DE5\u5177\u9636\u6BB5\u4E0E AI \u9636\u6BB5\u6DF7\u5408\u6216\u4EA4\u9519\uFF1B\u4EFB\u52A1\u672A\u6267\u884C\uFF0C\u4E5F\u672A\u5220\u51CF\u4EFB\u4F55\u9636\u6BB5\u3002AI \u9636\u6BB5\u5185\u643A\u5E26\u7684 local \u540E\u5904\u7406\u4ECD\u53EF\u4F5C\u4E3A\u540C\u4E00 AI \u9636\u6BB5\u6267\u884C\u3002"
   );
-  if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail5("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
-  const allImages = input.folderPath ? await readTrustedImageFolder({
-    folderPath: input.folderPath,
-    cwd: deps.cwd,
-    expectedImageCount: input.imageIndexes ? void 0 : input.expectedImageCount,
-    signal: deps.signal
-  }) : input.referenceAssetIds.map((id2, index) => ({ id: id2, name: `\u4F1A\u8BDD\u56FE\u7247-${index + 1}`, bytes: new Uint8Array() }));
-  if (input.imageIndexes?.some((index) => index >= allImages.length))
-    fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9009\u62E9\u4E86\u6587\u4EF6\u5939\u4E2D\u4E0D\u5B58\u5728\u7684\u56FE\u7247\u3002");
-  const images = input.imageIndexes ? input.imageIndexes.map((index) => allImages[index]) : allImages;
-  if (input.expectedImageCount !== void 0 && images.length !== input.expectedImageCount)
-    fail5("LOCAL_IMAGE_COUNT_MISMATCH", `\u5DE5\u4F5C\u6D41\u9009\u4E2D ${images.length} \u5F20\u56FE\u7247\uFF0C\u4E0E\u58F0\u660E\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
-  const choose = deps.randomIndex ?? randomInt;
-  let assignments;
-  if (input.skillStrategy === "random-per-image") assignments = shuffledWithoutReplacement(members, images.length, choose);
-  else if (input.skillStrategy === "random-per-image-reuse") assignments = images.map(() => {
-    const index = choose(members.length);
-    if (!Number.isInteger(index) || index < 0 || index >= members.length) throw new Error("Invalid random index");
-    return members[index];
-  });
-  else if (input.skillStrategy === "random-shared") {
-    const selected = members[choose(members.length)];
-    assignments = Array.from({ length: images.length }, () => selected);
-  } else assignments = Array.from({ length: images.length }, () => members[0]);
-  const verified = /* @__PURE__ */ new Set();
-  for (const skill of assignments) {
-    if (verified.has(skill.id)) continue;
-    await deps.verifySelectedSkill(skill.personal ? null : skill.details.slug, skill.id);
-    verified.add(skill.id);
-  }
-  await assertOwner(deps, ownerId, namespace);
-  const referenceAssetIds = input.folderPath ? await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images }) : images.map((image) => image.id);
-  if (referenceAssetIds.length !== images.length || input.folderPath && referenceAssetIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
-    fail5("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
-  await assertOwner(deps, ownerId, namespace);
-  const items = referenceAssetIds.map((referenceAssetId, index) => {
-    const skill = assignments[index];
-    return {
-      skillId: skill.id,
-      sourceName: images[index].name,
-      pricingReferenceCount: (skill.referenceCount ?? 0) + 1,
-      args: {
-        prompt: input.instructions,
-        modelId: model.id,
-        templateId: skill.id,
-        referenceAssetIds: [referenceAssetId],
-        ...parameters.ratio ? { ratio: parameters.ratio } : {},
-        ...parameters.quality ? { quality: parameters.quality } : {},
-        webSearch: false,
-        imageSearch: false,
-        ecoMode: parameters.ecoMode,
-        count: 1,
-        ...background
-      }
-    };
-  });
-  deps.signal?.throwIfAborted();
-  return {
-    intentId: (deps.createId ?? randomUUID14)(),
-    planVersion: 1,
-    taskName: `${title} \xB7 ${items.length} \u5F20`,
-    expectedOutputCount: items.length,
-    processingPlan,
-    items
-  };
-}
-async function prepareWorkflowBatch(raw, deps) {
-  if (Object.keys(raw).some((key) => !["workflow", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
-    fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u6307\u5B9A\u9636\u6BB5\u53CA\u5171\u4EAB\u751F\u56FE\u53C2\u6570\u3002");
-  const workflow = record6(raw.workflow), rawStages = workflow.stages;
-  const { workflow: _workflow, ...shared } = raw;
-  if (Object.keys(workflow).some((key) => key !== "stages") || !Array.isArray(rawStages) || !rawStages.length || rawStages.length > 10)
-    fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u65E0\u6548\u3002");
-  const stageIds = /* @__PURE__ */ new Set();
-  const parsed = rawStages.map((value2, index) => {
-    const stage = record6(value2), id2 = text3(stage.id, `workflow.stages[${index}].id`, 40);
-    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
-    stageIds.add(id2);
-    const workflowStageFields = /* @__PURE__ */ new Set([
-      "id",
-      "name",
-      "source",
-      "skillQuery",
-      "skillSource",
-      "skillFolder",
-      "skillStrategy",
-      "expectedImageCount",
-      "processingPresetPath",
-      "processingPlan",
-      ...generationFieldNames
-    ]);
-    rejectUnknownField(stage, workflowStageFields, `workflow.stages[${index}]`);
-    const name2 = stage.name === void 0 ? id2 : text3(stage.name, `workflow.stages[${index}].name`, 80);
-    const source = record6(stage.source);
-    rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "stageId", "imageIndexes"]), `workflow.stages[${index}].source`);
-    const folderPath = source.folderPath === void 0 ? void 0 : text3(source.folderPath, `workflow.stages[${index}].source.folderPath`, 4096);
-    const referenceAssetIds = source.referenceAssetIds;
-    const sourceStageId = source.stageId === void 0 ? void 0 : text3(source.stageId, `workflow.stages[${index}].source.stageId`, 40);
-    const sourceChoices = [folderPath !== void 0, referenceAssetIds !== void 0, sourceStageId !== void 0].filter(Boolean).length;
-    if (sourceChoices !== 1 || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((value3) => typeof value3 !== "string" || !value3 || value3.length > 240 || /[/\\\x00\r\n]/u.test(value3))))
-      fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
-    let imageIndexes;
-    if (source.imageIndexes !== void 0) {
-      if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail5("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
-      imageIndexes = source.imageIndexes;
-    }
-    const { id: _id, name: _name, source: _source, ...generationFields } = stage;
-    const parsedGeneration = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : referenceAssetIds ? { referenceAssetIds } : { referenceAssetIds: ["__deferred__"] } }, `workflow.stages[${index}]`);
-    const { folderPath: _folderPath, referenceAssetIds: _referenceAssetIds, imageIndexes: _imageIndexes, ...generation } = parsedGeneration;
-    return { id: id2, name: name2, folderPath, referenceAssetIds, sourceStageId, imageIndexes, generation };
-  });
-  const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
-  for (const stage of parsed) {
-    if (stage.folderPath && !deps.isFolderAuthorized(stage.folderPath))
-      fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u5DE5\u4F5C\u6D41\u4E2D\u7684\u6BCF\u4E2A\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u3002");
-    await presetProcessing(stage.generation, deps);
-    await assertOwner(deps, ownerId, namespace);
-  }
-  const referencedStages = new Set(parsed.flatMap((stage) => stage.sourceStageId ? [stage.sourceStageId] : []));
-  const items = [], steps = [], stages = /* @__PURE__ */ new Map();
-  const names = [];
-  for (const [stageIndex, stage] of parsed.entries()) {
-    let rootSource, selectedSeedIndexes, parent;
-    let selectedParentPositions = [];
-    let preparedChild;
-    if (stage.folderPath || stage.referenceAssetIds) {
-      rootSource = stage.folderPath ? { folderPath: stage.folderPath } : { referenceAssetIds: stage.referenceAssetIds };
-      preparedChild = await prepareNativeSkillBatch({
-        ...shared,
-        ...stage.generation,
-        ...rootSource,
-        ...stage.imageIndexes ? { imageIndexes: stage.imageIndexes, expectedImageCount: stage.generation.expectedImageCount ?? stage.imageIndexes.length } : {}
-      }, deps);
-      const childItems = preparedChild.items;
-      selectedSeedIndexes = stage.imageIndexes ?? childItems.map((_, index) => index);
-    } else {
-      const resolvedParent = stages.get(stage.sourceStageId) ?? fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
-      parent = resolvedParent;
-      rootSource = resolvedParent.rootSource;
-      selectedParentPositions = stage.imageIndexes ?? resolvedParent.itemIndexes.map((_, index) => index);
-      if (selectedParentPositions.some((index) => index >= resolvedParent.itemIndexes.length)) fail5("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
-      selectedSeedIndexes = selectedParentPositions.map((index) => resolvedParent.seedIndexes[index]);
-    }
-    const child = preparedChild ?? await prepareNativeSkillBatch({
-      ...shared,
-      ...stage.generation,
-      ...rootSource,
-      imageIndexes: selectedSeedIndexes,
-      expectedImageCount: stage.generation.expectedImageCount ?? selectedSeedIndexes.length,
-      processingPlan: stage.generation.processingPlan
-    }, deps);
-    await assertOwner(deps, ownerId, namespace);
-    const allChildItems = child.items;
-    if (allChildItems.length !== selectedSeedIndexes.length) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u7684\u5B9A\u4EF7\u53C2\u8003\u8303\u56F4\u53D1\u751F\u53D8\u5316\u3002");
-    const selectedItems = allChildItems.map((item) => structuredClone(item));
-    const offset = items.length;
-    if (offset + selectedItems.length > 100) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u5DE5\u4F5C\u6D41\u8D85\u8FC7 100 \u4E2A AI \u751F\u6210\u9879\uFF0C\u8BF7\u5206\u6279\u3002");
-    for (const [position, item] of selectedItems.entries()) {
-      if (parent) item.dependsOn = { itemIndex: parent.itemIndexes[selectedParentPositions[position]], outputIndex: 0, referenceIndex: 0 };
-      item.stage = { id: stage.id, label: stage.name, order: stageIndex };
-      items.push(item);
-    }
-    const scope = selectedItems.map((_, index) => offset + index);
-    const childSteps = child.processingPlan;
-    if (referencedStages.has(stage.id) && childSteps.length) fail5("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u53F6\u5B50\u9636\u6BB5\u3002");
-    for (const step of childSteps) steps.push({
-      ...step,
-      id: `w${stageIndex}-${step.id}`,
-      ...step.sourceStepId ? { sourceStepId: `w${stageIndex}-${step.sourceStepId}` } : { generationItemIndexes: scope }
-    });
-    stages.set(stage.id, {
-      id: stage.id,
-      rootSource,
-      seedIndexes: selectedSeedIndexes,
-      itemIndexes: scope
-    });
-    names.push(String(child.taskName));
-  }
-  await assertOwner(deps, ownerId, namespace);
-  return {
-    intentId: (deps.createId ?? randomUUID14)(),
-    planVersion: 1,
-    taskName: names.join(" \u2192 ").slice(0, 100),
-    expectedOutputCount: items.length,
-    processingPlan: parseProcessingPlan(steps),
-    items
-  };
-}
-async function prepareGroupedBatch(raw, deps) {
-  if (!Array.isArray(raw.groups) || !raw.groups.length || raw.groups.length > 10 || Object.keys(raw).some((key) => !["groups", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
-    fail5("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
-  const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
-  const { groups, ...shared } = raw;
-  const parsed = groups.map((group, index) => {
-    const row = record6(group);
-    if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
-      fail5("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
-    return parseInput({ ...shared, ...row }, `groups[${index}]`);
-  });
-  for (const input of parsed) {
-    if (!input.folderPath || !deps.isFolderAuthorized(input.folderPath)) fail5("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
-    await presetProcessing(input, deps);
-  }
-  const items = [], steps = [], names = [];
-  for (const [index, input] of parsed.entries()) {
-    await assertOwner(deps, owner, namespace);
-    const child = await prepareNativeSkillBatch(input, deps);
-    const childItems = child.items, offset = items.length;
-    if (offset + childItems.length > 100) fail5("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u4EFB\u52A1\u8D85\u8FC7 100 \u5F20\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u5206\u6279\u3002");
-    const scope = childItems.map((_, i) => offset + i);
-    const childSteps = child.processingPlan;
-    for (const step of childSteps) steps.push({
-      ...step,
-      id: `g${index}-${step.id}`,
-      ...step.sourceStepId ? { sourceStepId: `g${index}-${step.sourceStepId}` } : { generationItemIndexes: scope }
-    });
-    items.push(...childItems);
-    names.push(String(child.taskName));
-  }
-  await assertOwner(deps, owner, namespace);
-  return {
-    intentId: (deps.createId ?? randomUUID14)(),
-    planVersion: 1,
-    taskName: `${names.join(" / ")}`.slice(0, 100),
-    expectedOutputCount: items.length,
-    processingPlan: parseProcessingPlan(steps),
-    items
-  };
 }
 
 // plugins/podplo-dsh/src/plugin-update.ts
@@ -65257,8 +66557,8 @@ function startPolling(run, options = {}) {
 }
 
 // plugins/podplo-dsh/src/generation-completion-tracker.ts
-import { randomUUID as randomUUID15 } from "node:crypto";
-import { join as join12 } from "node:path";
+import { randomUUID as randomUUID16 } from "node:crypto";
+import { join as join14 } from "node:path";
 var validText = (value2, maximum = 180) => typeof value2 === "string" && value2.length > 0 && value2.length <= maximum && !/[\u0000\r\n]/u.test(value2);
 var validDate = (value2) => typeof value2 === "string" && Number.isFinite(Date.parse(value2));
 var validStatus = (value2) => ["reserved", "pending", "notifying", "paused", "delivered", "stopped", "invalidated"].includes(String(value2));
@@ -65284,9 +66584,9 @@ var GenerationCompletionTracker = class {
   now;
   createId;
   constructor(directory, options = {}) {
-    this.store = new AtomicStore(join12(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
+    this.store = new AtomicStore(join14(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
     this.now = options.now ?? (() => /* @__PURE__ */ new Date());
-    this.createId = options.createId ?? randomUUID15;
+    this.createId = options.createId ?? randomUUID16;
   }
   async init() {
     await this.store.load();
@@ -65532,8 +66832,8 @@ var GenerationProgressRefresh = class {
 };
 
 // plugins/podplo-dsh/src/native-task-attempt-policy.ts
-import { createHash as createHash16 } from "node:crypto";
-var digest = (value2) => createHash16("sha256").update(canonical(value2)).digest("hex");
+import { createHash as createHash18 } from "node:crypto";
+var digest3 = (value2) => createHash18("sha256").update(canonical(value2)).digest("hex");
 function trustedUserMessages(events) {
   return Array.isArray(events) ? events.filter((event) => !!event && typeof event === "object" && event.type === "user/message" && event.data?.source?.kind === "user") : [];
 }
@@ -65558,7 +66858,7 @@ var NativeTaskAttemptPolicy = class {
   }
   async run(input) {
     const messages = trustedUserMessages(input.events);
-    const boundaryKey = digest({
+    const boundaryKey = digest3({
       namespace: input.namespace ?? null,
       sessionId: input.sessionId,
       messageCount: messages.length,
@@ -65568,7 +66868,7 @@ var NativeTaskAttemptPolicy = class {
       this.boundaryKey = boundaryKey;
       this.entry = void 0;
     }
-    const inputDigest = digest(input.candidate);
+    const inputDigest = digest3(input.candidate);
     if (this.entry && this.entry.inputDigest !== inputDigest) {
       throw new PodploPluginError(
         "NATIVE_TASK_ATTEMPT_LOCKED",
@@ -65578,7 +66878,7 @@ var NativeTaskAttemptPolicy = class {
     }
     const entry = this.entry ??= {
       inputDigest,
-      attemptKey: digest({ boundaryKey, inputDigest })
+      attemptKey: digest3({ boundaryKey, inputDigest })
     };
     if (entry.failure) {
       throw new PodploPluginError(
@@ -65721,17 +67021,19 @@ function userAuthorizedFolder(events, folderPath) {
   if (!Array.isArray(events)) return false;
   const boundary = (value2, index) => {
     const before = index === 0 ? "" : value2[index - 1];
-    const after = value2[index + folderPath.length] ?? "";
-    return (!before || !/[A-Za-z0-9_./\\-]/u.test(before)) && (!after || /[\s"'“”‘’，。；：、！？）)\]}]/u.test(after));
+    const suffix = value2.slice(index + folderPath.length);
+    const after = suffix[0] ?? "";
+    const imageScope = /^(?:全部图片|所有图片|内的全部图片|中的全部图片|里的全部图片)(?=$|[\s,，。；：、！？）)\]}]|只做|保持|进行|按|使用|处理)/u.test(suffix);
+    return (!before || !/[A-Za-z0-9_./\\-]/u.test(before)) && (!after || /[\s"'“”‘’，。；：、！？）)\]}]/u.test(after) || imageScope);
   };
   const containsExactPath = (value2) => {
     for (let index = value2.indexOf(folderPath); index >= 0; index = value2.indexOf(folderPath, index + 1)) if (boundary(value2, index)) return true;
     return false;
   };
   const desktopName = basename13(folderPath);
-  const desktopPath = resolve2(homedir2(), "Desktop", desktopName);
+  const desktopPath = resolve3(homedir2(), "Desktop", desktopName);
   const desktopMention = new RegExp(`(?:\u684C\u9762|Desktop)(?:[\\s/\\\\:\uFF1A]+|(?=["\u201C'\u2018]))["\u201C'\u2018]?${desktopName.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}(?=$|[\\s"'\u201C\u201D\u2018\u2019\uFF0C\u3002\uFF1B\uFF1A\u3001\uFF01\uFF1F\uFF09)\\]}])`, "u");
-  const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute8(folderPath) && resolve2(folderPath) === desktopPath && desktopMention.test(value2);
+  const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute9(folderPath) && resolve3(folderPath) === desktopPath && desktopMention.test(value2);
   const questions = /* @__PURE__ */ new Map();
   for (const raw of events) {
     if (!raw || typeof raw !== "object") continue;
@@ -65774,15 +67076,18 @@ function userAuthorizedFolder(events, folderPath) {
   }
   return false;
 }
+function nativeTaskTextResult(result) {
+  return { content: [{ type: "text", text: JSON.stringify(result) }] };
+}
 async function openLocalOutput(path, reveal = false) {
-  if (!isAbsolute8(path) || path.includes("\0")) throw new Error("Invalid local output path");
+  if (!isAbsolute9(path) || path.includes("\0")) throw new Error("Invalid local output path");
   if (process.platform === "darwin") await promisify(execFile)("/usr/bin/open", reveal ? ["-R", path] : [path]);
   else if (process.platform === "win32") await promisify(execFile)("explorer.exe", reveal ? [`/select,${path}`] : [path]);
   else await promisify(execFile)("xdg-open", [reveal ? (await import("node:path")).dirname(path) : path]);
 }
 async function apply(ctx, config3 = {}) {
   const directory = config3.directory ?? dshHomePath("podplo-native", "v1");
-  if (!isAbsolute8(directory)) throw new Error("PodPlo storage directory must be absolute");
+  if (!isAbsolute9(directory)) throw new Error("PodPlo storage directory must be absolute");
   const fixtureOrigin = process.env.PODPLO_NATIVE_TEST === "1" ? process.env.PODPLO_NATIVE_FIXTURE_ORIGIN : void 0;
   const http = new PodploHttp(fixtureOrigin);
   const cipher = await nativeCipher(ctx);
@@ -65794,7 +67099,7 @@ async function apply(ctx, config3 = {}) {
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
   const projectForSession = (id2) => {
     const cwd = id2 ? ctx.sessions?.get(id2)?.header.cwd : void 0;
-    return cwd && isAbsolute8(cwd) ? { key: `cwd:${resolve2(cwd)}`, name: basename13(resolve2(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
+    return cwd && isAbsolute9(cwd) ? { key: `cwd:${resolve3(cwd)}`, name: basename13(resolve3(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
   const galleryFetch = fixtureOrigin ? (input, init) => {
@@ -65804,6 +67109,8 @@ async function apply(ctx, config3 = {}) {
     return fetch(`${fixtureOrigin}/__image.png`, init);
   } : void 0;
   let nativeReferenceResolver;
+  let nativeMixedStop;
+  let nativeMixedResolver;
   const service = new PodploPluginService({
     directory,
     cipher,
@@ -65813,6 +67120,8 @@ async function apply(ctx, config3 = {}) {
     workbench,
     generation: new NativeGenerationGateway(online),
     galleryFetch,
+    stopMixedTask: (operationId2) => nativeMixedStop?.(operationId2),
+    reconcileMixedTask: (operation) => nativeMixedResolver ? nativeMixedResolver(operation) : Promise.reject(new Error("Mixed task Host is not initialized")),
     resolveGenerationReferences: (input) => nativeReferenceResolver ? nativeReferenceResolver(input) : Promise.reject(new Error("Native reference importer is not initialized")),
     resolveArchiveProject: (caller, input) => projectForSession(caller.sessionId ?? (caller.source === "ui" && typeof input.archiveSessionId === "string" && ctx.agents.get(input.archiveSessionId) ? input.archiveSessionId : void 0)),
     resolveNativeSessionId: (caller) => {
@@ -65871,13 +67180,66 @@ async function apply(ctx, config3 = {}) {
     if (url3.href === PODPLO_PLUGIN_RELEASES_ATOM) return fetch(`${fixtureOrigin}/__plugin_releases.atom`, init);
     throw new Error("Unexpected fixture plugin update URL");
   } : void 0;
+  const localTaskJobs = /* @__PURE__ */ new Map();
+  nativeMixedStop = (operationId2) => {
+    for (const job of localTaskJobs.values()) if (job.operationId === operationId2) job.controller.abort();
+  };
+  nativeMixedResolver = async (operation) => {
+    if (!operation.mixedPlan) throw new PodploPluginError("INVALID_MIXED_TASK_PLAN", "\u7F3A\u5C11\u6DF7\u5408\u4EFB\u52A1\u8BA1\u5212\u3002");
+    const controller = new AbortController(), sessionId = operation.nativeSessionId;
+    const job = advanceNativeMixedTask(operation.mixedPlan, operation, {
+      directory,
+      sessionId,
+      signal: controller.signal,
+      authorize: async () => {
+        const ownerId = await online.workspaceIdentity(true);
+        if (ownerId !== operation.ownerId) throw new PodploPluginError("ACCOUNT_CHANGED", "\u6DF7\u5408\u4EFB\u52A1\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u5316\u3002");
+        return { ownerId, namespace: online.auth.namespace };
+      },
+      runLocal: (input) => prepareNativeLocalTask({ operationId: input.operationId, taskName: input.taskName, stages: [{
+        id: input.stageId,
+        name: input.stageLabel,
+        source: { referenceIds: input.referenceIds, scope: "all" },
+        local: { exactPlan: input.processingSteps }
+      }] }, sessionId, {
+        authorize: async () => ({ ownerId: await online.workspaceIdentity(true), namespace: online.auth.namespace }),
+        isPathAuthorized: () => false,
+        toolkit,
+        projectForSession,
+        signal: controller.signal,
+        archive: {
+          upsert: (input2, ownerId) => archives.manager.upsert({
+            ...input2,
+            operationIds: [...input2.operationIds, operation.operationId]
+          }, ownerId),
+          wait: () => archives.manager.wait(),
+          detail: (id2) => archives.manager.detail(id2),
+          recordProcessingFailure: (...args) => archives.manager.recordProcessingFailure(...args),
+          clearProcessingFailures: (...args) => archives.manager.clearProcessingFailures(...args)
+        }
+      }),
+      uploadLocalResult: async (input) => {
+        controller.signal.throwIfAborted();
+        const ids2 = await resolveGenerationReferences({ ownerId: operation.ownerId, nativeSessionId: sessionId, ids: [input.resultId] });
+        controller.signal.throwIfAborted();
+        if (ids2.length !== 1) throw new PodploPluginError("REFERENCE_IMPORT_INVALID", "\u672C\u5730\u9636\u6BB5\u7ED3\u679C\u4E0A\u4F20\u65E0\u6548\u3002");
+        return ids2[0];
+      }
+    });
+    localTaskJobs.set(job, { sessionId, controller, operationId: operation.operationId });
+    try {
+      return await job;
+    } finally {
+      localTaskJobs.delete(job);
+    }
+  };
   const updates = new PluginUpdateService({
     currentVersion: PLUGIN_VERSION,
     manager: ctx.pluginManager,
     ...updateFetcher ? { fetcher: updateFetcher } : {},
     busy: () => {
       const pending = service.snapshot().pending;
-      return pending.generations > 0 || pending.confirmations > 0 || toolkit.isBusy() || archives.isBusy();
+      return pending.generations > 0 || pending.confirmations > 0 || localTaskJobs.size > 0 || toolkit.isBusy() || archives.isBusy();
     }
   });
   const transport = {
@@ -66199,39 +67561,75 @@ async function apply(ctx, config3 = {}) {
             sessionId: agent.id,
             events: agent.session?.snapshotEvents?.(),
             candidate: args,
-            execute: (requestKey) => approveGeneration(
-              nativeTaskToolName,
-              args,
-              execution,
-              async (input) => {
-                const preparation = prepareNativeTask(input, {
-                  online,
-                  cwd: ctx.sessions?.get(agent.id)?.header.cwd,
-                  nativeSessionId: agent.id,
-                  signal: execution.signal,
-                  createId: () => `folder-${requestKey}`,
-                  personalSkills: (query, cursor) => online.userSkills(query, cursor, execution.signal),
-                  personalSkill: (id2) => online.userSkill(id2, { signal: execution.signal }),
-                  favoriteSkills: async (query) => (await service.dispatch("favorites.skills.list", query, { source: "agent", sessionId: agent.id })).data,
-                  isFolderAuthorized: (folderPath) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), folderPath),
-                  generationCapabilities: () => service.callTool("podplo_generation_capabilities", { refresh: false }, agent.id),
-                  verifySelectedSkill: async (slug2, id2) => {
-                    if (slug2 === null) {
-                      await service.callTool("podplo_get_my_skill", { id: id2 }, agent.id);
-                      return;
-                    }
-                    const detail = await service.callTool("podplo_get_skill", { slug: slug2 }, agent.id);
-                    const binding = detail?.binding && typeof detail.binding === "object" && !Array.isArray(detail.binding) ? detail.binding : void 0;
-                    if (detail?.slug !== slug2 || binding?.id !== id2)
-                      throw new PodploPluginError("SKILL_BINDING_CHANGED", `Skill ${slug2} \u7684\u6267\u884C\u7ED1\u5B9A\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u51C6\u5907\u6574\u6279\u3002`);
-                  },
-                  importReferences: importTrustedReferences
-                });
-                const prepared = await preparation;
-                execution.signal?.throwIfAborted?.();
-                return transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
-              }
-            )
+            execute: (requestKey) => {
+              const prepareAiTask = (input, mixed = false) => approveGeneration(
+                nativeTaskToolName,
+                input,
+                execution,
+                async (input2) => {
+                  const deps = {
+                    online,
+                    cwd: ctx.sessions?.get(agent.id)?.header.cwd,
+                    nativeSessionId: agent.id,
+                    signal: execution.signal,
+                    createId: () => `folder-${requestKey}`,
+                    personalSkills: (query, cursor) => online.userSkills(query, cursor, execution.signal),
+                    personalSkill: (id2) => online.userSkill(id2, { signal: execution.signal }),
+                    favoriteSkills: async (query) => (await service.dispatch("favorites.skills.list", query, { source: "agent", sessionId: agent.id })).data,
+                    isFolderAuthorized: (folderPath) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), folderPath),
+                    generationCapabilities: () => service.callTool("podplo_generation_capabilities", { refresh: false }, agent.id),
+                    verifySelectedSkill: async (slug2, id2) => {
+                      if (slug2 === null) {
+                        await service.callTool("podplo_get_my_skill", { id: id2 }, agent.id);
+                        return;
+                      }
+                      const detail = await service.callTool("podplo_get_skill", { slug: slug2 }, agent.id);
+                      const binding = detail?.binding && typeof detail.binding === "object" && !Array.isArray(detail.binding) ? detail.binding : void 0;
+                      if (detail?.slug !== slug2 || binding?.id !== id2)
+                        throw new PodploPluginError("SKILL_BINDING_CHANGED", `Skill ${slug2} \u7684\u6267\u884C\u7ED1\u5B9A\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u51C6\u5907\u6574\u6279\u3002`);
+                    },
+                    importReferences: importTrustedReferences
+                  };
+                  const prepared = mixed ? (await compileNativeMixedTask(input2, {
+                    ...deps,
+                    authorizeLocalTools: async (tools) => {
+                      const ownerId = await online.workspaceIdentity(true), namespace = online.auth.namespace;
+                      for (const tool of tools) if (await online.workspaceIdentity(true, tool) !== ownerId || online.auth.namespace !== namespace)
+                        throw new PodploPluginError("ACCOUNT_CHANGED", "\u4EFB\u52A1\u5DE5\u5177\u6388\u6743\u671F\u95F4\u8D26\u53F7\u5DF2\u53D8\u5316\u3002");
+                    },
+                    resolveSourceReferences: async (ids2) => resolveGenerationReferences({
+                      ownerId: await online.workspaceIdentity(true),
+                      nativeSessionId: agent.id,
+                      ids: ids2
+                    })
+                  })).prepared : await prepareNativeTask(input2, deps);
+                  execution.signal?.throwIfAborted?.();
+                  return transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
+                }
+              );
+              return runNativeTask(args, {
+                local: async (input) => {
+                  const controller = new AbortController();
+                  const signal = execution.signal ? AbortSignal.any([execution.signal, controller.signal]) : controller.signal;
+                  const job = prepareNativeLocalTask({ ...input, operationId: `local-${requestKey}` }, agent.id, {
+                    authorize: async () => ({ ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace }),
+                    isPathAuthorized: (path) => userAuthorizedFolder(agent.session?.snapshotEvents?.(), path),
+                    toolkit,
+                    archive: archives.manager,
+                    projectForSession,
+                    signal
+                  });
+                  localTaskJobs.set(job, { sessionId: agent.id, controller });
+                  try {
+                    return nativeTaskTextResult(await job);
+                  } finally {
+                    localTaskJobs.delete(job);
+                  }
+                },
+                ai: (input) => prepareAiTask(input),
+                mixed: (input) => prepareAiTask(input, true)
+              });
+            }
           });
         }
       });
@@ -66325,6 +67723,7 @@ async function apply(ctx, config3 = {}) {
     applyTaskPresetRestriction(sessionId, presetId);
   });
   const stopRemaining = async (sessionId) => {
+    for (const job of localTaskJobs.values()) if (job.sessionId === sessionId) job.controller.abort();
     if (closed || !ctx.agents.get(sessionId)) return;
     const ownerId = connectedOwnerId() ?? activeCompletionOwnerId;
     if (ownerId) {
@@ -66427,6 +67826,7 @@ async function apply(ctx, config3 = {}) {
   let stopping;
   const stop = () => stopping ??= (async () => {
     closed = true;
+    for (const job of localTaskJobs.values()) job.controller.abort();
     updates.close();
     created();
     disposed();
@@ -66449,6 +67849,8 @@ async function apply(ctx, config3 = {}) {
     await refreshing?.catch(() => void 0);
     await Promise.allSettled([...completionTrackingWrites.values()]);
     for (const id2 of [...bindings.keys()]) await remove({ id: id2 });
+    await Promise.allSettled([...localTaskJobs.keys()]);
+    await closeNativeMixedTasks(directory);
     await completionProjection.dispose();
     await unregisterPresets();
     await mcp.close();
@@ -66468,6 +67870,7 @@ export {
   Config,
   apply,
   inject,
+  nativeTaskTextResult,
   userAuthorizedFolder
 };
 /*! Bundled license information:
