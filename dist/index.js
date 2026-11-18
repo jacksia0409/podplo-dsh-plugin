@@ -55823,6 +55823,31 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
   return results;
 }
 
+// packages/tools/outline-input-error.ts
+var OUTLINE_INPUT_NOT_TRANSPARENT = "OUTLINE_INPUT_NOT_TRANSPARENT";
+var controlCharacters = /[\u0000-\u001f\u007f-\u009f\u202a-\u202e\u2066-\u2069]/gu;
+function outlineInputDisplayName(value2) {
+  const leaf = value2.replace(/\\/gu, "/").split("/").at(-1) ?? "";
+  const clean = leaf.replace(controlCharacters, "").trim();
+  if (!clean) return "\u5F53\u524D\u56FE\u7247";
+  const characters = Array.from(clean);
+  return characters.length <= 160 ? clean : `${characters.slice(0, 159).join("")}\u2026`;
+}
+function outlineInputNotTransparentMessage(value2) {
+  const name2 = outlineInputDisplayName(value2);
+  return `\u56FE\u7247\u300C${name2}\u300D\u6CA1\u6709\u771F\u5B9E\u900F\u660E\u50CF\u7D20\uFF08\u5F53\u524D\u662F\u4E0D\u900F\u660E\u56FE\u7247\uFF09\u3002\u8BF7\u5148\u62A0\u56FE\u5E76\u4FDD\u5B58\u4E3A\u900F\u660E PNG\uFF0C\u518D\u4F7F\u7528\u63CF\u8FB9\u3002`;
+}
+var OutlineInputNotTransparentError = class extends Error {
+  code = OUTLINE_INPUT_NOT_TRANSPARENT;
+  inputName;
+  constructor(inputName) {
+    const safeName2 = outlineInputDisplayName(inputName);
+    super(outlineInputNotTransparentMessage(safeName2));
+    this.name = "OutlineInputNotTransparentError";
+    this.inputName = safeName2;
+  }
+};
+
 // plugins/podplo-dsh/src/toolbox-pipeline.ts
 import sharp10 from "sharp";
 import { basename as basename6, extname as extname4 } from "node:path";
@@ -55838,6 +55863,50 @@ var ToolboxResizeOptionsSchema = external_exports2.discriminatedUnion("sizing", 
 
 // packages/tools/mirror-join.ts
 import sharp9 from "sharp";
+function blankSide(data, width2, height2, signal) {
+  const count3 = width2 * height2, outside = new Uint8Array(count3), queue = new Uint32Array(count3);
+  let head = 0, tail = 0;
+  const visit = (p) => {
+    if (!outside[p] && data[p * 4 + 3] === 0) {
+      outside[p] = 1;
+      queue[tail++] = p;
+    }
+  };
+  for (let x = 0; x < width2; x++) {
+    visit(x);
+    visit((height2 - 1) * width2 + x);
+  }
+  for (let y = 0; y < height2; y++) {
+    visit(y * width2);
+    visit(y * width2 + width2 - 1);
+  }
+  while (head < tail) {
+    if ((head & 65535) === 0) signal?.throwIfAborted();
+    const p = queue[head++], x = p % width2;
+    if (x > 0) visit(p - 1);
+    if (x + 1 < width2) visit(p + 1);
+    if (p >= width2) visit(p - width2);
+    if (p + width2 < count3) visit(p + width2);
+  }
+  const output = Buffer.alloc(count3 * 4);
+  for (let y = 0; y < height2; y++) {
+    signal?.throwIfAborted();
+    for (let x = 0; x < width2; x++) {
+      const p = y * width2 + x;
+      if (outside[p]) continue;
+      let edge2 = x === 0 || y === 0 || x === width2 - 1 || y === height2 - 1;
+      for (let dy = -1; dy <= 1 && !edge2; dy++) for (let dx = -1; dx <= 1; dx++)
+        if (outside[p + dy * width2 + dx]) {
+          edge2 = true;
+          break;
+        }
+      const offset = p * 4;
+      output[offset] = output[offset + 1] = output[offset + 2] = edge2 ? 17 : 255;
+      output[offset + 3] = edge2 ? data[offset + 3] : 255;
+    }
+  }
+  return output;
+}
 function mirrorJoinSize(width2, height2, direction, format2) {
   const size2 = {
     width: direction === "horizontal" ? width2 * 2 : width2,
@@ -55849,7 +55918,7 @@ function mirrorJoinSize(width2, height2, direction, format2) {
     throw new Error("\u955C\u50CF\u62FC\u63A5\u540E\u7684 WebP \u5355\u8FB9\u4E0D\u80FD\u8D85\u8FC7 16383 \u50CF\u7D20\uFF0C\u8BF7\u51CF\u5C0F\u5C3A\u5BF8\u6216\u6539\u7528 PNG\u3002");
   return size2;
 }
-async function joinMirror(bytes, direction, ppi, format2, signal) {
+async function joinMirror(bytes, direction, ppi, format2, signal, singleSideMirror = false) {
   signal?.throwIfAborted();
   const image = sharp9(bytes, { limitInputPixels: 1e8, failOn: "error" });
   const metadata = await image.metadata();
@@ -55857,12 +55926,14 @@ async function joinMirror(bytes, direction, ppi, format2, signal) {
   const { data, info } = await image.toColourspace("srgb").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
   const stride = info.width * 4, outputStride = size2.width * 4;
   const joined = Buffer.alloc(size2.width * size2.height * 4);
-  const reflected = direction === "horizontal" ? await sharp9(data, { raw: info }).flop().raw().toBuffer() : void 0;
+  const back = singleSideMirror ? blankSide(data, info.width, info.height, signal) : data;
+  const reflected = direction === "horizontal" ? await sharp9(back, { raw: info }).flop().raw().toBuffer() : void 0;
   for (let y = 0; y < info.height; y++) {
     signal?.throwIfAborted();
-    data.copy(joined, y * outputStride, y * stride, (y + 1) * stride);
+    const frontY = singleSideMirror && direction === "vertical" ? info.height + y : y;
+    data.copy(joined, frontY * outputStride, y * stride, (y + 1) * stride);
     if (reflected) reflected.copy(joined, y * outputStride + stride, y * stride, (y + 1) * stride);
-    else data.copy(joined, (size2.height - 1 - y) * outputStride, y * stride, (y + 1) * stride);
+    else back.copy(joined, ((singleSideMirror ? info.height : size2.height) - 1 - y) * outputStride, y * stride, (y + 1) * stride);
   }
   signal?.throwIfAborted();
   const output = await sharp9(joined, { raw: { ...size2, channels: 4 } }).withMetadata({ density: ppi }).png().toBuffer();
@@ -56014,8 +56085,9 @@ var print = external_exports2.preprocess(
 );
 var format = ExportOptionsSchema.omit({ ppi: true }).extend({
   mirror: external_exports2.boolean().default(false),
-  mirrorJoin: external_exports2.enum(["none", "horizontal", "vertical"]).default("none")
-}).strict();
+  mirrorJoin: external_exports2.enum(["none", "horizontal", "vertical"]).default("none"),
+  singleSideMirror: external_exports2.boolean().optional()
+}).strict().refine((options) => !options.singleSideMirror || options.mirrorJoin !== "none", "\u5355\u9762\u955C\u50CF\u9700\u8981\u9009\u62E9\u5DE6\u53F3\u6216\u4E0A\u4E0B\u62FC\u63A5");
 var ToolboxPlanSchema = external_exports2.object({ orderVersion: external_exports2.literal(2).optional(), trimTransparent: external_exports2.boolean().optional(), steps: external_exports2.array(external_exports2.discriminatedUnion("tool", [
   external_exports2.object({ tool: external_exports2.literal("resize"), options: resize }).strict(),
   external_exports2.object({ tool: external_exports2.literal("rotate"), options: RotateOptionsSchema }).strict(),
@@ -56164,7 +56236,7 @@ async function renderToolbox(inputs, plan, options) {
                 left: 1,
                 background: "#00000000"
               }).png().toBuffer() };
-            } else throw new Error("\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u771F\u5B9E\u900F\u660E\u50CF\u7D20\uFF1BRGB \u6216\u4E0D\u900F\u660E RGBA \u56FE\u7247\u4E0D\u80FD\u63CF\u8FB9");
+            } else throw new OutlineInputNotTransparentError(original.name);
           }
           const subject = await image.trim({ background: "#00000000", threshold: 0 }).png().toBuffer({ resolveWithObject: true });
           hints.outlineSource ??= { id: original.id, longEdge: Math.max(subject.info.width, subject.info.height) };
@@ -56202,11 +56274,11 @@ async function renderToolbox(inputs, plan, options) {
             fit: "contain"
           } }, void 0, options.signal);
         } else if (step.tool === "export") {
-          const { mirror, mirrorJoin, ...formatOptions } = step.options;
+          const { mirror, mirrorJoin, singleSideMirror, ...formatOptions } = step.options;
           let composed = frame;
           if (mirrorJoin !== "none") {
-            const joined = await joinMirror(frame.bytes, mirrorJoin, ppi, formatOptions.format, options.signal);
-            composed = { ...frame, name: `${stemOf(frame.name)}-${mirrorJoin === "horizontal" ? "\u5DE6\u53F3" : "\u4E0A\u4E0B"}\u955C\u50CF\u62FC\u63A5.png`, bytes: joined.bytes };
+            const joined = await joinMirror(frame.bytes, mirrorJoin, ppi, formatOptions.format, options.signal, singleSideMirror);
+            composed = { ...frame, name: `${stemOf(frame.name)}-${mirrorJoin === "horizontal" ? "\u5DE6\u53F3" : "\u4E0A\u4E0B"}${singleSideMirror ? "\u5355\u9762" : ""}\u955C\u50CF\u62FC\u63A5.png`, bytes: joined.bytes };
           }
           const info = await sharp10(composed.bytes, { limitInputPixels: limitInputPixels3 }).metadata();
           const variants = [composed];
@@ -58011,7 +58083,7 @@ var NativeLocalToolkit = class {
       const image = sharp12(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
       const metadata = await image.metadata();
       const transparent = metadata.hasAlpha === true && !(await image.stats()).isOpaque;
-      if (!transparent) throw new Error(`\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u771F\u5B9E\u900F\u660E\u80CC\u666F\uFF1B${input.name} \u662F RGB \u6216\u4E0D\u900F\u660E RGBA\uFF0C\u5DF2\u62D2\u7EDD\uFF0C\u907F\u514D\u63CF\u6210\u6574\u5F20\u77E9\u5F62`);
+      if (!transparent) throw new OutlineInputNotTransparentError(input.name);
     }
   }
   async resize(inputs, raw) {
@@ -58189,7 +58261,7 @@ var validators = {
     bleedBottom: edge,
     bleedLeft: edge
   }).strict(),
-  export: ExportOptionsSchema.omit({ ppi: true }).extend({ mirror: external_exports2.boolean(), mirrorJoin: external_exports2.enum(["none", "horizontal", "vertical"]) }).strict()
+  export: ExportOptionsSchema.omit({ ppi: true }).extend({ mirror: external_exports2.boolean(), mirrorJoin: external_exports2.enum(["none", "horizontal", "vertical"]), singleSideMirror: external_exports2.boolean().optional() }).strict().refine((options) => !options.singleSideMirror || options.mirrorJoin !== "none", "\u5355\u9762\u955C\u50CF\u9700\u8981\u9009\u62E9\u5DE6\u53F3\u6216\u4E0A\u4E0B\u62FC\u63A5")
 };
 var value = external_exports2.record(external_exports2.string(), external_exports2.unknown());
 var toolboxPresetSchema = external_exports2.object({
@@ -61097,7 +61169,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.27",
+  version: "0.1.28",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -64494,6 +64566,11 @@ var MAX_MCP_BODY = 32 * 1024 * 1024;
 var record7 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
 function publicError(error101) {
   if (error101 instanceof PrintSizeError) return { code: error101.code, message: PRINT_SIZE_ERRORS[error101.code], details: {} };
+  if (error101 instanceof OutlineInputNotTransparentError) return {
+    code: error101.code,
+    message: outlineInputNotTransparentMessage(error101.inputName),
+    details: {}
+  };
   if (error101 instanceof OnlineError && /^[A-Z_]{1,80}$/.test(error101.code)) {
     const status = Number.isInteger(error101.status) && error101.status >= 100 && error101.status <= 599 ? error101.status : 0;
     return { code: error101.code, message: error101.code === "SKILLS_WRITE_SCOPE_REQUIRED" ? "\u5F53\u524D\u6388\u6743\u4E0D\u652F\u6301\u7BA1\u7406\u81EA\u5EFA Skill\uFF1B\u8BF7\u5148\u786E\u8BA4\u4E3B\u7AD9\u5DF2\u5F00\u653E\u8BE5\u529F\u80FD\uFF0C\u518D\u91CD\u65B0\u6388\u6743\u3002" : error101.code === "UNAUTHENTICATED" ? "\u8BE5\u529F\u80FD\u672A\u63A5\u53D7\u5F53\u524D\u6388\u6743\uFF0C\u8BF7\u6838\u5BF9\u4E3B\u7AD9\u63A5\u53E3\u4E0E\u6743\u9650\u914D\u7F6E\u3002" : new OnlineError(error101.code, status).message, details: {} };
@@ -65436,6 +65513,8 @@ async function nativeToolkitTransport(options) {
       } catch (error101) {
         if (error101 instanceof PodploPluginError) throw error101;
         if (error101 instanceof PrintSizeError) return fail7(error101.code, PRINT_SIZE_ERRORS[error101.code]);
+        if (error101 instanceof OutlineInputNotTransparentError)
+          return fail7(error101.code, outlineInputNotTransparentMessage(error101.inputName));
         return fail7("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
       }
     },
