@@ -94,11 +94,14 @@ function generationStatusAttention(value2) {
   const blockedByDependency = (index, visiting = /* @__PURE__ */ new Set()) => {
     const item = items[index];
     if (!item || directlyBlocked(item)) return !!item;
-    if (item.status !== "quoted" || !item.dependsOn || typeof item.dependsOn !== "object") return false;
-    const parentIndex = Number(item.dependsOn.itemIndex);
-    if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
-    visiting.add(parentIndex);
-    return blockedByDependency(parentIndex, visiting);
+    if (item.status !== "quoted") return false;
+    const dependencies = Array.isArray(item.referenceDependencies) ? item.referenceDependencies : item.dependsOn && typeof item.dependsOn === "object" ? [item.dependsOn] : [];
+    return dependencies.some((dependency) => {
+      if (!dependency || typeof dependency !== "object" || dependency.kind === "local") return false;
+      const parentIndex = Number(dependency.itemIndex);
+      if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
+      return blockedByDependency(parentIndex, /* @__PURE__ */ new Set([...visiting, parentIndex]));
+    });
   };
   const blocked = items.filter(directlyBlocked);
   const hasRunnablePending = items.some((item, index) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? "")) && !blockedByDependency(index));
@@ -34602,7 +34605,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.23",
+  version: "0.1.24",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",

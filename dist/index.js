@@ -22176,28 +22176,28 @@ var require_outline_curves = __commonJS({
         const { margin, stroke, longEdge, guard, origin } = options;
         const target = margin + stroke / 2;
         let spacing = Math.max(1, Math.min(72, longEdge * 0.05, 8 + margin * 0.6 + stroke * 0.2));
-        let correction = 0, appliedCorrection = 0, paths = [], minimum = target;
+        let correction2 = 0, appliedCorrection = 0, paths = [], minimum = target;
         let loopCount = -1;
         for (let attempt = 0; attempt < 10; attempt++) {
-          const loops = trace(field, width2, height2, target + correction);
+          const loops = trace(field, width2, height2, target + correction2);
           if (loopCount < 0) loopCount = loops.length;
           else if (loops.length !== loopCount) {
             spacing = Math.max(0.75, spacing * 0.6);
-            correction = 0;
+            correction2 = 0;
             continue;
           }
           paths = loops.map((loop) => fit(loop, spacing));
-          appliedCorrection = correction;
+          appliedCorrection = correction2;
           minimum = Infinity;
           for (const path of paths) for (const [x, y] of sampled(path, 8))
             minimum = Math.min(minimum, distanceAt(field, width2, height2, x, y));
           if (minimum >= target - 0.2 || !paths.length) break;
           if (attempt < 9) {
-            const next = Math.min(guard - 0.5, correction + target - minimum + 0.35);
-            if (next <= correction + 0.05) {
+            const next = Math.min(guard - 0.5, correction2 + target - minimum + 0.35);
+            if (next <= correction2 + 0.05) {
               spacing = Math.max(0.75, spacing * 0.7);
-              correction = 0;
-            } else correction = next;
+              correction2 = 0;
+            } else correction2 = next;
           }
         }
         for (const path of paths) {
@@ -37539,14 +37539,14 @@ var OAuthSession = class {
     };
     let settled = false;
     const promise3 = new Promise((resolve4, reject) => {
-      const fail6 = (error101) => {
+      const fail7 = (error101) => {
         if (settled) return;
         settled = true;
         abort.abort();
         reject(error101);
       };
-      cancel = () => fail6(new OnlineError("AUTHORIZATION_CANCELLED"));
-      timer = setTimeout(() => fail6(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs2);
+      cancel = () => fail7(new OnlineError("AUTHORIZATION_CANCELLED"));
+      timer = setTimeout(() => fail7(new OnlineError("AUTHORIZATION_TIMED_OUT")), timeoutMs2);
       void (async () => {
         const resource = external_exports.object({ resource: external_exports.string(), authorization_servers: external_exports.array(external_exports.string()) }).parse(await this.http.json("/.well-known/oauth-protected-resource/api/mcp", { signal: abort.signal }));
         if (resource.resource !== `${this.http.origin}/api/mcp` || !resource.authorization_servers.includes(this.http.origin)) throw new OnlineError("RESOURCE_MISMATCH");
@@ -37590,7 +37590,7 @@ var OAuthSession = class {
           }
           if (url4.searchParams.has("error")) {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u53EF\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail6(new OnlineError("AUTHORIZATION_DENIED"));
+            fail7(new OnlineError("AUTHORIZATION_DENIED"));
             return;
           }
           const code = url4.searchParams.get("code");
@@ -37619,7 +37619,7 @@ var OAuthSession = class {
             resolve4(grant);
           }).catch((error101) => {
             response.writeHead(400).end("\u6388\u6743\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u5E94\u7528\u91CD\u8BD5\u3002");
-            fail6(error101);
+            fail7(error101);
           });
         });
         await new Promise((ready, rejectListen) => {
@@ -37656,7 +37656,7 @@ var OAuthSession = class {
         }).toString();
         if (settled) return;
         await openBrowser(url3.href);
-      })().catch(fail6);
+      })().catch(fail7);
     });
     this.attempt = { promise: promise3, cancel: () => cancel() };
     try {
@@ -54615,6 +54615,64 @@ async function resolveFavoriteSkill(input, list) {
   return { kind: "folder-pool", folderName: query, members };
 }
 
+// plugins/podplo-dsh/src/native-image-grouping.ts
+var imageGroupingSchema = {
+  type: "object",
+  additionalProperties: false,
+  required: ["mode"],
+  description: "Image inputs per AI item, independent of skill.strategy. Omit for single images. random+size:2 pairs images without replacement; each group is ONE generation with multiple references. Odd remainder defaults to reject; keep must be explicit. explicit groups index the selected source and must cover it; reuse across groups is allowed.",
+  properties: {
+    mode: { type: "string", enum: ["single", "all", "sequential", "random", "explicit"] },
+    size: { type: "integer", minimum: 2, maximum: 14 },
+    remainder: { type: "string", enum: ["reject", "keep"] },
+    groups: { type: "array", minItems: 1, maxItems: 100, items: {
+      type: "array",
+      minItems: 1,
+      maxItems: 14,
+      uniqueItems: true,
+      items: { type: "integer", minimum: 0, maximum: 99 }
+    } }
+  }
+};
+var fail2 = (message) => {
+  throw new PodploPluginError("INVALID_IMAGE_GROUPING", message);
+};
+function parseImageGrouping(raw) {
+  if (raw === void 0) return { mode: "single" };
+  if (!raw || typeof raw !== "object" || Array.isArray(raw)) return fail2("\u56FE\u7247\u5206\u7EC4\u5FC5\u987B\u662F\u5BF9\u8C61\u3002");
+  const value2 = raw, mode = value2.mode;
+  const allowed = mode === "explicit" ? ["mode", "groups"] : mode === "random" || mode === "sequential" ? ["mode", "size", "remainder"] : ["mode"];
+  if (Object.keys(value2).some((key) => !allowed.includes(key))) return fail2("\u56FE\u7247\u5206\u7EC4\u5305\u542B\u4E0D\u9002\u7528\u6216\u672A\u77E5\u5B57\u6BB5\u3002");
+  if (mode === "single" || mode === "all") return { mode };
+  if (mode === "random" || mode === "sequential") {
+    if (!Number.isSafeInteger(value2.size) || Number(value2.size) < 2 || Number(value2.size) > 14 || value2.remainder !== void 0 && !["reject", "keep"].includes(String(value2.remainder))) return fail2("\u5206\u7EC4\u5F20\u6570\u6216\u4F59\u56FE\u7B56\u7565\u65E0\u6548\u3002");
+    return { mode, size: Number(value2.size), ...value2.remainder === void 0 ? {} : { remainder: value2.remainder } };
+  }
+  if (mode !== "explicit" || !Array.isArray(value2.groups) || !value2.groups.length || value2.groups.length > 100 || value2.groups.some((group) => !Array.isArray(group) || !group.length || group.length > 14 || new Set(group).size !== group.length || group.some((index) => !Number.isSafeInteger(index) || index < 0 || index > 99))) return fail2("\u660E\u786E\u56FE\u7247\u7EC4\u5408\u5FC5\u987B\u4F7F\u7528\u6709\u6548\u7684\u96F6\u57FA\u7D22\u5F15\u3002");
+  return { mode, groups: value2.groups.map((group) => [...group]) };
+}
+function groupImageIndexes(count2, raw, randomIndex) {
+  const grouping = parseImageGrouping(raw);
+  if (!Number.isSafeInteger(count2) || count2 < 1 || count2 > 100) return fail2("\u5206\u7EC4\u56FE\u7247\u6570\u91CF\u65E0\u6548\u3002");
+  const indexes = Array.from({ length: count2 }, (_, index) => index);
+  if (grouping.mode === "single") return indexes.map((index) => [index]);
+  if (grouping.mode === "all") {
+    if (count2 > 14) return fail2("\u540C\u6B21\u751F\u6210\u6700\u591A 14 \u5F20\u8F93\u5165\u56FE\uFF0C\u8FD8\u9700\u9075\u5B88\u6240\u9009\u6A21\u578B\u53CA Skill \u7684\u53C2\u8003\u56FE\u4E0A\u9650\u3002");
+    return [indexes];
+  }
+  if (grouping.mode === "explicit") {
+    if (grouping.groups.some((group) => group.some((index) => index >= count2)) || new Set(grouping.groups.flat()).size !== count2) return fail2("\u56FE\u7247\u7EC4\u5408\u8D8A\u754C\u6216\u9057\u6F0F\u9009\u4E2D\u7D20\u6750\uFF1B\u8BF7\u4FDD\u7559\u5B8C\u6574\u8303\u56F4\u6216\u660E\u786E\u8C03\u6574 source \u8303\u56F4\u3002");
+    return grouping.groups;
+  }
+  if (count2 % grouping.size && grouping.remainder !== "keep") return fail2(`\u9009\u4E2D ${count2} \u5F20\uFF0C\u4E0D\u80FD\u6309\u6BCF\u7EC4 ${grouping.size} \u5F20\u5B8C\u6574\u5206\u7EC4\uFF1B\u8BF7\u660E\u786E\u4F59\u56FE\u662F\u5426\u5355\u72EC\u6210\u7EC4\u3002`);
+  if (grouping.mode === "random") for (let i = count2 - 1; i > 0; i--) {
+    const j = randomIndex(i + 1);
+    if (!Number.isSafeInteger(j) || j < 0 || j > i) throw new Error("Invalid random index");
+    [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
+  }
+  return Array.from({ length: Math.ceil(count2 / grouping.size) }, (_, index) => indexes.slice(index * grouping.size, (index + 1) * grouping.size));
+}
+
 // plugins/podplo-dsh/src/generation-background.ts
 var allows = (schema2, value2) => schema2?.type === "string" && (!schema2.enum || schema2.enum.includes(value2));
 function transparentControl(properties, model) {
@@ -57101,7 +57159,7 @@ var generationFieldNames = ["model", "ratio", "quality", "ecoMode", "background"
 var generationFieldSet = new Set(generationFieldNames);
 var nativeTaskTool = {
   name: nativeTaskToolName,
-  description: "Prepare one complete task: AI stages use skill and optional generation; local tool/preset stages use local and OMIT skill/generation. Ordered AI/tool stages share one task. Host resolves folders/presets and validates actions. Local-only work runs directly without AI, quotes or credits; AI work gets one complete quote and approval. Do not inspect files, invent IDs, write processingPlan or calculate credits.",
+  description: "Prepare one complete task: AI stages use skill and optional generation; local tool/preset stages use local and OMIT skill/generation. Ordered AI/tool stages share one task. Host resolves folders/presets and validates actions. grouping controls images per AI item independently of skill.strategy; each group produces one output. Use grouping:{mode:random,size:2} for random image pairs, skill.strategy:single for one fixed Skill. Parameter validation errors marked correctableBeforeConfirmation may be corrected while preserving the full user request. Local-only work runs directly without AI, quotes or credits; AI work gets one complete quote and approval. Do not inspect files, invent IDs, write processingPlan or calculate credits.",
   inputSchema: { type: "object", additionalProperties: false, required: ["stages"], examples: [{ stages: [
     {
       id: "base",
@@ -57141,11 +57199,12 @@ var nativeTaskTool = {
           },
           expectedImageCount: { type: "integer", minimum: 1, maximum: 100 }
         } },
+        grouping: imageGroupingSchema,
         skill: { type: "object", additionalProperties: false, required: ["query", "strategy"], properties: {
           query: { type: "string", minLength: 1, maxLength: 160 },
           source: { type: "string", enum: ["personal", "public", "favorite", "auto"] },
           favoriteFolder: { type: "string", minLength: 1, maxLength: 80 },
-          strategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"] }
+          strategy: { type: "string", enum: ["single", "random-per-image", "random-per-image-reuse", "random-shared"], description: "Skill assignment per image group (per image when ungrouped). Random strategies select family/favorite-folder members, never pair images." }
         } },
         generation: { type: "object", additionalProperties: false, properties: {
           model: { type: "string", maxLength: 160 },
@@ -57176,47 +57235,48 @@ var nativeTaskTool = {
     } }
   } }
 };
-var fail2 = (code, message) => {
+var fail3 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var imageExtensions = /* @__PURE__ */ new Set([".jpg", ".jpeg", ".png", ".webp"]);
 var record3 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
 var rejectUnknownField = (value2, allowed, path) => {
   const key = Object.keys(value2).find((candidate2) => !allowed.has(candidate2));
-  if (key !== void 0) fail2("INVALID_ARGUMENT", `${path}.${key} \u662F\u672A\u77E5\u53C2\u6570\u3002`);
+  if (key !== void 0) fail3("INVALID_ARGUMENT", `${path}.${key} \u662F\u672A\u77E5\u53C2\u6570\u3002`);
 };
 var text2 = (value2, name2, max) => {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail2("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail3("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
   return value2.trim();
 };
 function parseInput(value2, path = "batch") {
-  const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
+  const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "imageGrouping", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
   rejectUnknownField(value2, allowed, path);
   const count2 = value2.expectedImageCount;
-  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail2("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
-  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail2("INVALID_ARGUMENT", `${path}.skillStrategy \u65E0\u6548\u3002`);
+  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail3("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
+  if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail3("INVALID_ARGUMENT", `${path}.skillStrategy \u65E0\u6548\u3002`);
   let imageIndexes;
   if (value2.imageIndexes !== void 0) {
     const indexes = value2.imageIndexes;
     if (!Array.isArray(indexes) || !indexes.length || indexes.length > 100 || new Set(indexes).size !== indexes.length || indexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99))
-      fail2("INVALID_ARGUMENT", `${path}.imageIndexes \u65E0\u6548\u3002`);
+      fail3("INVALID_ARGUMENT", `${path}.imageIndexes \u65E0\u6548\u3002`);
     imageIndexes = indexes.map(Number);
   }
-  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail2("INVALID_ARGUMENT", `${path}.ecoMode \u65E0\u6548\u3002`);
-  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail2("INVALID_ARGUMENT", `${path}.background \u65E0\u6548\u3002`);
-  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail2("INVALID_ARGUMENT", `${path}.skillSource \u65E0\u6548\u3002`);
+  if (value2.ecoMode !== void 0 && typeof value2.ecoMode !== "boolean") fail3("INVALID_ARGUMENT", `${path}.ecoMode \u65E0\u6548\u3002`);
+  if (value2.background !== void 0 && value2.background !== "opaque" && value2.background !== "transparent") fail3("INVALID_ARGUMENT", `${path}.background \u65E0\u6548\u3002`);
+  if (value2.skillSource !== void 0 && !["personal", "public", "favorite", "auto"].includes(String(value2.skillSource))) fail3("INVALID_ARGUMENT", `${path}.skillSource \u65E0\u6548\u3002`);
   const skillFolder = value2.skillFolder === void 0 ? void 0 : text2(value2.skillFolder, `${path}.skillFolder`, 80);
   const skillSource = value2.skillSource ?? (skillFolder ? "favorite" : "auto");
-  if (skillFolder && skillSource !== "favorite") fail2("INVALID_ARGUMENT", `${path}.skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002`);
+  if (skillFolder && skillSource !== "favorite") fail3("INVALID_ARGUMENT", `${path}.skillFolder \u53EA\u80FD\u4E0E\u6536\u85CF\u6765\u6E90\u4E00\u8D77\u4F7F\u7528\u3002`);
   if (value2.instructions !== void 0 && (typeof value2.instructions !== "string" || value2.instructions.length > 3e3 || /\x00/u.test(value2.instructions)))
-    fail2("INVALID_ARGUMENT", `${path}.instructions \u65E0\u6548\u3002`);
+    fail3("INVALID_ARGUMENT", `${path}.instructions \u65E0\u6548\u3002`);
   const folderPath = value2.folderPath === void 0 ? void 0 : text2(value2.folderPath, `${path}.folderPath`, 4096);
   const referenceAssetIds = value2.referenceAssetIds;
   if (folderPath !== void 0 === (referenceAssetIds !== void 0) || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2))))
-    fail2("INVALID_ARGUMENT", "\u5FC5\u987B\u63D0\u4F9B\u4E00\u4E2A\u56FE\u7247\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750 ID\u3002");
+    fail3("INVALID_ARGUMENT", "\u5FC5\u987B\u63D0\u4F9B\u4E00\u4E2A\u56FE\u7247\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750 ID\u3002");
   return {
     ...folderPath ? { folderPath } : { referenceAssetIds },
     ...imageIndexes ? { imageIndexes } : {},
+    ...value2.imageGrouping === void 0 ? {} : { imageGrouping: parseImageGrouping(value2.imageGrouping) },
     ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
     skillQuery: text2(value2.skillQuery, `${path}.skillQuery`, 160),
     skillStrategy: value2.skillStrategy,
@@ -57233,28 +57293,38 @@ function parseInput(value2, path = "batch") {
   };
 }
 async function presetProcessing(input, deps) {
-  if (!input.processingPresetPath) return parseProcessingPlan(input.processingPlan) ?? [];
-  if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail2("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
+  if (!input.processingPresetPath) {
+    try {
+      return parseProcessingPlan(input.processingPlan) ?? [];
+    } catch {
+      return fail3("INVALID_PROCESSING_PLAN", "\u672C\u5730\u52A0\u5DE5\u53C2\u6570\u6216\u6B65\u9AA4\u987A\u5E8F\u65E0\u6548\uFF0C\u5C1A\u672A\u62A5\u4EF7\u3002");
+    }
+  }
+  if (!Array.isArray(input.processingPlan) || input.processingPlan.length) fail3("INVALID_ARGUMENT", "\u4F7F\u7528\u9884\u8BBE\u65F6 processingPlan \u5FC5\u987B\u4E3A []\uFF0C\u4E0D\u80FD\u8986\u76D6\u6216\u8FFD\u52A0\u9884\u8BBE\u6B65\u9AA4\u3002");
   return readNativeProcessingPreset(input.processingPresetPath, deps);
 }
 async function readNativeProcessingPreset(path, deps) {
-  if (!deps.isFolderAuthorized(path)) fail2("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
-  if (!isAbsolute4(path) || extname5(path).toLowerCase() !== ".json") fail2("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
+  if (!deps.isFolderAuthorized(path)) fail3("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
+  if (!isAbsolute4(path) || extname5(path).toLowerCase() !== ".json") fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
   const handle = await open4(path, constants3.O_RDONLY | (constants3.O_NOFOLLOW ?? 0));
   try {
     const before = await handle.stat();
-    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail2("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
+    if (!before.isFile() || before.size < 1 || before.size > 1024 * 1024) fail3("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u6587\u4EF6\u5927\u5C0F\u65E0\u6548\u3002");
     const bytes = await handle.readFile();
     const after = await handle.stat();
     if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
-      fail2("LOCAL_PRESET_CHANGED", "\u9884\u8BBE\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u5C1A\u672A\u63D0\u4EA4\u4EFB\u52A1\u3002");
+      fail3("LOCAL_PRESET_CHANGED", "\u9884\u8BBE\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u5C1A\u672A\u63D0\u4EA4\u4EFB\u52A1\u3002");
     deps.signal?.throwIfAborted();
-    return parseProcessingPlan([{
-      id: "toolbox-preset",
-      label: "\u5DE5\u5177\u7BB1\u9884\u8BBE",
-      toolName: TOOLBOX_PIPELINE_NAME,
-      options: toolboxPresetPlan(JSON.parse(bytes.toString("utf8").replace(/^\uFEFF/u, "")))
-    }]);
+    try {
+      return parseProcessingPlan([{
+        id: "toolbox-preset",
+        label: "\u5DE5\u5177\u7BB1\u9884\u8BBE",
+        toolName: TOOLBOX_PIPELINE_NAME,
+        options: toolboxPresetPlan(JSON.parse(bytes.toString("utf8").replace(/^\uFEFF/u, "")))
+      }]);
+    } catch {
+      return fail3("LOCAL_PRESET_INVALID", "\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u6216\u53C2\u6570\u65E0\u6548\uFF0C\u5C1A\u672A\u6267\u884C\u3002");
+    }
   } finally {
     await handle.close();
   }
@@ -57268,11 +57338,11 @@ async function personalMatch(input, deps) {
     const page = await deps.personalSkills(/^[0-9a-f-]{36}$/iu.test(input.skillQuery) ? "" : input.skillQuery, cursor);
     found.push(...page.items.filter((row) => row.id === input.skillQuery || row.name.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase()));
     cursor = page.nextCursor ?? void 0;
-    if (cursor && seen.has(cursor)) fail2("SKILL_QUERY_INVALID", "\u4E2A\u4EBA Skill \u5206\u9875\u7ED3\u679C\u65E0\u6548\u3002");
+    if (cursor && seen.has(cursor)) fail3("SKILL_QUERY_INVALID", "\u4E2A\u4EBA Skill \u5206\u9875\u7ED3\u679C\u65E0\u6548\u3002");
     if (cursor) seen.add(cursor);
-    if (seen.size > 100) fail2("SKILL_QUERY_AMBIGUOUS", "\u8BF7\u4F7F\u7528\u4E2A\u4EBA Skill \u7684\u7CBE\u786E ID\u3002");
+    if (seen.size > 100) fail3("SKILL_QUERY_AMBIGUOUS", "\u8BF7\u4F7F\u7528\u4E2A\u4EBA Skill \u7684\u7CBE\u786E ID\u3002");
   } while (cursor);
-  if (found.length > 1) fail2("SKILL_QUERY_AMBIGUOUS", "\u6709\u591A\u4E2A\u540C\u540D\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6307\u5B9A\u7CBE\u786E ID\u3002");
+  if (found.length > 1) fail3("SKILL_QUERY_AMBIGUOUS", "\u6709\u591A\u4E2A\u540C\u540D\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6307\u5B9A\u7CBE\u786E ID\u3002");
   if (!found.length) return;
   const skill = await deps.personalSkill(found[0].id);
   return {
@@ -57294,37 +57364,37 @@ async function readTrustedImageFolder(input) {
   input.signal?.throwIfAborted();
   let trustedRoot;
   if (!isAbsolute4(input.folderPath)) {
-    if (!input.cwd || !isAbsolute4(input.cwd)) fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
-    trustedRoot = await realpath4(input.cwd).catch(() => fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
+    if (!input.cwd || !isAbsolute4(input.cwd)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u9700\u8981\u5F53\u524D\u4F1A\u8BDD\u7684\u53EF\u4FE1\u9879\u76EE\u76EE\u5F55\u3002");
+    trustedRoot = await realpath4(input.cwd).catch(() => fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u4E0D\u53EF\u7528\u3002"));
   }
   const requested = isAbsolute4(input.folderPath) ? resolve(input.folderPath) : resolve(trustedRoot, input.folderPath);
-  const before = await lstat3(requested).catch(() => fail2("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
-  if (before.isSymbolicLink() || !before.isDirectory()) fail2("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
+  const before = await lstat3(requested).catch(() => fail3("LOCAL_FOLDER_NOT_FOUND", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BFB\u53D6\u3002"));
+  if (before.isSymbolicLink() || !before.isDirectory()) fail3("LOCAL_FOLDER_UNTRUSTED", "\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u5FC5\u987B\u662F\u5B9E\u9645\u76EE\u5F55\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u3002");
   const directory = await realpath4(requested);
-  if (trustedRoot && !isInside(trustedRoot, directory)) fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
+  if (trustedRoot && !isInside(trustedRoot, directory)) fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u76F8\u5BF9\u6587\u4EF6\u5939\u8D85\u51FA\u5F53\u524D\u4F1A\u8BDD\u9879\u76EE\u76EE\u5F55\u3002");
   const root = parse5(directory).root, home = await realpath4(homedir()).catch(() => homedir());
   const pathParts = relative3(root, directory).split(sep);
   if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
-    fail2("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
+    fail3("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
   const entries = await readdir(directory, { withFileTypes: true });
   const imageEntries = entries.filter((entry) => imageExtensions.has(extname5(entry.name).toLocaleLowerCase()));
-  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail2("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
+  if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail3("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
   imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
-  if (!imageEntries.length) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
-  if (imageEntries.length > 100) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
+  if (!imageEntries.length) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
+  if (imageEntries.length > 100) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u7684\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u3002");
   if (input.expectedImageCount !== void 0 && imageEntries.length !== input.expectedImageCount)
-    fail2("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
+    fail3("LOCAL_IMAGE_COUNT_MISMATCH", `\u6587\u4EF6\u5939\u4E2D\u6709 ${imageEntries.length} \u5F20\u53EF\u7528\u56FE\u7247\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
   const images = [];
   for (const [index, entry] of imageEntries.entries()) {
     input.signal?.throwIfAborted();
-    const handle = await open4(resolve(directory, entry.name), constants3.O_RDONLY | (constants3.O_NOFOLLOW ?? 0)).catch(() => fail2("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
+    const handle = await open4(resolve(directory, entry.name), constants3.O_RDONLY | (constants3.O_NOFOLLOW ?? 0)).catch(() => fail3("LOCAL_IMAGE_UNTRUSTED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u65E0\u6CD5\u5B89\u5168\u8BFB\u53D6\u3002`));
     try {
       const first = await handle.stat();
-      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail2("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
+      if (!first.isFile() || first.size < 1 || first.size > 5e7) fail3("LOCAL_IMAGE_INVALID", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5927\u5C0F\u65E0\u6548\u3002`);
       const bytes = await handle.readFile();
       const second = await handle.stat();
       if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
-        fail2("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
+        fail3("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
       images.push({ id: `trusted-folder-image-${index + 1}`, name: basename7(entry.name), bytes });
     } finally {
       await handle.close();
@@ -57333,52 +57403,52 @@ async function readTrustedImageFolder(input) {
   return images;
 }
 function catalogMatch(input, catalog) {
-  if (!catalog) return fail2("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+  if (!catalog) return fail3("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
   const query = input.skillQuery.toLocaleLowerCase();
   const rows = input.skillStrategy === "single" ? catalog.skills.filter((row) => row.executable) : catalog.families;
   const exact = rows.filter((row) => row.slug.toLocaleLowerCase() === query || row.title.toLocaleLowerCase() === query);
   if (exact.length === 1) return exact[0];
   const partial3 = rows.filter((row) => `${row.slug} ${row.title}`.toLocaleLowerCase().includes(query));
-  if (exact.length > 1 || partial3.length > 1) fail2("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
+  if (exact.length > 1 || partial3.length > 1) fail3("SKILL_QUERY_AMBIGUOUS", "Skill \u67E5\u8BE2\u5339\u914D\u5230\u591A\u4E2A\u7ED3\u679C\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E slug \u6216\u6807\u9898\u3002");
   if (partial3.length === 1) return partial3[0];
-  return fail2("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
+  return fail3("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u5BF9\u5E94\u7684\u53EF\u6267\u884C Skill \u6216 Skill \u65CF\u3002");
 }
 function boundSkill(value2) {
   const row = record3(value2), details = record3(row.details);
   if (typeof row.id !== "string" || typeof row.name !== "string" || typeof row.availableForCurrentPlan !== "boolean" || !Number.isInteger(row.minimumReferenceImages) || typeof details.slug !== "string" || typeof details.title !== "string" || !Array.isArray(details.inputs) || !Array.isArray(details.keeps) || !Array.isArray(details.changes) || typeof details.output !== "string")
-    fail2("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
+    fail3("SKILL_BINDING_INVALID", "Skill \u6267\u884C\u7ED1\u5B9A\u6216\u516C\u5F00\u8BE6\u60C5\u65E0\u6548\u3002");
   return row;
 }
 function capabilities(value2) {
   const row = record3(value2), schema2 = record3(row.quoteInputSchema);
-  if (row.available !== true || !Array.isArray(row.models) || !schema2.properties) fail2("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
+  if (row.available !== true || !Array.isArray(row.models) || !schema2.properties) fail3("GENERATION_CAPABILITIES_UNAVAILABLE", "\u751F\u56FE\u80FD\u529B\u5F53\u524D\u4E0D\u53EF\u7528\u3002");
   return row;
 }
 function modelMatch(value2, query) {
   const normalized2 = (text4) => text4.trim().replace(/\s+/gu, " ").toLocaleLowerCase();
   const target = normalized2(query);
   const exact = value2.models.filter((model2) => normalized2(model2.id) === target || normalized2(model2.name) === target);
-  if (exact.length > 1) fail2("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
+  if (exact.length > 1) fail3("MODEL_QUERY_AMBIGUOUS", "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u7CBE\u786E\u540D\u79F0\u6216 ID\u3002");
   const partial3 = exact.length ? exact : value2.models.filter((model2) => normalized2(model2.name).includes(target));
-  if (partial3.length !== 1) fail2(partial3.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial3.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
+  if (partial3.length !== 1) fail3(partial3.length ? "MODEL_QUERY_AMBIGUOUS" : "MODEL_NOT_FOUND", partial3.length ? "\u6A21\u578B\u67E5\u8BE2\u4E0D\u552F\u4E00\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5B8C\u6574\u7684\u6A21\u578B\u540D\u79F0\u6216 ID\u3002" : "\u6CA1\u6709\u627E\u5230\u8BE5\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u80FD\u529B\u540E\u91CD\u8BD5\u3002");
   const model = partial3[0];
-  if (!model.availableForCurrentPlan) fail2("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  if (!model.availableForCurrentPlan) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
   return model;
 }
 function resolveBatchParameters(input, value2) {
   const properties = value2.quoteInputSchema.properties ?? {};
   const selectedModel = input.model ? modelMatch(value2, input.model) : value2.models.find((row) => row.availableForCurrentPlan === true);
-  const model = selectedModel ?? fail2("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
-  if (model.availableForCurrentPlan === false) fail2("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
+  const model = selectedModel ?? fail3("MODEL_UNAVAILABLE", "\u5F53\u524D\u751F\u56FE\u80FD\u529B\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u7528\u7684\u6A21\u578B\uFF0C\u6574\u6279\u5C1A\u672A\u8BFB\u53D6\u6216\u62A5\u4EF7\u3002");
+  if (model.availableForCurrentPlan === false) fail3("MODEL_UNAVAILABLE", "\u8BE5\u6A21\u578B\u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
   const ratio = input.ratio ?? (model.ratios.includes("1:1") ? "1:1" : model.ratios[0]);
   const modelQuality = typeof model.defaultQuality === "string" && model.qualities.includes(model.defaultQuality) ? model.defaultQuality : void 0;
   const quality = input.quality ?? modelQuality ?? model.qualities[0];
-  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail2("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
-  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail2("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
+  if (input.ratio !== void 0 && !model.ratios.includes(input.ratio)) fail3("MODEL_RATIO_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u753B\u5E45\u6BD4\u4F8B\u3002");
+  if (input.quality !== void 0 && !model.qualities.includes(input.quality)) fail3("MODEL_QUALITY_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u4E0D\u652F\u6301\u8BE5\u8D28\u91CF\u6863\u4F4D\u3002");
   const required3 = new Set(value2.quoteInputSchema.required ?? []), missing = [];
   if (!ratio && required3.has("ratio")) missing.push("ratio");
   if (!quality && required3.has("quality")) missing.push("quality");
-  if (missing.length) fail2("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
+  if (missing.length) fail3("BATCH_PARAMETERS_REQUIRED", `\u5F53\u524D\u6A21\u578B\u5BF9 ${missing.join("\u3001")} \u6CA1\u6709\u53EF\u9A8C\u8BC1\u7684\u9ED8\u8BA4\u503C\uFF0C\u8BF7\u4E00\u6B21\u6307\u5B9A\u8FD9\u4E9B\u5FC5\u586B\u53C2\u6570\u3002`);
   const ecoMode = input.ecoMode ?? false;
   return {
     model,
@@ -57391,10 +57461,10 @@ function resolveBatchParameters(input, value2) {
 async function assertOwner(deps, ownerId, namespace) {
   deps.signal?.throwIfAborted();
   if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
-    fail2("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+    fail3("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
 }
 function shuffledWithoutReplacement(values, count2, choose) {
-  if (count2 > values.length) fail2("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+  if (count2 > values.length) fail3("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
   const pool = [...values], selected = [];
   while (selected.length < count2) {
     const index = choose(pool.length);
@@ -57405,27 +57475,27 @@ function shuffledWithoutReplacement(values, count2, choose) {
 }
 function expandNativeTaskInput(raw) {
   if (Object.keys(raw).some((key) => !["stages", "taskName"].includes(key)) || !Array.isArray(raw.stages) || !raw.stages.length || raw.stages.length > 10)
-    fail2("INVALID_ARGUMENT", "\u6574\u5355\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879\u3002");
+    fail3("INVALID_ARGUMENT", "\u6574\u5355\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879\u3002");
   const rawStages = raw.stages;
   const ids2 = /* @__PURE__ */ new Set();
   const stages = rawStages.map((value2, index) => {
     const stage = record3(value2), id2 = text2(stage.id, `stages[${index}].id`, 40);
-    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail2("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
-    rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "skill", "generation", "local"]), `stages[${index}]`);
+    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail3("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "grouping", "skill", "generation", "local"]), `stages[${index}]`);
     ids2.add(id2);
     const source = record3(stage.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
     const sourceChoices = [typeof folderPath === "string", typeof fromStage === "string", Array.isArray(referenceIds)].filter(Boolean).length;
     rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"]), `stages[${index}].source`);
     if (sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
-      fail2("INVALID_ARGUMENT", "\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+      fail3("INVALID_ARGUMENT", "\u9636\u6BB5\u6765\u6E90\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
     const scope = source.scope ?? "all";
-    if (!["all", "first", "indexes"].includes(String(scope))) fail2("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
-    if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail2("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
+    if (!["all", "first", "indexes"].includes(String(scope))) fail3("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
+    if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail3("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
     const imageIndexes = scope === "first" ? [0] : scope === "indexes" ? source.indexes : void 0;
     const skill = record3(stage.skill);
     rejectUnknownField(skill, /* @__PURE__ */ new Set(["query", "source", "favoriteFolder", "strategy"]), `stages[${index}].skill`);
     const strategy = String(skill.strategy);
-    if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail2("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
+    if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail3("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
     const generation = stage.generation === void 0 ? {} : record3(stage.generation);
     rejectUnknownField(generation, generationFieldSet, `stages[${index}].generation`);
     const local = stage.local === void 0 ? void 0 : record3(stage.local);
@@ -57435,22 +57505,28 @@ function expandNativeTaskInput(raw) {
       const choices = [local.presetPath, local.actions, local.exactPlan].filter((value3) => value3 !== void 0).length;
       rejectUnknownField(local, /* @__PURE__ */ new Set(["presetPath", "actions", "exactPlan"]), `stages[${index}].local`);
       if (choices !== 1)
-        fail2("INVALID_ARGUMENT", "\u672C\u5730\u52A0\u5DE5\u5FC5\u987B\u9009\u62E9\u9884\u8BBE\u8DEF\u5F84\u6216\u660E\u786E\u52A8\u4F5C\u3002");
+        fail3("INVALID_ARGUMENT", "\u672C\u5730\u52A0\u5DE5\u5FC5\u987B\u9009\u62E9\u9884\u8BBE\u8DEF\u5F84\u6216\u660E\u786E\u52A8\u4F5C\u3002");
       if (local.presetPath !== void 0) processingPresetPath = text2(local.presetPath, "local.presetPath", 4096);
-      else if (local.exactPlan !== void 0) processingPlan.push(...parseProcessingPlan(local.exactPlan) ?? []);
-      else {
-        if (!Array.isArray(local.actions) || local.actions.length > 10) fail2("INVALID_ARGUMENT", "\u672C\u5730\u52A8\u4F5C\u65E0\u6548\u3002");
+      else if (local.exactPlan !== void 0) {
+        try {
+          processingPlan.push(...parseProcessingPlan(local.exactPlan) ?? []);
+        } catch {
+          return fail3("INVALID_PROCESSING_PLAN", "\u672C\u5730\u52A0\u5DE5\u53C2\u6570\u6216\u6B65\u9AA4\u987A\u5E8F\u65E0\u6548\uFF0C\u5C1A\u672A\u62A5\u4EF7\u3002");
+        }
+      } else {
+        if (!Array.isArray(local.actions) || local.actions.length > 10) fail3("INVALID_ARGUMENT", "\u672C\u5730\u52A8\u4F5C\u65E0\u6548\u3002");
         const actions = local.actions;
         for (const [actionIndex, value3] of actions.entries()) {
           const action = record3(value3);
           rejectUnknownField(action, /* @__PURE__ */ new Set(["type", "rows", "columns"]), `stages[${index}].local.actions[${actionIndex}]`);
           if (action.type !== "grid-split" || !Number.isInteger(action.rows) || Number(action.rows) < 1 || Number(action.rows) > 6 || !Number.isInteger(action.columns) || Number(action.columns) < 1 || Number(action.columns) > 6)
-            fail2("UNSUPPORTED_LOCAL_ACTION", "\u5F53\u524D\u9AD8\u5C42\u5165\u53E3\u53EA\u652F\u6301 grid-split\uFF1B\u5176\u4ED6\u52A8\u4F5C\u8BF7\u63D0\u4F9B\u5DF2\u4FDD\u5B58\u7684 PodPlo \u5DE5\u5177\u7BB1\u9884\u8BBE\u3002");
+            fail3("UNSUPPORTED_LOCAL_ACTION", "\u5F53\u524D\u9AD8\u5C42\u5165\u53E3\u53EA\u652F\u6301 grid-split\uFF1B\u5176\u4ED6\u52A8\u4F5C\u8BF7\u63D0\u4F9B\u5DF2\u4FDD\u5B58\u7684 PodPlo \u5DE5\u5177\u7BB1\u9884\u8BBE\u3002");
           processingPlan.push({
             id: `grid-${actionIndex + 1}`,
             label: `${String(action.rows)}\xD7${String(action.columns)} \u5207\u56FE`,
             toolName: GRID_SPLIT_OPERATION_NAME,
-            options: { rows: action.rows, cols: action.columns }
+            options: { rows: action.rows, cols: action.columns },
+            ...actionIndex ? { sourceStepId: `grid-${actionIndex}` } : {}
           });
         }
       }
@@ -57460,6 +57536,7 @@ function expandNativeTaskInput(raw) {
       ...stage.name === void 0 ? {} : { name: text2(stage.name, "stage.name", 80) },
       source: { ...typeof folderPath === "string" ? { folderPath: text2(folderPath, "source.folderPath", 4096) } : Array.isArray(referenceIds) ? { referenceAssetIds: referenceIds } : { stageId: text2(fromStage, "source.fromStage", 40) }, ...imageIndexes ? { imageIndexes } : {} },
       ...source.expectedImageCount === void 0 ? {} : { expectedImageCount: source.expectedImageCount },
+      ...stage.grouping === void 0 ? {} : { imageGrouping: parseImageGrouping(stage.grouping) },
       skillQuery: text2(skill.query, "skill.query", 160),
       skillStrategy: strategy,
       ...skill.source === void 0 ? {} : { skillSource: skill.source },
@@ -57486,13 +57563,13 @@ async function prepareNativeSkillBatch(raw, deps) {
   if (raw.workflow !== void 0) return prepareWorkflowBatch(raw, deps);
   if (raw.groups !== void 0) return prepareGroupedBatch(raw, deps);
   const input = parseInput(raw);
-  if (input.folderPath && !deps.isFolderAuthorized(input.folderPath)) fail2("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
+  if (input.folderPath && !deps.isFolderAuthorized(input.folderPath)) fail3("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BE5\u6587\u4EF6\u5939\u8DEF\u5F84\u6CA1\u6709\u7531\u5F53\u524D\u4F1A\u8BDD\u4E2D\u7684\u7528\u6237\u660E\u786E\u63D0\u4F9B\uFF0C\u8BF7\u8BA9\u7528\u6237\u9009\u62E9\u6216\u53D1\u9001\u6587\u4EF6\u5939\u8DEF\u5F84\u3002");
   deps.signal?.throwIfAborted();
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const processingPlan = await presetProcessing(input, deps);
   const personal = await personalMatch(input, deps);
-  if (input.skillSource === "personal" && !personal) fail2("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
-  if (input.skillSource === "favorite" && !deps.favoriteSkills) fail2("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
+  if (input.skillSource === "personal" && !personal) fail3("SKILL_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u4E2A\u4EBA Skill\uFF0C\u8BF7\u6838\u5BF9\u540D\u79F0\u6216 ID\u3002");
+  if (input.skillSource === "favorite" && !deps.favoriteSkills) fail3("FAVORITES_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u8BFB\u53D6\u6211\u7684\u6536\u85CF\u3002");
   const favoriteStrategy = input.skillStrategy === "random-per-image-reuse" ? "random-per-image" : input.skillStrategy;
   const favorite = input.skillSource === "favorite" ? await resolveFavoriteSkill({ query: input.skillQuery, folder: input.skillFolder, strategy: favoriteStrategy }, deps.favoriteSkills) : void 0;
   const favoritePool = favorite?.kind === "folder-pool" ? favorite : void 0;
@@ -57501,14 +57578,14 @@ async function prepareNativeSkillBatch(raw, deps) {
   await assertOwner(deps, ownerId, namespace);
   const catalog = deps.online.snapshot().publicDirectory?.catalog;
   if (personal && input.skillSource === "auto" && catalog?.skills.some((row) => row.executable && [row.slug, row.title].some((value2) => value2.toLocaleLowerCase() === input.skillQuery.toLocaleLowerCase())))
-    fail2("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
-  if (favoritePool && !catalog) fail2("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+    fail3("SKILL_QUERY_AMBIGUOUS", "\u4E2A\u4EBA\u4E0E\u516C\u5F00\u76EE\u5F55\u6709\u540C\u540D Skill\uFF0C\u8BF7\u660E\u786E\u6765\u6E90\u3002");
+  if (favoritePool && !catalog) fail3("SKILL_CATALOG_UNAVAILABLE", "\u516C\u5F00 Skill \u76EE\u5F55\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
   const match = personal || favoritePool ? void 0 : catalogMatch(favoriteItem ? { ...input, skillQuery: favoriteItem.slug } : input, catalog);
   let title, members;
   if (input.skillStrategy === "single") {
     const skill = personal ?? boundSkill(await deps.online.skillDetails(match.slug));
-    if (!skill.availableForCurrentPlan || skill.minimumReferenceImages > 1)
-      fail2("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\uFF0C\u6216\u4E0D\u80FD\u6309\u4E00\u56FE\u4E00\u9879\u6267\u884C\u3002");
+    if (!skill.availableForCurrentPlan)
+      fail3("SKILL_UNAVAILABLE", "\u6240\u9009 Skill \u5F53\u524D\u5957\u9910\u4E0D\u53EF\u7528\u3002");
     title = skill.details.title;
     members = [skill];
   } else if (favoritePool) {
@@ -57529,9 +57606,9 @@ async function prepareNativeSkillBatch(raw, deps) {
         changes: publicRow.changes,
         output: publicRow.output
       } });
-      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
+      if (member.availableForCurrentPlan) members.push(member);
     }
-    if (!members.length) fail2("SKILL_FAVORITE_POOL_UNAVAILABLE", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879 Skill\u3002");
+    if (!members.length) fail3("SKILL_FAVORITE_POOL_UNAVAILABLE", "\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684 Skill\u3002");
   } else {
     const family = match;
     title = family.title;
@@ -57551,25 +57628,24 @@ async function prepareNativeSkillBatch(raw, deps) {
         changes: publicRow.changes,
         output: publicRow.output
       } });
-      if (member.availableForCurrentPlan && member.minimumReferenceImages <= 1) members.push(member);
+      if (member.availableForCurrentPlan) members.push(member);
     }
-    if (!members.length) fail2("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u4E00\u56FE\u4E00\u9879\u6210\u5458\u3002");
+    if (!members.length) fail3("SKILL_FAMILY_UNAVAILABLE", "\u8BE5 Skill \u65CF\u6CA1\u6709\u5F53\u524D\u5957\u9910\u53EF\u6267\u884C\u7684\u6210\u5458\u3002");
   }
   if (!personal && deps.online.snapshot().publicDirectory?.catalog?.contentVersion !== catalog.contentVersion)
-    fail2("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+    fail3("SKILL_CATALOG_CHANGED", "Skill \u76EE\u5F55\u5728\u6279\u91CF\u51C6\u5907\u671F\u95F4\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
   await assertOwner(deps, ownerId, namespace);
   const currentCapabilities = capabilities(await deps.generationCapabilities());
   const parameters = resolveBatchParameters(input, currentCapabilities), { model } = parameters;
   const referenceLimit = parameters.ecoMode ? model.ecoMaximumReferenceImages : model.maximumReferenceImages;
-  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail2("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
+  if (!Number.isInteger(referenceLimit) || referenceLimit < 1) fail3("MODEL_REFERENCE_UNAVAILABLE", "\u6240\u9009\u6A21\u578B\u5F53\u524D\u6A21\u5F0F\u4E0D\u652F\u6301\u53C2\u8003\u56FE\u3002");
   const background = backgroundArgs(
     currentCapabilities.quoteInputSchema.properties ?? {},
     model,
     parameters.background === "transparent"
   );
-  if (members.some((skill) => (skill.referenceCount ?? 0) + 1 > referenceLimit)) fail2("REFERENCE_LIMIT_EXCEEDED", "\u4E2A\u4EBA Skill \u7684\u53C2\u8003\u56FE\u52A0\u4E0A\u5F53\u524D\u56FE\u7247\u8D85\u8FC7\u6A21\u578B\u4E0A\u9650\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u8C03\u6574\u3002");
   const allImages = deps.sourceOccurrences ? deps.sourceOccurrences.map((row, index) => {
-    if (!row || typeof row.id !== "string" || !row.id || row.id.length > 240 || /[/\\\x00\r\n]/u.test(row.id) || typeof row.name !== "string" || !row.name.trim() || row.name.length > 255) fail2("INVALID_ARGUMENT", `Host \u865A\u62DF\u56FE\u7247 ${index + 1} \u65E0\u6548\u3002`);
+    if (!row || typeof row.id !== "string" || !row.id || row.id.length > 240 || /[/\\\x00\r\n]/u.test(row.id) || typeof row.name !== "string" || !row.name.trim() || row.name.length > 255) fail3("INVALID_ARGUMENT", `Host \u865A\u62DF\u56FE\u7247 ${index + 1} \u65E0\u6548\u3002`);
     return { id: row.id, name: row.name, bytes: new Uint8Array() };
   }) : input.folderPath ? await readTrustedImageFolder({
     folderPath: input.folderPath,
@@ -57578,22 +57654,26 @@ async function prepareNativeSkillBatch(raw, deps) {
     signal: deps.signal
   }) : input.referenceAssetIds.map((id2, index) => ({ id: id2, name: `\u4F1A\u8BDD\u56FE\u7247-${index + 1}`, bytes: new Uint8Array() }));
   if (input.imageIndexes?.some((index) => index >= allImages.length))
-    fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9009\u62E9\u4E86\u6587\u4EF6\u5939\u4E2D\u4E0D\u5B58\u5728\u7684\u56FE\u7247\u3002");
+    fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9009\u62E9\u4E86\u6587\u4EF6\u5939\u4E2D\u4E0D\u5B58\u5728\u7684\u56FE\u7247\u3002");
   const images = input.imageIndexes ? input.imageIndexes.map((index) => allImages[index]) : allImages;
   if (input.expectedImageCount !== void 0 && images.length !== input.expectedImageCount)
-    fail2("LOCAL_IMAGE_COUNT_MISMATCH", `\u5DE5\u4F5C\u6D41\u9009\u4E2D ${images.length} \u5F20\u56FE\u7247\uFF0C\u4E0E\u58F0\u660E\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
+    fail3("LOCAL_IMAGE_COUNT_MISMATCH", `\u5DE5\u4F5C\u6D41\u9009\u4E2D ${images.length} \u5F20\u56FE\u7247\uFF0C\u4E0E\u58F0\u660E\u7684 ${input.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4\u3002`);
   const choose = deps.randomIndex ?? randomInt;
+  const inputGroups = groupImageIndexes(images.length, input.imageGrouping, choose);
+  const eligibleMembers = members.filter((skill) => inputGroups.every((group) => group.length >= skill.minimumReferenceImages && group.length + (skill.referenceCount ?? 0) <= Math.min(referenceLimit, 14)));
+  if (!eligibleMembers.length) fail3("REFERENCE_LIMIT_EXCEEDED", "\u6BCF\u7EC4\u56FE\u7247\u6570\u4E0E Skill \u6700\u5C11\u8F93\u5165\u6216\u6A21\u578B\u53C2\u8003\u56FE\u4E0A\u9650\u4E0D\u517C\u5BB9\uFF08\u5305\u62EC\u4E2A\u4EBA Skill \u81EA\u5E26\u53C2\u8003\u56FE\uFF09\uFF0C\u5C1A\u672A\u62A5\u4EF7\u3002");
+  members = eligibleMembers;
   let assignments;
-  if (input.skillStrategy === "random-per-image") assignments = shuffledWithoutReplacement(members, images.length, choose);
-  else if (input.skillStrategy === "random-per-image-reuse") assignments = images.map(() => {
+  if (input.skillStrategy === "random-per-image") assignments = shuffledWithoutReplacement(members, inputGroups.length, choose);
+  else if (input.skillStrategy === "random-per-image-reuse") assignments = inputGroups.map(() => {
     const index = choose(members.length);
     if (!Number.isInteger(index) || index < 0 || index >= members.length) throw new Error("Invalid random index");
     return members[index];
   });
   else if (input.skillStrategy === "random-shared") {
     const selected = members[choose(members.length)];
-    assignments = Array.from({ length: images.length }, () => selected);
-  } else assignments = Array.from({ length: images.length }, () => members[0]);
+    assignments = Array.from({ length: inputGroups.length }, () => selected);
+  } else assignments = Array.from({ length: inputGroups.length }, () => members[0]);
   const verified = /* @__PURE__ */ new Set();
   for (const skill of assignments) {
     if (verified.has(skill.id)) continue;
@@ -57603,19 +57683,19 @@ async function prepareNativeSkillBatch(raw, deps) {
   await assertOwner(deps, ownerId, namespace);
   const referenceAssetIds = deps.sourceOccurrences ? images.map((image) => image.id) : input.folderPath ? await deps.importReferences({ ownerId, nativeSessionId: deps.nativeSessionId, inputs: images }) : images.map((image) => image.id);
   if (referenceAssetIds.length !== images.length || input.folderPath && referenceAssetIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
-    fail2("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
+    fail3("REFERENCE_IMPORT_INVALID", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u6574\u6279\u5C1A\u672A\u62A5\u4EF7\u3002");
   await assertOwner(deps, ownerId, namespace);
-  const items = referenceAssetIds.map((referenceAssetId, index) => {
+  const items = inputGroups.map((group, index) => {
     const skill = assignments[index];
     return {
       skillId: skill.id,
-      sourceName: images[index].name,
-      pricingReferenceCount: (skill.referenceCount ?? 0) + 1,
+      sourceName: group.map((position) => images[position].name).join(" + ").slice(0, 255),
+      pricingReferenceCount: (skill.referenceCount ?? 0) + group.length,
       args: {
         prompt: input.instructions,
         modelId: model.id,
         templateId: skill.id,
-        referenceAssetIds: [referenceAssetId],
+        referenceAssetIds: group.map((position) => referenceAssetIds[position]),
         ...parameters.ratio ? { ratio: parameters.ratio } : {},
         ...parameters.quality ? { quality: parameters.quality } : {},
         webSearch: false,
@@ -57633,20 +57713,21 @@ async function prepareNativeSkillBatch(raw, deps) {
     taskName: `${title} \xB7 ${items.length} \u5F20`,
     expectedOutputCount: items.length,
     processingPlan,
-    items
+    items,
+    inputGroups
   };
 }
 async function prepareWorkflowBatch(raw, deps) {
   if (Object.keys(raw).some((key) => !["workflow", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
-    fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u6307\u5B9A\u9636\u6BB5\u53CA\u5171\u4EAB\u751F\u56FE\u53C2\u6570\u3002");
+    fail3("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u6307\u5B9A\u9636\u6BB5\u53CA\u5171\u4EAB\u751F\u56FE\u53C2\u6570\u3002");
   const workflow = record3(raw.workflow), rawStages = workflow.stages;
   const { workflow: _workflow, ...shared } = raw;
   if (Object.keys(workflow).some((key) => key !== "stages") || !Array.isArray(rawStages) || !rawStages.length || rawStages.length > 10)
-    fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u65E0\u6548\u3002");
+    fail3("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u65E0\u6548\u3002");
   const stageIds = /* @__PURE__ */ new Set();
   const parsed = rawStages.map((value2, index) => {
     const stage = record3(value2), id2 = text2(stage.id, `workflow.stages[${index}].id`, 40);
-    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
+    if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail3("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     stageIds.add(id2);
     const workflowStageFields = /* @__PURE__ */ new Set([
       "id",
@@ -57657,6 +57738,7 @@ async function prepareWorkflowBatch(raw, deps) {
       "skillFolder",
       "skillStrategy",
       "expectedImageCount",
+      "imageGrouping",
       "processingPresetPath",
       "processingPlan",
       ...generationFieldNames
@@ -57670,10 +57752,10 @@ async function prepareWorkflowBatch(raw, deps) {
     const sourceStageId = source.stageId === void 0 ? void 0 : text2(source.stageId, `workflow.stages[${index}].source.stageId`, 40);
     const sourceChoices = [folderPath !== void 0, referenceAssetIds !== void 0, sourceStageId !== void 0].filter(Boolean).length;
     if (sourceChoices !== 1 || referenceAssetIds !== void 0 && (!Array.isArray(referenceAssetIds) || !referenceAssetIds.length || referenceAssetIds.length > 100 || new Set(referenceAssetIds).size !== referenceAssetIds.length || referenceAssetIds.some((value3) => typeof value3 !== "string" || !value3 || value3.length > 240 || /[/\\\x00\r\n]/u.test(value3))))
-      fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
+      fail3("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u5FC5\u987B\u9009\u62E9\u672C\u5730\u6587\u4EF6\u5939\u3001\u5F53\u524D\u4F1A\u8BDD/\u4E91\u7D20\u6750\u6216\u4E00\u4E2A\u524D\u5E8F\u9636\u6BB5\u3002");
     let imageIndexes;
     if (source.imageIndexes !== void 0) {
-      if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail2("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
+      if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail3("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
       imageIndexes = source.imageIndexes;
     }
     const { id: _id, name: _name, source: _source, ...generationFields } = stage;
@@ -57684,7 +57766,7 @@ async function prepareWorkflowBatch(raw, deps) {
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   for (const stage of parsed) {
     if (stage.folderPath && !deps.isFolderAuthorized(stage.folderPath))
-      fail2("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u5DE5\u4F5C\u6D41\u4E2D\u7684\u6BCF\u4E2A\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+      fail3("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u5DE5\u4F5C\u6D41\u4E2D\u7684\u6BCF\u4E2A\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u3002");
     await presetProcessing(stage.generation, deps);
     await assertOwner(deps, ownerId, namespace);
   }
@@ -57692,60 +57774,61 @@ async function prepareWorkflowBatch(raw, deps) {
   const items = [], steps = [], stages = /* @__PURE__ */ new Map();
   const names = [];
   for (const [stageIndex, stage] of parsed.entries()) {
-    let rootSource, selectedSeedIndexes, parent;
+    let parent;
     let selectedParentPositions = [];
-    let preparedChild;
+    let child;
     if (stage.folderPath || stage.referenceAssetIds) {
-      rootSource = stage.folderPath ? { folderPath: stage.folderPath } : { referenceAssetIds: stage.referenceAssetIds };
-      preparedChild = await prepareNativeSkillBatch({
+      child = await prepareNativeSkillBatch({
         ...shared,
         ...stage.generation,
-        ...rootSource,
+        ...stage.folderPath ? { folderPath: stage.folderPath } : { referenceAssetIds: stage.referenceAssetIds },
         ...stage.imageIndexes ? { imageIndexes: stage.imageIndexes, expectedImageCount: stage.generation.expectedImageCount ?? stage.imageIndexes.length } : {}
       }, deps);
-      const childItems = preparedChild.items;
-      selectedSeedIndexes = stage.imageIndexes ?? childItems.map((_, index) => index);
     } else {
-      const resolvedParent = stages.get(stage.sourceStageId) ?? fail2("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
-      parent = resolvedParent;
-      rootSource = resolvedParent.rootSource;
-      selectedParentPositions = stage.imageIndexes ?? resolvedParent.itemIndexes.map((_, index) => index);
-      if (selectedParentPositions.some((index) => index >= resolvedParent.itemIndexes.length)) fail2("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
-      selectedSeedIndexes = selectedParentPositions.map((index) => resolvedParent.seedIndexes[index]);
+      parent = stages.get(stage.sourceStageId) ?? fail3("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
+      selectedParentPositions = stage.imageIndexes ?? parent.itemIndexes.map((_, index) => index);
+      if (selectedParentPositions.some((index) => index >= parent.itemIndexes.length)) fail3("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
+      const pricingSources = selectedParentPositions.map((index) => parent.pricingSources[index]);
+      child = await prepareNativeSkillBatch({
+        ...shared,
+        ...stage.generation,
+        referenceAssetIds: [...new Set(pricingSources.map((row) => row.id))],
+        expectedImageCount: stage.generation.expectedImageCount ?? pricingSources.length
+      }, { ...deps, sourceOccurrences: pricingSources });
     }
-    const child = preparedChild ?? await prepareNativeSkillBatch({
-      ...shared,
-      ...stage.generation,
-      ...rootSource,
-      imageIndexes: selectedSeedIndexes,
-      expectedImageCount: stage.generation.expectedImageCount ?? selectedSeedIndexes.length,
-      processingPlan: stage.generation.processingPlan
-    }, deps);
     await assertOwner(deps, ownerId, namespace);
-    const allChildItems = child.items;
-    if (allChildItems.length !== selectedSeedIndexes.length) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u7684\u5B9A\u4EF7\u53C2\u8003\u8303\u56F4\u53D1\u751F\u53D8\u5316\u3002");
-    const selectedItems = allChildItems.map((item) => structuredClone(item));
+    const selectedItems = child.items.map((item) => structuredClone(item));
+    const groups = child.inputGroups;
     const offset = items.length;
-    if (offset + selectedItems.length > 100) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u5DE5\u4F5C\u6D41\u8D85\u8FC7 100 \u4E2A AI \u751F\u6210\u9879\uFF0C\u8BF7\u5206\u6279\u3002");
+    if (offset + selectedItems.length > 100) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u5DE5\u4F5C\u6D41\u8D85\u8FC7 100 \u4E2A AI \u751F\u6210\u9879\uFF0C\u8BF7\u5206\u6279\u3002");
     for (const [position, item] of selectedItems.entries()) {
-      if (parent) item.dependsOn = { itemIndex: parent.itemIndexes[selectedParentPositions[position]], outputIndex: 0, referenceIndex: 0 };
+      if (parent) {
+        const dependencies = groups[position].map((sourceIndex, referenceIndex) => ({
+          kind: "ai",
+          itemIndex: parent.itemIndexes[selectedParentPositions[sourceIndex]],
+          outputIndex: 0,
+          referenceIndex
+        }));
+        if (dependencies.length === 1) {
+          const { kind: _kind, ...dependency } = dependencies[0];
+          item.dependsOn = dependency;
+        } else item.referenceDependencies = dependencies;
+      }
       item.stage = { id: stage.id, label: stage.name, order: stageIndex };
       items.push(item);
     }
     const scope = selectedItems.map((_, index) => offset + index);
     const childSteps = child.processingPlan;
-    if (referencedStages.has(stage.id) && childSteps.length) fail2("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u53F6\u5B50\u9636\u6BB5\u3002");
+    if (referencedStages.has(stage.id) && childSteps.length) fail3("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u72EC\u7ACB\u9636\u6BB5\u3002");
     for (const step of childSteps) steps.push({
       ...step,
       id: `w${stageIndex}-${step.id}`,
       ...step.sourceStepId ? { sourceStepId: `w${stageIndex}-${step.sourceStepId}` } : { generationItemIndexes: scope }
     });
-    stages.set(stage.id, {
-      id: stage.id,
-      rootSource,
-      seedIndexes: selectedSeedIndexes,
-      itemIndexes: scope
-    });
+    stages.set(stage.id, { id: stage.id, pricingSources: selectedItems.map((item) => ({
+      id: item.args.referenceAssetIds[0],
+      name: String(item.sourceName)
+    })), itemIndexes: scope });
     names.push(String(child.taskName));
   }
   await assertOwner(deps, ownerId, namespace);
@@ -57760,17 +57843,17 @@ async function prepareWorkflowBatch(raw, deps) {
 }
 async function prepareGroupedBatch(raw, deps) {
   if (!Array.isArray(raw.groups) || !raw.groups.length || raw.groups.length > 10 || Object.keys(raw).some((key) => !["groups", "model", "ratio", "quality", "ecoMode", "background", "instructions"].includes(key)))
-    fail2("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
+    fail3("INVALID_ARGUMENT", "\u6574\u6279\u5206\u7EC4\u53C2\u6570\u65E0\u6548\u3002");
   const owner = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
   const { groups, ...shared } = raw;
   const parsed = groups.map((group, index) => {
     const row = record3(group);
     if (Object.keys(row).some((key) => !["folderPath", "skillQuery", "skillSource", "skillFolder", "skillStrategy", "expectedImageCount", "processingPresetPath", "processingPlan", "instructions"].includes(key)))
-      fail2("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
+      fail3("INVALID_ARGUMENT", "\u5206\u7EC4\u53EA\u80FD\u6307\u5B9A\u56FE\u7247\u3001Skill\u3001\u9884\u8BBE\u53CA\u8BE5\u7EC4\u63D0\u793A\u8BCD\u3002");
     return parseInput({ ...shared, ...row }, `groups[${index}]`);
   });
   for (const input of parsed) {
-    if (!input.folderPath || !deps.isFolderAuthorized(input.folderPath)) fail2("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
+    if (!input.folderPath || !deps.isFolderAuthorized(input.folderPath)) fail3("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u6BCF\u7EC4\u56FE\u7247\u6587\u4EF6\u5939\u3002");
     await presetProcessing(input, deps);
   }
   const items = [], steps = [], names = [];
@@ -57778,7 +57861,7 @@ async function prepareGroupedBatch(raw, deps) {
     await assertOwner(deps, owner, namespace);
     const child = await prepareNativeSkillBatch(input, deps);
     const childItems = child.items, offset = items.length;
-    if (offset + childItems.length > 100) fail2("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u4EFB\u52A1\u8D85\u8FC7 100 \u5F20\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u5206\u6279\u3002");
+    if (offset + childItems.length > 100) fail3("LOCAL_IMAGE_COUNT_MISMATCH", "\u5B8C\u6574\u4EFB\u52A1\u8D85\u8FC7 100 \u5F20\uFF0C\u8BF7\u5728\u62A5\u4EF7\u524D\u5206\u6279\u3002");
     const scope = childItems.map((_, i) => offset + i);
     const childSteps = child.processingPlan;
     for (const step of childSteps) steps.push({
@@ -57895,6 +57978,7 @@ function parseLocal(raw, stageId) {
       const action = record4(value2, `stage ${stageId}.local.actions[${index}]`);
       rejectUnknown(action, ["type", "rows", "columns"], `stage ${stageId}.local.actions[${index}]`);
       if (action.type !== "grid-split" || !Number.isInteger(action.rows) || !Number.isInteger(action.columns)) throw new Error("\u672C\u5730\u52A8\u4F5C\u65E0\u6548");
+      if (!GridSplitOptionsSchema.safeParse({ rows: action.rows, cols: action.columns }).success) throw new Error("\u56FE\u7247\u5206\u5272\u884C\u5217\u53C2\u6570\u65E0\u6548");
       return {
         id: `action-${index + 1}`,
         label: "\u56FE\u7247\u5206\u5272",
@@ -57980,9 +58064,13 @@ async function readPreset(path, deps) {
   try {
     value2 = JSON.parse(bytes.toString("utf8").replace(/^\uFEFF/u, ""));
   } catch {
-    throw new Error("\u5DE5\u5177\u9884\u8BBE JSON \u65E0\u6548");
+    throw new PodploPluginError("LOCAL_PRESET_INVALID", "\u5DE5\u5177\u9884\u8BBE JSON \u65E0\u6548");
   }
-  return toolboxPresetPlan(value2);
+  try {
+    return toolboxPresetPlan(value2);
+  } catch {
+    throw new PodploPluginError("LOCAL_PRESET_INVALID", "\u5DE5\u5177\u9884\u8BBE\u53C2\u6570\u65E0\u6548\uFF0C\u5C1A\u672A\u6267\u884C\u3002");
+  }
 }
 async function readAuthorizedLocalFolder(path, deps) {
   deps.signal?.throwIfAborted();
@@ -58046,7 +58134,13 @@ async function prepareNativeLocalTask(raw, sessionId, deps) {
 async function executeNativeLocalTask(raw, sessionId, deps) {
   deps.signal?.throwIfAborted();
   if (!opaque.test(sessionId)) throw new Error("\u539F\u751F\u4F1A\u8BDD\u7F16\u53F7\u65E0\u6548");
-  const parsed = parseNativeLocalTask(raw), identity2 = await deps.authorize();
+  let parsed;
+  try {
+    parsed = parseNativeLocalTask(raw);
+  } catch (cause) {
+    throw new PodploPluginError("INVALID_ARGUMENT", cause instanceof Error ? cause.message : "\u672C\u5730\u4EFB\u52A1\u53C2\u6570\u65E0\u6548");
+  }
+  const identity2 = await deps.authorize();
   const resolvedPlans = /* @__PURE__ */ new Map();
   for (const stage of parsed.stages) {
     deps.signal?.throwIfAborted();
@@ -58124,6 +58218,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
     taskId = saved;
     await deps.archive.wait();
   };
+  deps.onExecutionStarted?.();
   for (const stage of parsed.stages.filter((value2) => !value2.source.fromStage)) {
     deps.signal?.throwIfAborted();
     const state = stages.get(stage.id);
@@ -58292,7 +58387,7 @@ function validateNativeMixedTaskPlan(raw) {
   const seen = /* @__PURE__ */ new Map(), itemIndexes = /* @__PURE__ */ new Set();
   const stages = value2.stages.map((rawStage, order2) => {
     const stage = object4(rawStage, `stages[${order2}]`), kind = stage.kind;
-    exactKeys(stage, kind === "ai" ? ["id", "label", "order", "kind", "sourceBindings", "itemIndexes", "outputCount"] : ["id", "label", "order", "kind", "sourceBindings", "processingSteps", "outputCount", "outputSources"], `stages[${order2}]`);
+    exactKeys(stage, kind === "ai" ? ["id", "label", "order", "kind", "sourceBindings", "sourceGroups", "itemIndexes", "outputCount"] : ["id", "label", "order", "kind", "sourceBindings", "processingSteps", "outputCount", "outputSources"], `stages[${order2}]`);
     const stageId = mixedText(stage.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
     if (seen.has(stageId) || stage.order !== order2 || kind !== "ai" && kind !== "local") mixedFail("\u6DF7\u5408\u9636\u6BB5\u987A\u5E8F\u3001ID \u6216\u7C7B\u578B\u65E0\u6548\u3002");
     const label = mixedText(stage.label, `stages[${order2}].label`, 80);
@@ -58322,10 +58417,21 @@ function validateNativeMixedTaskPlan(raw) {
     if (!Number.isInteger(stage.outputCount) || Number(stage.outputCount) < 1 || Number(stage.outputCount) > 400) mixedFail("\u9636\u6BB5\u8F93\u51FA\u6570\u65E0\u6548\u3002");
     let parsed;
     if (kind === "ai") {
-      if (!Array.isArray(stage.itemIndexes) || stage.itemIndexes.length !== sourceBindings.length || stage.outputCount !== sourceBindings.length || new Set(stage.itemIndexes).size !== stage.itemIndexes.length || stage.itemIndexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99 || itemIndexes.has(Number(index))))
+      const groups = stage.sourceGroups === void 0 ? sourceBindings.map((_, index) => [index]) : stage.sourceGroups;
+      if (!Array.isArray(groups) || !groups.length || groups.length > 100 || groups.some((group) => !Array.isArray(group) || !group.length || group.length > 14 || new Set(group).size !== group.length || group.some((index) => !Number.isSafeInteger(index) || index < 0 || index >= sourceBindings.length)) || new Set(groups.flat()).size !== sourceBindings.length) mixedFail("AI \u9636\u6BB5\u56FE\u7247\u5206\u7EC4\u65E0\u6548\u3002");
+      if (!Array.isArray(stage.itemIndexes) || stage.itemIndexes.length !== groups.length || stage.outputCount !== groups.length || new Set(stage.itemIndexes).size !== stage.itemIndexes.length || stage.itemIndexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99 || itemIndexes.has(Number(index))))
         mixedFail("AI \u9636\u6BB5\u751F\u6210\u9879\u7D22\u5F15\u65E0\u6548\u3002");
       for (const index of stage.itemIndexes) itemIndexes.add(Number(index));
-      parsed = { id: stageId, label, order: order2, kind, sourceBindings, itemIndexes: stage.itemIndexes.map(Number), outputCount: Number(stage.outputCount) };
+      parsed = {
+        id: stageId,
+        label,
+        order: order2,
+        kind,
+        sourceBindings,
+        itemIndexes: stage.itemIndexes.map(Number),
+        outputCount: Number(stage.outputCount),
+        ...stage.sourceGroups === void 0 ? {} : { sourceGroups: groups.map((group) => [...group]) }
+      };
     } else {
       let processingSteps;
       try {
@@ -58385,7 +58491,9 @@ async function frozenLocalPlan(raw, deps) {
       const action = object4(rawAction, `local.actions[${index}]`);
       exactKeys(action, ["type", "rows", "columns"], `local.actions[${index}]`);
       if (action.type !== "grid-split") mixedFail("\u5F53\u524D\u672C\u5730\u52A8\u4F5C\u53EA\u652F\u6301 grid-split\u3002");
-      const options = GridSplitOptionsSchema.parse({ rows: action.rows, cols: action.columns });
+      const parsed = GridSplitOptionsSchema.safeParse({ rows: action.rows, cols: action.columns });
+      if (!parsed.success) mixedFail("\u56FE\u7247\u5206\u5272\u884C\u5217\u53C2\u6570\u65E0\u6548\u3002");
+      const options = parsed.data;
       return {
         id: `grid-${index + 1}`,
         label: `${options.rows}\xD7${options.cols} \u5207\u56FE`,
@@ -58461,6 +58569,8 @@ async function compileNativeMixedTask(raw, deps) {
   for (const [index, rawStage] of normalizedStages.entries()) {
     const stage = object4(rawStage, `stages[${index}]`);
     if (stage.skill === void 0 === (stage.local === void 0)) mixedFail(`stages[${index}] \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI Skill \u6216\u672C\u5730\u5DE5\u5177\u3002`);
+    if (stage.skill !== void 0) parseImageGrouping(stage.grouping);
+    else if (parseImageGrouping(stage.grouping).mode !== "single") mixedFail("\u56FE\u7247\u5206\u7EC4\u7528\u4E8E AI \u591A\u53C2\u8003\u56FE\u8F93\u5165\uFF0C\u672C\u5730\u5DE5\u5177\u9010\u5F20\u5904\u7406\u3002");
     if (stage.local !== void 0) frozenPlans.set(index, await frozenLocalPlan(stage.local, deps));
   }
   const taskName = raw.taskName === void 0 ? "\u56FE\u7247\u6DF7\u5408\u4EFB\u52A1" : mixedText(raw.taskName, "taskName", 100);
@@ -58474,7 +58584,7 @@ async function compileNativeMixedTask(raw, deps) {
   for (const [order2, rawStage] of normalizedStages.entries()) {
     deps.signal?.throwIfAborted();
     const stage = object4(rawStage, `stages[${order2}]`);
-    exactKeys(stage, ["id", "name", "source", "skill", "generation", "local"], `stages[${order2}]`);
+    exactKeys(stage, ["id", "name", "source", "grouping", "skill", "generation", "local"], `stages[${order2}]`);
     const id3 = mixedText(stage.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
     if (ids2.has(id3)) mixedFail("\u6DF7\u5408\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     ids2.add(id3);
@@ -58516,24 +58626,49 @@ async function compileNativeMixedTask(raw, deps) {
         skillSource: skill.source,
         skillFolder: skill.favoriteFolder,
         skillStrategy: skill.strategy,
+        imageGrouping: parseImageGrouping(stage.grouping),
         processingPlan: [],
         ...generation
       }, { ...compileDeps, sourceOccurrences: selected.map((row) => ({ id: row.pricingAssetId, name: row.name })) });
       const childItems = child.items;
-      if (childItems.length !== selected.length || items.length + childItems.length > 100) mixedFail("\u6DF7\u5408\u4EFB\u52A1 AI \u751F\u6210\u9879\u6570\u65E0\u6548\u3002");
+      const groups = child.inputGroups;
+      if (childItems.length !== groups.length || items.length + childItems.length > 100) mixedFail("\u6DF7\u5408\u4EFB\u52A1 AI \u751F\u6210\u9879\u6570\u65E0\u6548\u3002");
       const itemIndexes = [];
       for (const [position, childItem] of childItems.entries()) {
-        const itemIndex = items.length, binding = selected[position].binding;
+        const itemIndex = items.length;
+        const bindings = groups[position].map((sourceIndex) => selected[sourceIndex].binding);
         const item = { ...structuredClone(childItem), stage: { id: id3, label, order: order2 } };
-        if (binding.kind === "ai") item.dependsOn = { itemIndex: binding.itemIndex, outputIndex: binding.outputIndex, referenceIndex: 0 };
-        if (binding.kind === "local") item.localDependency = { stageId: binding.stageId, outputIndex: binding.outputIndex, referenceIndex: 0 };
+        const dependencies = bindings.flatMap((binding, referenceIndex) => binding.kind === "root" ? [] : binding.kind === "ai" ? [{ kind: "ai", itemIndex: binding.itemIndex, outputIndex: binding.outputIndex, referenceIndex }] : [{ kind: "local", stageId: binding.stageId, outputIndex: binding.outputIndex, referenceIndex }]);
+        if (bindings.length === 1 && dependencies.length === 1) {
+          const { kind, ...dependency } = dependencies[0];
+          if (kind === "ai") item.dependsOn = dependency;
+          else item.localDependency = dependency;
+        } else if (dependencies.length) item.referenceDependencies = dependencies;
         items.push(item);
         itemIndexes.push(itemIndex);
       }
-      const planStage = { id: id3, label, order: order2, kind: "ai", sourceBindings: selected.map((row) => row.binding), itemIndexes, outputCount: childItems.length };
+      const planStage = {
+        id: id3,
+        label,
+        order: order2,
+        kind: "ai",
+        sourceBindings: selected.map((row) => row.binding),
+        itemIndexes,
+        outputCount: childItems.length,
+        ...stage.grouping === void 0 ? {} : { sourceGroups: groups }
+      };
       stages.push(planStage);
-      occurrences.set(id3, selected.map((row, position) => ({ binding: { kind: "ai", stageId: id3, itemIndex: itemIndexes[position], outputIndex: 0, name: row.name }, pricingAssetId: row.pricingAssetId, name: row.name, mediaKind: "image" })));
+      occurrences.set(id3, childItems.map((item, position) => {
+        const first = selected[groups[position][0]], name2 = String(item.sourceName);
+        return {
+          binding: { kind: "ai", stageId: id3, itemIndex: itemIndexes[position], outputIndex: 0, name: name2 },
+          pricingAssetId: first.pricingAssetId,
+          name: name2,
+          mediaKind: "image"
+        };
+      }));
     } else {
+      if (parseImageGrouping(stage.grouping).mode !== "single") mixedFail("\u56FE\u7247\u5206\u7EC4\u7528\u4E8E AI \u591A\u53C2\u8003\u56FE\u8F93\u5165\uFF1B\u672C\u5730\u5DE5\u5177\u6309\u771F\u5B9E\u56FE\u7247\u9010\u5F20\u5904\u7406\u3002");
       if (selected.some((row) => row.mediaKind === "file")) mixedFail(`\u9636\u6BB5 ${id3} \u4E0D\u80FD\u628A PDF \u6216\u5176\u4ED6\u6587\u4EF6\u4F5C\u4E3A\u56FE\u7247\u5DE5\u5177\u8F93\u5165\u3002`);
       const processingSteps = frozenPlans.get(order2), terminalOutputs = localTerminalOutputs(processingSteps);
       const multiplier = terminalOutputs.reduce((sum, value2) => sum + value2.factor, 0);
@@ -58789,11 +58924,14 @@ function generationStatusAttention(value2) {
   const blockedByDependency = (index, visiting = /* @__PURE__ */ new Set()) => {
     const item = items[index];
     if (!item || directlyBlocked(item)) return !!item;
-    if (item.status !== "quoted" || !item.dependsOn || typeof item.dependsOn !== "object") return false;
-    const parentIndex = Number(item.dependsOn.itemIndex);
-    if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
-    visiting.add(parentIndex);
-    return blockedByDependency(parentIndex, visiting);
+    if (item.status !== "quoted") return false;
+    const dependencies = Array.isArray(item.referenceDependencies) ? item.referenceDependencies : item.dependsOn && typeof item.dependsOn === "object" ? [item.dependsOn] : [];
+    return dependencies.some((dependency) => {
+      if (!dependency || typeof dependency !== "object" || dependency.kind === "local") return false;
+      const parentIndex = Number(dependency.itemIndex);
+      if (!Number.isInteger(parentIndex) || parentIndex < 0 || parentIndex >= items.length || visiting.has(parentIndex)) return false;
+      return blockedByDependency(parentIndex, /* @__PURE__ */ new Set([...visiting, parentIndex]));
+    });
   };
   const blocked = items.filter(directlyBlocked);
   const hasRunnablePending = items.some((item, index) => ["quoted", "submitting", "submitted"].includes(String(item.status ?? "")) && !blockedByDependency(index));
@@ -58852,12 +58990,12 @@ var schema = external_exports2.union([stateV2, stateV1]).transform((value2) => v
     items: row.skills.map((skill) => ({ type: "skill", ...skill }))
   }))
 });
-var fail3 = (code, message) => {
+var fail4 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 function parse6(type, input) {
   const result = type.safeParse(input);
-  return result.success ? result.data : fail3("INVALID_ARGUMENT", "\u6536\u85CF\u6587\u4EF6\u5939\u6216\u5907\u6CE8\u53C2\u6570\u65E0\u6548\u3002");
+  return result.success ? result.data : fail4("INVALID_ARGUMENT", "\u6536\u85CF\u6587\u4EF6\u5939\u6216\u5907\u6CE8\u53C2\u6570\u65E0\u6548\u3002");
 }
 var LocalFavoriteOrganization = class {
   store;
@@ -58895,8 +59033,8 @@ var LocalFavoriteOrganization = class {
   create(ownerId, rawName, guard) {
     const value2 = parse6(name, rawName);
     return this.change(ownerId, (row) => {
-      if (row.folders.some((folder2) => folder2.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail3("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      if (row.folders.length >= 100) fail3("FAVORITE_FOLDER_LIMIT", "\u6536\u85CF\u6587\u4EF6\u5939\u6570\u91CF\u5DF2\u8FBE\u4E0A\u9650\u3002");
+      if (row.folders.some((folder2) => folder2.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail4("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (row.folders.length >= 100) fail4("FAVORITE_FOLDER_LIMIT", "\u6536\u85CF\u6587\u4EF6\u5939\u6570\u91CF\u5DF2\u8FBE\u4E0A\u9650\u3002");
       const folder = { id: randomUUID11(), name: value2 };
       row.folders.push(folder);
       return { folder };
@@ -58906,8 +59044,8 @@ var LocalFavoriteOrganization = class {
     const folderId = parse6(external_exports2.string().uuid(), rawId), value2 = parse6(name, rawName);
     return this.change(ownerId, (row) => {
       const folder = row.folders.find((item) => item.id === folderId);
-      if (!folder) return fail3("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
-      if (row.folders.some((item) => item.id !== folderId && item.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail3("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (!folder) return fail4("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (row.folders.some((item) => item.id !== folderId && item.name.toLocaleLowerCase() === value2.toLocaleLowerCase())) fail4("FAVORITE_FOLDER_EXISTS", "\u5DF2\u6709\u540C\u540D\u6536\u85CF\u6587\u4EF6\u5939\u3002");
       folder.name = value2;
       return { folder };
     }, guard);
@@ -58915,7 +59053,7 @@ var LocalFavoriteOrganization = class {
   delete(ownerId, rawId, guard) {
     const folderId = parse6(external_exports2.string().uuid(), rawId);
     return this.change(ownerId, (row) => {
-      if (!row.folders.some((item) => item.id === folderId)) return fail3("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (!row.folders.some((item) => item.id === folderId)) return fail4("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
       let movedItemCount = 0, movedSkillCount = 0;
       for (const item of row.items) if (item.folderId === folderId) {
         item.folderId = null;
@@ -58930,7 +59068,7 @@ var LocalFavoriteOrganization = class {
   update(ownerId, input, guard) {
     const value2 = parse6(compatibleUpdate, input);
     return this.change(ownerId, (row) => {
-      if (value2.folderId && !row.folders.some((item) => item.id === value2.folderId)) fail3("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
+      if (value2.folderId && !row.folders.some((item) => item.id === value2.folderId)) fail4("FAVORITE_FOLDER_NOT_FOUND", "\u6CA1\u6709\u627E\u5230\u8BE5\u6536\u85CF\u6587\u4EF6\u5939\u3002");
       const previous = row.items.find((item) => item.type === value2.type && item.id === value2.id);
       const updated = {
         type: value2.type,
@@ -58957,7 +59095,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.23",
+  version: "0.1.24",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -59076,6 +59214,9 @@ function taskDiagnostics(task) {
 }
 
 // plugins/podplo-dsh/src/generation-state.ts
+function generationReferenceDependencies(item) {
+  return item.referenceDependencies ?? (item.dependsOn ? [{ kind: "ai", ...item.dependsOn }] : item.localDependency ? [{ kind: "local", ...item.localDependency }] : []);
+}
 var comparableGenerationItems = (items) => items.map((item) => ({
   ...item.skillId ? { skillId: item.skillId } : {},
   ...item.sourceName ? { sourceName: item.sourceName } : {},
@@ -59083,6 +59224,7 @@ var comparableGenerationItems = (items) => items.map((item) => ({
   ...item.stage ? { stage: item.stage } : {},
   ...item.dependsOn ? { dependsOn: item.dependsOn } : {},
   ...item.localDependency ? { localDependency: item.localDependency } : {},
+  ...item.referenceDependencies ? { referenceDependencies: item.referenceDependencies } : {},
   args: item.args
 }));
 function record5(value2, label) {
@@ -59110,7 +59252,7 @@ function generationAudit(row) {
   return audit;
 }
 function estimatedFinalOutputCount(row) {
-  const dependedOn = new Set(row.items.flatMap((item) => item.dependsOn ? [item.dependsOn.itemIndex] : []));
+  const dependedOn = new Set(row.items.flatMap((item) => generationReferenceDependencies(item).flatMap((dep) => dep.kind === "ai" ? [dep.itemIndex] : [])));
   const leafItems = new Set(row.items.map((_, index) => index).filter((index) => !dependedOn.has(index)));
   if (!row.processingPlan?.length) return [...leafItems].reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
   const stepCounts = /* @__PURE__ */ new Map(), consumedItems = /* @__PURE__ */ new Set();
@@ -59144,13 +59286,14 @@ function safeOperation2(row) {
       aiOutputCount: items.reduce((sum, item) => sum + item.quote.outputCount, 0),
       credits: items.reduce((sum, item) => sum + item.quote.totalCredits, 0),
       models: [...new Set(items.flatMap((item) => item.modelName ? [item.modelName] : []))],
-      ecoMode: items.some((item) => item.args.ecoMode === true)
+      ecoMode: items.some((item) => item.args.ecoMode === true),
+      inputGroupSizes: items.map((item) => Array.isArray(item.args.referenceAssetIds) ? item.args.referenceAssetIds.length : 0)
     };
   });
   const processingSummary = row.mixedPlan ? row.mixedPlan.stages.filter((stage) => stage.kind === "local").map((stage) => stage.label).join(" \u2192 ") : row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
   const referenced = new Set(row.mixedPlan?.stages.flatMap((stage) => stage.sourceBindings.flatMap((source) => source.kind === "root" ? [] : [source.stageId])) ?? []);
   const finalOutputCount = row.mixedPlan ? row.mixedPlan.stages.filter((stage) => !referenced.has(stage.id)).reduce((sum, stage) => sum + stage.outputCount, 0) : estimatedFinalOutputCount(row);
-  const stageText = stages.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
+  const stageText = stages.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.inputGroupSizes.some((size2) => size2 > 1) ? `\uFF0C\u5206\u7EC4\u8F93\u5165 ${stage.inputGroupSizes.join("/")} \u5F20` : "") + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
   const workflowText = row.mixedPlan ? row.mixedPlan.stages.map((stage) => stage.kind === "local" ? `${stage.label}\uFF1A\u672C\u5730\u52A0\u5DE5\uFF0C\u9884\u8BA1 ${stage.outputCount} \u4E2A\u4EA7\u7269` : stages.find((value2) => value2.id === stage.id) ? `${stage.label}\uFF1AAI ${stage.outputCount} \u5F20` : stage.label).join(" \u2192 ") + "\uFF1B" : "";
   const confirmationText = `${workflowText}${stageText}\u3002\u6574\u5355\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0CAI \u8F93\u51FA ${summary.outputCount} \u5F20` + (processingSummary ? `\uFF1B\u672C\u5730\u52A0\u5DE5 ${processingSummary}\uFF0C\u9884\u8BA1\u6210\u54C1 ${finalOutputCount} \u5F20\uFF08\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1\u79EF\u5206\uFF09` : "") + "\u3002";
   return {
@@ -59186,6 +59329,7 @@ function safeOperation2(row) {
       ...item.modelName ? { modelName: item.modelName } : {},
       ...item.stage ? { stage: structuredClone(item.stage) } : {},
       ...item.dependsOn ? { dependsOn: structuredClone(item.dependsOn) } : {},
+      ...item.referenceDependencies ? { referenceDependencies: structuredClone(item.referenceDependencies) } : {},
       status: item.status,
       totalCredits: item.approvedCredits ?? item.quote.totalCredits,
       outputCount: item.approvedOutputCount ?? item.quote.outputCount,
@@ -59197,7 +59341,7 @@ function safeOperation2(row) {
         requiresManualStatusRefresh: true,
         userAction: item.statusBlocked.kind === "authorization" ? "\u8BF7\u91CD\u65B0\u767B\u5F55\u6216\u6062\u590D\u751F\u56FE\u6743\u9650\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002" : "\u8BF7\u6838\u5BF9 PodPlo \u8FDE\u63A5\u6216\u66F4\u65B0\u670D\u52A1\u540E\u624B\u52A8\u5237\u65B0\uFF1B\u6B64\u9879\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002"
       } : {},
-      ...!item.retry && item.status === "quoted" && item.dependsOn && ["quoted", "submitting", "submitted"].includes(row.items[item.dependsOn.itemIndex]?.status ?? "") ? { waitReason: "dependency" } : {},
+      ...!item.retry && item.status === "quoted" && generationReferenceDependencies(item).some((dep) => dep.kind === "local" || ["quoted", "submitting", "submitted"].includes(row.items[dep.itemIndex]?.status ?? "")) ? { waitReason: "dependency" } : {},
       ...!item.retry && !item.statusBlocked && item.status === "submitted" ? { waitReason: "remote_generation" } : {},
       ...item.status === "submission_unknown" ? {
         waitReason: "manual_reconciliation",
@@ -59294,14 +59438,15 @@ ROUTING: AI Skill work and deterministic local tool/preset processing are equal 
 
 INTENT: Treat the user's words and the selected PodPlo Skill/tool/preset as authoritative. Do not create, rewrite, expand, translate or optimize prompts. Do not add composition, style, identity, dimensions, model, quality, processing steps or a different order. Reuse exact user instructions and Skill/Host-supplied prompt content. Apply only the named tools/preset, in the requested order.
 
-EXECUTE WHEN CLEAR: When the image range and requested tool/preset/order are clear (plus one uniquely matching Skill only for an AI stage), resolve exact catalog bindings and call the PodPlo tool immediately. Do not ask for optional composition, dimensions, model, ratio or quality merely to fill fields. Use a parameter only when it came from the user, the selected Skill, the selected tool/preset, or an explicit default in the authoritative current schema. Never guess a required value or paid scope. Ask one consolidated question only when execution is genuinely blocked by a missing or conflicting image range, Skill identity, tool/preset identity, call order, or required parameter with no authoritative default. Resolve a unique exact catalog match without asking. Ask once for real duplicates, absence or conflicts; do not reconfirm clear information or a path already confirmed by an answered native question. Choices are neutral unless the user asks for a recommendation.
+EXECUTE WHEN CLEAR: Execute once image range, tool/preset/order and (for AI) Skill are clear. Resolve a unique exact catalog match without asking. Do not ask for optional composition, dimensions, model, ratio or quality. Use user, Skill, tool/preset or authoritative-schema values only; omit unspecified optional generation fields for Host defaults. Ask one consolidated question only when execution is genuinely blocked by missing/conflicting range, Skill, tools/order or a required value without a default. Do not reconfirm answered paths. Choices stay neutral unless recommendations are requested.
 
-LOCAL FOLDERS: Use podplo_prepare_task with source.folderPath for user-supplied folders. For local-only processing, pass local.presetPath or exact local actions and OMIT skill and generation; do not search the Skill catalog or request an AI stage. Use the plan\u2019s taskName and stage name for History and folders. Set skill.source="personal" for \u6211\u7684 Skill. The Host resolves the folder and preset; do not call read_image, Bash/shell, list files, search source code, read/rewrite preset JSON, inspect individual images, invent IDs or reimplement the pipeline. Put every requested stage in stages, with source.fromStage for dependencies and local.presetPath for a saved preset. The Host executes a local-only task directly, with no AI quote, model call, generation or credit charge. For AI work it freezes all Skill bindings and parameters, quotes the complete AI graph once, requests one approval, then continues it automatically. Use random-per-image-reuse for ordinary per-image random selection that may repeat family members; use random-per-image only when the user explicitly requires no repeats. Additional instructions are optional: omit them when the Skill already defines the task; never invent content to fill the field.
+LOCAL FOLDERS: Use podplo_prepare_task with source.folderPath. For local-only work pass local.presetPath or exact local actions and OMIT skill and generation; no Skill lookup. The Host resolves the folder and preset; do not call read_image, Bash/shell, list files, search source code, read/rewrite presets or invent IDs. Put every requested stage in stages; source.fromStage consumes previous outputs. Use taskName/name for History and skill.source="personal" for \u6211\u7684 Skill. For AI, the Host freezes bindings/parameters, quotes the complete AI graph once, requests one approval, then runs dependencies automatically.
+Image grouping is separate from Skill choice: grouping={mode:"random",size:2} pairs images; sequential+size preserves order, all combines all inputs, explicit+groups specifies combinations. Each group is one generation; strategy=single keeps one Skill. Odd remainders require clarification; remainder=keep needs explicit user intent. Skill random-per-image-reuse permits repeated family/folder members per group; random-per-image requires no repeats. Extra instructions remain optional and verbatim.
 
 FAVORITES: User-private remarks and favorite folders never change the original Skill title or ID. Use read-only podplo_list_favorite_skills to locate a unique exact remark/title/slug, then podplo_get_skill with the returned slug for current binding. For random selection across independent Skills in one exact favorite folder, set skill.query and skill.favoriteFolder to that same exact folder name; otherwise query the exact Skill or family as before. Conflicting exact matches require one clarification.
 PROMPT BOUNDARY: Send only explicit user extra rules verbatim; use an empty prompt/instructions when absent. Public Skill metadata is for selection, never user rules. The server alone assembles Skill text.
 
-OTHER INPUTS: For current-chat or cloud images, reuse the existing session reference IDs in podplo_prepare_task source.referenceIds; do not inspect them again. Submit every requested stage once, preserving every user-supplied generation choice and local action. On a definitive nonretryable validation or policy failure, report it and stop until a new user message; do not drop parameters or stages, probe with a partial task, or try another entry point. Do not scan private storage.
+OTHER INPUTS: For current-chat or cloud images, reuse the existing session reference IDs in podplo_prepare_task source.referenceIds; do not inspect them again. Submit every requested stage once, preserving every user-supplied generation choice and local action. If a tool error explicitly marks correctableBeforeConfirmation, correct only its parameter representation while preserving the full user-requested image range, grouping, stages, Skill, model and Eco choices, then retry the complete task. Ask once if the intended correction is ambiguous; do not guess away constraints. Authorization/policy failures, a prepared confirmation, rejected/cancelled approval or begun execution remain locked: report and stop. Never drop requirements, probe with a partial task or switch entry points to bypass validation. Do not scan private storage.
 
 APPROVAL AND COMPLETION: Necessary file authorization and explicit deletion confirmation remain required. The one native credit approval is required only when the task includes AI generation. The approval ceiling covers the complete declared AI workflow; local deterministic outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected or cancelled ends the attempt without retry. If nativeApproval is unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask whether approval was clicked or ask for a second confirmation. After approval the Host performs all dependent generation, download and registered local processing without another model call. Report factual status only: do not inspect or judge quality, change prompts/parameters/plans, add tools, retry paid work, regenerate, re-quote or switch to an alternative workflow. Reuse operation IDs after uncertain submission. In IM, wait with podplo_wait_generation and return only verified files through the native delivery tools; returned files are queued for delivery, so never claim the recipient received them. A technical failure is reported as a failure.
 
@@ -59310,7 +59455,7 @@ var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u7F16\u6392\u4E24\u79CD\u5E73\u7EA7\u4E
 
 \u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u53EA\u6709 AI \u9636\u6BB5\u624D\u8981\u6C42\u552F\u4E00\u5339\u914D\u7684 Skill\u3002\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u7EAF\u5DE5\u5177\u9636\u6BB5\u53EA\u4F20 local\uFF0C\u4E0D\u4F20 skill \u6216 generation\uFF1B\u7528 taskName \u548C\u9636\u6BB5 name \u6807\u660E\u4EFB\u52A1\u89C4\u5212\u540D\u79F0\u3002\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u9047\u5230\u660E\u786E\u4E0D\u53EF\u91CD\u8BD5\u7684\u6821\u9A8C\u6216\u7B56\u7565\u5931\u8D25\u65F6\u7ACB\u5373\u62A5\u544A\u5E76\u505C\u6B62\uFF0C\u7B49\u5F85\u65B0\u7684\u7528\u6237\u6D88\u606F\uFF1B\u4E0D\u5220\u53C2\u6570\u6216\u9636\u6BB5\u3001\u4E0D\u7F29\u6210\u5C40\u90E8\u4EFB\u52A1\u8BD5\u63A2\u3001\u4E0D\u6362\u5165\u53E3\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u76F4\u63A5\u672C\u5730\u6267\u884C\uFF0C\u4E0D\u62A5\u4EF7\u3001\u4E0D\u751F\u56FE\u3001\u4E0D\u8C03\u7528\u6A21\u578B\u3001\u4E0D\u6263 AI \u79EF\u5206\uFF1B\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF0C\u5305\u62EC\u540E\u7EED\u8FD8\u4F1A\u4F7F\u7528\u7684\u751F\u6210\u56FE\u548C\u52A0\u5DE5\u56FE\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u4EFB\u52A1\u603B\u7ED3\u548C\u6700\u7EC8\u56DE\u590D\u53EA\u5199\u7B80\u77ED\u7684\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u7EAF\u5DE5\u5177\u9636\u6BB5\u53EA\u4F20 local\uFF0C\u4E0D\u4F20 skill \u6216 generation\uFF1B\u7528 taskName \u548C\u9636\u6BB5 name \u6807\u660E\u4EFB\u52A1\u89C4\u5212\u540D\u79F0\u3002\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u56FE\u7247\u5206\u7EC4\u4E0E Skill \u5206\u914D\u72EC\u7ACB\uFF1A\u4E24\u4E24\u968F\u673A\u7EC4\u5408\u7528\u9636\u6BB5 grouping={mode:"random",size:2}\uFF1B\u987A\u5E8F\u5206\u7EC4\u7528 sequential+size\uFF0C\u5168\u90E8\u5171\u540C\u8F93\u5165\u7528 all\uFF0C\u660E\u786E\u7EC4\u5408\u7528 explicit+groups\uFF08\u9009\u4E2D\u8303\u56F4\u5185\u96F6\u57FA\u7D22\u5F15\uFF09\u3002\u6BCF\u7EC4\u662F\u4E00\u6B21\u591A\u53C2\u8003\u56FE\u751F\u6210\uFF1B\u56FA\u5B9A\u6536\u85CF Skill \u4ECD\u7528 strategy=single\uFF0C\u968F\u673A Skill \u7B56\u7565\u6309\u7EC4\u5206\u914D\u3002\u4F59\u56FE\u9ED8\u8BA4\u62A5\u9519\uFF0C\u4E0D\u9057\u6F0F\u3001\u4E0D\u64C5\u81EA\u91CD\u590D\uFF1B\u4EC5\u7528\u6237\u660E\u786E\u5141\u8BB8\u624D\u7528 remainder=keep\u3002\u540E\u7EED\u52A0\u5DE5\u5BF9\u5404\u7EC4\u5B9E\u9645\u751F\u6210\u56FE\u6267\u884C\uFF0C\u540E\u7EE7\u9636\u6BB5\u7528 fromStage\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u4EC5\u5F53\u9519\u8BEF\u660E\u786E\u6807\u8BB0 correctableBeforeConfirmation \u65F6\uFF0C\u5141\u8BB8\u4FDD\u6301\u5B8C\u6574\u7528\u6237\u8303\u56F4\u3001\u5206\u7EC4\u3001\u9636\u6BB5\u53CA\u663E\u5F0F\u6A21\u578B/Eco\u7B49\u8981\u6C42\uFF0C\u4FEE\u6B63\u53C2\u6570\u8868\u793A\u540E\u91CD\u8BD5\u6574\u5355\uFF1B\u542B\u4E49\u4E0D\u660E\u786E\u5219\u96C6\u4E2D\u6F84\u6E05\u3002\u6743\u9650/\u7B56\u7565\u9519\u8BEF\u3001\u62A5\u4EF7\u8FDB\u5165\u786E\u8BA4\u3001\u7528\u6237\u62D2\u7EDD/\u53D6\u6D88\u6216\u5F00\u59CB\u6267\u884C\u540E\u4ECD\u9501\u5B9A\uFF0C\u4E0D\u5220\u8981\u6C42\u3001\u4E0D\u964D\u914D\u3001\u4E0D\u5C40\u90E8\u8BD5\u5355\u3001\u4E0D\u6362\u5165\u53E3\u7ED5\u8FC7\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u76F4\u63A5\u672C\u5730\u6267\u884C\uFF0C\u4E0D\u62A5\u4EF7\u3001\u4E0D\u751F\u56FE\u3001\u4E0D\u8C03\u7528\u6A21\u578B\u3001\u4E0D\u6263 AI \u79EF\u5206\uFF1B\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF0C\u5305\u62EC\u540E\u7EED\u8FD8\u4F1A\u4F7F\u7528\u7684\u751F\u6210\u56FE\u548C\u52A0\u5DE5\u56FE\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u4EFB\u52A1\u603B\u7ED3\u548C\u6700\u7EC8\u56DE\u590D\u53EA\u5199\u7B80\u77ED\u7684\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
 Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill only for AI stages, or the lookup needed to resolve it (a local tool/preset requires no Skill); the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary only when AI generation is included. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
@@ -59422,8 +59567,7 @@ function generationArgs(item, preservePrompt) {
   delete args.visibility;
   if (!preservePrompt && typeof args.prompt === "string") args.prompt = args.prompt.trim();
   const references = Array.isArray(args.referenceAssetIds) ? args.referenceAssetIds.filter((value2) => typeof value2 === "string") : [];
-  const dependency = item.localDependency ?? item.dependsOn;
-  if (dependency) references.splice(dependency.referenceIndex, 1);
+  for (const dependency of [...generationReferenceDependencies(item)].sort((a, b) => b.referenceIndex - a.referenceIndex)) references.splice(dependency.referenceIndex, 1);
   args.referenceAssetIds = references;
   args.webSearch = args.webSearch === true;
   args.imageSearch = args.imageSearch === true;
@@ -59432,9 +59576,8 @@ function generationArgs(item, preservePrompt) {
 }
 function buildGenerationOrder(input) {
   const processing = input.mixedPlan ? { version: 2, mixedPlan: input.mixedPlan } : structuredClone(input.processingPlan ?? []);
-  const localSlots = (item) => {
-    const dependency = item.localDependency;
-    if (!dependency || !input.mixedPlan) return [];
+  const localSlot = (dependency) => {
+    if (!input.mixedPlan) throw new Error("Missing frozen local task plan");
     const sourceItems = [], sourceAssetIds = [];
     const visit = (stageId, outputIndex, seen = /* @__PURE__ */ new Set()) => {
       const key = `${stageId}:${outputIndex}`;
@@ -59452,16 +59595,16 @@ function buildGenerationOrder(input) {
       } else visit(binding.stageId, binding.outputIndex, seen);
     };
     visit(dependency.stageId, dependency.outputIndex);
-    return [{ kind: "local", ...dependency, planDigest: generationOrderDigest(processing), sourceItems, sourceAssetIds }];
+    return { kind: "local", ...dependency, planDigest: generationOrderDigest(processing), sourceItems, sourceAssetIds };
   };
   const items = input.items.map((item) => ({
     itemId: item.itemId,
     generation: generationArgs(item, input.preservePrompt === true),
-    referenceSlots: item.dependsOn ? [{
-      itemId: input.items[item.dependsOn.itemIndex].itemId,
-      outputIndex: item.dependsOn.outputIndex,
-      referenceIndex: item.dependsOn.referenceIndex
-    }] : localSlots(item),
+    referenceSlots: generationReferenceDependencies(item).map((dependency) => dependency.kind === "ai" ? {
+      itemId: input.items[dependency.itemIndex].itemId,
+      outputIndex: dependency.outputIndex,
+      referenceIndex: dependency.referenceIndex
+    } : localSlot(dependency)).sort((a, b) => a.referenceIndex - b.referenceIndex),
     processingPlan: structuredClone(processing),
     localCredits: item.approvedCredits ?? item.quote.totalCredits
   }));
@@ -60722,21 +60865,25 @@ var PodploPluginService = class extends EventEmitter2 {
   }
   assertMixedItems(plan, items) {
     if (!plan) {
-      if (items.some((item) => item.localDependency)) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u672C\u5730\u4F9D\u8D56\u7F3A\u5C11\u5B8C\u6574\u51BB\u7ED3\u65B9\u6848\u3002");
+      if (items.some((item) => generationReferenceDependencies(item).some((dep) => dep.kind === "local"))) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u672C\u5730\u4F9D\u8D56\u7F3A\u5C11\u5B8C\u6574\u51BB\u7ED3\u65B9\u6848\u3002");
       return;
     }
     const covered = /* @__PURE__ */ new Set();
     for (const stage of plan.stages.filter((stage2) => stage2.kind === "ai")) {
-      if (stage.kind !== "ai" || stage.itemIndexes.length !== stage.sourceBindings.length) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u9636\u6BB5\u6570\u91CF\u4E0E\u6765\u6E90\u4E0D\u4E00\u81F4\u3002");
+      if (stage.kind !== "ai") continue;
+      const groups = stage.sourceGroups ?? stage.sourceBindings.map((_, index) => [index]);
       for (const [position, index] of stage.itemIndexes.entries()) {
-        const item = items[index], source = stage.sourceBindings[position];
-        if (!item || covered.has(index) || item.stage?.id !== stage.id || item.args.count !== 1)
-          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u9636\u6BB5\u4E0E\u6574\u5355\u9879\u76EE\u4E0D\u4E00\u81F4\u3002");
+        const item = items[index], sources = groups[position].map((sourceIndex) => stage.sourceBindings[sourceIndex]);
+        if (!item || covered.has(index) || item.stage?.id !== stage.id || item.args.count !== 1 || !Array.isArray(item.args.referenceAssetIds) || item.args.referenceAssetIds.length !== sources.length)
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u9636\u6BB5\u4E0E\u6574\u5355\u9879\u76EE\u6216\u53C2\u8003\u56FE\u6570\u91CF\u4E0D\u4E00\u81F4\u3002");
         covered.add(index);
-        if (source.kind === "local" && (!item.localDependency || item.localDependency.stageId !== source.stageId || item.localDependency.outputIndex !== source.outputIndex) || source.kind !== "local" && item.localDependency)
-          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u672C\u5730\u7ED3\u679C\u5F15\u7528\u4E0E\u51BB\u7ED3\u65B9\u6848\u4E0D\u4E00\u81F4\u3002");
-        if (source.kind === "ai" && (!item.dependsOn || item.dependsOn.itemIndex !== source.itemIndex || item.dependsOn.outputIndex !== source.outputIndex) || source.kind !== "ai" && item.dependsOn)
-          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u7ED3\u679C\u5F15\u7528\u4E0E\u51BB\u7ED3\u65B9\u6848\u4E0D\u4E00\u81F4\u3002");
+        const expected = sources.flatMap((source, referenceIndex) => source.kind === "root" ? [] : source.kind === "ai" ? [{ kind: "ai", itemIndex: source.itemIndex, outputIndex: source.outputIndex, referenceIndex }] : [{ kind: "local", stageId: source.stageId, outputIndex: source.outputIndex, referenceIndex }]);
+        if (!isDeepStrictEqual(generationReferenceDependencies(item), expected))
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u7ED3\u679C\u5F15\u7528\u4E0E\u51BB\u7ED3\u5206\u7EC4\u65B9\u6848\u4E0D\u4E00\u81F4\u3002");
+        sources.forEach((source, referenceIndex) => {
+          if (source.kind === "root" && item.args.referenceAssetIds[referenceIndex] !== source.assetId)
+            throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u6839\u56FE\u5F15\u7528\u4E0E\u51BB\u7ED3\u5206\u7EC4\u65B9\u6848\u4E0D\u4E00\u81F4\u3002");
+        });
       }
     }
     if (covered.size !== items.length) throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u6DF7\u5408\u4EFB\u52A1\u6F0F\u8BB0\u4E86 AI \u9879\u76EE\u3002");
@@ -60874,6 +61021,24 @@ var PodploPluginService = class extends EventEmitter2 {
         if (!/^[A-Za-z0-9_-]+$/u.test(id2)) throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].stage.id \u65E0\u6548`);
         stage = { id: id2, label: text3(rawStage.label, "stage.label", 80), order: Number(rawStage.order) };
       }
+      let referenceDependencies;
+      if (item.referenceDependencies !== void 0) {
+        if (item.dependsOn !== void 0 || item.localDependency !== void 0 || !Array.isArray(item.referenceDependencies) || !item.referenceDependencies.length || item.referenceDependencies.length > 14)
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u591A\u53C2\u8003\u56FE\u4F9D\u8D56\u4E0D\u80FD\u4E0E\u65E7\u5355\u69FD\u4F9D\u8D56\u6DF7\u7528\u3002");
+        const slots = /* @__PURE__ */ new Set();
+        referenceDependencies = item.referenceDependencies.map((raw2) => {
+          const dep = record6(raw2, "referenceDependencies");
+          if (!Number.isSafeInteger(dep.referenceIndex) || Number(dep.referenceIndex) < 0 || Number(dep.referenceIndex) > 13 || !Array.isArray(args.referenceAssetIds) || Number(dep.referenceIndex) >= args.referenceAssetIds.length || slots.has(Number(dep.referenceIndex)) || !Number.isSafeInteger(dep.outputIndex) || Number(dep.outputIndex) < 0 || Number(dep.outputIndex) > 399)
+            throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u591A\u53C2\u8003\u56FE\u4F9D\u8D56\u4F4D\u7F6E\u65E0\u6548\u6216\u91CD\u590D\u3002");
+          slots.add(Number(dep.referenceIndex));
+          const common = { outputIndex: Number(dep.outputIndex), referenceIndex: Number(dep.referenceIndex) };
+          if (dep.kind === "ai" && Object.keys(dep).every((key) => ["kind", "itemIndex", "outputIndex", "referenceIndex"].includes(key)) && Number.isSafeInteger(dep.itemIndex) && Number(dep.itemIndex) >= 0 && Number(dep.itemIndex) < index)
+            return { kind: "ai", itemIndex: Number(dep.itemIndex), ...common };
+          if (dep.kind === "local" && Object.keys(dep).every((key) => ["kind", "stageId", "outputIndex", "referenceIndex"].includes(key)) && typeof dep.stageId === "string" && /^[A-Za-z0-9_-]{1,40}$/u.test(dep.stageId))
+            return { kind: "local", stageId: dep.stageId, ...common };
+          throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u591A\u53C2\u8003\u56FE\u4F9D\u8D56\u5FC5\u987B\u5F15\u7528\u6709\u6548\u524D\u5E8F\u8F93\u51FA\u3002");
+        });
+      }
       let localDependency;
       if (item.localDependency !== void 0) {
         const dependency = record6(item.localDependency, `items[${index}].localDependency`);
@@ -60899,6 +61064,7 @@ var PodploPluginService = class extends EventEmitter2 {
           ...sourceName,
           ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
           ...stage ? { stage } : {},
+          ...referenceDependencies ? { referenceDependencies } : {},
           ...localDependency ? { localDependency } : {},
           ...dependsOn ? { dependsOn } : {},
           args: { ...args }
@@ -60911,6 +61077,7 @@ var PodploPluginService = class extends EventEmitter2 {
         ...sourceName,
         ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
         ...stage ? { stage } : {},
+        ...referenceDependencies ? { referenceDependencies } : {},
         ...localDependency ? { localDependency } : {},
         ...dependsOn ? { dependsOn } : {},
         args: { ...args, templateId: skillId }
@@ -60963,9 +61130,10 @@ var PodploPluginService = class extends EventEmitter2 {
         return value2;
       };
       const rawIds = [...parse8(primary, "referenceAssetIds"), ...parse8(compatibility, "imageIds")];
+      const dependent = generationReferenceDependencies(item).length > 0;
       if (item.dependsOn && new Set(rawIds).size !== rawIds.length)
         throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u7684\u5B9A\u4EF7\u53C2\u8003\u56FE\u4E0D\u80FD\u91CD\u590D\uFF0C\u4EE5\u514D\u4F9D\u8D56\u63D2\u69FD\u53D1\u751F\u504F\u79FB");
-      const ids2 = item.dependsOn ? rawIds : [...new Set(rawIds)];
+      const ids2 = dependent ? rawIds : [...new Set(rawIds)];
       if (ids2.length > 14) throw new PodploPluginError("INVALID_REFERENCE_ID", "\u6BCF\u9879\u6700\u591A\u4F7F\u7528 14 \u5F20\u53C2\u8003\u56FE");
       let resolved = ids2;
       if (ids2.length === 0) {
@@ -60978,7 +61146,7 @@ var PodploPluginService = class extends EventEmitter2 {
       }
       if (!Array.isArray(resolved) || resolved.length !== ids2.length || resolved.some((id2) => typeof id2 !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
         throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247\u3002");
-      args.referenceAssetIds = item.dependsOn ? [...resolved] : [...new Set(resolved)];
+      args.referenceAssetIds = dependent ? [...resolved] : [...new Set(resolved)];
       delete args.imageIds;
       if (item.dependsOn && item.dependsOn.referenceIndex >= args.referenceAssetIds.length)
         throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u7684\u5B9A\u4EF7\u53C2\u8003\u4F4D\u7F6E\u65E0\u6548");
@@ -61003,6 +61171,8 @@ var PodploPluginService = class extends EventEmitter2 {
     }
     if (mixedPlan && (!wholeOrder || capabilities2.supportsLocalGenerationOrderReferences !== true))
       throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u4E3B\u7AD9\u5C1A\u672A\u63D0\u4F9B\u53D7\u6279\u51C6\u7684\u672C\u5730\u7ED3\u679C\u4F9D\u8D56\u5408\u540C\uFF0C\u672A\u9884\u7559\u6216\u6267\u884C\u3002");
+    if (!wholeOrder && items.some((item) => item.referenceDependencies?.length))
+      throw new PodploPluginError("ORDER_RESERVATION_UNAVAILABLE", "\u591A\u53C2\u8003\u56FE\u4F9D\u8D56\u9700\u8981\u6574\u5355\u9884\u7559\u534F\u8BAE\uFF0C\u672A\u9000\u56DE\u9010\u9879\u63D0\u4EA4\u3002");
     const balance = wholeOrder ? await gateway.balance() : void 0;
     if (balance) await this.assertOwner(ownerId, true);
     const savedItems = [];
@@ -61083,12 +61253,11 @@ var PodploPluginService = class extends EventEmitter2 {
     if (!Number.isSafeInteger(savedItems.reduce((sum, item) => sum + item.quote.totalCredits, 0)) || !Number.isSafeInteger(savedItems.reduce((sum, item) => sum + item.quote.outputCount, 0))) {
       throw new PodploPluginError("INVALID_QUOTE_RESPONSE", "\u4E3B\u7AD9\u6574\u6279\u62A5\u4EF7\u8D85\u51FA\u5B89\u5168\u8303\u56F4");
     }
-    for (const item of savedItems) {
-      if (!item.dependsOn) continue;
-      const parent = savedItems[item.dependsOn.itemIndex];
-      if (!parent || item.dependsOn.outputIndex >= parent.quote.outputCount || !Array.isArray(item.args.referenceAssetIds) || item.dependsOn.referenceIndex >= item.args.referenceAssetIds.length) {
+    for (const item of savedItems) for (const dependency of generationReferenceDependencies(item)) {
+      if (dependency.kind !== "ai") continue;
+      const parent = savedItems[dependency.itemIndex];
+      if (!parent || dependency.outputIndex >= parent.quote.outputCount || !Array.isArray(item.args.referenceAssetIds) || dependency.referenceIndex >= item.args.referenceAssetIds.length)
         throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "\u540E\u7EE7\u751F\u56FE\u5F15\u7528\u4E86\u6B63\u5F0F\u62A5\u4EF7\u4E2D\u4E0D\u5B58\u5728\u7684\u8F93\u51FA\u6216\u53C2\u8003\u4F4D\u7F6E");
-      }
     }
     this.assertQuotedOutputCount(savedItems, expectedOutputCount);
     await this.assertProcessingPlanAuthorized(ownerId, processingPlan);
@@ -61239,12 +61408,37 @@ var PodploPluginService = class extends EventEmitter2 {
       if (!operation || !item || item.status !== "quoted") continue;
       const reservedOrder = !!operation.pricingVersion;
       let dependencyAssetId;
+      const dependencyAssets = /* @__PURE__ */ new Map();
       if (!this.retryDue(item)) continue;
       if (operation.stoppedAt || this.stoppedOperationIds.has(operationId2)) {
         await this.cancelRemainingItems(operationId2, ownerId, "NATIVE_SESSION_STOPPED");
         break;
       }
-      if (item.localDependency) {
+      if (item.referenceDependencies?.length) {
+        try {
+          if (item.referenceDependencies.some((dep) => dep.kind === "local")) await this.reconcileMixed(operationId2, ownerId);
+          operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
+          if (operation.mixedFailure) {
+            await this.failUnsubmittedItem(operationId2, ownerId, itemId, operation.mixedFailure);
+            continue;
+          }
+          let waiting = false, failure;
+          for (const dep of item.referenceDependencies) {
+            const resolved = dep.kind === "ai" ? this.dependencyResult(operation, { ...item, dependsOn: dep }) : operation.mixedRuntime && resolveMixedOutput(operation.mixedRuntime, dep.stageId, dep.outputIndex);
+            if (!resolved || resolved.status === "waiting") waiting = true;
+            else if (resolved.status === "failed") failure = "code" in resolved ? resolved.code : resolved.errorCode;
+            else dependencyAssets.set(dep.referenceIndex, resolved.assetId);
+          }
+          if (failure) {
+            await this.failUnsubmittedItem(operationId2, ownerId, itemId, failure);
+            continue;
+          }
+          if (waiting) continue;
+        } catch (error101) {
+          await this.failUnsubmittedItem(operationId2, ownerId, itemId, this.errorCode(error101));
+          continue;
+        }
+      } else if (item.localDependency) {
         try {
           await this.reconcileMixed(operationId2, ownerId);
           operation = this.store.snapshot().operations.find((row) => row.ownerId === ownerId && row.operationId === operationId2);
@@ -61373,6 +61567,7 @@ var PodploPluginService = class extends EventEmitter2 {
             resolvedReferenceAssetIds = item.args.referenceAssetIds.filter((value2) => typeof value2 === "string");
             const dependency = item.localDependency ?? item.dependsOn;
             if (dependency && dependencyAssetId) resolvedReferenceAssetIds[dependency.referenceIndex] = dependencyAssetId;
+            for (const [referenceIndex, assetId] of dependencyAssets) resolvedReferenceAssetIds[referenceIndex] = assetId;
           }
           result = await gateway.submitOrderItem({
             orderId: operation.reservation.orderId,
@@ -62519,7 +62714,7 @@ var MappingSchema = external_exports2.object({
   updatedAt: external_exports2.string().datetime()
 }).strict();
 var hash3 = (value2) => createHash12("sha256").update(value2).digest("hex");
-var fail4 = (code, message) => {
+var fail5 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var authorizationHash = (identity2) => hash3(`${identity2.ownerId}\0${identity2.namespace ?? ""}`);
@@ -62530,15 +62725,15 @@ function safeWebpName(value2) {
 }
 async function normalizeNativeReference(input) {
   const source = Buffer.from(input.bytes);
-  if (!source.length || source.length > MAX_INPUT_BYTES) fail4("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
+  if (!source.length || source.length > MAX_INPUT_BYTES) fail5("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
   let metadata;
   try {
     metadata = await sharp11(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
   } catch {
-    return fail4("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
+    return fail5("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
   }
   if (!metadata.width || !metadata.height || !["jpeg", "png", "webp"].includes(metadata.format ?? "") || metadata.width * metadata.height > MAX_INPUT_PIXELS || metadata.pages && metadata.pages > 1)
-    fail4("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
+    fail5("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u662F JPEG\u3001PNG \u6216 WebP \u5355\u5F20\u9759\u6001\u56FE\u7247\uFF0C\u4E14\u4E0D\u80FD\u8D85\u8FC7 40MP\u3002");
   const swaps = metadata.orientation !== void 0 && [5, 6, 7, 8].includes(metadata.orientation);
   const orientedWidth = swaps ? metadata.height : metadata.width;
   const orientedHeight = swaps ? metadata.width : metadata.height;
@@ -62557,10 +62752,10 @@ async function normalizeNativeReference(input) {
     scale *= Math.max(0.42, Math.min(0.88, ratio));
     quality = Math.max(38, quality - 7);
   }
-  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail4("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
+  if (!output.length || output.length > MAX_OUTPUT_BYTES) fail5("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
   const verified = await sharp11(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
   if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)
-    fail4("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
+    fail5("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
   return { name: safeWebpName(input.name), bytes: output, fingerprint: hash3(output) };
 }
 var NativeReferenceBridge = class {
@@ -62583,18 +62778,18 @@ var NativeReferenceBridge = class {
   async resolveReferences(expectedOwnerId, sessionId, rawIds) {
     const ids2 = external_exports2.array(external_exports2.string().min(1).max(240).regex(OPAQUE_ID, "\u53C2\u8003\u56FE\u5FC5\u987B\u662F\u4F1A\u8BDD\u4E2D\u7684\u4E0D\u900F\u660E ID\uFF0C\u4E0D\u80FD\u662F\u6587\u4EF6\u8DEF\u5F84")).min(1).max(14).parse(rawIds);
     const identity2 = await this.deps.authorize(true);
-    if (identity2.ownerId !== expectedOwnerId) fail4("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (identity2.ownerId !== expectedOwnerId) fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
     const expectedAuthorization = authorizationHash(identity2);
     const resolved = [];
     for (const id2 of ids2) {
       const local = await this.deps.resolveLocal(sessionId, id2);
       await this.assertIdentity(identity2, true);
       if (!local) {
-        if (!CLOUD_ID.test(id2)) fail4("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!CLOUD_ID.test(id2)) fail5("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u4E0D\u662F\u5F53\u524D\u4F1A\u8BDD\u9644\u4EF6\u3001\u5F53\u524D\u4F1A\u8BDD\u672C\u5730\u7ED3\u679C\u6216\u4E91\u7D20\u6750 ID\u3002\u8BF7\u5148\u7528 DSH \u8BFB\u53D6\u56FE\u7247\u6216\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         resolved.push(id2);
         continue;
       }
-      if (local.id !== id2) fail4("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
+      if (local.id !== id2) fail5("INVALID_REFERENCE_ID", "\u53C2\u8003\u56FE\u89E3\u6790\u7ED3\u679C\u4E0E\u8BF7\u6C42\u4E0D\u4E00\u81F4\u3002");
       const normalized2 = await normalizeNativeReference(local);
       await this.assertIdentity(identity2, true);
       resolved.push(await this.resolveLocal(identity2, expectedAuthorization, sessionId, normalized2));
@@ -62604,14 +62799,14 @@ var NativeReferenceBridge = class {
   }
   /** Import bytes read by a trusted Host path without exposing paths or pixels to the model. */
   async resolveTrustedInputs(expectedOwnerId, sessionId, inputs) {
-    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail4("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
+    if (!sessionId || inputs.length < 1 || inputs.length > 100) fail5("INVALID_REFERENCE_ID", "\u53EF\u4FE1\u53C2\u8003\u56FE\u6570\u91CF\u5FC5\u987B\u4E3A 1-100 \u5F20\u3002");
     const identity2 = await this.deps.authorize(true);
-    if (identity2.ownerId !== expectedOwnerId) fail4("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (identity2.ownerId !== expectedOwnerId) fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
     const expectedAuthorization = authorizationHash(identity2);
     const normalizedInputs = [];
     for (const [index, input] of inputs.entries()) {
       if (!input || typeof input.id !== "string" || !input.id || input.id.length > 240 || typeof input.name !== "string" || !input.name || input.name.length > 255 || !(input.bytes instanceof Uint8Array))
-        fail4("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
+        fail5("INVALID_REFERENCE_ID", `\u7B2C ${index + 1} \u5F20\u53EF\u4FE1\u53C2\u8003\u56FE\u65E0\u6548\u3002`);
       normalizedInputs.push(await normalizeNativeReference(input));
       await this.assertIdentity(identity2, true);
     }
@@ -62625,7 +62820,7 @@ var NativeReferenceBridge = class {
   }
   async assertIdentity(expected, write) {
     const current = await this.deps.authorize(write);
-    if (authorizationHash(current) !== authorizationHash(expected)) fail4("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
+    if (authorizationHash(current) !== authorizationHash(expected)) fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u53C2\u8003\u56FE\u3002");
   }
   mappingKey(authorization, sessionId, fingerprint2) {
     return `${authorization}:${hash3(sessionId)}:${fingerprint2}`;
@@ -62662,7 +62857,7 @@ var NativeReferenceBridge = class {
           if (error101 instanceof PodploPluginError && error101.code === "ACCOUNT_CHANGED") throw error101;
         }
       }
-      return fail4("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail5("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
     await this.assertIdentity(identity2, true);
     await this.store.transaction((state) => {
@@ -62681,7 +62876,7 @@ var NativeReferenceBridge = class {
       if (!CLOUD_ID.test(detail.id)) throw new Error("Invalid uploaded reference id");
       if (detail.status !== "ready") {
         await this.update(mapping, { status: "unknown", cloudAssetId: detail.id });
-        fail4("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+        fail5("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
       }
       await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
       await this.assertIdentity(identity2, true);
@@ -62690,7 +62885,7 @@ var NativeReferenceBridge = class {
       const latest = this.find(authorization, sessionId, input.fingerprint);
       if (latest?.status === "uploading") await this.update(latest, { status: "unknown" });
       if (error101 instanceof PodploPluginError) throw error101;
-      return fail4("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail5("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
   }
   async update(mapping, patch) {
@@ -62950,7 +63145,7 @@ var OutputDirectoryManager = class {
 };
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
-var fail5 = (code, message) => {
+var fail6 = (code, message) => {
   throw new PodploPluginError(code, message);
 };
 var cloudAssetId = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu;
@@ -62970,8 +63165,8 @@ var importReferenceDefinition = {
 };
 function session(ctx, id2) {
   if (id2 === PODPLO_TOOLBOX_WORKSPACE_ID || id2 === PODPLO_GRID_SPLIT_WORKSPACE_ID)
-    return fail5("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
-  return id2 && ctx.agents.get(id2) || fail5("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
+    return fail6("NATIVE_SESSION_REQUIRED", "\u72EC\u7ACB\u5DE5\u5177\u5DE5\u4F5C\u533A\u4E0D\u80FD\u4F5C\u4E3A\u539F\u751F\u804A\u5929\u4F1A\u8BDD\u4F7F\u7528\u3002");
+  return id2 && ctx.agents.get(id2) || fail6("NATIVE_SESSION_REQUIRED", "\u8BF7\u5148\u6253\u5F00\u4E00\u4E2A\u539F\u751F\u4F1A\u8BDD\u3002");
 }
 function imageReceipt(events, id2) {
   if (!events || typeof events !== "object") return;
@@ -62983,16 +63178,16 @@ function imageReceipt(events, id2) {
   }
 }
 async function downloadOriginal(value2, assetId, fetcher = fetch) {
-  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail5("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
+  if (!/^[a-f0-9-]{36}$/u.test(assetId)) fail6("INVALID_ASSET_ID", "\u7D20\u6750\u7F16\u53F7\u65E0\u6548\u3002");
   const url3 = new URL(value2);
   if (url3.protocol !== "https:" || !/^[a-f0-9]{32}\.r2\.cloudflarestorage\.com$/u.test(url3.hostname) || url3.port || url3.username || url3.password || url3.hash || !new RegExp(`^/podplo-assets/(?:upload|generated)/${assetId}/original\\.(?:png|jpg|jpeg|webp)$`, "u").test(url3.pathname))
-    fail5("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
+    fail6("ORIGINAL_UNAVAILABLE", "\u8BE5\u7D20\u6750\u6682\u672A\u63D0\u4F9B\u53EF\u4FE1\u539F\u56FE\uFF0C\u8BF7\u91CD\u65B0\u83B7\u53D6\u7D20\u6750\u8BE6\u60C5\u3002");
   const response = await fetcher(url3, { redirect: "error", credentials: "omit", signal: AbortSignal.timeout(6e4) });
   const limit = 1e8;
-  if (!response.ok || !response.body) fail5("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+  if (!response.ok || !response.body) fail6("ORIGINAL_UNAVAILABLE", "\u539F\u56FE\u4E0B\u8F7D\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
   if (Number(response.headers.get("content-length")) > limit) {
     await response.body.cancel();
-    fail5("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+    fail6("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
   }
   const reader = response.body.getReader(), chunks = [];
   let length = 0;
@@ -63003,7 +63198,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
       length += part.value.length;
       if (length > limit) {
         await reader.cancel();
-        fail5("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
+        fail6("IMAGE_TOO_LARGE", "\u539F\u56FE\u8D85\u8FC7\u5927\u5C0F\u9650\u5236\u3002");
       }
       chunks.push(part.value);
     }
@@ -63011,7 +63206,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
     reader.releaseLock();
   }
   const bytes = Buffer.concat(chunks), meta5 = await sharp12(bytes, { limitInputPixels: 1e8 }).metadata();
-  if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail5("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+  if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail6("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
   return bytes;
 }
 async function nativeToolkitTransport(options) {
@@ -63028,17 +63223,17 @@ async function nativeToolkitTransport(options) {
       if (attachmentId) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
-        if (!receipt) return fail5("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail6("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
         return { id: id2, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data), kind: "image" };
       }
       const namespace = online.auth.namespace;
-      if (await online.workspaceIdentity(false) !== ownerId) return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+      if (await online.workspaceIdentity(false) !== ownerId) return fail6("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
       const detail = await online.reference(id2);
-      if (!detail.downloadUrl || detail.status !== "ready") return fail5("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+      if (!detail.downloadUrl || detail.status !== "ready") return fail6("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
       const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
       if (namespace !== online.auth.namespace || await online.workspaceIdentity(false) !== ownerId)
-        return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
+        return fail6("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u7D20\u6750\u3002");
       return { id: id2, name: detail.filename ?? `\u7D20\u6750-${id2}.png`, bytes, kind: "image" };
     }
   });
@@ -63063,7 +63258,7 @@ async function nativeToolkitTransport(options) {
       if (attachmentId) {
         const agent = session(ctx, sessionId);
         const receipt = imageReceipt(agent.session.snapshotEvents(), attachmentId);
-        if (!receipt) return fail5("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
+        if (!receipt) return fail6("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         const stored = await ctx.attachments.readImage(receipt);
         return { id: id2, name: receipt.name ?? "\u4F1A\u8BDD\u56FE\u7247", bytes: Buffer.from(stored.data) };
       }
@@ -63072,10 +63267,10 @@ async function nativeToolkitTransport(options) {
       if (!index) throw new Error("Native reference lookup is not active");
       const known = await index.promise;
       if (known.other.has(id2))
-        return fail5("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
+        return fail6("LOCAL_RESULT_SESSION_MISMATCH", "\u8FD9\u5F20\u672C\u5730\u5904\u7406\u7ED3\u679C\u4E0D\u5C5E\u4E8E\u5F53\u524D\u4F1A\u8BDD\uFF0C\u8BF7\u56DE\u5230\u539F\u4F1A\u8BDD\u4F7F\u7528\uFF0C\u6216\u5C06\u56FE\u7247\u91CD\u65B0\u52A0\u5165\u5F53\u524D\u4F1A\u8BDD\u3002");
       if (!known.current.has(id2)) return void 0;
       const result = await toolkit.readResult(id2, sessionId, "read");
-      if (result.kind !== "image") return fail5("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
+      if (result.kind !== "image") return fail6("INVALID_REFERENCE_IMAGE", "\u8BE5\u672C\u5730\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\uFF0C\u4E0D\u80FD\u4F5C\u4E3A\u53C2\u8003\u56FE\u3002");
       return { id: id2, name: result.name, bytes: result.bytes };
     },
     uploadReference: (input, expectedOwnerId) => online.uploadReference(input, expectedOwnerId),
@@ -63118,7 +63313,7 @@ async function nativeToolkitTransport(options) {
         session(ctx, sessionId);
         const input = args && typeof args === "object" && !Array.isArray(args) ? args : {};
         if (Object.keys(input).some((key) => key !== "imageIds") || !Array.isArray(input.imageIds) || input.imageIds.length < 1 || input.imageIds.length > 14 || new Set(input.imageIds).size !== input.imageIds.length || input.imageIds.some((id2) => typeof id2 !== "string" || !id2 || id2.length > 240 || /[/\\\x00\r\n]/u.test(id2)))
-          return fail5("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
+          return fail6("INVALID_REFERENCE_ID", "imageIds \u5FC5\u987B\u5305\u542B 1-14 \u4E2A\u5F53\u524D\u4F1A\u8BDD\u56FE\u7247 ID\uFF0C\u4E0D\u80FD\u4F7F\u7528\u6587\u4EF6\u8DEF\u5F84\u3002");
         const ownerId = await online.workspaceIdentity(true);
         const sourceIds = input.imageIds;
         const referenceAssetIds = await resolveGenerationReferences({ ownerId, nativeSessionId: sessionId, ids: sourceIds });
@@ -63130,8 +63325,8 @@ async function nativeToolkitTransport(options) {
         return await toolkit.callTool(name2, args, sessionId);
       } catch (error101) {
         if (error101 instanceof PodploPluginError) throw error101;
-        if (error101 instanceof PrintSizeError) return fail5(error101.code, PRINT_SIZE_ERRORS[error101.code]);
-        return fail5("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
+        if (error101 instanceof PrintSizeError) return fail6(error101.code, PRINT_SIZE_ERRORS[error101.code]);
+        return fail6("LOCAL_TOOL_FAILED", "\u672C\u5730\u5904\u7406\u672A\u5B8C\u6210\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u4F1A\u8BDD\u7684\u56FE\u7247\u3001\u7ED3\u679C\u7F16\u53F7\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
       }
     },
     async dispatch(action, args, caller) {
@@ -63139,7 +63334,7 @@ async function nativeToolkitTransport(options) {
       const gridSplitStandalone = action.startsWith("splitter.");
       const standalone3 = toolboxStandalone || gridSplitStandalone;
       if (!standalone3 && !action.startsWith("local.")) return service.dispatch(action, args, caller);
-      if (caller.source !== "ui") return fail5("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
+      if (caller.source !== "ui") return fail6("UI_REQUIRED", "\u6B64\u64CD\u4F5C\u9700\u8981\u5728\u63D2\u4EF6\u9875\u9762\u4E2D\u6267\u884C\u3002");
       if (!standalone3) session(ctx, caller.sessionId);
       const scope = gridSplitStandalone ? PODPLO_GRID_SPLIT_WORKSPACE_ID : standalone3 ? PODPLO_TOOLBOX_WORKSPACE_ID : caller.sessionId;
       if (toolboxStandalone) action = `local.${action.slice("toolbox.".length)}`;
@@ -63153,10 +63348,10 @@ async function nativeToolkitTransport(options) {
       if (standalone3 && action === "local.use") {
         session(ctx, caller.sessionId);
         const id3 = args?.id;
-        if (typeof id3 !== "string") return fail5("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+        if (typeof id3 !== "string") return fail6("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
         const expected = { ownerId: await online.workspaceIdentity(true), namespace: online.auth.namespace };
         const result = await toolkit.readResult(id3, scope);
-        if (result.kind !== "image") return fail5("INVALID_REFERENCE_IMAGE", "\u8BE5\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\u3002");
+        if (result.kind !== "image") return fail6("INVALID_REFERENCE_IMAGE", "\u8BE5\u7ED3\u679C\u4E0D\u662F\u56FE\u7247\u3002");
         const contentType = result.contentType === "image/jpg" ? "image/jpeg" : result.contentType;
         const copied = await toolkit.importInput({ name: result.name, contentType, base64: result.bytes.toString("base64") }, caller.sessionId, expected);
         return { ok: true, data: copied };
@@ -63165,7 +63360,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail5("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail6("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.callTool(toolName, {
           operationId: input.operationId,
           ids: input.ids,
@@ -63176,7 +63371,7 @@ async function nativeToolkitTransport(options) {
         const input = args && typeof args === "object" ? args : {};
         const toolName = input.toolName;
         if (typeof toolName !== "string" || !processingToolNames.includes(toolName))
-          return fail5("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
+          return fail6("INVALID_LOCAL_TOOL", "\u8BF7\u9009\u62E9\u4E00\u4E2A\u6709\u6548\u7684\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u3002");
         return { ok: true, data: await toolkit.toolPreview(toolName, {
           ids: input.ids,
           options: input.options
@@ -63199,16 +63394,16 @@ async function nativeToolkitTransport(options) {
         return { ok: true, data: { opened: true } };
       }
       const id2 = args?.id;
-      if (typeof id2 !== "string") return fail5("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
+      if (typeof id2 !== "string") return fail6("INVALID_RESULT_ID", "\u7ED3\u679C\u7F16\u53F7\u65E0\u6548\u3002");
       if (action === "local.output.exportAsset") {
         const namespace = online.auth.namespace, owner = await online.workspaceIdentity(true);
         const detail = await online.reference(id2);
-        if (!detail.downloadUrl || detail.status !== "ready") return fail5("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
+        if (!detail.downloadUrl || detail.status !== "ready") return fail6("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u539F\u56FE\u5C1A\u672A\u5C31\u7EEA\u3002");
         const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
+          return fail6("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
         const format2 = (await sharp12(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
-        if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail5("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
+        if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail6("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id2}`;
         const stem = basename10(originalName, extname9(originalName));
         const trustedName = `${stem || `\u7D20\u6750-${id2}`}.${format2 === "jpeg" ? "jpg" : format2}`;
@@ -63227,7 +63422,7 @@ async function nativeToolkitTransport(options) {
         const result = await toolkit.readResult(id2, scope, "export");
         const attachment = await ctx.attachments.saveFile({ data: result.bytes, name: result.name });
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
-          return fail5("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
+          return fail6("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u3002");
         return { ok: true, data: {
           attachment,
           name: result.name,
@@ -63235,7 +63430,7 @@ async function nativeToolkitTransport(options) {
           dataUrl: `data:${result.contentType};base64,${result.bytes.toString("base64")}`
         } };
       }
-      return fail5("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
+      return fail6("UNKNOWN_ACTION", "\u672A\u77E5\u672C\u5730\u5DE5\u5177\u64CD\u4F5C\u3002");
     }
   };
   return { transport, toolkit, outputs, resolveGenerationReferences, importTrustedReferences };
@@ -66849,6 +67044,79 @@ var transientPreparationCodes = /* @__PURE__ */ new Set([
 function isDeterministicNativeTaskError(error101) {
   return error101 instanceof PodploPluginError && !transientPreparationCodes.has(error101.code);
 }
+var correctableCodes = /* @__PURE__ */ new Set([
+  "INVALID_ARGUMENT",
+  "INVALID_IMAGE_GROUPING",
+  "INVALID_MIXED_TASK_PLAN",
+  "INVALID_GENERATION_DEPENDENCY",
+  "INVALID_PROCESSING_PLAN",
+  "LOCAL_PRESET_INVALID",
+  "UNSUPPORTED_LOCAL_ACTION",
+  "SKILL_STRATEGY_MISMATCH",
+  "SKILL_NOT_FOUND",
+  "SKILL_QUERY_AMBIGUOUS",
+  "MODEL_NOT_FOUND",
+  "MODEL_QUERY_AMBIGUOUS",
+  "MODEL_RATIO_UNAVAILABLE",
+  "MODEL_QUALITY_UNAVAILABLE",
+  "BATCH_PARAMETERS_REQUIRED",
+  "REFERENCE_LIMIT_EXCEEDED",
+  "LOCAL_IMAGE_COUNT_MISMATCH"
+]);
+var correction = (code, message) => new PodploPluginError(
+  code,
+  `${message} \u786E\u8BA4\u524D\u53EF\u4EE5\u4FEE\u6B63\u53C2\u6570\u8868\u793A\uFF0C\u4F46\u5FC5\u987B\u4FDD\u7559\u7528\u6237\u5B8C\u6574\u56FE\u7247\u8303\u56F4\u3001\u9636\u6BB5\u53CA\u660E\u786E\u8981\u6C42\uFF1B\u4E0D\u5F97\u5220\u51CF\u3001\u964D\u914D\u6216\u5C40\u90E8\u8BD5\u5355\u3002`,
+  { retryable: true, correctableBeforeConfirmation: true }
+);
+function nativeTaskCorrectionResult(error101) {
+  if (!(error101 instanceof PodploPluginError) || !error101.details || typeof error101.details !== "object" || error101.details.correctableBeforeConfirmation !== true) return;
+  return { isError: true, content: [{ type: "text", text: JSON.stringify({
+    code: error101.code,
+    message: error101.message,
+    retryable: true,
+    correctableBeforeConfirmation: true
+  }) }] };
+}
+function preservesRequest(before, after, code) {
+  if (!Array.isArray(before.stages)) return false;
+  if (!Array.isArray(after.stages) || before.stages.length !== after.stages.length) return false;
+  const object7 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
+  return before.stages.every((raw, index) => {
+    const stage = object7(raw), next = object7(after.stages[index]);
+    if (stage.id !== next.id) return false;
+    const source = object7(stage.source), nextSource = object7(next.source);
+    for (const key of ["folderPath", "referenceIds", "fromStage", "indexes", "expectedImageCount"])
+      if (source[key] !== void 0 && digest3(source[key]) !== digest3(nextSource[key])) return false;
+    if (["all", "first", "indexes"].includes(String(source.scope)) && source.scope !== nextSource.scope) return false;
+    if (source.scope === void 0 && nextSource.scope !== void 0 && nextSource.scope !== "all") return false;
+    for (const key of ["skill", "local", "grouping"]) if (stage[key] !== void 0 && next[key] === void 0) return false;
+    const generation = object7(stage.generation), changed = object7(next.generation);
+    for (const [key, value2] of Object.entries(generation)) {
+      if (changed[key] === void 0) return false;
+      const repairable = key === "model" && ["MODEL_NOT_FOUND", "MODEL_QUERY_AMBIGUOUS"].includes(code) || key === "ratio" && code === "MODEL_RATIO_UNAVAILABLE" || key === "quality" && code === "MODEL_QUALITY_UNAVAILABLE";
+      if (!repairable && digest3(value2) !== digest3(changed[key])) return false;
+    }
+    const skill = object7(stage.skill), newSkill = object7(next.skill);
+    if (skill.source !== void 0 && skill.source !== newSkill.source) return false;
+    if (skill.favoriteFolder !== void 0 && skill.favoriteFolder !== newSkill.favoriteFolder) return false;
+    if (code !== "SKILL_STRATEGY_MISMATCH" && skill.strategy !== newSkill.strategy) return false;
+    if (!["SKILL_NOT_FOUND", "SKILL_QUERY_AMBIGUOUS"].includes(code) && skill.query !== newSkill.query) return false;
+    const grouping = object7(stage.grouping), newGrouping = object7(next.grouping);
+    if (stage.grouping === void 0 && next.grouping !== void 0 && newGrouping.mode !== "single" && code !== "SKILL_STRATEGY_MISMATCH") return false;
+    if (["single", "all", "random", "sequential", "explicit"].includes(String(grouping.mode)) && grouping.mode !== newGrouping.mode) return false;
+    if (Number.isSafeInteger(grouping.size) && Number(grouping.size) >= 2 && Number(grouping.size) <= 14 && grouping.size !== newGrouping.size) return false;
+    if (grouping.groups !== void 0 && digest3(grouping.groups) !== digest3(newGrouping.groups)) return false;
+    if (["random", "sequential"].includes(String(grouping.mode)) && (grouping.remainder ?? "reject") !== (newGrouping.remainder ?? "reject")) return false;
+    const local = object7(stage.local), nextLocal = object7(next.local);
+    if (local.presetPath !== void 0 && local.presetPath !== nextLocal.presetPath) return false;
+    for (const key of ["actions", "exactPlan"]) if (Array.isArray(local[key])) {
+      const steps = local[key], nextSteps = nextLocal[key];
+      if (!Array.isArray(nextSteps) || steps.length !== nextSteps.length) return false;
+      if (key === "exactPlan" && steps.some((step, i) => object7(step).id !== object7(nextSteps[i]).id || object7(step).toolName !== object7(nextSteps[i]).toolName)) return false;
+    }
+    return true;
+  });
+}
 var NativeTaskAttemptPolicy = class {
   boundaryKey;
   entry;
@@ -66869,6 +67137,7 @@ var NativeTaskAttemptPolicy = class {
       this.entry = void 0;
     }
     const inputDigest = digest3(input.candidate);
+    if (this.entry?.correctable && !this.entry.sealed && !this.entry.promise && this.entry.inputDigest !== inputDigest && preservesRequest(this.entry.candidate, input.candidate, this.entry.failure.code)) this.entry = void 0;
     if (this.entry && this.entry.inputDigest !== inputDigest) {
       throw new PodploPluginError(
         "NATIVE_TASK_ATTEMPT_LOCKED",
@@ -66878,9 +67147,11 @@ var NativeTaskAttemptPolicy = class {
     }
     const entry = this.entry ??= {
       inputDigest,
+      candidate: structuredClone(input.candidate),
       attemptKey: digest3({ boundaryKey, inputDigest })
     };
     if (entry.failure) {
+      if (entry.correctable && !entry.sealed) throw correction(entry.failure.code, entry.failure.message);
       throw new PodploPluginError(
         "NATIVE_TASK_ATTEMPT_NON_RETRYABLE",
         `\u672C\u8F6E\u5B8C\u6574\u4EFB\u52A1\u5DF2\u786E\u5B9A\u6027\u5931\u8D25\uFF08${entry.failure.code}\uFF09\uFF1A${entry.failure.message} \u8BF7\u4FEE\u6B63\u540E\u7531\u7528\u6237\u53D1\u9001\u65B0\u6D88\u606F\u518D\u8BD5\u3002`,
@@ -66888,15 +67159,20 @@ var NativeTaskAttemptPolicy = class {
       );
     }
     if (entry.promise) return entry.promise;
-    const attempt = Promise.resolve().then(() => input.execute(entry.attemptKey));
+    const attempt = Promise.resolve().then(() => input.execute(entry.attemptKey, () => {
+      entry.sealed = true;
+      entry.correctable = false;
+    }));
     entry.promise = attempt;
     try {
       return await attempt;
     } catch (error101) {
       if (isDeterministicNativeTaskError(error101)) {
         entry.failure = { code: error101.code, message: error101.message };
+        entry.correctable = !entry.sealed && correctableCodes.has(error101.code);
       }
       entry.promise = void 0;
+      if (entry.correctable && entry.failure) throw correction(entry.failure.code, entry.failure.message);
       throw error101;
     }
   }
@@ -67561,7 +67837,7 @@ async function apply(ctx, config3 = {}) {
             sessionId: agent.id,
             events: agent.session?.snapshotEvents?.(),
             candidate: args,
-            execute: (requestKey) => {
+            execute: (requestKey, sealAttempt) => {
               const prepareAiTask = (input, mixed = false) => approveGeneration(
                 nativeTaskToolName,
                 input,
@@ -67604,7 +67880,9 @@ async function apply(ctx, config3 = {}) {
                     })
                   })).prepared : await prepareNativeTask(input2, deps);
                   execution.signal?.throwIfAborted?.();
-                  return transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
+                  const quoted = await transport.callTool("podplo_prepare_generation", { ...prepared, wholeOrderRequired: true }, agent.id);
+                  sealAttempt();
+                  return quoted;
                 }
               );
               return runNativeTask(args, {
@@ -67617,7 +67895,8 @@ async function apply(ctx, config3 = {}) {
                     toolkit,
                     archive: archives.manager,
                     projectForSession,
-                    signal
+                    signal,
+                    onExecutionStarted: sealAttempt
                   });
                   localTaskJobs.set(job, { sessionId: agent.id, controller });
                   try {
@@ -67630,6 +67909,10 @@ async function apply(ctx, config3 = {}) {
                 mixed: (input) => prepareAiTask(input, true)
               });
             }
+          }).catch((error101) => {
+            const repair = nativeTaskCorrectionResult(error101);
+            if (repair) return repair;
+            throw error101;
           });
         }
       });
