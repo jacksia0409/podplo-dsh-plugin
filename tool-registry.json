@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "pluginVersion": "0.1.24",
-  "registrySha256": "adb01c5530372c48ac471f8552dca068c5557a853e1a25468bbf0886fc9e5247",
+  "pluginVersion": "0.1.25",
+  "registrySha256": "a4149bc6789dd5ad12e752682d85d4a90a3cbe63418e46bec5e5f46a122a34b0",
   "registry": {
     "schemaVersion": 1,
     "tools": [
@@ -50,7 +50,7 @@
       {
         "id": "grid-split",
         "name": "图片分割",
-        "description": "按行列将图片平均分割为多张切片。",
+        "description": "按行列平均切片，或将白底组图中的多个素材裁剪为透明 PNG。",
         "operations": [
           {
             "id": "grid-split",

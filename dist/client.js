@@ -33519,7 +33519,7 @@ var tool_registry_default = {
     {
       id: "grid-split",
       name: "\u56FE\u7247\u5206\u5272",
-      description: "\u6309\u884C\u5217\u5C06\u56FE\u7247\u5E73\u5747\u5206\u5272\u4E3A\u591A\u5F20\u5207\u7247\u3002",
+      description: "\u6309\u884C\u5217\u5E73\u5747\u5207\u7247\uFF0C\u6216\u5C06\u767D\u5E95\u7EC4\u56FE\u4E2D\u7684\u591A\u4E2A\u7D20\u6750\u88C1\u526A\u4E3A\u900F\u660E PNG\u3002",
       operations: [
         { id: "grid-split", name: "\u56FE\u7247\u5206\u5272", token: "podplo_grid_split" }
       ]
@@ -34332,19 +34332,43 @@ function GridSplitPanel({ request, access }) {
   const [selected, setSelected] = (0, import_react7.useState)([]);
   const [rows, setRows] = (0, import_react7.useState)("2");
   const [cols, setCols] = (0, import_react7.useState)("2");
+  const [mode, setMode] = (0, import_react7.useState)("grid");
+  const [tolerance, setTolerance] = (0, import_react7.useState)("18");
+  const [gap, setGap] = (0, import_react7.useState)("32");
+  const [padding, setPadding] = (0, import_react7.useState)("16");
+  const [minArea, setMinArea] = (0, import_react7.useState)("160");
   const [preview, setPreview] = (0, import_react7.useState)([]);
   const [saved, setSaved] = (0, import_react7.useState)([]);
   const [busy, setBusy] = (0, import_react7.useState)("");
   const [error101, setError] = (0, import_react7.useState)("");
   const [notice, setNotice] = (0, import_react7.useState)("");
   const previewSequence = (0, import_react7.useRef)(0);
+  const defaultSource = (0, import_react7.useRef)("");
   const selectedSources = (0, import_react7.useMemo)(() => selected.flatMap((id) => {
     const source = sources.find((row) => row.id === id);
     return source ? [source] : [];
   }), [sources, selected]);
   const rowCount = Number(rows), colCount = Number(cols);
-  const parameterError = !Number.isInteger(rowCount) || rowCount < 1 || rowCount > 6 ? "\u884C\u6570\u8BF7\u586B\u5199 1\uFF5E6 \u7684\u6574\u6570\u3002" : !Number.isInteger(colCount) || colCount < 1 || colCount > 6 ? "\u5217\u6570\u8BF7\u586B\u5199 1\uFF5E6 \u7684\u6574\u6570\u3002" : selectedSources.some((source) => rowCount > source.height || colCount > source.width) ? "\u884C\u5217\u6570\u4E0D\u80FD\u8D85\u8FC7\u56FE\u7247\u7684\u50CF\u7D20\u5BBD\u9AD8\u3002" : "";
-  const resultCount = selectedSources.length * rowCount * colCount;
+  const assetValues = { backgroundTolerance: Number(tolerance), groupGap: Number(gap), padding: Number(padding), minArea: Number(minArea) };
+  const parameterError = mode === "grid" && (!Number.isInteger(rowCount) || rowCount < 1 || rowCount > 6) ? "\u884C\u6570\u8BF7\u586B\u5199 1\uFF5E6 \u7684\u6574\u6570\u3002" : mode === "grid" && (!Number.isInteger(colCount) || colCount < 1 || colCount > 6) ? "\u5217\u6570\u8BF7\u586B\u5199 1\uFF5E6 \u7684\u6574\u6570\u3002" : mode === "grid" && selectedSources.some((source) => rowCount > source.height || colCount > source.width) ? "\u884C\u5217\u6570\u4E0D\u80FD\u8D85\u8FC7\u56FE\u7247\u7684\u50CF\u7D20\u5BBD\u9AD8\u3002" : mode === "assets" && (!Number.isFinite(assetValues.backgroundTolerance) || assetValues.backgroundTolerance < 4 || assetValues.backgroundTolerance > 40) ? "\u80CC\u666F\u5BB9\u5DEE\u8BF7\u586B\u5199 4\uFF5E40\u3002" : mode === "assets" && (!Number.isInteger(assetValues.groupGap) || assetValues.groupGap < 4 || assetValues.groupGap > 100) ? "\u540C\u7EC4\u8DDD\u79BB\u8BF7\u586B\u5199 4\uFF5E100 \u7684\u6574\u6570\u3002" : mode === "assets" && (!Number.isInteger(assetValues.padding) || assetValues.padding < 0 || assetValues.padding > 60) ? "\u900F\u660E\u7559\u767D\u8BF7\u586B\u5199 0\uFF5E60 \u7684\u6574\u6570\u3002" : mode === "assets" && (!Number.isInteger(assetValues.minArea) || assetValues.minArea < 10 || assetValues.minArea > 3e3) ? "\u5FFD\u7565\u5C0F\u788E\u5C51\u8BF7\u586B\u5199 10\uFF5E3000 \u7684\u6574\u6570\u3002" : "";
+  const resultCount = mode === "grid" ? selectedSources.length * rowCount * colCount : preview.length;
+  const splitOptions = mode === "grid" ? { rows: rowCount, cols: colCount } : { mode: "assets", ...assetValues };
+  const resetAssetDefaults = (0, import_react7.useCallback)((source = selectedSources[0]) => {
+    if (!source) return;
+    const short = Math.min(source.width, source.height);
+    setTolerance("18");
+    setGap(String(Math.min(100, Math.max(10, Math.round(short * 0.022)))));
+    setPadding(String(Math.min(60, Math.max(8, Math.round(short * 0.012)))));
+    setMinArea(String(Math.min(3e3, Math.max(24, Math.round(source.width * source.height * 4e-5)))));
+    setSaved([]);
+  }, [selectedSources]);
+  (0, import_react7.useEffect)(() => {
+    const key = mode === "assets" && selectedSources[0] ? selectedSources[0].id : "";
+    if (key && key !== defaultSource.current) {
+      defaultSource.current = key;
+      resetAssetDefaults(selectedSources[0]);
+    }
+  }, [mode, selectedSources[0]?.id, resetAssetDefaults]);
   const load = (0, import_react7.useCallback)(async () => {
     const response = await request("splitter.list");
     const images = (response.data.images ?? []).filter((row) => !row.sourceId).slice(0, MAX_SOURCES);
@@ -34363,7 +34387,7 @@ function GridSplitPanel({ request, access }) {
     if (access.status !== "active" || !selectedSources.length || parameterError) return;
     const timer = setTimeout(() => {
       setBusy((current) => current || "preview");
-      void request("splitter.preview", { ids: [selectedSources[0].id], options: { rows: rowCount, cols: colCount } }).then((response) => {
+      void request("splitter.preview", { ids: [selectedSources[0].id], options: splitOptions }).then((response) => {
         if (active && sequence === previewSequence.current) setPreview(response.data.images ?? []);
       }).catch((value2) => {
         if (active && sequence === previewSequence.current && messageOf2(value2) !== "PREVIEW_SUPERSEDED") setError(messageOf2(value2));
@@ -34376,7 +34400,7 @@ function GridSplitPanel({ request, access }) {
       clearTimeout(timer);
       if (previewSequence.current === sequence) previewSequence.current++;
     };
-  }, [access.status, selectedSources[0]?.id, rowCount, colCount, parameterError, request]);
+  }, [access.status, selectedSources[0]?.id, mode, rowCount, colCount, tolerance, gap, padding, minArea, parameterError, request]);
   const importFiles = async (files) => {
     if (access.status !== "active") {
       setError("\u56FE\u7247\u5206\u5272\u6388\u6743\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9\u6216\u7EED\u671F\u3002");
@@ -34421,7 +34445,7 @@ function GridSplitPanel({ request, access }) {
       setError(parameterError);
       return;
     }
-    if (resultCount > 400) {
+    if (mode === "grid" && resultCount > 400) {
       setError("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20\u3002");
       return;
     }
@@ -34432,11 +34456,11 @@ function GridSplitPanel({ request, access }) {
       const response = await request("splitter.save", {
         operationId: operationId2(),
         ids: selectedSources.map((row) => row.id),
-        options: { rows: rowCount, cols: colCount }
+        options: splitOptions
       });
       const images = response.data.images ?? [];
       setSaved(images);
-      setNotice(`\u5DF2\u6309\u884C\u4ECE\u5DE6\u5230\u53F3\u4FDD\u5B58 ${images.length} \u5F20\u5207\u7247\u3002`);
+      setNotice(mode === "assets" ? `\u5DF2\u4FDD\u5B58 ${images.length} \u5F20\u900F\u660E PNG \u7D20\u6750\u3002` : `\u5DF2\u6309\u884C\u4ECE\u5DE6\u5230\u53F3\u4FDD\u5B58 ${images.length} \u5F20\u5207\u7247\u3002`);
     } catch (value2) {
       setError(messageOf2(value2));
     } finally {
@@ -34460,7 +34484,7 @@ function GridSplitPanel({ request, access }) {
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("header", { className: "ppd-grid-split__header", children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h1", { children: toolGroupDefinitionBySlug(GRID_SPLIT_TOOL_ID).name }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "\u6309\u884C\u5217\u5E73\u5747\u5207\u5206\uFF0C\u4F59\u6570\u50CF\u7D20\u4F1A\u5B8C\u6574\u5206\u914D\u5230\u5404\u5207\u7247\u3002" })
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: mode === "assets" ? "\u4ECE\u767D\u5E95\u7EC4\u56FE\u8BC6\u522B\u591A\u4E2A\u7D20\u6750\uFF0C\u5206\u522B\u5BFC\u51FA\u900F\u660E PNG\u3002" : "\u6309\u884C\u5217\u5E73\u5747\u5207\u5206\uFF0C\u4F59\u6570\u50CF\u7D20\u4F1A\u5B8C\u6574\u5206\u914D\u5230\u5404\u5207\u7247\u3002" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { className: "ppd-grid-split__upload", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: busy === "import" ? "\u6B63\u5728\u6DFB\u52A0\u2026" : "\u4E0A\u4F20\u56FE\u7247" }),
@@ -34474,6 +34498,20 @@ function GridSplitPanel({ request, access }) {
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__layout", children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("aside", { className: "ppd-grid-split__settings", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "\u5206\u5272\u65B9\u5F0F" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__mode", role: "group", "aria-label": "\u5206\u5272\u65B9\u5F0F", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", "aria-pressed": mode === "grid", disabled: busy === "save", onClick: () => {
+              setMode("grid");
+              setSaved([]);
+            }, children: "\u5E73\u5747\u5207\u5206" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", "aria-pressed": mode === "assets", disabled: busy === "save", onClick: () => {
+              defaultSource.current = "";
+              setMode("assets");
+              setSaved([]);
+            }, children: "\u7D20\u6750\u88C1\u526A" })
+          ] })
+        ] }),
+        mode === "grid" ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { children: [
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "\u5206\u5272\u8BBE\u7F6E" }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__numbers", children: [
             /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
@@ -34492,6 +34530,48 @@ function GridSplitPanel({ request, access }) {
             ] })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__hint", children: parameterError || (selectedSources.length ? `\u5C06\u4EA7\u751F ${resultCount} \u5F20\u5207\u7247` : "\u53EF\u9009\u62E9\u4E00\u5F20\u6216\u591A\u5F20\u56FE\u7247") })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "\u7D20\u6750\u8BC6\u522B\u8BBE\u7F6E" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__asset-settings", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+              "\u540C\u7EC4\u8DDD\u79BB ",
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: gap }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { "aria-label": "\u540C\u7EC4\u8DDD\u79BB", type: "range", min: "4", max: "100", step: "1", value: gap, disabled: busy === "save" || access.status !== "active", onChange: (event) => {
+                setGap(event.target.value);
+                setSaved([]);
+              } }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: "\u7D20\u6750\u592A\u788E\u65F6\u8C03\u5927\uFF1B\u76F8\u90BB\u7D20\u6750\u7C98\u8FDE\u65F6\u8C03\u5C0F\u3002" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+              "\u80CC\u666F\u5BB9\u5DEE ",
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: tolerance }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { "aria-label": "\u80CC\u666F\u5BB9\u5DEE", type: "range", min: "4", max: "40", step: "1", value: tolerance, disabled: busy === "save" || access.status !== "active", onChange: (event) => {
+                setTolerance(event.target.value);
+                setSaved([]);
+              } }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: "\u767D\u8FB9\u6B8B\u7559\u65F6\u8C03\u5927\uFF1B\u6D45\u8272\u7D20\u6750\u7F3A\u5931\u65F6\u8C03\u5C0F\u3002" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+              "\u900F\u660E\u7559\u767D ",
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: padding }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { "aria-label": "\u900F\u660E\u7559\u767D", type: "range", min: "0", max: "60", step: "1", value: padding, disabled: busy === "save" || access.status !== "active", onChange: (event) => {
+                setPadding(event.target.value);
+                setSaved([]);
+              } }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: "\u63A7\u5236\u6BCF\u5F20 PNG \u56DB\u5468\u7684\u900F\u660E\u7A7A\u95F4\u3002" })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+              "\u5FFD\u7565\u5C0F\u788E\u5C51 ",
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: minArea }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { "aria-label": "\u5FFD\u7565\u5C0F\u788E\u5C51", type: "range", min: "10", max: "3000", step: "1", value: minArea, disabled: busy === "save" || access.status !== "active", onChange: (event) => {
+                setMinArea(event.target.value);
+                setSaved([]);
+              } }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: "\u566A\u70B9\u591A\u65F6\u8C03\u5927\uFF1B\u5C0F\u88C5\u9970\u6D88\u5931\u65F6\u8C03\u5C0F\u3002" })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "ppd-grid-split__reset", type: "button", disabled: !!busy || !selectedSources[0] || access.status !== "active", onClick: () => resetAssetDefaults(), children: "\u6062\u590D\u81EA\u52A8\u503C" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__hint", children: parameterError || (selectedSources.length ? preview.length ? `\u9996\u5F20\u56FE\u7247\u8BC6\u522B\u5230 ${preview.length} \u4EF6\u7D20\u6750` : "\u6B63\u5728\u8BC6\u522B\u9996\u5F20\u56FE\u7247" : "\u53EF\u9009\u62E9\u4E00\u5F20\u6216\u591A\u5F20\u767D\u5E95\u7EC4\u56FE") })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { children: [
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("h3", { children: [
@@ -34527,20 +34607,20 @@ function GridSplitPanel({ request, access }) {
           ] }, source.id)) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__empty", children: "\u4E0A\u4F20\u56FE\u7247\u540E\u5F00\u59CB\u5206\u5272\u3002" }) })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "ppd-grid-split__primary", type: "button", disabled: !!busy || access.status !== "active" || !selectedSources.length || !!parameterError || resultCount > 400, onClick: () => void save(), children: busy === "save" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58\u5207\u7247" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "ppd-grid-split__primary", type: "button", disabled: !!busy || access.status !== "active" || !selectedSources.length || !!parameterError || mode === "grid" && resultCount > 400, onClick: () => void save(), children: busy === "save" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : mode === "assets" ? "\u4FDD\u5B58\u900F\u660E PNG" : "\u4FDD\u5B58\u5207\u7247" }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy || !saved.length, onClick: () => void reveal(), children: "\u6253\u5F00\u7ED3\u679C\u6587\u4EF6\u5939" })
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("main", { className: "ppd-grid-split__preview", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__preview-title", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "\u5207\u7247\u9884\u89C8" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: mode === "assets" ? "\u7D20\u6750\u9884\u89C8" : "\u5207\u7247\u9884\u89C8" }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: selectedSources[0] ? `\u9884\u89C8\uFF1A${selectedSources[0].name}` : "" })
         ] }),
         preview.length ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-grid-split__tiles", style: {
-          "--ppd-grid-split-cols": colCount,
-          minWidth: `${colCount * 120 + (colCount - 1) * 10}px`
-        }, children: preview.map((tile, index) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("figure", { "data-grid-split-tile": true, "data-row": Math.floor(index / colCount), "data-col": index % colCount, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("img", { src: tile.dataUrl, alt: `\u7B2C ${Math.floor(index / colCount) + 1} \u884C\u7B2C ${index % colCount + 1} \u5217` }),
+          "--ppd-grid-split-cols": mode === "assets" ? Math.min(4, preview.length) : colCount,
+          minWidth: `${(mode === "assets" ? Math.min(4, preview.length) : colCount) * 120 + ((mode === "assets" ? Math.min(4, preview.length) : colCount) - 1) * 10}px`
+        }, children: preview.map((tile, index) => /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("figure", { "data-grid-split-tile": true, "data-row": mode === "assets" ? void 0 : Math.floor(index / colCount), "data-col": mode === "assets" ? void 0 : index % colCount, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("img", { src: tile.dataUrl, alt: mode === "assets" ? `\u8BC6\u522B\u5230\u7684\u7D20\u6750 ${index + 1}` : `\u7B2C ${Math.floor(index / colCount) + 1} \u884C\u7B2C ${index % colCount + 1} \u5217` }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("figcaption", { children: [
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("b", { children: tile.name }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("small", { children: [
@@ -34550,7 +34630,7 @@ function GridSplitPanel({ request, access }) {
               "px"
             ] })
           ] })
-        ] }, `${tile.name}:${index}`)) }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-grid-split__preview-empty", children: busy === "preview" ? "\u6B63\u5728\u751F\u6210\u9884\u89C8\u2026" : "\u9009\u62E9\u56FE\u7247\u540E\u5728\u8FD9\u91CC\u9884\u89C8\u5207\u7247" })
+        ] }, `${tile.name}:${index}`)) }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-grid-split__preview-empty", children: busy === "preview" ? "\u6B63\u5728\u751F\u6210\u9884\u89C8\u2026" : mode === "assets" ? "\u9009\u62E9\u767D\u5E95\u7EC4\u56FE\u540E\u5728\u8FD9\u91CC\u9884\u89C8\u7D20\u6750" : "\u9009\u62E9\u56FE\u7247\u540E\u5728\u8FD9\u91CC\u9884\u89C8\u5207\u7247" })
       ] })
     ] }),
     notice && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__notice", role: "status", children: notice }),
@@ -34605,7 +34685,7 @@ var import_react9 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.24",
+  version: "0.1.25",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
