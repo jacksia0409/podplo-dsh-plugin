@@ -42,7 +42,7 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
 ));
 var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-// ../../../node_modules/pdf-lib/node_modules/tslib/tslib.es6.js
+// node_modules/pdf-lib/node_modules/tslib/tslib.es6.js
 var tslib_es6_exports = {};
 __export(tslib_es6_exports, {
   __assign: () => __assign,
@@ -347,7 +347,7 @@ function __classPrivateFieldSet(receiver, privateMap, value2) {
 }
 var extendStatics, __assign;
 var init_tslib_es6 = __esm({
-  "../../../node_modules/pdf-lib/node_modules/tslib/tslib.es6.js"() {
+  "node_modules/pdf-lib/node_modules/tslib/tslib.es6.js"() {
     extendStatics = function(d, b) {
       extendStatics = Object.setPrototypeOf || { __proto__: [] } instanceof Array && function(d2, b2) {
         d2.__proto__ = b2;
@@ -369,9 +369,9 @@ var init_tslib_es6 = __esm({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/base64.js
+// node_modules/pdf-lib/cjs/utils/base64.js
 var require_base64 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/base64.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/base64.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.decodeFromBase64DataUri = exports.decodeFromBase64 = exports.encodeToBase64 = void 0;
@@ -438,9 +438,9 @@ var require_base64 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/strings.js
+// node_modules/pdf-lib/cjs/utils/strings.js
 var require_strings = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/strings.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/strings.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.findLastMatch = exports.parseDate = exports.breakTextIntoLines = exports.charSplit = exports.charAtIndex = exports.mergeLines = exports.lineSplit = exports.isNewlineChar = exports.newlineChars = exports.escapedNewlineChars = exports.cleanText = exports.escapeRegExp = exports.addRandomSuffix = exports.copyStringIntoBuffer = exports.padStart = exports.charFromHexCode = exports.charFromCode = exports.toHexString = exports.toHexStringOfMinLength = exports.toCodePoint = exports.toCharCode = void 0;
@@ -590,16 +590,16 @@ var require_strings = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/arrays.js
+// node_modules/pdf-lib/cjs/utils/arrays.js
 var require_arrays = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/arrays.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/arrays.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.toUint8Array = exports.canBeConvertedToUint8Array = exports.pluckIndices = exports.range = exports.sum = exports.reverseArray = exports.sortedUniq = exports.byAscendingId = exports.arrayAsString = exports.mergeUint8Arrays = exports.mergeIntoTypedArray = exports.typedArrayFor = exports.last = void 0;
     var base64_1 = require_base64();
     var strings_1 = require_strings();
-    exports.last = function(array3) {
-      return array3[array3.length - 1];
+    exports.last = function(array5) {
+      return array5[array5.length - 1];
     };
     exports.typedArrayFor = function(value2) {
       if (value2 instanceof Uint8Array)
@@ -644,48 +644,48 @@ var require_arrays = __commonJS({
       var mergedBuffer = new Uint8Array(totalSize);
       var offset = 0;
       for (var idx = 0, len = arrays.length; idx < len; idx++) {
-        var array3 = arrays[idx];
-        mergedBuffer.set(array3, offset);
-        offset += array3.length;
+        var array5 = arrays[idx];
+        mergedBuffer.set(array5, offset);
+        offset += array5.length;
       }
       return mergedBuffer;
     };
-    exports.arrayAsString = function(array3) {
+    exports.arrayAsString = function(array5) {
       var str = "";
-      for (var idx = 0, len = array3.length; idx < len; idx++) {
-        str += strings_1.charFromCode(array3[idx]);
+      for (var idx = 0, len = array5.length; idx < len; idx++) {
+        str += strings_1.charFromCode(array5[idx]);
       }
       return str;
     };
     exports.byAscendingId = function(a, b) {
       return a.id - b.id;
     };
-    exports.sortedUniq = function(array3, indexer) {
+    exports.sortedUniq = function(array5, indexer) {
       var uniq = [];
-      for (var idx = 0, len = array3.length; idx < len; idx++) {
-        var curr = array3[idx];
-        var prev = array3[idx - 1];
+      for (var idx = 0, len = array5.length; idx < len; idx++) {
+        var curr = array5[idx];
+        var prev = array5[idx - 1];
         if (idx === 0 || indexer(curr) !== indexer(prev)) {
           uniq.push(curr);
         }
       }
       return uniq;
     };
-    exports.reverseArray = function(array3) {
-      var arrayLen = array3.length;
+    exports.reverseArray = function(array5) {
+      var arrayLen = array5.length;
       for (var idx = 0, len = Math.floor(arrayLen / 2); idx < len; idx++) {
         var leftIdx = idx;
         var rightIdx = arrayLen - idx - 1;
-        var temp = array3[idx];
-        array3[leftIdx] = array3[rightIdx];
-        array3[rightIdx] = temp;
+        var temp = array5[idx];
+        array5[leftIdx] = array5[rightIdx];
+        array5[rightIdx] = temp;
       }
-      return array3;
+      return array5;
     };
-    exports.sum = function(array3) {
+    exports.sum = function(array5) {
       var total = 0;
-      for (var idx = 0, len = array3.length; idx < len; idx++) {
-        total += array3[idx];
+      for (var idx = 0, len = array5.length; idx < len; idx++) {
+        total += array5[idx];
       }
       return total;
     };
@@ -720,9 +720,9 @@ var require_arrays = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/async.js
+// node_modules/pdf-lib/cjs/utils/async.js
 var require_async = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/async.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/async.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.waitForTick = void 0;
@@ -736,9 +736,9 @@ var require_async = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/unicode.js
+// node_modules/pdf-lib/cjs/utils/unicode.js
 var require_unicode = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/unicode.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/unicode.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.hasUtf16BOM = exports.utf16Decode = exports.lowSurrogate = exports.highSurrogate = exports.hasSurrogates = exports.isWithinBMP = exports.utf16Encode = exports.utf8Encode = void 0;
@@ -878,9 +878,9 @@ var require_unicode = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/numbers.js
+// node_modules/pdf-lib/cjs/utils/numbers.js
 var require_numbers = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/numbers.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/numbers.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.bytesFor = exports.sizeInBytes = exports.numberToString = void 0;
@@ -920,9 +920,9 @@ var require_numbers = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/errors.js
+// node_modules/pdf-lib/cjs/utils/errors.js
 var require_errors = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/errors.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.error = void 0;
@@ -932,9 +932,9 @@ var require_errors = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/utils/common.js
+// node_modules/pako/lib/utils/common.js
 var require_common = __commonJS({
-  "../../../node_modules/pako/lib/utils/common.js"(exports) {
+  "node_modules/pako/lib/utils/common.js"(exports) {
     "use strict";
     var TYPED_OK = typeof Uint8Array !== "undefined" && typeof Uint16Array !== "undefined" && typeof Int32Array !== "undefined";
     function _has(obj, key) {
@@ -1023,16 +1023,16 @@ var require_common = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/trees.js
+// node_modules/pako/lib/zlib/trees.js
 var require_trees = __commonJS({
-  "../../../node_modules/pako/lib/zlib/trees.js"(exports) {
+  "node_modules/pako/lib/zlib/trees.js"(exports) {
     "use strict";
     var utils = require_common();
     var Z_FIXED = 4;
     var Z_BINARY = 0;
     var Z_TEXT = 1;
     var Z_UNKNOWN = 2;
-    function zero(buf) {
+    function zero2(buf) {
       var len = buf.length;
       while (--len >= 0) {
         buf[len] = 0;
@@ -1071,17 +1071,17 @@ var require_trees = __commonJS({
     var bl_order = [16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
     var DIST_CODE_LEN = 512;
     var static_ltree = new Array((L_CODES + 2) * 2);
-    zero(static_ltree);
+    zero2(static_ltree);
     var static_dtree = new Array(D_CODES * 2);
-    zero(static_dtree);
+    zero2(static_dtree);
     var _dist_code = new Array(DIST_CODE_LEN);
-    zero(_dist_code);
+    zero2(_dist_code);
     var _length_code = new Array(MAX_MATCH - MIN_MATCH + 1);
-    zero(_length_code);
+    zero2(_length_code);
     var base_length = new Array(LENGTH_CODES);
-    zero(base_length);
+    zero2(base_length);
     var base_dist = new Array(D_CODES);
-    zero(base_dist);
+    zero2(base_dist);
     function StaticTreeDesc(static_tree, extra_bits, extra_base, elems, max_length) {
       this.static_tree = static_tree;
       this.extra_bits = extra_bits;
@@ -1457,7 +1457,7 @@ var require_trees = __commonJS({
       var prevlen = -1;
       var curlen;
       var nextlen = tree[0 * 2 + 1];
-      var count2 = 0;
+      var count3 = 0;
       var max_count = 7;
       var min_count = 4;
       if (nextlen === 0) {
@@ -1468,21 +1468,21 @@ var require_trees = __commonJS({
       for (n = 0; n <= max_code; n++) {
         curlen = nextlen;
         nextlen = tree[(n + 1) * 2 + 1];
-        if (++count2 < max_count && curlen === nextlen) {
+        if (++count3 < max_count && curlen === nextlen) {
           continue;
-        } else if (count2 < min_count) {
-          s.bl_tree[curlen * 2] += count2;
+        } else if (count3 < min_count) {
+          s.bl_tree[curlen * 2] += count3;
         } else if (curlen !== 0) {
           if (curlen !== prevlen) {
             s.bl_tree[curlen * 2]++;
           }
           s.bl_tree[REP_3_6 * 2]++;
-        } else if (count2 <= 10) {
+        } else if (count3 <= 10) {
           s.bl_tree[REPZ_3_10 * 2]++;
         } else {
           s.bl_tree[REPZ_11_138 * 2]++;
         }
-        count2 = 0;
+        count3 = 0;
         prevlen = curlen;
         if (nextlen === 0) {
           max_count = 138;
@@ -1501,7 +1501,7 @@ var require_trees = __commonJS({
       var prevlen = -1;
       var curlen;
       var nextlen = tree[0 * 2 + 1];
-      var count2 = 0;
+      var count3 = 0;
       var max_count = 7;
       var min_count = 4;
       if (nextlen === 0) {
@@ -1511,27 +1511,27 @@ var require_trees = __commonJS({
       for (n = 0; n <= max_code; n++) {
         curlen = nextlen;
         nextlen = tree[(n + 1) * 2 + 1];
-        if (++count2 < max_count && curlen === nextlen) {
+        if (++count3 < max_count && curlen === nextlen) {
           continue;
-        } else if (count2 < min_count) {
+        } else if (count3 < min_count) {
           do {
             send_code(s, curlen, s.bl_tree);
-          } while (--count2 !== 0);
+          } while (--count3 !== 0);
         } else if (curlen !== 0) {
           if (curlen !== prevlen) {
             send_code(s, curlen, s.bl_tree);
-            count2--;
+            count3--;
           }
           send_code(s, REP_3_6, s.bl_tree);
-          send_bits(s, count2 - 3, 2);
-        } else if (count2 <= 10) {
+          send_bits(s, count3 - 3, 2);
+        } else if (count3 <= 10) {
           send_code(s, REPZ_3_10, s.bl_tree);
-          send_bits(s, count2 - 3, 3);
+          send_bits(s, count3 - 3, 3);
         } else {
           send_code(s, REPZ_11_138, s.bl_tree);
-          send_bits(s, count2 - 11, 7);
+          send_bits(s, count3 - 11, 7);
         }
-        count2 = 0;
+        count3 = 0;
         prevlen = curlen;
         if (nextlen === 0) {
           max_count = 138;
@@ -1665,9 +1665,9 @@ var require_trees = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/adler32.js
+// node_modules/pako/lib/zlib/adler32.js
 var require_adler32 = __commonJS({
-  "../../../node_modules/pako/lib/zlib/adler32.js"(exports, module) {
+  "node_modules/pako/lib/zlib/adler32.js"(exports, module) {
     "use strict";
     function adler32(adler, buf, len, pos) {
       var s1 = adler & 65535 | 0, s2 = adler >>> 16 & 65535 | 0, n = 0;
@@ -1687,9 +1687,9 @@ var require_adler32 = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/crc32.js
+// node_modules/pako/lib/zlib/crc32.js
 var require_crc32 = __commonJS({
-  "../../../node_modules/pako/lib/zlib/crc32.js"(exports, module) {
+  "node_modules/pako/lib/zlib/crc32.js"(exports, module) {
     "use strict";
     function makeTable() {
       var c, table = [];
@@ -1715,9 +1715,9 @@ var require_crc32 = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/messages.js
+// node_modules/pako/lib/zlib/messages.js
 var require_messages = __commonJS({
-  "../../../node_modules/pako/lib/zlib/messages.js"(exports, module) {
+  "node_modules/pako/lib/zlib/messages.js"(exports, module) {
     "use strict";
     module.exports = {
       2: "need dictionary",
@@ -1742,9 +1742,9 @@ var require_messages = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/deflate.js
+// node_modules/pako/lib/zlib/deflate.js
 var require_deflate = __commonJS({
-  "../../../node_modules/pako/lib/zlib/deflate.js"(exports) {
+  "node_modules/pako/lib/zlib/deflate.js"(exports) {
     "use strict";
     var utils = require_common();
     var trees = require_trees();
@@ -1802,7 +1802,7 @@ var require_deflate = __commonJS({
     function rank(f) {
       return (f << 1) - (f > 4 ? 9 : 0);
     }
-    function zero(buf) {
+    function zero2(buf) {
       var len = buf.length;
       while (--len >= 0) {
         buf[len] = 0;
@@ -2287,7 +2287,7 @@ var require_deflate = __commonJS({
     ];
     function lm_init(s) {
       s.window_size = 2 * s.w_size;
-      zero(s.head);
+      zero2(s.head);
       s.max_lazy_match = configuration_table[s.level].max_lazy;
       s.good_match = configuration_table[s.level].good_length;
       s.nice_match = configuration_table[s.level].nice_length;
@@ -2341,19 +2341,19 @@ var require_deflate = __commonJS({
       this.dyn_ltree = new utils.Buf16(HEAP_SIZE * 2);
       this.dyn_dtree = new utils.Buf16((2 * D_CODES + 1) * 2);
       this.bl_tree = new utils.Buf16((2 * BL_CODES + 1) * 2);
-      zero(this.dyn_ltree);
-      zero(this.dyn_dtree);
-      zero(this.bl_tree);
+      zero2(this.dyn_ltree);
+      zero2(this.dyn_dtree);
+      zero2(this.bl_tree);
       this.l_desc = null;
       this.d_desc = null;
       this.bl_desc = null;
       this.bl_count = new utils.Buf16(MAX_BITS + 1);
       this.heap = new utils.Buf16(2 * L_CODES + 1);
-      zero(this.heap);
+      zero2(this.heap);
       this.heap_len = 0;
       this.heap_max = 0;
       this.depth = new utils.Buf16(2 * L_CODES + 1);
-      zero(this.depth);
+      zero2(this.depth);
       this.l_buf = 0;
       this.lit_bufsize = 0;
       this.last_lit = 0;
@@ -2662,7 +2662,7 @@ var require_deflate = __commonJS({
           } else if (flush !== Z_BLOCK) {
             trees._tr_stored_block(s, 0, 0, false);
             if (flush === Z_FULL_FLUSH) {
-              zero(s.head);
+              zero2(s.head);
               if (s.lookahead === 0) {
                 s.strstart = 0;
                 s.block_start = 0;
@@ -2737,7 +2737,7 @@ var require_deflate = __commonJS({
       s.wrap = 0;
       if (dictLength >= s.w_size) {
         if (wrap === 0) {
-          zero(s.head);
+          zero2(s.head);
           s.strstart = 0;
           s.block_start = 0;
           s.insert = 0;
@@ -2791,9 +2791,9 @@ var require_deflate = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/utils/strings.js
+// node_modules/pako/lib/utils/strings.js
 var require_strings2 = __commonJS({
-  "../../../node_modules/pako/lib/utils/strings.js"(exports) {
+  "node_modules/pako/lib/utils/strings.js"(exports) {
     "use strict";
     var utils = require_common();
     var STR_APPLY_OK = true;
@@ -2877,9 +2877,9 @@ var require_strings2 = __commonJS({
       }
       return buf;
     };
-    exports.buf2string = function(buf, max) {
+    exports.buf2string = function(buf, max2) {
       var i, out, c, c_len;
-      var len = max || buf.length;
+      var len = max2 || buf.length;
       var utf16buf = new Array(len * 2);
       for (out = 0, i = 0; i < len; ) {
         c = buf[i++];
@@ -2912,30 +2912,30 @@ var require_strings2 = __commonJS({
       }
       return buf2binstring(utf16buf, out);
     };
-    exports.utf8border = function(buf, max) {
+    exports.utf8border = function(buf, max2) {
       var pos;
-      max = max || buf.length;
-      if (max > buf.length) {
-        max = buf.length;
+      max2 = max2 || buf.length;
+      if (max2 > buf.length) {
+        max2 = buf.length;
       }
-      pos = max - 1;
+      pos = max2 - 1;
       while (pos >= 0 && (buf[pos] & 192) === 128) {
         pos--;
       }
       if (pos < 0) {
-        return max;
+        return max2;
       }
       if (pos === 0) {
-        return max;
+        return max2;
       }
-      return pos + _utf8len[buf[pos]] > max ? pos : max;
+      return pos + _utf8len[buf[pos]] > max2 ? pos : max2;
     };
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/zstream.js
+// node_modules/pako/lib/zlib/zstream.js
 var require_zstream = __commonJS({
-  "../../../node_modules/pako/lib/zlib/zstream.js"(exports, module) {
+  "node_modules/pako/lib/zlib/zstream.js"(exports, module) {
     "use strict";
     function ZStream() {
       this.input = null;
@@ -2955,9 +2955,9 @@ var require_zstream = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/deflate.js
+// node_modules/pako/lib/deflate.js
 var require_deflate2 = __commonJS({
-  "../../../node_modules/pako/lib/deflate.js"(exports) {
+  "node_modules/pako/lib/deflate.js"(exports) {
     "use strict";
     var zlib_deflate = require_deflate();
     var utils = require_common();
@@ -3116,9 +3116,9 @@ var require_deflate2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/inffast.js
+// node_modules/pako/lib/zlib/inffast.js
 var require_inffast = __commonJS({
-  "../../../node_modules/pako/lib/zlib/inffast.js"(exports, module) {
+  "node_modules/pako/lib/zlib/inffast.js"(exports, module) {
     "use strict";
     var BAD = 30;
     var TYPE = 12;
@@ -3345,9 +3345,9 @@ var require_inffast = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/inftrees.js
+// node_modules/pako/lib/zlib/inftrees.js
 var require_inftrees = __commonJS({
-  "../../../node_modules/pako/lib/zlib/inftrees.js"(exports, module) {
+  "node_modules/pako/lib/zlib/inftrees.js"(exports, module) {
     "use strict";
     var utils = require_common();
     var MAXBITS = 15;
@@ -3498,7 +3498,7 @@ var require_inftrees = __commonJS({
       var bits = opts.bits;
       var len = 0;
       var sym = 0;
-      var min = 0, max = 0;
+      var min = 0, max2 = 0;
       var root = 0;
       var curr = 0;
       var drop = 0;
@@ -3513,34 +3513,34 @@ var require_inftrees = __commonJS({
       var base2 = null;
       var base_index = 0;
       var end;
-      var count2 = new utils.Buf16(MAXBITS + 1);
+      var count3 = new utils.Buf16(MAXBITS + 1);
       var offs = new utils.Buf16(MAXBITS + 1);
       var extra = null;
       var extra_index = 0;
       var here_bits, here_op, here_val;
       for (len = 0; len <= MAXBITS; len++) {
-        count2[len] = 0;
+        count3[len] = 0;
       }
       for (sym = 0; sym < codes; sym++) {
-        count2[lens[lens_index + sym]]++;
+        count3[lens[lens_index + sym]]++;
       }
       root = bits;
-      for (max = MAXBITS; max >= 1; max--) {
-        if (count2[max] !== 0) {
+      for (max2 = MAXBITS; max2 >= 1; max2--) {
+        if (count3[max2] !== 0) {
           break;
         }
       }
-      if (root > max) {
-        root = max;
+      if (root > max2) {
+        root = max2;
       }
-      if (max === 0) {
+      if (max2 === 0) {
         table[table_index++] = 1 << 24 | 64 << 16 | 0;
         table[table_index++] = 1 << 24 | 64 << 16 | 0;
         opts.bits = 1;
         return 0;
       }
-      for (min = 1; min < max; min++) {
-        if (count2[min] !== 0) {
+      for (min = 1; min < max2; min++) {
+        if (count3[min] !== 0) {
           break;
         }
       }
@@ -3550,17 +3550,17 @@ var require_inftrees = __commonJS({
       left = 1;
       for (len = 1; len <= MAXBITS; len++) {
         left <<= 1;
-        left -= count2[len];
+        left -= count3[len];
         if (left < 0) {
           return -1;
         }
       }
-      if (left > 0 && (type === CODES || max !== 1)) {
+      if (left > 0 && (type === CODES || max2 !== 1)) {
         return -1;
       }
       offs[1] = 0;
       for (len = 1; len < MAXBITS; len++) {
-        offs[len + 1] = offs[len] + count2[len];
+        offs[len + 1] = offs[len] + count3[len];
       }
       for (sym = 0; sym < codes; sym++) {
         if (lens[lens_index + sym] !== 0) {
@@ -3623,8 +3623,8 @@ var require_inftrees = __commonJS({
           huff = 0;
         }
         sym++;
-        if (--count2[len] === 0) {
-          if (len === max) {
+        if (--count3[len] === 0) {
+          if (len === max2) {
             break;
           }
           len = lens[lens_index + work[sym]];
@@ -3636,8 +3636,8 @@ var require_inftrees = __commonJS({
           next += min;
           curr = len - drop;
           left = 1 << curr;
-          while (curr + drop < max) {
-            left -= count2[curr + drop];
+          while (curr + drop < max2) {
+            left -= count3[curr + drop];
             if (left <= 0) {
               break;
             }
@@ -3661,9 +3661,9 @@ var require_inftrees = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/inflate.js
+// node_modules/pako/lib/zlib/inflate.js
 var require_inflate = __commonJS({
-  "../../../node_modules/pako/lib/zlib/inflate.js"(exports) {
+  "node_modules/pako/lib/zlib/inflate.js"(exports) {
     "use strict";
     var utils = require_common();
     var adler32 = require_adler32();
@@ -4900,9 +4900,9 @@ var require_inflate = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/constants.js
+// node_modules/pako/lib/zlib/constants.js
 var require_constants = __commonJS({
-  "../../../node_modules/pako/lib/zlib/constants.js"(exports, module) {
+  "node_modules/pako/lib/zlib/constants.js"(exports, module) {
     "use strict";
     module.exports = {
       /* Allowed flush values; see deflate() and inflate() below for details */
@@ -4947,9 +4947,9 @@ var require_constants = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/zlib/gzheader.js
+// node_modules/pako/lib/zlib/gzheader.js
 var require_gzheader = __commonJS({
-  "../../../node_modules/pako/lib/zlib/gzheader.js"(exports, module) {
+  "node_modules/pako/lib/zlib/gzheader.js"(exports, module) {
     "use strict";
     function GZheader() {
       this.text = 0;
@@ -4967,9 +4967,9 @@ var require_gzheader = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/lib/inflate.js
+// node_modules/pako/lib/inflate.js
 var require_inflate2 = __commonJS({
-  "../../../node_modules/pako/lib/inflate.js"(exports) {
+  "node_modules/pako/lib/inflate.js"(exports) {
     "use strict";
     var zlib_inflate = require_inflate();
     var utils = require_common();
@@ -5141,9 +5141,9 @@ var require_inflate2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pako/index.js
+// node_modules/pako/index.js
 var require_pako = __commonJS({
-  "../../../node_modules/pako/index.js"(exports, module) {
+  "node_modules/pako/index.js"(exports, module) {
     "use strict";
     var assign = require_common().assign;
     var deflate = require_deflate2();
@@ -5155,9 +5155,9 @@ var require_pako = __commonJS({
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/utils.js
+// node_modules/@pdf-lib/standard-fonts/lib/utils.js
 var require_utils = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/utils.js"(exports) {
+  "node_modules/@pdf-lib/standard-fonts/lib/utils.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod) {
       return mod && mod.__esModule ? mod : { "default": mod };
@@ -5197,10 +5197,10 @@ var require_utils = __commonJS({
       }
       return bytes;
     };
-    var arrayToString = function(array3) {
+    var arrayToString = function(array5) {
       var str = "";
-      for (var i2 = 0; i2 < array3.length; i2++) {
-        str += String.fromCharCode(array3[i2]);
+      for (var i2 = 0; i2 < array5.length; i2++) {
+        str += String.fromCharCode(array5[i2]);
       }
       return str;
     };
@@ -5217,107 +5217,107 @@ var require_utils = __commonJS({
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Courier-Bold.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Courier-Bold.compressed.json
 var require_Courier_Bold_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Courier-Bold.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Courier-Bold.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Courier-BoldOblique.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Courier-BoldOblique.compressed.json
 var require_Courier_BoldOblique_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Courier-BoldOblique.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Courier-BoldOblique.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Courier-Oblique.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Courier-Oblique.compressed.json
 var require_Courier_Oblique_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Courier-Oblique.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Courier-Oblique.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Courier.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Courier.compressed.json
 var require_Courier_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Courier.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Courier.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Bold.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Bold.compressed.json
 var require_Helvetica_Bold_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Bold.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Bold.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica-BoldOblique.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Helvetica-BoldOblique.compressed.json
 var require_Helvetica_BoldOblique_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica-BoldOblique.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Helvetica-BoldOblique.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Oblique.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Oblique.compressed.json
 var require_Helvetica_Oblique_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Oblique.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Helvetica-Oblique.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Helvetica.compressed.json
 var require_Helvetica_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Helvetica.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Helvetica.compressed.json"(exports, module) {
     module.exports = "eJyNnVtzG8mxrf+KAk/nRGh8eBWleZPnItsaj0ZXWNvhB5BsUdgE0TLAFgjt2P/9AI2uzJUrV7X8olB/q4CuyspaVX0p8H8mP7V3d83yfvLj5MPfu/Xspnl0enH05Nmjs6dHz84mjye/tsv732d3za7AX5rF1+Z+fjXb426xUHh2N19shTBt5jef92f5e3M97+525K/3s8X86vnyZrEre7Q7Xv86f2iu/5jfX32e/Hi/6prHk58+z1azq/tm9bbZf/aXh/tmed1cv2nvZsuhbn/+c/sw+fGfPxw/efL4h5OT88fHR0dHj5+dHv/r8eT9rvBqMV82f7Tr+f28XU5+/GEng/Du8/zqdtms15Mfz3f8Q7Na98UmR0cnf9p90e4kv7e7Juyb81P7Zbvat+LR/7n6v4+Onz09f7z/96L/99n+32dH/b8Xj55ft5fNo7fb9X1zt3701+VVu/rSrmb3zfWfHj16vlg8erP/nvWjN826WX3dUQvVo/n60ezR/Wp23dzNVreP2k+Pfpsv2/vtl+aHXaHFo+cvHs2W1/+vXT2a775g3V2u59fz2WrerP+0q+wvu1Ndz5c3b68+N30f9DV5e7/7yGx1XdRdwZ9mX/4ydMnF8dPHk3+Uo/OT08eT5+urfaBXg/hzY8c/nBxdPJ68vb/+y3QnPun/+2H336dPD7319+Z+Nb/ahfOf/zOZ/mPy48nFTvh9V5H1l9kuiv/7mHDzcLWY3Rk/PT8/8H937S5alwtTzs+fHJRld3e576abZdau28VitjL+dNctPf/SrK72SV6EJ08uDsLsbietd9Hxmp2cQA36/vbanZ4O3zdbNctF86km0cdKNWbr/Teub73iT8+GTy26dQ7O1W5szvIpPm+/fG6WufiuKfP2OvP1Yrb+nIP1rVm1mbbLJsP7jSh5/3nViLKf2m4l6PyrKLuePwjYfG1E3zYhpp4O86VIq6t20YoIrZu7eZSsBxZ7E0i0+Xc3W2R8s2p2g1k0899ds+6NpijHR8dDRs9E+j3P6M+GLkom/pTRz/mDvzg6Pj6gX/2DJQIv8nf9Jcfpr96yvV3u0d/yGV/m9v/mY69k69/zGX/P9XqVv/6PXOp1/q43+YNvcyTe5Q++zx/8YOjZ2dDT01zqHxl9zGf8rxzVy91cdtvcB99wcafFgcqfi6Zy9sRM5Wo+v5qvrrq73B/d3rXXu+kHxkgwuFAZ+9gso8ucElfCgMW4zQ36lEvdZPQ5V3me0X/net3mUouclyJawnWE730Rwz6b9CrXSzi8iH2XP/g1Z+8ml3rIaJvRN6jqmedXTISTJ0clK1eV8jEbzRn7bLyfL66bHJLDXH/dbkScw/TsU8F9v0zz5DguI+7Tfl2IRmuf2arJ49OiXc0FXzeVb7nqVrt5/MoDePzsGIbNet6vW1MTy7JFD6ubbr5T7tp7vXTYy/0Xf0em0Jee/TQXTCygdis5uR64nt3cqDntwHEtRiuOfd81qwbG/umFLYZmN6vZFz/b6XnJrN0FRAMZF1ypb+blbD0S4XF1pRcL1gFR7y8ZDrFZLOZf1vO1kHZtvf/cdmGxaG5f5v2Q3N5zq9lXUdnZVXcv8MHLPy2ah6xVRtbd7GrVihNfrhp14uv2fnYVRpxL811PYgDc0HAcemV3l3O7NbdYpHbLm9mqu1vMOnGa9ma3zrwVXzdbhcWT9ctdyFkXnvuyZ3fdOnz56vrTbqEXVoa+QomTrC9AIvczvIIzPDm3M9ztnK5b4CnsamMmprzr/aBfr8UEtogntpRqI7cVSdvksrvxubsi3uW9mGL+mrrUnSBmoE//MW98apKd6l8Xe89XR7kGZbq4nn+dQ0L7R2LNfMEsBodXO37IV3rqQzZFUgxssu4vvmiYQFPzV/r5wlBxXO+IGY0H/0ylhzr6gF8FpJP4NcPOI+Ai5KQ4sWroRXHwq3LTQ5yKXMfXhTEPvJU6Lr+rCvjwqOVoNFVf6cvm2KVU7duisUI4k1VChsxk89fsiTYU5/HsZxdDnRftt2Z5IzL3TTyFX8WNJmc3OkiE6MOrNpGsKm294rb69U+OnJ3m3ed2JVr1is7uYai4wVviZ2USo7DZaOKMtYjpya2/w7Hu+lXOStSXUtCiWONkq8UE77rF/fzLYivqRQ30JA8NPLsolyaz1f18trief/qU+2pbt4bf43k8YceS5ZfRNBuZdbJk6VQZnsuaDdYy5vcYIJ8M6Yvw/ttuxYA34ewSaNXeNku8EDJzXDU383Vc+voQjZ0N03EeF+Yc3W5Uh+sRD3ZlDbmqRKalyPi4rKTUf9EIP3tW1q79ra54I8zi/Mv95wx/SgZoZq586/R4aON9Zd5oqrNjbRZ8Xls+jGRlDLBfL9PQsFsRXClzhVqP1Kae2jS6rg3KPI7t3KPLEp4xy7qgWdyLGz73waTdEzftiCPW43vXiZZQzC1Ucp3pY4FC71eqcYXztNyw6H18l8CrXSKv8/e9Tfn67FnJV72ifTk6//4WO84vJeyxjjLFZAtuGTFMzmvT2W+x2haHXdQ+zxYwNZRBvr80oVvd1hdjLr+MyyZPte90YGUoNLUG3UQzxQYN3ap6VffdW7lAtAyWNT8rPXi9swn10KONXQRWqC2ti+XPzs3Or+dXymh/jl8EC7Ox5e7vsX+8upV+ezOe10p1b60soZ9XTTpeDlgPUJ3NiEcWlL/Upnt2CrtFLBtqC7K4ErBvGx0KlSrcj55p0d7s+3vZinC3dTPtslSG8u6rKiP5ZvyKFmZyj3klfZdyHrebO8u8aHbPr43xX7r948h/PZ68bFbLP2bz1f4h8j8nz/cPqyePfzg9+tfj4ejgHgEd6hnRYOoIX8Sjg6sEhA1D4VU8ylXAqTdw66pAD+M/oOA8QRlCFtjh7lBAh4GD6HU4erc7Oj7xwxK0wEL7QXm/Ozz3oxIAQCEAwCEAQEsAAFEAQLEAABuGdmC9oyD5sDu6sKNp0D7uG3jkh6VJyKDugLsQ1i4nQ1dJhk4mQ5eToasmQyeSobNYABti4eTr7ujMjjbhaBuPSosAQc0HOhTC0WmIQmKcxqlzHqxFeSEQDVvjcuwW9ZVAlVrKoWxi7kKTqB+N6840mXvUBBrjxmmgF/46IxzyxnjcuyAHf5HBAQyRDRhXXmBiNgSTyBWMa2swmf3BBDYJE6JTFAx2UdA0l0LjMMbuYYKwkKJ1ucPYTIyP5aSwFZMqOVkxGJNrOZmsxoToNwWD6RS0yWgrEHmQ8WxEgx+gERmicBonI3LORlSUFwKRERmXRlTUVwJVaimNyMTc6SZRpxvXnW4yd7oJZETGyYgKf50RGpExNiIXpBEVGYzIEBmRcWVEJmYjMomMyLg2IpPZiExgIzIhGlHBYEQFTXMpNCJjbEQmCCMqWpc7jI3I+FhOCiMyqZKTFSMyuZaTyYhMiEZUMBhRQZuMtgKRERnPRoShQTeKnAIbRfIlEtmcgvyixsmmoii9KhR5VeNjDZHWFUvkXIk6JUwUddbEMpw6USVPiyIZWxBfVzhaXBTY50iVZhfKgONFTrYXReV9sUQ2wKiTC0ZRW2Esw34YVTbFqEZnDBrYY+DTSnk0yiiwW0ZVWGYo0FVSgc0zit8dGsJGoz42NCqGGsuMDo1krVGN/ho0MNnANxW+rXHy3Chm43WCtouUOgQlstwgseGC+EJTMluUpNVCgVea1qsuTRb1nEeoUhahpHMIS3AGoUbWihIZK0ivJUVTRcyWGjRpqFAC7BQpmSlKykpRz0aKKtkoStpEsQRbKGpsoKhF+wQFzBPoVJZF40TMtomaME2QO9nNbJgofSfJhVmiWk/yilFiiZEkTyaJWrRIUMAggW4k3WpK1ohSNsah9eiKhijkxskPnbMZFuWFQGSDxqUHFvWVQJVaSuszMaeESZQPxnUymMyZYAJ5nXEyusJfZ4QWZ4z9zQVpbkUGZzNEtmZceZqJ2dBMIjczrq3MZPYxE9jETIgOVjDYV0HTXAqNyxi7lgnCsorW5Q5jszI+lpPCpkyq5GTFoEyu5WSyJhOiLxUMplTQJqOtQORFxrMRlbqiEzmjgLpAXgQCm5FJLxQjO3JB+pHJrxSrVVZakqu5/12jBHBBZ4DrnAKukC+5QMZkwmvB0JocsjeBIs3JdHAnZ2RPLih/cjUblGvkUC5oi3KdPcoVNilXoksZB5syNhXl0KgcslO5IqzKxE50IZuVC6PpKuzKtVq6VgzL9Wq6JstyJXqWcTAtYxvBtoqRb7mQjatUDI3LGQXXBTIuENi4THqhGBmXC9K4TH6lWK2y0rhczZngGmWCCzoTXOdMcIWMywUyLhNeC4bG5ZCNCxRpXKaDcTkj43JBGZer2bhcI+NyQRuX62xcrrBxuRKNyzgYl7GpKIfG5ZCNyxVhXCZ2ogvZuFwYTVdhXK7V0rViXK5X0zUZlyvRuIyDcRnbCLZVjIzLhWxcq+GHPrwKhVBgCybLMsyGNQgvMiGzKlha1SC+ykRXT5pU0XKfF4V6vGDd30Xl3i6crKlgMqYBv04ETakgtiTj0pAGFeyoEDKjgpUVFS0bUVHIhgrWJlRUtqDC2YAKj/YzUDCfgUxTGTSegth2ChemM0hd6h42nIJHEk+YTVF04lWMpqiVxEsmU3i0mIGCwQxkk8g2E7KWgrOxDOmOzmKIQmicvMU5m0tRXghE9mJc+ktRXwlUqaW0GBNzV5tEfW1cd7bJ3NsmkM8YJ6Mp/HVGaDXG2GtckGZTZHAbQ2Q3xpXfmJgNxyRyHOPackxmzzGBTceE6DoFg+0UNM2l0HiMsfOYIKynaF3uMDYf42M5KezHpEpOVgzI5FpOJgsyIXpQwWBCBW0y2gpEPmQ8GdGfh9w89iPvDEMhfsBD9xgtUQNEAQPFYgXMwgRsiJCTw+96Pf7hxMjw010F/QSFTo1YoQGVV+KoZMFcfBj+XLzgVLxYc/qACfSRn3fouXVPfxQ7s0fFxQGFPgKeurynpY8AWU8As54ANvQEkGKpjtwLfh5swLW9Azzzo9I6QFBlpyWA/rUWuQGVToDwGaIYGqdAGlfRNDGH1CSKq3EOrgkcYRNimA1TrAv/kMMwzaUg9IYo/sZzJ3Du0/lSd/T7CGN3FMTdUTh3R+GyO4oouqNI3B2Fp+4oQuqOIlB3FMzdMfAPOQzTXAq7oyDujsJFdwwSd8eAqTt+HXriqR+VUwEq8QcUQg8cKgS0BByQxRqYhRnYEGEgJbiOZrag6I/iCqpHpQWAxHqq52kp1dO4iuoRrZB6RoujnoV1UU9KCxyV3jp25CuM/iguYnoUV/4HlJc0PU+rmQO1bX8Bx/VNj2jt0jNatuxZG49yndtKBVtZwTbXpJWLrF4RdWzjcr9HcaX/K44JiP5qPy7P7cicyVGJPqKw2D8IfxtG2GH18TccYYBKfgIKkQIOkQJaIgXI4gHM+gzYkJ9ASogczeJRbsEst2BWacFMtmCWWzATLZiJFsxSC2a5BXGl9be8xNqjLnyky83sKm3qZJu63Ca+SABFtLYTre1Ca19ODtfh534U7a9Hwut6nryup9HreiQvFnuFXLBnZdQBipb3cvC3Mz+Kc/9L9DdEecZ/Sf6GFPwNcJz+XwZ/A0aT/svB3+Ao17mtVLCVFWxzTdjfQBF1NH8DFNceLyd4Tfxyki6HX6asBp5c+eUkXf++FFkNCrnyy0m+4H054WvdPdmGbNnmrN7m7A0GjOOCBPoyUtVooSLfPTWNIVL1cKJCPLJIpkFGKo23qEJ6kEAZTSoNSFZF6lORPAq4QB6xVIKGDKk8RkjmIR3ltiqMhkWOeSryvYazE5CqTYEKjbedrYJUco2ogoGQQF5CqrIVKpIdhgqQ2ZCqfYcKsQWRzG5EcjSmKG5rI4ztitRkH79NhhvLx35o95SRxdvJrnyIh/vLygs76u+unvmh3csDhjftHMcffc2S8SfGtxas3zAQgFKf/xb2VB8T4zjU9lST/EEwCEvYcXxGjAMkdxyTVgtV0DleuEuXYsGRU7t0B6nca8HwGePwuSDDh7eOmEH48N5RaWm6eZQEEb6i1cIXdA5fEbc5Fhw+4yJ8YXCGIEYlhZJkHdBQ6ENVweAGIYQ4KinQUVbhDiWqQc+lUuiTEcpopm6oGuFQYJimQjcY4w5wQYa+yB8Eg3AXhIE2xiE2QQS3aLWwBp0DWsRtjgUH0XgK327JC3cb+qN4EdujeK3eI3Fd2/N0XdvTeF3bI7p67RldvfYsXL32JF6rvxr6/syP4rLzVe5vFz7YjPpq6GOPyz92R0/s6KP1/yvsZkDQdKflNoKf0m4jDKj4NHSDIeoL49QhxlWvmJi7xiTqH+PcSSZwT5kQu8sw9RnO3xQG7r3K7E0q9CPO3acRQY/idH5BiPpWTeYkUS+nx34DD3snob8jp06PIvV8FFX3xxI5B6JOiRBFzoaockpENeZF1Cg50k5uFT1Ok7F93KoIJEzatnwqOKRO2s58oTglUXUzs9IpnYLGOQWbziCjkFI+oUTZhJLKJdRzJqFKeYQSZxFqnEOoxQxChfKHtqzmOHHu1Des5gKQN7Rj8zRRyBnax3mRKeVLZRdnVilXQOFMKVuCIE0MUY4YpwQxrrLDxJwaJlFeGOekMIEzwoSYDoYpF3BjH4WBs6CyrY9U6H/c8nYaEfQ87oK7IER9rvbAkUS9XTB3dbzNgT3OCnU8y9T/LKs04DI5G7gEJQXLnBusc4qwHjOFVUoYkt9VY8rpk2SVRVQIkokUyClSILVIgQxjhRKN5ZxvVILSjlTOPtvDA3nnjDLOBco1F1SWuZrzyzXKLBc4p1zhbHIl5pFzyqCwY48jwllT26/HMmRK2MJ2SgyyI2xru2BGGSE3tbFGWWCc+79cbkL3G6LeN06db1z1vYm5602injfOHW8C97sJsdsNU6/jbQgKA/d55SYEqdDjeAviNCLob7wrcUGIelvdkyCJ+rpg7urySih0tSHqauPU1cZVV5uYu9ok6mrj3NUmcFebELvaMHU1vthNYeCurrzWTSp0Nb7yfBoRdDW+BX1BiLpavQNNEnV1wdTVfwy9PLyS/gf2MLLSu8jii78g4D0xwPbqLzB/wxegv+ILsLzjC6j0ILBZaJm9oQIovkXYI/HkrufpcV1P4zO6HtEzt57RQ8aehfcEexIfuP0B/Xb81FBjmdQfxYdKPSoJiig/vu55euh0oPDEFXB8ft0jeh7dM3rfbc/aeJTr3FYq2MoKtrkm/DgUFFFHe/AJKD4d/wNHxxD91xN8A74/im/A90i8Ad/z9AZ8T+Mb8D2Sb8D3Cr0B3zN6A75n4Q34N5PDWw8nfhRdu0fCmHuePLmn0Y57JN9h6hXy6J6V+AOKDvxmMN9TP4qvNr7JluvCextEb7CXAIlR/oZ6CWgc5W9EL4FC4/9N6CVgYfy/CXPEmzA9vBmmAdc+xhH0hsx/oOUWJfS+IUoB4yoPTMzJYBJlhHGdFiZzbphACWKcsgRvMp8Sonyp3GQmFTLHEKWPcZVDJuZEMomyybhOKZM5r0zg5DIhZli+j25omgPxMZfirFM3zQepPFmF1DNEqWdcpZ6JOfVMotQzrlPPZE49Eyj1jFPq4QP2U0KUepXH66RC6hmi1DOuUs/EnHomUeoZ16lnMqeeCZx6JsTUwxcIKEOmORAfcylOPfX2QJHS+34nUuA0HHnfTxcRKanf99NqJT0r7/tpmVNVv+8nVUxb/UZDRZUpHMpgIkeB0zmqMqljEZHasQAneFQraR4LpWSPckr5KFPipxc9ZJZOa6H8WPtEGhDVtzwOBd5OeB/k20naB/mWn3US5uK8zYtwKp62OCYhfSQ0iz8WRProLr/xWrY/pGvZntG1bM/UtWwv5GvZHtO1bM/4WraHfC3bw3gt2yO6ln03GNmZH8WR9C5ZFvA0Zt6hOQGSo+NdsCFg8d3Rd2g4jmaxETPRA3YN/sRRrQNmugNmogP8Mhy+V8V/luNvF+L+0at2AT78DpIRPkdVaERr7eI8sEpzG93ccH2OvITBq92IKDQqCp+3Xz43fb2889pYpBXNaWtVb3XVW9FTfOmOkqi+XbtjudxhfvHuxVZ0KBq0Ev1De7hAWTd385wZXSzUidN0tbh1Om6diBu/6IySiFunur3Lyb+Jh1s6FI3BV86G8+EG61Iy7bBOAnux3mOdVBGytMs6Ccmf8z7rpFCw0k5rFsCz09UPc+Xe6uqHJfLx2tUPy+zo6eqHOXl74TPR7OTyJpDVGx/tX2X6ptX6N9m/CdXu5YnAOJmLr3rCwOfFEH+NqmWaIUxgG3JhLFRqwnBNzBom0tRhvBbGPIkUJc0kRWhF4TSnmDDaTjW7mFZLido8Y3qtrWnGMaGSGWnuKcJKsVoI0lTkgpyPiiwmpSJ1oniankwY7QI1UZlW64LalGV6rQvy5GVKZdRuBNsqVmu+mtXCBUeY26KSvjPKaZ6Lso57LKOiH0ukPohynv+ingMedQ57VNOMmG7KnEmBZ8eRmzK6iJgp9U0ZrVZmzcpNGS3zDKpvykh1Vg1ZnlOjzDNrVP+DjJKzbCwxnlF5xo3ydxIqzb5RZael+wLR7eRNA/3F9fbkuTnKyZ1J/n7I5WxNJdScHYvwzB3V8U4Rs3jQ81we5Lb6wTyvR/k/iI6c42OJ8YSszvex1HiE8twf5dG8zOuAIK/qynj48sqAZL0+CIXUKiEU6KofzSuGKP8HnStXD7HEeOdWVxKx1HjnilVF1Ec9aVNVtnVlPHR5zfF+WGic+VGcI9/jggKQmCvf08IBaJwV34cFAjC69/0eFgJA4hT3fsKvH72fpDePypMBbGvaIcWcWq13SLGY2592SDHnSOQdUizEmKQdUsQpOpWdReHxCMZJ7yySIkVsZGeRLJFjp3cWSZGjWNlZJNUYT72zSIkU2bFNNvBoCYOrNtkIiQJb3WQj9BxUtclGSBxQuclGaDGYapNNliiQ9R0o5QEcxjDtQGFO0dM7UFjMcUs7UJhzxPIOFBZirNIOFOIUpcrOjfe8PaGuUMBqOzcqsgrfyM6NSgkKZnXnRkXn0FZ2blRUCvTolgVWOexhy0JiFOq8ZSEJKrxyy0LSKKRiy0JSOIxpy0LiFLrKG/7OOVz2xw6eK0bhcoHC5YIKl6s5XK5RuFzgcLnC4XIlhss5hcsECpdxDtfwA+7PM6FQFUyBKliFqWg5SEWhEBXMASqcw1N4DE6hFJoBU2AGSmH5MITkqR+VcACKvyX6IYUBePot0Q/YfED0W6IfQrOBhd8S/YDNdfQitOdF7LkexSsuF17Fo5gKPRL93fPU1z2N/dwjecuqV6j3exZvTvUodu8e+W/E9kdxu0GPSggAhYYAT5sSeloaAsiqC8x6DNjQY0BKCxyVK9szIOU20HlBsZObnJh2jweRTsxGJma4fwM452sj8rUR+Wp3ZBy18Sg3o63UuZV1bnPl+E4KKKLadssEUB5TcG/EOgTvSXjPdaFnu5yNXSX1Opl6XU49vpkAikjKTiRlF5JyOrjeuR/F17Wm6HqAxC6IKbke0LgLYhpcDxjtx5iC6wGJ2x+mE3x1coreBUi8JDkl7wIaX4ecCu8ChV58nKJ3AYqvOE4nuOdnit4FKNr3NHkX8GTCU/QuQGS10+BdwMIEO0XvclSc6qmRvX7qR6VNgOI7m9NkVMDT7wNN2agAx1/amwajAkY/lzdFo/KGtaFAm5uhfgl6SkYFNFdO/xL0NBgVsPhL0FM0KkdmVN4fXSjQ5YaoXzmckiMBzQ3RP2I4DY4ETMQ//kbhnmzDONnm8bxN4/bjYGTDD2V9RCdDZg80gcW7wCDgrV/Adr8XmD+kBOg3bQGWO7WA7Bmks72lPT23I5sqHcWp0jlOlU5tqnTEU6UrPlU6s6nSkU2Vhvply5k1wh8FAosLso/J1LBs/pWyj2hryGj6+xh8DQuW+AOy+Dsrk/sTIMOyzAvRZxrRXH/4hqzS3ka3Nz5bAy7i0Ig4NCoO/MBsz+ZhOM3juOsRbVb+OHglfEcrgtDWGtzqBreiYekZGUg++ADa4zBgoqN9decMV3eeAF0coZ2wl65mJZ22kk5YSXpeBJJymU65TEcugw8tEuOGpMcWSZDNVA8uksYNzo8ukpLaxw8vEmc/xe2Fg1ml7YXMlb2q7YUskdHWtheyzJabthcyJ/MtHB3KGA9JE8iLjcvxaqoYtKbxyDWBfcmEZE6mkFMbjxfRxmnE8jMr/hpVy+TgJrCNuzAWKmXorglXN7EWx+TvJlTjmJy+CGD3hsjzjbPxF6EV35umABNGg6UmA9Nq8ahNC6bX4pXmBxN4kkhPOVkQ00WRcM4wVvNbPXuYOmKraR4xoTKZmF613TytmEK2S48jFeYWqweSSpMBqTySVDKHRT6UVGJqvHgsqSSeeUCDyQcpzT8oqSkI9TwLoUoTEUp6LsISPB2hRjMSSjQpgYQOjJitAjWanVCSRoIFhJegzHaCGjsGaslkUaT5CiWassLz6mAc4km2+L5K1dP0hRrPYEH7TjjVPBZkMZWhPhLuNKGhNhbuNK2BBjMbUprcUOL5DbRWnyPNcqh9L6BqrkN5JGC1GQ+LpAsiFHniQ43nPvX6hNDEDAgqToKIR2YFPRVigXHnTxMiapU5EYuMTQ55ZkQxTg77ncJfLav2R5tw5D+X3h/F+3M9SvfhimXi9xa0yWibP8inMZ7PNVgwnqugTUbb/EE+l/F8rvDOE5ww8E2Fbyvfw+ePYq4EdCVUAehG0q38Bj45SvnU5SUcOG9Bm4y2+YN8OuP5XPYuBZzM2Eawrfgsn8+FfEJ7GwFOaGwj2FZ8lk/oQj4h/M37k0A2iWzTp/hE4m/eDwr+WeuTiDYZbfMH+VTqz1ofpMsdvdxbix3FFxv2ZGHn7I/ihNej+PwfhPjM6nKS3pC4nOCfGLxEBwcknrRdkl8DjU/aLoU7g0JP2i6DFwMLP5x4GTrncoJPFy4x/oBSXa9wOXZeyG3Qb1Vkr9JdiPOAb3NJ/T1pz+Z5wLe5ZOV70i9blG8y4VaV1t92mPIn6y+zq30Izwfaf3H+OyJHWSYtRypeeBv6aqMijrT90UPQtkGj3uaBNlDdaYa5Pjghn8Zv2OQvfciltrkUV1TN0YOkU8Mw17ZwqC3uRKQvfciltrkU11btTCySeuu5VE2+9axErLxeHkT+UCm/rZRPDaotGwZdXbads8ItorXGafqqjTzBgyy7lWW5HZUVSFH9Mi41A6TUDtCwIYA3+iQPuvRWl06NQS23ht91Hmqb3nUmDi3Iyy9DD7nUNpfiGqsV2SClt16HauW3XlmACoslnLMHUW4rynGl5bJu0NLLp0Pl8sunLECtxTrQ2YMotxXluNZybXjQPk0O96NO/SguwnpU7j4BEu9K9Dwt1Xoa35XoEb0R0TN6I6Jn4Y2InsS3PT5BxJ3sxsOiWa/7mx9PC4wfanJD6Y2cA9INzW/kHGh6I6fHuf38Rk7PRPvbeJTrrF6/6bmsYJtrol+/6RVRR3r9pke5Q+gvcn/KS6AnURjoYdW0v77ot1n6kd0fcWQ38QDFLZQHoVxmrwSirzVO3+1cnUDsD5UCnay2O1Sr4sTxb8yJPy+n/7Lc7TASTvwo+sUtjgRE+XLmlkYCUhgJgONVzm0YCcDoWuZ2GAlwlOvcVirYygq2uSY8EkARdWzjVeItjoQB5V3rWqC2VPasV1TR6PqO9UqB3FeV/epa5ejU9qtLua0Ko2GRvV3fjK4LjDarkg61nehapiSpbEQ/qHeT4QaxH0XP6JH4qfKe411gp/Gnynskf6q8V+inyntGP1Xes/BT5XeDDR1WNXdoQ4Cwdj1dhsYuc2OXlcYuZWOXubHLamOXorFL0dhlamy8T7gMTV/mpvNScaDhkfhRRBSEygNxEnM48uNw4jow4mE4CRyi9Cg8YggWXuJTIDhs6hJ/kMKvIh1FRLGr/CYSiTl2+ReRiOvY5d9DYoFjl34OKWKIXfgxpBgIjp264VCk/FsRR0rgOI79UoQsImJa+Z0IqVbiW/mVCC2nWOsfiVAixj3/RIQKZeqD6g9EDAXKrW3oA0MUfeMq7ibmiJtEsTauo2wyx9cEjqwJMab5ccAS7/1TIDiC6t7/QdqtF+hu/57QDfp2OLF/ZBOO/FqpDavoNq+iW7mKLosTrkq6MUocKoU3Rgk95PNsBaKK1h9etvJW45nQuN7pVuNQ03SrUfGHSgW2NU4N+s4TSljfcZvUrcYsQXvoVmOmD/K0W02pHaMPO1u+OXcWMdcfb84N1cSbc4Qe8nm2AlGF649L29Hd/Kxy3UmGJpCyqSoP1aps6wo1j+XcysrG+zbfgmQB2hRuQTJ7ECfbKkZ1H3myXC42+jt65+cRla9hbhsaicddjSTCqVmy/Y3EfZMjCb7TkYSy3ZGw7XmM/DKjK4EqYSiPCjMvj/2SMiTGs4ivc8nrXcNn95mLajSV6jWV6jVjvdTUeyn+sTDSKj3Y1HqwqfXgp4xEh95UMjDeAmP1c0ZzgSrxnI/FbV6P27wSm3ktNvNabP47I1HqdjQGC4EqDV6Mf5H9ZbXI7zISbVxWzrmsJO1ytC7LyvhuBaqcuB3r3bbeu22ld9OfqSO51vltJaxtpYlfBCrTDNnMv3PRlUCVAK0qPbMa7RkRsXXlBOvKCdZVO12Pnlqh0Q90AlXq2o1lS1fPlq6SLXxdxXItW7qaVXR6ItwvNC7ivL/JyN+XN7TNpWyRwRyaT9K3XKNvlQh/q2TDNzEL6b99apiXXXiReRy/YZMRrLnya2ht5TW0tv4a2heo6Ol5If7wy9A2fIRO8EV/9/AttXeHol4Ty+tIh8dt9FWmnrm6aD7dly89/P+H8wtTywf7Vc5RxrbSyVqopvjKlf6YW5jQLK+UFu0hl1hX8MgJ1yMnRGtT6nerM/TFYZithlX8sR/F20IrXLsDEjeJVrRiBxpvDa3COh0Y3fFZweociL0wb2h4Ke4UwGGwnBvZLdoOg3QFyzUg2B7A3hyAQ2uAlMYAKm1xFA9CRzlfhINUz0XtY4PXOdmtqU7sYBkOhm8FMuQbEjwP8CH4Tr5g3M2SPPCwT8HL7b7zzA/CuZx32JwuhaLTXdapLutSl9HsCULuyy735TBXOviKzduGg6HmQLyKAyx31GAoGqLxaJwGpXE1Mk3Mw9MkGqPGeaCawKPVhDhkDdO49RubmBx8u/M8Yh/GRmJiGBbZYVpKEVNinhimnDBOiQGvGDNR47aIi0x0o+ToNzFaQMHuA4UsM4mOYDjagmPhDSZGg7Db1KmD2SoKz35RFDcHI8o54KEnhaLTUVVGIp54sqJTRftKetzJvJJI0Wbg3j6FZptJdB1xy35Qwt9qIkTWk/5SE3NlPfIPNZFE1pP/TBMLbD3przQRJuuhP9J0yjRYT8FuPUZiPhkW+WRayidTYj4ZpowxThkDuxKYKNMo4iIT3ShpPSZG6ynYraeQZSbRegxH63EsrMfEaD32Mn7qYLYe8beR6BPuLkaU9cA7AxSKTkdVWY94YYAVnSraetLbAswriRStB14VoNBsM4nWI94TKEp4eo0GFAW2oaiyGUVVWlIsIowpFmB7imoyqSgnq4oyGVYU2baCSplKWrSwIIKRRU45GkWVqbFEzteoU9ZGkbMzqpyjQa1yaVmhyKLGx0KhrTAWIUMMIthi4MsaJ4uMIhklicouYxEyzSB+qaRXMtCgChsNOvhl5NJS+VUiGVK21/qLRLrEd1KXDXfsLSJdZjS9kwWrV4ik9rUS4m2NkzXXXh866HlrldhSVd5kGD7C129DobTqJw7foPfWrdPkTRy/obLhci3+lHhS8Hukp5ZP6BEhVfhOHxu0hXM42v/NXCbxbqBjcauviB8Smdr910L2fz7+WSRlpiUMM2RUyo3e4Q7uaRYH5XBf+OswzR/M5ivO7YDKhA4ovoPtHF+8dmpvWzvyt6ed+evizso+Zif26rShkghPrU1Rb3Kb/N16QLpNjWxTfHXecW5qI5raiKa28SjXua1UsJUVbHNN0nvtrog6+hvsjnLs6fd2N2XdeG5H8f2+TVghOorLQufpLcBNWAA68lWfM1/qOSvrOye2qDNUEuqJtckXfRtMKEBxG88mJRTwtL7dcEIBjmvdTUgoYLSq3QwJBUe5zm2lgq2sYJtrkn6GxxVRR//RHUdxQb3BhDoE/2GC2/ceMPiA4va9hxR84Ol52wMHH3DcNPcQgg+Mtu9ti6v6kY1mR+aqjsTOli27qtO4h2UbXdUZbcLZoqs6iRtStji9HhmKBZrcKNqytM226lw2SuxI2gZbdSTayhuOtsVW/SjXWe0n2rKtOs010duFttFWncWNQdtgq4Z8+TJEHx9InBCiNqUHEsxVg9UDCZao6fmBBAvcHfxAgjHFIS1dKRaiKOekcUpM5yOxECnqUs5T0ypxShlrQi1OrUCVBsosNrHeEM5n4zqpTa61hdPbeKVvU6LDK9OQ60gpAihRxqOk4oN6DhGqFCWUOBKocceiFscAKhQq9bsaOVj6AzweUKIhEaTxYImBEdQ8NlCuxzKNENRGYtlqWm+7HC2ojzaQxwxKethgiZE28uBBqZ4UPIS+lfXquR3FNfi3sF4FlNfg33i9ChTXq47j0vxbXK86o6X5t7Je9aNc57ZSwVZWsM01SetVV0Qdfb3qKF4rfMOZiBHVP81EiYvGqZkoSbkf0kzEnFubZyISWoEqDZS9pGYiliqVrXRanolYoO5LM9HAy/0qhaiJxqkPnYumm5ib7lLuQ9MoLMa53SZwHxahFajSQNmHJtYbwn1oXPehybW2cB8apz7EX0GqYWpq0Kg/oyZCEQrkcEQ5923QKWRB47gEkfsZxbaCR4Ig+zwUGG8o933QdP+HImNt5TwIGuTCv/73/wO+9kRf";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Times-Bold.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Times-Bold.compressed.json
 var require_Times_Bold_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Times-Bold.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Times-Bold.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Times-BoldItalic.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Times-BoldItalic.compressed.json
 var require_Times_BoldItalic_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Times-BoldItalic.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Times-BoldItalic.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Times-Italic.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Times-Italic.compressed.json
 var require_Times_Italic_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Times-Italic.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Times-Italic.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Times-Roman.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Times-Roman.compressed.json
 var require_Times_Roman_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Times-Roman.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Times-Roman.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Symbol.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/Symbol.compressed.json
 var require_Symbol_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Symbol.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Symbol.compressed.json"(exports, module) {
     module.exports = "eJx9WFlv2zgQ/iuGnnYBt5DkS85bmk13g27SoEkPbNEHWqIlIhSpklSuov99R7JIkSLtFyGZjxzN8c0h/4oueF1jpqKz6Mt1K1GJZ4s4S+PZYrvdbqJ59J4zdYNqDAfuXuodp52spdSToZrQl6n0KyZl1Sm/xgVpa5BcKURJfs5KCgdj+F++J8+4uCUqr6IzJVo8jy4qJFCusLjD3d27BucE0cGYd+/4c3T2/U2SxfM36XYxT+JtDI8k/jGPPrMCC0oYvuWSKMJZdPYmiWMLuK9I/sCwlNHZCuRfsJD9sSiOk7dxnMFbbrgieefGBW9eROfA7I/8z1myzVbz7rnpn9vuCW/unpvZecF3eHb3IhWu5eyK5Vw0XCCFi7ezc0pnvRo5E1hi8QhCeM0lHCoIK+/yCvdR67zrfd2THPA7VfzzNTrbpv2fX+BPeH8fm2usBMnBg++/oq/forO08+QGNMgGgeG/5wfxYrE4iPFzTlFt5JtkkLeMPIL/EFoNreJBE2vrXReako3YcqvVEXCTKWJdzPS7Gizyjk/mZZvsAKC66d7FCgMtF4NC2eaVqpDyLW+QwIzi/TGoD6tvPQL7BJEPNVKVb39DW2mkJnY5FALyD9eEhU6DL4SPrqTaS0mRrHyDXrHgvpQz7AvVU+CkqgQOnN3zVgSkkFVfKslzQIgfMfPFOBxWRiyDjcs5p5wFIoFr4kImprQrP59WP1ubiVpcCgxlNLq5XC4PwM8Wy77EvSs5ZyU0EpuFaXqAzmlTjVlerzcH8TuskH/4oiLj0WQQ/oWpdXadJAfxZSOJ7exmPfD01lYSD8K/kU0288JLS7Mh+hW337dINCPA5MRX8QE1jXU8Wx/E/6J6V4zyLBtCdd36Km4Cso+QTOG4N6T5dvRusxxsu6/scK5Wgw2fKovZ20HxHSnrQDjv0WjEejvw7/MkxmMD6ZQkvnEfa1xayperg/ibZfN2kN1K4lvxHw4lZAfD6QErpy1lOt2QF4H3XATa8HDP7VnrVWY6SoNZQfKWokBRt90Ak7mt2GACwTVE8bNPE+Tw3VTIzkmQqRuLqsvtUGaFw3cTcjzJxSod3tjYSnQgS4fvpgyc8KaDZuLwXR8FtYlv8YPD9rHBuGxfbQYG1q1vL2v9+3zC9nF0EF+BqoLBFBbbjRfSYbsJprLYboxtpx1Fj23esXoMhqlx7rB9uR2OPxP/aCMDmX61/Vhm8cha7HA91bzbWUR1z0/m8tLUKSyJ1qWNHqeXrTUf16lb76Or6XIzTmWFA4mHyeLOkUS3+H23UpJQPAnbE0bUS2CSUi6IdWM13Mhpu/OlBUE1t/YbA1QYCeWLYVsrRh+SeDm0RCQEf9pxa3Xpds4RcpJhqNVDbXPkzqTpOJcK/mT1VO17gUtn57C3J3cpMlUucW77Px3hRwZ83VJFGvriJ6YRHJboLmnWPUNXWAC7FbQg+/0IrjUL4RMFBxhYkEdSBLxiXB0xD8TkEZorywPXoP0I/jxhXGzWKEoJUFgeiTvs3srq2eO9Hq2Aeq92S9eDIgeYwIeawKoVY+KyVOumuBmpY0r+CgrgQVn7ohl9n6aIoc4TJjB0lEDWvmaGa05ETrGfPRd3lm1jI64b9SKtBJlbhAFTgEhuqWoUvlhCFdwRBW613cNWqnGYyDAdj+OQfdnugpBWHUa14jAKbbN2tlDrfR6mXUT9p7F3peyGvHNBb0UCl933GHgmyN6Hc/0R6+KZxiG7Ba6ReJjg6RiAos0DpTRsHWNz1s284Mr58DI+UF52N8B7vyIGzP4+nGJcWLXiNMtiR0/0S0BPtExAj3ZNwE42zh11e6duTZS/YlZaK6DebfrkOsb4aURMnsqiA+viHpPowDrwsoX1y6moRTZ20cMXtmpOgFYf8sGd8kFrRw4ptuCQagu2lJvwmpXEUu2DNSlOoEf12vY4aXOZkG6WY8OC4hzrwHRcjVhWepjd4KdYKK7jrx5H89WjRxPWoycydlS3jZ/I2VS/G9yp9gB6PG1T1aY4YAp3LfPHPPqABbtFRHS/jf34/T82FAfb";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/ZapfDingbats.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/ZapfDingbats.compressed.json
 var require_ZapfDingbats_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/ZapfDingbats.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/ZapfDingbats.compressed.json"(exports, module) {
     module.exports = "eJxtmNtu20YQhl+F4FULyMGeD7pz3AY1ChtG7NpFA18w1NomIlECSRcxgrx7SVk7+wOdG8H5OJydf2Z2d5gf9cV+t0v9VK/r+6vXsXlOlbHe28paq229qj/t++m62aXZ4J/m8PRb1z9/baZxefK63Z6eXN5dVMvTCh83u277xr/6kLrnl2XNq7TpXnczuZyabdee98/b2VzM/x4/dd/T5qab2pd6PQ2vaVVfvDRD005puE3Lu7eH1HbN9hTjx4/77/X6y5lcnUmjVzHIVVDicVX/1W/SsO36dLMfu6nb9/X6TAoBD+5euvZbn8axXtuZ36dhPJrVQqgPQoh5hev91LWLkIv94W1Ygq9+aX+tZAx2tfz64284/sblN/rqfLP/mqrbt3FKu7G67Nv9cNgPzZQ2H6rz7bb6vLgZq89pTMO/M/xfEqturJpqSM/d7GJIm2oamk3aNcO3av80O5xh3yyKmm1193ZIT02bqovTKjP+MAf++7zsZvZ3276kYyWWXB0z99S18/PbafPHQ71W4fjn/fxnFO+ZvkrT0LVzTr78qB/+nk38bHM9exgP8zr1z9U7jt6840YW5uSJKcZOCaBBnKgm5mU8MVNYyMwWFvO7Ukagkmgg6sDWQ5yFFqjzUrLEaQ3BEmiwNsMSaZS0vgWfOkPHWQowNeTUc0kumnxZvsgPxlGai6VTGUqAVCTQ6QkWnc77DKEiLktSUBJKqHIQZ86d8gCpHYoiEzMsb1ubYy8vW50DChB5ZhGqrijD0EqUIeiaEHIfCg5Kpuu0ApiToaGPSY0uaQsyr65L2oKi1yFt1PLaQ3lzfXTgXodGoJYzglndSLDMPg1sTPJpQJHJigw0QrGERqD9YhyTOgONQDUyuF1zaxuokc/BW2ztXCMrGZ9WMW1oQZHIXWNBkSCfRZEL5BMUiZw6CzVSFCfUSGZFNjIldoKDkonTKQiJIGzWmFd3BizJJ9SINoLDriOfUCOZS+zg+KGD1qGiLNMLxtJD1/ns00ON6EzyUCM6vbxhoBKaqbG3DFQCNiL1iHccBPV0DHhQH/JW8EW90dkyFKGywCJU0WkVSvSGeiSUODWFFD0HYdPQVoiRgfPMA+/nnRgiAyNYSjpWNQcNSMrtFCUH4ZIRpSCWocFCSuhCEY6hoUClc0WC52BJlCYYLQdhN+hygRRRlo5BKRRLS6oihSqh+ZzzRGG1Mo4Iz1LoP0qsxDGFzk0JE42ji0jCPejomJKCuwil4m5CiRMEUMVSzVLDUstSx1Juc0oVWMpqY295qVltmtWmWW2a1aZZbZrVplltmtWmWW2G1WZYbYbVZlhthtVmWG2G1WZYbYbVZlhtltVmWW2W1WZZbZbVZlltltVmWW2W1QYjQCh7E2aAQHeGhCFgPoNoy8KNb2wxBhmGKBxoUZXlLGsLI6AsftEDHV0wIURVbANLcTKlGGBIKPOAxCmhePCKUwFzAmpDFRQvjA9R06Hq8TONvshgKDCuRAZTXigUxjxNFfKRo3CLhnIJBMFRvMZpqpNBMlQJzGT5WFQMVQI/AikPMIhEU1aDjqJvQwmjSHB05cC9jbYwc5UtAHNLhDw41ha+lEqF4JaH3gmB61SYcqInxTDmQK8v08vjqv4zDf1N0w3Lf4A8/vwPpfK11w==";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Font.js
+// node_modules/@pdf-lib/standard-fonts/lib/Font.js
 var require_Font = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Font.js"(exports) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Font.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod) {
       return mod && mod.__esModule ? mod : { "default": mod };
@@ -5411,16 +5411,16 @@ var require_Font = __commonJS({
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/all-encodings.compressed.json
+// node_modules/@pdf-lib/standard-fonts/lib/all-encodings.compressed.json
 var require_all_encodings_compressed = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/all-encodings.compressed.json"(exports, module) {
+  "node_modules/@pdf-lib/standard-fonts/lib/all-encodings.compressed.json"(exports, module) {
     module.exports = "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";
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/Encoding.js
+// node_modules/@pdf-lib/standard-fonts/lib/Encoding.js
 var require_Encoding = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/Encoding.js"(exports) {
+  "node_modules/@pdf-lib/standard-fonts/lib/Encoding.js"(exports) {
     "use strict";
     var __importDefault2 = exports && exports.__importDefault || function(mod) {
       return mod && mod.__esModule ? mod : { "default": mod };
@@ -5465,9 +5465,9 @@ var require_Encoding = __commonJS({
   }
 });
 
-// ../../../node_modules/@pdf-lib/standard-fonts/lib/index.js
+// node_modules/@pdf-lib/standard-fonts/lib/index.js
 var require_lib = __commonJS({
-  "../../../node_modules/@pdf-lib/standard-fonts/lib/index.js"(exports) {
+  "node_modules/@pdf-lib/standard-fonts/lib/index.js"(exports) {
     "use strict";
     function __export2(m) {
       for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
@@ -5478,9 +5478,9 @@ var require_lib = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/objects.js
+// node_modules/pdf-lib/cjs/utils/objects.js
 var require_objects = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/objects.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/objects.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.rectanglesAreEqual = exports.isStandardFont = exports.StandardFontValues = exports.values = void 0;
@@ -5500,9 +5500,9 @@ var require_objects = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/validators.js
+// node_modules/pdf-lib/cjs/utils/validators.js
 var require_validators = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/validators.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/validators.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.assertPositive = exports.assertInteger = exports.assertMultiple = exports.assertRangeOrUndefined = exports.assertRange = exports.assertEachIs = exports.assertOrUndefined = exports.assertIs = exports.createTypeErrorMsg = exports.isType = exports.getType = exports.assertIsSubset = exports.assertIsOneOfOrUndefined = exports.assertIsOneOf = exports.createValueErrorMsg = exports.singleQuote = exports.backtick = void 0;
@@ -5652,19 +5652,19 @@ var require_validators = __commonJS({
         exports.assertIs(values[idx], valueName, types);
       }
     };
-    exports.assertRange = function(value2, valueName, min, max) {
+    exports.assertRange = function(value2, valueName, min, max2) {
       exports.assertIs(value2, valueName, ["number"]);
       exports.assertIs(min, "min", ["number"]);
-      exports.assertIs(max, "max", ["number"]);
-      max = Math.max(min, max);
-      if (value2 < min || value2 > max) {
-        throw new Error(exports.backtick(valueName) + " must be at least " + min + " and at most " + max + ", but was actually " + value2);
+      exports.assertIs(max2, "max", ["number"]);
+      max2 = Math.max(min, max2);
+      if (value2 < min || value2 > max2) {
+        throw new Error(exports.backtick(valueName) + " must be at least " + min + " and at most " + max2 + ", but was actually " + value2);
       }
     };
-    exports.assertRangeOrUndefined = function(value2, valueName, min, max) {
+    exports.assertRangeOrUndefined = function(value2, valueName, min, max2) {
       exports.assertIs(value2, valueName, ["number", "undefined"]);
       if (typeof value2 === "number")
-        exports.assertRange(value2, valueName, min, max);
+        exports.assertRange(value2, valueName, min, max2);
     };
     exports.assertMultiple = function(value2, valueName, multiplier) {
       exports.assertIs(value2, valueName, ["number"]);
@@ -5685,9 +5685,9 @@ var require_validators = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/pdfDocEncoding.js
+// node_modules/pdf-lib/cjs/utils/pdfDocEncoding.js
 var require_pdfDocEncoding = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/pdfDocEncoding.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/pdfDocEncoding.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.pdfDocEncodingDecode = void 0;
@@ -5751,9 +5751,9 @@ var require_pdfDocEncoding = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/Cache.js
+// node_modules/pdf-lib/cjs/utils/Cache.js
 var require_Cache = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/Cache.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/Cache.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Cache = (
@@ -5784,9 +5784,9 @@ var require_Cache = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/index.js
+// node_modules/pdf-lib/cjs/utils/index.js
 var require_utils2 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -5807,9 +5807,9 @@ var require_utils2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/errors.js
+// node_modules/pdf-lib/cjs/core/errors.js
 var require_errors2 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/errors.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.MissingKeywordError = exports.MissingPDFHeaderError = exports.StalledParserError = exports.UnbalancedParenthesisError = exports.PDFStreamParsingError = exports.PDFInvalidObjectParsingError = exports.PDFObjectParsingError = exports.NextByteAssertionError = exports.PDFParsingError = exports.NumberParsingError = exports.MissingTfOperatorError = exports.MissingDAEntryError = exports.MultiSelectValueError = exports.InvalidAcroFieldValueError = exports.IndexOutOfBoundsError = exports.CorruptPageTreeError = exports.InvalidTargetIndexError = exports.InvalidPDFDateStringError = exports.PDFArrayIsNotRectangleError = exports.PageEmbeddingMismatchedContextError = exports.UnrecognizedStreamTypeError = exports.MissingPageContentsEmbeddingError = exports.MissingCatalogError = exports.ReparseError = exports.UnsupportedEncodingError = exports.UnexpectedObjectTypeError = exports.PrivateConstructorError = exports.MethodNotImplementedError = void 0;
@@ -6008,9 +6008,9 @@ var require_errors2 = __commonJS({
       /** @class */
       (function(_super) {
         tslib_1.__extends(IndexOutOfBoundsError2, _super);
-        function IndexOutOfBoundsError2(index, min, max) {
+        function IndexOutOfBoundsError2(index, min, max2) {
           var _this = this;
-          var msg = "index should be at least " + min + " and at most " + max + ", but was actually " + index;
+          var msg = "index should be at least " + min + " and at most " + max2 + ", but was actually " + index;
           _this = _super.call(this, msg) || this;
           return _this;
         }
@@ -6217,9 +6217,9 @@ var require_errors2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/syntax/CharCodes.js
+// node_modules/pdf-lib/cjs/core/syntax/CharCodes.js
 var require_CharCodes = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/syntax/CharCodes.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/syntax/CharCodes.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var CharCodes;
@@ -6287,9 +6287,9 @@ var require_CharCodes = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/document/PDFHeader.js
+// node_modules/pdf-lib/cjs/core/document/PDFHeader.js
 var require_PDFHeader = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/document/PDFHeader.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/document/PDFHeader.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6337,9 +6337,9 @@ var require_PDFHeader = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFObject.js
+// node_modules/pdf-lib/cjs/core/objects/PDFObject.js
 var require_PDFObject = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFObject.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFObject.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var errors_1 = require_errors2();
@@ -6367,9 +6367,9 @@ var require_PDFObject = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFNumber.js
+// node_modules/pdf-lib/cjs/core/objects/PDFNumber.js
 var require_PDFNumber = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFNumber.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFNumber.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6414,9 +6414,9 @@ var require_PDFNumber = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFArray.js
+// node_modules/pdf-lib/cjs/core/objects/PDFArray.js
 var require_PDFArray = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFArray.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFArray.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6541,9 +6541,9 @@ var require_PDFArray = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFBool.js
+// node_modules/pdf-lib/cjs/core/objects/PDFBool.js
 var require_PDFBool = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFBool.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFBool.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6600,9 +6600,9 @@ var require_PDFBool = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/syntax/Delimiters.js
+// node_modules/pdf-lib/cjs/core/syntax/Delimiters.js
 var require_Delimiters = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/syntax/Delimiters.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/syntax/Delimiters.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IsDelimiter = void 0;
@@ -6622,9 +6622,9 @@ var require_Delimiters = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/syntax/Whitespace.js
+// node_modules/pdf-lib/cjs/core/syntax/Whitespace.js
 var require_Whitespace = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/syntax/Whitespace.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/syntax/Whitespace.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IsWhitespace = void 0;
@@ -6640,9 +6640,9 @@ var require_Whitespace = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/syntax/Irregular.js
+// node_modules/pdf-lib/cjs/core/syntax/Irregular.js
 var require_Irregular = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/syntax/Irregular.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/syntax/Irregular.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IsIrregular = void 0;
@@ -6660,9 +6660,9 @@ var require_Irregular = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFName.js
+// node_modules/pdf-lib/cjs/core/objects/PDFName.js
 var require_PDFName = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFName.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFName.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6795,9 +6795,9 @@ var require_PDFName = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFNull.js
+// node_modules/pdf-lib/cjs/core/objects/PDFNull.js
 var require_PDFNull = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFNull.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFNull.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6836,9 +6836,9 @@ var require_PDFNull = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFDict.js
+// node_modules/pdf-lib/cjs/core/objects/PDFDict.js
 var require_PDFDict = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFDict.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFDict.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -6980,9 +6980,9 @@ var require_PDFDict = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFStream.js
+// node_modules/pdf-lib/cjs/core/objects/PDFStream.js
 var require_PDFStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7063,9 +7063,9 @@ var require_PDFStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFRawStream.js
+// node_modules/pdf-lib/cjs/core/objects/PDFRawStream.js
 var require_PDFRawStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFRawStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFRawStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7105,9 +7105,9 @@ var require_PDFRawStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFRef.js
+// node_modules/pdf-lib/cjs/core/objects/PDFRef.js
 var require_PDFRef = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFRef.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFRef.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7162,9 +7162,9 @@ var require_PDFRef = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/operators/PDFOperator.js
+// node_modules/pdf-lib/cjs/core/operators/PDFOperator.js
 var require_PDFOperator = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/operators/PDFOperator.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/operators/PDFOperator.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7227,9 +7227,9 @@ var require_PDFOperator = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/operators/PDFOperatorNames.js
+// node_modules/pdf-lib/cjs/core/operators/PDFOperatorNames.js
 var require_PDFOperatorNames = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/operators/PDFOperatorNames.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/operators/PDFOperatorNames.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var PDFOperatorNames;
@@ -7312,9 +7312,9 @@ var require_PDFOperatorNames = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFFlateStream.js
+// node_modules/pdf-lib/cjs/core/structures/PDFFlateStream.js
 var require_PDFFlateStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFFlateStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFFlateStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7355,9 +7355,9 @@ var require_PDFFlateStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFContentStream.js
+// node_modules/pdf-lib/cjs/core/structures/PDFContentStream.js
 var require_PDFContentStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFContentStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFContentStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7427,9 +7427,9 @@ var require_PDFContentStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/rng.js
+// node_modules/pdf-lib/cjs/utils/rng.js
 var require_rng = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/rng.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/rng.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.SimpleRNG = void 0;
@@ -7453,9 +7453,9 @@ var require_rng = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/PDFContext.js
+// node_modules/pdf-lib/cjs/core/PDFContext.js
 var require_PDFContext = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/PDFContext.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/PDFContext.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7575,11 +7575,11 @@ var require_PDFContext = __commonJS({
           } else if (typeof literal3 === "boolean") {
             return literal3 ? PDFBool_1.default.True : PDFBool_1.default.False;
           } else if (Array.isArray(literal3)) {
-            var array3 = PDFArray_1.default.withContext(this);
+            var array5 = PDFArray_1.default.withContext(this);
             for (var idx = 0, len = literal3.length; idx < len; idx++) {
-              array3.push(this.obj(literal3[idx]));
+              array5.push(this.obj(literal3[idx]));
             }
-            return array3;
+            return array5;
           } else {
             var dict = PDFDict_1.default.withContext(this);
             var keys2 = Object.keys(literal3);
@@ -7652,9 +7652,9 @@ var require_PDFContext = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFPageLeaf.js
+// node_modules/pdf-lib/cjs/core/structures/PDFPageLeaf.js
 var require_PDFPageLeaf = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFPageLeaf.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFPageLeaf.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7866,9 +7866,9 @@ var require_PDFPageLeaf = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/PDFObjectCopier.js
+// node_modules/pdf-lib/cjs/core/PDFObjectCopier.js
 var require_PDFObjectCopier = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/PDFObjectCopier.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/PDFObjectCopier.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -7963,9 +7963,9 @@ var require_PDFObjectCopier = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/document/PDFCrossRefSection.js
+// node_modules/pdf-lib/cjs/core/document/PDFCrossRefSection.js
 var require_PDFCrossRefSection = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/document/PDFCrossRefSection.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/document/PDFCrossRefSection.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8092,9 +8092,9 @@ var require_PDFCrossRefSection = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/document/PDFTrailer.js
+// node_modules/pdf-lib/cjs/core/document/PDFTrailer.js
 var require_PDFTrailer = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/document/PDFTrailer.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/document/PDFTrailer.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8143,9 +8143,9 @@ var require_PDFTrailer = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/document/PDFTrailerDict.js
+// node_modules/pdf-lib/cjs/core/document/PDFTrailerDict.js
 var require_PDFTrailerDict = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/document/PDFTrailerDict.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/document/PDFTrailerDict.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8185,9 +8185,9 @@ var require_PDFTrailerDict = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFObjectStream.js
+// node_modules/pdf-lib/cjs/core/structures/PDFObjectStream.js
 var require_PDFObjectStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFObjectStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFObjectStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8271,9 +8271,9 @@ var require_PDFObjectStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/writers/PDFWriter.js
+// node_modules/pdf-lib/cjs/core/writers/PDFWriter.js
 var require_PDFWriter = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/writers/PDFWriter.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/writers/PDFWriter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8424,9 +8424,9 @@ var require_PDFWriter = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFInvalidObject.js
+// node_modules/pdf-lib/cjs/core/objects/PDFInvalidObject.js
 var require_PDFInvalidObject = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFInvalidObject.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFInvalidObject.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8466,9 +8466,9 @@ var require_PDFInvalidObject = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFCrossRefStream.js
+// node_modules/pdf-lib/cjs/core/structures/PDFCrossRefStream.js
 var require_PDFCrossRefStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFCrossRefStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFCrossRefStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.EntryType = void 0;
@@ -8658,9 +8658,9 @@ var require_PDFCrossRefStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/writers/PDFStreamWriter.js
+// node_modules/pdf-lib/cjs/core/writers/PDFStreamWriter.js
 var require_PDFStreamWriter = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/writers/PDFStreamWriter.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/writers/PDFStreamWriter.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8781,9 +8781,9 @@ var require_PDFStreamWriter = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFHexString.js
+// node_modules/pdf-lib/cjs/core/objects/PDFHexString.js
 var require_PDFHexString = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFHexString.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFHexString.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8863,9 +8863,9 @@ var require_PDFHexString = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/StandardFontEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/StandardFontEmbedder.js
 var require_StandardFontEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/StandardFontEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/StandardFontEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -8956,9 +8956,9 @@ var require_StandardFontEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/CMap.js
+// node_modules/pdf-lib/cjs/core/embedders/CMap.js
 var require_CMap = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/CMap.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/CMap.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createCmap = void 0;
@@ -9005,9 +9005,9 @@ var require_CMap = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/FontFlags.js
+// node_modules/pdf-lib/cjs/core/embedders/FontFlags.js
 var require_FontFlags = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/FontFlags.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/FontFlags.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.deriveFontFlags = void 0;
@@ -9050,9 +9050,9 @@ var require_FontFlags = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/objects/PDFString.js
+// node_modules/pdf-lib/cjs/core/objects/PDFString.js
 var require_PDFString = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/objects/PDFString.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/objects/PDFString.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -9171,9 +9171,9 @@ var require_PDFString = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/CustomFontEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/CustomFontEmbedder.js
 var require_CustomFontEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/CustomFontEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/CustomFontEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -9414,9 +9414,9 @@ var require_CustomFontEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/CustomFontSubsetEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/CustomFontSubsetEmbedder.js
 var require_CustomFontSubsetEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/CustomFontSubsetEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/CustomFontSubsetEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -9490,9 +9490,9 @@ var require_CustomFontSubsetEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/FileEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/FileEmbedder.js
 var require_FileEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/FileEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/FileEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AFRelationship = void 0;
@@ -9570,9 +9570,9 @@ var require_FileEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/JpegEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/JpegEmbedder.js
 var require_JpegEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/JpegEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/JpegEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -9689,9 +9689,9 @@ var require_JpegEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/@pdf-lib/upng/cjs/UPNG.js
+// node_modules/@pdf-lib/upng/cjs/UPNG.js
 var require_UPNG = __commonJS({
-  "../../../node_modules/@pdf-lib/upng/cjs/UPNG.js"(exports) {
+  "node_modules/@pdf-lib/upng/cjs/UPNG.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", {
       value: true
@@ -9723,14 +9723,14 @@ var require_UPNG = __commonJS({
       return frms;
     };
     UPNG.toRGBA8.decodeImage = function(data, w, h, out) {
-      var area = w * h, bpp = UPNG.decode._getBPP(out);
+      var area2 = w * h, bpp = UPNG.decode._getBPP(out);
       var bpl = Math.ceil(w * bpp / 8);
-      var bf = new Uint8Array(area * 4), bf32 = new Uint32Array(bf.buffer);
+      var bf = new Uint8Array(area2 * 4), bf32 = new Uint32Array(bf.buffer);
       var ctype = out.ctype, depth = out.depth;
       var rs = UPNG._bin.readUshort;
       var time5 = Date.now();
       if (ctype == 6) {
-        var qarea = area << 2;
+        var qarea = area2 << 2;
         if (depth == 8) for (var i = 0; i < qarea; i += 4) {
           bf[i] = data[i];
           bf[i + 1] = data[i + 1];
@@ -9743,22 +9743,22 @@ var require_UPNG = __commonJS({
       } else if (ctype == 2) {
         var ts = out.tabs["tRNS"];
         if (ts == null) {
-          if (depth == 8) for (var i = 0; i < area; i++) {
+          if (depth == 8) for (var i = 0; i < area2; i++) {
             var ti = i * 3;
             bf32[i] = 255 << 24 | data[ti + 2] << 16 | data[ti + 1] << 8 | data[ti];
           }
-          if (depth == 16) for (var i = 0; i < area; i++) {
+          if (depth == 16) for (var i = 0; i < area2; i++) {
             var ti = i * 6;
             bf32[i] = 255 << 24 | data[ti + 4] << 16 | data[ti + 2] << 8 | data[ti];
           }
         } else {
           var tr = ts[0], tg = ts[1], tb = ts[2];
-          if (depth == 8) for (var i = 0; i < area; i++) {
+          if (depth == 8) for (var i = 0; i < area2; i++) {
             var qi = i << 2, ti = i * 3;
             bf32[i] = 255 << 24 | data[ti + 2] << 16 | data[ti + 1] << 8 | data[ti];
             if (data[ti] == tr && data[ti + 1] == tg && data[ti + 2] == tb) bf[qi + 3] = 0;
           }
-          if (depth == 16) for (var i = 0; i < area; i++) {
+          if (depth == 16) for (var i = 0; i < area2; i++) {
             var qi = i << 2, ti = i * 6;
             bf32[i] = 255 << 24 | data[ti + 4] << 16 | data[ti + 2] << 8 | data[ti];
             if (rs(data, ti) == tr && rs(data, ti + 2) == tg && rs(data, ti + 4) == tb) bf[qi + 3] = 0;
@@ -9796,7 +9796,7 @@ var require_UPNG = __commonJS({
             bf[qi + 3] = j < tl ? ap[j] : 255;
           }
         }
-        if (depth == 8) for (var i = 0; i < area; i++) {
+        if (depth == 8) for (var i = 0; i < area2; i++) {
           var qi = i << 2, j = data[i], cj = 3 * j;
           bf[qi] = p[cj];
           bf[qi + 1] = p[cj + 1];
@@ -9804,14 +9804,14 @@ var require_UPNG = __commonJS({
           bf[qi + 3] = j < tl ? ap[j] : 255;
         }
       } else if (ctype == 4) {
-        if (depth == 8) for (var i = 0; i < area; i++) {
+        if (depth == 8) for (var i = 0; i < area2; i++) {
           var qi = i << 2, di = i << 1, gr = data[di];
           bf[qi] = gr;
           bf[qi + 1] = gr;
           bf[qi + 2] = gr;
           bf[qi + 3] = data[di + 1];
         }
-        if (depth == 16) for (var i = 0; i < area; i++) {
+        if (depth == 16) for (var i = 0; i < area2; i++) {
           var qi = i << 2, di = i << 2, gr = data[di];
           bf[qi] = gr;
           bf[qi + 1] = gr;
@@ -10721,8 +10721,8 @@ var require_UPNG = __commonJS({
           ctype = 3;
           bpp = 1;
         } else if (gotAlpha == false && frms.length == 1) {
-          var nimg = new Uint8Array(nw * nh * 3), area = nw * nh;
-          for (var i = 0; i < area; i++) {
+          var nimg = new Uint8Array(nw * nh * 3), area2 = nw * nh;
+          for (var i = 0; i < area2; i++) {
             var ti = i * 3, qi = i * 4;
             nimg[ti] = cimg[qi];
             nimg[ti + 1] = cimg[qi + 1];
@@ -10754,28 +10754,28 @@ var require_UPNG = __commonJS({
           var tlim = forbidPrev || alwaysBlend || j == 1 || frms[j - 2].dispose != 0 ? 1 : 2, tstp = 0, tarea = 1e9;
           for (var it = 0; it < tlim; it++) {
             var pimg = new Uint8Array(bufs[j - 1 - it]), p32 = new Uint32Array(bufs[j - 1 - it]);
-            var mix = w, miy = h, max = -1, may = -1;
+            var mix = w, miy = h, max2 = -1, may = -1;
             for (var y = 0; y < h; y++) for (var x = 0; x < w; x++) {
               var i = y * w + x;
               if (cimg32[i] != p32[i]) {
                 if (x < mix) mix = x;
-                if (x > max) max = x;
+                if (x > max2) max2 = x;
                 if (y < miy) miy = y;
                 if (y > may) may = y;
               }
             }
-            if (max == -1) mix = miy = max = may = 0;
+            if (max2 == -1) mix = miy = max2 = may = 0;
             if (evenCrd) {
               if ((mix & 1) == 1) mix--;
               if ((miy & 1) == 1) miy--;
             }
-            var sarea = (max - mix + 1) * (may - miy + 1);
+            var sarea = (max2 - mix + 1) * (may - miy + 1);
             if (sarea < tarea) {
               tarea = sarea;
               tstp = it;
               nx = mix;
               ny = miy;
-              nw = max - mix + 1;
+              nw = max2 - mix + 1;
               nh = may - miy + 1;
             }
           }
@@ -10820,10 +10820,10 @@ var require_UPNG = __commonJS({
         if (j - 1 != 0) UPNG.encode._updateFrame(bufs, w, h, frms, j - 1, r, evenCrd);
         UPNG.encode._updateFrame(bufs, w, h, frms, j, r, evenCrd);
       }
-      var area = 0;
+      var area2 = 0;
       if (bufs.length != 1) for (var i = 0; i < frms.length; i++) {
         var frm = frms[i];
-        area += frm.rect.width * frm.rect.height;
+        area2 += frm.rect.width * frm.rect.height;
       }
       return frms;
     };
@@ -10831,19 +10831,19 @@ var require_UPNG = __commonJS({
       var U8 = Uint8Array, U32 = Uint32Array;
       var pimg = new U8(bufs[i - 1]), pimg32 = new U32(bufs[i - 1]), nimg = i + 1 < bufs.length ? new U8(bufs[i + 1]) : null;
       var cimg = new U8(bufs[i]), cimg32 = new U32(cimg.buffer);
-      var mix = w, miy = h, max = -1, may = -1;
+      var mix = w, miy = h, max2 = -1, may = -1;
       for (var y = 0; y < r.height; y++) for (var x = 0; x < r.width; x++) {
         var cx = r.x + x, cy = r.y + y;
         var j = cy * w + cx, cc = cimg32[j];
         if (cc == 0 || frms[i - 1].dispose == 0 && pimg32[j] == cc && (nimg == null || nimg[j * 4 + 3] != 0)) {
         } else {
           if (cx < mix) mix = cx;
-          if (cx > max) max = cx;
+          if (cx > max2) max2 = cx;
           if (cy < miy) miy = cy;
           if (cy > may) may = cy;
         }
       }
-      if (max == -1) mix = miy = max = may = 0;
+      if (max2 == -1) mix = miy = max2 = may = 0;
       if (evenCrd) {
         if ((mix & 1) == 1) mix--;
         if ((miy & 1) == 1) miy--;
@@ -10851,7 +10851,7 @@ var require_UPNG = __commonJS({
       r = {
         x: mix,
         y: miy,
-        width: max - mix + 1,
+        width: max2 - mix + 1,
         height: may - miy + 1
       };
       var fr = frms[i];
@@ -11159,9 +11159,9 @@ var require_UPNG = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/utils/png.js
+// node_modules/pdf-lib/cjs/utils/png.js
 var require_png = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/utils/png.js"(exports) {
+  "node_modules/pdf-lib/cjs/utils/png.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PNG = exports.PngType = void 0;
@@ -11234,9 +11234,9 @@ var require_png = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/PngEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/PngEmbedder.js
 var require_PngEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/PngEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/PngEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -11308,9 +11308,9 @@ var require_PngEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/Stream.js
+// node_modules/pdf-lib/cjs/core/streams/Stream.js
 var require_Stream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/Stream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/Stream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var Stream = (
@@ -11415,9 +11415,9 @@ var require_Stream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/DecodeStream.js
+// node_modules/pdf-lib/cjs/core/streams/DecodeStream.js
 var require_DecodeStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/DecodeStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/DecodeStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -11562,9 +11562,9 @@ var require_DecodeStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/Ascii85Stream.js
+// node_modules/pdf-lib/cjs/core/streams/Ascii85Stream.js
 var require_Ascii85Stream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/Ascii85Stream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/Ascii85Stream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -11645,9 +11645,9 @@ var require_Ascii85Stream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/AsciiHexStream.js
+// node_modules/pdf-lib/cjs/core/streams/AsciiHexStream.js
 var require_AsciiHexStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/AsciiHexStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/AsciiHexStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -11710,9 +11710,9 @@ var require_AsciiHexStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/FlateStream.js
+// node_modules/pdf-lib/cjs/core/streams/FlateStream.js
 var require_FlateStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/FlateStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/FlateStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -12597,9 +12597,9 @@ var require_FlateStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/LZWStream.js
+// node_modules/pdf-lib/cjs/core/streams/LZWStream.js
 var require_LZWStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/LZWStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/LZWStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -12728,9 +12728,9 @@ var require_LZWStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/RunLengthStream.js
+// node_modules/pdf-lib/cjs/core/streams/RunLengthStream.js
 var require_RunLengthStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/RunLengthStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/RunLengthStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -12778,9 +12778,9 @@ var require_RunLengthStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/streams/decode.js
+// node_modules/pdf-lib/cjs/core/streams/decode.js
 var require_decode = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/streams/decode.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/streams/decode.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.decodePDFRawStream = void 0;
@@ -12840,9 +12840,9 @@ var require_decode = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/PDFPageEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/PDFPageEmbedder.js
 var require_PDFPageEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/PDFPageEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/PDFPageEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -12935,9 +12935,9 @@ var require_PDFPageEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/interactive/ViewerPreferences.js
+// node_modules/pdf-lib/cjs/core/interactive/ViewerPreferences.js
 var require_ViewerPreferences = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/interactive/ViewerPreferences.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/interactive/ViewerPreferences.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Duplex = exports.PrintScaling = exports.ReadingDirection = exports.NonFullScreenPageMode = void 0;
@@ -13182,9 +13182,9 @@ var require_ViewerPreferences = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroField.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroField.js
 var require_PDFAcroField = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroField.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroField.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13329,9 +13329,9 @@ var require_PDFAcroField = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/annotation/BorderStyle.js
+// node_modules/pdf-lib/cjs/core/annotation/BorderStyle.js
 var require_BorderStyle = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/annotation/BorderStyle.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/annotation/BorderStyle.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13367,9 +13367,9 @@ var require_BorderStyle = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/annotation/PDFAnnotation.js
+// node_modules/pdf-lib/cjs/core/annotation/PDFAnnotation.js
 var require_PDFAnnotation = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/annotation/PDFAnnotation.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/annotation/PDFAnnotation.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13496,9 +13496,9 @@ var require_PDFAnnotation = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/annotation/AppearanceCharacteristics.js
+// node_modules/pdf-lib/cjs/core/annotation/AppearanceCharacteristics.js
 var require_AppearanceCharacteristics = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/annotation/AppearanceCharacteristics.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/annotation/AppearanceCharacteristics.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13625,9 +13625,9 @@ var require_AppearanceCharacteristics = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/annotation/PDFWidgetAnnotation.js
+// node_modules/pdf-lib/cjs/core/annotation/PDFWidgetAnnotation.js
 var require_PDFWidgetAnnotation = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/annotation/PDFWidgetAnnotation.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/annotation/PDFWidgetAnnotation.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13743,9 +13743,9 @@ var require_PDFWidgetAnnotation = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroTerminal.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroTerminal.js
 var require_PDFAcroTerminal = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroTerminal.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroTerminal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13811,9 +13811,9 @@ var require_PDFAcroTerminal = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroButton.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroButton.js
 var require_PDFAcroButton = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroButton.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroButton.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13909,9 +13909,9 @@ var require_PDFAcroButton = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroCheckBox.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroCheckBox.js
 var require_PDFAcroCheckBox = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroCheckBox.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroCheckBox.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -13967,9 +13967,9 @@ var require_PDFAcroCheckBox = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/flags.js
+// node_modules/pdf-lib/cjs/core/acroform/flags.js
 var require_flags = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/flags.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/flags.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AcroChoiceFlags = exports.AcroTextFlags = exports.AcroButtonFlags = exports.AcroFieldFlags = void 0;
@@ -14011,9 +14011,9 @@ var require_flags = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroChoice.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroChoice.js
 var require_PDFAcroChoice = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroChoice.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroChoice.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14142,9 +14142,9 @@ var require_PDFAcroChoice = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroComboBox.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroComboBox.js
 var require_PDFAcroComboBox = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroComboBox.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroComboBox.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14176,9 +14176,9 @@ var require_PDFAcroComboBox = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroNonTerminal.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroNonTerminal.js
 var require_PDFAcroNonTerminal = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroNonTerminal.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroNonTerminal.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14218,9 +14218,9 @@ var require_PDFAcroNonTerminal = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroSignature.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroSignature.js
 var require_PDFAcroSignature = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroSignature.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroSignature.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14242,9 +14242,9 @@ var require_PDFAcroSignature = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroText.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroText.js
 var require_PDFAcroText = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroText.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroText.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14319,9 +14319,9 @@ var require_PDFAcroText = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroPushButton.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroPushButton.js
 var require_PDFAcroPushButton = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroPushButton.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroPushButton.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14353,9 +14353,9 @@ var require_PDFAcroPushButton = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroRadioButton.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroRadioButton.js
 var require_PDFAcroRadioButton = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroRadioButton.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroRadioButton.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14418,9 +14418,9 @@ var require_PDFAcroRadioButton = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroListBox.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroListBox.js
 var require_PDFAcroListBox = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroListBox.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroListBox.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14450,9 +14450,9 @@ var require_PDFAcroListBox = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/utils.js
+// node_modules/pdf-lib/cjs/core/acroform/utils.js
 var require_utils3 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/utils.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/utils.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.createPDFAcroField = exports.createPDFAcroFields = void 0;
@@ -14560,9 +14560,9 @@ var require_utils3 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroForm.js
+// node_modules/pdf-lib/cjs/core/acroform/PDFAcroForm.js
 var require_PDFAcroForm = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/PDFAcroForm.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/PDFAcroForm.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14648,9 +14648,9 @@ var require_PDFAcroForm = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/acroform/index.js
+// node_modules/pdf-lib/cjs/core/acroform/index.js
 var require_acroform = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/acroform/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/acroform/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14711,9 +14711,9 @@ var require_acroform = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFCatalog.js
+// node_modules/pdf-lib/cjs/core/structures/PDFCatalog.js
 var require_PDFCatalog = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFCatalog.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFCatalog.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14791,9 +14791,9 @@ var require_PDFCatalog = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/structures/PDFPageTree.js
+// node_modules/pdf-lib/cjs/core/structures/PDFPageTree.js
 var require_PDFPageTree = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/structures/PDFPageTree.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/structures/PDFPageTree.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -14946,9 +14946,9 @@ var require_PDFPageTree = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/syntax/Numeric.js
+// node_modules/pdf-lib/cjs/core/syntax/Numeric.js
 var require_Numeric = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/syntax/Numeric.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/syntax/Numeric.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.IsNumeric = exports.IsNumericPrefix = exports.IsDigit = void 0;
@@ -14978,9 +14978,9 @@ var require_Numeric = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/parser/BaseParser.js
+// node_modules/pdf-lib/cjs/core/parser/BaseParser.js
 var require_BaseParser = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/parser/BaseParser.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/parser/BaseParser.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -15093,9 +15093,9 @@ var require_BaseParser = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/parser/ByteStream.js
+// node_modules/pdf-lib/cjs/core/parser/ByteStream.js
 var require_ByteStream = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/parser/ByteStream.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/parser/ByteStream.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -15165,9 +15165,9 @@ var require_ByteStream = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/syntax/Keywords.js
+// node_modules/pdf-lib/cjs/core/syntax/Keywords.js
 var require_Keywords = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/syntax/Keywords.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/syntax/Keywords.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.Keywords = void 0;
@@ -15256,9 +15256,9 @@ var require_Keywords = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/parser/PDFObjectParser.js
+// node_modules/pdf-lib/cjs/core/parser/PDFObjectParser.js
 var require_PDFObjectParser = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/parser/PDFObjectParser.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/parser/PDFObjectParser.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -15476,9 +15476,9 @@ var require_PDFObjectParser = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/parser/PDFObjectStreamParser.js
+// node_modules/pdf-lib/cjs/core/parser/PDFObjectStreamParser.js
 var require_PDFObjectStreamParser = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/parser/PDFObjectStreamParser.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/parser/PDFObjectStreamParser.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -15562,9 +15562,9 @@ var require_PDFObjectStreamParser = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/parser/PDFXRefStreamParser.js
+// node_modules/pdf-lib/cjs/core/parser/PDFXRefStreamParser.js
 var require_PDFXRefStreamParser = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/parser/PDFXRefStreamParser.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/parser/PDFXRefStreamParser.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -15656,9 +15656,9 @@ var require_PDFXRefStreamParser = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/parser/PDFParser.js
+// node_modules/pdf-lib/cjs/core/parser/PDFParser.js
 var require_PDFParser = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/parser/PDFParser.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/parser/PDFParser.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -15997,9 +15997,9 @@ var require_PDFParser = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/annotation/flags.js
+// node_modules/pdf-lib/cjs/core/annotation/flags.js
 var require_flags2 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/annotation/flags.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/annotation/flags.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.AnnotationFlags = void 0;
@@ -16022,9 +16022,9 @@ var require_flags2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/annotation/index.js
+// node_modules/pdf-lib/cjs/core/annotation/index.js
 var require_annotation = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/annotation/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/annotation/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -16044,9 +16044,9 @@ var require_annotation = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/index.js
+// node_modules/pdf-lib/cjs/core/index.js
 var require_core = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -16247,9 +16247,9 @@ var require_core = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/objects.js
+// node_modules/pdf-lib/cjs/api/objects.js
 var require_objects2 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/objects.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/objects.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.asNumber = exports.asPDFNumber = exports.asPDFName = void 0;
@@ -16266,9 +16266,9 @@ var require_objects2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/rotations.js
+// node_modules/pdf-lib/cjs/api/rotations.js
 var require_rotations = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/rotations.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/rotations.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.rotateRectangle = exports.adjustDimsForRotation = exports.reduceRotation = exports.toDegrees = exports.toRadians = exports.radiansToDegrees = exports.degreesToRadians = exports.degrees = exports.radians = exports.RotationTypes = void 0;
@@ -16346,9 +16346,9 @@ var require_rotations = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/operators.js
+// node_modules/pdf-lib/cjs/api/operators.js
 var require_operators = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/operators.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/operators.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.endMarkedContent = exports.beginMarkedContent = exports.setStrokingCmykColor = exports.setFillingCmykColor = exports.setStrokingRgbColor = exports.setFillingRgbColor = exports.setStrokingGrayscaleColor = exports.setFillingGrayscaleColor = exports.drawObject = exports.rotateAndSkewTextDegreesAndTranslate = exports.rotateAndSkewTextRadiansAndTranslate = exports.setTextMatrix = exports.setTextRenderingMode = exports.TextRenderingMode = exports.setTextRise = exports.setLineHeight = exports.setCharacterSqueeze = exports.setWordSpacing = exports.setCharacterSpacing = exports.setFontAndSize = exports.endText = exports.beginText = exports.showText = exports.moveText = exports.nextLine = exports.endPath = exports.fillAndStroke = exports.fill = exports.stroke = exports.square = exports.rectangle = exports.lineTo = exports.moveTo = exports.closePath = exports.appendQuadraticCurve = exports.appendBezierCurve = exports.setLineWidth = exports.popGraphicsState = exports.pushGraphicsState = exports.setGraphicsState = exports.setLineJoin = exports.LineJoinStyle = exports.setLineCap = exports.LineCapStyle = exports.restoreDashPattern = exports.setDashPattern = exports.skewDegrees = exports.skewRadians = exports.rotateDegrees = exports.rotateRadians = exports.scale = exports.translate = exports.concatTransformationMatrix = exports.clipEvenOdd = exports.clip = void 0;
@@ -16592,9 +16592,9 @@ var require_operators = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/colors.js
+// node_modules/pdf-lib/cjs/api/colors.js
 var require_colors = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/colors.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/colors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.colorToComponents = exports.componentsToColor = exports.setStrokingColor = exports.setFillingColor = exports.cmyk = exports.rgb = exports.grayscale = exports.ColorTypes = void 0;
@@ -16644,9 +16644,9 @@ var require_colors = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/svgPath.js
+// node_modules/pdf-lib/cjs/api/svgPath.js
 var require_svgPath = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/svgPath.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/svgPath.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.svgPathToOperators = void 0;
@@ -17006,9 +17006,9 @@ var require_svgPath = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/operations.js
+// node_modules/pdf-lib/cjs/api/operations.js
 var require_operations = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/operations.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/operations.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.drawOptionList = exports.drawTextField = exports.drawTextLines = exports.drawButton = exports.drawRadioButton = exports.drawCheckBox = exports.rotateInPlace = exports.drawCheckMark = exports.drawSvgPath = exports.drawEllipse = exports.drawEllipsePath = exports.drawRectangle = exports.drawLine = exports.drawPage = exports.drawImage = exports.drawLinesOfText = exports.drawText = void 0;
@@ -17458,9 +17458,9 @@ var require_operations = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/errors.js
+// node_modules/pdf-lib/cjs/api/errors.js
 var require_errors3 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/errors.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/errors.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.InvalidMaxLengthError = exports.ExceededMaxLengthError = exports.CombedTextLayoutError = exports.RichTextFieldReadError = exports.FieldExistsAsNonTerminalError = exports.InvalidFieldNamePartError = exports.FieldAlreadyExistsError = exports.MissingOnValueCheckError = exports.UnexpectedFieldTypeError = exports.NoSuchFieldError = exports.RemovePageFromEmptyDocumentError = exports.ForeignPageError = exports.FontkitNotRegisteredError = exports.EncryptedPDFError = void 0;
@@ -17667,9 +17667,9 @@ var require_errors3 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/text/alignment.js
+// node_modules/pdf-lib/cjs/api/text/alignment.js
 var require_alignment = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/text/alignment.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/text/alignment.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.TextAlignment = void 0;
@@ -17682,9 +17682,9 @@ var require_alignment = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/text/layout.js
+// node_modules/pdf-lib/cjs/api/text/layout.js
 var require_layout = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/text/layout.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/text/layout.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.layoutSinglelineText = exports.layoutCombedText = exports.layoutMultilineText = void 0;
@@ -17885,9 +17885,9 @@ var require_layout = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/appearances.js
+// node_modules/pdf-lib/cjs/api/form/appearances.js
 var require_appearances = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/appearances.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/appearances.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.defaultOptionListAppearanceProvider = exports.defaultDropdownAppearanceProvider = exports.defaultTextFieldAppearanceProvider = exports.defaultButtonAppearanceProvider = exports.defaultRadioGroupAppearanceProvider = exports.defaultCheckBoxAppearanceProvider = exports.normalizeAppearance = void 0;
@@ -18285,9 +18285,9 @@ var require_appearances = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFEmbeddedPage.js
+// node_modules/pdf-lib/cjs/api/PDFEmbeddedPage.js
 var require_PDFEmbeddedPage = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFEmbeddedPage.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFEmbeddedPage.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -18345,9 +18345,9 @@ var require_PDFEmbeddedPage = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFFont.js
+// node_modules/pdf-lib/cjs/api/PDFFont.js
 var require_PDFFont = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFFont.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFFont.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -18429,9 +18429,9 @@ var require_PDFFont = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFImage.js
+// node_modules/pdf-lib/cjs/api/PDFImage.js
 var require_PDFImage = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFImage.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFImage.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -18506,9 +18506,9 @@ var require_PDFImage = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/image/alignment.js
+// node_modules/pdf-lib/cjs/api/image/alignment.js
 var require_alignment2 = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/image/alignment.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/image/alignment.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ImageAlignment = void 0;
@@ -18521,9 +18521,9 @@ var require_alignment2 = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/image/index.js
+// node_modules/pdf-lib/cjs/api/image/index.js
 var require_image = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/image/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/image/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -18531,9 +18531,9 @@ var require_image = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFField.js
+// node_modules/pdf-lib/cjs/api/form/PDFField.js
 var require_PDFField = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFField.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFField.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.assertFieldAppearanceOptions = void 0;
@@ -18759,9 +18759,9 @@ var require_PDFField = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFCheckBox.js
+// node_modules/pdf-lib/cjs/api/form/PDFCheckBox.js
 var require_PDFCheckBox = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFCheckBox.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFCheckBox.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -18876,9 +18876,9 @@ var require_PDFCheckBox = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFDropdown.js
+// node_modules/pdf-lib/cjs/api/form/PDFDropdown.js
 var require_PDFDropdown = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFDropdown.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFDropdown.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -19094,9 +19094,9 @@ var require_PDFDropdown = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFOptionList.js
+// node_modules/pdf-lib/cjs/api/form/PDFOptionList.js
 var require_PDFOptionList = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFOptionList.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFOptionList.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -19290,9 +19290,9 @@ var require_PDFOptionList = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFRadioGroup.js
+// node_modules/pdf-lib/cjs/api/form/PDFRadioGroup.js
 var require_PDFRadioGroup = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFRadioGroup.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFRadioGroup.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -19455,9 +19455,9 @@ var require_PDFRadioGroup = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFSignature.js
+// node_modules/pdf-lib/cjs/api/form/PDFSignature.js
 var require_PDFSignature = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFSignature.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFSignature.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -19489,9 +19489,9 @@ var require_PDFSignature = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFTextField.js
+// node_modules/pdf-lib/cjs/api/form/PDFTextField.js
 var require_PDFTextField = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFTextField.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFTextField.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -19731,9 +19731,9 @@ var require_PDFTextField = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/StandardFonts.js
+// node_modules/pdf-lib/cjs/api/StandardFonts.js
 var require_StandardFonts = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/StandardFonts.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/StandardFonts.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.StandardFonts = void 0;
@@ -19757,9 +19757,9 @@ var require_StandardFonts = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFForm.js
+// node_modules/pdf-lib/cjs/api/form/PDFForm.js
 var require_PDFForm = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFForm.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFForm.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -20136,9 +20136,9 @@ var require_PDFForm = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/sizes.js
+// node_modules/pdf-lib/cjs/api/sizes.js
 var require_sizes = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/sizes.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/sizes.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.PageSizes = void 0;
@@ -20197,9 +20197,9 @@ var require_sizes = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFDocumentOptions.js
+// node_modules/pdf-lib/cjs/api/PDFDocumentOptions.js
 var require_PDFDocumentOptions = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFDocumentOptions.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFDocumentOptions.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.ParseSpeeds = void 0;
@@ -20213,9 +20213,9 @@ var require_PDFDocumentOptions = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFEmbeddedFile.js
+// node_modules/pdf-lib/cjs/api/PDFEmbeddedFile.js
 var require_PDFEmbeddedFile = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFEmbeddedFile.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFEmbeddedFile.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -20279,9 +20279,9 @@ var require_PDFEmbeddedFile = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFJavaScript.js
+// node_modules/pdf-lib/cjs/api/PDFJavaScript.js
 var require_PDFJavaScript = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFJavaScript.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFJavaScript.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -20341,9 +20341,9 @@ var require_PDFJavaScript = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/core/embedders/JavaScriptEmbedder.js
+// node_modules/pdf-lib/cjs/core/embedders/JavaScriptEmbedder.js
 var require_JavaScriptEmbedder = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/core/embedders/JavaScriptEmbedder.js"(exports) {
+  "node_modules/pdf-lib/cjs/core/embedders/JavaScriptEmbedder.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -20387,9 +20387,9 @@ var require_JavaScriptEmbedder = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFDocument.js
+// node_modules/pdf-lib/cjs/api/PDFDocument.js
 var require_PDFDocument = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFDocument.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFDocument.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -21094,9 +21094,9 @@ var require_PDFDocument = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFPageOptions.js
+// node_modules/pdf-lib/cjs/api/PDFPageOptions.js
 var require_PDFPageOptions = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFPageOptions.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFPageOptions.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     exports.BlendMode = void 0;
@@ -21118,9 +21118,9 @@ var require_PDFPageOptions = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/PDFPage.js
+// node_modules/pdf-lib/cjs/api/PDFPage.js
 var require_PDFPage = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/PDFPage.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/PDFPage.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -21789,9 +21789,9 @@ var require_PDFPage = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/PDFButton.js
+// node_modules/pdf-lib/cjs/api/form/PDFButton.js
 var require_PDFButton = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/PDFButton.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/PDFButton.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -21899,9 +21899,9 @@ var require_PDFButton = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/form/index.js
+// node_modules/pdf-lib/cjs/api/form/index.js
 var require_form = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/form/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/form/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -21945,9 +21945,9 @@ var require_form = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/text/index.js
+// node_modules/pdf-lib/cjs/api/text/index.js
 var require_text = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/text/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/text/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -21956,9 +21956,9 @@ var require_text = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/api/index.js
+// node_modules/pdf-lib/cjs/api/index.js
 var require_api = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/api/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/api/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -22002,17 +22002,17 @@ var require_api = __commonJS({
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/types/index.js
+// node_modules/pdf-lib/cjs/types/index.js
 var require_types = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/types/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/types/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
   }
 });
 
-// ../../../node_modules/pdf-lib/cjs/index.js
+// node_modules/pdf-lib/cjs/index.js
 var require_cjs = __commonJS({
-  "../../../node_modules/pdf-lib/cjs/index.js"(exports) {
+  "node_modules/pdf-lib/cjs/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: true });
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
@@ -22095,7 +22095,7 @@ var require_outline_curves = __commonJS({
         }
         return loops;
       }
-      function area(points) {
+      function area2(points) {
         let sum = 0;
         for (let i = 0; i < points.length; i++) {
           const a = points[i], b = points[(i + 1) % points.length];
@@ -22109,11 +22109,11 @@ var require_outline_curves = __commonJS({
           return Math.hypot(p[0] - q[0], p[1] - q[1]);
         });
         const total = lengths.reduce((a, b) => a + b, 0);
-        const count2 = Math.max(16, Math.min(4096, Math.ceil(total / spacing)));
+        const count3 = Math.max(16, Math.min(4096, Math.ceil(total / spacing)));
         const result = [];
         let edge2 = 0, traveled = 0;
-        for (let i = 0; i < count2; i++) {
-          const position = total * i / count2;
+        for (let i = 0; i < count3; i++) {
+          const position = total * i / count3;
           while (edge2 < lengths.length - 1 && traveled + lengths[edge2] < position) traveled += lengths[edge2++];
           const a = points[edge2], b = points[(edge2 + 1) % points.length];
           const t = lengths[edge2] > 0 ? (position - traveled) / lengths[edge2] : 0;
@@ -22158,8 +22158,8 @@ var require_outline_curves = __commonJS({
             ];
           });
           fitted = { start: begin, segments };
-          const originalArea = Math.abs(area(points));
-          const ratio = Math.abs(area(sampled(fitted))) / originalArea;
+          const originalArea = Math.abs(area2(points));
+          const ratio = Math.abs(area2(sampled(fitted))) / originalArea;
           if (ratio >= 0.85 && ratio <= 1.15) break;
         }
         return fitted;
@@ -22213,7 +22213,7 @@ var require_outline_curves = __commonJS({
           targetDistance: target
         };
       }
-      return { trace, fit, sampled, area, build, create: createOutlineCurves };
+      return { trace, fit, sampled, area: area2, build, create: createOutlineCurves };
     });
   }
 });
@@ -22317,9 +22317,9 @@ var require_outline_core = __commonJS({
         if (!/^#[0-9a-f]{6}$/i.test(value2)) throw new Error("\u989C\u8272\u5FC5\u987B\u662F #RRGGBB \u683C\u5F0F\u3002");
         return [1, 3, 5].map((i) => parseInt(value2.slice(i, i + 2), 16));
       }
-      function number7(value2, fallback, min, max) {
+      function number8(value2, fallback, min, max2) {
         const n = value2 === void 0 ? fallback : Number(value2);
-        if (!Number.isFinite(n) || n < min || n > max) throw new Error("\u63CF\u8FB9\u53C2\u6570\u8D85\u51FA\u5141\u8BB8\u8303\u56F4\u3002");
+        if (!Number.isFinite(n) || n < min || n > max2) throw new Error("\u63CF\u8FB9\u53C2\u6570\u8D85\u51FA\u5141\u8BB8\u8303\u56F4\u3002");
         return n;
       }
       function paddingFor(longEdge, margin, stroke, fillEnabled) {
@@ -22329,12 +22329,12 @@ var require_outline_core = __commonJS({
       function build(input, options = {}) {
         const { width: width2, height: height2, alpha } = input;
         if (!Number.isInteger(width2) || !Number.isInteger(height2) || width2 < 1 || height2 < 1 || !alpha || alpha.length !== width2 * height2) throw new Error("\u56FE\u7247\u8499\u7248\u65E0\u6548\u3002");
-        const margin = number7(options.margin, 60, 0, 3e3);
-        const stroke = number7(options.stroke, 4, 0, 300);
+        const margin = number8(options.margin, 60, 0, 3e3);
+        const stroke = number8(options.stroke, 4, 0, 300);
         const fillEnabled = options.fillEnabled === void 0 ? margin > 0 : options.fillEnabled === true;
-        const requestedRounding = number7(options.rounding, 40, 0, 3e3);
+        const requestedRounding = number8(options.rounding, 40, 0, 3e3);
         const rounding = requestedRounding > 0 ? requestedRounding + margin : 0;
-        const threshold = number7(options.threshold, 16, 1, 254);
+        const threshold = number8(options.threshold, 16, 1, 254);
         const fill = color2(options.fillColor || "#ffffff");
         const ink = color2(options.strokeColor || "#111111");
         const longEdge = Math.max(width2, height2);
@@ -22343,13 +22343,13 @@ var require_outline_core = __commonJS({
         const w = width2 + 2 * workPad, h = height2 + 2 * workPad;
         if (w * h > 14e6) throw new Error("\u8F6E\u5ED3\u5206\u6790\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u964D\u4F4E\u53C2\u6570\u6216\u56FE\u7247\u5C3A\u5BF8\u3002");
         let mask = new Uint8Array(w * h);
-        let count2 = 0;
+        let count3 = 0;
         for (let y = 0; y < height2; y++) for (let x = 0; x < width2; x++) {
           const present = alpha[y * width2 + x] >= threshold ? 1 : 0;
           mask[(y + workPad) * w + x + workPad] = present;
-          count2 += present;
+          count3 += present;
         }
-        if (!count2) throw new Error("\u6CA1\u6709\u627E\u5230\u53EF\u63CF\u8FB9\u7684\u4E3B\u4F53\uFF0C\u8BF7\u964D\u4F4E\u900F\u660E\u5EA6\u9608\u503C\u3002");
+        if (!count3) throw new Error("\u6CA1\u6709\u627E\u5230\u53EF\u63CF\u8FB9\u7684\u4E3B\u4F53\uFF0C\u8BF7\u964D\u4F4E\u900F\u660E\u5EA6\u9608\u503C\u3002");
         if (options.fillHoles !== false) fillHoles(mask, w, h);
         mask = closing(mask, w, h, rounding);
         if (options.fillHoles !== false) fillHoles(mask, w, h);
@@ -22412,7 +22412,7 @@ import Schema from "@deepseek-ai/schemastery";
 // packages/online/service.ts
 import { EventEmitter } from "node:events";
 
-// ../../../node_modules/zod/v4/classic/external.js
+// node_modules/zod/v4/classic/external.js
 var external_exports = {};
 __export(external_exports, {
   $brand: () => $brand,
@@ -22655,7 +22655,7 @@ __export(external_exports, {
   xor: () => xor
 });
 
-// ../../../node_modules/zod/v4/core/index.js
+// node_modules/zod/v4/core/index.js
 var core_exports2 = {};
 __export(core_exports2, {
   $ZodAny: () => $ZodAny,
@@ -22934,7 +22934,7 @@ __export(core_exports2, {
   version: () => version
 });
 
-// ../../../node_modules/zod/v4/core/core.js
+// node_modules/zod/v4/core/core.js
 var _a;
 var NEVER = /* @__PURE__ */ Object.freeze({
   status: "aborted"
@@ -23011,7 +23011,7 @@ function config(newConfig) {
   return globalConfig;
 }
 
-// ../../../node_modules/zod/v4/core/util.js
+// node_modules/zod/v4/core/util.js
 var util_exports = {};
 __export(util_exports, {
   BIGINT_FORMAT_RANGES: () => BIGINT_FORMAT_RANGES,
@@ -23096,8 +23096,8 @@ function getEnumValues(entries) {
   const values = Object.entries(entries).filter(([k, _]) => numericValues.indexOf(+k) === -1).map(([_, v]) => v);
   return values;
 }
-function joinValues(array3, separator = "|") {
-  return array3.map((val) => stringifyPrimitive(val)).join(separator);
+function joinValues(array5, separator = "|") {
+  return array5.map((val) => stringifyPrimitive(val)).join(separator);
 }
 function jsonStringifyReplacer(_, value2) {
   if (typeof value2 === "bigint")
@@ -23707,7 +23707,7 @@ var Class = class {
   }
 };
 
-// ../../../node_modules/zod/v4/core/errors.js
+// node_modules/zod/v4/core/errors.js
 var initializer = (inst, def) => {
   inst.name = "$ZodError";
   Object.defineProperty(inst, "_zod", {
@@ -23846,7 +23846,7 @@ function prettifyError(error101) {
   return lines.join("\n");
 }
 
-// ../../../node_modules/zod/v4/core/parse.js
+// node_modules/zod/v4/core/parse.js
 var _parse = (_Err) => (schema2, value2, _ctx, _params) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
   const result = schema2._zod.run({ value: value2, issues: [] }, ctx);
@@ -23934,7 +23934,7 @@ var _safeDecodeAsync = (_Err) => async (schema2, value2, _ctx) => {
 };
 var safeDecodeAsync = /* @__PURE__ */ _safeDecodeAsync($ZodRealError);
 
-// ../../../node_modules/zod/v4/core/regexes.js
+// node_modules/zod/v4/core/regexes.js
 var regexes_exports = {};
 __export(regexes_exports, {
   base64: () => base64,
@@ -24093,7 +24093,7 @@ var sha512_hex = /^[0-9a-fA-F]{128}$/;
 var sha512_base64 = /* @__PURE__ */ fixedBase64(86, "==");
 var sha512_base64url = /* @__PURE__ */ fixedBase64url(86);
 
-// ../../../node_modules/zod/v4/core/checks.js
+// node_modules/zod/v4/core/checks.js
 var $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
   var _a5;
   inst._zod ?? (inst._zod = {});
@@ -24641,7 +24641,7 @@ var $ZodCheckOverwrite = /* @__PURE__ */ $constructor("$ZodCheckOverwrite", (ins
   };
 });
 
-// ../../../node_modules/zod/v4/core/doc.js
+// node_modules/zod/v4/core/doc.js
 var Doc = class {
   constructor(args = []) {
     this.content = [];
@@ -24677,14 +24677,14 @@ var Doc = class {
   }
 };
 
-// ../../../node_modules/zod/v4/core/versions.js
+// node_modules/zod/v4/core/versions.js
 var version = {
   major: 4,
   minor: 4,
   patch: 3
 };
 
-// ../../../node_modules/zod/v4/core/schemas.js
+// node_modules/zod/v4/core/schemas.js
 var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
   var _a5;
   inst ?? (inst = {});
@@ -26777,7 +26777,7 @@ function handleRefineResult(result, payload, input, inst) {
   }
 }
 
-// ../../../node_modules/zod/v4/locales/index.js
+// node_modules/zod/v4/locales/index.js
 var locales_exports = {};
 __export(locales_exports, {
   ar: () => ar_default,
@@ -26834,7 +26834,7 @@ __export(locales_exports, {
   zhTW: () => zh_TW_default
 });
 
-// ../../../node_modules/zod/v4/locales/ar.js
+// node_modules/zod/v4/locales/ar.js
 var error = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0641", verb: "\u0623\u0646 \u064A\u062D\u0648\u064A" },
@@ -26941,7 +26941,7 @@ function ar_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/az.js
+// node_modules/zod/v4/locales/az.js
 var error2 = () => {
   const Sizable = {
     string: { unit: "simvol", verb: "olmal\u0131d\u0131r" },
@@ -27047,9 +27047,9 @@ function az_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/be.js
-function getBelarusianPlural(count2, one, few, many) {
-  const absCount = Math.abs(count2);
+// node_modules/zod/v4/locales/be.js
+function getBelarusianPlural(count3, one, few, many) {
+  const absCount = Math.abs(count3);
   const lastDigit = absCount % 10;
   const lastTwoDigits = absCount % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
@@ -27204,7 +27204,7 @@ function be_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/bg.js
+// node_modules/zod/v4/locales/bg.js
 var error4 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0430", verb: "\u0434\u0430 \u0441\u044A\u0434\u044A\u0440\u0436\u0430" },
@@ -27325,7 +27325,7 @@ function bg_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ca.js
+// node_modules/zod/v4/locales/ca.js
 var error5 = () => {
   const Sizable = {
     string: { unit: "car\xE0cters", verb: "contenir" },
@@ -27434,7 +27434,7 @@ function ca_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/cs.js
+// node_modules/zod/v4/locales/cs.js
 var error6 = () => {
   const Sizable = {
     string: { unit: "znak\u016F", verb: "m\xEDt" },
@@ -27546,7 +27546,7 @@ function cs_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/da.js
+// node_modules/zod/v4/locales/da.js
 var error7 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "havde" },
@@ -27662,7 +27662,7 @@ function da_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/de.js
+// node_modules/zod/v4/locales/de.js
 var error8 = () => {
   const Sizable = {
     string: { unit: "Zeichen", verb: "zu haben" },
@@ -27771,7 +27771,7 @@ function de_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/el.js
+// node_modules/zod/v4/locales/el.js
 var error9 = () => {
   const Sizable = {
     string: { unit: "\u03C7\u03B1\u03C1\u03B1\u03BA\u03C4\u03AE\u03C1\u03B5\u03C2", verb: "\u03BD\u03B1 \u03AD\u03C7\u03B5\u03B9" },
@@ -27881,7 +27881,7 @@ function el_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/en.js
+// node_modules/zod/v4/locales/en.js
 var error10 = () => {
   const Sizable = {
     string: { unit: "characters", verb: "to have" },
@@ -27994,7 +27994,7 @@ function en_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/eo.js
+// node_modules/zod/v4/locales/eo.js
 var error11 = () => {
   const Sizable = {
     string: { unit: "karaktrojn", verb: "havi" },
@@ -28104,7 +28104,7 @@ function eo_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/es.js
+// node_modules/zod/v4/locales/es.js
 var error12 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "tener" },
@@ -28237,7 +28237,7 @@ function es_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fa.js
+// node_modules/zod/v4/locales/fa.js
 var error13 = () => {
   const Sizable = {
     string: { unit: "\u06A9\u0627\u0631\u0627\u06A9\u062A\u0631", verb: "\u062F\u0627\u0634\u062A\u0647 \u0628\u0627\u0634\u062F" },
@@ -28352,7 +28352,7 @@ function fa_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fi.js
+// node_modules/zod/v4/locales/fi.js
 var error14 = () => {
   const Sizable = {
     string: { unit: "merkki\xE4", subject: "merkkijonon" },
@@ -28465,7 +28465,7 @@ function fi_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fr.js
+// node_modules/zod/v4/locales/fr.js
 var error15 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -28591,7 +28591,7 @@ function fr_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fr-CA.js
+// node_modules/zod/v4/locales/fr-CA.js
 var error16 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -28699,7 +28699,7 @@ function fr_CA_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/he.js
+// node_modules/zod/v4/locales/he.js
 var error17 = () => {
   const TypeNames = {
     string: { label: "\u05DE\u05D7\u05E8\u05D5\u05D6\u05EA", gender: "f" },
@@ -28894,7 +28894,7 @@ function he_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/hr.js
+// node_modules/zod/v4/locales/hr.js
 var error18 = () => {
   const Sizable = {
     string: { unit: "znakova", verb: "imati" },
@@ -29017,7 +29017,7 @@ function hr_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/hu.js
+// node_modules/zod/v4/locales/hu.js
 var error19 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "legyen" },
@@ -29126,9 +29126,9 @@ function hu_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/hy.js
-function getArmenianPlural(count2, one, many) {
-  return Math.abs(count2) === 1 ? one : many;
+// node_modules/zod/v4/locales/hy.js
+function getArmenianPlural(count3, one, many) {
+  return Math.abs(count3) === 1 ? one : many;
 }
 function withDefiniteArticle(word) {
   if (!word)
@@ -29274,7 +29274,7 @@ function hy_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/id.js
+// node_modules/zod/v4/locales/id.js
 var error21 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "memiliki" },
@@ -29381,7 +29381,7 @@ function id_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/is.js
+// node_modules/zod/v4/locales/is.js
 var error22 = () => {
   const Sizable = {
     string: { unit: "stafi", verb: "a\xF0 hafa" },
@@ -29491,7 +29491,7 @@ function is_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/it.js
+// node_modules/zod/v4/locales/it.js
 var error23 = () => {
   const Sizable = {
     string: { unit: "caratteri", verb: "avere" },
@@ -29600,7 +29600,7 @@ function it_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ja.js
+// node_modules/zod/v4/locales/ja.js
 var error24 = () => {
   const Sizable = {
     string: { unit: "\u6587\u5B57", verb: "\u3067\u3042\u308B" },
@@ -29708,7 +29708,7 @@ function ja_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ka.js
+// node_modules/zod/v4/locales/ka.js
 var error25 = () => {
   const Sizable = {
     string: { unit: "\u10E1\u10D8\u10DB\u10D1\u10DD\u10DA\u10DD", verb: "\u10E3\u10DC\u10D3\u10D0 \u10E8\u10D4\u10D8\u10EA\u10D0\u10D5\u10D3\u10D4\u10E1" },
@@ -29821,7 +29821,7 @@ function ka_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/km.js
+// node_modules/zod/v4/locales/km.js
 var error26 = () => {
   const Sizable = {
     string: { unit: "\u178F\u17BD\u17A2\u1780\u17D2\u179F\u179A", verb: "\u1782\u17BD\u179A\u1798\u17B6\u1793" },
@@ -29932,12 +29932,12 @@ function km_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/kh.js
+// node_modules/zod/v4/locales/kh.js
 function kh_default() {
   return km_default();
 }
 
-// ../../../node_modules/zod/v4/locales/ko.js
+// node_modules/zod/v4/locales/ko.js
 var error27 = () => {
   const Sizable = {
     string: { unit: "\uBB38\uC790", verb: "to have" },
@@ -30049,12 +30049,12 @@ function ko_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/lt.js
+// node_modules/zod/v4/locales/lt.js
 var capitalizeFirstCharacter = (text5) => {
   return text5.charAt(0).toUpperCase() + text5.slice(1);
 };
-function getUnitTypeFromNumber(number7) {
-  const abs = Math.abs(number7);
+function getUnitTypeFromNumber(number8) {
+  const abs = Math.abs(number8);
   const last = abs % 10;
   const last2 = abs % 100;
   if (last2 >= 11 && last2 <= 19 || last === 0)
@@ -30253,7 +30253,7 @@ function lt_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/mk.js
+// node_modules/zod/v4/locales/mk.js
 var error29 = () => {
   const Sizable = {
     string: { unit: "\u0437\u043D\u0430\u0446\u0438", verb: "\u0434\u0430 \u0438\u043C\u0430\u0430\u0442" },
@@ -30363,7 +30363,7 @@ function mk_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ms.js
+// node_modules/zod/v4/locales/ms.js
 var error30 = () => {
   const Sizable = {
     string: { unit: "aksara", verb: "mempunyai" },
@@ -30471,7 +30471,7 @@ function ms_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/nl.js
+// node_modules/zod/v4/locales/nl.js
 var error31 = () => {
   const Sizable = {
     string: { unit: "tekens", verb: "heeft" },
@@ -30582,7 +30582,7 @@ function nl_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/no.js
+// node_modules/zod/v4/locales/no.js
 var error32 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "\xE5 ha" },
@@ -30691,7 +30691,7 @@ function no_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ota.js
+// node_modules/zod/v4/locales/ota.js
 var error33 = () => {
   const Sizable = {
     string: { unit: "harf", verb: "olmal\u0131d\u0131r" },
@@ -30801,7 +30801,7 @@ function ota_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ps.js
+// node_modules/zod/v4/locales/ps.js
 var error34 = () => {
   const Sizable = {
     string: { unit: "\u062A\u0648\u06A9\u064A", verb: "\u0648\u0644\u0631\u064A" },
@@ -30916,7 +30916,7 @@ function ps_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/pl.js
+// node_modules/zod/v4/locales/pl.js
 var error35 = () => {
   const Sizable = {
     string: { unit: "znak\xF3w", verb: "mie\u0107" },
@@ -31026,7 +31026,7 @@ function pl_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/pt.js
+// node_modules/zod/v4/locales/pt.js
 var error36 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "ter" },
@@ -31135,7 +31135,7 @@ function pt_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ro.js
+// node_modules/zod/v4/locales/ro.js
 var error37 = () => {
   const Sizable = {
     string: { unit: "caractere", verb: "s\u0103 aib\u0103" },
@@ -31255,9 +31255,9 @@ function ro_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ru.js
-function getRussianPlural(count2, one, few, many) {
-  const absCount = Math.abs(count2);
+// node_modules/zod/v4/locales/ru.js
+function getRussianPlural(count3, one, few, many) {
+  const absCount = Math.abs(count3);
   const lastDigit = absCount % 10;
   const lastTwoDigits = absCount % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
@@ -31412,7 +31412,7 @@ function ru_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/sl.js
+// node_modules/zod/v4/locales/sl.js
 var error39 = () => {
   const Sizable = {
     string: { unit: "znakov", verb: "imeti" },
@@ -31522,7 +31522,7 @@ function sl_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/sv.js
+// node_modules/zod/v4/locales/sv.js
 var error40 = () => {
   const Sizable = {
     string: { unit: "tecken", verb: "att ha" },
@@ -31633,7 +31633,7 @@ function sv_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ta.js
+// node_modules/zod/v4/locales/ta.js
 var error41 = () => {
   const Sizable = {
     string: { unit: "\u0B8E\u0BB4\u0BC1\u0BA4\u0BCD\u0BA4\u0BC1\u0B95\u0BCD\u0B95\u0BB3\u0BCD", verb: "\u0B95\u0BCA\u0BA3\u0BCD\u0B9F\u0BBF\u0BB0\u0BC1\u0B95\u0BCD\u0B95 \u0BB5\u0BC7\u0BA3\u0BCD\u0B9F\u0BC1\u0BAE\u0BCD" },
@@ -31744,7 +31744,7 @@ function ta_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/th.js
+// node_modules/zod/v4/locales/th.js
 var error42 = () => {
   const Sizable = {
     string: { unit: "\u0E15\u0E31\u0E27\u0E2D\u0E31\u0E01\u0E29\u0E23", verb: "\u0E04\u0E27\u0E23\u0E21\u0E35" },
@@ -31855,7 +31855,7 @@ function th_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/tr.js
+// node_modules/zod/v4/locales/tr.js
 var error43 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "olmal\u0131" },
@@ -31961,7 +31961,7 @@ function tr_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/uk.js
+// node_modules/zod/v4/locales/uk.js
 var error44 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0456\u0432", verb: "\u043C\u0430\u0442\u0438\u043C\u0435" },
@@ -32070,12 +32070,12 @@ function uk_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ua.js
+// node_modules/zod/v4/locales/ua.js
 function ua_default() {
   return uk_default();
 }
 
-// ../../../node_modules/zod/v4/locales/ur.js
+// node_modules/zod/v4/locales/ur.js
 var error45 = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0648\u0641", verb: "\u06C1\u0648\u0646\u0627" },
@@ -32186,7 +32186,7 @@ function ur_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/uz.js
+// node_modules/zod/v4/locales/uz.js
 var error46 = () => {
   const Sizable = {
     string: { unit: "belgi", verb: "bo\u2018lishi kerak" },
@@ -32297,7 +32297,7 @@ function uz_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/vi.js
+// node_modules/zod/v4/locales/vi.js
 var error47 = () => {
   const Sizable = {
     string: { unit: "k\xFD t\u1EF1", verb: "c\xF3" },
@@ -32406,7 +32406,7 @@ function vi_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/zh-CN.js
+// node_modules/zod/v4/locales/zh-CN.js
 var error48 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u7B26", verb: "\u5305\u542B" },
@@ -32516,7 +32516,7 @@ function zh_CN_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/zh-TW.js
+// node_modules/zod/v4/locales/zh-TW.js
 var error49 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u5143", verb: "\u64C1\u6709" },
@@ -32624,7 +32624,7 @@ function zh_TW_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/yo.js
+// node_modules/zod/v4/locales/yo.js
 var error50 = () => {
   const Sizable = {
     string: { unit: "\xE0mi", verb: "n\xED" },
@@ -32732,7 +32732,7 @@ function yo_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/core/registries.js
+// node_modules/zod/v4/core/registries.js
 var _a2;
 var $output = /* @__PURE__ */ Symbol("ZodOutput");
 var $input = /* @__PURE__ */ Symbol("ZodInput");
@@ -32782,7 +32782,7 @@ function registry() {
 (_a2 = globalThis).__zod_globalRegistry ?? (_a2.__zod_globalRegistry = registry());
 var globalRegistry = globalThis.__zod_globalRegistry;
 
-// ../../../node_modules/zod/v4/core/api.js
+// node_modules/zod/v4/core/api.js
 // @__NO_SIDE_EFFECTS__
 function _string(Class3, params) {
   return new Class3({
@@ -33821,7 +33821,7 @@ function _stringFormat(Class3, format2, fnOrRegex, _params = {}) {
   return inst;
 }
 
-// ../../../node_modules/zod/v4/core/to-json-schema.js
+// node_modules/zod/v4/core/to-json-schema.js
 function initializeContext(params) {
   let target = params?.target ?? "draft-2020-12";
   if (target === "draft-4")
@@ -34180,7 +34180,7 @@ var createStandardJSONSchemaMethod = (schema2, io, processors = {}) => (params) 
   return finalize(ctx, schema2);
 };
 
-// ../../../node_modules/zod/v4/core/json-schema-processors.js
+// node_modules/zod/v4/core/json-schema-processors.js
 var formatMap = {
   guid: "uuid",
   url: "uri",
@@ -34724,7 +34724,7 @@ function toJSONSchema(input, params) {
   return finalize(ctx, input);
 }
 
-// ../../../node_modules/zod/v4/core/json-schema-generator.js
+// node_modules/zod/v4/core/json-schema-generator.js
 var JSONSchemaGenerator = class {
   /** @deprecated Access via ctx instead */
   get metadataRegistry() {
@@ -34799,10 +34799,10 @@ var JSONSchemaGenerator = class {
   }
 };
 
-// ../../../node_modules/zod/v4/core/json-schema.js
+// node_modules/zod/v4/core/json-schema.js
 var json_schema_exports = {};
 
-// ../../../node_modules/zod/v4/classic/schemas.js
+// node_modules/zod/v4/classic/schemas.js
 var schemas_exports2 = {};
 __export(schemas_exports2, {
   ZodAny: () => ZodAny,
@@ -34973,7 +34973,7 @@ __export(schemas_exports2, {
   xor: () => xor
 });
 
-// ../../../node_modules/zod/v4/classic/checks.js
+// node_modules/zod/v4/classic/checks.js
 var checks_exports2 = {};
 __export(checks_exports2, {
   endsWith: () => _endsWith,
@@ -35007,7 +35007,7 @@ __export(checks_exports2, {
   uppercase: () => _uppercase
 });
 
-// ../../../node_modules/zod/v4/classic/iso.js
+// node_modules/zod/v4/classic/iso.js
 var iso_exports = {};
 __export(iso_exports, {
   ZodISODate: () => ZodISODate,
@@ -35048,7 +35048,7 @@ function duration2(params) {
   return _isoDuration(ZodISODuration, params);
 }
 
-// ../../../node_modules/zod/v4/classic/errors.js
+// node_modules/zod/v4/classic/errors.js
 var initializer2 = (inst, issues) => {
   $ZodError.init(inst, issues);
   inst.name = "ZodError";
@@ -35088,7 +35088,7 @@ var ZodRealError = /* @__PURE__ */ $constructor("ZodError", initializer2, {
   Parent: Error
 });
 
-// ../../../node_modules/zod/v4/classic/parse.js
+// node_modules/zod/v4/classic/parse.js
 var parse2 = /* @__PURE__ */ _parse(ZodRealError);
 var parseAsync2 = /* @__PURE__ */ _parseAsync(ZodRealError);
 var safeParse2 = /* @__PURE__ */ _safeParse(ZodRealError);
@@ -35102,7 +35102,7 @@ var safeDecode2 = /* @__PURE__ */ _safeDecode(ZodRealError);
 var safeEncodeAsync2 = /* @__PURE__ */ _safeEncodeAsync(ZodRealError);
 var safeDecodeAsync2 = /* @__PURE__ */ _safeDecodeAsync(ZodRealError);
 
-// ../../../node_modules/zod/v4/classic/schemas.js
+// node_modules/zod/v4/classic/schemas.js
 var _installedGroups = /* @__PURE__ */ new WeakMap();
 function _installLazyMethods(inst, group, methods) {
   const proto = Object.getPrototypeOf(inst);
@@ -36392,7 +36392,7 @@ function preprocess(fn, schema2) {
   });
 }
 
-// ../../../node_modules/zod/v4/classic/compat.js
+// node_modules/zod/v4/classic/compat.js
 var ZodIssueCode = {
   invalid_type: "invalid_type",
   too_big: "too_big",
@@ -36418,7 +36418,7 @@ var ZodFirstPartyTypeKind;
 /* @__PURE__ */ (function(ZodFirstPartyTypeKind3) {
 })(ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {}));
 
-// ../../../node_modules/zod/v4/classic/from-json-schema.js
+// node_modules/zod/v4/classic/from-json-schema.js
 var z = {
   ...schemas_exports2,
   ...checks_exports2,
@@ -36898,7 +36898,7 @@ function fromJSONSchema(schema2, params) {
   return convertSchema(normalized2, ctx);
 }
 
-// ../../../node_modules/zod/v4/classic/coerce.js
+// node_modules/zod/v4/classic/coerce.js
 var coerce_exports = {};
 __export(coerce_exports, {
   bigint: () => bigint3,
@@ -36923,7 +36923,7 @@ function date4(params) {
   return _coercedDate(ZodDate, params);
 }
 
-// ../../../node_modules/zod/v4/classic/external.js
+// node_modules/zod/v4/classic/external.js
 config(en_default());
 
 // packages/online/user-skills.ts
@@ -38002,7 +38002,7 @@ var tool_registry_default = {
     {
       id: "image-processing-outline",
       name: "\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9",
-      description: "\u56FE\u7247\u65CB\u8F6C\u3001\u8C03\u8272\u3001\u63CF\u8FB9\u3001\u900F\u660E\u8FB9\u88C1\u526A\u3001\u5C3A\u5BF8\u3001\u51FA\u8840\u4E0E\u8F93\u51FA\u8BBE\u7F6E\u3002",
+      description: "\u56FE\u7247\u65CB\u8F6C\u3001\u8C03\u8272\u3001\u63CF\u8FB9\u3001\u900F\u660E\u8FB9\u88C1\u526A\u3001\u5C3A\u5BF8\u3001\u51FA\u8840\u3001\u8F93\u51FA\u8BBE\u7F6E\uFF0C\u4EE5\u53CA\u5BF9\u767D\u5E95\u6216\u900F\u660E\u56FE\u7684\u5916\u8F6E\u5ED3\u8FD1\u4F3C\u6D4B\u957F\u3002",
       operations: [
         { id: "rotate-flip", name: "\u65CB\u8F6C\u7FFB\u8F6C", token: "podplo_rotate_flip_images" },
         { id: "basic-color-adjustment", name: "\u8C03\u8272", token: "podplo_adjust_image_colors" },
@@ -38226,8 +38226,8 @@ var CloudFavoriteSchema = CloudFavoriteIdentitySchema.extend({
   imageUrl: external_exports.union([publicImageUrl, skillPreviewImageUrl]).nullable(),
   createdAt: external_exports.string().datetime()
 }).strict().superRefine((value2, issue3) => {
-  const valid = value2.type === "skill" ? value2.assetKind === null : ["gallery", "element"].includes(value2.assetKind ?? "");
-  if (!valid) issue3.addIssue({ code: "custom", path: ["assetKind"], message: "\u6536\u85CF\u7C7B\u578B\u4E0E\u7D20\u6750\u6765\u6E90\u4E0D\u4E00\u81F4" });
+  const valid2 = value2.type === "skill" ? value2.assetKind === null : ["gallery", "element"].includes(value2.assetKind ?? "");
+  if (!valid2) issue3.addIssue({ code: "custom", path: ["assetKind"], message: "\u6536\u85CF\u7C7B\u578B\u4E0E\u7D20\u6750\u6765\u6E90\u4E0D\u4E00\u81F4" });
   if (["gallery", "element"].includes(value2.assetKind ?? "") && value2.imageUrl === null)
     issue3.addIssue({ code: "custom", path: ["imageUrl"], message: "\u516C\u5F00\u6536\u85CF\u5FC5\u987B\u8FD4\u56DE\u53EF\u4FE1\u5C55\u793A\u56FE\u7247" });
   if (value2.type === "gallery" && value2.imageUrl !== null && !publicImageUrl.safeParse(value2.imageUrl).success)
@@ -40600,8 +40600,8 @@ function getEnumValues2(entries) {
   const values = Object.entries(entries).filter(([k, _]) => numericValues.indexOf(+k) === -1).map(([_, v]) => v);
   return values;
 }
-function joinValues2(array3, separator = "|") {
-  return array3.map((val) => stringifyPrimitive2(val)).join(separator);
+function joinValues2(array5, separator = "|") {
+  return array5.map((val) => stringifyPrimitive2(val)).join(separator);
 }
 function jsonStringifyReplacer2(_, value2) {
   if (typeof value2 === "bigint")
@@ -44552,8 +44552,8 @@ function az_default2() {
 }
 
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/locales/be.js
-function getBelarusianPlural2(count2, one, few, many) {
-  const absCount = Math.abs(count2);
+function getBelarusianPlural2(count3, one, few, many) {
+  const absCount = Math.abs(count3);
   const lastDigit = absCount % 10;
   const lastTwoDigits = absCount % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
@@ -46631,8 +46631,8 @@ function hu_default2() {
 }
 
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/locales/hy.js
-function getArmenianPlural2(count2, one, many) {
-  return Math.abs(count2) === 1 ? one : many;
+function getArmenianPlural2(count3, one, many) {
+  return Math.abs(count3) === 1 ? one : many;
 }
 function withDefiniteArticle2(word) {
   if (!word)
@@ -47557,8 +47557,8 @@ function ko_default2() {
 var capitalizeFirstCharacter2 = (text5) => {
   return text5.charAt(0).toUpperCase() + text5.slice(1);
 };
-function getUnitTypeFromNumber2(number7) {
-  const abs = Math.abs(number7);
+function getUnitTypeFromNumber2(number8) {
+  const abs = Math.abs(number8);
   const last = abs % 10;
   const last2 = abs % 100;
   if (last2 >= 11 && last2 <= 19 || last === 0)
@@ -48760,8 +48760,8 @@ function ro_default2() {
 }
 
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/locales/ru.js
-function getRussianPlural2(count2, one, few, many) {
-  const absCount = Math.abs(count2);
+function getRussianPlural2(count3, one, few, many) {
+  const absCount = Math.abs(count3);
   const lastDigit = absCount % 10;
   const lastTwoDigits = absCount % 100;
   if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
@@ -54467,12 +54467,17 @@ function median(values) {
   const middle = Math.floor(values.length / 2);
   return values.length % 2 ? values[middle] : (values[middle - 1] + values[middle]) / 2;
 }
-function borderLab(rgb, width2, height2) {
+function borderLab(rgb, width2, height2, compositeAlphaOnWhite = false) {
   const strip = Math.min(width2, height2, Math.max(2, Math.floor(Math.min(width2, height2) / 200)));
   const channels = [[], [], []];
   const add = (x, y) => {
     const offset = (y * width2 + x) * 4;
-    const lab = rgbToOpenCvLab(rgb[offset], rgb[offset + 1], rgb[offset + 2]);
+    const alpha = compositeAlphaOnWhite ? rgb[offset + 3] / 255 : 1;
+    const lab = rgbToOpenCvLab(
+      Math.round(rgb[offset] * alpha + 255 * (1 - alpha)),
+      Math.round(rgb[offset + 1] * alpha + 255 * (1 - alpha)),
+      Math.round(rgb[offset + 2] * alpha + 255 * (1 - alpha))
+    );
     channels[0].push(lab[0]);
     channels[1].push(lab[1]);
     channels[2].push(lab[2]);
@@ -54625,7 +54630,7 @@ async function removeSmallBorderIntrusions(rgba, width2, height2) {
     const right = labels2[y * width2 + width2 - 1];
     if (right) edge2.add(right);
   }
-  const interior = [...areas].filter(([label]) => !edge2.has(label)).map(([, area]) => area);
+  const interior = [...areas].filter(([label]) => !edge2.has(label)).map(([, area2]) => area2);
   if (!interior.length) return rgba;
   const maximum = Math.max(64, Math.round(Math.max(...interior) * 0.28)), removable = new Set([...edge2].filter((label) => (areas.get(label) ?? 0) <= maximum && (areas.get(label) ?? 0) <= Math.round(width2 * height2 * 0.08)));
   if (!removable.size) return rgba;
@@ -54952,26 +54957,26 @@ function parseImageGrouping(raw) {
   if (mode !== "explicit" || !Array.isArray(value2.groups) || !value2.groups.length || value2.groups.length > 100 || value2.groups.some((group) => !Array.isArray(group) || !group.length || group.length > 14 || new Set(group).size !== group.length || group.some((index) => !Number.isSafeInteger(index) || index < 0 || index > 99))) return fail2("\u660E\u786E\u56FE\u7247\u7EC4\u5408\u5FC5\u987B\u4F7F\u7528\u6709\u6548\u7684\u96F6\u57FA\u7D22\u5F15\u3002");
   return { mode, groups: value2.groups.map((group) => [...group]) };
 }
-function groupImageIndexes(count2, raw, randomIndex) {
+function groupImageIndexes(count3, raw, randomIndex) {
   const grouping = parseImageGrouping(raw);
-  if (!Number.isSafeInteger(count2) || count2 < 1 || count2 > 100) return fail2("\u5206\u7EC4\u56FE\u7247\u6570\u91CF\u65E0\u6548\u3002");
-  const indexes = Array.from({ length: count2 }, (_, index) => index);
+  if (!Number.isSafeInteger(count3) || count3 < 1 || count3 > 100) return fail2("\u5206\u7EC4\u56FE\u7247\u6570\u91CF\u65E0\u6548\u3002");
+  const indexes = Array.from({ length: count3 }, (_, index) => index);
   if (grouping.mode === "single") return indexes.map((index) => [index]);
   if (grouping.mode === "all") {
-    if (count2 > 14) return fail2("\u540C\u6B21\u751F\u6210\u6700\u591A 14 \u5F20\u8F93\u5165\u56FE\uFF0C\u8FD8\u9700\u9075\u5B88\u6240\u9009\u6A21\u578B\u53CA Skill \u7684\u53C2\u8003\u56FE\u4E0A\u9650\u3002");
+    if (count3 > 14) return fail2("\u540C\u6B21\u751F\u6210\u6700\u591A 14 \u5F20\u8F93\u5165\u56FE\uFF0C\u8FD8\u9700\u9075\u5B88\u6240\u9009\u6A21\u578B\u53CA Skill \u7684\u53C2\u8003\u56FE\u4E0A\u9650\u3002");
     return [indexes];
   }
   if (grouping.mode === "explicit") {
-    if (grouping.groups.some((group) => group.some((index) => index >= count2)) || new Set(grouping.groups.flat()).size !== count2) return fail2("\u56FE\u7247\u7EC4\u5408\u8D8A\u754C\u6216\u9057\u6F0F\u9009\u4E2D\u7D20\u6750\uFF1B\u8BF7\u4FDD\u7559\u5B8C\u6574\u8303\u56F4\u6216\u660E\u786E\u8C03\u6574 source \u8303\u56F4\u3002");
+    if (grouping.groups.some((group) => group.some((index) => index >= count3)) || new Set(grouping.groups.flat()).size !== count3) return fail2("\u56FE\u7247\u7EC4\u5408\u8D8A\u754C\u6216\u9057\u6F0F\u9009\u4E2D\u7D20\u6750\uFF1B\u8BF7\u4FDD\u7559\u5B8C\u6574\u8303\u56F4\u6216\u660E\u786E\u8C03\u6574 source \u8303\u56F4\u3002");
     return grouping.groups;
   }
-  if (count2 % grouping.size && grouping.remainder !== "keep") return fail2(`\u9009\u4E2D ${count2} \u5F20\uFF0C\u4E0D\u80FD\u6309\u6BCF\u7EC4 ${grouping.size} \u5F20\u5B8C\u6574\u5206\u7EC4\uFF1B\u8BF7\u660E\u786E\u4F59\u56FE\u662F\u5426\u5355\u72EC\u6210\u7EC4\u3002`);
-  if (grouping.mode === "random") for (let i = count2 - 1; i > 0; i--) {
+  if (count3 % grouping.size && grouping.remainder !== "keep") return fail2(`\u9009\u4E2D ${count3} \u5F20\uFF0C\u4E0D\u80FD\u6309\u6BCF\u7EC4 ${grouping.size} \u5F20\u5B8C\u6574\u5206\u7EC4\uFF1B\u8BF7\u660E\u786E\u4F59\u56FE\u662F\u5426\u5355\u72EC\u6210\u7EC4\u3002`);
+  if (grouping.mode === "random") for (let i = count3 - 1; i > 0; i--) {
     const j = randomIndex(i + 1);
     if (!Number.isSafeInteger(j) || j < 0 || j > i) throw new Error("Invalid random index");
     [indexes[i], indexes[j]] = [indexes[j], indexes[i]];
   }
-  return Array.from({ length: Math.ceil(count2 / grouping.size) }, (_, index) => indexes.slice(index * grouping.size, (index + 1) * grouping.size));
+  return Array.from({ length: Math.ceil(count3 / grouping.size) }, (_, index) => indexes.slice(index * grouping.size, (index + 1) * grouping.size));
 }
 
 // plugins/podplo-dsh/src/generation-background.ts
@@ -55011,7 +55016,7 @@ import { createHash as createHash7, randomUUID as randomUUID8 } from "node:crypt
 import { constants as constants2 } from "node:fs";
 import { lstat as lstat2, mkdir as mkdir5, open as open3, realpath as realpath3, unlink } from "node:fs/promises";
 import { basename as basename7, extname as extname5, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
-import sharp11 from "sharp";
+import sharp12 from "sharp";
 
 // packages/tools/toolkit-contracts.ts
 var PRINT_SIZE_ERRORS = {
@@ -55288,7 +55293,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
   const base2 = () => sharp5(normalized2.data, { limitInputPixels, failOn: "error" });
   const alpha = await base2().ensureAlpha().extractChannel("alpha").raw().toBuffer();
   const columns = new Uint32Array(width2), rows = new Uint32Array(height2);
-  let left = width2, right = -1, top = height2, bottom = -1, count2 = 0, nonzeroCount = 0, transparent = false;
+  let left = width2, right = -1, top = height2, bottom = -1, count3 = 0, nonzeroCount = 0, transparent = false;
   let coreLeft = width2, coreRight = -1, coreTop = height2, coreBottom = -1;
   for (let y = 0; y < height2; y++) {
     if (y % 128 === 0) signal?.throwIfAborted();
@@ -55297,7 +55302,7 @@ async function cropTransparentImage(input, signal, threshold = 0) {
       if (value2 < 255) transparent = true;
       if (value2) nonzeroCount++;
       if (value2 <= threshold) continue;
-      count2++;
+      count3++;
       columns[x] = columns[x] + 1;
       rows[y] = rows[y] + 1;
       left = Math.min(left, x);
@@ -55313,25 +55318,25 @@ async function cropTransparentImage(input, signal, threshold = 0) {
     }
   }
   const issues = [];
-  const bounds = count2 ? { left, top, width: right - left + 1, height: bottom - top + 1 } : null;
+  const bounds = count3 ? { left, top, width: right - left + 1, height: bottom - top + 1 } : null;
   if (!metadata.hasAlpha || !transparent) issues.push("NO_TRANSPARENCY");
-  if (!count2) issues.push(nonzeroCount ? "NO_PIXELS_ABOVE_THRESHOLD" : "EMPTY_IMAGE");
+  if (!count3) issues.push(nonzeroCount ? "NO_PIXELS_ABOVE_THRESHOLD" : "EMPTY_IMAGE");
   const gap = Math.max(2, Math.ceil(Math.max(width2, height2) * 5e-3));
-  if (count2 && (coreRight < 0 || Math.max(coreLeft - left, right - coreRight, coreTop - top, bottom - coreBottom) >= gap))
+  if (count3 && (coreRight < 0 || Math.max(coreLeft - left, right - coreRight, coreTop - top, bottom - coreBottom) >= gap))
     issues.push("FAINT_EXTENTS");
   const isolatedBand = (projection, start, end, direction) => {
     let pixels = 0, empty = 0;
     for (let i = start; direction === 1 ? i <= end : i >= end; i += direction) {
       if (projection[i]) {
-        if (empty >= gap) return pixels <= Math.max(4, Math.floor(count2 * 1e-3)) && pixels < count2 / 4;
+        if (empty >= gap) return pixels <= Math.max(4, Math.floor(count3 * 1e-3)) && pixels < count3 / 4;
         empty = 0;
         pixels += projection[i];
-        if (pixels > Math.max(4, Math.floor(count2 * 1e-3))) return false;
+        if (pixels > Math.max(4, Math.floor(count3 * 1e-3))) return false;
       } else if (pixels) empty++;
     }
     return false;
   };
-  if (count2 && (isolatedBand(columns, left, right, 1) || isolatedBand(columns, right, left, -1) || isolatedBand(rows, top, bottom, 1) || isolatedBand(rows, bottom, top, -1))) issues.push("ISOLATED_EXTENTS");
+  if (count3 && (isolatedBand(columns, left, right, 1) || isolatedBand(columns, right, left, -1) || isolatedBand(rows, top, bottom, 1) || isolatedBand(rows, bottom, top, -1))) issues.push("ISOLATED_EXTENTS");
   if (!bounds || issues.includes("NO_TRANSPARENCY")) return {
     bytes: normalized2.data,
     width: width2,
@@ -56167,8 +56172,8 @@ async function renderToolbox(inputs, plan, options) {
             hints.pendingPattern = true;
             settings = { ...settings, fill: "none" };
           }
-          const valid = OutlineOptionsSchema.parse(settings);
-          outputs = await processToolkit([outlineInput], { tool: "outline", options: valid }, pattern, options.signal);
+          const valid2 = OutlineOptionsSchema.parse(settings);
+          outputs = await processToolkit([outlineInput], { tool: "outline", options: valid2 }, pattern, options.signal);
           if (step.trimTransparent && !plan.trimTransparent && !plan.steps.some((row) => row.tool === "trim")) {
             await options.authorize("trim");
             const croppedOutputs = [];
@@ -56261,6 +56266,746 @@ async function renderToolbox(inputs, plan, options) {
   return result;
 }
 
+// node_modules/d3-array/dist/d3-array.mjs
+function ascending(a, b) {
+  return a == null || b == null ? NaN : a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+}
+function descending(a, b) {
+  return a == null || b == null ? NaN : b < a ? -1 : b > a ? 1 : b >= a ? 0 : NaN;
+}
+function bisector(f) {
+  let compare1, compare2, delta;
+  if (f.length !== 2) {
+    compare1 = ascending;
+    compare2 = (d, x) => ascending(f(d), x);
+    delta = (d, x) => f(d) - x;
+  } else {
+    compare1 = f === ascending || f === descending ? f : zero;
+    compare2 = f;
+    delta = f;
+  }
+  function left(a, x, lo = 0, hi = a.length) {
+    if (lo < hi) {
+      if (compare1(x, x) !== 0) return hi;
+      do {
+        const mid = lo + hi >>> 1;
+        if (compare2(a[mid], x) < 0) lo = mid + 1;
+        else hi = mid;
+      } while (lo < hi);
+    }
+    return lo;
+  }
+  function right(a, x, lo = 0, hi = a.length) {
+    if (lo < hi) {
+      if (compare1(x, x) !== 0) return hi;
+      do {
+        const mid = lo + hi >>> 1;
+        if (compare2(a[mid], x) <= 0) lo = mid + 1;
+        else hi = mid;
+      } while (lo < hi);
+    }
+    return lo;
+  }
+  function center(a, x, lo = 0, hi = a.length) {
+    const i = left(a, x, lo, hi - 1);
+    return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+  }
+  return { left, center, right };
+}
+function zero() {
+  return 0;
+}
+function number7(x) {
+  return x === null ? NaN : +x;
+}
+var ascendingBisect = bisector(ascending);
+var bisectRight = ascendingBisect.right;
+var bisectLeft = ascendingBisect.left;
+var bisectCenter = bisector(number7).center;
+var blur2 = Blur2(blurf);
+var blurImage = Blur2(blurfImage);
+function Blur2(blur) {
+  return function(data, rx, ry = rx) {
+    if (!((rx = +rx) >= 0)) throw new RangeError("invalid rx");
+    if (!((ry = +ry) >= 0)) throw new RangeError("invalid ry");
+    let { data: values, width: width2, height: height2 } = data;
+    if (!((width2 = Math.floor(width2)) >= 0)) throw new RangeError("invalid width");
+    if (!((height2 = Math.floor(height2 !== void 0 ? height2 : values.length / width2)) >= 0)) throw new RangeError("invalid height");
+    if (!width2 || !height2 || !rx && !ry) return data;
+    const blurx = rx && blur(rx);
+    const blury = ry && blur(ry);
+    const temp = values.slice();
+    if (blurx && blury) {
+      blurh(blurx, temp, values, width2, height2);
+      blurh(blurx, values, temp, width2, height2);
+      blurh(blurx, temp, values, width2, height2);
+      blurv(blury, values, temp, width2, height2);
+      blurv(blury, temp, values, width2, height2);
+      blurv(blury, values, temp, width2, height2);
+    } else if (blurx) {
+      blurh(blurx, values, temp, width2, height2);
+      blurh(blurx, temp, values, width2, height2);
+      blurh(blurx, values, temp, width2, height2);
+    } else if (blury) {
+      blurv(blury, values, temp, width2, height2);
+      blurv(blury, temp, values, width2, height2);
+      blurv(blury, values, temp, width2, height2);
+    }
+    return data;
+  };
+}
+function blurh(blur, T, S, w, h) {
+  for (let y = 0, n = w * h; y < n; ) {
+    blur(T, S, y, y += w, 1);
+  }
+}
+function blurv(blur, T, S, w, h) {
+  for (let x = 0, n = w * h; x < w; ++x) {
+    blur(T, S, x, x + n, w);
+  }
+}
+function blurfImage(radius) {
+  const blur = blurf(radius);
+  return (T, S, start, stop, step) => {
+    start <<= 2, stop <<= 2, step <<= 2;
+    blur(T, S, start + 0, stop + 0, step);
+    blur(T, S, start + 1, stop + 1, step);
+    blur(T, S, start + 2, stop + 2, step);
+    blur(T, S, start + 3, stop + 3, step);
+  };
+}
+function blurf(radius) {
+  const radius0 = Math.floor(radius);
+  if (radius0 === radius) return bluri(radius);
+  const t = radius - radius0;
+  const w = 2 * radius + 1;
+  return (T, S, start, stop, step) => {
+    if (!((stop -= step) >= start)) return;
+    let sum = radius0 * S[start];
+    const s0 = step * radius0;
+    const s1 = s0 + step;
+    for (let i = start, j = start + s0; i < j; i += step) {
+      sum += S[Math.min(stop, i)];
+    }
+    for (let i = start, j = stop; i <= j; i += step) {
+      sum += S[Math.min(stop, i + s0)];
+      T[i] = (sum + t * (S[Math.max(start, i - s1)] + S[Math.min(stop, i + s1)])) / w;
+      sum -= S[Math.max(start, i - s0)];
+    }
+  };
+}
+function bluri(radius) {
+  const w = 2 * radius + 1;
+  return (T, S, start, stop, step) => {
+    if (!((stop -= step) >= start)) return;
+    let sum = radius * S[start];
+    const s = step * radius;
+    for (let i = start, j = start + s; i < j; i += step) {
+      sum += S[Math.min(stop, i)];
+    }
+    for (let i = start, j = stop; i <= j; i += step) {
+      sum += S[Math.min(stop, i + s)];
+      T[i] = sum / w;
+      sum -= S[Math.max(start, i - s)];
+    }
+  };
+}
+function count(values, valueof) {
+  let count3 = 0;
+  if (valueof === void 0) {
+    for (let value2 of values) {
+      if (value2 != null && (value2 = +value2) >= value2) {
+        ++count3;
+      }
+    }
+  } else {
+    let index = -1;
+    for (let value2 of values) {
+      if ((value2 = valueof(value2, ++index, values)) != null && (value2 = +value2) >= value2) {
+        ++count3;
+      }
+    }
+  }
+  return count3;
+}
+function extent(values, valueof) {
+  let min;
+  let max2;
+  if (valueof === void 0) {
+    for (const value2 of values) {
+      if (value2 != null) {
+        if (min === void 0) {
+          if (value2 >= value2) min = max2 = value2;
+        } else {
+          if (min > value2) min = value2;
+          if (max2 < value2) max2 = value2;
+        }
+      }
+    }
+  } else {
+    let index = -1;
+    for (let value2 of values) {
+      if ((value2 = valueof(value2, ++index, values)) != null) {
+        if (min === void 0) {
+          if (value2 >= value2) min = max2 = value2;
+        } else {
+          if (min > value2) min = value2;
+          if (max2 < value2) max2 = value2;
+        }
+      }
+    }
+  }
+  return [min, max2];
+}
+var array3 = Array.prototype;
+var slice = array3.slice;
+var e10 = Math.sqrt(50);
+var e5 = Math.sqrt(10);
+var e2 = Math.sqrt(2);
+function tickSpec(start, stop, count3) {
+  const step = (stop - start) / Math.max(0, count3), power = Math.floor(Math.log10(step)), error101 = step / Math.pow(10, power), factor = error101 >= e10 ? 10 : error101 >= e5 ? 5 : error101 >= e2 ? 2 : 1;
+  let i1, i2, inc;
+  if (power < 0) {
+    inc = Math.pow(10, -power) / factor;
+    i1 = Math.round(start * inc);
+    i2 = Math.round(stop * inc);
+    if (i1 / inc < start) ++i1;
+    if (i2 / inc > stop) --i2;
+    inc = -inc;
+  } else {
+    inc = Math.pow(10, power) * factor;
+    i1 = Math.round(start / inc);
+    i2 = Math.round(stop / inc);
+    if (i1 * inc < start) ++i1;
+    if (i2 * inc > stop) --i2;
+  }
+  if (i2 < i1 && 0.5 <= count3 && count3 < 2) return tickSpec(start, stop, count3 * 2);
+  return [i1, i2, inc];
+}
+function ticks(start, stop, count3) {
+  stop = +stop, start = +start, count3 = +count3;
+  if (!(count3 > 0)) return [];
+  if (start === stop) return [start];
+  const reverse = stop < start, [i1, i2, inc] = reverse ? tickSpec(stop, start, count3) : tickSpec(start, stop, count3);
+  if (!(i2 >= i1)) return [];
+  const n = i2 - i1 + 1, ticks2 = new Array(n);
+  if (reverse) {
+    if (inc < 0) for (let i = 0; i < n; ++i) ticks2[i] = (i2 - i) / -inc;
+    else for (let i = 0; i < n; ++i) ticks2[i] = (i2 - i) * inc;
+  } else {
+    if (inc < 0) for (let i = 0; i < n; ++i) ticks2[i] = (i1 + i) / -inc;
+    else for (let i = 0; i < n; ++i) ticks2[i] = (i1 + i) * inc;
+  }
+  return ticks2;
+}
+function tickIncrement(start, stop, count3) {
+  stop = +stop, start = +start, count3 = +count3;
+  return tickSpec(start, stop, count3)[2];
+}
+function nice(start, stop, count3) {
+  let prestep;
+  while (true) {
+    const step = tickIncrement(start, stop, count3);
+    if (step === prestep || step === 0 || !isFinite(step)) {
+      return [start, stop];
+    } else if (step > 0) {
+      const i = Math.ceil(start / step);
+      const j = Math.floor(stop / step);
+      start = (i - (i * step > start)) * step;
+      stop = (j + (j * step < stop)) * step;
+    } else if (step < 0) {
+      const s = -step;
+      const i = Math.ceil(start * s);
+      const j = Math.floor(stop * s);
+      start = (i - (i / s > start)) / s;
+      stop = (j + (j / s < stop)) / s;
+    }
+    prestep = step;
+  }
+}
+function thresholdSturges(values) {
+  return Math.max(1, Math.ceil(Math.log(count(values)) / Math.LN2) + 1);
+}
+var shuffle = shuffler(Math.random);
+function shuffler(random) {
+  return function shuffle2(array5, i0 = 0, i1 = array5.length) {
+    let m = i1 - (i0 = +i0);
+    while (m) {
+      const i = random() * m-- | 0, t = array5[m + i0];
+      array5[m + i0] = array5[i + i0];
+      array5[i + i0] = t;
+    }
+    return array5;
+  };
+}
+
+// node_modules/d3-contour/dist/d3-contour.mjs
+var array4 = Array.prototype;
+var slice2 = array4.slice;
+function ascending2(a, b) {
+  return a - b;
+}
+function area(ring) {
+  var i = 0, n = ring.length, area2 = ring[n - 1][1] * ring[0][0] - ring[n - 1][0] * ring[0][1];
+  while (++i < n) area2 += ring[i - 1][1] * ring[i][0] - ring[i - 1][0] * ring[i][1];
+  return area2;
+}
+var constant = (x) => () => x;
+function contains2(ring, hole) {
+  var i = -1, n = hole.length, c;
+  while (++i < n) if (c = ringContains(ring, hole[i])) return c;
+  return 0;
+}
+function ringContains(ring, point) {
+  var x = point[0], y = point[1], contains3 = -1;
+  for (var i = 0, n = ring.length, j = n - 1; i < n; j = i++) {
+    var pi = ring[i], xi = pi[0], yi = pi[1], pj = ring[j], xj = pj[0], yj = pj[1];
+    if (segmentContains(pi, pj, point)) return 0;
+    if (yi > y !== yj > y && x < (xj - xi) * (y - yi) / (yj - yi) + xi) contains3 = -contains3;
+  }
+  return contains3;
+}
+function segmentContains(a, b, c) {
+  var i;
+  return collinear(a, b, c) && within(a[i = +(a[0] === b[0])], c[i], b[i]);
+}
+function collinear(a, b, c) {
+  return (b[0] - a[0]) * (c[1] - a[1]) === (c[0] - a[0]) * (b[1] - a[1]);
+}
+function within(p, q, r) {
+  return p <= q && q <= r || r <= q && q <= p;
+}
+function noop() {
+}
+var cases = [
+  [],
+  [[[1, 1.5], [0.5, 1]]],
+  [[[1.5, 1], [1, 1.5]]],
+  [[[1.5, 1], [0.5, 1]]],
+  [[[1, 0.5], [1.5, 1]]],
+  [[[1, 1.5], [0.5, 1]], [[1, 0.5], [1.5, 1]]],
+  [[[1, 0.5], [1, 1.5]]],
+  [[[1, 0.5], [0.5, 1]]],
+  [[[0.5, 1], [1, 0.5]]],
+  [[[1, 1.5], [1, 0.5]]],
+  [[[0.5, 1], [1, 0.5]], [[1.5, 1], [1, 1.5]]],
+  [[[1.5, 1], [1, 0.5]]],
+  [[[0.5, 1], [1.5, 1]]],
+  [[[1, 1.5], [1.5, 1]]],
+  [[[0.5, 1], [1, 1.5]]],
+  []
+];
+function Contours() {
+  var dx = 1, dy = 1, threshold = thresholdSturges, smooth = smoothLinear;
+  function contours(values) {
+    var tz = threshold(values);
+    if (!Array.isArray(tz)) {
+      const e = extent(values, finite);
+      tz = ticks(...nice(e[0], e[1], tz), tz);
+      while (tz[tz.length - 1] >= e[1]) tz.pop();
+      while (tz[1] < e[0]) tz.shift();
+    } else {
+      tz = tz.slice().sort(ascending2);
+    }
+    return tz.map((value2) => contour(values, value2));
+  }
+  function contour(values, value2) {
+    const v = value2 == null ? NaN : +value2;
+    if (isNaN(v)) throw new Error(`invalid value: ${value2}`);
+    var polygons = [], holes = [];
+    isorings(values, v, function(ring) {
+      smooth(ring, values, v);
+      if (area(ring) > 0) polygons.push([ring]);
+      else holes.push(ring);
+    });
+    holes.forEach(function(hole) {
+      for (var i = 0, n = polygons.length, polygon; i < n; ++i) {
+        if (contains2((polygon = polygons[i])[0], hole) !== -1) {
+          polygon.push(hole);
+          return;
+        }
+      }
+    });
+    return {
+      type: "MultiPolygon",
+      value: value2,
+      coordinates: polygons
+    };
+  }
+  function isorings(values, value2, callback) {
+    var fragmentByStart = new Array(), fragmentByEnd = new Array(), x, y, t0, t1, t2, t3;
+    x = y = -1;
+    t1 = above(values[0], value2);
+    cases[t1 << 1].forEach(stitch);
+    while (++x < dx - 1) {
+      t0 = t1, t1 = above(values[x + 1], value2);
+      cases[t0 | t1 << 1].forEach(stitch);
+    }
+    cases[t1 << 0].forEach(stitch);
+    while (++y < dy - 1) {
+      x = -1;
+      t1 = above(values[y * dx + dx], value2);
+      t2 = above(values[y * dx], value2);
+      cases[t1 << 1 | t2 << 2].forEach(stitch);
+      while (++x < dx - 1) {
+        t0 = t1, t1 = above(values[y * dx + dx + x + 1], value2);
+        t3 = t2, t2 = above(values[y * dx + x + 1], value2);
+        cases[t0 | t1 << 1 | t2 << 2 | t3 << 3].forEach(stitch);
+      }
+      cases[t1 | t2 << 3].forEach(stitch);
+    }
+    x = -1;
+    t2 = values[y * dx] >= value2;
+    cases[t2 << 2].forEach(stitch);
+    while (++x < dx - 1) {
+      t3 = t2, t2 = above(values[y * dx + x + 1], value2);
+      cases[t2 << 2 | t3 << 3].forEach(stitch);
+    }
+    cases[t2 << 3].forEach(stitch);
+    function stitch(line) {
+      var start = [line[0][0] + x, line[0][1] + y], end = [line[1][0] + x, line[1][1] + y], startIndex = index(start), endIndex = index(end), f, g;
+      if (f = fragmentByEnd[startIndex]) {
+        if (g = fragmentByStart[endIndex]) {
+          delete fragmentByEnd[f.end];
+          delete fragmentByStart[g.start];
+          if (f === g) {
+            f.ring.push(end);
+            callback(f.ring);
+          } else {
+            fragmentByStart[f.start] = fragmentByEnd[g.end] = { start: f.start, end: g.end, ring: f.ring.concat(g.ring) };
+          }
+        } else {
+          delete fragmentByEnd[f.end];
+          f.ring.push(end);
+          fragmentByEnd[f.end = endIndex] = f;
+        }
+      } else if (f = fragmentByStart[endIndex]) {
+        if (g = fragmentByEnd[startIndex]) {
+          delete fragmentByStart[f.start];
+          delete fragmentByEnd[g.end];
+          if (f === g) {
+            f.ring.push(end);
+            callback(f.ring);
+          } else {
+            fragmentByStart[g.start] = fragmentByEnd[f.end] = { start: g.start, end: f.end, ring: g.ring.concat(f.ring) };
+          }
+        } else {
+          delete fragmentByStart[f.start];
+          f.ring.unshift(start);
+          fragmentByStart[f.start = startIndex] = f;
+        }
+      } else {
+        fragmentByStart[startIndex] = fragmentByEnd[endIndex] = { start: startIndex, end: endIndex, ring: [start, end] };
+      }
+    }
+  }
+  function index(point) {
+    return point[0] * 2 + point[1] * (dx + 1) * 4;
+  }
+  function smoothLinear(ring, values, value2) {
+    ring.forEach(function(point) {
+      var x = point[0], y = point[1], xt = x | 0, yt = y | 0, v1 = valid(values[yt * dx + xt]);
+      if (x > 0 && x < dx && xt === x) {
+        point[0] = smooth1(x, valid(values[yt * dx + xt - 1]), v1, value2);
+      }
+      if (y > 0 && y < dy && yt === y) {
+        point[1] = smooth1(y, valid(values[(yt - 1) * dx + xt]), v1, value2);
+      }
+    });
+  }
+  contours.contour = contour;
+  contours.size = function(_) {
+    if (!arguments.length) return [dx, dy];
+    var _0 = Math.floor(_[0]), _1 = Math.floor(_[1]);
+    if (!(_0 >= 0 && _1 >= 0)) throw new Error("invalid size");
+    return dx = _0, dy = _1, contours;
+  };
+  contours.thresholds = function(_) {
+    return arguments.length ? (threshold = typeof _ === "function" ? _ : Array.isArray(_) ? constant(slice2.call(_)) : constant(_), contours) : threshold;
+  };
+  contours.smooth = function(_) {
+    return arguments.length ? (smooth = _ ? smoothLinear : noop, contours) : smooth === smoothLinear;
+  };
+  return contours;
+}
+function finite(x) {
+  return isFinite(x) ? x : NaN;
+}
+function above(x, value2) {
+  return x == null ? false : +x >= value2;
+}
+function valid(v) {
+  return v == null || isNaN(v = +v) ? -Infinity : v;
+}
+function smooth1(x, v0, v1, value2) {
+  const a = value2 - v0;
+  const b = v1 - v0;
+  const d = isFinite(a) || isFinite(b) ? a / b : Math.sign(a) / Math.sign(b);
+  return isNaN(d) ? x : x + d - 0.5;
+}
+
+// packages/tools/contour-measure.ts
+import sharp11 from "sharp";
+var ContourMeasureOptionsSchema = external_exports.object({
+  actualWidthCm: external_exports.number().finite().min(0.01).max(1e5),
+  actualHeightCm: external_exports.number().finite().min(0.01).max(1e5),
+  backgroundTolerance: external_exports.number().finite().min(4).max(40).default(18),
+  alphaThreshold: external_exports.number().int().min(0).max(254).default(16)
+}).strict();
+var MAX_PIXELS2 = 12e6;
+var MAX_COMPONENTS = 200;
+var MAX_RAW_POINTS = 5e5;
+var MAX_PATH_CHARACTERS = 1e6;
+var YIELD_INTERVAL = 262144;
+async function yieldToHost(signal) {
+  signal?.throwIfAborted();
+  await new Promise((resolve4) => setImmediate(resolve4));
+  signal?.throwIfAborted();
+}
+function squaredDistanceToSegment(point, start, end) {
+  let x = start[0], y = start[1];
+  const dx = end[0] - x, dy = end[1] - y;
+  if (dx || dy) {
+    const t = ((point[0] - x) * dx + (point[1] - y) * dy) / (dx * dx + dy * dy);
+    if (t >= 1) {
+      x = end[0];
+      y = end[1];
+    } else if (t > 0) {
+      x += dx * t;
+      y += dy * t;
+    }
+  }
+  const offsetX = point[0] - x, offsetY = point[1] - y;
+  return offsetX * offsetX + offsetY * offsetY;
+}
+function simplifyOpen(points, epsilon) {
+  if (points.length <= 2) return points;
+  const keep = new Uint8Array(points.length);
+  keep[0] = 1;
+  keep[points.length - 1] = 1;
+  const stack = [[0, points.length - 1]], threshold = epsilon * epsilon;
+  while (stack.length) {
+    const [start, end] = stack.pop();
+    let maximum = threshold, split = -1;
+    for (let index = start + 1; index < end; index++) {
+      const distance = squaredDistanceToSegment(points[index], points[start], points[end]);
+      if (distance > maximum) {
+        maximum = distance;
+        split = index;
+      }
+    }
+    if (split >= 0) {
+      keep[split] = 1;
+      stack.push([start, split], [split, end]);
+    }
+  }
+  return points.filter((_, index) => keep[index] === 1);
+}
+function simplifyClosedContour(raw, epsilon = 0.75) {
+  const points = [...raw];
+  if (points.length > 1 && points[0][0] === points.at(-1)[0] && points[0][1] === points.at(-1)[1]) points.pop();
+  if (points.length < 3) return [];
+  let anchor = 0;
+  for (let index = 1; index < points.length; index++) {
+    if (points[index][0] < points[anchor][0] || points[index][0] === points[anchor][0] && points[index][1] < points[anchor][1]) anchor = index;
+  }
+  const ordered = points.slice(anchor).concat(points.slice(0, anchor));
+  let opposite = 1, farthest = -1;
+  for (let index = 1; index < ordered.length; index++) {
+    const dx = ordered[index][0] - ordered[0][0], dy = ordered[index][1] - ordered[0][1];
+    const distance = dx * dx + dy * dy;
+    if (distance > farthest) {
+      farthest = distance;
+      opposite = index;
+    }
+  }
+  const first = simplifyOpen(ordered.slice(0, opposite + 1), epsilon);
+  const second = simplifyOpen(ordered.slice(opposite).concat([ordered[0]]), epsilon);
+  const simplified = first.slice(0, -1).concat(second);
+  return simplified.length >= 4 ? simplified : [];
+}
+function formatCoordinate(value2) {
+  return Number(value2.toFixed(3)).toString();
+}
+function pathFor(points) {
+  return points.map((point, index) => `${index ? "L" : "M"}${formatCoordinate(point[0])} ${formatCoordinate(point[1])}`).join("") + "Z";
+}
+function physicalLength(points, scaleX, scaleY) {
+  let length = 0;
+  for (let index = 1; index < points.length; index++) {
+    length += Math.hypot(
+      (points[index][0] - points[index - 1][0]) * scaleX,
+      (points[index][1] - points[index - 1][1]) * scaleY
+    );
+  }
+  return length;
+}
+function edgeAlphaCount(rgba, width2, height2, threshold) {
+  let count3 = 0, samples = 0;
+  const inspect = (x, y) => {
+    samples++;
+    if (rgba[(y * width2 + x) * 4 + 3] <= threshold) count3++;
+  };
+  for (let x = 0; x < width2; x++) {
+    inspect(x, 0);
+    if (height2 > 1) inspect(x, height2 - 1);
+  }
+  for (let y = 1; y < height2 - 1; y++) {
+    inspect(0, y);
+    if (width2 > 1) inspect(width2 - 1, y);
+  }
+  return { count: count3, samples };
+}
+async function edgeConnectedYielding(candidate2, width2, height2, signal) {
+  const stack = [];
+  const push = (x, y) => {
+    const index = y * width2 + x;
+    if (candidate2[index] === 1) stack.push(index);
+  };
+  for (let x = 0; x < width2; x++) {
+    push(x, 0);
+    push(x, height2 - 1);
+  }
+  for (let y = 1; y < height2 - 1; y++) {
+    push(0, y);
+    push(width2 - 1, y);
+  }
+  let processed = 0;
+  while (stack.length) {
+    const seed = stack.pop();
+    if (candidate2[seed] !== 1) continue;
+    const y = Math.floor(seed / width2), x = seed - y * width2;
+    let left = x, right = x;
+    while (left > 0 && candidate2[y * width2 + left - 1] === 1) left--;
+    while (right + 1 < width2 && candidate2[y * width2 + right + 1] === 1) right++;
+    candidate2.fill(2, y * width2 + left, y * width2 + right + 1);
+    processed += right - left + 1;
+    if (processed >= YIELD_INTERVAL) {
+      processed = 0;
+      await yieldToHost(signal);
+    }
+    for (const adjacentY of [y - 1, y + 1]) {
+      if (adjacentY < 0 || adjacentY >= height2) continue;
+      let scan = Math.max(0, left - 1), end = Math.min(width2 - 1, right + 1);
+      while (scan <= end) {
+        if (candidate2[adjacentY * width2 + scan] === 1) {
+          stack.push(adjacentY * width2 + scan);
+          while (scan <= end && candidate2[adjacentY * width2 + scan] === 1) scan++;
+        } else scan++;
+      }
+    }
+  }
+  const connected = new Uint8Array(candidate2.length);
+  for (let index = 0; index < candidate2.length; index++) {
+    if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
+    connected[index] = candidate2[index] === 2 ? 1 : 0;
+  }
+  return connected;
+}
+async function foregroundMask(rgba, width2, height2, options, signal) {
+  const edgeAlpha = edgeAlphaCount(rgba, width2, height2, options.alphaThreshold);
+  const transparent = edgeAlpha.count >= Math.max(1, Math.ceil(edgeAlpha.samples * 0.05));
+  const mask = new Uint8Array(width2 * height2);
+  if (transparent) {
+    for (let index = 0; index < mask.length; index++) {
+      if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
+      mask[index] = rgba[index * 4 + 3] > options.alphaThreshold ? 1 : 0;
+    }
+    return { mask, mode: "transparent" };
+  }
+  const background = borderLab(rgba, width2, height2, true);
+  if (background[0] < 220 || Math.hypot(background[1] - 128, background[2] - 128) > 25)
+    throw new Error("\u76EE\u524D\u53EA\u652F\u6301\u900F\u660E\u5E95\u6216\u767D\u8272\uFF0F\u8FD1\u767D\u8272\u80CC\u666F\u56FE\u7247\u3002");
+  const candidates = new Uint8Array(mask.length);
+  for (let index = 0; index < mask.length; index++) {
+    if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
+    const offset = index * 4, alpha = rgba[offset + 3] / 255;
+    const lab = rgbToOpenCvLab(
+      Math.round(rgba[offset] * alpha + 255 * (1 - alpha)),
+      Math.round(rgba[offset + 1] * alpha + 255 * (1 - alpha)),
+      Math.round(rgba[offset + 2] * alpha + 255 * (1 - alpha))
+    );
+    candidates[index] = rgba[offset + 3] <= options.alphaThreshold || Math.hypot(lab[0] - background[0], lab[1] - background[1], lab[2] - background[2]) <= options.backgroundTolerance ? 1 : 0;
+  }
+  const connected = await edgeConnectedYielding(candidates, width2, height2, signal);
+  for (let index = 0; index < mask.length; index++) {
+    if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
+    mask[index] = !connected[index] && rgba[index * 4 + 3] > options.alphaThreshold ? 1 : 0;
+  }
+  return { mask, mode: "white" };
+}
+async function measureImageContours(input, raw, signal) {
+  const options = ContourMeasureOptionsSchema.parse(raw);
+  if (input.kind === "file") throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u53EA\u63A5\u53D7\u56FE\u7247\u3002");
+  signal?.throwIfAborted();
+  const image = sharp11(input.bytes, { limitInputPixels: MAX_PIXELS2, failOn: "error" }).autoOrient().toColourspace("srgb").ensureAlpha();
+  const metadata = await image.metadata();
+  if ((metadata.pages ?? 1) > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\u3002");
+  const decoded = await image.raw().toBuffer({ resolveWithObject: true });
+  const { width: width2, height: height2 } = decoded.info;
+  if (width2 * height2 > MAX_PIXELS2) throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u6682\u4E0D\u652F\u6301\u8D85\u8FC7 1200 \u4E07\u50CF\u7D20\u7684\u56FE\u7247\u3002");
+  const { mask, mode } = await foregroundMask(decoded.data, width2, height2, options, signal);
+  let x0 = width2, y0 = height2, x1 = 0, y1 = 0, foregroundPixels = 0, boundaryEdges = 0, touchesEdge = false;
+  for (let index = 0; index < mask.length; index++) {
+    if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
+    if (!mask[index]) continue;
+    foregroundPixels++;
+    const y = Math.floor(index / width2), x = index - y * width2;
+    x0 = Math.min(x0, x);
+    y0 = Math.min(y0, y);
+    x1 = Math.max(x1, x + 1);
+    y1 = Math.max(y1, y + 1);
+    if (x === 0 || y === 0 || x === width2 - 1 || y === height2 - 1) touchesEdge = true;
+    if (x === 0 || !mask[index - 1]) boundaryEdges++;
+    if (x === width2 - 1 || !mask[index + 1]) boundaryEdges++;
+    if (y === 0 || !mask[index - width2]) boundaryEdges++;
+    if (y === height2 - 1 || !mask[index + width2]) boundaryEdges++;
+    if (boundaryEdges > MAX_RAW_POINTS) throw new Error("\u8F6E\u5ED3\u7EC6\u8282\u8FC7\u591A\uFF0C\u8BF7\u5148\u4F7F\u7528\u66F4\u5E72\u51C0\u7684\u767D\u5E95\u6216\u900F\u660E\u56FE\u7247\u3002");
+  }
+  if (!foregroundPixels) throw new Error("\u6CA1\u6709\u8BC6\u522B\u5230\u53EF\u6D4B\u91CF\u7684\u4E3B\u4F53\uFF0C\u8BF7\u68C0\u67E5\u80CC\u666F\u6216\u9608\u503C\u3002");
+  const bboxWidth = x1 - x0, bboxHeight = y1 - y0;
+  if (Math.max(bboxWidth, bboxHeight) < 32) throw new Error("\u4E3B\u4F53\u5206\u8FA8\u7387\u8FC7\u4F4E\uFF0C\u65E0\u6CD5\u53EF\u9760\u6D4B\u91CF\u8F6E\u5ED3\u3002");
+  signal?.throwIfAborted();
+  const generated = Contours().size([width2, height2]).thresholds([0.5]).smooth(true)(mask)[0];
+  if (!generated) throw new Error("\u6CA1\u6709\u751F\u6210\u53EF\u6D4B\u91CF\u7684\u95ED\u5408\u8F6E\u5ED3\u3002");
+  const polygons = generated.coordinates;
+  const exteriorRings = polygons.map((polygon) => polygon[0]).filter((ring) => !!ring?.length);
+  if (!exteriorRings.length) throw new Error("\u6CA1\u6709\u751F\u6210\u53EF\u6D4B\u91CF\u7684\u5916\u8F6E\u5ED3\u3002");
+  if (exteriorRings.length > MAX_COMPONENTS)
+    throw new Error(`\u8BC6\u522B\u5230 ${exteriorRings.length} \u4E2A\u79BB\u6563\u8F6E\u5ED3\uFF0C\u8BF7\u63D0\u9AD8\u900F\u660E\u9608\u503C\u6216\u80CC\u666F\u5BB9\u5DEE\u540E\u91CD\u8BD5\u3002`);
+  const rawPointCount = exteriorRings.reduce((sum, ring) => sum + ring.length, 0);
+  if (rawPointCount > MAX_RAW_POINTS) throw new Error("\u8F6E\u5ED3\u7EC6\u8282\u8FC7\u591A\uFF0C\u8BF7\u5148\u4F7F\u7528\u66F4\u5E72\u51C0\u7684\u767D\u5E95\u6216\u900F\u660E\u56FE\u7247\u3002");
+  const simplified = exteriorRings.map((ring) => {
+    const reduced = simplifyClosedContour(ring, 0.75);
+    return reduced.length >= 4 ? reduced : [...ring];
+  });
+  const paths = simplified.map(pathFor);
+  if (paths.reduce((sum, path) => sum + path.length, 0) > MAX_PATH_CHARACTERS)
+    throw new Error("\u8F6E\u5ED3\u9884\u89C8\u6570\u636E\u8FC7\u5927\uFF0C\u8BF7\u5148\u4F7F\u7528\u66F4\u5E72\u51C0\u7684\u56FE\u7247\u3002");
+  const scaleX = options.actualWidthCm / bboxWidth, scaleY = options.actualHeightCm / bboxHeight;
+  const totalLengthCm = simplified.reduce((sum, ring) => sum + physicalLength(ring, scaleX, scaleY), 0);
+  if (!Number.isFinite(totalLengthCm) || totalLengthCm <= 0) throw new Error("\u8F6E\u5ED3\u957F\u5EA6\u8BA1\u7B97\u5931\u8D25\u3002");
+  signal?.throwIfAborted();
+  const preview = await sharp11(decoded.data, { raw: { width: width2, height: height2, channels: decoded.info.channels } }).resize({ width: 1024, height: 1024, fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
+  const warnings = [];
+  if (Math.max(bboxWidth, bboxHeight) < 128) warnings.push("\u4E3B\u4F53\u5206\u8FA8\u7387\u8F83\u4F4E\uFF0C\u7ED3\u679C\u8BEF\u5DEE\u53EF\u80FD\u8F83\u5927");
+  if (touchesEdge) warnings.push("\u8F6E\u5ED3\u63A5\u89E6\u753B\u5E03\u8FB9\u7F18\uFF0C\u56FE\u7247\u53EF\u80FD\u88C1\u65AD\u4E86\u4E3B\u4F53");
+  if (exteriorRings.length > 20) warnings.push(`\u8BC6\u522B\u5230 ${exteriorRings.length} \u4E2A\u79BB\u6563\u5916\u8F6E\u5ED3\uFF0C\u8BF7\u68C0\u67E5\u9884\u89C8`);
+  return {
+    sourceId: input.id,
+    sourceWidth: width2,
+    sourceHeight: height2,
+    previewDataUrl: `data:image/webp;base64,${preview.toString("base64")}`,
+    bbox: { x: x0, y: y0, width: bboxWidth, height: bboxHeight },
+    paths,
+    totalLengthCm: Number(totalLengthCm.toPrecision(12)),
+    componentCount: exteriorRings.length,
+    pointCount: simplified.reduce((sum, ring) => sum + ring.length, 0),
+    backgroundMode: mode,
+    ...warnings.length ? { warning: warnings.join("\uFF1B") + "\u3002" } : {}
+  };
+}
+
 // plugins/podplo-dsh/src/local-toolkit.ts
 var hashPattern = /^[a-f0-9]{64}$/u;
 var resultFilePattern = /^results\/[a-f0-9]{64}\/[a-f0-9]{64}\/(?:待复核\/)?[0-9a-f-]{36}\.(?:png|jpe?g|webp|pdf|zip|json)$/u;
@@ -56330,6 +57075,7 @@ var listArgs = external_exports2.object({ limit: external_exports2.number().int(
 var resizeArgs = external_exports2.object({ operationId, ids: uniqueIds, options: ResizeOptionsSchema.strict() }).strict();
 var operationArgs = external_exports2.object({ operationId, ids: uniqueIds, options: external_exports2.unknown() }).strict();
 var previewArgs = external_exports2.object({ ids: uniqueIds, options: external_exports2.unknown() }).strict();
+var contourMeasureArgs = external_exports2.object({ ids: external_exports2.array(opaqueId).length(1), options: ContourMeasureOptionsSchema }).strict();
 var processingTools = {
   podplo_resize_images: "resize",
   podplo_rotate_flip_images: "rotate-flip",
@@ -56458,6 +57204,8 @@ var NativeLocalToolkit = class {
   inflight = /* @__PURE__ */ new Map();
   previewControllers = /* @__PURE__ */ new Map();
   previewTails = /* @__PURE__ */ new Map();
+  contourControllers = /* @__PURE__ */ new Map();
+  contourTails = /* @__PURE__ */ new Map();
   previewCache = new ImageMemoryCache(16 * 1024 * 1024, 96);
   frameCache = createToolboxFrameCache();
   cacheAuthorization;
@@ -56476,14 +57224,18 @@ var NativeLocalToolkit = class {
     if (this.closed) return;
     this.closed = true;
     for (const controller of this.previewControllers.values()) controller.abort();
+    for (const controller of this.contourControllers.values()) controller.abort();
     await Promise.allSettled([
       ...[...this.inflight.values()].map((row) => row.promise),
-      ...this.previewTails.values()
+      ...this.previewTails.values(),
+      ...this.contourTails.values()
     ]);
     await this.store.flush();
     this.inflight.clear();
     this.previewControllers.clear();
     this.previewTails.clear();
+    this.contourControllers.clear();
+    this.contourTails.clear();
     this.previewCache.clear();
     this.frameCache.clear();
   }
@@ -56517,7 +57269,7 @@ var NativeLocalToolkit = class {
     const bytes = Buffer.from(args.base64, "base64");
     if (!bytes.length || bytes.length > 50 * 1024 * 1024 || bytes.toString("base64") !== args.base64)
       throw new Error("\u672C\u5730\u56FE\u7247\u7F16\u7801\u65E0\u6548\u6216\u8D85\u8FC7 50 MB");
-    const metadata = await sharp11(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    const metadata = await sharp12(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
     const expected = { "image/png": "png", "image/jpeg": "jpeg", "image/webp": "webp" }[args.contentType];
     if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1 || metadata.format !== expected)
       throw new Error("\u672C\u5730\u56FE\u7247\u5185\u5BB9\u4E0E\u58F0\u660E\u683C\u5F0F\u4E0D\u4E00\u81F4\uFF0C\u6216\u5C5E\u4E8E\u4E0D\u652F\u6301\u7684\u591A\u9875/\u52A8\u753B\u56FE\u7247");
@@ -56588,7 +57340,7 @@ var NativeLocalToolkit = class {
     const source = await this.readStored(row);
     const key = `${identity2.authorization}:${row.session}:${row.id}:${row.fingerprint}:${row.digest}:512:82`, epoch = this.previewCache.revision();
     const cached3 = this.previewCache.get(key);
-    const bytes = cached3 ?? await sharp11(source, { limitInputPixels: 1e8, failOn: "error" }).resize(512, 512, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
+    const bytes = cached3 ?? await sharp12(source, { limitInputPixels: 1e8, failOn: "error" }).resize(512, 512, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer();
     await this.assertIdentity(identity2, "read");
     if (!cached3) this.previewCache.set(key, bytes, epoch);
     return { ...publicResult(row), contentType: "image/webp", bytes };
@@ -56647,6 +57399,36 @@ var NativeLocalToolkit = class {
     if (!("mode" in options) && args.ids.length * options.rows * options.cols > 400) throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
     return this.idempotent(GRID_SPLIT_OPERATION_NAME, { ...args, options }, opaqueId.parse(sessionId));
   }
+  /** UI-only measurement. It does not mutate pixels, publish files, or create an operation receipt. */
+  async contourMeasure(raw, sessionId) {
+    this.ready();
+    const args = contourMeasureArgs.parse(raw), session2 = opaqueId.parse(sessionId);
+    const identity2 = await this.identity("process", "podplo_outline_images");
+    const key = `contour:${sha256(session2)}`;
+    this.contourControllers.get(key)?.abort();
+    const controller = new AbortController();
+    this.contourControllers.set(key, controller);
+    const previous = this.contourTails.get(key) ?? Promise.resolve(void 0);
+    const pending = previous.catch(() => void 0).then(async () => {
+      await this.assertIdentity(identity2, "process", "podplo_outline_images");
+      const inputs = await this.resolveInputs(args.ids, identity2, session2, sha256(session2), "process", "podplo_outline_images");
+      const input = inputs[0];
+      if (input.kind === "file") throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u53EA\u63A5\u53D7\u56FE\u7247\u3002");
+      const result = await measureImageContours(input, args.options, controller.signal);
+      await this.assertIdentity(identity2, "process", "podplo_outline_images");
+      return result;
+    });
+    this.contourTails.set(key, pending);
+    try {
+      return await pending;
+    } catch (error101) {
+      if (controller.signal.aborted) throw new Error("PREVIEW_SUPERSEDED");
+      throw error101;
+    } finally {
+      if (this.contourControllers.get(key) === controller) this.contourControllers.delete(key);
+      if (this.contourTails.get(key) === pending) this.contourTails.delete(key);
+    }
+  }
   async renderPipeline(inputs, plan, sessionId, identity2, preview = false, signal) {
     const rendered = await renderToolbox(inputs, plan, {
       preview,
@@ -56668,7 +57450,7 @@ var NativeLocalToolkit = class {
     const firstSource = rendered.previews[0]?.sourceId;
     for (const output of rendered.previews.filter((row) => row.sourceId === firstSource)) {
       const proof = output.kind === "file", mirror = /-镜像(?:-|$)/.test(output.stem);
-      const metadata = await sharp11(output.bytes, { limitInputPixels: 1e8 }).metadata();
+      const metadata = await sharp12(output.bytes, { limitInputPixels: 1e8 }).metadata();
       images.push({ ...await this.previewImage(
         proof ? "proof" : mirror ? "mirror" : "effect",
         safeOutputName(output.stem, output.extension),
@@ -56878,7 +57660,7 @@ var NativeLocalToolkit = class {
       if (options.mirror) images2.push(await this.previewImage(
         "mirror",
         `${basename7(input.name, extname5(input.name))}-\u63CF\u8FB9-\u955C\u50CF.png`,
-        await sharp11(png).flop().png().toBuffer(),
+        await sharp12(png).flop().png().toBuffer(),
         preview.exportWidth,
         preview.exportHeight,
         "png",
@@ -56897,7 +57679,7 @@ var NativeLocalToolkit = class {
       };
     }
     const bounded2 = await this.boundedPreviewInput(input, signal);
-    const sourceMetadata = await sharp11(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+    const sourceMetadata = await sharp12(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
     if (!sourceMetadata.width || !sourceMetadata.height) throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u7684\u56FE\u7247");
     const swapsOrientation = sourceMetadata.orientation !== void 0 && [5, 6, 7, 8].includes(sourceMetadata.orientation);
     const sourceSize = {
@@ -56923,7 +57705,7 @@ var NativeLocalToolkit = class {
           Math.max(1, Math.round(previewTarget.height * scale)),
           { fit: proportional || options.fit === "inside" ? "fill" : options.fit }
         ).toBuffer();
-        const info = await sharp11(bytes).metadata();
+        const info = await sharp12(bytes).metadata();
         outputs = [{
           stem: `${basename7(input.name, extname5(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
           bytes,
@@ -57007,13 +57789,13 @@ var NativeLocalToolkit = class {
   }
   async boundedPreviewInput(input, signal) {
     signal.throwIfAborted();
-    const bytes = await sharp11(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().resize(700, 700, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
+    const bytes = await sharp12(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient().resize(700, 700, { fit: "inside", withoutEnlargement: true }).png().toBuffer();
     signal.throwIfAborted();
     return { ...input, bytes, kind: "image" };
   }
   async assertStaticPreviewImage(input, signal) {
     signal.throwIfAborted();
-    const metadata = await sharp11(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).metadata();
+    const metadata = await sharp12(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).metadata();
     if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1)
       throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\uFF0C\u8BF7\u5148\u8F6C\u4E3A\u5355\u5F20\u9759\u6001\u56FE\u7247");
     signal.throwIfAborted();
@@ -57030,7 +57812,7 @@ var NativeLocalToolkit = class {
     signal.throwIfAborted();
     const cacheKey = `${scope}:${imageDigest(source)}:700:84`, epoch = this.previewCache.revision();
     const cached3 = scope ? this.previewCache.get(cacheKey) : void 0;
-    const bytes = cached3 ?? await sharp11(source, { limitInputPixels: 1e8, failOn: "error" }).resize(700, 700, { fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
+    const bytes = cached3 ?? await sharp12(source, { limitInputPixels: 1e8, failOn: "error" }).resize(700, 700, { fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
     signal.throwIfAborted();
     if (scope && !cached3) this.previewCache.set(cacheKey, bytes, epoch);
     return {
@@ -57202,7 +57984,7 @@ var NativeLocalToolkit = class {
         rows.push({ id: input.id, name: input.name, kind: "file", format: extname5(input.name).slice(1).toLowerCase() });
         continue;
       }
-      const image = sharp11(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
+      const image = sharp12(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
       const metadata = await image.metadata();
       if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u65E0\u6CD5\u8BC6\u522B\u6216\u591A\u9875/\u52A8\u753B\u56FE\u7247");
       const hasAlpha = metadata.hasAlpha === true;
@@ -57225,7 +58007,7 @@ var NativeLocalToolkit = class {
   async assertTransparentForOutline(inputs) {
     for (const input of inputs) {
       if (input.kind === "file") throw new Error("\u81EA\u52A8\u63CF\u8FB9\u53EA\u63A5\u53D7\u56FE\u7247");
-      const image = sharp11(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
+      const image = sharp12(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
       const metadata = await image.metadata();
       const transparent = metadata.hasAlpha === true && !(await image.stats()).isOpaque;
       if (!transparent) throw new Error(`\u81EA\u52A8\u63CF\u8FB9\u9700\u8981\u771F\u5B9E\u900F\u660E\u80CC\u666F\uFF1B${input.name} \u662F RGB \u6216\u4E0D\u900F\u660E RGBA\uFF0C\u5DF2\u62D2\u7EDD\uFF0C\u907F\u514D\u63CF\u6210\u6574\u5F20\u77E9\u5F62`);
@@ -57237,7 +58019,7 @@ var NativeLocalToolkit = class {
       if (input.kind === "file") throw new Error("\u5C3A\u5BF8\u8C03\u6574\u53EA\u63A5\u53D7\u56FE\u7247");
       const { image, format: format2, transparentCrop } = await prepareResizeImage(input.bytes, options);
       const bytes = await image.toBuffer();
-      const output = await sharp11(bytes).metadata();
+      const output = await sharp12(bytes).metadata();
       outputs.push({
         stem: `${basename7(input.name, extname5(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
         extension: format2 === "jpeg" ? "jpg" : format2,
@@ -57488,7 +58270,11 @@ var NATIVE_TASK_MAX_LOCAL_OUTPUTS = 400;
 var NATIVE_TASK_PAIRING_MODES = ["zip", "random", "broadcast", "cartesian", "explicit"];
 var NATIVE_TASK_SELECTION_MODES = ["all", "first", "indexes", "sample"];
 var NATIVE_TASK_SELECTION_SORTS = ["source", "name-asc", "name-desc", "size-asc", "size-desc"];
-var NATIVE_TASK_DIRECTORY_MODES = ["root", "child", "random-child"];
+var NATIVE_TASK_DIRECTORY_MODES = ["root", "child", "random-child", "recursive"];
+var NATIVE_TASK_DEFAULT_RECURSIVE_DEPTH = 8;
+var NATIVE_TASK_MAX_RECURSIVE_DEPTH = 16;
+var NATIVE_TASK_MAX_INVENTORY_IMAGES = 1e5;
+var NATIVE_TASK_MAX_INVENTORY_DIRECTORIES = 1e4;
 var NativeTaskSourceError = class extends Error {
   constructor(path, message) {
     super(`${path}: ${message}`);
@@ -57512,8 +58298,8 @@ function exact(value2, allowed, path) {
   const unknown3 = Object.keys(value2).find((key) => !allowed.includes(key));
   if (unknown3 !== void 0) fail3(`${path}.${unknown3}`, "\u662F\u672A\u77E5\u5B57\u6BB5");
 }
-function text2(value2, path, max, pattern) {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /[\x00-\x1f]/u.test(value2) || pattern && !pattern.test(value2.trim())) return fail3(path, "\u65E0\u6548");
+function text2(value2, path, max2, pattern) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max2 || /[\x00-\x1f]/u.test(value2) || pattern && !pattern.test(value2.trim())) return fail3(path, "\u65E0\u6548");
   return value2.trim();
 }
 function integer4(value2, path, minimum, maximum) {
@@ -57522,14 +58308,20 @@ function integer4(value2, path, minimum, maximum) {
 }
 function normalizeDirectory(raw, path) {
   const value2 = object4(raw, path);
-  exact(value2, ["mode", "name"], path);
+  exact(value2, ["mode", "name", "maxDepth"], path);
   if (!NATIVE_TASK_DIRECTORY_MODES.includes(String(value2.mode))) fail3(`${path}.mode`, "\u65E0\u6548");
   if (value2.mode === "child") {
+    if (value2.maxDepth !== void 0) fail3(`${path}.maxDepth`, "\u4EC5\u80FD\u4E0E recursive \u6A21\u5F0F\u4E00\u8D77\u4F7F\u7528");
     const name2 = text2(value2.name, `${path}.name`, 255);
     if (name2 === "." || name2 === ".." || name2.includes("/") || name2.includes("\\")) fail3(`${path}.name`, "\u5FC5\u987B\u662F\u6388\u6743\u6839\u76EE\u5F55\u4E0B\u7684\u5355\u4E00\u76F4\u63A5\u5B50\u76EE\u5F55\u540D");
     return { mode: "child", name: name2 };
   }
+  if (value2.mode === "recursive") {
+    if (value2.name !== void 0) fail3(`${path}.name`, "\u4E0D\u80FD\u4E0E recursive \u6A21\u5F0F\u4E00\u8D77\u4F7F\u7528");
+    return { mode: "recursive", maxDepth: value2.maxDepth === void 0 ? NATIVE_TASK_DEFAULT_RECURSIVE_DEPTH : integer4(value2.maxDepth, `${path}.maxDepth`, 1, NATIVE_TASK_MAX_RECURSIVE_DEPTH) };
+  }
   if (value2.name !== void 0) fail3(`${path}.name`, "\u4EC5\u80FD\u4E0E child \u6A21\u5F0F\u4E00\u8D77\u4F7F\u7528");
+  if (value2.maxDepth !== void 0) fail3(`${path}.maxDepth`, "\u4EC5\u80FD\u4E0E recursive \u6A21\u5F0F\u4E00\u8D77\u4F7F\u7528");
   return { mode: value2.mode };
 }
 function normalizeFilter(raw, path) {
@@ -57709,10 +58501,10 @@ function chooseIndex(maximum, randomIndex) {
   if (!Number.isSafeInteger(index) || index < 0 || index >= maximum) throw new Error("Invalid random index");
   return index;
 }
-function sampleWithoutReplacement(values, count2, randomIndex) {
-  if (count2 > values.length) fail3("selection.count", "\u8D85\u8FC7\u7B5B\u9009\u540E\u6765\u6E90\u6570\uFF1B\u5982\u9700\u590D\u7528\u5FC5\u987B\u660E\u786E reuse:true");
+function sampleWithoutReplacement(values, count3, randomIndex) {
+  if (count3 > values.length) fail3("selection.count", "\u8D85\u8FC7\u7B5B\u9009\u540E\u6765\u6E90\u6570\uFF1B\u5982\u9700\u590D\u7528\u5FC5\u987B\u660E\u786E reuse:true");
   const remaining = [...values], selected = [];
-  while (selected.length < count2) selected.push(remaining.splice(chooseIndex(remaining.length, randomIndex), 1)[0]);
+  while (selected.length < count3) selected.push(remaining.splice(chooseIndex(remaining.length, randomIndex), 1)[0]);
   return selected;
 }
 function applyNativeSourceSelection(values, selection, randomIndex) {
@@ -57820,7 +58612,8 @@ var poolProperties = {
   expectedImageCount: { type: "integer", minimum: 1, maximum: 100 },
   directory: { type: "object", additionalProperties: false, required: ["mode"], properties: {
     mode: { type: "string", enum: NATIVE_TASK_DIRECTORY_MODES },
-    name: { type: "string", minLength: 1, maxLength: 255 }
+    name: { type: "string", minLength: 1, maxLength: 255 },
+    maxDepth: { type: "integer", minimum: 1, maximum: NATIVE_TASK_MAX_RECURSIVE_DEPTH }
   } },
   selection: nativeTaskSourceSelectionSchema
 };
@@ -57887,7 +58680,7 @@ var generationFieldNames = ["model", "ratio", "quality", "ecoMode", "background"
 var generationFieldSet = new Set(generationFieldNames);
 var nativeTaskTool = {
   name: nativeTaskToolName,
-  description: "Prepare one complete AI/local task. protocolVersion:2 adds named pools, direct/random child folders, selection and pairing. Pairing defines AI reference groups and cannot combine with grouping; roles only preserve order. Host freezes randomness before one AI quote. Local tools remain per-image. Do not inspect files, invent IDs or calculate credits.",
+  description: "Prepare one complete AI/local task; first inspect unknown sources with podplo_inspect_task mode:sources. v2 supports bounded recursive-library sampling, single random-child and cross-pool pairing. Library size differs from selected-input limits. Freeze choices before one AI confirmation; local tools stay per-image. Keep scope, Skill, model and Eco.",
   inputSchema: { type: "object", additionalProperties: false, required: ["stages"], examples: [{ stages: [
     {
       id: "base",
@@ -57953,15 +58746,15 @@ var rejectUnknownField = (value2, allowed, path) => {
   const key = Object.keys(value2).find((candidate2) => !allowed.has(candidate2));
   if (key !== void 0) fail4("INVALID_ARGUMENT", `${path}.${key} \u662F\u672A\u77E5\u53C2\u6570\u3002`);
 };
-var text3 = (value2, name2, max) => {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /\x00/u.test(value2)) fail4("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
+var text3 = (value2, name2, max2) => {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max2 || /\x00/u.test(value2)) fail4("INVALID_ARGUMENT", `${name2} \u65E0\u6548\u3002`);
   return value2.trim();
 };
 function parseInput(value2, path = "batch") {
   const allowed = /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "imageIndexes", "imageGrouping", "expectedImageCount", "skillQuery", "skillSource", "skillFolder", "processingPresetPath", "skillStrategy", "model", "ratio", "quality", "ecoMode", "background", "processingPlan", "instructions"]);
   rejectUnknownField(value2, allowed, path);
-  const count2 = value2.expectedImageCount;
-  if (count2 !== void 0 && (!Number.isInteger(count2) || Number(count2) < 1 || Number(count2) > 100)) fail4("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
+  const count3 = value2.expectedImageCount;
+  if (count3 !== void 0 && (!Number.isInteger(count3) || Number(count3) < 1 || Number(count3) > 100)) fail4("INVALID_ARGUMENT", `${path}.expectedImageCount \u5FC5\u987B\u4E3A 1-100\u3002`);
   if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(String(value2.skillStrategy))) fail4("INVALID_ARGUMENT", `${path}.skillStrategy \u65E0\u6548\u3002`);
   let imageIndexes;
   if (value2.imageIndexes !== void 0) {
@@ -57986,7 +58779,7 @@ function parseInput(value2, path = "batch") {
     ...folderPath ? { folderPath } : { referenceAssetIds },
     ...imageIndexes ? { imageIndexes } : {},
     ...value2.imageGrouping === void 0 ? {} : { imageGrouping: parseImageGrouping(value2.imageGrouping) },
-    ...count2 === void 0 ? {} : { expectedImageCount: Number(count2) },
+    ...count3 === void 0 ? {} : { expectedImageCount: Number(count3) },
     skillQuery: text3(value2.skillQuery, `${path}.skillQuery`, 160),
     skillStrategy: value2.skillStrategy,
     ...value2.model === void 0 ? {} : { model: text3(value2.model, `${path}.model`, 160) },
@@ -58172,10 +58965,10 @@ async function assertOwner(deps, ownerId, namespace) {
   if (deps.online.auth.namespace !== namespace || await deps.online.workspaceIdentity(true) !== ownerId)
     fail4("ACCOUNT_CHANGED", "\u6279\u91CF\u51C6\u5907\u671F\u95F4\u8D26\u53F7\u6216\u767B\u5F55\u6001\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002");
 }
-function shuffledWithoutReplacement(values, count2, choose) {
-  if (count2 > values.length) fail4("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count2} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
+function shuffledWithoutReplacement(values, count3, choose) {
+  if (count3 > values.length) fail4("SKILL_FAMILY_TOO_SMALL", `\u8BE5\u968F\u673A\u6C60\u53EA\u6709 ${values.length} \u4E2A\u53EF\u7528\u6210\u5458\uFF0C\u4E0D\u80FD\u4E3A ${count3} \u5F20\u56FE\u7247\u65E0\u91CD\u590D\u968F\u673A\u5206\u914D\u3002`);
   const pool = [...values], selected = [];
-  while (selected.length < count2) {
+  while (selected.length < count3) {
     const index = choose(pool.length);
     if (!Number.isInteger(index) || index < 0 || index >= pool.length) throw new Error("Invalid random index");
     selected.push(pool.splice(index, 1)[0]);
@@ -58613,8 +59406,8 @@ function record4(value2, label) {
   if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new Error(`${label}\u65E0\u6548`);
   return value2;
 }
-function cleanText(value2, label, max) {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /[\x00-\x1f]/u.test(value2)) throw new Error(`${label}\u65E0\u6548`);
+function cleanText(value2, label, max2) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max2 || /[\x00-\x1f]/u.test(value2)) throw new Error(`${label}\u65E0\u6548`);
   return value2.trim();
 }
 function rejectUnknown(value2, allowed, label) {
@@ -58787,37 +59580,87 @@ async function readPreset(path, deps) {
     throw new PodploPluginError("LOCAL_PRESET_INVALID", "\u5DE5\u5177\u9884\u8BBE\u53C2\u6570\u65E0\u6548\uFF0C\u5C1A\u672A\u6267\u884C\u3002");
   }
 }
+function folderError(code, message, details = {}) {
+  throw new PodploPluginError(code, message, details);
+}
+async function folderRoot(path, isPathAuthorized, signal) {
+  signal?.throwIfAborted();
+  if (!isAbsolute5(path) || !await isPathAuthorized(path)) folderError("LOCAL_PATH_NOT_AUTHORIZED", "\u56FE\u7247\u6587\u4EF6\u5939\u672A\u83B7\u7528\u6237\u6388\u6743");
+  const requested = resolve2(path);
+  let stat;
+  try {
+    stat = await lstat4(requested);
+  } catch (cause) {
+    const code = cause && typeof cause === "object" && "code" in cause ? String(cause.code) : "";
+    if (code === "ENOENT") folderError("LOCAL_FOLDER_NOT_FOUND", "\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u5B58\u5728");
+    folderError("LOCAL_FOLDER_UNREADABLE", "\u56FE\u7247\u6587\u4EF6\u5939\u65E0\u6CD5\u8BFB\u53D6");
+  }
+  if (stat.isSymbolicLink()) folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u6587\u4EF6\u5939\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5");
+  if (!stat.isDirectory()) folderError("LOCAL_FOLDER_NOT_DIRECTORY", "\u56FE\u7247\u6765\u6E90\u4E0D\u662F\u6587\u4EF6\u5939");
+  let root;
+  try {
+    root = await realpath5(requested);
+  } catch {
+    return folderError("LOCAL_FOLDER_UNREADABLE", "\u56FE\u7247\u6587\u4EF6\u5939\u65E0\u6CD5\u89E3\u6790");
+  }
+  if (root !== requested) folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u6587\u4EF6\u5939\u8DEF\u5F84\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
+  return root;
+}
 async function resolveAuthorizedLocalFolder(path, directorySelection, deps) {
   deps.signal?.throwIfAborted();
-  if (!isAbsolute5(path) || !await deps.isPathAuthorized(path)) throw new Error("\u56FE\u7247\u6587\u4EF6\u5939\u672A\u83B7\u7528\u6237\u6388\u6743");
-  const requested = resolve2(path), stat = await lstat4(requested).catch(() => void 0), root = await realpath5(requested).catch(() => "");
-  if (!stat?.isDirectory() || stat.isSymbolicLink() || root !== requested) throw new Error("\u56FE\u7247\u6587\u4EF6\u5939\u65E0\u6548\u6216\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
+  const root = await folderRoot(path, deps.isPathAuthorized, deps.signal);
   const diskRoot = parse6(root).root, home = await realpath5(homedir2()).catch(() => homedir2());
   if (deps.rejectBroadOrHidden && (root === diskRoot || root === home || relative4(diskRoot, root).split(sep2).some((part) => part.startsWith("."))))
-    throw new Error("\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u7EC4\u5408\u4EFB\u52A1\u6765\u6E90");
-  if (!directorySelection || directorySelection.mode === "root") return root;
-  const entries = (await readdir2(root, { withFileTypes: true })).filter((entry) => !entry.name.startsWith(".") && entry.isDirectory() && !entry.isSymbolicLink()).sort((left, right) => left.name.localeCompare(right.name, "en", { numeric: true, sensitivity: "base" }));
+    folderError("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u7EC4\u5408\u4EFB\u52A1\u6765\u6E90");
+  if (!directorySelection || directorySelection.mode === "root" || directorySelection.mode === "recursive") return root;
+  let rootEntries;
+  try {
+    rootEntries = await readdir2(root, { withFileTypes: true });
+  } catch {
+    return folderError("LOCAL_FOLDER_UNREADABLE", "\u56FE\u7247\u6587\u4EF6\u5939\u65E0\u6CD5\u5217\u51FA\u5185\u5BB9");
+  }
+  const entries = rootEntries.filter((entry) => !entry.name.startsWith(".") && entry.isDirectory() && !entry.isSymbolicLink()).sort((left, right) => left.name.localeCompare(right.name, "en", { numeric: true, sensitivity: "base" }));
   let chosen;
   if (directorySelection.mode === "child") {
     if (directorySelection.name.includes("/") || directorySelection.name.includes("\\") || directorySelection.name === "." || directorySelection.name === "..")
-      throw new Error("\u56FE\u7247\u5B50\u76EE\u5F55\u540D\u65E0\u6548");
+      folderError("LOCAL_FOLDER_INVALID_CHILD", "\u56FE\u7247\u5B50\u76EE\u5F55\u540D\u65E0\u6548");
     chosen = entries.find((entry) => entry.name === directorySelection.name)?.name;
-    if (!chosen) throw new Error("\u6307\u5B9A\u7684\u76F4\u63A5\u56FE\u7247\u5B50\u76EE\u5F55\u4E0D\u5B58\u5728");
+    if (!chosen) folderError("LOCAL_FOLDER_NOT_FOUND", "\u6307\u5B9A\u7684\u76F4\u63A5\u56FE\u7247\u5B50\u76EE\u5F55\u4E0D\u5B58\u5728");
   } else {
     const eligible = [];
     for (const entry of entries) {
-      const children = await readdir2(join6(root, entry.name), { withFileTypes: true }).catch(() => []);
-      const images = children.filter((child2) => !child2.name.startsWith(".") && imageExtensions2.has(extname7(child2.name).toLowerCase()));
-      if (images.length >= 1 && images.length <= 100 && images.every((child2) => child2.isFile() && !child2.isSymbolicLink())) eligible.push(entry);
+      deps.signal?.throwIfAborted();
+      const childPath = join6(root, entry.name);
+      let inventory;
+      try {
+        inventory = await inspectAuthorizedLocalFolder(
+          childPath,
+          { isPathAuthorized: deps.isPathAuthorized, authorizedRoot: root, signal: deps.signal, allowLargeInventory: true }
+        );
+      } catch (cause) {
+        if (cause instanceof PodploPluginError && cause.code === "LOCAL_FOLDER_NO_DIRECT_IMAGES") continue;
+        throw cause;
+      }
+      try {
+        applyNativeSourceSelection(inventory, deps.selection, () => 0);
+        eligible.push(entry);
+      } catch {
+      }
     }
-    if (!eligible.length) throw new Error("\u6388\u6743\u6839\u76EE\u5F55\u4E0B\u6CA1\u6709\u53EF\u7528\u7684\u76F4\u63A5\u56FE\u7247\u5B50\u76EE\u5F55");
+    if (!eligible.length) folderError(
+      "LOCAL_FOLDER_NO_ELIGIBLE_CHILD",
+      "\u6388\u6743\u6839\u76EE\u5F55\u4E0B\u6CA1\u6709\u80FD\u6EE1\u8DB3\u672C\u6B21\u9009\u62E9\u6570\u91CF\u7684\u76F4\u63A5\u56FE\u7247\u5B50\u76EE\u5F55",
+      { directSubdirectoryCount: entries.length, requiredImageCount: deps.selection?.mode === "sample" ? deps.selection.count ?? null : null }
+    );
     const choose = deps.randomIndex ?? randomInt2;
     const index = choose(eligible.length);
-    if (!Number.isSafeInteger(index) || index < 0 || index >= eligible.length) throw new Error("\u968F\u673A\u5B50\u76EE\u5F55\u9009\u62E9\u7ED3\u679C\u65E0\u6548");
+    if (!Number.isSafeInteger(index) || index < 0 || index >= eligible.length) folderError("LOCAL_FOLDER_RANDOM_INVALID", "\u968F\u673A\u5B50\u76EE\u5F55\u9009\u62E9\u7ED3\u679C\u65E0\u6548");
     chosen = eligible[index].name;
   }
   const child = join6(root, chosen), childStat = await lstat4(child).catch(() => void 0), resolvedChild = await realpath5(child).catch(() => "");
-  if (!childStat?.isDirectory() || childStat.isSymbolicLink() || resolvedChild !== child) throw new Error("\u56FE\u7247\u5B50\u76EE\u5F55\u65E0\u6548\u6216\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
+  if (!childStat) folderError("LOCAL_FOLDER_NOT_FOUND", "\u9009\u4E2D\u7684\u56FE\u7247\u5B50\u76EE\u5F55\u4E0D\u5B58\u5728");
+  if (childStat.isSymbolicLink() || resolvedChild !== child) folderError("LOCAL_FOLDER_SYMLINK", "\u9009\u4E2D\u7684\u56FE\u7247\u5B50\u76EE\u5F55\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
+  if (!childStat.isDirectory()) folderError("LOCAL_FOLDER_NOT_DIRECTORY", "\u9009\u4E2D\u7684\u56FE\u7247\u6765\u6E90\u4E0D\u662F\u6587\u4EF6\u5939");
   return child;
 }
 async function readAuthorizedLocalFolder(path, deps) {
@@ -58825,9 +59668,24 @@ async function readAuthorizedLocalFolder(path, deps) {
   return readAuthorizedLocalFolderEntries(entries, deps.signal);
 }
 async function readAuthorizedLocalFolderEntries(entries, signal) {
+  if (!entries.length || entries.length > 100) folderError(
+    "LOCAL_IMAGE_COUNT_MISMATCH",
+    "\u672C\u6B21\u6700\u7EC8\u9009\u62E9\u5FC5\u987B\u5305\u542B 1\uFF5E100 \u5F20\u56FE\u7247",
+    { selectedImageCount: entries.length, maximumSelectedImages: 100 }
+  );
+  if (entries.some((entry) => entry.byteSize < 1 || entry.byteSize > 50 * 1024 * 1024))
+    folderError("LOCAL_IMAGE_INVALID", "\u6700\u7EC8\u9009\u62E9\u4E2D\u5305\u542B\u7A7A\u56FE\u7247\u6216\u8D85\u8FC7\u5355\u5F20 50 MB \u9650\u5236\u7684\u56FE\u7247");
+  const totalBytes = entries.reduce((sum, entry) => sum + entry.byteSize, 0);
+  if (totalBytes > 250 * 1024 * 1024) folderError(
+    "LOCAL_IMAGE_BYTES_EXCEEDED",
+    "\u672C\u6B21\u6700\u7EC8\u9009\u62E9\u7684\u56FE\u7247\u5408\u8BA1\u4E0D\u80FD\u8D85\u8FC7 250 MB",
+    { selectedImageCount: entries.length, maximumBatchBytes: 250 * 1024 * 1024 }
+  );
   const inputs = [];
   for (const entry of entries) {
     signal?.throwIfAborted();
+    if (await realpath5(entry.path).catch(() => "") !== entry.path)
+      folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u8DEF\u5F84\u5728\u6700\u7EC8\u8BFB\u53D6\u524D\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5\u6216\u5DF2\u7ECF\u79FB\u52A8");
     const handle = await open5(entry.path, constants4.O_RDONLY | constants4.O_NOFOLLOW);
     try {
       const before = await handle.stat();
@@ -58836,6 +59694,8 @@ async function readAuthorizedLocalFolderEntries(entries, signal) {
       const bytes = await handle.readFile(), after = await handle.stat();
       if (before.dev !== after.dev || before.ino !== after.ino || before.size !== after.size || before.mtimeMs !== after.mtimeMs)
         throw new Error(`\u56FE\u7247 ${entry.name} \u5728\u8BFB\u53D6\u671F\u95F4\u53D1\u751F\u53D8\u5316`);
+      if (await realpath5(entry.path).catch(() => "") !== entry.path)
+        folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u8DEF\u5F84\u5728\u6700\u7EC8\u8BFB\u53D6\u671F\u95F4\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5\u6216\u5DF2\u7ECF\u79FB\u52A8");
       inputs.push({
         id: `folder-${digest({ file: entry.name, bytes: createHash8("sha256").update(bytes).digest("hex") }).slice(0, 48)}`,
         name: entry.name,
@@ -58850,32 +59710,103 @@ async function readAuthorizedLocalFolderEntries(entries, signal) {
 }
 async function inspectAuthorizedLocalFolder(path, deps) {
   deps.signal?.throwIfAborted();
-  if (!isAbsolute5(path) || !await deps.isPathAuthorized(deps.authorizedRoot ?? path)) throw new Error("\u56FE\u7247\u6587\u4EF6\u5939\u672A\u83B7\u7528\u6237\u6388\u6743");
-  const requested = resolve2(path), stat = await lstat4(requested).catch(() => void 0), directory = await realpath5(requested).catch(() => "");
-  if (!stat?.isDirectory() || stat.isSymbolicLink() || directory !== requested) throw new Error("\u56FE\u7247\u6587\u4EF6\u5939\u65E0\u6548\u6216\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
+  if (!isAbsolute5(path) || !await deps.isPathAuthorized(deps.authorizedRoot ?? path)) folderError("LOCAL_PATH_NOT_AUTHORIZED", "\u56FE\u7247\u6587\u4EF6\u5939\u672A\u83B7\u7528\u6237\u6388\u6743");
+  const directory = await folderRoot(path, async () => true, deps.signal);
+  let authorizedRoot = directory;
   if (deps.authorizedRoot !== void 0) {
-    if (!isAbsolute5(deps.authorizedRoot)) throw new Error("\u6388\u6743\u6839\u76EE\u5F55\u65E0\u6548");
-    const rootPath = resolve2(deps.authorizedRoot), rootStat = await lstat4(rootPath).catch(() => void 0), root = await realpath5(rootPath).catch(() => "");
-    if (!rootStat?.isDirectory() || rootStat.isSymbolicLink() || root !== rootPath) throw new Error("\u6388\u6743\u6839\u76EE\u5F55\u65E0\u6548\u6216\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5");
-    const child = relative4(root, directory);
-    if (child !== "" && (child === ".." || child.startsWith(`..${sep2}`) || child.includes(sep2)))
-      throw new Error("\u56FE\u7247\u76EE\u5F55\u5FC5\u987B\u662F\u6388\u6743\u6839\u76EE\u5F55\u672C\u8EAB\u6216\u5B83\u7684\u76F4\u63A5\u5B50\u76EE\u5F55");
+    if (!isAbsolute5(deps.authorizedRoot)) folderError("LOCAL_FOLDER_OUT_OF_SCOPE", "\u6388\u6743\u6839\u76EE\u5F55\u65E0\u6548");
+    authorizedRoot = await folderRoot(deps.authorizedRoot, async () => true, deps.signal);
+    const child = relative4(authorizedRoot, directory);
+    const recursive2 = deps.directorySelection?.mode === "recursive";
+    if (child !== "" && (child === ".." || child.startsWith(`..${sep2}`) || !recursive2 && child.includes(sep2)))
+      folderError("LOCAL_FOLDER_OUT_OF_SCOPE", recursive2 ? "\u56FE\u7247\u76EE\u5F55\u5FC5\u987B\u4F4D\u4E8E\u6388\u6743\u6839\u76EE\u5F55\u5185" : "\u56FE\u7247\u76EE\u5F55\u5FC5\u987B\u662F\u6388\u6743\u6839\u76EE\u5F55\u672C\u8EAB\u6216\u5B83\u7684\u76F4\u63A5\u5B50\u76EE\u5F55");
   }
-  const candidates = (await readdir2(directory, { withFileTypes: true })).filter((entry) => !entry.name.startsWith(".") && imageExtensions2.has(extname7(entry.name).toLowerCase()));
-  if (candidates.some((entry) => entry.isSymbolicLink() || !entry.isFile())) throw new Error("\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6");
-  const entries = candidates.sort((left, right) => left.name.localeCompare(right.name, "en", { numeric: true, sensitivity: "base" }));
-  if (!entries.length || entries.length > 100) throw new Error("\u6587\u4EF6\u5939\u5FC5\u987B\u76F4\u63A5\u5305\u542B 1\uFF5E100 \u5F20 JPEG\u3001PNG \u6216 WebP \u56FE\u7247");
+  const recursiveSelection = deps.directorySelection?.mode === "recursive" ? deps.directorySelection : void 0;
+  const recursive = recursiveSelection !== void 0;
+  const maxDepth = recursiveSelection?.maxDepth ?? 0;
+  const queue = [{ directory, depth: 0 }];
   const result = [];
-  let total = 0;
-  for (const entry of entries) {
+  let scannedDirectories = 0, directSubdirectoryCount = 0;
+  const collator = new Intl.Collator("en", { numeric: true, sensitivity: "base" });
+  while (queue.length) {
     deps.signal?.throwIfAborted();
-    const file3 = join6(directory, entry.name), metadata = await lstat4(file3);
-    if (!metadata.isFile() || metadata.isSymbolicLink() || metadata.size < 1 || metadata.size > 50 * 1024 * 1024)
-      throw new Error(`\u56FE\u7247 ${entry.name} \u4E3A\u7A7A\u3001\u8D85\u8FC7 50 MB \u6216\u4E0D\u662F\u76F4\u63A5\u666E\u901A\u6587\u4EF6`);
-    total += metadata.size;
-    if (total > 250 * 1024 * 1024) throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
-    result.push({ path: file3, name: entry.name, byteSize: metadata.size, device: metadata.dev, inode: metadata.ino, modifiedAt: metadata.mtimeMs });
+    const current = queue.shift();
+    const currentStat = await lstat4(current.directory).catch(() => void 0);
+    const currentReal = await realpath5(current.directory).catch(() => "");
+    if (!currentStat?.isDirectory()) folderError("LOCAL_FOLDER_UNREADABLE", "\u56FE\u7247\u5B50\u76EE\u5F55\u5728\u6E05\u70B9\u671F\u95F4\u5DF2\u79FB\u52A8\u6216\u4E0D\u53EF\u8BFB\u53D6");
+    if (currentStat.isSymbolicLink() || currentReal !== current.directory)
+      folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u5B50\u76EE\u5F55\u5728\u6E05\u70B9\u671F\u95F4\u53D8\u6210\u4E86\u7B26\u53F7\u94FE\u63A5");
+    const currentChild = relative4(authorizedRoot, currentReal);
+    if (currentChild === ".." || currentChild.startsWith(`..${sep2}`))
+      folderError("LOCAL_FOLDER_OUT_OF_SCOPE", "\u56FE\u7247\u5B50\u76EE\u5F55\u5728\u6E05\u70B9\u671F\u95F4\u8D85\u51FA\u4E86\u6388\u6743\u6839\u76EE\u5F55");
+    let children;
+    try {
+      children = await readdir2(current.directory, { withFileTypes: true });
+    } catch {
+      return folderError("LOCAL_FOLDER_UNREADABLE", "\u56FE\u7247\u76EE\u5F55\u4E2D\u7684\u90E8\u5206\u5185\u5BB9\u65E0\u6CD5\u8BFB\u53D6", { scannedDirectories });
+    }
+    children.sort((left, right) => collator.compare(left.name, right.name));
+    for (const entry of children) {
+      deps.signal?.throwIfAborted();
+      if (entry.name.startsWith(".")) continue;
+      const file3 = join6(current.directory, entry.name);
+      if (entry.isSymbolicLink()) folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u76EE\u5F55\u4E2D\u5305\u542B\u7B26\u53F7\u94FE\u63A5\uFF0C\u9012\u5F52\u8BFB\u53D6\u5DF2\u505C\u6B62");
+      if (entry.isDirectory()) {
+        if (current.depth === 0) directSubdirectoryCount++;
+        if (!recursive) continue;
+        if (current.depth >= maxDepth) folderError(
+          "LOCAL_FOLDER_DEPTH_EXCEEDED",
+          "\u56FE\u7247\u76EE\u5F55\u5C42\u7EA7\u8D85\u8FC7\u58F0\u660E\u7684\u9012\u5F52\u6DF1\u5EA6\uFF0C\u672A\u8FDB\u884C\u4E0D\u5B8C\u6574\u62BD\u6837",
+          { maxDepth, scannedDirectories, discoveredImageCount: result.length }
+        );
+        const resolved = await realpath5(file3).catch(() => "");
+        const child = relative4(authorizedRoot, resolved);
+        if (resolved !== file3 || child === ".." || child.startsWith(`..${sep2}`))
+          folderError("LOCAL_FOLDER_SYMLINK", "\u56FE\u7247\u5B50\u76EE\u5F55\u8DEF\u5F84\u7ECF\u8FC7\u4E86\u7B26\u53F7\u94FE\u63A5\u6216\u8D85\u51FA\u6388\u6743\u6839\u76EE\u5F55");
+        scannedDirectories++;
+        if (scannedDirectories > NATIVE_TASK_MAX_INVENTORY_DIRECTORIES)
+          folderError(
+            "LOCAL_FOLDER_DIRECTORY_LIMIT",
+            "\u56FE\u7247\u76EE\u5F55\u6570\u91CF\u8D85\u8FC7\u5B89\u5168\u6E05\u70B9\u4E0A\u9650\uFF0C\u672A\u8FDB\u884C\u4E0D\u5B8C\u6574\u62BD\u6837",
+            { maximumDirectories: NATIVE_TASK_MAX_INVENTORY_DIRECTORIES, discoveredImageCount: result.length }
+          );
+        queue.push({ directory: file3, depth: current.depth + 1 });
+        continue;
+      }
+      if (!imageExtensions2.has(extname7(entry.name).toLowerCase())) continue;
+      if (!entry.isFile()) folderError("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u6765\u6E90\u5305\u542B\u975E\u666E\u901A\u56FE\u7247\u6587\u4EF6");
+      let metadata;
+      try {
+        metadata = await lstat4(file3);
+      } catch {
+        return folderError("LOCAL_FOLDER_UNREADABLE", "\u56FE\u7247\u76EE\u5F55\u4E2D\u7684\u90E8\u5206\u56FE\u7247\u5143\u6570\u636E\u65E0\u6CD5\u8BFB\u53D6");
+      }
+      if (!metadata.isFile() || metadata.isSymbolicLink()) folderError("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u6765\u6E90\u5305\u542B\u975E\u666E\u901A\u56FE\u7247\u6587\u4EF6");
+      const relativeName = recursive ? relative4(directory, file3).split(sep2).join("/") : entry.name;
+      const extension = extname7(entry.name), stem = entry.name.slice(0, -extension.length);
+      const name2 = relativeName.length <= 255 ? relativeName : `${stem.slice(0, 220)}-${createHash8("sha256").update(relativeName).digest("hex").slice(0, 16)}${extension}`;
+      result.push({ path: file3, name: name2, byteSize: metadata.size, device: metadata.dev, inode: metadata.ino, modifiedAt: metadata.mtimeMs });
+      if (result.length > NATIVE_TASK_MAX_INVENTORY_IMAGES)
+        folderError(
+          "LOCAL_FOLDER_IMAGE_LIMIT",
+          "\u56FE\u7247\u6570\u91CF\u8D85\u8FC7\u5B89\u5168\u6E05\u70B9\u4E0A\u9650\uFF0C\u672A\u8FDB\u884C\u4E0D\u5B8C\u6574\u62BD\u6837",
+          { maximumImages: NATIVE_TASK_MAX_INVENTORY_IMAGES, scannedDirectories }
+        );
+    }
   }
+  result.sort((left, right) => collator.compare(left.name, right.name));
+  if (!result.length && deps.allowEmpty) return [];
+  if (!result.length) folderError(
+    recursive ? "LOCAL_FOLDER_EMPTY" : "LOCAL_FOLDER_NO_DIRECT_IMAGES",
+    recursive ? "\u6388\u6743\u76EE\u5F55\u53CA\u58F0\u660E\u6DF1\u5EA6\u5185\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247" : directSubdirectoryCount ? "\u6388\u6743\u76EE\u5F55\u6CA1\u6709\u76F4\u63A5\u56FE\u7247\uFF0C\u4F46\u5305\u542B\u5B50\u76EE\u5F55\uFF1B\u8BF7\u660E\u786E\u4F7F\u7528 recursive \u5168\u5E93\u62BD\u6837\u6216 random-child \u5355\u5B50\u76EE\u5F55\u62BD\u6837" : "\u6388\u6743\u76EE\u5F55\u6CA1\u6709\u76F4\u63A5\u5B58\u653E\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247",
+    { directImageCount: 0, directSubdirectoryCount, recursive, maxDepth: recursive ? maxDepth : null }
+  );
+  if (!deps.allowLargeInventory && result.length > 100)
+    folderError(
+      "LOCAL_IMAGE_COUNT_MISMATCH",
+      "\u6765\u6E90\u56FE\u7247\u8D85\u8FC7 100 \u5F20\uFF1B\u5FC5\u987B\u5148\u660E\u786E\u7B5B\u9009\u6216\u62BD\u6837\u5230\u6700\u591A 100 \u5F20",
+      { inventoryImageCount: result.length, maximumSelectedImages: 100, recursive }
+    );
   return result;
 }
 function replyOf(value2) {
@@ -58943,8 +59874,17 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
     if (cached3) return cached3;
     let values;
     if (pool.folderPath) {
-      const directory = await resolveAuthorizedLocalFolder(pool.folderPath, pool.directory, { ...deps, randomIndex: choose, rejectBroadOrHidden: true });
-      const metadata = await inspectAuthorizedLocalFolder(directory, { ...deps, authorizedRoot: pool.folderPath });
+      const directory = await resolveAuthorizedLocalFolder(
+        pool.folderPath,
+        pool.directory,
+        { ...deps, randomIndex: choose, rejectBroadOrHidden: true, selection: pool.selection }
+      );
+      const metadata = await inspectAuthorizedLocalFolder(directory, {
+        ...deps,
+        authorizedRoot: pool.folderPath,
+        directorySelection: pool.directory?.mode === "recursive" ? pool.directory : void 0,
+        allowLargeInventory: pool.selection !== void 0 || pool.directory?.mode === "recursive"
+      });
       if (pool.expectedImageCount !== void 0 && pool.expectedImageCount !== metadata.length)
         throw new Error(`\u6765\u6E90\u6C60 ${key} \u5B9E\u9645\u56FE\u7247 ${metadata.length} \u5F20\uFF0C\u4E0E\u58F0\u660E\u6570\u91CF\u4E0D\u4E00\u81F4`);
       const selectedMetadata = applyNativeSourceSelection(metadata, pool.selection, choose);
@@ -59247,8 +60187,8 @@ function object5(value2, label) {
 function exactKeys(value2, allowed, label) {
   if (Object.keys(value2).some((key) => !allowed.includes(key))) mixedFail(`${label}\u5305\u542B\u672A\u77E5\u5B57\u6BB5\u3002`);
 }
-function mixedText(value2, label, max, pattern) {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max || /[\x00-\x1f]/u.test(value2) || pattern && !pattern.test(value2)) return mixedFail(`${label}\u65E0\u6548\u3002`);
+function mixedText(value2, label, max2, pattern) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max2 || /[\x00-\x1f]/u.test(value2) || pattern && !pattern.test(value2)) return mixedFail(`${label}\u65E0\u6548\u3002`);
   return value2.trim();
 }
 function validateNativeMixedTaskPlan(raw) {
@@ -59485,11 +60425,23 @@ async function compileNativeMixedTask(raw, deps) {
       const selectedDirectory = await resolveAuthorizedLocalFolder(
         root,
         pool.directory,
-        { isPathAuthorized: deps.isFolderAuthorized, signal: deps.signal, randomIndex: deps.randomIndex, rejectBroadOrHidden: strictBoundary }
+        {
+          isPathAuthorized: deps.isFolderAuthorized,
+          signal: deps.signal,
+          randomIndex: deps.randomIndex,
+          rejectBroadOrHidden: strictBoundary,
+          selection: pool.selection
+        }
       );
       const files = await inspectAuthorizedLocalFolder(
         selectedDirectory,
-        { isPathAuthorized: deps.isFolderAuthorized, authorizedRoot: root, signal: deps.signal }
+        {
+          isPathAuthorized: deps.isFolderAuthorized,
+          authorizedRoot: root,
+          signal: deps.signal,
+          directorySelection: pool.directory?.mode === "recursive" ? pool.directory : void 0,
+          allowLargeInventory: pool.selection !== void 0 || pool.directory?.mode === "recursive"
+        }
       );
       if (pool.expectedImageCount !== void 0 && pool.expectedImageCount !== files.length) mixedFail(`${label} \u6587\u4EF6\u5939\u56FE\u7247\u6570\u4E0D\u5339\u914D\u3002`);
       const selectedMetadata = selectSource(files, pool.selection);
@@ -60066,7 +61018,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.25",
+  version: "0.1.26",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -60230,13 +61182,13 @@ function estimatedFinalOutputCount(row) {
   const referencedSteps = new Set(row.processingPlan.flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
   for (const step of row.processingPlan) {
     const indexes = step.generationItemIndexes ?? [...leafItems];
-    let count2 = step.sourceStepId ? stepCounts.get(step.sourceStepId) ?? 0 : indexes.reduce((sum, index) => sum + (row.items[index]?.quote.outputCount ?? 0), 0);
+    let count3 = step.sourceStepId ? stepCounts.get(step.sourceStepId) ?? 0 : indexes.reduce((sum, index) => sum + (row.items[index]?.quote.outputCount ?? 0), 0);
     if (!step.sourceStepId) for (const index of indexes) consumedItems.add(index);
     if (step.toolName === "podplo_grid_split" && step.options && typeof step.options === "object") {
       const options = step.options;
-      if (Number.isSafeInteger(options.rows) && Number.isSafeInteger(options.cols)) count2 *= Number(options.rows) * Number(options.cols);
+      if (Number.isSafeInteger(options.rows) && Number.isSafeInteger(options.cols)) count3 *= Number(options.rows) * Number(options.cols);
     }
-    stepCounts.set(step.id, count2);
+    stepCounts.set(step.id, count3);
   }
   const untouched = [...leafItems].filter((index) => !consumedItems.has(index)).reduce((sum, index) => sum + row.items[index].quote.outputCount, 0);
   return untouched + row.processingPlan.filter((step) => !referencedSteps.has(step.id)).reduce((sum, step) => sum + (stepCounts.get(step.id) ?? 0), 0);
@@ -60249,7 +61201,7 @@ function safeOperation2(row) {
     const items = row.items.filter((item, index) => (item.stage?.id ?? `item-${index}`) === id2);
     const skills = /* @__PURE__ */ new Map();
     for (const item of items) skills.set(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill", (skills.get(item.skillName ?? "\u5DF2\u7ED1\u5B9A Skill") ?? 0) + 1);
-    const skillSummary = [...skills].slice(0, 5).map(([name2, count2]) => `${name2}\xD7${count2}`).join("\u3001") + (skills.size > 5 ? `\u7B49 ${skills.size} \u4E2A Skill` : "");
+    const skillSummary = [...skills].slice(0, 5).map(([name2, count3]) => `${name2}\xD7${count3}`).join("\u3001") + (skills.size > 5 ? `\u7B49 ${skills.size} \u4E2A Skill` : "");
     return {
       id: id2,
       label,
@@ -60342,18 +61294,18 @@ function safeOperation2(row) {
   };
 }
 function operationSummary(row) {
-  const count2 = (status) => row.items.filter((item) => item.status === status).length;
+  const count3 = (status) => row.items.filter((item) => item.status === status).length;
   return {
     itemCount: row.items.length,
     totalCredits: row.items.reduce((sum, item) => sum + (item.approvedCredits ?? item.quote.totalCredits), 0),
     outputCount: row.items.reduce((sum, item) => sum + (item.approvedOutputCount ?? item.quote.outputCount), 0),
     acceptedCount: row.items.filter((item) => !!item.generationId).length,
-    completedCount: count2("completed"),
-    unknownCount: count2("submission_unknown"),
-    failedCount: count2("failed"),
-    cancelledCount: count2("cancelled"),
-    pendingCount: count2("quoted") + count2("submitting"),
-    submittedCount: count2("submitted")
+    completedCount: count3("completed"),
+    unknownCount: count3("submission_unknown"),
+    failedCount: count3("failed"),
+    cancelledCount: count3("cancelled"),
+    pendingCount: count3("quoted") + count3("submitting"),
+    submittedCount: count3("submitted")
   };
 }
 function operationStatus(row) {
@@ -60417,20 +61369,20 @@ Image grouping is separate from Skill choice: grouping={mode:"random",size:2} pa
 FAVORITES: Private remarks/folders never change Skill IDs or titles. Use podplo_list_favorite_skills for an exact match, then podplo_get_skill for its binding. For independent Skills in one favorite folder, set skill.query and skill.favoriteFolder to that same exact folder name; otherwise use the exact Skill/family. Conflicting matches require clarification.
 PROMPT BOUNDARY: Send only explicit user extra rules verbatim; use an empty prompt/instructions when absent. Public Skill metadata is for selection, never user rules. The server alone assembles Skill text.
 
-OTHER INPUTS: For current-chat or cloud images, reuse the existing session reference IDs in podplo_prepare_task source.referenceIds; do not inspect them again. Submit every requested stage once, preserving every user-supplied generation choice and local action. If a tool error explicitly marks correctableBeforeConfirmation, correct only its parameter representation while preserving the full user-requested image range, grouping, stages, Skill, model and Eco choices, then retry the complete task. Ask once if the intended correction is ambiguous; do not guess away constraints. Authorization/policy failures, a prepared confirmation, rejected/cancelled approval or begun execution remain locked: report and stop. Never drop requirements, probe with a partial task or switch entry points to bypass validation. Do not scan private storage.
+OTHER INPUTS: Reuse current-chat/cloud reference IDs in source.referenceIds. Submit every requested stage once. If an error marks correctableBeforeConfirmation, correct only its representation while preserving range, grouping, stages, Skill, model and Eco, then retry the whole task. If a locked attempt needs changed user intent, ask only for the missing correction; on the next trusted user message carry forward every unchanged explicit requirement and rebuild the complete candidate. Never demand that the user copy the whole plan. Authorization/policy failures, a prepared confirmation, rejected/cancelled approval or begun execution remain locked. Never drop requirements, probe with a partial task or switch entry points to bypass validation.
 
 APPROVAL AND COMPLETION: File authorization and deletion confirmation remain required. One native credit approval covers the complete AI workflow; local outputs are not AI images or credits. Only nativeApproval allowed-once/allowed-elsewhere approves generation. Rejected/cancelled ends the attempt. If unavailable, report that the existing quote awaits confirmation in PodPlo; do not recreate it, repeatedly request approval or call Stop. Do not ask for a second confirmation. After approval the Host performs generation, download and registered processing without another model call. Report facts; never judge quality, change plans, add tools, retry paid work, regenerate or re-quote. Reuse operation IDs after uncertain submission. In IM use podplo_wait_generation and native delivery for verified files; queued files are not delivery proof, so never claim the recipient received them.
 
-TASK CAPABILITIES: Use podplo_task_capabilities for unknown rules; podplo_inspect_task is read-only, with no upload, quote, approval or processing. Inspection is not a frozen order. Multi-source tasks use protocolVersion:2, sources pools, source.inputs and source.pairing. selection.mode=sample,count:N selects before pairing; directory.mode=random-child selects an authorized direct child. Preserve source scope, roles, order and pairing; never replace two pools with one mixed folder.
+TASK CAPABILITIES: Use podplo_task_capabilities for unknown rules. Before prepare_task, when local counts/layout are unknown call podplo_inspect_task with mode:"sources" and named sources; then inspect the complete candidate. These read-only checks do not consume an attempt. Never guess that no direct images means over 100 images or a symlink. Multi-source tasks use protocolVersion:2 pools and source.pairing. For one-to-one random pairs, select each pool independently and use pairing.mode=random; never merge pools then use stage grouping. random-child chooses one direct child; directory.mode=recursive samples across the authorized tree and is required for a full-library sample. Preserve literal paths, scope, roles, order and pairing.
 
 DELIVERY: Keep verified outputs from every declared AI and local-processing stage in \u6210\u54C1/ and \u4EFB\u52A1\u603B\u7ED3.txt, including outputs used by later stages. Mark failed and unexecuted items separately; partial success is not complete success. Exclude source/reference copies, review/proof images and JSON reports. Summaries list outcomes and verified locations without prompts, parameters, credits or execution steps. Preserve existing files and user edits.`;
 var PODPLO_MCP_SERVER_GUIDANCE = `\u4F60\u7F16\u6392\u4E24\u79CD\u5E73\u7EA7\u4EFB\u52A1\uFF1A\u8C03\u7528 PodPlo \u516C\u5F00\uFF0F\u4E2A\u4EBA\u53EF\u6267\u884C Skill \u8FDB\u884C AI \u751F\u56FE\uFF0C\u4EE5\u53CA\u4E0D\u8C03\u7528 Skill \u7684\u5185\u7F6E\u5DE5\u5177\uFF0F\u9884\u8BBE\u672C\u5730\u52A0\u5DE5\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u4E0D\u9700\u8981 Skill\u3001AI \u6A21\u578B\u3001\u751F\u56FE\u53C2\u6570\u3001\u62A5\u4EF7\u6216\u79EF\u5206\u786E\u8BA4\u3002\u201C\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9\u201D\u7B49\u5DE5\u5177\u7EC4\u4E0D\u80FD\u5F53\u4F5C Skill \u67E5\u627E\uFF0C\u66F4\u4E0D\u80FD\u8981\u6C42\u7528\u6237\u4E3A\u9884\u8BBE\u52A0\u5DE5\u9009\u62E9 Skill\u3002\u6240\u6709 AI \u56FE\u7247\u751F\u6210\u6216 AI \u6539\u56FE\u5FC5\u987B\u9009\u7528 PodPlo Skill\uFF0C\u4E0D\u7528\u5176\u4ED6\u751F\u56FE\u670D\u52A1\u3001\u901A\u7528\u89C6\u89C9\u5DE5\u5177\u3001shell\u3001PowerShell\u3001\u6587\u4EF6\u811A\u672C\u6216\u81EA\u5199\u4EE3\u7801\u66FF\u4EE3\u3002\u7528\u6237\u6388\u6743\u6587\u4EF6\u5939\u548C\u5DF2\u6709\u4F1A\u8BDD\u5F15\u7528\u7531 Host \u767B\u8BB0\uFF1B\u4E0D\u8C03\u7528 read_image \u53D6 ID\u3001\u8BC6\u56FE\u3001\u5BA1\u7F8E\u8BC4\u4EF7\u3001\u6539\u5199\u63D0\u793A\u8BCD\u6216\u81EA\u521B\u8981\u6C42\u3002
 
 \u7528\u6237\u3001\u6240\u9009 Skill\u3001\u5DE5\u5177\uFF0F\u9884\u8BBE\u548C\u5F53\u524D\u6743\u5A01 schema \u662F\u552F\u4E00\u53C2\u6570\u6765\u6E90\uFF1B\u4E0D\u6539\u5199\u3001\u6269\u5199\u3001\u7FFB\u8BD1\u6216\u4F18\u5316\u63D0\u793A\u8BCD\uFF0C\u4E0D\u8FFD\u52A0\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u8D28\u91CF\u3001\u52A0\u5DE5\u6B65\u9AA4\u6216\u6539\u53D8\u987A\u5E8F\u3002\u56FE\u7247\u8303\u56F4\u3001\u6307\u5B9A\u5DE5\u5177\uFF0F\u9884\u8BBE\u5DF2\u660E\u786E\u65F6\u76F4\u63A5\u8C03\u7528\uFF1B\u53EA\u6709 AI \u9636\u6BB5\u624D\u8981\u6C42\u552F\u4E00\u5339\u914D\u7684 Skill\u3002\u552F\u4E00\u7CBE\u786E\u76EE\u5F55\u5339\u914D\u81EA\u884C\u89E3\u6790\uFF0C\u4E0D\u4E8C\u6B21\u786E\u8BA4\u3002\u53EF\u9009\u7684\u6784\u56FE\u3001\u5C3A\u5BF8\u3001\u6A21\u578B\u3001\u6BD4\u4F8B\u3001\u8D28\u91CF\u4E0D\u4E3A\u586B\u5B57\u6BB5\u800C\u8FFD\u95EE\uFF1B\u53EA\u5728 Skill\uFF0F\u56FE\u7247\u8303\u56F4\uFF0F\u5DE5\u5177\u9884\u8BBE\uFF0F\u987A\u5E8F\u771F\u5B9E\u7F3A\u5931\u6216\u51B2\u7A81\uFF0C\u6216\u5FC5\u586B\u53C2\u6570\u786E\u65E0\u6743\u5A01\u9ED8\u8BA4\u65F6\uFF0C\u628A\u6240\u6709\u963B\u585E\u4E00\u6B21\u95EE\u5B8C\u3002
 
-\u672A\u77E5\u4EFB\u52A1\u89C4\u5219\u6309\u9700\u67E5\u8BE2 podplo_task_capabilities\uFF1Bpodplo_inspect_task \u4EC5\u53EA\u8BFB\u68C0\u67E5\uFF0C\u4E0D\u4E0A\u4F20\u3001\u62A5\u4EF7\u3001\u9884\u7559\u3001\u5BA1\u6279\u6216\u52A0\u5DE5\uFF0C\u4E0D\u7B49\u4E8E\u6267\u884C\u6388\u6743\u6216\u51BB\u7ED3\u8BA2\u5355\u3002\u591A\u6765\u6E90\u7528 protocolVersion:2\u3001sources \u6765\u6E90\u6C60\u3001source.inputs \u4E0E source.pairing\uFF1Bselection.mode=sample,count:N \u5148\u62BD\u6837\u518D\u914D\u5BF9\uFF0Cdirectory.mode=random-child \u9009\u62E9\u6388\u6743\u6839\u5185\u4E00\u4E2A\u76F4\u63A5\u5B50\u76EE\u5F55\u3002\u4FDD\u7559\u6765\u6E90\u8303\u56F4\u3001\u89D2\u8272\u3001\u987A\u5E8F\u548C\u914D\u5BF9\uFF0C\u4E0D\u8981\u6C42\u7528\u6237\u628A\u591A\u4E2A\u6765\u6E90\u6DF7\u8FDB\u4E00\u4E2A\u6587\u4EF6\u5939\uFF0C\u4E0D\u5220\u6765\u6E90\u66FF\u4EE3\u539F\u4EFB\u52A1\u3002
+\u672A\u77E5\u89C4\u5219\u6309\u9700\u67E5\u8BE2 podplo_task_capabilities\u3002\u672C\u5730\u6765\u6E90\u6570\u91CF\u6216\u76EE\u5F55\u7ED3\u6784\u5C1A\u672A\u6838\u5B9E\u65F6\uFF0C\u5148\u8C03\u7528 podplo_inspect_task \u7684 mode:"sources" \u548C sources \u53C2\u6570\u53EA\u8BFB\u6E05\u70B9\u547D\u540D\u6765\u6E90\uFF0C\u518D\u68C0\u67E5\u5B8C\u6574\u5019\u9009\uFF0C\u6700\u540E\u624D\u8C03\u7528 prepare_task\uFF1B\u68C0\u67E5\u4E0D\u4E0A\u4F20\u3001\u62A5\u4EF7\u3001\u5BA1\u6279\u6216\u5360\u7528\u6267\u884C\u5019\u9009\u3002\u4E0D\u628A\u201C\u6839\u76EE\u5F55\u65E0\u76F4\u63A5\u56FE\u7247\u201D\u731C\u6210\u201C\u8D85\u8FC7100\u5F20\u201D\u6216\u201C\u7B26\u53F7\u94FE\u63A5\u201D\u3002\u591A\u6765\u6E90\u7528 protocolVersion:2\u3001sources\u3001source.inputs \u4E0E source.pairing\uFF1A\u4E24\u4E2A\u6C60\u4E00\u4E00\u968F\u673A\u7EC4\u5408\u65F6\u5206\u522B\u9009\u62E9\u7D20\u6750\u5E76\u7528 pairing.mode=random\uFF0C\u4E0D\u80FD\u6DF7\u5408\u540E\u7528 grouping\u3002random-child \u8868\u793A\u6574\u6279\u53EA\u9009\u4E00\u4E2A\u76F4\u63A5\u5B50\u76EE\u5F55\uFF1B\u6574\u4E2A\u56FE\u5E93\u8DE8\u5B50\u76EE\u5F55\u62BD\u6837\u7528 directory.mode=recursive\uFF0C\u4E0D\u80FD\u5077\u6362\u6210\u968F\u673A\u5355\u4E2A\u98CE\u683C\u3002\u8DEF\u5F84\u6309\u7528\u6237\u660E\u786E\u5B57\u9762\u503C\u767B\u8BB0\uFF0C\u4E0D\u628A\u201C\u968F\u673A\u9009\u53D6\u201D\u7B49\u8BF4\u660E\u64C5\u81EA\u62FC\u8FDB\u76EE\u5F55\u540D\u3002\u4FDD\u7559\u8303\u56F4\u3001\u89D2\u8272\u3001\u987A\u5E8F\u548C\u914D\u5BF9\u3002
 
-\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u7EAF\u5DE5\u5177\u9636\u6BB5\u53EA\u4F20 local\uFF0C\u4E0D\u4F20 skill \u6216 generation\uFF1B\u7528 taskName \u548C\u9636\u6BB5 name \u6807\u660E\u4EFB\u52A1\u89C4\u5212\u540D\u79F0\u3002\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u56FE\u7247\u5206\u7EC4\u4E0E Skill \u5206\u914D\u72EC\u7ACB\uFF1A\u4E24\u4E24\u968F\u673A\u7EC4\u5408\u7528\u9636\u6BB5 grouping={mode:"random",size:2}\uFF1B\u987A\u5E8F\u5206\u7EC4\u7528 sequential+size\uFF0C\u5168\u90E8\u5171\u540C\u8F93\u5165\u7528 all\uFF0C\u660E\u786E\u7EC4\u5408\u7528 explicit+groups\uFF08\u9009\u4E2D\u8303\u56F4\u5185\u96F6\u57FA\u7D22\u5F15\uFF09\u3002\u6BCF\u7EC4\u662F\u4E00\u6B21\u591A\u53C2\u8003\u56FE\u751F\u6210\uFF1B\u56FA\u5B9A\u6536\u85CF Skill \u4ECD\u7528 strategy=single\uFF0C\u968F\u673A Skill \u7B56\u7565\u6309\u7EC4\u5206\u914D\u3002\u4F59\u56FE\u9ED8\u8BA4\u62A5\u9519\uFF0C\u4E0D\u9057\u6F0F\u3001\u4E0D\u64C5\u81EA\u91CD\u590D\uFF1B\u4EC5\u7528\u6237\u660E\u786E\u5141\u8BB8\u624D\u7528 remainder=keep\u3002\u540E\u7EED\u52A0\u5DE5\u5BF9\u5404\u7EC4\u5B9E\u9645\u751F\u6210\u56FE\u6267\u884C\uFF0C\u540E\u7EE7\u9636\u6BB5\u7528 fromStage\u3002\u666E\u901A\u201C\u6BCF\u56FE\u968F\u673A\u201D\u7528\u53EF\u91CD\u590D\u7684 random-per-image-reuse\uFF0C\u660E\u786E\u8981\u6C42\u4E0D\u91CD\u590D\u624D\u7528 random-per-image\u3002\u4EC5\u5F53\u9519\u8BEF\u660E\u786E\u6807\u8BB0 correctableBeforeConfirmation \u65F6\uFF0C\u5141\u8BB8\u4FDD\u6301\u5B8C\u6574\u7528\u6237\u8303\u56F4\u3001\u5206\u7EC4\u3001\u9636\u6BB5\u53CA\u663E\u5F0F\u6A21\u578B/Eco\u7B49\u8981\u6C42\uFF0C\u4FEE\u6B63\u53C2\u6570\u8868\u793A\u540E\u91CD\u8BD5\u6574\u5355\uFF1B\u542B\u4E49\u4E0D\u660E\u786E\u5219\u96C6\u4E2D\u6F84\u6E05\u3002\u6743\u9650/\u7B56\u7565\u9519\u8BEF\u3001\u62A5\u4EF7\u8FDB\u5165\u786E\u8BA4\u3001\u7528\u6237\u62D2\u7EDD/\u53D6\u6D88\u6216\u5F00\u59CB\u6267\u884C\u540E\u4ECD\u9501\u5B9A\uFF0C\u4E0D\u5220\u8981\u6C42\u3001\u4E0D\u964D\u914D\u3001\u4E0D\u5C40\u90E8\u8BD5\u5355\u3001\u4E0D\u6362\u5165\u53E3\u7ED5\u8FC7\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u76F4\u63A5\u672C\u5730\u6267\u884C\uFF0C\u4E0D\u62A5\u4EF7\u3001\u4E0D\u751F\u56FE\u3001\u4E0D\u8C03\u7528\u6A21\u578B\u3001\u4E0D\u6263 AI \u79EF\u5206\uFF1B\u5B8C\u6574 AI \u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\uFF0C\u672C\u5730\u5207\u56FE\u7B49\u786E\u5B9A\u6027\u8F93\u51FA\u4E0D\u7B97 AI \u5F20\u6570\u6216\u79EF\u5206\uFF1B\u4FDD\u7559\u6587\u4EF6\u6743\u9650\u3001\u539F\u751F\u79EF\u5206\u5BA1\u6279\u548C\u5220\u9664\u786E\u8BA4\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u5DF2\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u8D28\u91CF\u3001\u4E0D\u6539\u53C2\u6570\u3001\u4E0D\u52A0\u5DE5\u5177\u3001\u4E0D\u6539\u65B9\u6848\u3001\u4E0D\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF0C\u5305\u62EC\u540E\u7EED\u8FD8\u4F1A\u4F7F\u7528\u7684\u751F\u6210\u56FE\u548C\u52A0\u5DE5\u56FE\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u4EFB\u52A1\u603B\u7ED3\u548C\u6700\u7EC8\u56DE\u590D\u53EA\u5199\u7B80\u77ED\u7684\u6210\u529F\uFF0F\u5931\u8D25\uFF0F\u672A\u6267\u884C\u7ED3\u679C\u53CA\u5FC5\u8981\u7684\u6210\u679C\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
+\u6536\u85CF\u5907\u6CE8\u548C\u6536\u85CF\u6587\u4EF6\u5939\u7528\u53EA\u8BFB podplo_list_favorite_skills \u5B9A\u4F4D\uFF0C\u552F\u4E00\u7CBE\u786E\u5339\u914D\u540E\u4FDD\u7559\u539F\u7ED1\u5B9A\uFF1B\u5907\u6CE8\u4EC5\u672C\u4EBA\u53EF\u89C1\uFF0C\u4E0D\u6539\u539F\u540D\u6216 ID\u3002\u9ED8\u8BA4\u7528 podplo_prepare_task \u4E00\u6B21\u767B\u8BB0\u5B8C\u6574 stages\uFF1A\u7EAF\u5DE5\u5177\u9636\u6BB5\u53EA\u4F20 local\uFF0C\u4E0D\u4F20 skill \u6216 generation\uFF1B\u7528 taskName \u548C\u9636\u6BB5 name \u6807\u660E\u4EFB\u52A1\u89C4\u5212\u540D\u79F0\u3002\u6587\u4EF6\u5939\u7528 source.folderPath\u3001\u804A\u5929\uFF0F\u4E91\u7D20\u6750\u7528\u5DF2\u6709 source.referenceIds\u3001\u540E\u7EE7\u9636\u6BB5\u7528 source.fromStage\u3001\u6211\u7684 Skill \u7528 skill.source=personal\u3001\u6536\u85CF\u6587\u4EF6\u5939\u7528 skill.source=favorite \u548C favoriteFolder\u3001\u9884\u8BBE\u7528 local.presetPath\u3002\u5728\u4E00\u4E2A\u7CBE\u786E\u6536\u85CF\u6587\u4EF6\u5939\u5185\u968F\u673A\u9009\u591A\u4E2A\u72EC\u7ACB Skill \u65F6\uFF0Cskill.query \u4E0E skill.favoriteFolder \u90FD\u586B\u8BE5\u6587\u4EF6\u5939\u7684\u540C\u4E00\u7CBE\u786E\u540D\u79F0\uFF1B\u5176\u4ED6\u60C5\u51B5\u4ECD\u67E5\u5177\u4F53 Skill \u6216 Skill \u65CF\u3002\u6587\u4EF6\u5939\u548C\u9884\u8BBE\u7531 Host \u89E3\u6790\uFF0C\u4E0D\u8C03\u7528 read_image\uFF0C\u4E0D\u7528 Bash\uFF0Fshell \u5217\u76EE\u5F55\u6216\u67E5\u6E90\u7801\u3002\u5355\u6C60\u56FE\u7247\u5206\u7EC4\u4E0E Skill \u5206\u914D\u72EC\u7ACB\uFF1A\u968F\u673A\u53CC\u56FE\u7EC4\u7528 grouping={mode:"random",size:2}\uFF1B\u8DE8\u6C60\u4E00\u4E00\u968F\u673A\u7EC4\u5408\u5FC5\u987B\u4F7F\u7528 source.pairing\u3002\u6BCF\u7EC4\u662F\u4E00\u6B21\u591A\u53C2\u8003\u56FE\u751F\u6210\uFF1B\u56FA\u5B9A\u6536\u85CF Skill \u7528 strategy=single\u3002\u666E\u901A\u6BCF\u56FE\u968F\u673A\u7528random-per-image-reuse\uFF0C\u660E\u786E\u4E0D\u91CD\u590D\u7528random-per-image\u3002\u4F59\u56FE\u9ED8\u8BA4\u62A5\u9519\uFF0C\u4E0D\u9057\u6F0F\u3001\u4E0D\u64C5\u81EA\u91CD\u590D\u3002\u4EC5\u5F53\u9519\u8BEF\u660E\u786E\u6807\u8BB0 correctableBeforeConfirmation \u65F6\uFF0C\u624D\u53EF\u4FDD\u7559\u5B8C\u6574\u8303\u56F4\u3001\u9636\u6BB5\u3001Skill\u53CA\u6A21\u578B/Eco\u4FEE\u6B63\u53C2\u6570\u8868\u793A\uFF1B\u542B\u4E49\u4E0D\u660E\u786E\u5219\u96C6\u4E2D\u6F84\u6E05\u3002\u540C\u4E00\u6D88\u606F\u88AB\u9501\u540E\u4E0D\u5F97\u6362\u65B9\u6848\u91CD\u8BD5\uFF1B\u9700\u8981\u7528\u6237\u66F4\u6B63\u65F6\u53EA\u95EE\u66F4\u6B63\u5B57\u6BB5\uFF0C\u4E0B\u4E00\u6761\u53EF\u4FE1\u7528\u6237\u6D88\u606F\u5EFA\u7ACB\u65B0\u8FB9\u754C\uFF0C\u5E76\u6CBF\u7528\u5176\u4F59\u5DF2\u660E\u786E\u8981\u6C42\u91CD\u5EFA\u5B8C\u6574\u5019\u9009\uFF0C\u4E0D\u8981\u6C42\u590D\u5236\u5168\u6587\u3002\u6743\u9650/\u7B56\u7565\u9519\u8BEF\u3001\u62A5\u4EF7\u8FDB\u5165\u786E\u8BA4\u3001\u7528\u6237\u62D2\u7EDD/\u53D6\u6D88\u6216\u5F00\u59CB\u6267\u884C\u540E\u4ECD\u9501\u5B9A\uFF1B\u4E0D\u5220\u8981\u6C42\u3001\u4E0D\u964D\u914D\u3001\u4E0D\u5C40\u90E8\u8BD5\u5355\u3001\u4E0D\u6362\u5165\u53E3\u7ED5\u8FC7\u3002\u7EAF\u5DE5\u5177\u4EFB\u52A1\u76F4\u63A5\u672C\u5730\u6267\u884C\uFF0C\u4E0D\u62A5\u4EF7\u6216\u6263AI\u79EF\u5206\uFF1B\u5B8C\u6574AI\u5DE5\u4F5C\u6D41\u79EF\u5206\u53EA\u786E\u8BA4\u4E00\u6B21\u3002\u5BBF\u4E3B\u786E\u8BA4\u540E\u4E0D\u518D\u8C03\u7528\u6A21\u578B\uFF0C\u81EA\u52A8\u5B8C\u6210\u540E\u7EE7\u751F\u6210\u3001\u4E0B\u8F7D\u548C\u767B\u8BB0\u52A0\u5DE5\uFF1B\u5931\u8D25\u53EA\u5982\u5B9E\u62A5\u544A\uFF0C\u4E0D\u8BC4\u4EF7\u3001\u4E0D\u52A0\u5DE5\u5177\u6216\u91CD\u8BD5\u6536\u8D39\u3002\u4FDD\u7559\u5E76\u5C55\u793A\u6BCF\u4E2A\u5DF2\u767B\u8BB0\u9636\u6BB5\u7684\u5B9E\u9645\u6210\u679C\uFF1B\u5931\u8D25\u4E0E\u672A\u6267\u884C\u5206\u522B\u6807\u660E\uFF0C\u4E0D\u628A\u90E8\u5206\u6210\u529F\u8BF4\u6210\u5168\u90E8\u6210\u529F\u3002\u6700\u7EC8\u53EA\u5199\u7B80\u77ED\u7ED3\u679C\u548C\u5FC5\u8981\u4F4D\u7F6E\uFF0C\u4E0D\u5199\u6267\u884C\u8FC7\u7A0B\u3001\u63D0\u793A\u8BCD\u3001\u6A21\u578B\u53C2\u6570\u3001\u79EF\u5206\u660E\u7EC6\u6216\u5DE5\u5177\u6B65\u9AA4\u3002`;
 var PODPLO_PLAN_MODE_GUIDANCE = `You are in explicit plan mode because the session selected it. Do not execute, mutate files, submit a quote, request native approval or call image-processing tools until the user approves through exit_plan_mode or switches mode.
 
 Produce a short PodPlo call plan, not an engineering implementation plan. Include only: the target image range; the exact executable PodPlo public/personal Skill only for AI stages, or the lookup needed to resolve it (a local tool/preset requires no Skill); the exact requested PodPlo tool/preset order; the source of any authoritative defaults; and the single quote/approval boundary only when AI generation is included. Do not propose code, APIs, schemas, tests, shell commands, external image services, prompt rewriting, aesthetic review or extra processing.
@@ -60501,10 +61453,10 @@ var localGenerationPricingVersion = generation_credit_pricing_source_default.pri
 function calculateLocalGenerationQuote(model, input) {
   const bundled = model && [model.id, model.modelId, model.key, model.name, model.label, model.modelName].map((value2) => bundledModels.get(identity(value2))).find(Boolean);
   const rule = bundled?.rule;
-  const count2 = input.count;
+  const count3 = input.count;
   const resolution = input.resolution || (typeof model?.defaultResolution === "string" ? model.defaultResolution : bundled?.defaultResolution ?? "");
   const quality = input.quality || (typeof model?.defaultQuality === "string" ? model.defaultQuality : bundled?.defaultQuality ?? void 0);
-  if (!isGenerationCreditPricingRule(rule) || !resolution || !Number.isSafeInteger(count2) || count2 < 1) return void 0;
+  if (!isGenerationCreditPricingRule(rule) || !resolution || !Number.isSafeInteger(count3) || count3 < 1) return void 0;
   try {
     const creditsPerImage = calculateGenerationCreditsFromRule(rule, {
       quality: quality ?? null,
@@ -60515,9 +61467,9 @@ function calculateLocalGenerationQuote(model, input) {
       webSearch: input.webSearch,
       imageSearch: input.imageSearch
     });
-    const totalCredits = creditsPerImage * count2;
+    const totalCredits = creditsPerImage * count3;
     if (!Number.isSafeInteger(creditsPerImage) || creditsPerImage < 0 || !Number.isSafeInteger(totalCredits)) return void 0;
-    return { creditsPerImage, totalCredits, outputCount: count2, pricingVersion: localGenerationPricingVersion };
+    return { creditsPerImage, totalCredits, outputCount: count3, pricingVersion: localGenerationPricingVersion };
   } catch {
     return void 0;
   }
@@ -60687,13 +61639,13 @@ function record6(value2, label = "\u53C2\u6570") {
   if (!value2 || typeof value2 !== "object" || Array.isArray(value2)) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u5FC5\u987B\u662F\u5BF9\u8C61`);
   return value2;
 }
-function text4(value2, label, max = 5e3) {
-  if (typeof value2 !== "string" || !value2.trim() || value2.length > max) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u65E0\u6548`);
+function text4(value2, label, max2 = 5e3) {
+  if (typeof value2 !== "string" || !value2.trim() || value2.length > max2) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u65E0\u6548`);
   return value2.trim();
 }
-function optionalText(value2, label, max = 5e3) {
+function optionalText(value2, label, max2 = 5e3) {
   if (value2 === void 0) return void 0;
-  if (typeof value2 !== "string" || value2.length > max) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u65E0\u6548`);
+  if (typeof value2 !== "string" || value2.length > max2) throw new PodploPluginError("INVALID_ARGUMENT", `${label}\u65E0\u6548`);
   return value2;
 }
 function bool(value2, fallback = false) {
@@ -61363,16 +62315,16 @@ var PodploPluginService = class extends EventEmitter2 {
       removed: 0,
       retryable: false
     };
-    const count2 = (status) => row.results.filter((item) => item.status === status).length;
+    const count3 = (status) => row.results.filter((item) => item.status === status).length;
     return {
       status: row.status,
       total: row.results.length,
-      added: count2("added"),
-      existing: count2("existing"),
-      rejected: count2("rejected"),
-      unknown: count2("unknown"),
-      removed: count2("removed"),
-      retryable: count2("rejected") > 0,
+      added: count3("added"),
+      existing: count3("existing"),
+      rejected: count3("rejected"),
+      unknown: count3("unknown"),
+      removed: count3("removed"),
+      retryable: count3("rejected") > 0,
       updatedAt: row.updatedAt
     };
   }
@@ -62071,9 +63023,9 @@ var PodploPluginService = class extends EventEmitter2 {
     if (expectedOutputCount === void 0) return;
     let planned = 0;
     for (const item of items) {
-      const count2 = item.args.count;
-      if (count2 === void 0 || !Number.isSafeInteger(count2) || count2 < 1) return;
-      planned += count2;
+      const count3 = item.args.count;
+      if (count3 === void 0 || !Number.isSafeInteger(count3) || count3 < 1) return;
+      planned += count3;
       if (!Number.isSafeInteger(planned)) return;
     }
     if (planned !== expectedOutputCount) {
@@ -63667,13 +64619,13 @@ async function startPluginMcp(service) {
 }
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
-import sharp13 from "sharp";
+import sharp14 from "sharp";
 import { basename as basename11, extname as extname10 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
 import { createHash as createHash12 } from "node:crypto";
 import { basename as basename9, extname as extname8, join as join10 } from "node:path";
-import sharp12 from "sharp";
+import sharp13 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
 var MAX_INPUT_PIXELS = 4e7;
@@ -63703,7 +64655,7 @@ async function normalizeNativeReference(input) {
   if (!source.length || source.length > MAX_INPUT_BYTES) fail6("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB\u3002");
   let metadata;
   try {
-    metadata = await sharp12(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
+    metadata = await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, animated: true, failOn: "error" }).metadata();
   } catch {
     return fail6("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5DF2\u635F\u574F\u3001\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u6216\u8D85\u8FC7 40MP\u3002");
   }
@@ -63721,14 +64673,14 @@ async function normalizeNativeReference(input) {
   for (let attempt = 0; attempt < 9; attempt++) {
     const width2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
     const height2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
-    output = await sharp12(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
+    output = await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
     if (output.length <= targetBytes) break;
     const ratio = Math.sqrt(targetBytes / output.length) * 0.92;
     scale *= Math.max(0.42, Math.min(0.88, ratio));
     quality = Math.max(38, quality - 7);
   }
   if (!output.length || output.length > MAX_OUTPUT_BYTES) fail6("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
-  const verified = await sharp12(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
+  const verified = await sharp13(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
   if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)
     fail6("INVALID_REFERENCE_IMAGE", "\u53C2\u8003\u56FE\u5B89\u5168\u8F6C\u6362\u5931\u8D25\u3002");
   return { name: safeWebpName(input.name), bytes: output, fingerprint: hash3(output) };
@@ -63943,6 +64895,43 @@ var OutputDirectoryManager = class {
     await this.verifyRoot(row.path);
     await this.assertIdentity(identity2, "read");
     return { configured: true, directory: row.path };
+  }
+  /**
+   * Resolve the optional parent used when creating a new archive project.
+   * A configured directory that was removed externally must not strand new
+   * local results: only an initial lstat ENOENT falls back to the archive's
+   * controlled default root. The saved preference is deliberately retained.
+   */
+  async archiveDirectory() {
+    this.ready();
+    const identity2 = await this.identity("read");
+    const row = this.store.snapshot().directories.find((item) => item.principal === identity2.principal);
+    if (!row) {
+      await this.assertIdentity(identity2, "read");
+      return;
+    }
+    let stat;
+    try {
+      stat = await lstat5(row.path);
+    } catch (error101) {
+      await this.assertIdentity(identity2, "read");
+      if (error101.code !== "ENOENT") throw error101;
+      return;
+    }
+    let actual;
+    try {
+      if (!stat.isDirectory() || stat.isSymbolicLink())
+        throw new Error("\u8F93\u51FA\u76EE\u5F55\u5FC5\u987B\u662F\u73B0\u5B58\u7684\u771F\u5B9E\u6587\u4EF6\u5939\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5");
+      actual = await realpath6(row.path);
+      if (!isAbsolute6(actual)) throw new Error("\u8F93\u51FA\u76EE\u5F55\u89E3\u6790\u5931\u8D25");
+      const actualStat = await lstat5(actual);
+      if (!actualStat.isDirectory() || actualStat.isSymbolicLink()) throw new Error("\u8F93\u51FA\u76EE\u5F55\u5DF2\u88AB\u66FF\u6362");
+    } catch (error101) {
+      await this.assertIdentity(identity2, "read");
+      throw error101;
+    }
+    await this.assertIdentity(identity2, "read");
+    return actual;
   }
   async configure(pathValue, confirmed) {
     this.ready();
@@ -64180,7 +65169,7 @@ async function downloadOriginal(value2, assetId, fetcher = fetch) {
   } finally {
     reader.releaseLock();
   }
-  const bytes = Buffer.concat(chunks), meta5 = await sharp13(bytes, { limitInputPixels: 1e8 }).metadata();
+  const bytes = Buffer.concat(chunks), meta5 = await sharp14(bytes, { limitInputPixels: 1e8 }).metadata();
   if (!meta5.width || !meta5.height || !["png", "jpeg", "webp"].includes(meta5.format ?? "")) fail7("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
   return bytes;
 }
@@ -64361,6 +65350,7 @@ async function nativeToolkitTransport(options) {
       if (gridSplitStandalone) action = `local.${action.slice("splitter.".length)}`;
       if (toolboxStandalone && action === "local.save") return { ok: true, data: await toolkit.runPipeline(args, scope) };
       if (toolboxStandalone && action === "local.pipelinePreview") return { ok: true, data: await toolkit.toolPreview(TOOLBOX_PIPELINE_NAME, args, scope) };
+      if (toolboxStandalone && action === "local.contourMeasure") return { ok: true, data: await toolkit.contourMeasure(args, scope) };
       if (gridSplitStandalone && action === "local.save") return { ok: true, data: await toolkit.runGridSplit(args, scope) };
       if (gridSplitStandalone && action === "local.preview") return { ok: true, data: await toolkit.gridSplitPreview(args, scope) };
       if (action === "local.list") return { ok: true, data: gridSplitStandalone ? await toolkit.listGridSplitInputs(scope) : await toolkit.list(scope) };
@@ -64422,7 +65412,7 @@ async function nativeToolkitTransport(options) {
         const bytes = await downloadOriginal(detail.downloadUrl, id2, options.fetcher);
         if (namespace !== online.auth.namespace || owner !== await online.workspaceIdentity(true))
           return fail7("ACCOUNT_CHANGED", "\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA\u7D20\u6750\u3002");
-        const format2 = (await sharp13(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
+        const format2 = (await sharp14(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
         if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail7("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id2}`;
         const stem = basename11(originalName, extname10(originalName));
@@ -64514,7 +65504,7 @@ import { createHash as createHash15, randomUUID as randomUUID15 } from "node:cry
 import { constants as constants7 } from "node:fs";
 import { link, lstat as lstat7, mkdir as mkdir8, open as open8, realpath as realpath8, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
 import { basename as basename12, dirname as dirname8, extname as extname11, isAbsolute as isAbsolute8, join as join13 } from "node:path";
-import sharp14 from "sharp";
+import sharp15 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
 import { createHash as createHash14, randomUUID as randomUUID14 } from "node:crypto";
@@ -64525,8 +65515,8 @@ var hash4 = (value2) => createHash14("sha256").update(value2).digest("hex");
 var archiveTaskKey = (ownerId, sessionId, key) => hash4(`${hash4(ownerId)}\0${sessionId}\0${key}`);
 var stageSchema = external_exports2.enum(["generation", "download", "processing", "archive", "connection"]);
 var statusSchema = external_exports2.enum(["running", "completed", "failed", "stopped", "unknown"]);
-var count = external_exports2.number().int().min(0).max(1e6).optional();
-var countsSchema = external_exports2.object({ planned: count, generated: count, processed: count, saved: count });
+var count2 = external_exports2.number().int().min(0).max(1e6).optional();
+var countsSchema = external_exports2.object({ planned: count2, generated: count2, processed: count2, saved: count2 });
 var entrySchema = external_exports2.object({
   id: external_exports2.string().regex(/^[a-f0-9]{64}$/),
   type: external_exports2.enum(["generation", "toolbox", "local"]),
@@ -65419,7 +66409,7 @@ var TaskArchiveManager = class {
         let extension = extname11(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
-          const meta5 = await sharp14(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+          const meta5 = await sharp15(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta5.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta5.format === "jpeg" ? "jpg" : meta5.format;
         }
@@ -65475,7 +66465,7 @@ var TaskArchiveManager = class {
         let extension = extname11(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json"].includes(extension);
         if (image) {
-          const meta5 = await sharp14(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
+          const meta5 = await sharp15(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta5.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta5.format === "jpeg" ? "jpg" : meta5.format;
         }
@@ -66254,7 +67244,7 @@ var TaskArchiveManager = class {
     if (hash5(bytes) !== file3.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
     const key = `${identity2.grant}:${task.sessionId}:${task.id}:${file3.id}:${file3.digest}:640:82`, epoch = this.previewCache.revision();
     const cached3 = preview && file3.image ? this.previewCache.get(key) : void 0;
-    const result = cached3 ?? (preview && file3.image ? await sharp14(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
+    const result = cached3 ?? (preview && file3.image ? await sharp15(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
     await this.same(identity2);
     if (preview && file3.image && !cached3) this.previewCache.set(key, result, epoch);
     return { bytes: result, name: name2, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname11(name2).slice(1)}` };
@@ -66312,7 +67302,7 @@ var TaskArchiveManager = class {
 
 // plugins/podplo-dsh/src/archive-processing-pipeline.ts
 import { createHash as createHash16 } from "node:crypto";
-import sharp15 from "sharp";
+import sharp16 from "sharp";
 var automaticProcessingTools = /* @__PURE__ */ new Set([
   "podplo_outline_images",
   "podplo_rotate_flip_images",
@@ -66436,7 +67426,7 @@ var ArchiveProcessingPipeline = class {
 };
 async function hasRealTransparency(input) {
   if (input.kind === "file") return false;
-  const image = sharp15(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).autoOrient();
+  const image = sharp16(input.bytes, { limitInputPixels: 1e8, animated: true, failOn: "error" }).autoOrient();
   const metadata = await image.metadata();
   if (!metadata.width || !metadata.height || metadata.pages && metadata.pages > 1 || metadata.hasAlpha !== true) return false;
   return !(await image.stats()).isOpaque;
@@ -66499,7 +67489,7 @@ async function taskArchiveHost(options) {
       return { ownerId: await online.workspaceIdentity(false), namespace: online.auth.namespace };
     },
     async outputDirectory() {
-      return (await options.outputs.get()).directory;
+      return options.outputs.archiveDirectory();
     },
     activity(identity2, tasks, at) {
       return operationLog.recordMany(identity2, tasks.map((task) => ({
@@ -67485,9 +68475,9 @@ function parseStrictSemver(raw) {
   for (const value2 of match[4]?.split(".") ?? []) {
     if (/^\d+$/u.test(value2)) {
       if (value2.length > 1 && value2.startsWith("0")) return;
-      const number7 = Number(value2);
-      if (!Number.isSafeInteger(number7)) return;
-      identifiers.push(number7);
+      const number8 = Number(value2);
+      if (!Number.isSafeInteger(number8)) return;
+      identifiers.push(number8);
     } else identifiers.push(value2);
   }
   const core2 = [Number(match[1]), Number(match[2]), Number(match[3])];
@@ -68179,8 +69169,8 @@ var NativeTaskAttemptPolicy = class {
     if (this.entry && this.entry.inputDigest !== inputDigest) {
       throw new PodploPluginError(
         "NATIVE_TASK_ATTEMPT_LOCKED",
-        "\u540C\u4E00\u6761\u7528\u6237\u6D88\u606F\u4E2D\u7684\u5B8C\u6574\u4EFB\u52A1\u65B9\u6848\u5DF2\u7ECF\u9501\u5B9A\uFF1B\u4E0D\u80FD\u901A\u8FC7\u5220\u51CF\u56FE\u7247\u3001\u9636\u6BB5\u3001Skill\u3001\u6A21\u578B\u3001Eco \u53C2\u6570\u3001\u6587\u4EF6\u5939\u6216\u53C2\u8003\u56FE\u91CD\u65B0\u8BD5\u5355\u3002\u8BF7\u8BA9\u7528\u6237\u53D1\u9001\u4E00\u6761\u65B0\u6D88\u606F\u660E\u786E\u4FEE\u6539\u5B8C\u6574\u65B9\u6848\u3002",
-        { retryable: false, requiresNewUserMessage: true }
+        "\u540C\u4E00\u6761\u7528\u6237\u6D88\u606F\u4E2D\u7684\u4EFB\u52A1\u5019\u9009\u5DF2\u7ECF\u9501\u5B9A\uFF0C\u4E0D\u80FD\u5728\u672C\u6D88\u606F\u5185\u6539\u6765\u6E90\u3001\u8303\u56F4\u3001\u9636\u6BB5\u3001Skill\u3001\u6A21\u578B\u6216 Eco \u540E\u91CD\u65B0\u8BD5\u5355\u3002\u82E5\u786E\u9700\u6539\u53D8\uFF0C\u8BF7\u53EA\u8BA9\u7528\u6237\u8BF4\u660E\u8981\u66F4\u6B63\u7684\u5B57\u6BB5\uFF1B\u65B0\u7528\u6237\u6D88\u606F\u4F1A\u5EFA\u7ACB\u65B0\u8FB9\u754C\uFF0C\u5BBF\u4E3B\u5E94\u6CBF\u7528\u5176\u4F59\u5DF2\u660E\u786E\u8981\u6C42\u91CD\u65B0\u6784\u9020\u5B8C\u6574\u5019\u9009\uFF0C\u65E0\u9700\u7528\u6237\u590D\u8FF0\u6574\u4EFD\u65B9\u6848\u3002",
+        { retryable: false, requiresNewUserMessage: true, fullRestatementRequired: false }
       );
     }
     const entry = this.entry ??= {
@@ -68192,8 +69182,8 @@ var NativeTaskAttemptPolicy = class {
       if (entry.correctable && !entry.sealed) throw correction(entry.failure.code, entry.failure.message);
       throw new PodploPluginError(
         "NATIVE_TASK_ATTEMPT_NON_RETRYABLE",
-        `\u672C\u8F6E\u5B8C\u6574\u4EFB\u52A1\u5DF2\u786E\u5B9A\u6027\u5931\u8D25\uFF08${entry.failure.code}\uFF09\uFF1A${entry.failure.message} \u8BF7\u4FEE\u6B63\u540E\u7531\u7528\u6237\u53D1\u9001\u65B0\u6D88\u606F\u518D\u8BD5\u3002`,
-        { retryable: false, requiresNewUserMessage: true, causeCode: entry.failure.code }
+        `\u672C\u8F6E\u4EFB\u52A1\u5019\u9009\u5DF2\u786E\u5B9A\u6027\u5931\u8D25\uFF08${entry.failure.code}\uFF09\uFF1A${entry.failure.message} \u5982\u9700\u6539\u53D8\u539F\u8981\u6C42\uFF0C\u8BF7\u8BA9\u7528\u6237\u53EA\u8BF4\u660E\u66F4\u6B63\u5B57\u6BB5\uFF1B\u65B0\u7528\u6237\u6D88\u606F\u5EFA\u7ACB\u65B0\u8FB9\u754C\u540E\u6CBF\u7528\u5176\u4F59\u5DF2\u660E\u786E\u8981\u6C42\uFF0C\u65E0\u9700\u5168\u6587\u91CD\u53D1\u3002`,
+        { retryable: false, requiresNewUserMessage: true, fullRestatementRequired: false, causeCode: entry.failure.code }
       );
     }
     if (entry.promise) return entry.promise;
@@ -68297,7 +69287,8 @@ function reconcilePodploTaskToolRestriction(binding, agent, enabled) {
 
 // plugins/podplo-dsh/src/native-task-read-tools.ts
 import { createHash as createHash20 } from "node:crypto";
-import { basename as basename14 } from "node:path";
+import { basename as basename14, extname as extname13 } from "node:path";
+import { lstat as lstat8, readdir as readdir3, realpath as realpath9 } from "node:fs/promises";
 
 // plugins/podplo-dsh/src/native-task-capabilities.ts
 import { createHash as createHash19 } from "node:crypto";
@@ -68400,6 +69391,8 @@ function topicDetails(topic, facts) {
     overview: {
       taskEntry: "podplo_prepare_task",
       inspectionEntry: "podplo_inspect_task",
+      inspectionModes: ["sources", "task"],
+      sourceInventoryRequiresStages: false,
       sourceForms: facts.sourceForms,
       namedSourcePools: facts.namedSourcePools,
       multiSourceStages: facts.multiSourceStages,
@@ -68409,7 +69402,11 @@ function topicDetails(topic, facts) {
       forms: facts.sourceForms,
       namedPools: facts.namedSourcePools,
       stageReferences: facts.sourceForms.includes("fromStage"),
-      directoryModes: facts.directoryModes
+      directoryModes: facts.directoryModes,
+      recursiveDefaultDepth: NATIVE_TASK_DEFAULT_RECURSIVE_DEPTH,
+      recursiveMaximumDepth: NATIVE_TASK_MAX_RECURSIVE_DEPTH,
+      recursiveScope: "all regular image files under the authorized root, within the declared depth; no symlinks or hidden directories",
+      randomChildScope: "one eligible direct child for the entire batch; not whole-library sampling"
     },
     selection: {
       modes: facts.selectionModes,
@@ -68448,6 +69445,9 @@ function topicDetails(topic, facts) {
       sourceGroupsPerStage: NATIVE_TASK_MAX_SOURCE_GROUPS,
       aiItemsPerTask: NATIVE_TASK_MAX_AI_ITEMS,
       localOutputsPerStage: NATIVE_TASK_MAX_LOCAL_OUTPUTS,
+      libraryCandidateImages: NATIVE_TASK_MAX_INVENTORY_IMAGES,
+      libraryDirectories: NATIVE_TASK_MAX_INVENTORY_DIRECTORIES,
+      libraryLimitIsNotExecutionLimit: true,
       modelReferenceLimits: "runtime",
       ecoReferenceLimits: "runtime"
     }
@@ -68501,8 +69501,8 @@ var nativeTaskInspectionVersion = 1;
 var nativeTaskInspectionTransportSchema = {
   type: "object",
   additionalProperties: false,
-  required: ["stages"],
   properties: {
+    mode: { type: "string", enum: ["task", "sources"], description: "sources inventories authorized inputs without a task, Skill or model; task inspects a complete candidate." },
     protocolVersion: { type: "integer", enum: [2] },
     taskName: { type: "string", minLength: 1, maxLength: 100 },
     sources: { type: "object", minProperties: 1, maxProperties: 40, additionalProperties: { type: "object" } },
@@ -68519,23 +69519,51 @@ var nativeTaskInspectionTransportSchema = {
         local: { type: "object" }
       }
     } }
-  }
+  },
+  anyOf: [{ required: ["stages"] }, { required: ["mode", "sources"], properties: { mode: { const: "sources" } } }]
 };
 var nativeTaskInspectionTool = {
   name: nativeTaskInspectionToolName,
-  description: "Inspect one proposed PodPlo task without executing it. The Host may read only the minimum authorized file/reference metadata needed to resolve source selection, pairing/grouping, stage order and expected item counts. It never uploads images, quotes, checks or reserves wallet credits, asks for approval, persists task/order state, generates images or runs local processing. Inspection is not execution authorization and does not freeze a paid order; podplo_prepare_task rechecks changed files, references, capabilities and account state.",
+  description: 'Read-only PodPlo inspection. Before planning when folder structure or counts are unknown, call {mode:"sources",sources:{alias:{folderPath:"authorized path",directory:{mode:"recursive"}}}} without stages, Skill or model; it returns per-source inventory and precise diagnostics, never a locked execution candidate. For a complete task pass stages to inspect selection, pairing and expected counts. Only authorized file/reference metadata is read. No uploads, pricing/wallet requests, approval, persistence, generation or processing. Inspection neither authorizes execution nor freezes a paid order; preparation rechecks inputs and account state.',
   inputSchema: structuredClone(nativeTaskInspectionTransportSchema)
 };
 function safeInteger(value2) {
   return Number.isSafeInteger(value2) && Number(value2) >= 0 ? Number(value2) : 0;
 }
+function diagnosticCounts(value2) {
+  const details = value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
+  const counts = {};
+  for (const key of [
+    "directImageCount",
+    "subdirectoryCount",
+    "directSubdirectoryCount",
+    "imageCount",
+    "selectedCount",
+    "selectedImageCount",
+    "inventoryImageCount",
+    "requestedCount",
+    "requiredImageCount",
+    "limit",
+    "maxDepth",
+    "maximumSelectedImages",
+    "maximumImages",
+    "maximumDirectories",
+    "scannedDirectories",
+    "discoveredImageCount",
+    "maximumBatchBytes"
+  ])
+    if (Number.isSafeInteger(details[key]) && Number(details[key]) >= 0) counts[key] = Number(details[key]);
+  return Object.keys(counts).length ? counts : void 0;
+}
 function normalizeDiagnostic(value2) {
+  const details = diagnosticCounts(value2.details);
   return {
     code: typeof value2.code === "string" && value2.code ? value2.code : "TASK_INSPECTION_DIAGNOSTIC",
     message: typeof value2.message === "string" && value2.message ? value2.message : "\u4EFB\u52A1\u68C0\u67E5\u8FD4\u56DE\u4E86\u672A\u8BF4\u660E\u7684\u8BCA\u65AD\u3002",
-    ...typeof value2.fieldPath === "string" && value2.fieldPath ? { fieldPath: value2.fieldPath } : {},
+    ...typeof value2.fieldPath === "string" && /^[A-Za-z_][A-Za-z0-9_.\[\]-]{0,255}$/u.test(value2.fieldPath) ? { fieldPath: value2.fieldPath } : {},
     severity: ["error", "warning", "info"].includes(value2.severity) ? value2.severity : "error",
-    correctable: value2.correctable === true
+    correctable: value2.correctable === true,
+    ...details ? { details } : {}
   };
 }
 function normalizeAnalysis(value2) {
@@ -68854,12 +69882,14 @@ function inspectionFailure(error101) {
   };
   if (error101 instanceof PodploPluginError) {
     const details = error101.details && typeof error101.details === "object" && !Array.isArray(error101.details) ? error101.details : {};
+    const counts = diagnosticCounts(details);
     return {
       code: error101.code,
       message: error101.message,
       ...typeof details.fieldPath === "string" ? { fieldPath: details.fieldPath } : {},
       severity: "error",
-      correctable: details.correctable === true || details.correctableBeforeConfirmation === true
+      correctable: details.correctable === true || details.correctableBeforeConfirmation === true,
+      ...counts ? { details: counts } : {}
     };
   }
   return {
@@ -68869,11 +69899,87 @@ function inspectionFailure(error101) {
     correctable: false
   };
 }
+async function inspectSourceInventory(raw, deps) {
+  const task = asRecord(raw), pools = asRecord(task.sources), entries = Object.entries(pools);
+  if (!entries.length || entries.length > 40 || Object.keys(task).some((key) => !["mode", "sources", "protocolVersion"].includes(key)) || task.protocolVersion !== void 0 && task.protocolVersion !== 2)
+    throw new PodploPluginError("INVALID_SOURCE_INVENTORY", "\u6765\u6E90\u6E05\u70B9\u53EA\u63A5\u53D7 mode:sources\u30011\uFF5E40 \u4E2A\u547D\u540D sources \u548C\u53EF\u9009 protocolVersion:2\uFF0C\u4E0D\u9700\u8981\u9636\u6BB5\u3001Skill \u6216\u6A21\u578B\u3002", {
+      fieldPath: "sources",
+      correctable: true
+    });
+  const sources = [], diagnostics = [];
+  const authorization = [];
+  for (const [id2, value2] of entries) {
+    const fieldPath = `sources.${id2}`;
+    try {
+      const normalized2 = normalizeNativeTaskSourcePlan({
+        protocolVersion: 2,
+        sources: { [id2]: value2 },
+        stages: [{ id: "inventory", source: { inputs: [{ pool: id2 }], pairing: { mode: "zip" } } }]
+      });
+      const source = normalized2.sources[id2];
+      if (source.fromStage) throw new PodploPluginError(
+        "FUTURE_SOURCE_INVENTORY_UNAVAILABLE",
+        "\u6765\u6E90\u6E05\u70B9\u53EA\u68C0\u67E5\u5DF2\u7ECF\u5B58\u5728\u7684\u6587\u4EF6\u5939\u6216\u5F53\u524D\u4F1A\u8BDD\u5F15\u7528\uFF0C\u4E0D\u63A8\u6D4B\u524D\u5E8F\u6210\u679C\u3002",
+        { fieldPath, correctable: true }
+      );
+      const resolved = await deps.resolveSourceMetadata(source, { stageId: "inventory", poolId: id2, fieldPath, inventoryOnly: true });
+      if (!Array.isArray(resolved.items) || resolved.items.some((item) => !item || typeof item.id !== "string" || !item.id || typeof item.name !== "string" || !item.name || !["image", "file"].includes(item.mediaKind)))
+        throw new PodploPluginError("INVALID_SOURCE_METADATA", "\u6765\u6E90\u5143\u6570\u636E\u65E0\u6548\u3002", { fieldPath, correctable: false });
+      authorization.push(resolved.authorization);
+      const summary = {
+        id: id2,
+        kind: source.folderPath ? "folderPath" : "referenceIds",
+        totalCount: resolved.items.length,
+        selectedCount: null,
+        selectionChecked: false,
+        authorization: resolved.authorization,
+        ...resolved.snapshot ? { snapshot: resolved.snapshot } : {}
+      };
+      sources.push(summary);
+      if (source.expectedImageCount !== void 0 && source.expectedImageCount !== resolved.items.length)
+        throw new PodploPluginError("SOURCE_COUNT_CHANGED", `\u9884\u671F ${source.expectedImageCount} \u5F20\uFF0C\u5F53\u524D\u6765\u6E90\u5171\u6709 ${resolved.items.length} \u5F20\u3002`, {
+          fieldPath: `${fieldPath}.expectedImageCount`,
+          correctable: true
+        });
+      if (source.selection) {
+        summary.selectedCount = applyNativeSourceSelection(resolved.items, source.selection, deps.randomIndex ?? randomInt4).length;
+        summary.selectionChecked = true;
+      }
+    } catch (error101) {
+      authorization.push(error101 instanceof PodploPluginError && error101.code === "LOCAL_PATH_NOT_AUTHORIZED" ? "blocked" : "unknown");
+      const diagnostic = inspectionFailure(error101);
+      diagnostics.push({ ...diagnostic, fieldPath: diagnostic.fieldPath ?? fieldPath });
+      if (!sources.some((source) => source.id === id2)) sources.push({ id: id2, status: "blocked" });
+    }
+  }
+  return {
+    protocolVersion: 2,
+    sources,
+    stages: [],
+    totals: {
+      sourceCount: sources.length,
+      selectedInputCount: 0,
+      expectedAiItemCount: 0,
+      expectedLocalInputCount: 0,
+      expectedOutputCount: null
+    },
+    diagnostics,
+    authorization: combinedAuthorization(authorization),
+    sourceMetadata: diagnostics.length ? "blocked" : combinedAuthorization(authorization),
+    localPlan: "not_applicable"
+  };
+}
 async function inspectNativeTask(raw, deps) {
   let analysis;
+  const inventoryOnly = asRecord(raw).mode === "sources";
   try {
-    const normalizedSources = normalizeNativeTaskSourcePlan(raw);
-    analysis = normalizeAnalysis(await analyzeNativeTaskReadOnly(raw, normalizedSources, deps));
+    if (asRecord(raw).mode !== void 0 && !["sources", "task"].includes(String(asRecord(raw).mode)))
+      throw new PodploPluginError("INVALID_INSPECTION_MODE", "\u68C0\u67E5\u6A21\u5F0F\u5FC5\u987B\u662F task \u6216 sources\u3002", { fieldPath: "mode", correctable: true });
+    if (inventoryOnly) analysis = normalizeAnalysis(await inspectSourceInventory(raw, deps));
+    else {
+      const normalizedSources = normalizeNativeTaskSourcePlan(raw);
+      analysis = normalizeAnalysis(await analyzeNativeTaskReadOnly(raw, normalizedSources, deps));
+    }
   } catch (error101) {
     analysis = normalizeAnalysis({
       protocolVersion: nativeTaskProtocolVersion,
@@ -68896,6 +70002,7 @@ async function inspectNativeTask(raw, deps) {
   return {
     version: nativeTaskInspectionVersion,
     taskProtocolVersion: analysis.protocolVersion,
+    inspectionMode: inventoryOnly ? "sources" : "task",
     readonly: true,
     blocked,
     executionAuthorized: false,
@@ -68904,7 +70011,7 @@ async function inspectNativeTask(raw, deps) {
     analysis,
     checks: {
       structure: diagnosticBlocked ? "blocked" : "passed",
-      structureScope: "source protocol, stage shape, selection, pairing and grouping only",
+      structureScope: inventoryOnly ? "source declarations and inventory only; no task stages inspected" : "source protocol, stage shape, selection, pairing and grouping only",
       sourceMetadata: diagnosticBlocked ? "blocked" : analysis.sourceMetadata ?? "unknown",
       sourceAuthorization: analysis.authorization ?? "unknown",
       fileContents: "unchecked",
@@ -68951,32 +70058,56 @@ function nativeTaskReadToolDefinitions(deps) {
         async resolveSourceMetadata(source, context) {
           signal?.throwIfAborted();
           if (source.folderPath) {
-            const directory = await resolveAuthorizedLocalFolder(source.folderPath, source.directory, {
-              isPathAuthorized: deps.isPathAuthorized,
-              randomIndex: deps.randomIndex,
-              signal,
-              rejectBroadOrHidden: true
-            });
-            const entries = await inspectAuthorizedLocalFolder(directory, {
-              isPathAuthorized: deps.isPathAuthorized,
-              authorizedRoot: source.folderPath,
-              signal
-            });
-            return {
-              authorization: "passed",
-              items: entries.map((entry) => ({
-                id: `file-${fingerprint2([entry.device, entry.inode])}`,
-                name: entry.name,
-                byteSize: entry.byteSize,
-                kind: "folder-file",
-                mediaKind: "image"
-              })),
-              snapshot: {
-                directoryName: basename14(directory),
-                count: entries.length,
-                metadataDigest: fingerprint2(entries.map((entry) => [entry.name, entry.device, entry.inode, entry.byteSize, entry.modifiedAt]))
-              }
-            };
+            try {
+              const directory = await resolveAuthorizedLocalFolder(source.folderPath, source.directory, {
+                isPathAuthorized: deps.isPathAuthorized,
+                randomIndex: deps.randomIndex,
+                signal,
+                rejectBroadOrHidden: true,
+                selection: source.selection
+              });
+              const entries = await inspectAuthorizedLocalFolder(directory, {
+                isPathAuthorized: deps.isPathAuthorized,
+                authorizedRoot: source.folderPath,
+                signal,
+                directorySelection: source.directory?.mode === "recursive" ? source.directory : void 0,
+                allowLargeInventory: context.inventoryOnly === true || source.selection !== void 0,
+                allowEmpty: context.inventoryOnly === true
+              });
+              const before = await lstat8(directory);
+              if (!before.isDirectory() || before.isSymbolicLink() || await realpath9(directory) !== directory)
+                throw new PodploPluginError("LOCAL_FOLDER_CHANGED", "\u6765\u6E90\u76EE\u5F55\u5728\u6E05\u70B9\u671F\u95F4\u53D1\u751F\u53D8\u5316\uFF0C\u672A\u6267\u884C\u4EFB\u52A1\u3002");
+              const direct = await readdir3(directory, { withFileTypes: true });
+              const after = await lstat8(directory);
+              if (!after.isDirectory() || after.isSymbolicLink() || before.dev !== after.dev || before.ino !== after.ino || await realpath9(directory) !== directory)
+                throw new PodploPluginError("LOCAL_FOLDER_CHANGED", "\u6765\u6E90\u76EE\u5F55\u5728\u6E05\u70B9\u671F\u95F4\u53D1\u751F\u53D8\u5316\uFF0C\u672A\u6267\u884C\u4EFB\u52A1\u3002");
+              const directImageCount = direct.filter((entry) => !entry.name.startsWith(".") && entry.isFile() && [".jpg", ".jpeg", ".png", ".webp"].includes(extname13(entry.name).toLowerCase())).length;
+              const subdirectoryCount = direct.filter((entry) => !entry.name.startsWith(".") && entry.isDirectory() && !entry.isSymbolicLink()).length;
+              return {
+                authorization: "passed",
+                items: entries.map((entry) => ({
+                  id: `file-${fingerprint2([entry.device, entry.inode])}`,
+                  name: entry.name,
+                  byteSize: entry.byteSize,
+                  kind: "folder-file",
+                  mediaKind: "image"
+                })),
+                snapshot: {
+                  directoryName: basename14(directory),
+                  count: entries.length,
+                  directImageCount,
+                  subdirectoryCount,
+                  recursive: source.directory?.mode === "recursive",
+                  metadataDigest: fingerprint2(entries.map((entry) => [entry.name, entry.device, entry.inode, entry.byteSize, entry.modifiedAt]))
+                }
+              };
+            } catch (error101) {
+              if (error101 instanceof PodploPluginError) throw new PodploPluginError(error101.code, error101.message, {
+                ...error101.details && typeof error101.details === "object" ? error101.details : {},
+                fieldPath: `${context.fieldPath}.folderPath`
+              });
+              throw error101;
+            }
           }
           if (source.referenceIds) {
             const items = await deps.readReferences(source.referenceIds, signal);
