@@ -2009,6 +2009,13 @@ var GenerationBootstrapCache = class {
     this.drafts.set(key, { ...draft, approvalAttempted: true });
     return true;
   }
+  clearApprovalAttempt(ownerId, sessionId, intentId, planVersion) {
+    const key = this.draftKey(ownerId, sessionId);
+    const draft = this.drafts.get(key);
+    if (!draft || draft.intentId !== intentId || draft.planVersion !== planVersion) return false;
+    this.drafts.set(key, { ...draft, approvalAttempted: false });
+    return true;
+  }
   advanceDraftPlan(ownerId, sessionId, intentId, planVersion, nextPlanVersion) {
     const key = this.draftKey(ownerId, sessionId);
     const draft = this.drafts.get(key);
@@ -2314,6 +2321,41 @@ function calculateLocalGenerationQuote(model, input) {
   } catch {
     return void 0;
   }
+}
+
+// plugins/podplo-dsh/src/generation-approval-failure.ts
+var REQUOTE_WITHOUT_SUBMISSION = /* @__PURE__ */ new Set([
+  "MCP_INVALID_TOOL_ARGUMENTS",
+  "ORDINARY_ORDER_BACKEND_UNAVAILABLE",
+  "ORDER_RESERVATION_UNAVAILABLE",
+  "QUOTE_EXPIRED",
+  "CONFIRMATION_MISMATCH"
+]);
+var RETRY_WITHOUT_SUBMISSION = /* @__PURE__ */ new Set(["INSUFFICIENT_CREDITS"]);
+var errorCode = (error101) => error101 && typeof error101 === "object" && typeof error101.code === "string" ? error101.code : "";
+var errorMessage = (error101) => error101 instanceof Error ? error101.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
+function generationApprovalFailure(error101) {
+  const detail = errorMessage(error101);
+  const code = errorCode(error101);
+  if (REQUOTE_WITHOUT_SUBMISSION.has(code)) {
+    return {
+      outcome: "not_submitted",
+      message: `\u786E\u8BA4\u672A\u5B8C\u6210\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002${detail} \u8BF7\u91CD\u65B0\u6838\u9A8C\u79EF\u5206\u540E\u518D\u751F\u6210\u3002`,
+      recovery: "requote"
+    };
+  }
+  if (RETRY_WITHOUT_SUBMISSION.has(code)) {
+    return {
+      outcome: "not_submitted",
+      message: `\u786E\u8BA4\u672A\u5B8C\u6210\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002${detail} \u5904\u7406\u540E\u53EF\u6309\u539F\u62A5\u4EF7\u518D\u6B21\u786E\u8BA4\u3002`,
+      recovery: "retry_same_quote"
+    };
+  }
+  return {
+    outcome: "unknown",
+    message: `\u786E\u8BA4\u7ED3\u679C\u5C1A\u672A\u786E\u5B9A\uFF1A${detail} \u8BF7\u5728\u5386\u53F2\u8BB0\u5F55\u4E2D\u5237\u65B0\u6838\u5BF9\uFF1B\u4E3A\u9632\u91CD\u590D\u6267\u884C\uFF0C\u672C\u62A5\u4EF7\u4E0D\u4F1A\u518D\u6B21\u63D0\u4EA4\u3002`,
+    recovery: "lock_unknown"
+  };
 }
 
 // plugins/podplo-dsh/src/generation-panel.tsx
@@ -3243,10 +3285,24 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       setPlanVersion(1);
     } catch (error102) {
       if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.nativeSessionId === expectedContext.nativeSessionId) {
-        const message = `\u786E\u8BA4\u7ED3\u679C\u5C1A\u672A\u786E\u5B9A\uFF1A${errorText(error102)} \u8BF7\u5728\u5386\u53F2\u8BB0\u5F55\u4E2D\u5237\u65B0\u6838\u5BF9\uFF1B\u4E3A\u9632\u91CD\u590D\u6267\u884C\uFF0C\u672C\u62A5\u4EF7\u4E0D\u4F1A\u518D\u6B21\u63D0\u4EA4\u3002`;
-        setError(message);
-        onSubmission?.({ ...expectedOperation, status: "submission_unknown" }, message);
-        onChanged?.();
+        const failure = generationApprovalFailure(error102);
+        if (failure.outcome === "not_submitted") {
+          if (expectedContext.nativeSessionId) generationBootstrapCache.clearApprovalAttempt(
+            expectedOwner,
+            expectedContext.nativeSessionId,
+            expectedOperation.intentId,
+            expectedOperation.planVersion
+          );
+          setApprovalAttempted(false);
+          if (failure.recovery === "requote") invalidate();
+          setError(failure.message);
+          onVerification?.();
+          onChanged?.();
+        } else {
+          setError(failure.message);
+          onSubmission?.({ ...expectedOperation, status: "submission_unknown" }, failure.message);
+          onChanged?.();
+        }
       }
     } finally {
       approving.current = false;
@@ -18197,7 +18253,7 @@ function date4(params) {
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/classic/external.js
 config(en_default());
 
-// node_modules/zod/v4/classic/external.js
+// ../../../node_modules/zod/v4/classic/external.js
 var external_exports2 = {};
 __export(external_exports2, {
   $brand: () => $brand2,
@@ -18440,7 +18496,7 @@ __export(external_exports2, {
   xor: () => xor2
 });
 
-// node_modules/zod/v4/core/index.js
+// ../../../node_modules/zod/v4/core/index.js
 var core_exports4 = {};
 __export(core_exports4, {
   $ZodAny: () => $ZodAny2,
@@ -18719,7 +18775,7 @@ __export(core_exports4, {
   version: () => version2
 });
 
-// node_modules/zod/v4/core/core.js
+// ../../../node_modules/zod/v4/core/core.js
 var _a3;
 var NEVER2 = /* @__PURE__ */ Object.freeze({
   status: "aborted"
@@ -18796,7 +18852,7 @@ function config2(newConfig) {
   return globalConfig2;
 }
 
-// node_modules/zod/v4/core/util.js
+// ../../../node_modules/zod/v4/core/util.js
 var util_exports2 = {};
 __export(util_exports2, {
   BIGINT_FORMAT_RANGES: () => BIGINT_FORMAT_RANGES2,
@@ -19492,7 +19548,7 @@ var Class2 = class {
   }
 };
 
-// node_modules/zod/v4/core/errors.js
+// ../../../node_modules/zod/v4/core/errors.js
 var initializer3 = (inst, def) => {
   inst.name = "$ZodError";
   Object.defineProperty(inst, "_zod", {
@@ -19631,7 +19687,7 @@ function prettifyError2(error101) {
   return lines.join("\n");
 }
 
-// node_modules/zod/v4/core/parse.js
+// ../../../node_modules/zod/v4/core/parse.js
 var _parse2 = (_Err) => (schema, value2, _ctx, _params) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
   const result = schema._zod.run({ value: value2, issues: [] }, ctx);
@@ -19719,7 +19775,7 @@ var _safeDecodeAsync2 = (_Err) => async (schema, value2, _ctx) => {
 };
 var safeDecodeAsync3 = /* @__PURE__ */ _safeDecodeAsync2($ZodRealError2);
 
-// node_modules/zod/v4/core/regexes.js
+// ../../../node_modules/zod/v4/core/regexes.js
 var regexes_exports2 = {};
 __export(regexes_exports2, {
   base64: () => base643,
@@ -19878,7 +19934,7 @@ var sha512_hex2 = /^[0-9a-fA-F]{128}$/;
 var sha512_base642 = /* @__PURE__ */ fixedBase642(86, "==");
 var sha512_base64url2 = /* @__PURE__ */ fixedBase64url2(86);
 
-// node_modules/zod/v4/core/checks.js
+// ../../../node_modules/zod/v4/core/checks.js
 var $ZodCheck2 = /* @__PURE__ */ $constructor2("$ZodCheck", (inst, def) => {
   var _a5;
   inst._zod ?? (inst._zod = {});
@@ -20426,7 +20482,7 @@ var $ZodCheckOverwrite2 = /* @__PURE__ */ $constructor2("$ZodCheckOverwrite", (i
   };
 });
 
-// node_modules/zod/v4/core/doc.js
+// ../../../node_modules/zod/v4/core/doc.js
 var Doc2 = class {
   constructor(args = []) {
     this.content = [];
@@ -20462,14 +20518,14 @@ var Doc2 = class {
   }
 };
 
-// node_modules/zod/v4/core/versions.js
+// ../../../node_modules/zod/v4/core/versions.js
 var version2 = {
   major: 4,
   minor: 4,
   patch: 3
 };
 
-// node_modules/zod/v4/core/schemas.js
+// ../../../node_modules/zod/v4/core/schemas.js
 var $ZodType2 = /* @__PURE__ */ $constructor2("$ZodType", (inst, def) => {
   var _a5;
   inst ?? (inst = {});
@@ -22562,7 +22618,7 @@ function handleRefineResult2(result, payload, input, inst) {
   }
 }
 
-// node_modules/zod/v4/locales/index.js
+// ../../../node_modules/zod/v4/locales/index.js
 var locales_exports2 = {};
 __export(locales_exports2, {
   ar: () => ar_default2,
@@ -22619,7 +22675,7 @@ __export(locales_exports2, {
   zhTW: () => zh_TW_default2
 });
 
-// node_modules/zod/v4/locales/ar.js
+// ../../../node_modules/zod/v4/locales/ar.js
 var error51 = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0641", verb: "\u0623\u0646 \u064A\u062D\u0648\u064A" },
@@ -22726,7 +22782,7 @@ function ar_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/az.js
+// ../../../node_modules/zod/v4/locales/az.js
 var error52 = () => {
   const Sizable = {
     string: { unit: "simvol", verb: "olmal\u0131d\u0131r" },
@@ -22832,7 +22888,7 @@ function az_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/be.js
+// ../../../node_modules/zod/v4/locales/be.js
 function getBelarusianPlural2(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -22989,7 +23045,7 @@ function be_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/bg.js
+// ../../../node_modules/zod/v4/locales/bg.js
 var error54 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0430", verb: "\u0434\u0430 \u0441\u044A\u0434\u044A\u0440\u0436\u0430" },
@@ -23110,7 +23166,7 @@ function bg_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ca.js
+// ../../../node_modules/zod/v4/locales/ca.js
 var error55 = () => {
   const Sizable = {
     string: { unit: "car\xE0cters", verb: "contenir" },
@@ -23219,7 +23275,7 @@ function ca_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/cs.js
+// ../../../node_modules/zod/v4/locales/cs.js
 var error56 = () => {
   const Sizable = {
     string: { unit: "znak\u016F", verb: "m\xEDt" },
@@ -23331,7 +23387,7 @@ function cs_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/da.js
+// ../../../node_modules/zod/v4/locales/da.js
 var error57 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "havde" },
@@ -23447,7 +23503,7 @@ function da_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/de.js
+// ../../../node_modules/zod/v4/locales/de.js
 var error58 = () => {
   const Sizable = {
     string: { unit: "Zeichen", verb: "zu haben" },
@@ -23556,7 +23612,7 @@ function de_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/el.js
+// ../../../node_modules/zod/v4/locales/el.js
 var error59 = () => {
   const Sizable = {
     string: { unit: "\u03C7\u03B1\u03C1\u03B1\u03BA\u03C4\u03AE\u03C1\u03B5\u03C2", verb: "\u03BD\u03B1 \u03AD\u03C7\u03B5\u03B9" },
@@ -23666,7 +23722,7 @@ function el_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/en.js
+// ../../../node_modules/zod/v4/locales/en.js
 var error60 = () => {
   const Sizable = {
     string: { unit: "characters", verb: "to have" },
@@ -23779,7 +23835,7 @@ function en_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/eo.js
+// ../../../node_modules/zod/v4/locales/eo.js
 var error61 = () => {
   const Sizable = {
     string: { unit: "karaktrojn", verb: "havi" },
@@ -23889,7 +23945,7 @@ function eo_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/es.js
+// ../../../node_modules/zod/v4/locales/es.js
 var error62 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "tener" },
@@ -24022,7 +24078,7 @@ function es_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/fa.js
+// ../../../node_modules/zod/v4/locales/fa.js
 var error63 = () => {
   const Sizable = {
     string: { unit: "\u06A9\u0627\u0631\u0627\u06A9\u062A\u0631", verb: "\u062F\u0627\u0634\u062A\u0647 \u0628\u0627\u0634\u062F" },
@@ -24137,7 +24193,7 @@ function fa_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/fi.js
+// ../../../node_modules/zod/v4/locales/fi.js
 var error64 = () => {
   const Sizable = {
     string: { unit: "merkki\xE4", subject: "merkkijonon" },
@@ -24250,7 +24306,7 @@ function fi_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/fr.js
+// ../../../node_modules/zod/v4/locales/fr.js
 var error65 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -24376,7 +24432,7 @@ function fr_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/fr-CA.js
+// ../../../node_modules/zod/v4/locales/fr-CA.js
 var error66 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -24484,7 +24540,7 @@ function fr_CA_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/he.js
+// ../../../node_modules/zod/v4/locales/he.js
 var error67 = () => {
   const TypeNames = {
     string: { label: "\u05DE\u05D7\u05E8\u05D5\u05D6\u05EA", gender: "f" },
@@ -24679,7 +24735,7 @@ function he_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/hr.js
+// ../../../node_modules/zod/v4/locales/hr.js
 var error68 = () => {
   const Sizable = {
     string: { unit: "znakova", verb: "imati" },
@@ -24802,7 +24858,7 @@ function hr_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/hu.js
+// ../../../node_modules/zod/v4/locales/hu.js
 var error69 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "legyen" },
@@ -24911,7 +24967,7 @@ function hu_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/hy.js
+// ../../../node_modules/zod/v4/locales/hy.js
 function getArmenianPlural2(count, one, many) {
   return Math.abs(count) === 1 ? one : many;
 }
@@ -25059,7 +25115,7 @@ function hy_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/id.js
+// ../../../node_modules/zod/v4/locales/id.js
 var error71 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "memiliki" },
@@ -25166,7 +25222,7 @@ function id_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/is.js
+// ../../../node_modules/zod/v4/locales/is.js
 var error72 = () => {
   const Sizable = {
     string: { unit: "stafi", verb: "a\xF0 hafa" },
@@ -25276,7 +25332,7 @@ function is_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/it.js
+// ../../../node_modules/zod/v4/locales/it.js
 var error73 = () => {
   const Sizable = {
     string: { unit: "caratteri", verb: "avere" },
@@ -25385,7 +25441,7 @@ function it_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ja.js
+// ../../../node_modules/zod/v4/locales/ja.js
 var error74 = () => {
   const Sizable = {
     string: { unit: "\u6587\u5B57", verb: "\u3067\u3042\u308B" },
@@ -25493,7 +25549,7 @@ function ja_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ka.js
+// ../../../node_modules/zod/v4/locales/ka.js
 var error75 = () => {
   const Sizable = {
     string: { unit: "\u10E1\u10D8\u10DB\u10D1\u10DD\u10DA\u10DD", verb: "\u10E3\u10DC\u10D3\u10D0 \u10E8\u10D4\u10D8\u10EA\u10D0\u10D5\u10D3\u10D4\u10E1" },
@@ -25606,7 +25662,7 @@ function ka_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/km.js
+// ../../../node_modules/zod/v4/locales/km.js
 var error76 = () => {
   const Sizable = {
     string: { unit: "\u178F\u17BD\u17A2\u1780\u17D2\u179F\u179A", verb: "\u1782\u17BD\u179A\u1798\u17B6\u1793" },
@@ -25717,12 +25773,12 @@ function km_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/kh.js
+// ../../../node_modules/zod/v4/locales/kh.js
 function kh_default2() {
   return km_default2();
 }
 
-// node_modules/zod/v4/locales/ko.js
+// ../../../node_modules/zod/v4/locales/ko.js
 var error77 = () => {
   const Sizable = {
     string: { unit: "\uBB38\uC790", verb: "to have" },
@@ -25834,7 +25890,7 @@ function ko_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/lt.js
+// ../../../node_modules/zod/v4/locales/lt.js
 var capitalizeFirstCharacter2 = (text2) => {
   return text2.charAt(0).toUpperCase() + text2.slice(1);
 };
@@ -26038,7 +26094,7 @@ function lt_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/mk.js
+// ../../../node_modules/zod/v4/locales/mk.js
 var error79 = () => {
   const Sizable = {
     string: { unit: "\u0437\u043D\u0430\u0446\u0438", verb: "\u0434\u0430 \u0438\u043C\u0430\u0430\u0442" },
@@ -26148,7 +26204,7 @@ function mk_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ms.js
+// ../../../node_modules/zod/v4/locales/ms.js
 var error80 = () => {
   const Sizable = {
     string: { unit: "aksara", verb: "mempunyai" },
@@ -26256,7 +26312,7 @@ function ms_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/nl.js
+// ../../../node_modules/zod/v4/locales/nl.js
 var error81 = () => {
   const Sizable = {
     string: { unit: "tekens", verb: "heeft" },
@@ -26367,7 +26423,7 @@ function nl_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/no.js
+// ../../../node_modules/zod/v4/locales/no.js
 var error82 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "\xE5 ha" },
@@ -26476,7 +26532,7 @@ function no_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ota.js
+// ../../../node_modules/zod/v4/locales/ota.js
 var error83 = () => {
   const Sizable = {
     string: { unit: "harf", verb: "olmal\u0131d\u0131r" },
@@ -26586,7 +26642,7 @@ function ota_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ps.js
+// ../../../node_modules/zod/v4/locales/ps.js
 var error84 = () => {
   const Sizable = {
     string: { unit: "\u062A\u0648\u06A9\u064A", verb: "\u0648\u0644\u0631\u064A" },
@@ -26701,7 +26757,7 @@ function ps_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/pl.js
+// ../../../node_modules/zod/v4/locales/pl.js
 var error85 = () => {
   const Sizable = {
     string: { unit: "znak\xF3w", verb: "mie\u0107" },
@@ -26811,7 +26867,7 @@ function pl_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/pt.js
+// ../../../node_modules/zod/v4/locales/pt.js
 var error86 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "ter" },
@@ -26920,7 +26976,7 @@ function pt_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ro.js
+// ../../../node_modules/zod/v4/locales/ro.js
 var error87 = () => {
   const Sizable = {
     string: { unit: "caractere", verb: "s\u0103 aib\u0103" },
@@ -27040,7 +27096,7 @@ function ro_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ru.js
+// ../../../node_modules/zod/v4/locales/ru.js
 function getRussianPlural2(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -27197,7 +27253,7 @@ function ru_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/sl.js
+// ../../../node_modules/zod/v4/locales/sl.js
 var error89 = () => {
   const Sizable = {
     string: { unit: "znakov", verb: "imeti" },
@@ -27307,7 +27363,7 @@ function sl_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/sv.js
+// ../../../node_modules/zod/v4/locales/sv.js
 var error90 = () => {
   const Sizable = {
     string: { unit: "tecken", verb: "att ha" },
@@ -27418,7 +27474,7 @@ function sv_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ta.js
+// ../../../node_modules/zod/v4/locales/ta.js
 var error91 = () => {
   const Sizable = {
     string: { unit: "\u0B8E\u0BB4\u0BC1\u0BA4\u0BCD\u0BA4\u0BC1\u0B95\u0BCD\u0B95\u0BB3\u0BCD", verb: "\u0B95\u0BCA\u0BA3\u0BCD\u0B9F\u0BBF\u0BB0\u0BC1\u0B95\u0BCD\u0B95 \u0BB5\u0BC7\u0BA3\u0BCD\u0B9F\u0BC1\u0BAE\u0BCD" },
@@ -27529,7 +27585,7 @@ function ta_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/th.js
+// ../../../node_modules/zod/v4/locales/th.js
 var error92 = () => {
   const Sizable = {
     string: { unit: "\u0E15\u0E31\u0E27\u0E2D\u0E31\u0E01\u0E29\u0E23", verb: "\u0E04\u0E27\u0E23\u0E21\u0E35" },
@@ -27640,7 +27696,7 @@ function th_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/tr.js
+// ../../../node_modules/zod/v4/locales/tr.js
 var error93 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "olmal\u0131" },
@@ -27746,7 +27802,7 @@ function tr_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/uk.js
+// ../../../node_modules/zod/v4/locales/uk.js
 var error94 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0456\u0432", verb: "\u043C\u0430\u0442\u0438\u043C\u0435" },
@@ -27855,12 +27911,12 @@ function uk_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/ua.js
+// ../../../node_modules/zod/v4/locales/ua.js
 function ua_default2() {
   return uk_default2();
 }
 
-// node_modules/zod/v4/locales/ur.js
+// ../../../node_modules/zod/v4/locales/ur.js
 var error95 = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0648\u0641", verb: "\u06C1\u0648\u0646\u0627" },
@@ -27971,7 +28027,7 @@ function ur_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/uz.js
+// ../../../node_modules/zod/v4/locales/uz.js
 var error96 = () => {
   const Sizable = {
     string: { unit: "belgi", verb: "bo\u2018lishi kerak" },
@@ -28082,7 +28138,7 @@ function uz_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/vi.js
+// ../../../node_modules/zod/v4/locales/vi.js
 var error97 = () => {
   const Sizable = {
     string: { unit: "k\xFD t\u1EF1", verb: "c\xF3" },
@@ -28191,7 +28247,7 @@ function vi_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/zh-CN.js
+// ../../../node_modules/zod/v4/locales/zh-CN.js
 var error98 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u7B26", verb: "\u5305\u542B" },
@@ -28301,7 +28357,7 @@ function zh_CN_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/zh-TW.js
+// ../../../node_modules/zod/v4/locales/zh-TW.js
 var error99 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u5143", verb: "\u64C1\u6709" },
@@ -28409,7 +28465,7 @@ function zh_TW_default2() {
   };
 }
 
-// node_modules/zod/v4/locales/yo.js
+// ../../../node_modules/zod/v4/locales/yo.js
 var error100 = () => {
   const Sizable = {
     string: { unit: "\xE0mi", verb: "n\xED" },
@@ -28517,7 +28573,7 @@ function yo_default2() {
   };
 }
 
-// node_modules/zod/v4/core/registries.js
+// ../../../node_modules/zod/v4/core/registries.js
 var _a4;
 var $output2 = /* @__PURE__ */ Symbol("ZodOutput");
 var $input2 = /* @__PURE__ */ Symbol("ZodInput");
@@ -28567,7 +28623,7 @@ function registry2() {
 (_a4 = globalThis).__zod_globalRegistry ?? (_a4.__zod_globalRegistry = registry2());
 var globalRegistry2 = globalThis.__zod_globalRegistry;
 
-// node_modules/zod/v4/core/api.js
+// ../../../node_modules/zod/v4/core/api.js
 // @__NO_SIDE_EFFECTS__
 function _string2(Class3, params) {
   return new Class3({
@@ -29606,7 +29662,7 @@ function _stringFormat2(Class3, format, fnOrRegex, _params = {}) {
   return inst;
 }
 
-// node_modules/zod/v4/core/to-json-schema.js
+// ../../../node_modules/zod/v4/core/to-json-schema.js
 function initializeContext2(params) {
   let target2 = params?.target ?? "draft-2020-12";
   if (target2 === "draft-4")
@@ -29965,7 +30021,7 @@ var createStandardJSONSchemaMethod2 = (schema, io, processors = {}) => (params) 
   return finalize2(ctx, schema);
 };
 
-// node_modules/zod/v4/core/json-schema-processors.js
+// ../../../node_modules/zod/v4/core/json-schema-processors.js
 var formatMap2 = {
   guid: "uuid",
   url: "uri",
@@ -30509,7 +30565,7 @@ function toJSONSchema2(input, params) {
   return finalize2(ctx, input);
 }
 
-// node_modules/zod/v4/core/json-schema-generator.js
+// ../../../node_modules/zod/v4/core/json-schema-generator.js
 var JSONSchemaGenerator2 = class {
   /** @deprecated Access via ctx instead */
   get metadataRegistry() {
@@ -30584,10 +30640,10 @@ var JSONSchemaGenerator2 = class {
   }
 };
 
-// node_modules/zod/v4/core/json-schema.js
+// ../../../node_modules/zod/v4/core/json-schema.js
 var json_schema_exports2 = {};
 
-// node_modules/zod/v4/classic/schemas.js
+// ../../../node_modules/zod/v4/classic/schemas.js
 var schemas_exports4 = {};
 __export(schemas_exports4, {
   ZodAny: () => ZodAny2,
@@ -30758,7 +30814,7 @@ __export(schemas_exports4, {
   xor: () => xor2
 });
 
-// node_modules/zod/v4/classic/checks.js
+// ../../../node_modules/zod/v4/classic/checks.js
 var checks_exports4 = {};
 __export(checks_exports4, {
   endsWith: () => _endsWith2,
@@ -30792,7 +30848,7 @@ __export(checks_exports4, {
   uppercase: () => _uppercase2
 });
 
-// node_modules/zod/v4/classic/iso.js
+// ../../../node_modules/zod/v4/classic/iso.js
 var iso_exports2 = {};
 __export(iso_exports2, {
   ZodISODate: () => ZodISODate2,
@@ -30833,7 +30889,7 @@ function duration4(params) {
   return _isoDuration2(ZodISODuration2, params);
 }
 
-// node_modules/zod/v4/classic/errors.js
+// ../../../node_modules/zod/v4/classic/errors.js
 var initializer4 = (inst, issues) => {
   $ZodError2.init(inst, issues);
   inst.name = "ZodError";
@@ -30873,7 +30929,7 @@ var ZodRealError2 = /* @__PURE__ */ $constructor2("ZodError", initializer4, {
   Parent: Error
 });
 
-// node_modules/zod/v4/classic/parse.js
+// ../../../node_modules/zod/v4/classic/parse.js
 var parse4 = /* @__PURE__ */ _parse2(ZodRealError2);
 var parseAsync4 = /* @__PURE__ */ _parseAsync2(ZodRealError2);
 var safeParse4 = /* @__PURE__ */ _safeParse2(ZodRealError2);
@@ -30887,7 +30943,7 @@ var safeDecode4 = /* @__PURE__ */ _safeDecode2(ZodRealError2);
 var safeEncodeAsync4 = /* @__PURE__ */ _safeEncodeAsync2(ZodRealError2);
 var safeDecodeAsync4 = /* @__PURE__ */ _safeDecodeAsync2(ZodRealError2);
 
-// node_modules/zod/v4/classic/schemas.js
+// ../../../node_modules/zod/v4/classic/schemas.js
 var _installedGroups2 = /* @__PURE__ */ new WeakMap();
 function _installLazyMethods2(inst, group, methods) {
   const proto = Object.getPrototypeOf(inst);
@@ -32177,7 +32233,7 @@ function preprocess2(fn, schema) {
   });
 }
 
-// node_modules/zod/v4/classic/compat.js
+// ../../../node_modules/zod/v4/classic/compat.js
 var ZodIssueCode2 = {
   invalid_type: "invalid_type",
   too_big: "too_big",
@@ -32203,7 +32259,7 @@ var ZodFirstPartyTypeKind2;
 /* @__PURE__ */ (function(ZodFirstPartyTypeKind3) {
 })(ZodFirstPartyTypeKind2 || (ZodFirstPartyTypeKind2 = {}));
 
-// node_modules/zod/v4/classic/from-json-schema.js
+// ../../../node_modules/zod/v4/classic/from-json-schema.js
 var z2 = {
   ...schemas_exports4,
   ...checks_exports4,
@@ -32683,7 +32739,7 @@ function fromJSONSchema2(schema, params) {
   return convertSchema2(normalized, ctx);
 }
 
-// node_modules/zod/v4/classic/coerce.js
+// ../../../node_modules/zod/v4/classic/coerce.js
 var coerce_exports2 = {};
 __export(coerce_exports2, {
   bigint: () => bigint6,
@@ -32708,7 +32764,7 @@ function date8(params) {
   return _coercedDate2(ZodDate2, params);
 }
 
-// node_modules/zod/v4/classic/external.js
+// ../../../node_modules/zod/v4/classic/external.js
 config2(en_default2());
 
 // packages/tools/toolkit-contracts.ts
@@ -33572,6 +33628,9 @@ var tools = [
   { key: "export", label: toolOperationDefinitionFor("podplo_export_images").name, help: "\u955C\u50CF\u62FC\u63A5 / \u683C\u5F0F / PDF", group: "\u5370\u5237\u4E0E\u5BFC\u51FA" }
 ];
 var imageProcessingDefinition = toolGroupDefinitionBySlug(IMAGE_PROCESSING_TOOL_ID);
+var MAX_SOURCE_IMAGES = 100;
+var MAX_BATCH_BYTES = 250 * 1024 * 1024;
+var validImageTypes = /* @__PURE__ */ new Set(["image/png", "image/jpeg", "image/webp"]);
 var initialOptions = {
   resize: { lockAspect: true, resizeAxis: "width", width: 2e3, height: 2e3, unit: "px", ppi: 300, trimTransparent: false },
   rotate: { angle: 0, flipHorizontal: false, flipVertical: false },
@@ -33629,6 +33688,9 @@ function unitFactor(unit, ppi) {
 function messageOf(error101) {
   return error101 instanceof Error ? error101.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
 }
+function importBoundaryFailure(error101) {
+  return /(账号已变化|登录|授权|订阅|SESSION_CHANGED|SESSION_REPLACED|ACCOUNT_CHANGED|AUTHORIZATION_INVALID|INVALID_TOKEN|UNAUTHENTICATED|SIGN_IN_REQUIRED|FORBIDDEN|SUBSCRIPTION_REQUIRED|TOOL_GROUP_REQUIRED|TOOL_GROUP_EXPIRED)/iu.test(messageOf(error101));
+}
 function operationId() {
   if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
   return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
@@ -33658,7 +33720,9 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   const resizeEdited = (0, import_react6.useRef)(false);
   const [options, setOptions] = (0, import_react6.useState)(() => structuredClone(initialOptions));
   const [images, setImages] = (0, import_react6.useState)([]);
+  const [sourceQueue, setSourceQueue] = (0, import_react6.useState)([]);
   const [selected, setSelected] = (0, import_react6.useState)([]);
+  const [previewSource, setPreviewSource] = (0, import_react6.useState)("");
   const [sourcePreview, setSourcePreview] = (0, import_react6.useState)();
   const [sourcePreviewScope, setSourcePreviewScope] = (0, import_react6.useState)();
   const [toolPreview, setToolPreview] = (0, import_react6.useState)();
@@ -33672,16 +33736,24 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   const [notice, setNotice] = (0, import_react6.useState)("");
   const [presetNotice, setPresetNotice] = (0, import_react6.useState)("");
   const [error101, setError] = (0, import_react6.useState)("");
+  const imports = (0, import_react6.useRef)(0);
   const groupAccess = (0, import_react6.useMemo)(() => toolGroupAccessBySlug(toolGroups), [toolGroups]);
   const imageProcessingAccess = groupAccess[IMAGE_PROCESSING_TOOL_ID];
+  const panelScope = (0, import_react6.useMemo)(() => ({}), [request, imageProcessingAccess.status, imageProcessingAccess.expiresAt]);
+  const currentScope = (0, import_react6.useRef)(panelScope);
+  currentScope.current = panelScope;
   const effectiveEnabled = Object.fromEntries(tools.map((tool) => [
     tool.key,
     enabled[tool.key] && imageProcessingAccess.status === "active"
   ]));
   const trimAccess = imageProcessingAccess;
   const effectiveTrim = trimTransparent && trimAccess.status === "active";
-  const selectedIds = (0, import_react6.useMemo)(() => selected.filter((id) => images.some((row) => row.id === id)), [selected, images]);
-  const previewIds = JSON.stringify(selectedIds);
+  const sourceImages = (0, import_react6.useMemo)(() => sourceQueue.flatMap((id) => {
+    const row = images.find((image) => image.id === id);
+    return row ? [row] : [];
+  }), [sourceQueue, images]);
+  const selectedIds = (0, import_react6.useMemo)(() => selected.filter((id) => sourceQueue.includes(id) && images.some((row) => row.id === id)), [selected, sourceQueue, images]);
+  const selectedKey = JSON.stringify(selectedIds);
   const plan = { orderVersion: 2, steps: tools.flatMap((row) => [
     ...row.key === "resize" && effectiveTrim ? [{ tool: "trim", ...trimThreshold ? { threshold: trimThreshold } : {} }] : [],
     ...effectiveEnabled[row.key] ? [{ tool: row.key, options: processingOptions(row.key, options[row.key]) }] : []
@@ -33692,7 +33764,9 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   const bleedError = enabled.print && bleedFields.some((field) => typeof options.print[field] !== "number" || !Number.isFinite(options.print[field]) || Number(options.print[field]) < 0 || Number(options.print[field]) > 1e3) ? "\u51FA\u8840\u8BF7\u586B\u5199 0\uFF5E1000 \u6BEB\u7C73\u7684\u6709\u6548\u6570\u5B57\uFF0C\u5141\u8BB8\u5355\u8FB9\u4E3A 0\u3002" : "";
   const trimThresholdError = !Number.isInteger(trimThreshold) || trimThreshold < 0 || trimThreshold > 254 ? "\u88C1\u8FB9\u900F\u660E\u5EA6\u9608\u503C\u8BF7\u586B\u5199 0\uFF5E254 \u7684\u6574\u6570\u3002" : "";
   const trimError = effectiveTrim ? trimThresholdError : "";
-  const sourceId = selectedIds[0], source = images.find((row) => row.id === sourceId);
+  const sourceId = selectedIds.includes(previewSource) ? previewSource : selectedIds[0];
+  const previewIds = JSON.stringify(sourceId ? [sourceId] : []);
+  const source = images.find((row) => row.id === sourceId);
   const upstreamSteps = plan.steps.filter((row) => !["resize", "print", "export"].includes(row.tool));
   const upstreamKey = JSON.stringify({ id: sourceId, steps: upstreamSteps });
   const resizeBasis = resizeSource && resizeSource.id === sourceId && resizeSource.key === upstreamKey ? resizeSource : upstreamSteps.length ? void 0 : source;
@@ -33788,7 +33862,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
     }
     setPreviewBusy(true);
     const timer = setTimeout(() => {
-      void request("local.pipelinePreview", { ids: JSON.parse(previewIds), options: JSON.parse(previewOptions) }).then((value2) => {
+      void request("local.pipelinePreview", { ids: [sourceId], options: JSON.parse(previewOptions) }).then((value2) => {
         if (alive) {
           setToolPreview(value2.data);
           setToolPreviewScope({ request, sourceKey: previewIds, optionsKey: previewOptions });
@@ -33809,7 +33883,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   (0, import_react6.useEffect)(() => {
     setLatest([]);
     setNotice("");
-  }, [previewIds]);
+  }, [selectedKey]);
   (0, import_react6.useEffect)(() => {
     setNotice("");
   }, [previewOptions]);
@@ -33821,66 +33895,130 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
     if (trimAccess.status !== "active") setTrimTransparent(false);
     setLatest([]);
   }, [toolGroups]);
-  const importFile = async (file3, purpose = "source") => {
+  (0, import_react6.useEffect)(() => {
+    imports.current++;
+    setImages([]);
+    setSourceQueue([]);
+    setSelected([]);
+    setPreviewSource("");
+    setSourcePreview(void 0);
+    setSourcePreviewScope(void 0);
+    setToolPreview(void 0);
+    setToolPreviewScope(void 0);
+    setResizeSource(void 0);
+    setLatest([]);
+    setNotice("");
+    setError("");
+    setBusy("");
+  }, [panelScope]);
+  const importPattern = async (file3) => {
     if (!file3) return;
-    if (file3.size > 50 * 1024 * 1024) {
-      setError("\u5355\u5F20\u56FE\u7247\u4E0D\u80FD\u8D85\u8FC7 50 MB\u3002");
+    if (!validImageTypes.has(file3.type) || file3.size < 1 || file3.size > 50 * 1024 * 1024) {
+      setError("\u56FE\u6848\u53EA\u652F\u6301 1 B\uFF5E50 MB \u7684 PNG\u3001JPEG \u6216 WebP \u56FE\u7247\u3002");
       return;
     }
-    if (!["image/png", "image/jpeg", "image/webp"].includes(file3.type)) {
-      setError("\u53EA\u652F\u6301 PNG\u3001JPEG \u548C WebP\u3002");
-      return;
-    }
-    setBusy(purpose === "pattern" ? "import-pattern" : "import");
+    const token = ++imports.current, scope = panelScope;
+    setBusy("import-pattern");
     setError("");
     setNotice("");
     try {
       const bytes = new Uint8Array(await file3.arrayBuffer());
+      if (!mounted.current || token !== imports.current || currentScope.current !== scope) return;
       const result = await request("local.importInput", { name: file3.name, contentType: file3.type, base64: toBase64(bytes) });
+      if (!mounted.current || token !== imports.current || currentScope.current !== scope) return;
       setImages((current) => [...current.filter((row) => row.id !== result.data.id), result.data]);
-      if (purpose === "pattern") {
-        setOptions((current) => ({ ...current, outline: { ...current.outline, patternId: result.data.id } }));
-        setNotice("\u672C\u5730\u56FE\u6848\u5DF2\u9009\u7528\u3002");
-      } else {
-        setSelected([result.data.id]);
-        setNotice("\u56FE\u7247\u5DF2\u6DFB\u52A0\u3002");
-      }
+      setOptions((current) => ({ ...current, outline: { ...current.outline, patternId: result.data.id } }));
+      setNotice("\u672C\u5730\u56FE\u6848\u5DF2\u9009\u7528\u3002");
     } catch (value2) {
-      setError(messageOf(value2));
+      if (token === imports.current && currentScope.current === scope) setError(messageOf(value2));
     } finally {
-      setBusy("");
+      if (token === imports.current && currentScope.current === scope) setBusy("");
     }
   };
+  const importFiles = async (files) => {
+    if (!files?.length) return;
+    if (imageProcessingAccess.status !== "active") {
+      setError(`${imageProcessingDefinition.name}\u6388\u6743\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9\u6216\u7EED\u671F\u3002`);
+      return;
+    }
+    const incoming = [...files];
+    if (incoming.length > MAX_SOURCE_IMAGES) {
+      setError(`\u4E00\u6B21\u6700\u591A\u9009\u62E9 ${MAX_SOURCE_IMAGES} \u5F20\u56FE\u7247\u3002`);
+      return;
+    }
+    const valid = incoming.filter((file3) => validImageTypes.has(file3.type) && file3.size >= 1 && file3.size <= 50 * 1024 * 1024);
+    const failed = incoming.filter((file3) => !valid.includes(file3)).map((file3) => file3.name);
+    if (sourceQueue.length + valid.length > MAX_SOURCE_IMAGES) {
+      setError(`\u5F53\u524D\u6279\u6B21\u6700\u591A\u4FDD\u7559 ${MAX_SOURCE_IMAGES} \u5F20\u56FE\u7247\uFF1B\u5DF2\u6DFB\u52A0 ${sourceQueue.length} \u5F20\uFF0C\u672C\u6B21\u6709 ${valid.length} \u5F20\u53EF\u5BFC\u5165\u3002\u8BF7\u5148\u79FB\u9664\u90E8\u5206\u56FE\u7247\u3002`);
+      return;
+    }
+    if (valid.reduce((sum, file3) => sum + file3.size, 0) > MAX_BATCH_BYTES) {
+      setError("\u672C\u6B21\u9009\u62E9\u7684\u56FE\u7247\u5408\u8BA1\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5BFC\u5165\u3002");
+      return;
+    }
+    const token = ++imports.current, scope = panelScope;
+    setBusy("import");
+    setError("");
+    setNotice("");
+    const imported = [];
+    let boundaryError = "";
+    for (let index = 0; index < valid.length; index++) {
+      const file3 = valid[index];
+      try {
+        const bytes = new Uint8Array(await file3.arrayBuffer());
+        if (!mounted.current || token !== imports.current || currentScope.current !== scope) return;
+        const result = await request("local.importInput", { name: file3.name, contentType: file3.type, base64: toBase64(bytes) });
+        if (!mounted.current || token !== imports.current || currentScope.current !== scope) return;
+        imported.push(result.data);
+      } catch (value2) {
+        failed.push(file3.name);
+        if (importBoundaryFailure(value2)) {
+          boundaryError = messageOf(value2);
+          failed.push(...valid.slice(index + 1).map((row) => row.name));
+          break;
+        }
+      }
+    }
+    if (token !== imports.current || currentScope.current !== scope) return;
+    if (imported.length) {
+      const ids2 = imported.map((row) => row.id);
+      setImages((current) => [...current.filter((row) => !ids2.includes(row.id)), ...imported]);
+      setSourceQueue((current) => [.../* @__PURE__ */ new Set([...current, ...ids2])]);
+      setSelected((current) => [.../* @__PURE__ */ new Set([...current, ...ids2])]);
+      setPreviewSource((current) => current && selectedIds.includes(current) ? current : ids2[0]);
+      setNotice(`\u5DF2\u6DFB\u52A0\u5E76\u9009\u4E2D ${imported.length} \u5F20\u56FE\u7247\u3002`);
+    }
+    if (failed.length) setError(boundaryError ? `${boundaryError}\uFF1B\u672C\u6279\u5DF2\u505C\u6B62\uFF0C${failed.length} \u5F20\u56FE\u7247\u672A\u5BFC\u5165\u3002\u5DF2\u6210\u529F\u7684\u56FE\u7247\u5DF2\u4FDD\u7559\u3002` : `\u6709 ${failed.length} \u5F20\u56FE\u7247\u672A\u5BFC\u5165\uFF1A${failed.slice(0, 3).join("\u3001")}${failed.length > 3 ? " \u7B49" : ""}\u3002\u4EC5\u652F\u6301 1 B\uFF5E50 MB \u7684 PNG\u3001JPEG \u6216 WebP\uFF1B\u5DF2\u6210\u529F\u7684\u56FE\u7247\u5DF2\u4FDD\u7559\u3002`);
+    setBusy("");
+  };
   const save = async () => {
+    const scope = panelScope;
     setBusy("save");
     setError("");
     setNotice("");
     try {
       const response = await request("local.save", { operationId: operationId(), ids: selectedIds, options: plan });
-      if (!mounted.current) return;
+      if (!mounted.current || currentScope.current !== scope) return;
       const rows = [...response.data.images ?? [], ...response.data.files ?? []];
       setLatest(rows);
       setPreviewMode(0);
-      if (response.data.preview) {
-        setToolPreview(response.data.preview);
-        setToolPreviewScope({ request, sourceKey: previewIds, optionsKey: previewOptions });
-      }
       setNotice(`\u5DF2\u4FDD\u5B58 ${rows.length} \u4E2A\u7ED3\u679C\uFF0C\u539F\u4EF6\u4FDD\u7559\u3002`);
     } catch (value2) {
-      setError(messageOf(value2));
+      if (currentScope.current === scope) setError(messageOf(value2));
     } finally {
-      setBusy("");
+      if (currentScope.current === scope) setBusy("");
     }
   };
   const openResult = async (id) => {
+    const scope = panelScope;
     setBusy(`open:${id}`);
     setError("");
     try {
       await request("local.reveal", { id });
     } catch (value2) {
-      setError(messageOf(value2));
+      if (currentScope.current === scope) setError(messageOf(value2));
     } finally {
-      setBusy("");
+      if (currentScope.current === scope) setBusy("");
     }
   };
   const exportPreset = () => {
@@ -33905,12 +34043,14 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   const presetInput = (0, import_react6.useRef)(null);
   const importPreset = async (file3) => {
     if (!file3) return;
+    const scope = panelScope;
     setError("");
     setNotice("");
     setBusy("import-preset");
     try {
       if (file3.size > 1024 * 1024) throw new Error("\u9884\u8BBE\u6587\u4EF6\u4E0D\u80FD\u8D85\u8FC7 1 MB\u3002");
       const preset = importToolboxPreset(JSON.parse((await file3.text()).replace(/^\uFEFF/u, "")), initialOptions);
+      if (currentScope.current !== scope) return;
       resizeEdited.current = true;
       const allowedEnabled = Object.fromEntries(tools.map((tool) => [
         tool.key,
@@ -33929,9 +34069,9 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       setToolPreviewScope(void 0);
       setPresetNotice(`\u5DF2\u5BFC\u5165\u9884\u8BBE\uFF1A${file3.name}\u3002${skipped.length ? `\u672A\u542F\u7528\u65E0\u6709\u6548\u6388\u6743\u7684\u6A21\u5757\uFF1A${skipped.join("\u3001")}\u3002` : ""}${preset.needsPattern && allowedEnabled.outline ? "\u8BF7\u91CD\u65B0\u9009\u62E9\u63CF\u8FB9\u56FE\u6848\u56FE\u7247\u3002" : ""}`);
     } catch (value2) {
-      setError(`\u9884\u8BBE\u5BFC\u5165\u5931\u8D25\uFF1A${messageOf(value2)}`);
+      if (currentScope.current === scope) setError(`\u9884\u8BBE\u5BFC\u5165\u5931\u8D25\uFF1A${messageOf(value2)}`);
     } finally {
-      setBusy("");
+      if (currentScope.current === scope) setBusy("");
     }
   };
   const previewLabel = (image, index) => image.name.includes("\u6821\u6837") ? `\u6821\u6837${index > 2 ? " " + (index - 1) : ""}` : /-镜像(?:-|\.)/.test(image.name) ? "\u955C\u50CF" : `\u7ED3\u679C ${index + 1}`;
@@ -33961,9 +34101,9 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
                   values: options[row.key],
                   images,
                   update: (name, value2) => update(row.key, name, value2),
-                  importPattern: (file3) => importFile(file3, "pattern"),
+                  importPattern,
                   patternBusy: busy === "import-pattern",
-                  outlineLongEdge: toolPreview?.outlineSource?.id === sourceId ? toolPreview?.outlineSource?.longEdge : void 0
+                  outlineLongEdge: visibleToolPreview?.outlineSource?.id === sourceId ? visibleToolPreview?.outlineSource?.longEdge : void 0
                 }
               ) })
             ] }),
@@ -34054,15 +34194,50 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
               {
                 type: "file",
                 accept: "image/png,image/jpeg,image/webp",
-                disabled: !!busy,
+                multiple: true,
+                disabled: !!busy || imageProcessingAccess.status !== "active",
                 onChange: (event) => {
-                  void importFile(event.currentTarget.files?.[0]);
+                  void importFiles(event.currentTarget.files);
                   event.currentTarget.value = "";
                 }
               }
             ),
-            busy === "import" ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\uFF0B \u4E0A\u4F20\u56FE\u7247"
+            busy === "import" ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\uFF0B \u6279\u91CF\u4E0A\u4F20\u56FE\u7247"
           ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { className: "ppd-toolbox__source-batch", "aria-label": "\u5F53\u524D\u6279\u6B21\u56FE\u7247", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__source-batch-heading", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: "\u5F53\u524D\u6279\u6B21\u56FE\u7247" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
+              selectedIds.length,
+              "/",
+              sourceImages.length,
+              " \u5F20\u5DF2\u9009"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: !!busy || !sourceImages.length, onClick: () => setSelected(sourceImages.map((row) => row.id)), children: "\u5168\u9009" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: !!busy || !selectedIds.length, onClick: () => setSelected([]), children: "\u53D6\u6D88\u5168\u9009" })
+          ] }),
+          sourceImages.length ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-toolbox__source-list", children: sourceImages.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__source-row", "data-preview-source": sourceId === row.id, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", checked: selectedIds.includes(row.id), disabled: !!busy, onChange: (event) => setSelected((current) => event.target.checked ? [.../* @__PURE__ */ new Set([...current, row.id])] : current.filter((id) => id !== row.id)) }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: row.name }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("small", { children: [
+                  row.width,
+                  " \xD7 ",
+                  row.height,
+                  "px",
+                  row.density ? ` \xB7 ${row.density} DPI` : ""
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: !!busy || !selectedIds.includes(row.id), "aria-pressed": sourceId === row.id, onClick: () => setPreviewSource(row.id), children: "\u9884\u89C8" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: !!busy, onClick: () => {
+              setSourceQueue((current) => current.filter((id) => id !== row.id));
+              setSelected((current) => current.filter((id) => id !== row.id));
+            }, children: "\u79FB\u9664" })
+          ] }, row.id)) }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "\u6279\u91CF\u4E0A\u4F20\u540E\u53EF\u52FE\u9009\u8981\u5904\u7406\u7684\u56FE\u7247\uFF0C\u5E76\u5207\u6362\u5F53\u524D\u9884\u89C8\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: "\u4E00\u6B21\u6700\u591A 100 \u5F20\u3001\u5355\u5F20 50 MB\uFF1B\u5355\u6279\u5904\u7406\u8F93\u5165\u5408\u8BA1\u6700\u591A 250 MB\u3002" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbox__previews", children: [
           /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
@@ -34077,7 +34252,9 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
           retainingPreviousEffect && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-toolbox__preview-retained", role: "status", children: previewBusy ? "\u6B63\u5728\u66F4\u65B0\uFF0C\u5F53\u524D\u663E\u793A\u4E0A\u6B21\u6548\u679C" : previewError ? "\u66F4\u65B0\u5931\u8D25\uFF0C\u5F53\u524D\u663E\u793A\u4E0A\u6B21\u6210\u529F\u6548\u679C" : "\u5F53\u524D\u663E\u793A\u4E0A\u6B21\u6548\u679C" })
         ] }),
         selectedIds.length > 1 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-toolbox__preview-note", children: [
-          "\u9884\u89C8\u7B2C\u4E00\u5F20\uFF0C\u4FDD\u5B58\u65F6\u5904\u7406\u5168\u90E8 ",
+          "\u5F53\u524D\u9884\u89C8 ",
+          source?.name,
+          "\uFF0C\u4FDD\u5B58\u65F6\u5904\u7406\u5168\u90E8 ",
           selectedIds.length,
           " \u5F20\u3002"
         ] }),
@@ -34318,8 +34495,10 @@ function ToolFields({ tool, values, images, update, importPattern, patternBusy, 
 var import_react7 = require("react");
 var import_jsx_runtime8 = require("react/jsx-runtime");
 var MAX_SOURCES = 10;
+var MAX_BATCH_BYTES2 = 250 * 1024 * 1024;
 var validTypes = /* @__PURE__ */ new Set(["image/png", "image/jpeg", "image/webp"]);
 var messageOf2 = (value2) => value2 instanceof Error ? value2.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
+var importBoundaryFailure2 = (value2) => /(账号已变化|登录|授权|订阅|SESSION_CHANGED|SESSION_REPLACED|ACCOUNT_CHANGED|AUTHORIZATION_INVALID|INVALID_TOKEN|UNAUTHENTICATED|SIGN_IN_REQUIRED|FORBIDDEN|SUBSCRIPTION_REQUIRED|TOOL_GROUP_REQUIRED|TOOL_GROUP_EXPIRED)/iu.test(messageOf2(value2));
 var operationId2 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 function toBase642(bytes) {
   let binary = "";
@@ -34328,6 +34507,10 @@ function toBase642(bytes) {
   return btoa(binary);
 }
 function GridSplitPanel({ request, access }) {
+  const scope = (0, import_react7.useMemo)(() => ({}), [request, access.status, access.expiresAt]);
+  const currentScope = (0, import_react7.useRef)(scope);
+  currentScope.current = scope;
+  const imports = (0, import_react7.useRef)(0);
   const [sources, setSources] = (0, import_react7.useState)([]);
   const [selected, setSelected] = (0, import_react7.useState)([]);
   const [rows, setRows] = (0, import_react7.useState)("2");
@@ -34340,7 +34523,9 @@ function GridSplitPanel({ request, access }) {
   const [preview, setPreview] = (0, import_react7.useState)([]);
   const [saved, setSaved] = (0, import_react7.useState)([]);
   const [busy, setBusy] = (0, import_react7.useState)("");
+  const [loadingSources, setLoadingSources] = (0, import_react7.useState)(true);
   const [error101, setError] = (0, import_react7.useState)("");
+  const [previewError, setPreviewError] = (0, import_react7.useState)("");
   const [notice, setNotice] = (0, import_react7.useState)("");
   const previewSequence = (0, import_react7.useRef)(0);
   const defaultSource = (0, import_react7.useRef)("");
@@ -34370,19 +34555,44 @@ function GridSplitPanel({ request, access }) {
     }
   }, [mode, selectedSources[0]?.id, resetAssetDefaults]);
   const load = (0, import_react7.useCallback)(async () => {
-    const response = await request("splitter.list");
-    const images = (response.data.images ?? []).filter((row) => !row.sourceId).slice(0, MAX_SOURCES);
-    setSources(images);
-    setSelected((current) => current.filter((id) => images.some((row) => row.id === id)));
-  }, [request]);
+    setLoadingSources(true);
+    try {
+      const response = await request("splitter.list");
+      if (currentScope.current !== scope) return;
+      const images = (response.data.images ?? []).filter((row) => !row.sourceId).slice(0, MAX_SOURCES);
+      setSources(images);
+    } finally {
+      if (currentScope.current === scope) setLoadingSources(false);
+    }
+  }, [request, scope]);
   (0, import_react7.useEffect)(() => {
-    void load().catch((value2) => setError(messageOf2(value2)));
-  }, [load]);
+    imports.current++;
+    previewSequence.current++;
+    setSources([]);
+    setSelected([]);
+    setPreview([]);
+    setSaved([]);
+    setBusy("");
+    setLoadingSources(true);
+    setError("");
+    setPreviewError("");
+    setNotice("");
+    defaultSource.current = "";
+    return () => {
+      imports.current++;
+      previewSequence.current++;
+    };
+  }, [scope]);
+  (0, import_react7.useEffect)(() => {
+    void load().catch((value2) => {
+      if (currentScope.current === scope) setError(messageOf2(value2));
+    });
+  }, [load, scope]);
   (0, import_react7.useEffect)(() => {
     const sequence = ++previewSequence.current;
     let active = true;
     setPreview([]);
-    setError("");
+    setPreviewError("");
     setBusy((current) => current === "preview" ? "" : current);
     if (access.status !== "active" || !selectedSources.length || parameterError) return;
     const timer = setTimeout(() => {
@@ -34390,7 +34600,7 @@ function GridSplitPanel({ request, access }) {
       void request("splitter.preview", { ids: [selectedSources[0].id], options: splitOptions }).then((response) => {
         if (active && sequence === previewSequence.current) setPreview(response.data.images ?? []);
       }).catch((value2) => {
-        if (active && sequence === previewSequence.current && messageOf2(value2) !== "PREVIEW_SUPERSEDED") setError(messageOf2(value2));
+        if (active && sequence === previewSequence.current && messageOf2(value2) !== "PREVIEW_SUPERSEDED") setPreviewError(messageOf2(value2));
       }).finally(() => {
         if (active && sequence === previewSequence.current) setBusy((current) => current === "preview" ? "" : current);
       });
@@ -34407,6 +34617,10 @@ function GridSplitPanel({ request, access }) {
       return;
     }
     if (!files?.length) return;
+    if (loadingSources) {
+      setError("\u6B63\u5728\u8BFB\u53D6\u5F53\u524D\u56FE\u7247\u961F\u5217\uFF0C\u8BF7\u7A0D\u540E\u518D\u6DFB\u52A0\u3002");
+      return;
+    }
     setError("");
     setNotice("");
     const incoming = [...files];
@@ -34414,27 +34628,45 @@ function GridSplitPanel({ request, access }) {
       setError(`\u4E00\u6B21\u6700\u591A\u6DFB\u52A0 ${MAX_SOURCES} \u5F20\u56FE\u7247\u3002`);
       return;
     }
-    const invalid = incoming.find((file3) => !validTypes.has(file3.type) || file3.size < 1 || file3.size > 50 * 1024 * 1024);
-    if (invalid) {
-      setError("\u53EA\u652F\u6301 1 B\uFF5E50 MB \u7684 PNG\u3001JPEG \u6216 WebP \u56FE\u7247\u3002");
+    const valid = incoming.filter((file3) => validTypes.has(file3.type) && file3.size >= 1 && file3.size <= 50 * 1024 * 1024);
+    const failed = incoming.filter((file3) => !valid.includes(file3)).map((file3) => file3.name);
+    if (valid.reduce((sum, file3) => sum + file3.size, 0) > MAX_BATCH_BYTES2) {
+      setError("\u672C\u6B21\u9009\u62E9\u7684\u56FE\u7247\u5408\u8BA1\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5BFC\u5165\u3002");
       return;
     }
-    setBusy("import");
-    try {
-      const imported = [];
-      for (const file3 of incoming) {
-        const bytes = new Uint8Array(await file3.arrayBuffer());
-        const response = await request("splitter.importInput", { name: file3.name, contentType: file3.type, base64: toBase642(bytes) });
-        imported.push(response.data);
-      }
-      setSources((current) => [...imported, ...current.filter((row) => !imported.some((next) => next.id === row.id))].slice(0, MAX_SOURCES));
-      setSelected((current) => [.../* @__PURE__ */ new Set([...current, ...imported.map((row) => row.id)])]);
-      setNotice(`\u5DF2\u6DFB\u52A0 ${imported.length} \u5F20\u56FE\u7247${sources.length + imported.length > MAX_SOURCES ? `\uFF0C\u5F53\u524D\u961F\u5217\u4EC5\u4FDD\u7559\u6700\u8FD1 ${MAX_SOURCES} \u5F20` : ""}\u3002`);
-    } catch (value2) {
-      setError(messageOf2(value2));
-    } finally {
-      setBusy("");
+    if (sources.length + valid.length > MAX_SOURCES) {
+      setError(`\u5F53\u524D\u961F\u5217\u6700\u591A\u4FDD\u7559 ${MAX_SOURCES} \u5F20\u56FE\u7247\uFF1B\u5DF2\u6709 ${sources.length} \u5F20\uFF0C\u672C\u6B21\u6709 ${valid.length} \u5F20\u53EF\u5BFC\u5165\u3002\u8BF7\u5148\u79FB\u9664\u90E8\u5206\u56FE\u7247\u3002`);
+      return;
     }
+    const token = ++imports.current, importScope = scope;
+    setBusy("import");
+    const imported = [];
+    let boundaryError = "";
+    for (let index = 0; index < valid.length; index++) {
+      const file3 = valid[index];
+      try {
+        const bytes = new Uint8Array(await file3.arrayBuffer());
+        if (token !== imports.current || currentScope.current !== importScope) return;
+        const response = await request("splitter.importInput", { name: file3.name, contentType: file3.type, base64: toBase642(bytes) });
+        if (token !== imports.current || currentScope.current !== importScope) return;
+        imported.push(response.data);
+      } catch (value2) {
+        failed.push(file3.name);
+        if (importBoundaryFailure2(value2)) {
+          boundaryError = messageOf2(value2);
+          failed.push(...valid.slice(index + 1).map((row) => row.name));
+          break;
+        }
+      }
+    }
+    if (token !== imports.current || currentScope.current !== importScope) return;
+    if (imported.length) {
+      setSources((current) => [...imported, ...current.filter((row) => !imported.some((next) => next.id === row.id))]);
+      setSelected((current) => [.../* @__PURE__ */ new Set([...current, ...imported.map((row) => row.id)])]);
+      setNotice(`\u5DF2\u6DFB\u52A0\u5E76\u9009\u4E2D ${imported.length} \u5F20\u56FE\u7247\u3002`);
+    }
+    if (failed.length) setError(boundaryError ? `${boundaryError}\uFF1B\u672C\u6279\u5DF2\u505C\u6B62\uFF0C${failed.length} \u5F20\u56FE\u7247\u672A\u5BFC\u5165\u3002\u5DF2\u6210\u529F\u7684\u56FE\u7247\u5DF2\u4FDD\u7559\u3002` : `\u6709 ${failed.length} \u5F20\u56FE\u7247\u672A\u5BFC\u5165\uFF1A${failed.slice(0, 3).join("\u3001")}${failed.length > 3 ? " \u7B49" : ""}\u3002\u4EC5\u652F\u6301 1 B\uFF5E50 MB \u7684 PNG\u3001JPEG \u6216 WebP\uFF1B\u5DF2\u6210\u529F\u7684\u56FE\u7247\u5DF2\u4FDD\u7559\u3002`);
+    setBusy("");
   };
   const save = async () => {
     if (!selectedSources.length) {
@@ -34452,34 +34684,37 @@ function GridSplitPanel({ request, access }) {
     setBusy("save");
     setError("");
     setNotice("");
+    const operationScope = scope;
     try {
       const response = await request("splitter.save", {
         operationId: operationId2(),
         ids: selectedSources.map((row) => row.id),
         options: splitOptions
       });
+      if (currentScope.current !== operationScope) return;
       const images = response.data.images ?? [];
       setSaved(images);
       setNotice(mode === "assets" ? `\u5DF2\u4FDD\u5B58 ${images.length} \u5F20\u900F\u660E PNG \u7D20\u6750\u3002` : `\u5DF2\u6309\u884C\u4ECE\u5DE6\u5230\u53F3\u4FDD\u5B58 ${images.length} \u5F20\u5207\u7247\u3002`);
     } catch (value2) {
-      setError(messageOf2(value2));
+      if (currentScope.current === operationScope) setError(messageOf2(value2));
     } finally {
-      setBusy("");
+      if (currentScope.current === operationScope) setBusy("");
     }
   };
   const reveal = async () => {
     if (!saved[0]) return;
     setBusy("reveal");
     setError("");
+    const operationScope = scope;
     try {
       await request("splitter.reveal", { id: saved[0].id });
     } catch (value2) {
-      setError(messageOf2(value2));
+      if (currentScope.current === operationScope) setError(messageOf2(value2));
     } finally {
-      setBusy("");
+      if (currentScope.current === operationScope) setBusy("");
     }
   };
-  const hasMessage = Boolean(notice || error101 || parameterError && selectedSources.length > 0);
+  const hasMessage = Boolean(notice || error101 || previewError || parameterError && selectedSources.length > 0);
   return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: "ppd-grid-split", "data-grid-split-panel": true, "data-has-message": hasMessage, "aria-label": "PodPlo \u56FE\u7247\u5206\u5272", children: [
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("header", { className: "ppd-grid-split__header", children: [
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
@@ -34488,7 +34723,7 @@ function GridSplitPanel({ request, access }) {
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { className: "ppd-grid-split__upload", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { children: busy === "import" ? "\u6B63\u5728\u6DFB\u52A0\u2026" : "\u4E0A\u4F20\u56FE\u7247" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "file", accept: "image/png,image/jpeg,image/webp", multiple: true, disabled: !!busy || access.status !== "active", onChange: (event) => {
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "file", accept: "image/png,image/jpeg,image/webp", multiple: true, disabled: !!busy || loadingSources || access.status !== "active", onChange: (event) => {
           void importFiles(event.currentTarget.files);
           event.currentTarget.value = "";
         } })
@@ -34604,7 +34839,8 @@ function GridSplitPanel({ request, access }) {
               setSelected((current) => current.filter((id) => id !== source.id));
               setSaved([]);
             }, children: "\u79FB\u9664" })
-          ] }, source.id)) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__empty", children: "\u4E0A\u4F20\u56FE\u7247\u540E\u5F00\u59CB\u5206\u5272\u3002" }) })
+          ] }, source.id)) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__empty", children: "\u4E0A\u4F20\u56FE\u7247\u540E\u5F00\u59CB\u5206\u5272\u3002" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__hint", children: "\u5F53\u524D\u961F\u5217\u6700\u591A 10 \u5F20\u3001\u5355\u5F20 50 MB\uFF1B\u6709\u6548\u56FE\u7247\u4F1A\u5B8C\u6574\u52A0\u5165\uFF0C\u4E0D\u4F1A\u9759\u9ED8\u66FF\u6362\u5DF2\u6709\u56FE\u7247\u3002" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-grid-split__actions", children: [
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { className: "ppd-grid-split__primary", type: "button", disabled: !!busy || access.status !== "active" || !selectedSources.length || !!parameterError || mode === "grid" && resultCount > 400, onClick: () => void save(), children: busy === "save" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : mode === "assets" ? "\u4FDD\u5B58\u900F\u660E PNG" : "\u4FDD\u5B58\u5207\u7247" }),
@@ -34634,7 +34870,7 @@ function GridSplitPanel({ request, access }) {
       ] })
     ] }),
     notice && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__notice", role: "status", children: notice }),
-    (error101 || parameterError && selectedSources.length > 0) && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__error", role: "alert", children: error101 || parameterError })
+    (error101 || previewError || parameterError && selectedSources.length > 0) && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-grid-split__error", role: "alert", children: error101 || previewError || parameterError })
   ] });
 }
 
@@ -34642,7 +34878,10 @@ function GridSplitPanel({ request, access }) {
 var import_react8 = require("react");
 var import_jsx_runtime9 = require("react/jsx-runtime");
 var validTypes2 = /* @__PURE__ */ new Set(["image/png", "image/jpeg", "image/webp"]);
+var MAX_SOURCES2 = 100;
+var MAX_BATCH_BYTES3 = 250 * 1024 * 1024;
 var messageOf3 = (value2) => value2 instanceof Error ? value2.message : "\u6D4B\u91CF\u672A\u5B8C\u6210\uFF0C\u8BF7\u91CD\u8BD5\u3002";
+var importBoundaryFailure3 = (value2) => /(账号已变化|登录|授权|订阅|SESSION_CHANGED|SESSION_REPLACED|ACCOUNT_CHANGED|AUTHORIZATION_INVALID|INVALID_TOKEN|UNAUTHENTICATED|SIGN_IN_REQUIRED|FORBIDDEN|SUBSCRIPTION_REQUIRED|TOOL_GROUP_REQUIRED|TOOL_GROUP_EXPIRED)/iu.test(messageOf3(value2));
 function base645(bytes) {
   let binary = "";
   for (let offset = 0; offset < bytes.length; offset += 32768)
@@ -34657,34 +34896,41 @@ function ContourMeasurePanel({ request, access }) {
   const sequence = (0, import_react8.useRef)(0), imports = (0, import_react8.useRef)(0);
   const [sourceState, setSourceState] = (0, import_react8.useState)();
   const [selection, setSelection] = (0, import_react8.useState)();
-  const [width2, setWidth] = (0, import_react8.useState)("50"), [height2, setHeight] = (0, import_react8.useState)("50");
+  const [dimensions, setDimensions] = (0, import_react8.useState)({});
   const [tolerance, setTolerance] = (0, import_react8.useState)("18"), [alpha, setAlpha] = (0, import_react8.useState)("16");
   const [result, setResult] = (0, import_react8.useState)();
   const [pending, setPending] = (0, import_react8.useState)();
   const [importing, setImporting] = (0, import_react8.useState)();
+  const [loadingSources, setLoadingSources] = (0, import_react8.useState)(true);
   const [error101, setError] = (0, import_react8.useState)();
+  const [notice, setNotice] = (0, import_react8.useState)();
   const active = access.status === "active";
   const sources = sourceState?.scope === scope ? sourceState.items : [];
   const source = selection?.scope === scope ? sources.find((row) => row.id === selection.id) : void 0;
+  const dimension = source ? dimensions[source.id] ?? { width: "50", height: "50" } : { width: "50", height: "50" };
+  const width2 = dimension.width, height2 = dimension.height;
   const options = { actualWidthCm: Number(width2), actualHeightCm: Number(height2), backgroundTolerance: Number(tolerance), alphaThreshold: Number(alpha) };
   const parameterError = !width2.trim() || !height2.trim() || !Number.isFinite(options.actualWidthCm) || !Number.isFinite(options.actualHeightCm) || options.actualWidthCm < 0.01 || options.actualHeightCm < 0.01 || options.actualWidthCm > 1e5 || options.actualHeightCm > 1e5 ? "\u5B9E\u9645\u5BBD\u9AD8\u8BF7\u586B\u5199 0.01\uFF5E100000 cm \u7684\u6709\u6548\u6570\u5B57\u3002" : !tolerance.trim() || !Number.isFinite(options.backgroundTolerance) || options.backgroundTolerance < 4 || options.backgroundTolerance > 40 ? "\u80CC\u666F\u5BB9\u5DEE\u8BF7\u586B\u5199 4\uFF5E40\u3002" : !alpha.trim() || !Number.isInteger(options.alphaThreshold) || options.alphaThreshold < 0 || options.alphaThreshold > 254 ? "\u900F\u660E\u5EA6\u9608\u503C\u8BF7\u586B\u5199 0\uFF5E254 \u7684\u6574\u6570\u3002" : "";
   const key = JSON.stringify([source?.id, width2, height2, tolerance, alpha]);
   const uploading = importing === scope;
   const visible = active && !uploading && !parameterError && result?.scope === scope && result.key === key ? result.data : void 0;
   const busy = active && !uploading && pending?.scope === scope && pending.key === key;
-  const errorMessage = error101?.scope === scope && (!error101.key || error101.key === key) ? error101.message : "";
+  const errorMessage2 = error101?.scope === scope && (!error101.key || error101.key === key) ? error101.message : "";
   (0, import_react8.useEffect)(() => {
     let live = true;
     if (!active) return;
+    setLoadingSources(true);
     void request("toolbox.list").then((response) => {
       if (!live || currentScope.current !== scope) return;
-      const rows = response.data.images ?? [];
+      const rows = (response.data.images ?? []).filter((row) => row.kind === "image" && !row.sourceId).slice(0, MAX_SOURCES2);
       setSourceState((previous) => ({ scope, items: [...new Map([
         ...previous?.scope === scope ? previous.items : [],
-        ...rows.filter((row) => row.kind === "image" && !row.sourceId)
-      ].map((row) => [row.id, row])).values()] }));
+        ...rows
+      ].map((row) => [row.id, row])).values()].slice(0, MAX_SOURCES2) }));
     }).catch((value2) => {
       if (live && currentScope.current === scope) setError({ scope, message: messageOf3(value2) });
+    }).finally(() => {
+      if (live && currentScope.current === scope) setLoadingSources(false);
     });
     return () => {
       live = false;
@@ -34716,36 +34962,72 @@ function ContourMeasurePanel({ request, access }) {
       clearTimeout(timer);
     };
   }, [request, scope, key, active, uploading, parameterError]);
-  (0, import_react8.useEffect)(() => () => {
-    sequence.current++;
-    imports.current++;
-  }, []);
-  const importFile = async (file3) => {
-    if (!file3 || !active) return;
+  (0, import_react8.useEffect)(() => {
+    setDimensions({});
+    setNotice(void 0);
+    setLoadingSources(true);
+    return () => {
+      sequence.current++;
+      imports.current++;
+    };
+  }, [scope]);
+  const importFiles = async (files) => {
+    if (!files?.length || !active) return;
+    if (loadingSources) {
+      setError({ scope, message: "\u6B63\u5728\u8BFB\u53D6\u5F53\u524D\u56FE\u7247\u5217\u8868\uFF0C\u8BF7\u7A0D\u540E\u518D\u6DFB\u52A0\u3002" });
+      return;
+    }
+    const incoming = [...files];
+    if (incoming.length > MAX_SOURCES2) {
+      setError({ scope, message: `\u4E00\u6B21\u6700\u591A\u9009\u62E9 ${MAX_SOURCES2} \u5F20\u56FE\u7247\u3002` });
+      return;
+    }
+    const valid = incoming.filter((file3) => validTypes2.has(file3.type) && file3.size >= 1 && file3.size <= 50 * 1024 * 1024);
+    const failed = incoming.filter((file3) => !valid.includes(file3)).map((file3) => file3.name);
+    if (sources.length + valid.length > MAX_SOURCES2) {
+      setError({ scope, message: `\u5F53\u524D\u6279\u6B21\u6700\u591A\u4FDD\u7559 ${MAX_SOURCES2} \u5F20\u56FE\u7247\uFF1B\u5DF2\u6DFB\u52A0 ${sources.length} \u5F20\uFF0C\u672C\u6B21\u6709 ${valid.length} \u5F20\u53EF\u5BFC\u5165\u3002\u8BF7\u5148\u79FB\u9664\u90E8\u5206\u56FE\u7247\u3002` });
+      return;
+    }
+    if (valid.reduce((sum, file3) => sum + file3.size, 0) > MAX_BATCH_BYTES3) {
+      setError({ scope, message: "\u672C\u6B21\u9009\u62E9\u7684\u56FE\u7247\u5408\u8BA1\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5BFC\u5165\u3002" });
+      return;
+    }
     setError(void 0);
+    setNotice(void 0);
     sequence.current++;
     setResult(void 0);
     setPending(void 0);
-    setSelection(void 0);
-    if (!validTypes2.has(file3.type) || file3.size < 1 || file3.size > 50 * 1024 * 1024) {
-      setError({ scope, message: "\u8BF7\u4E0A\u4F20\u4E0D\u8D85\u8FC7 50 MB \u7684 PNG\u3001JPEG \u6216 WebP \u9759\u6001\u56FE\u7247\u3002" });
-      return;
-    }
     const token = ++imports.current;
     setImporting(scope);
-    try {
-      const bytes = new Uint8Array(await file3.arrayBuffer());
-      if (token !== imports.current || currentScope.current !== scope) return;
-      const response = await request("toolbox.importInput", { name: file3.name, contentType: file3.type, base64: base645(bytes) });
-      if (token !== imports.current || currentScope.current !== scope) return;
-      const imported = response.data;
-      setSourceState((previous) => ({ scope, items: [imported, ...previous?.scope === scope ? previous.items.filter((row) => row.id !== imported.id) : []] }));
-      setSelection({ scope, id: imported.id });
-    } catch (value2) {
-      if (token === imports.current && currentScope.current === scope) setError({ scope, message: messageOf3(value2) });
-    } finally {
-      if (token === imports.current && currentScope.current === scope) setImporting(void 0);
+    const imported = [];
+    let boundaryError = "";
+    for (let index = 0; index < valid.length; index++) {
+      const file3 = valid[index];
+      try {
+        const bytes = new Uint8Array(await file3.arrayBuffer());
+        if (token !== imports.current || currentScope.current !== scope) return;
+        const response = await request("toolbox.importInput", { name: file3.name, contentType: file3.type, base64: base645(bytes) });
+        if (token !== imports.current || currentScope.current !== scope) return;
+        imported.push(response.data);
+      } catch (value2) {
+        failed.push(file3.name);
+        if (importBoundaryFailure3(value2)) {
+          boundaryError = messageOf3(value2);
+          failed.push(...valid.slice(index + 1).map((row) => row.name));
+          break;
+        }
+      }
     }
+    if (token !== imports.current || currentScope.current !== scope) return;
+    if (imported.length) {
+      const ids2 = imported.map((row) => row.id);
+      setSourceState((previous) => ({ scope, items: [...imported, ...previous?.scope === scope ? previous.items.filter((row) => !ids2.includes(row.id)) : []].slice(0, MAX_SOURCES2) }));
+      setDimensions((current) => ({ ...current, ...Object.fromEntries(ids2.filter((sourceId) => !current[sourceId]).map((sourceId) => [sourceId, { width: "50", height: "50" }])) }));
+      setSelection({ scope, id: imported[0].id });
+      setNotice({ scope, message: `\u5DF2\u6DFB\u52A0 ${imported.length} \u5F20\u56FE\u7247\uFF0C\u53EF\u9010\u5F20\u586B\u5199\u5B9E\u9645\u5BBD\u9AD8\u5E76\u6D4B\u91CF\u3002` });
+    }
+    if (failed.length) setError({ scope, message: boundaryError ? `${boundaryError}\uFF1B\u672C\u6279\u5DF2\u505C\u6B62\uFF0C${failed.length} \u5F20\u56FE\u7247\u672A\u5BFC\u5165\u3002\u5DF2\u6210\u529F\u7684\u56FE\u7247\u5DF2\u4FDD\u7559\u3002` : `\u6709 ${failed.length} \u5F20\u56FE\u7247\u672A\u5BFC\u5165\uFF1A${failed.slice(0, 3).join("\u3001")}${failed.length > 3 ? " \u7B49" : ""}\u3002\u4EC5\u652F\u6301 1 B\uFF5E50 MB \u7684 PNG\u3001JPEG \u6216 WebP\uFF1B\u5DF2\u6210\u529F\u7684\u56FE\u7247\u5DF2\u4FDD\u7559\u3002` });
+    setImporting(void 0);
   };
   return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { className: "ppd-contour", "data-contour-measure-panel": true, "aria-labelledby": `${id}-heading`, children: [
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("header", { className: "ppd-contour__header", children: [
@@ -34754,17 +35036,17 @@ function ContourMeasurePanel({ request, access }) {
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: "\u4E0A\u4F20\u767D\u5E95\u56FE\u6216\u900F\u660E\u56FE\uFF0C\u6309\u5B9E\u9645\u5BBD\u9AD8\u8BA1\u7B97\u6700\u5916\u4FA7\u8F6E\u5ED3\u7684\u603B\u957F\u5EA6\u3002" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { className: "ppd-contour__upload", children: [
-        uploading ? "\u6B63\u5728\u4E0A\u4F20\u2026" : "\u4E0A\u4F20\u56FE\u7247",
+        uploading ? "\u6B63\u5728\u4E0A\u4F20\u2026" : loadingSources ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\u6279\u91CF\u4E0A\u4F20\u56FE\u7247",
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
           "input",
           {
             type: "file",
             accept: "image/png,image/jpeg,image/webp",
-            disabled: !active || uploading,
+            multiple: true,
+            disabled: !active || uploading || loadingSources,
             onChange: (event) => {
-              const file3 = event.currentTarget.files?.[0];
+              void importFiles(event.currentTarget.files);
               event.currentTarget.value = "";
-              void importFile(file3);
             }
           }
         )
@@ -34782,14 +35064,33 @@ function ContourMeasurePanel({ request, access }) {
             /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("option", { value: "", children: "\u8BF7\u9009\u62E9\u6216\u4E0A\u4F20\u56FE\u7247" }),
             sources.map((row) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("option", { value: row.id, children: row.name }, row.id))
           ] }),
+          sources.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "ppd-contour__sources", "aria-label": "\u5F53\u524D\u6279\u6B21\u56FE\u7247", children: sources.map((row) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { "data-current": source?.id === row.id, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("button", { type: "button", onClick: () => setSelection({ scope, id: row.id }), children: [
+              row.name,
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("small", { children: [
+                row.width,
+                " \xD7 ",
+                row.height,
+                "px"
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", "aria-label": `\u4ECE\u5F53\u524D\u6279\u6B21\u79FB\u9664 ${row.name}`, onClick: () => {
+              setSourceState((previous) => ({ scope, items: previous?.scope === scope ? previous.items.filter((item) => item.id !== row.id) : [] }));
+              if (source?.id === row.id) setSelection(void 0);
+            }, children: "\u79FB\u9664" })
+          ] }, row.id)) }),
           /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-contour__dimensions", children: [
             /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { htmlFor: `${id}-width`, children: [
               "\u5B9E\u9645\u5BBD\u5EA6\uFF08cm\uFF09",
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { id: `${id}-width`, "data-contour-width": true, type: "number", min: "0.01", max: "100000", step: "any", value: width2, onChange: (event) => setWidth(event.target.value) })
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { id: `${id}-width`, "data-contour-width": true, type: "number", min: "0.01", max: "100000", step: "any", value: width2, onChange: (event) => {
+                if (source) setDimensions((current) => ({ ...current, [source.id]: { ...current[source.id] ?? { width: "50", height: "50" }, width: event.target.value } }));
+              } })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { htmlFor: `${id}-height`, children: [
               "\u5B9E\u9645\u9AD8\u5EA6\uFF08cm\uFF09",
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { id: `${id}-height`, "data-contour-height": true, type: "number", min: "0.01", max: "100000", step: "any", value: height2, onChange: (event) => setHeight(event.target.value) })
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { id: `${id}-height`, "data-contour-height": true, type: "number", min: "0.01", max: "100000", step: "any", value: height2, onChange: (event) => {
+                if (source) setDimensions((current) => ({ ...current, [source.id]: { ...current[source.id] ?? { width: "50", height: "50" }, height: event.target.value } }));
+              } })
             ] })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__hint", children: "\u586B\u5199\u4E3B\u4F53\u5916\u63A5\u77E9\u5F62\u7684\u5B9E\u9645\u5BBD\u9AD8\uFF0C\u4E0D\u542B\u56DB\u5468\u7A7A\u767D\u3002\u5BBD\u9AD8\u5206\u522B\u6362\u7B97\uFF0C\u539F\u56FE\u4E0D\u4F1A\u88AB\u62C9\u4F38\u6216\u4FEE\u6539\u3002" }),
@@ -34801,10 +35102,12 @@ function ContourMeasurePanel({ request, access }) {
             "\u900F\u660E\u5EA6\u9608\u503C",
             /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { id: `${id}-alpha`, "data-contour-alpha-threshold": true, type: "number", min: "0", max: "254", step: "1", value: alpha, onChange: (event) => setAlpha(event.target.value) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__hint", children: "\u5BB9\u5DEE\u63A7\u5236\u767D\u5E95\u8FB9\u7F18\u7684\u8BC6\u522B\uFF1B\u900F\u660E\u5EA6\u9608\u503C\u8D8A\u9AD8\uFF0C\u8D8A\u6DE1\u7684\u8FB9\u7F18\u8D8A\u5BB9\u6613\u88AB\u5FFD\u7565\u3002" })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__hint", children: "\u5BB9\u5DEE\u63A7\u5236\u767D\u5E95\u8FB9\u7F18\u7684\u8BC6\u522B\uFF1B\u900F\u660E\u5EA6\u9608\u503C\u8D8A\u9AD8\uFF0C\u8D8A\u6DE1\u7684\u8FB9\u7F18\u8D8A\u5BB9\u6613\u88AB\u5FFD\u7565\u3002" }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__hint", children: "\u5F53\u524D\u6279\u6B21\u6700\u591A 100 \u5F20\u3001\u5355\u5F20 50 MB\uFF1B\u6BCF\u5F20\u56FE\u7247\u5355\u72EC\u4FDD\u7559\u5B9E\u9645\u5BBD\u9AD8\uFF0C\u5207\u6362\u540E\u7EE7\u7EED\u6D4B\u91CF\u3002" })
         ] }),
+        notice?.scope === scope && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__notice", role: "status", children: notice.message }),
         active && parameterError && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__error", role: "alert", children: parameterError }),
-        errorMessage && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__error", role: "alert", children: errorMessage }),
+        errorMessage2 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-contour__error", role: "alert", children: errorMessage2 }),
         visible && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-contour__result", role: "status", children: [
           /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { children: "\u5916\u8F6E\u5ED3\u603B\u957F\u5EA6\uFF08\u8FD1\u4F3C\u503C\uFF09" }),
           /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("strong", { "data-contour-total-length": true, children: [
@@ -34926,7 +35229,7 @@ var import_react10 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.26",
+  version: "0.1.27",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -37195,7 +37498,7 @@ var style_default = '.ppd-panel{--ppd-bg:#fff;--ppd-surface:#f7f7f5;--ppd-line:#
 var generation_panel_default = '.ppd-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-skill-feedback{margin:6px 0 0;display:flex;align-items:center;gap:8px;color:#a13d31;font-size:12px;line-height:18px}.ppd-skill-feedback .ppd-link-button{flex:none}\n.ppd-generation-shell.is-floating:has(>.ppd-skill-feedback){height:auto}\n.ppd-generation{min-width:0}.ppd-generation-loading{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--ppd-muted)}.ppd-generation-loading .ppd-spinner{width:12px;height:12px}.ppd-generation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:start}.ppd-generation-form{min-width:0;margin:0;border:0;padding:0;display:grid;gap:9px}.ppd-generation-form:disabled{opacity:1}.ppd-generation-form:disabled .ppd-web-composer{opacity:.72}.ppd-link-button{width:max-content;border:0;background:none;color:var(--ppd-accent);padding:0;font:inherit;cursor:pointer}.ppd-form-hint,.ppd-generation-quote small,.ppd-muted{color:var(--ppd-muted);font-size:12px}\n\n.ppd-web-composer{--composer-line:#e0e4eb;--composer-soft:#f0f2f5;--composer-muted:#676f7e;--composer-faint:#a8afbd;--composer-ink:#0b0d12;position:relative;box-sizing:border-box;width:100%;max-width:720px;height:178px;border:1px solid var(--composer-line);border-radius:16px;background:#fff;box-shadow:0 2px 5px rgba(15,20,28,.04);padding:12px 12px 8px;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}.ppd-web-composer.is-focused{border-color:var(--composer-line);box-shadow:0 2px 5px rgba(15,20,28,.04)}.ppd-composer-media-row{height:64px;display:flex;align-items:flex-start;gap:8px;padding-right:38px;min-width:0}.ppd-composer-clear{position:absolute;z-index:7;top:14px;right:14px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#8b929d;cursor:pointer;font-size:21px;line-height:1;transform:rotate(-20deg);transition:background-color .18s,color .18s,transform .18s}.ppd-composer-clear:hover{background:var(--composer-soft);color:#3f4752;transform:translateY(-1px) rotate(-20deg)}.ppd-web-composer>textarea{flex:1;min-height:0;resize:none;border:0;outline:0;background:transparent;color:var(--composer-ink);font-family:inherit;font-size:12px;line-height:18px;font-weight:500;padding:0 2px}.ppd-web-composer>textarea::placeholder{color:var(--composer-faint)}\n.ppd-skill-token{position:relative;box-sizing:border-box;width:max-content;min-width:170px;max-width:min(300px,calc(100% - 64px));height:56px;flex:0 1 auto;padding:0 13px;display:flex;align-items:center;justify-content:flex-start;gap:10px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-skill-token.has-value{padding-right:12px;border:0;background:#121418;color:#fff}.ppd-skill-copy{position:static;min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:2px}.ppd-skill-token small{color:#7b8290;font-size:9px;line-height:11px;font-weight:700;letter-spacing:.04em}.ppd-skill-token strong{max-width:220px;overflow:hidden;color:inherit;font-size:12px;line-height:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.ppd-token-mark{width:28px;height:28px;display:grid;place-items:center;flex:0 0 28px;border-radius:8px;background:#fff;color:#1a1d24;font-size:16px}.ppd-skill-cover{width:42px;height:42px;flex:0 0 42px;border-radius:8px;object-fit:cover}.ppd-skill-token>select,.ppd-upload-tile>select,.ppd-toolbar-select>select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-reference-tray{position:relative;height:56px;min-width:0;display:flex;flex:0 1 auto;align-items:flex-start;gap:8px;isolation:isolate}.ppd-upload-tile,.ppd-reference-token{position:relative;box-sizing:border-box;width:56px;height:56px;flex:0 0 56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;display:grid;place-items:center;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-upload-tile:hover{border-color:#1597e5;background:#eaf6fd;color:#086eba}.ppd-local-upload{border-style:solid;font-size:22px}.ppd-reference-token{border:0;background:#242830;color:#fff}.ppd-reference-token>img{width:100%;height:100%;object-fit:cover}.ppd-reference-token>span{font-size:17px;font-weight:800}.ppd-reference-token>b{position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.72);display:grid;place-items:center;font-size:10px}.ppd-reference-actions{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;gap:2px;padding:3px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 54%);opacity:0;transition:opacity .14s}.ppd-reference-token:hover .ppd-reference-actions,.ppd-reference-token:focus-within .ppd-reference-actions{opacity:1}.ppd-reference-actions button{width:15px;height:15px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center;font-size:9px;line-height:1;cursor:pointer}.ppd-reference-actions button:disabled{opacity:.35}.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:absolute;z-index:6;left:38px;top:22px;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#242830;color:#fff;box-shadow:0 4px 10px rgba(12,16,22,.24)}.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:-40px}.ppd-reference-tray.has-references>.ppd-reference-token{border:2px solid #fff;border-radius:15px;clip-path:polygon(10% 12%,35% 3%,68% 8%,93% 2%,98% 36%,90% 68%,96% 92%,58% 97%,28% 91%,3% 98%,7% 61%,2% 31%);box-shadow:0 3px 9px rgba(19,24,31,.18);transition:margin-left .24s cubic-bezier(.2,.72,.2,1),clip-path .2s ease,border-radius .2s ease,transform .2s ease}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(2n){transform:rotate(4deg)}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(3n){transform:rotate(-4deg)}.ppd-reference-tray.has-references:is(:hover,:focus-within){z-index:8}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-tray.has-references:not(:hover):not(:focus-within)>.ppd-local-upload{display:none}\n.ppd-composer-toolbar{height:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.ppd-toolbar-left,.ppd-toolbar-right{display:flex;align-items:center;gap:2px;min-width:0}.ppd-toolbar-left{flex:1}.ppd-toolbar-right{flex:none}.ppd-toolbar-divider{width:1px;height:22px;flex:0 0 1px;background:var(--composer-line);margin:0 6px 5px 5px}.ppd-toolbar-icon,.ppd-toolbar-button,.ppd-toolbar-select{position:relative;box-sizing:border-box;height:32px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--composer-muted);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;white-space:nowrap}.ppd-toolbar-icon{width:32px;flex:0 0 32px;padding:0}.ppd-toolbar-button,.ppd-toolbar-select{padding:0 8px;font-size:12px;font-weight:500}.ppd-toolbar-icon:hover,.ppd-toolbar-button:hover,.ppd-toolbar-select:hover{background:var(--composer-soft);color:var(--composer-ink)}.ppd-toolbar-select strong{max-width:118px;overflow:hidden;font-size:12px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.ppd-model-dot{width:14px;height:14px;flex:0 0 14px;border-radius:4px;background:linear-gradient(145deg,#7b8cff,#7557d8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.ppd-model-dot.is-gpt{background:linear-gradient(145deg,#49c970,#138f7e)}\n.ppd-contract-control{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;opacity:.001!important;pointer-events:none!important}.ppd-model-menu,.ppd-settings-menu{position:relative}.ppd-model-menu>summary,.ppd-settings-menu>summary{list-style:none}.ppd-model-menu>summary::-webkit-details-marker,.ppd-settings-menu>summary::-webkit-details-marker{display:none}.ppd-model-menu[open]>summary,.ppd-settings-menu[open]>summary{background:var(--composer-soft);color:var(--composer-ink)}.ppd-settings-menu summary>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu summary>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover,.ppd-settings-popover{position:absolute;z-index:30;left:0;bottom:38px;box-sizing:border-box;border:1px solid #e3e6ea;border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(20,27,38,.14)}.ppd-model-popover{width:390px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px;display:grid;gap:7px}.ppd-model-popover>header{display:flex;flex-direction:column;gap:2px;padding:7px 9px 5px}.ppd-model-popover>header strong{color:#202630;font-size:12px}.ppd-model-popover>header small{color:#959daa;font-size:9px}.ppd-model-popover>button{position:relative;min-height:74px;border:1px solid #e2e6eb;border-radius:12px;padding:9px 38px 9px 9px;background:#fff;display:flex;align-items:center;gap:11px;color:#171b22;text-align:left;cursor:pointer}.ppd-model-popover>button:hover,.ppd-model-popover>button.is-selected{border-color:#b5bdc8;background:#eef1f5}.ppd-model-popover>button:disabled{opacity:.55;cursor:not-allowed}.ppd-model-popover>button>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;gap:4px}.ppd-model-popover>button strong{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover>button small{color:#697383;font-size:10px}.ppd-model-popover>button>b{position:absolute;right:15px}.ppd-model-brand{width:42px;height:42px;flex:0 0 42px;border-radius:11px;background:linear-gradient(145deg,#8798ff,#7053d4);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}.ppd-model-brand.is-gpt{background:linear-gradient(145deg,#58cf78,#168e7e)}.ppd-settings-popover{width:330px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px}.ppd-settings-popover section+section{margin-top:5px}.ppd-settings-popover section>label:first-child{display:block;margin:0 3px 3px;color:#8a929e;font-size:9px;font-weight:650}.ppd-ratio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:4px;border-radius:12px;background:#f6f7f9}.ppd-ratio-grid button{min-height:40px;border:0;border-radius:8px;background:transparent;color:#77808c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}.ppd-ratio-grid button:hover,.ppd-ratio-grid button.is-selected,.ppd-segmented button:hover,.ppd-segmented button.is-selected{background:#fff;color:#202630;box-shadow:0 1px 4px rgba(18,25,35,.08)}.ppd-ratio-grid b{font-size:10px}.ppd-ratio-glyph{width:15px;height:11px;border:1.5px solid currentColor;border-radius:3px}.ppd-segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;border-radius:10px;background:#f6f7f9}.ppd-segmented button{min-width:0;height:28px;border:0;border-radius:7px;background:transparent;color:#74808d;cursor:pointer;font-size:10px;text-transform:capitalize}.ppd-settings-check{position:relative;height:30px;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;color:#687281!important;cursor:pointer}.ppd-settings-check>input{position:absolute;opacity:0}.ppd-settings-check>i{position:relative;width:30px;height:18px;border-radius:999px;background:#dfe3e8}.ppd-settings-check>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-settings-check>input:checked+i{background:#1d2734}.ppd-settings-check>input:checked+i>b{transform:translateX(12px)}\n.ppd-search-chip{position:relative;height:32px;border:1px solid transparent;border-radius:8px;background:#f6f7f9;color:#737d8a;display:flex;align-items:center;gap:8px;padding:0 7px 0 9px;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-search-chip>input,.ppd-eco-control>input{position:absolute;opacity:0;pointer-events:none}.ppd-search-chip>i,.ppd-eco-control>i{position:relative;width:30px;height:18px;flex:0 0 30px;border-radius:999px;background:#dfe3e8;transition:background-color .18s}.ppd-search-chip>i>b,.ppd-eco-control>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-search-chip.is-selected{background:#f0efff;color:#514aab}.ppd-search-chip.is-selected>i{background:#625abd}.ppd-search-chip.is-selected>i>b,.ppd-eco-control.is-selected>i>b{transform:translateX(12px)}.ppd-eco-control{position:relative;height:30px;display:flex;align-items:center;gap:5px;padding:0 4px;color:#7d8794;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-eco-control.is-selected>i{background:#1d2734}.ppd-generation-cost{height:32px;display:flex;align-items:center;gap:4px;padding:0 2px;color:#6f7782;white-space:nowrap}.ppd-generation-cost>strong{min-width:14px;color:#4d5560;font-size:13px;font-weight:700}.ppd-generate-button{width:34px;height:32px;flex:0 0 34px;border:1px solid transparent;border-radius:7px;background:var(--composer-ink);color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .18s,background-color .3s}.ppd-generate-button:hover:not(:disabled){transform:translateY(-1px);background:#232832}.ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint);cursor:not-allowed}.ppd-generate-button .ppd-spinner{width:14px;height:14px}.ppd-composer-meta{min-height:18px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;color:var(--ppd-muted);font-size:11px}.ppd-composer-meta>span+span:before{content:"\xB7";margin-right:12px}.ppd-file-input{display:none}\n.ppd-web-composer .ppd-model-popover,.ppd-web-composer .ppd-settings-popover{top:38px;bottom:auto}\n.ppd-generation-quote{position:sticky;top:0;display:grid;gap:12px;border:1px solid var(--ppd-line);border-radius:16px;background:var(--ppd-bg);padding:18px}.ppd-generation-quote h2{font-size:16px;margin:0}.ppd-generation-quote>strong{font-size:30px;line-height:1}.ppd-generation-quote>span{font-size:13px}.ppd-generation-quote p{margin:0;line-height:1.55}.ppd-generation-state{border-radius:9px;background:var(--ppd-surface);padding:8px 10px;font-weight:650}\n@media(hover:none),(pointer:coarse){.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references>.ppd-reference-token,.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-actions{opacity:1}.ppd-reference-tray.has-references>.ppd-local-upload{display:grid}}\n@media(max-width:1050px){.ppd-generation-grid{grid-template-columns:1fr}.ppd-generation-quote{position:static;max-width:720px}.ppd-web-composer{max-width:none}}\n@media(max-width:720px){.ppd-web-composer{height:auto;min-height:214px}.ppd-composer-media-row{overflow-x:auto}.ppd-composer-toolbar{height:auto;min-height:72px;align-items:stretch;flex-direction:column}.ppd-toolbar-left{flex-wrap:wrap}.ppd-toolbar-right{justify-content:flex-end}.ppd-model-popover{left:0;right:auto;width:min(390px,calc(100vw - 52px))}.ppd-settings-popover{left:auto;right:0;width:min(330px,calc(100vw - 52px))}.ppd-search-chip>span{display:none}}\n@media(max-width:480px){.ppd-skill-token{min-width:138px}.ppd-skill-token strong{max-width:130px}.ppd-model-select strong{max-width:80px}.ppd-eco-control>span{display:none}}\n.ppd-generation-shell.is-inline{position:relative;width:min(720px,100%);margin:0 auto}.ppd-generation-shell.is-floating{position:absolute;z-index:45;left:50%;bottom:18px;width:min(720px,calc(100% - 40px));transform:translateX(-50%)}.ppd-generation-shell.is-floating:before{content:"";position:absolute;z-index:-1;inset:-24px -34px -22px;background:radial-gradient(ellipse at center,rgba(247,248,249,.98) 38%,rgba(247,248,249,.78) 64%,transparent 78%);pointer-events:none}.ppd-generation-shell.is-floating>.ppd-alert,.ppd-generation-shell.is-floating>.ppd-notice{margin:0 0 7px}.ppd-generation-shell.is-collapsed{width:min(620px,calc(100% - 40px))}.ppd-generation-collapsed{width:100%;height:54px;border:1px solid #dde1e6;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 15px 45px rgba(23,30,42,.16);padding:0 12px;display:flex;align-items:center;gap:10px;color:#1d222b;text-align:left}.ppd-generation-collapsed>span:nth-child(2){min-width:0;display:grid;flex:1;gap:2px}.ppd-generation-collapsed strong,.ppd-generation-collapsed small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-generation-collapsed strong{font-size:12px}.ppd-generation-collapsed small{color:#8a929e;font-size:9px}.ppd-generation-collapsed>b{color:#596270;font-size:10px}.ppd-composer-actions{position:absolute;z-index:9;top:9px;right:9px;display:flex;gap:2px}.ppd-composer-actions button{width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#8b929d;display:grid;place-items:center}.ppd-composer-actions button:hover{background:var(--composer-soft);color:#3f4752}.ppd-composer-actions button svg{transform:rotate(-20deg)}.ppd-generation-shell.is-floating .ppd-composer-media-row{padding-right:70px}.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:38px}.ppd-generation-shell.is-inline .ppd-model-popover,.ppd-generation-shell.is-inline .ppd-settings-popover{top:38px;bottom:auto}.ppd-generation-shell.is-floating .ppd-model-popover,.ppd-generation-shell.is-floating .ppd-settings-popover{top:auto;bottom:38px}.ppd-generate-button{width:auto;min-width:104px;padding:0 7px 0 11px;display:flex;gap:8px}.ppd-generate-button>span:not(.ppd-spinner){white-space:nowrap;font-size:11px;font-weight:700}.ppd-generation-shell .ppd-composer-meta{display:none}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-inline{width:100%}}\n\n/* The native resource pages use the same Web dock geometry: a 480\xD740 trigger\n   opens into the 820\xD7200 shell, while the generation page keeps the composer inline. */\n.ppd-generation-shell.is-floating{bottom:76px;width:min(820px,calc(100% - 64px));height:200px;padding:10px;border:1px solid #d8dad5;border-radius:18px;background:rgba(255,255,255,.98);box-shadow:0 22px 64px rgba(16,24,38,.2),0 4px 12px rgba(16,24,38,.08);backdrop-filter:blur(12px);transform-origin:center bottom;animation:ppd-composer-open .28s cubic-bezier(.2,.82,.2,1)}\n@keyframes ppd-composer-open{from{opacity:0;transform:translateX(-50%) scale(.58,.18)}to{opacity:1;transform:translateX(-50%) scale(1)}}\n.ppd-generation-shell.is-floating:before{display:none}.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:none;border-color:transparent;box-shadow:none}.ppd-generation-shell.is-floating .ppd-composer-actions{right:19px;top:19px}\n.ppd-generation-shell.is-collapsed{bottom:24px;width:min(480px,calc(100% - 40px));height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}\n.ppd-generation-collapsed{height:40px;border-color:#d5dbe3;border-radius:16px;padding:4px 5px;gap:9px;box-shadow:0 10px 32px rgba(16,24,38,.18),0 2px 6px rgba(16,24,38,.06)}\n.ppd-collapsed-add,.ppd-collapsed-expand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px}.ppd-collapsed-add{color:#485260}.ppd-collapsed-placeholder{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#737b89;font-size:13px;font-weight:500}.ppd-generation-collapsed>small{color:#8a929e;font-size:9px;white-space:nowrap}.ppd-collapsed-expand{border-radius:50%;background:#e9edf2;color:#7d8998;font-size:16px}\n.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-notice,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{position:absolute;z-index:3;right:12px;bottom:calc(100% + 8px);left:12px;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;text-align:center}.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{color:#a13e3e}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-collapsed{width:calc(100% - 24px)}}\n.ppd-generation .ppd-generate-button{background:var(--composer-ink);color:#fff}.ppd-generation .ppd-generate-button>span,.ppd-generation .ppd-generate-button>svg{color:#fff;stroke:currentColor}.ppd-generation .ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint)}.ppd-generation .ppd-generate-button:disabled>span,.ppd-generation .ppd-generate-button:disabled>svg{color:var(--composer-faint)}\n.ppd-generation .ppd-local-upload{display:none!important}\n\n/* Match Web product-mode selected Skill and empty floating reference tile. */\n.ppd-generation .ppd-skill-token.has-value{background:#eef0f4;color:#252a34}.ppd-generation-shell.is-floating .ppd-reference-tray:not(.has-references)>.ppd-upload-tile{border:0;border-radius:0;background:transparent}\n.ppd-add-menu{position:relative}.ppd-add-menu>summary{list-style:none}.ppd-add-menu>summary::-webkit-details-marker{display:none}.ppd-add-popover{position:absolute;z-index:30;left:0;top:38px;width:160px;padding:5px;border:1px solid var(--composer-line);border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,27,38,.14)}.ppd-generation-shell.is-floating .ppd-add-popover{top:auto;bottom:38px}.ppd-add-popover>label,.ppd-add-popover>button{position:relative;box-sizing:border-box;display:block;width:100%;padding:9px;border:0;border-radius:6px;background:transparent;color:var(--composer-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}.ppd-add-popover>label:hover,.ppd-add-popover>button:hover{background:var(--composer-soft)}.ppd-add-popover select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.ppd-generation .ppd-generate-button{width:34px;min-width:34px;padding:0;justify-content:center}.ppd-generation-cost{margin:0 10px 0 6px}\n\n/* Manual generation history shares the account bar and keeps the draft mounted. */\n.ppd-panel [hidden]{display:none!important}\n.ppd-price-verification{margin:0 12px 10px;color:#866218;font-size:12px;line-height:1.5}\n.ppd-history-shortcut{display:flex;justify-content:flex-end;padding:12px 28px 0}\n.ppd-panel-generation .ppd-content.ppd-history-content{display:block;min-height:0;padding:24px 28px}\n.ppd-history{width:100%;max-width:1120px;margin:0 auto}\n.ppd-history-heading,.ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}\n.ppd-history-heading{margin-bottom:20px}.ppd-history-heading h2{font-size:20px;margin:0}\n.ppd-history-list{display:grid;gap:16px}.ppd-history-record{padding:20px;border:1px solid #e4e4e2;border-radius:12px;background:#fff}\n.ppd-history-record-heading strong{display:flex;align-items:center;gap:8px}.ppd-history-record-heading>span,.ppd-history-record time,.ppd-history-record>small{color:#73736e;font-size:12px}\n.ppd-history-record time{display:block;margin-top:8px}.ppd-history-record progress{display:block;width:100%;height:6px;margin:16px 0 8px;accent-color:#656c49}\n.ppd-history-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}.ppd-history-results .ppd-image{aspect-ratio:1;background:#f5f5f3;border-radius:8px;overflow:hidden}.ppd-history-results img{width:100%;height:100%;object-fit:contain}\n@media(max-width:720px){.ppd-history-shortcut{padding-inline:16px}.ppd-panel-generation .ppd-content.ppd-history-content{padding:20px 16px}.ppd-history-heading,.ppd-history-record-heading{flex-wrap:wrap}.ppd-history-results{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}\n\n/* Local reference previews appear before cloud upload; only ready asset IDs can generate. */\n.ppd-upload-preview{clip-path:none!important;transform:none!important;margin-left:0!important;border-radius:10px!important;outline:1px solid #c8cdd5}\n.ppd-upload-preview>img{opacity:.65}\n.ppd-upload-preview.is-failed{outline-color:#a13e3e}\n.ppd-upload-preview .ppd-upload-preview-status{position:absolute;right:0;bottom:0;left:0;padding:4px 1px;background:rgba(24,28,34,.8);color:#fff;font-size:9px;line-height:12px;text-align:center}\n.ppd-upload-preview.is-failed .ppd-upload-preview-status{background:rgba(139,39,39,.9)}\n.ppd-upload-preview-remove{position:absolute;top:1px;right:1px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#fff;color:#8b2727;cursor:pointer}\n';
 
 // plugins/podplo-dsh/src/manual-toolbox.css
-var manual_toolbox_default = '.ppd-toolbox{position:relative;height:100%;overflow:hidden;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-toolbox *{box-sizing:border-box}.ppd-toolbox button{cursor:pointer}.ppd-toolbox button:disabled{cursor:default;opacity:.55}\n.ppd-toolbox button,.ppd-toolbox input,.ppd-toolbox select{font:inherit}\n.ppd-toolbox__header,.ppd-toolbox__result,.ppd-toolbox__exported{display:flex;align-items:center;justify-content:space-between;gap:12px}\n.ppd-toolbox__header h2{margin:0 0 8px;font-size:24px;line-height:1.2}.ppd-toolbox__header p,.ppd-toolbox__output p{margin:4px 0 0;color:#777;font-size:12px;line-height:1.6}\n.ppd-toolbox__upload{position:relative;padding:8px 12px;border:1px solid #ddd;border-radius:10px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-toolbox__tabs{display:grid;gap:14px}.ppd-toolbox__tool-group>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ppd-toolbox__tool-group h3{font-size:11px;color:#777;margin:0 0 7px}\n.ppd-toolbox__tabs button{display:flex;flex-direction:column;gap:3px;text-align:left;padding:9px;border:1px solid #ddd;border-radius:11px;background:#fff;color:inherit}\n.ppd-toolbox__tabs button.is-active{border-color:#222;background:#f4f4f1}.ppd-toolbox__tabs small{color:#888;font-size:10px}\n.ppd-toolbox__body{display:grid;height:100%;min-height:0;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:20px;align-items:start}.ppd-toolbox__workspace{min-width:0;min-height:0;height:100%;overflow:auto;padding-bottom:48px}\n.ppd-toolbox__parameters{display:grid;align-content:start;gap:12px;min-width:0;min-height:0;height:100%;overflow:auto;padding-right:4px;padding-bottom:48px}.ppd-toolbox__source-list{max-height:160px;overflow:auto}\n.ppd-toolbox__sources,.ppd-toolbox__controls,.ppd-toolbox__preview-panel,.ppd-toolbox__results,.ppd-toolbox__output{min-width:0;border:1px solid #e4e4df;border-radius:14px;padding:14px;background:#fff}\n.ppd-toolbox__controls fieldset{border:0;min-width:0;padding:0;margin:0}\n.ppd-toolbox h3{margin:0 0 11px;font-size:14px}.ppd-toolbox__source{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid #eee}\n.ppd-toolbox__source span,.ppd-toolbox__result span,.ppd-toolbox__exported span{display:flex;min-width:0;flex-direction:column;gap:3px}.ppd-toolbox__source b,.ppd-toolbox__result b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}\n.ppd-toolbox__source small,.ppd-toolbox__result small,.ppd-toolbox__exported small{color:#888;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.ppd-toolbox__fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 9px}.ppd-toolbox__fields label{display:flex;min-width:0;flex-direction:column;gap:5px;font-size:12px;color:#666}\n.ppd-toolbox__fields input,.ppd-toolbox__fields select,.ppd-toolbox__directory>input{min-width:0;padding:7px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-toolbox__fields input[readonly]{background:#f4f4f1;color:#777}\n.ppd-toolbox__edge-group{grid-column:1/-1;display:grid;gap:10px;border-top:1px solid #eee;padding-top:12px}.ppd-toolbox__edge-group h4{font-size:12px;margin:0;color:#333}\n.ppd-toolbox__range-field{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 10px;align-items:center}.ppd-toolbox__range-field label{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}.ppd-toolbox__range-field input[type=number]{width:88px}.ppd-toolbox__range-field output{min-width:64px;text-align:right;font-size:12px;color:#444;font-variant-numeric:tabular-nums}\n.ppd-toolbox__fields .ppd-toolbox__range-field input[type=range]{grid-column:1/-1;width:100%;height:20px;margin:0;padding:0;border:0;background:transparent;accent-color:#333;cursor:ew-resize}.ppd-toolbox__pixel-basis{grid-column:1/-1;margin:0;font-size:11px;line-height:1.5;color:#777}\n.ppd-toolbox__fields .ppd-toolbox__check{flex-direction:row;align-items:center;grid-column:1/-1}.ppd-toolbox .ppd-toolbox__primary{margin-top:16px;width:100%;padding:11px 13px;border:0;border-radius:10px;background:#20201f;color:#fff}\n.ppd-toolbox__preview-heading{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.ppd-toolbox__preview-heading>span{font-size:12px;color:#777}\n.ppd-toolbox__preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.ppd-toolbox__preview-toolbar .ppd-toolbox__upload{margin-left:auto}.ppd-toolbox__preview-tabs{display:flex;gap:6px}.ppd-toolbox__preview-tabs button{border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;padding:6px 14px}.ppd-toolbox__preview-tabs button[aria-pressed=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-toolbox__previews{position:relative}.ppd-toolbox__previews figure{margin:0;min-width:0}.ppd-toolbox__previews figcaption{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%)}\n.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{display:block;width:100%;height:clamp(300px,52vh,620px);object-fit:contain;border-radius:9px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-toolbox__preview-empty{display:grid;place-items:center;color:#777;font-size:12px;text-align:center}.ppd-toolbox__previews small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:9px;color:#666;font-size:12px}\n.ppd-toolbox__preview-retained{position:absolute;top:10px;left:50%;translate:-50% 0;z-index:1;max-width:calc(100% - 20px);padding:7px 11px;border-radius:999px;background:rgba(32,32,31,.82);color:#fff;font-size:12px;line-height:1.3;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.12);pointer-events:none}\n.ppd-toolbox__preview-note{font-size:12px;color:#666;line-height:1.5;margin:12px 0 0}.ppd-toolbox__preview-error{color:#9d2c23;font-size:12px;line-height:1.5;margin:12px 0 0}\n.ppd-toolbox__preview-files{margin:12px 0 0;padding-left:18px;font-size:12px;overflow-wrap:anywhere}.ppd-toolbox__preview-files li+li{margin-top:8px}.ppd-toolbox__preview-files small{display:block;color:#666;margin-top:3px}\n.ppd-toolbox__results,.ppd-toolbox__output{margin-top:14px}.ppd-toolbox__result{padding:8px 0;border-bottom:1px solid #eee}.ppd-toolbox__result>div{display:flex;gap:6px}.ppd-toolbox__result button,.ppd-toolbox__output button{padding:6px 8px;border:1px solid #ddd;border-radius:8px;background:#fafafa;color:inherit}\n.ppd-toolbox__result>span{flex:1}.ppd-toolbox__result-thumbnail{width:56px;height:56px;object-fit:contain;border-radius:6px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/12px 12px;flex-shrink:0}\n.ppd-toolbox__directory{display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:8px;align-items:center;margin-top:10px}.ppd-toolbox__directory label{grid-column:1/-1;font-size:11px;color:#666}.ppd-toolbox__output code{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#666}\n.ppd-toolbox__exported{margin-top:10px;padding:9px;background:#f6f6f3;border-radius:10px}.ppd-toolbox__notice,.ppd-toolbox__error{position:absolute;left:18px;right:18px;bottom:8px;margin:0;z-index:2;padding:9px 11px;border-radius:9px;font-size:12px}.ppd-toolbox__notice{background:#e9f6ee;color:#246c3b}.ppd-toolbox__error{background:#fff0ef;color:#9d2c23}.ppd-toolbox__empty{color:#999;font-size:11px}\n@media(max-width:900px){.ppd-toolbox__body{grid-template-columns:minmax(230px,290px) minmax(0,1fr);gap:14px}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__result{align-items:flex-start;flex-wrap:wrap}}\n@media(max-width:620px){.ppd-toolbox{padding:12px;overflow:auto}.ppd-toolbox__header{align-items:flex-start;flex-wrap:wrap}.ppd-toolbox__body{height:auto;grid-template-columns:1fr}.ppd-toolbox__parameters,.ppd-toolbox__workspace{height:auto;overflow:visible;padding:0}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__directory label{grid-column:auto}.ppd-toolbox__preview-tabs button{flex:1}.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{height:320px}.ppd-toolbox__notice,.ppd-toolbox__error{position:sticky;left:auto;right:auto;margin-top:12px}}\n\n/* Vertical independent modules; only the left pane scrolls while adjusting parameters. */\n.ppd-toolbox__modules{min-width:0}.ppd-toolbox__module{padding:16px 0;border-top:1px solid #e4e4df}\n.ppd-toolbox__module h3{margin:0 0 14px;font-size:16px}.ppd-toolbox__module h3 label{display:flex;align-items:center;gap:10px;cursor:pointer}\n.ppd-toolbox__module h3 input{width:17px;height:17px;margin:0;accent-color:#292927}\n.ppd-toolbox__module fieldset{border:0;min-width:0;margin:0;padding:0}\n.ppd-toolbox__save-bar{position:sticky;bottom:-48px;background:#fff;padding:8px 0 14px;margin-top:0;z-index:1}\n.ppd-toolbox__save-bar .ppd-toolbox__primary{margin-top:0}.ppd-toolbox__save-bar>small{display:block;margin-top:8px;color:#888;font-size:11px;line-height:1.5}\n.ppd-toolbox__actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}\n.ppd-toolbox__actions>button{padding:10px 13px;border:1px solid #ddd;border-radius:10px;background:#fff;color:inherit}\n.ppd-toolbox__actions>button:last-child{grid-column:1/-1}\n.ppd-toolbox__preview-tabs{flex-wrap:wrap}.ppd-toolbox__result-name{display:flex;flex:1;min-width:0;text-align:left;flex-direction:column;gap:4px;background:none!important;border:0!important}\n@media(max-width:620px){.ppd-toolbox__save-bar{position:static}.ppd-toolbox__module{padding:14px 0}}\n\n/* Bound the toolbox to the native DSH panel, including its account header. */\n.ppd-panel-toolbox{height:100%;min-height:0}\n.ppd-panel-toolbox .ppd-panel-scroll{display:flex;flex-direction:column;min-height:0;overflow:hidden}\n.ppd-panel-toolbox .ppd-account{flex:0 0 auto}\n.ppd-panel-toolbox .ppd-content{flex:1 1 0;min-height:0;width:100%;max-width:none;margin:0;padding:0;overflow:hidden}\n\n.ppd-toolbox-hub{display:flex;flex-direction:column;height:100%;min-height:0}\n.ppd-toolbox-hub__tabs{display:flex;flex:0 0 auto;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e1;overflow-x:auto}\n.ppd-toolbox-hub__tabs button{flex:0 0 auto;border:0;border-bottom:2px solid transparent;padding:12px 0 10px;background:transparent;color:#64645e;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox-hub__tabs button[aria-selected=true]{border-bottom-color:#292927;color:#292927;font-weight:600}\n.ppd-toolbox-hub__tabs button:focus-visible{outline:2px solid #64645e;outline-offset:-3px}\n.ppd-toolbox-hub__panel{flex:1 1 0;min-height:0;overflow:auto}\n.ppd-toolbox-hub__panel[hidden]{display:none!important}\n.ppd-toolbox-hub__panel[id$="-processing"]{display:flex;flex-direction:column;overflow:hidden}\n.ppd-processing-tools{display:flex;flex:0 0 auto;gap:6px;padding:10px 18px;border-bottom:1px solid #e5e5e1}\n.ppd-processing-tools button{border:1px solid #ddd;border-radius:7px;padding:6px 14px;background:#fff;color:#64645e;font:inherit;font-size:12px;cursor:pointer}\n.ppd-processing-tools button[aria-selected=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-processing-tools__panel{flex:1 1 0;min-height:0;overflow:auto}.ppd-processing-tools__panel[hidden]{display:none!important}\n.ppd-contour{height:100%;overflow:auto;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-contour *{box-sizing:border-box}.ppd-contour__header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}\n.ppd-contour h2{font-size:22px;margin:0 0 7px}.ppd-contour__header p{margin:0;color:#777;font-size:12px;line-height:1.6}\n.ppd-contour__upload{position:relative;flex-shrink:0;padding:8px 12px;border:1px solid #ddd;border-radius:9px;cursor:pointer;font-size:12px}\n.ppd-contour__upload:has(input:disabled){opacity:.55;cursor:default}.ppd-contour__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-contour__upload:focus-within{outline:2px solid #64645e;outline-offset:2px}\n.ppd-contour__layout{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:20px;align-items:start}\n.ppd-contour__settings{min-width:0}.ppd-contour fieldset{display:grid;gap:12px;border:0;margin:0;padding:0;min-width:0}\n.ppd-contour fieldset>label,.ppd-contour__dimensions label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;color:#666}\n.ppd-contour input,.ppd-contour select{width:100%;min-width:0;font:inherit;font-size:13px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-contour fieldset:disabled{opacity:.55}.ppd-contour__dimensions{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.ppd-contour__hint{font-size:12px;line-height:1.7;color:#777;margin:4px 0 10px}.ppd-contour__error{font-size:12px;line-height:1.6;color:#9d2c23;margin:12px 0;overflow-wrap:anywhere}\n.ppd-contour__result{display:grid;gap:7px;border:1px solid #e4e4df;border-radius:12px;padding:16px;margin-top:16px;background:#f7f7f4;font-size:12px;color:#666}\n.ppd-contour__result strong{color:#292927;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}\n.ppd-contour__result p{margin:2px 0;line-height:1.6}.ppd-contour__warning{color:#8a5a18}\n.ppd-contour__preview{min-width:0;border:1px solid #e4e4df;border-radius:12px;padding:12px;background:#fff}\n.ppd-contour__preview svg,.ppd-contour__empty{display:block;width:100%;height:clamp(280px,56vh,620px);border-radius:8px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-contour__empty{display:grid;place-items:center;padding:20px;text-align:center;color:#777;font-size:12px}\n.ppd-contour__preview p{font-size:12px;line-height:1.6;margin:10px 0 0;color:#666;overflow-wrap:anywhere}\n@media(max-width:800px){.ppd-contour__layout{grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:14px}}\n@media(max-width:620px){.ppd-contour{padding:12px}.ppd-contour__header{align-items:flex-start;flex-wrap:wrap}.ppd-contour__layout{grid-template-columns:1fr}.ppd-contour__preview svg,.ppd-contour__empty{height:320px}.ppd-processing-tools{padding:8px 12px}}\n';
+var manual_toolbox_default = '.ppd-toolbox{position:relative;height:100%;overflow:hidden;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-toolbox *{box-sizing:border-box}.ppd-toolbox button{cursor:pointer}.ppd-toolbox button:disabled{cursor:default;opacity:.55}\n.ppd-toolbox button,.ppd-toolbox input,.ppd-toolbox select{font:inherit}\n.ppd-toolbox__header,.ppd-toolbox__result,.ppd-toolbox__exported{display:flex;align-items:center;justify-content:space-between;gap:12px}\n.ppd-toolbox__header h2{margin:0 0 8px;font-size:24px;line-height:1.2}.ppd-toolbox__header p,.ppd-toolbox__output p{margin:4px 0 0;color:#777;font-size:12px;line-height:1.6}\n.ppd-toolbox__upload{position:relative;padding:8px 12px;border:1px solid #ddd;border-radius:10px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-toolbox__tabs{display:grid;gap:14px}.ppd-toolbox__tool-group>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ppd-toolbox__tool-group h3{font-size:11px;color:#777;margin:0 0 7px}\n.ppd-toolbox__tabs button{display:flex;flex-direction:column;gap:3px;text-align:left;padding:9px;border:1px solid #ddd;border-radius:11px;background:#fff;color:inherit}\n.ppd-toolbox__tabs button.is-active{border-color:#222;background:#f4f4f1}.ppd-toolbox__tabs small{color:#888;font-size:10px}\n.ppd-toolbox__body{display:grid;height:100%;min-height:0;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:20px;align-items:start}.ppd-toolbox__workspace{min-width:0;min-height:0;height:100%;overflow:auto;padding-bottom:48px}\n.ppd-toolbox__parameters{display:grid;align-content:start;gap:12px;min-width:0;min-height:0;height:100%;overflow:auto;padding-right:4px;padding-bottom:48px}.ppd-toolbox__source-list{max-height:160px;overflow:auto}\n.ppd-toolbox__sources,.ppd-toolbox__controls,.ppd-toolbox__preview-panel,.ppd-toolbox__results,.ppd-toolbox__output{min-width:0;border:1px solid #e4e4df;border-radius:14px;padding:14px;background:#fff}\n.ppd-toolbox__controls fieldset{border:0;min-width:0;padding:0;margin:0}\n.ppd-toolbox h3{margin:0 0 11px;font-size:14px}.ppd-toolbox__source{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid #eee}\n.ppd-toolbox__source span,.ppd-toolbox__result span,.ppd-toolbox__exported span{display:flex;min-width:0;flex-direction:column;gap:3px}.ppd-toolbox__source b,.ppd-toolbox__result b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}\n.ppd-toolbox__source small,.ppd-toolbox__result small,.ppd-toolbox__exported small{color:#888;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.ppd-toolbox__fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 9px}.ppd-toolbox__fields label{display:flex;min-width:0;flex-direction:column;gap:5px;font-size:12px;color:#666}\n.ppd-toolbox__fields input,.ppd-toolbox__fields select,.ppd-toolbox__directory>input{min-width:0;padding:7px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-toolbox__fields input[readonly]{background:#f4f4f1;color:#777}\n.ppd-toolbox__edge-group{grid-column:1/-1;display:grid;gap:10px;border-top:1px solid #eee;padding-top:12px}.ppd-toolbox__edge-group h4{font-size:12px;margin:0;color:#333}\n.ppd-toolbox__range-field{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 10px;align-items:center}.ppd-toolbox__range-field label{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}.ppd-toolbox__range-field input[type=number]{width:88px}.ppd-toolbox__range-field output{min-width:64px;text-align:right;font-size:12px;color:#444;font-variant-numeric:tabular-nums}\n.ppd-toolbox__fields .ppd-toolbox__range-field input[type=range]{grid-column:1/-1;width:100%;height:20px;margin:0;padding:0;border:0;background:transparent;accent-color:#333;cursor:ew-resize}.ppd-toolbox__pixel-basis{grid-column:1/-1;margin:0;font-size:11px;line-height:1.5;color:#777}\n.ppd-toolbox__fields .ppd-toolbox__check{flex-direction:row;align-items:center;grid-column:1/-1}.ppd-toolbox .ppd-toolbox__primary{margin-top:16px;width:100%;padding:11px 13px;border:0;border-radius:10px;background:#20201f;color:#fff}\n.ppd-toolbox__preview-heading{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.ppd-toolbox__preview-heading>span{font-size:12px;color:#777}\n.ppd-toolbox__preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.ppd-toolbox__preview-toolbar .ppd-toolbox__upload{margin-left:auto}.ppd-toolbox__preview-tabs{display:flex;gap:6px}.ppd-toolbox__preview-tabs button{border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;padding:6px 14px}.ppd-toolbox__preview-tabs button[aria-pressed=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-toolbox__source-batch{display:grid;gap:8px;margin-bottom:12px;padding:10px;border:1px solid #e4e4df;border-radius:10px;background:#fafaf8}.ppd-toolbox__source-batch-heading{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-toolbox__source-batch-heading strong{font-size:12px}.ppd-toolbox__source-batch-heading span{margin-right:auto;color:#777;font-size:11px}.ppd-toolbox__source-batch-heading button,.ppd-toolbox__source-row>button{padding:4px 7px;border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;font-size:11px}.ppd-toolbox__source-list{display:grid;gap:3px;max-height:180px;overflow:auto}.ppd-toolbox__source-row{display:flex;align-items:center;gap:6px;padding:4px;border-radius:7px}.ppd-toolbox__source-row[data-preview-source=true]{background:#eeeeea}.ppd-toolbox__source-row>label{display:flex;min-width:0;flex:1;align-items:flex-start;gap:7px;cursor:pointer}.ppd-toolbox__source-row>label span{display:flex;min-width:0;flex-direction:column;gap:2px}.ppd-toolbox__source-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.ppd-toolbox__source-row small,.ppd-toolbox__source-batch>small,.ppd-toolbox__source-batch>p{margin:0;color:#777;font-size:10px;line-height:1.5}.ppd-toolbox__source-row>button[aria-pressed=true]{border-color:#292927;background:#292927;color:#fff}\n.ppd-toolbox__previews{position:relative}.ppd-toolbox__previews figure{margin:0;min-width:0}.ppd-toolbox__previews figcaption{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%)}\n.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{display:block;width:100%;height:clamp(300px,52vh,620px);object-fit:contain;border-radius:9px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-toolbox__preview-empty{display:grid;place-items:center;color:#777;font-size:12px;text-align:center}.ppd-toolbox__previews small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:9px;color:#666;font-size:12px}\n.ppd-toolbox__preview-retained{position:absolute;top:10px;left:50%;translate:-50% 0;z-index:1;max-width:calc(100% - 20px);padding:7px 11px;border-radius:999px;background:rgba(32,32,31,.82);color:#fff;font-size:12px;line-height:1.3;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.12);pointer-events:none}\n.ppd-toolbox__preview-note{font-size:12px;color:#666;line-height:1.5;margin:12px 0 0}.ppd-toolbox__preview-error{color:#9d2c23;font-size:12px;line-height:1.5;margin:12px 0 0}\n.ppd-toolbox__preview-files{margin:12px 0 0;padding-left:18px;font-size:12px;overflow-wrap:anywhere}.ppd-toolbox__preview-files li+li{margin-top:8px}.ppd-toolbox__preview-files small{display:block;color:#666;margin-top:3px}\n.ppd-toolbox__results,.ppd-toolbox__output{margin-top:14px}.ppd-toolbox__result{padding:8px 0;border-bottom:1px solid #eee}.ppd-toolbox__result>div{display:flex;gap:6px}.ppd-toolbox__result button,.ppd-toolbox__output button{padding:6px 8px;border:1px solid #ddd;border-radius:8px;background:#fafafa;color:inherit}\n.ppd-toolbox__result>span{flex:1}.ppd-toolbox__result-thumbnail{width:56px;height:56px;object-fit:contain;border-radius:6px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/12px 12px;flex-shrink:0}\n.ppd-toolbox__directory{display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:8px;align-items:center;margin-top:10px}.ppd-toolbox__directory label{grid-column:1/-1;font-size:11px;color:#666}.ppd-toolbox__output code{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#666}\n.ppd-toolbox__exported{margin-top:10px;padding:9px;background:#f6f6f3;border-radius:10px}.ppd-toolbox__notice,.ppd-toolbox__error{position:absolute;left:18px;right:18px;bottom:8px;margin:0;z-index:2;padding:9px 11px;border-radius:9px;font-size:12px}.ppd-toolbox__notice{background:#e9f6ee;color:#246c3b}.ppd-toolbox__error{background:#fff0ef;color:#9d2c23}.ppd-toolbox__empty{color:#999;font-size:11px}\n@media(max-width:900px){.ppd-toolbox__body{grid-template-columns:minmax(230px,290px) minmax(0,1fr);gap:14px}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__result{align-items:flex-start;flex-wrap:wrap}}\n@media(max-width:620px){.ppd-toolbox{padding:12px;overflow:auto}.ppd-toolbox__header{align-items:flex-start;flex-wrap:wrap}.ppd-toolbox__body{height:auto;grid-template-columns:1fr}.ppd-toolbox__parameters,.ppd-toolbox__workspace{height:auto;overflow:visible;padding:0}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__directory label{grid-column:auto}.ppd-toolbox__preview-tabs button{flex:1}.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{height:320px}.ppd-toolbox__notice,.ppd-toolbox__error{position:sticky;left:auto;right:auto;margin-top:12px}}\n\n/* Vertical independent modules; only the left pane scrolls while adjusting parameters. */\n.ppd-toolbox__modules{min-width:0}.ppd-toolbox__module{padding:16px 0;border-top:1px solid #e4e4df}\n.ppd-toolbox__module h3{margin:0 0 14px;font-size:16px}.ppd-toolbox__module h3 label{display:flex;align-items:center;gap:10px;cursor:pointer}\n.ppd-toolbox__module h3 input{width:17px;height:17px;margin:0;accent-color:#292927}\n.ppd-toolbox__module fieldset{border:0;min-width:0;margin:0;padding:0}\n.ppd-toolbox__save-bar{position:sticky;bottom:-48px;background:#fff;padding:8px 0 14px;margin-top:0;z-index:1}\n.ppd-toolbox__save-bar .ppd-toolbox__primary{margin-top:0}.ppd-toolbox__save-bar>small{display:block;margin-top:8px;color:#888;font-size:11px;line-height:1.5}\n.ppd-toolbox__actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}\n.ppd-toolbox__actions>button{padding:10px 13px;border:1px solid #ddd;border-radius:10px;background:#fff;color:inherit}\n.ppd-toolbox__actions>button:last-child{grid-column:1/-1}\n.ppd-toolbox__preview-tabs{flex-wrap:wrap}.ppd-toolbox__result-name{display:flex;flex:1;min-width:0;text-align:left;flex-direction:column;gap:4px;background:none!important;border:0!important}\n@media(max-width:620px){.ppd-toolbox__save-bar{position:static}.ppd-toolbox__module{padding:14px 0}}\n\n/* Bound the toolbox to the native DSH panel, including its account header. */\n.ppd-panel-toolbox{height:100%;min-height:0}\n.ppd-panel-toolbox .ppd-panel-scroll{display:flex;flex-direction:column;min-height:0;overflow:hidden}\n.ppd-panel-toolbox .ppd-account{flex:0 0 auto}\n.ppd-panel-toolbox .ppd-content{flex:1 1 0;min-height:0;width:100%;max-width:none;margin:0;padding:0;overflow:hidden}\n\n.ppd-toolbox-hub{display:flex;flex-direction:column;height:100%;min-height:0}\n.ppd-toolbox-hub__tabs{display:flex;flex:0 0 auto;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e1;overflow-x:auto}\n.ppd-toolbox-hub__tabs button{flex:0 0 auto;border:0;border-bottom:2px solid transparent;padding:12px 0 10px;background:transparent;color:#64645e;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox-hub__tabs button[aria-selected=true]{border-bottom-color:#292927;color:#292927;font-weight:600}\n.ppd-toolbox-hub__tabs button:focus-visible{outline:2px solid #64645e;outline-offset:-3px}\n.ppd-toolbox-hub__panel{flex:1 1 0;min-height:0;overflow:auto}\n.ppd-toolbox-hub__panel[hidden]{display:none!important}\n.ppd-toolbox-hub__panel[id$="-processing"]{display:flex;flex-direction:column;overflow:hidden}\n.ppd-processing-tools{display:flex;flex:0 0 auto;gap:6px;padding:10px 18px;border-bottom:1px solid #e5e5e1}\n.ppd-processing-tools button{border:1px solid #ddd;border-radius:7px;padding:6px 14px;background:#fff;color:#64645e;font:inherit;font-size:12px;cursor:pointer}\n.ppd-processing-tools button[aria-selected=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-processing-tools__panel{flex:1 1 0;min-height:0;overflow:auto}.ppd-processing-tools__panel[hidden]{display:none!important}\n.ppd-contour{height:100%;overflow:auto;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-contour *{box-sizing:border-box}.ppd-contour__header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}\n.ppd-contour h2{font-size:22px;margin:0 0 7px}.ppd-contour__header p{margin:0;color:#777;font-size:12px;line-height:1.6}\n.ppd-contour__upload{position:relative;flex-shrink:0;padding:8px 12px;border:1px solid #ddd;border-radius:9px;cursor:pointer;font-size:12px}\n.ppd-contour__upload:has(input:disabled){opacity:.55;cursor:default}.ppd-contour__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-contour__upload:focus-within{outline:2px solid #64645e;outline-offset:2px}\n.ppd-contour__layout{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:20px;align-items:start}\n.ppd-contour__settings{min-width:0}.ppd-contour fieldset{display:grid;gap:12px;border:0;margin:0;padding:0;min-width:0}\n.ppd-contour fieldset>label,.ppd-contour__dimensions label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;color:#666}\n.ppd-contour input,.ppd-contour select{width:100%;min-width:0;font:inherit;font-size:13px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-contour fieldset:disabled{opacity:.55}.ppd-contour__dimensions{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.ppd-contour__hint{font-size:12px;line-height:1.7;color:#777;margin:4px 0 10px}.ppd-contour__error,.ppd-contour__notice{font-size:12px;line-height:1.6;margin:12px 0;overflow-wrap:anywhere}.ppd-contour__error{color:#9d2c23}.ppd-contour__notice{color:#246c3b}\n.ppd-contour__sources{display:grid;gap:3px;max-height:150px;overflow:auto;padding:6px;border:1px solid #e4e4df;border-radius:9px}.ppd-contour__sources>div{display:flex;gap:5px;border-radius:7px;padding:3px}.ppd-contour__sources>div[data-current=true]{background:#eeeeea}.ppd-contour__sources button{border:0;background:transparent;color:inherit;font-size:11px;cursor:pointer}.ppd-contour__sources button:first-child{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;overflow:hidden;text-align:left}.ppd-contour__sources button:first-child:not(:only-child){white-space:nowrap;text-overflow:ellipsis}.ppd-contour__sources button:last-child{color:#777}.ppd-contour__sources small{color:#777;font-size:10px}\n.ppd-contour__result{display:grid;gap:7px;border:1px solid #e4e4df;border-radius:12px;padding:16px;margin-top:16px;background:#f7f7f4;font-size:12px;color:#666}\n.ppd-contour__result strong{color:#292927;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}\n.ppd-contour__result p{margin:2px 0;line-height:1.6}.ppd-contour__warning{color:#8a5a18}\n.ppd-contour__preview{min-width:0;border:1px solid #e4e4df;border-radius:12px;padding:12px;background:#fff}\n.ppd-contour__preview svg,.ppd-contour__empty{display:block;width:100%;height:clamp(280px,56vh,620px);border-radius:8px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-contour__empty{display:grid;place-items:center;padding:20px;text-align:center;color:#777;font-size:12px}\n.ppd-contour__preview p{font-size:12px;line-height:1.6;margin:10px 0 0;color:#666;overflow-wrap:anywhere}\n@media(max-width:800px){.ppd-contour__layout{grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:14px}}\n@media(max-width:620px){.ppd-contour{padding:12px}.ppd-contour__header{align-items:flex-start;flex-wrap:wrap}.ppd-contour__layout{grid-template-columns:1fr}.ppd-contour__preview svg,.ppd-contour__empty{height:320px}.ppd-processing-tools{padding:8px 12px}}\n';
 
 // plugins/podplo-dsh/src/grid-split.css
 var grid_split_default = ".ppd-grid-split{position:relative;height:100%;min-height:0;overflow:hidden;padding:20px;color:var(--text-primary,#292927);background:var(--background,#fff);box-sizing:border-box}\n.ppd-grid-split *{box-sizing:border-box}.ppd-grid-split button,.ppd-grid-split input{font:inherit}.ppd-grid-split button{cursor:pointer}.ppd-grid-split button:disabled{cursor:default;opacity:.5}\n.ppd-grid-split__header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px}.ppd-grid-split__header h1{margin:0 0 6px;font-size:24px;line-height:1.2}.ppd-grid-split__header p{margin:0;color:#6d6d68;font-size:12px;line-height:1.6}\n.ppd-grid-split__upload{position:relative;flex:0 0 auto;padding:9px 13px;border:1px solid #d9d9d4;border-radius:10px;background:#fff;cursor:pointer;font-size:13px}.ppd-grid-split__upload input{position:absolute;width:1px;height:1px;opacity:0}\n.ppd-grid-split__layout{display:grid;grid-template-columns:minmax(250px,320px) minmax(0,1fr);gap:18px;height:calc(100% - 72px);min-height:0}.ppd-grid-split__settings,.ppd-grid-split__preview{min-height:0;border:1px solid #e4e4df;border-radius:14px;background:#fff}.ppd-grid-split__settings{display:flex;flex-direction:column;gap:0;overflow:auto;padding:4px 16px 16px}.ppd-grid-split__settings>section{padding:15px 0;border-bottom:1px solid #ecece8}.ppd-grid-split h3{margin:0 0 12px;font-size:14px}.ppd-grid-split h3 span{float:right;color:#6d6d68;font-size:11px;font-weight:400}\n.ppd-grid-split[data-has-message=true] .ppd-grid-split__layout{height:calc(100% - 124px)}\n.ppd-grid-split__numbers{display:grid;grid-template-columns:1fr 1fr;gap:10px}.ppd-grid-split__numbers label{display:grid;gap:5px;color:#60605c;font-size:12px}.ppd-grid-split__numbers input{width:100%;min-width:0;padding:8px;border:1px solid #d9d9d4;border-radius:8px;background:#fff;color:inherit}.ppd-grid-split__hint{min-height:18px;margin:9px 0 0;color:#6d6d68;font-size:11px;line-height:1.5}\n.ppd-grid-split__mode{display:grid;grid-template-columns:1fr 1fr;gap:6px}.ppd-grid-split__mode button{padding:8px;border:1px solid #d9d9d4;border-radius:8px;background:#fff;color:#60605c}.ppd-grid-split__mode button[aria-pressed=true]{border-color:#292927;background:#292927;color:#fff}.ppd-grid-split__asset-settings{display:grid;gap:13px}.ppd-grid-split__asset-settings label{display:grid;grid-template-columns:1fr auto;gap:4px 8px;color:#60605c;font-size:12px}.ppd-grid-split__asset-settings label>span{font-variant-numeric:tabular-nums;color:#292927}.ppd-grid-split__asset-settings input{grid-column:1/-1;width:100%;accent-color:#292927}.ppd-grid-split__asset-settings small{grid-column:1/-1;color:#777771;font-size:10px;line-height:1.45}.ppd-grid-split__reset{margin-top:12px;padding:7px 9px;border:1px solid #d9d9d4;border-radius:8px;background:#fff;color:#60605c;font-size:11px}\n.ppd-grid-split__sources{display:grid;gap:2px}.ppd-grid-split__source{display:flex;align-items:center;gap:7px}.ppd-grid-split__source>label{display:flex;min-width:0;flex:1;align-items:flex-start;gap:9px;padding:7px 0;cursor:pointer}.ppd-grid-split__sources input{margin-top:3px;accent-color:#292927}.ppd-grid-split__sources span{display:flex;min-width:0;flex-direction:column;gap:3px}.ppd-grid-split__sources b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.ppd-grid-split__sources small{color:#6d6d68;font-size:11px}.ppd-grid-split__source>button{padding:4px 6px;border:0;background:transparent;color:#6d6d68;font-size:11px}.ppd-grid-split__empty{margin:0;color:#6d6d68;font-size:11px}\n.ppd-grid-split__actions{display:grid;grid-template-columns:1fr;gap:8px;margin-top:auto;padding-top:16px}.ppd-grid-split__actions button{padding:10px 12px;border:1px solid #d9d9d4;border-radius:10px;background:#fff;color:inherit}.ppd-grid-split__actions .ppd-grid-split__primary{border-color:#20201f;background:#20201f;color:#fff}\n.ppd-grid-split__preview{overflow:auto;padding:16px}.ppd-grid-split__preview-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px}.ppd-grid-split__preview-title span{max-width:60%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#6d6d68;font-size:11px}.ppd-grid-split__tiles{display:grid;grid-template-columns:repeat(var(--ppd-grid-split-cols),minmax(120px,1fr));gap:10px}.ppd-grid-split__tiles figure{min-width:0;margin:0;padding:8px;border:1px solid #ecece8;border-radius:10px;background:#fafaf8}\n.ppd-grid-split__tiles img{display:block;width:100%;height:150px;object-fit:contain;border-radius:6px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/14px 14px}.ppd-grid-split__tiles figcaption{display:flex;min-width:0;flex-direction:column;gap:3px;padding-top:7px}.ppd-grid-split__tiles b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}.ppd-grid-split__tiles small{color:#6d6d68;font-size:11px}.ppd-grid-split__preview-empty{display:grid;place-items:center;height:calc(100% - 36px);min-height:260px;border-radius:9px;background:#f7f7f4;color:#6d6d68;font-size:12px;text-align:center} /* taste-skill-ignore: transparency checkerboard, not a decorative gradient */\n.ppd-grid-split__notice,.ppd-grid-split__error{position:absolute;z-index:2;right:20px;bottom:8px;left:20px;margin:0;padding:9px 11px;border-radius:9px;font-size:12px}.ppd-grid-split__notice{background:#e9f6ee;color:#246c3b}.ppd-grid-split__error{background:#fff0ef;color:#9d2c23}\n@media(max-width:760px){.ppd-grid-split{height:auto;min-height:100%;overflow:auto;padding:12px}.ppd-grid-split__header{flex-wrap:wrap}.ppd-grid-split__layout,.ppd-grid-split[data-has-message=true] .ppd-grid-split__layout{height:auto;grid-template-columns:1fr}.ppd-grid-split__settings{overflow:visible}.ppd-grid-split__preview{overflow:auto}.ppd-grid-split__preview-empty{min-height:220px}.ppd-grid-split__notice,.ppd-grid-split__error{position:sticky;right:auto;bottom:auto;left:auto;margin-top:12px}}\n\n";
