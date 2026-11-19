@@ -22403,7 +22403,7 @@ import { createCipheriv, createDecipheriv, randomBytes as randomBytes4 } from "n
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir3 } from "node:os";
-import { basename as basename15, isAbsolute as isAbsolute9, resolve as resolve3 } from "node:path";
+import { basename as basename16, isAbsolute as isAbsolute9, resolve as resolve3 } from "node:path";
 import { dshHomePath } from "@deepseek-ai/dsh-home-paths";
 import { credentialKey } from "@deepseek-ai/dsh-credentials";
 import * as NativeMcp from "@deepseek-ai/dsh-mcp-client";
@@ -54821,7 +54821,7 @@ var PodploPluginError = class extends Error {
 import { constants as constants3, open as open4, readdir, realpath as realpath4, lstat as lstat3 } from "node:fs/promises";
 import { randomInt, randomUUID as randomUUID9 } from "node:crypto";
 import { homedir } from "node:os";
-import { basename as basename8, extname as extname6, isAbsolute as isAbsolute4, parse as parse5, relative as relative3, resolve, sep } from "node:path";
+import { basename as basename9, extname as extname7, isAbsolute as isAbsolute4, parse as parse5, relative as relative3, resolve, sep } from "node:path";
 
 // plugins/podplo-dsh/src/favorite-skill-resolution.ts
 var fail = (code, message) => {
@@ -55012,11 +55012,46 @@ function normalizeBackground(input) {
   return { ...input, output_format: format2 };
 }
 
+// packages/tools/contour-report.ts
+import { basename as basename5, extname as extname3 } from "node:path";
+var CONTOUR_REPORT_OPERATION_NAME = "podplo_contour_measure_report";
+function contourReport(name2, result, options, measuredAt) {
+  const displayName = basename5(name2.replace(/\\/g, "/")).replace(/[\x00-\x1f\x7f\u202a-\u202e\u2066-\u2069]/gu, " ").slice(0, 200);
+  const lines = [
+    "\u8F6E\u5ED3\u6D4B\u957F\u7ED3\u679C",
+    `\u56FE\u7247\uFF1A${displayName}`,
+    `\u6D4B\u91CF\u65F6\u95F4\uFF1A${measuredAt}`,
+    `\u56FE\u7247\u5C3A\u5BF8\uFF1A${result.sourceWidth} \xD7 ${result.sourceHeight} px`,
+    `\u4E3B\u4F53\u5305\u56F4\u6846\uFF1A${result.bbox.width} \xD7 ${result.bbox.height} px`,
+    `\u4E3B\u4F53\u5B9E\u9645\u5BBD\u5EA6\uFF1A${options.actualWidthCm} cm`,
+    `\u4E3B\u4F53\u5B9E\u9645\u9AD8\u5EA6\uFF1A${options.actualHeightCm} cm`,
+    `\u5916\u8F6E\u5ED3\u603B\u957F\u5EA6\uFF08\u8FD1\u4F3C\u503C\uFF09\uFF1A${result.totalLengthCm.toFixed(4)} cm`,
+    `${(result.totalLengthCm / 100).toFixed(6)} m`,
+    `\u5916\u8F6E\u5ED3\u6570\u91CF\uFF1A${result.componentCount}\uFF0C\u5185\u90E8\u5B54\u6D1E\u4E0D\u8BA1\u5165\u3002`,
+    `\u80CC\u666F\u8BC6\u522B\uFF1A${result.backgroundMode === "transparent" ? "\u900F\u660E\u56FE" : "\u767D\u5E95\u56FE"}`,
+    `\u767D\u5E95\u80CC\u666F\u5BB9\u5DEE\uFF1A${options.backgroundTolerance}`,
+    `\u900F\u660E\u5EA6\u9608\u503C\uFF1A${options.alphaThreshold}`,
+    ...result.warning ? [`\u63D0\u793A\uFF1A${result.warning}`] : [],
+    "\u8FD1\u4F3C\u503C\uFF0C\u8BF7\u4EE5\u8F6E\u5ED3\u9884\u89C8\u4E3A\u51C6\uFF1B\u9634\u5F71\u3001\u6A21\u7CCA\u8FB9\u7F18\u548C\u56FE\u7247\u5206\u8FA8\u7387\u4F1A\u5F71\u54CD\u6D4B\u91CF\u7ED3\u679C\u3002",
+    ""
+  ];
+  return {
+    stem: `${basename5(displayName, extname3(displayName))}-\u8F6E\u5ED3\u6D4B\u957F`,
+    extension: "txt",
+    format: "txt",
+    kind: "file",
+    width: 0,
+    height: 0,
+    sourceId: result.sourceId,
+    bytes: Buffer.from("\uFEFF" + lines.join("\r\n"), "utf8")
+  };
+}
+
 // plugins/podplo-dsh/src/local-toolkit.ts
 import { createHash as createHash7, randomUUID as randomUUID8 } from "node:crypto";
 import { constants as constants2 } from "node:fs";
 import { lstat as lstat2, mkdir as mkdir5, open as open3, realpath as realpath3, unlink } from "node:fs/promises";
-import { basename as basename7, extname as extname5, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
+import { basename as basename8, extname as extname6, isAbsolute as isAbsolute3, join as join5, relative as relative2 } from "node:path";
 import sharp12 from "sharp";
 
 // packages/tools/toolkit-contracts.ts
@@ -55407,7 +55442,7 @@ var import_pdf_lib = __toESM(require_cjs(), 1);
 import sharp8 from "sharp";
 import { Worker as Worker2 } from "node:worker_threads";
 import { existsSync } from "node:fs";
-import { basename as basename5, dirname as dirname6, extname as extname3, join as join4 } from "node:path";
+import { basename as basename6, dirname as dirname6, extname as extname4, join as join4 } from "node:path";
 import { fileURLToPath } from "node:url";
 
 // packages/tools/outline.ts
@@ -55674,7 +55709,7 @@ if (parentPort) parentPort.once("message", (message) => {
 var limitInputPixels2 = 1e8;
 function colorWorkerPath() {
   const here = dirname6(fileURLToPath(import.meta.url));
-  const candidate2 = basename5(here) === "dist" ? join4(here, "tool-worker.cjs") : join4(here, "../../dist/tool-worker.cjs");
+  const candidate2 = basename6(here) === "dist" ? join4(here, "tool-worker.cjs") : join4(here, "../../dist/tool-worker.cjs");
   return existsSync(candidate2) ? candidate2 : void 0;
 }
 function adjustColors(data, options, signal) {
@@ -55747,7 +55782,7 @@ async function processToolkit(inputs, raw, pattern, signal, preview) {
   const results = [];
   for (const input of inputs) {
     signal?.throwIfAborted();
-    const stem = basename5(input.name, extname3(input.name));
+    const stem = basename6(input.name, extname4(input.name));
     const image = sharp8(input.bytes, { limitInputPixels: limitInputPixels2, failOn: "error" }).autoOrient();
     const metadata = await image.metadata(), density = metadata.density ?? 300;
     if (metadata.pages && metadata.pages > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\uFF0C\u8BF7\u5148\u8F6C\u4E3A\u5355\u5F20\u9759\u6001\u56FE\u7247");
@@ -55850,7 +55885,7 @@ var OutlineInputNotTransparentError = class extends Error {
 
 // plugins/podplo-dsh/src/toolbox-pipeline.ts
 import sharp10 from "sharp";
-import { basename as basename6, extname as extname4 } from "node:path";
+import { basename as basename7, extname as extname5 } from "node:path";
 
 // plugins/podplo-dsh/src/toolbox-resize.ts
 var base = ResizeOptionsSchema.omit({ width: true, height: true, sizing: true, format: true, fit: true }).extend({ trimTransparent: external_exports2.boolean().default(false) });
@@ -56111,7 +56146,7 @@ var toolboxToolNames = {
 };
 var createToolboxFrameCache = (maxBytes, maxEntries) => new ImageMemoryCache(maxBytes, maxEntries);
 var limitInputPixels3 = 1e8;
-var stemOf = (name2) => basename6(name2, extname4(name2));
+var stemOf = (name2) => basename7(name2, extname5(name2));
 function bounded(outputs) {
   if (outputs.length > 400 || outputs.reduce((sum, row) => sum + row.bytes.length, 0) > 250 * 1024 * 1024)
     throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
@@ -56825,7 +56860,7 @@ var ContourMeasureOptionsSchema = external_exports.object({
   backgroundTolerance: external_exports.number().finite().min(4).max(40).default(18),
   alphaThreshold: external_exports.number().int().min(0).max(254).default(16)
 }).strict();
-var MAX_PIXELS2 = 12e6;
+var MAX_CONTOUR_SOURCE_PIXELS = 1e8;
 var MAX_COMPONENTS = 200;
 var MAX_RAW_POINTS = 5e5;
 var MAX_PATH_CHARACTERS = 1e6;
@@ -56913,11 +56948,11 @@ function physicalLength(points, scaleX, scaleY) {
   }
   return length;
 }
-function edgeAlphaCount(rgba, width2, height2, threshold) {
+function edgeAlphaCount(alpha, width2, height2, threshold) {
   let count3 = 0, samples = 0;
   const inspect = (x, y) => {
     samples++;
-    if (rgba[(y * width2 + x) * 4 + 3] <= threshold) count3++;
+    if (alpha[y * width2 + x] <= threshold) count3++;
   };
   for (let x = 0; x < width2; x++) {
     inspect(x, 0);
@@ -56968,29 +57003,14 @@ async function edgeConnectedYielding(candidate2, width2, height2, signal) {
       }
     }
   }
-  const connected = new Uint8Array(candidate2.length);
-  for (let index = 0; index < candidate2.length; index++) {
-    if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
-    connected[index] = candidate2[index] === 2 ? 1 : 0;
-  }
-  return connected;
+  return candidate2;
 }
-async function foregroundMask(rgba, width2, height2, options, signal) {
-  const edgeAlpha = edgeAlphaCount(rgba, width2, height2, options.alphaThreshold);
-  const transparent = edgeAlpha.count >= Math.max(1, Math.ceil(edgeAlpha.samples * 0.05));
-  const mask = new Uint8Array(width2 * height2);
-  if (transparent) {
-    for (let index = 0; index < mask.length; index++) {
-      if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
-      mask[index] = rgba[index * 4 + 3] > options.alphaThreshold ? 1 : 0;
-    }
-    return { mask, mode: "transparent" };
-  }
+async function whiteForegroundMask(rgba, width2, height2, options, signal) {
   const background = borderLab(rgba, width2, height2, true);
   if (background[0] < 220 || Math.hypot(background[1] - 128, background[2] - 128) > 25)
     throw new Error("\u76EE\u524D\u53EA\u652F\u6301\u900F\u660E\u5E95\u6216\u767D\u8272\uFF0F\u8FD1\u767D\u8272\u80CC\u666F\u56FE\u7247\u3002");
-  const candidates = new Uint8Array(mask.length);
-  for (let index = 0; index < mask.length; index++) {
+  const candidates = new Uint8Array(width2 * height2);
+  for (let index = 0; index < candidates.length; index++) {
     if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
     const offset = index * 4, alpha = rgba[offset + 3] / 255;
     const lab = rgbToOpenCvLab(
@@ -57000,49 +57020,102 @@ async function foregroundMask(rgba, width2, height2, options, signal) {
     );
     candidates[index] = rgba[offset + 3] <= options.alphaThreshold || Math.hypot(lab[0] - background[0], lab[1] - background[1], lab[2] - background[2]) <= options.backgroundTolerance ? 1 : 0;
   }
-  const connected = await edgeConnectedYielding(candidates, width2, height2, signal);
-  for (let index = 0; index < mask.length; index++) {
+  await edgeConnectedYielding(candidates, width2, height2, signal);
+  for (let index = 0; index < candidates.length; index++) {
     if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
-    mask[index] = !connected[index] && rgba[index * 4 + 3] > options.alphaThreshold ? 1 : 0;
+    candidates[index] = candidates[index] !== 2 && rgba[index * 4 + 3] > options.alphaThreshold ? 1 : 0;
   }
-  return { mask, mode: "white" };
+  return candidates;
 }
-async function measureImageContours(input, raw, signal) {
-  const options = ContourMeasureOptionsSchema.parse(raw);
-  if (input.kind === "file") throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u53EA\u63A5\u53D7\u56FE\u7247\u3002");
-  signal?.throwIfAborted();
-  const image = sharp11(input.bytes, { limitInputPixels: MAX_PIXELS2, failOn: "error" }).autoOrient().toColourspace("srgb").ensureAlpha();
-  const metadata = await image.metadata();
-  if ((metadata.pages ?? 1) > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\u3002");
-  const decoded = await image.raw().toBuffer({ resolveWithObject: true });
-  const { width: width2, height: height2 } = decoded.info;
-  if (width2 * height2 > MAX_PIXELS2) throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u6682\u4E0D\u652F\u6301\u8D85\u8FC7 1200 \u4E07\u50CF\u7D20\u7684\u56FE\u7247\u3002");
-  const { mask, mode } = await foregroundMask(decoded.data, width2, height2, options, signal);
-  let x0 = width2, y0 = height2, x1 = 0, y1 = 0, foregroundPixels = 0, boundaryEdges = 0, touchesEdge = false;
-  for (let index = 0; index < mask.length; index++) {
+async function cropForegroundMask(values, width2, height2, isForeground, signal) {
+  let x0 = width2, y0 = height2, x1 = 0, y1 = 0, foregroundPixels = 0;
+  for (let index = 0; index < values.length; index++) {
     if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
-    if (!mask[index]) continue;
+    if (!isForeground(values[index])) continue;
     foregroundPixels++;
     const y = Math.floor(index / width2), x = index - y * width2;
     x0 = Math.min(x0, x);
     y0 = Math.min(y0, y);
     x1 = Math.max(x1, x + 1);
     y1 = Math.max(y1, y + 1);
-    if (x === 0 || y === 0 || x === width2 - 1 || y === height2 - 1) touchesEdge = true;
+  }
+  if (!foregroundPixels) return void 0;
+  const croppedWidth = x1 - x0, croppedHeight = y1 - y0;
+  const fullCanvas = x0 === 0 && y0 === 0 && croppedWidth === width2 && croppedHeight === height2;
+  let mask;
+  if (fullCanvas && values.every((value2) => value2 === 0 || value2 === 1)) {
+    mask = values;
+  } else {
+    mask = new Uint8Array(croppedWidth * croppedHeight);
+    for (let y = 0; y < croppedHeight; y++) {
+      const sourceOffset = (y + y0) * width2 + x0, targetOffset = y * croppedWidth;
+      for (let x = 0; x < croppedWidth; x++) mask[targetOffset + x] = isForeground(values[sourceOffset + x]) ? 1 : 0;
+      if (y && y % 256 === 0) await yieldToHost(signal);
+    }
+  }
+  let boundaryEdges = 0;
+  for (let index = 0; index < mask.length; index++) {
+    if (index && index % YIELD_INTERVAL === 0) await yieldToHost(signal);
+    if (!mask[index]) continue;
+    const y = Math.floor(index / croppedWidth), x = index - y * croppedWidth;
     if (x === 0 || !mask[index - 1]) boundaryEdges++;
-    if (x === width2 - 1 || !mask[index + 1]) boundaryEdges++;
-    if (y === 0 || !mask[index - width2]) boundaryEdges++;
-    if (y === height2 - 1 || !mask[index + width2]) boundaryEdges++;
+    if (x === croppedWidth - 1 || !mask[index + 1]) boundaryEdges++;
+    if (y === 0 || !mask[index - croppedWidth]) boundaryEdges++;
+    if (y === croppedHeight - 1 || !mask[index + croppedWidth]) boundaryEdges++;
     if (boundaryEdges > MAX_RAW_POINTS) throw new Error("\u8F6E\u5ED3\u7EC6\u8282\u8FC7\u591A\uFF0C\u8BF7\u5148\u4F7F\u7528\u66F4\u5E72\u51C0\u7684\u767D\u5E95\u6216\u900F\u660E\u56FE\u7247\u3002");
   }
-  if (!foregroundPixels) throw new Error("\u6CA1\u6709\u8BC6\u522B\u5230\u53EF\u6D4B\u91CF\u7684\u4E3B\u4F53\uFF0C\u8BF7\u68C0\u67E5\u80CC\u666F\u6216\u9608\u503C\u3002");
-  const bboxWidth = x1 - x0, bboxHeight = y1 - y0;
+  return {
+    mask,
+    x: x0,
+    y: y0,
+    width: croppedWidth,
+    height: croppedHeight,
+    touchesEdge: x0 === 0 || y0 === 0 || x1 === width2 || y1 === height2
+  };
+}
+async function measureImageContours(input, raw, signal) {
+  const options = ContourMeasureOptionsSchema.parse(raw);
+  if (input.kind === "file") throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u53EA\u63A5\u53D7\u56FE\u7247\u3002");
+  signal?.throwIfAborted();
+  const header = await sharp11(input.bytes, { limitInputPixels: false, failOn: "error" }).metadata();
+  if ((header.pages ?? 1) > 1) throw new Error("\u6682\u4E0D\u652F\u6301\u591A\u9875\u6216\u52A8\u753B\u56FE\u7247\u3002");
+  const sourceWidth = header.autoOrient.width ?? header.width;
+  const sourceHeight = header.autoOrient.height ?? header.height;
+  if (!sourceWidth || !sourceHeight) throw new Error("\u65E0\u6CD5\u8BFB\u53D6\u56FE\u7247\u5C3A\u5BF8\u3002");
+  if (sourceWidth * sourceHeight > MAX_CONTOUR_SOURCE_PIXELS)
+    throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u6682\u4E0D\u652F\u6301\u8D85\u8FC7 1 \u4EBF\u50CF\u7D20\u7684\u56FE\u7247\u3002");
+  const image = sharp11(input.bytes, { limitInputPixels: MAX_CONTOUR_SOURCE_PIXELS, failOn: "error" }).autoOrient();
+  let mode = "white", cropped;
+  let transparent = false;
+  if (header.hasAlpha) {
+    const alphaDecoded = await image.clone().extractChannel("alpha").raw().toBuffer({ resolveWithObject: true });
+    const { width: width2, height: height2 } = alphaDecoded.info;
+    const edgeAlpha = edgeAlphaCount(alphaDecoded.data, width2, height2, options.alphaThreshold);
+    if (edgeAlpha.count >= Math.max(1, Math.ceil(edgeAlpha.samples * 0.05))) {
+      mode = "transparent";
+      transparent = true;
+      cropped = await cropForegroundMask(
+        alphaDecoded.data,
+        width2,
+        height2,
+        (value2) => value2 > options.alphaThreshold,
+        signal
+      );
+    }
+  }
+  if (!cropped && !transparent) {
+    const decoded = await image.clone().toColourspace("srgb").ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+    const fullMask = await whiteForegroundMask(decoded.data, decoded.info.width, decoded.info.height, options, signal);
+    cropped = await cropForegroundMask(fullMask, decoded.info.width, decoded.info.height, (value2) => value2 === 1, signal);
+  }
+  if (!cropped) throw new Error("\u6CA1\u6709\u8BC6\u522B\u5230\u53EF\u6D4B\u91CF\u7684\u4E3B\u4F53\uFF0C\u8BF7\u68C0\u67E5\u80CC\u666F\u6216\u9608\u503C\u3002");
+  const { mask, x: x0, y: y0, width: bboxWidth, height: bboxHeight, touchesEdge } = cropped;
   if (Math.max(bboxWidth, bboxHeight) < 32) throw new Error("\u4E3B\u4F53\u5206\u8FA8\u7387\u8FC7\u4F4E\uFF0C\u65E0\u6CD5\u53EF\u9760\u6D4B\u91CF\u8F6E\u5ED3\u3002");
   signal?.throwIfAborted();
-  const generated = Contours().size([width2, height2]).thresholds([0.5]).smooth(true)(mask)[0];
+  const generated = Contours().size([bboxWidth, bboxHeight]).thresholds([0.5]).smooth(true)(mask)[0];
   if (!generated) throw new Error("\u6CA1\u6709\u751F\u6210\u53EF\u6D4B\u91CF\u7684\u95ED\u5408\u8F6E\u5ED3\u3002");
   const polygons = generated.coordinates;
-  const exteriorRings = polygons.map((polygon) => polygon[0]).filter((ring) => !!ring?.length);
+  const exteriorRings = polygons.map((polygon) => polygon[0]).filter((ring) => !!ring?.length).map((ring) => ring.map(([x, y]) => [x + x0, y + y0]));
   if (!exteriorRings.length) throw new Error("\u6CA1\u6709\u751F\u6210\u53EF\u6D4B\u91CF\u7684\u5916\u8F6E\u5ED3\u3002");
   if (exteriorRings.length > MAX_COMPONENTS)
     throw new Error(`\u8BC6\u522B\u5230 ${exteriorRings.length} \u4E2A\u79BB\u6563\u8F6E\u5ED3\uFF0C\u8BF7\u63D0\u9AD8\u900F\u660E\u9608\u503C\u6216\u80CC\u666F\u5BB9\u5DEE\u540E\u91CD\u8BD5\u3002`);
@@ -57059,15 +57132,15 @@ async function measureImageContours(input, raw, signal) {
   const totalLengthCm = simplified.reduce((sum, ring) => sum + physicalLength(ring, scaleX, scaleY), 0);
   if (!Number.isFinite(totalLengthCm) || totalLengthCm <= 0) throw new Error("\u8F6E\u5ED3\u957F\u5EA6\u8BA1\u7B97\u5931\u8D25\u3002");
   signal?.throwIfAborted();
-  const preview = await sharp11(decoded.data, { raw: { width: width2, height: height2, channels: decoded.info.channels } }).resize({ width: 1024, height: 1024, fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
+  const preview = await image.clone().resize({ width: 1024, height: 1024, fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
   const warnings = [];
   if (Math.max(bboxWidth, bboxHeight) < 128) warnings.push("\u4E3B\u4F53\u5206\u8FA8\u7387\u8F83\u4F4E\uFF0C\u7ED3\u679C\u8BEF\u5DEE\u53EF\u80FD\u8F83\u5927");
   if (touchesEdge) warnings.push("\u8F6E\u5ED3\u63A5\u89E6\u753B\u5E03\u8FB9\u7F18\uFF0C\u56FE\u7247\u53EF\u80FD\u88C1\u65AD\u4E86\u4E3B\u4F53");
   if (exteriorRings.length > 20) warnings.push(`\u8BC6\u522B\u5230 ${exteriorRings.length} \u4E2A\u79BB\u6563\u5916\u8F6E\u5ED3\uFF0C\u8BF7\u68C0\u67E5\u9884\u89C8`);
   return {
     sourceId: input.id,
-    sourceWidth: width2,
-    sourceHeight: height2,
+    sourceWidth,
+    sourceHeight,
     previewDataUrl: `data:image/webp;base64,${preview.toString("base64")}`,
     bbox: { x: x0, y: y0, width: bboxWidth, height: bboxHeight },
     paths,
@@ -57081,7 +57154,7 @@ async function measureImageContours(input, raw, signal) {
 
 // plugins/podplo-dsh/src/local-toolkit.ts
 var hashPattern = /^[a-f0-9]{64}$/u;
-var resultFilePattern = /^results\/[a-f0-9]{64}\/[a-f0-9]{64}\/(?:待复核\/)?[0-9a-f-]{36}\.(?:png|jpe?g|webp|pdf|zip|json)$/u;
+var resultFilePattern = /^results\/[a-f0-9]{64}\/[a-f0-9]{64}\/(?:待复核\/)?[0-9a-f-]{36}\.(?:png|jpe?g|webp|pdf|zip|json|txt)$/u;
 var storedResultSchema = external_exports2.object({
   id: external_exports2.string().uuid(),
   name: external_exports2.string().min(1).max(255),
@@ -57108,7 +57181,7 @@ var storedOperationSchema = external_exports2.object({
   completedAt: external_exports2.string().datetime(),
   nativeSessionId: external_exports2.string().min(1).max(240).optional(),
   inputIds: external_exports2.array(external_exports2.string()).max(100).optional(),
-  toolName: external_exports2.enum(["podplo_resize_images", "podplo_rotate_flip_images", "podplo_adjust_image_colors", "podplo_export_images", "podplo_prepare_print_files", "podplo_package_delivery", "podplo_outline_images", "podplo_toolbox_pipeline", "podplo_grid_split"]).optional(),
+  toolName: external_exports2.enum(["podplo_resize_images", "podplo_rotate_flip_images", "podplo_adjust_image_colors", "podplo_export_images", "podplo_prepare_print_files", "podplo_package_delivery", "podplo_outline_images", "podplo_toolbox_pipeline", "podplo_grid_split", CONTOUR_REPORT_OPERATION_NAME]).optional(),
   archiveProject: external_exports2.object({ key: external_exports2.string(), name: external_exports2.string() }).optional(),
   options: external_exports2.unknown().optional()
 }).strict();
@@ -57163,7 +57236,8 @@ function processingAuthorizationTools(name2, options) {
   const add = (tool) => {
     if (!tools.includes(tool)) tools.push(tool);
   };
-  if (name2 === GRID_SPLIT_OPERATION_NAME) add(GRID_SPLIT_OPERATION_NAME);
+  if (name2 === CONTOUR_REPORT_OPERATION_NAME) add("podplo_outline_images");
+  else if (name2 === GRID_SPLIT_OPERATION_NAME) add(GRID_SPLIT_OPERATION_NAME);
   else if (name2 === TOOLBOX_PIPELINE_NAME) {
     const plan = ToolboxPlanSchema.parse(options);
     if (plan.trimTransparent || plan.steps.some((step) => step.tool === "trim" || step.tool === "resize" && step.options.trimTransparent || step.tool === "outline" && step.trimTransparent)) add("trim");
@@ -57179,6 +57253,7 @@ function processingAuthorizationTools(name2, options) {
   return tools;
 }
 function normalizedProcessingOptions(name2, options) {
+  if (name2 === CONTOUR_REPORT_OPERATION_NAME) return ContourMeasureOptionsSchema.parse(options);
   if (name2 === TOOLBOX_PIPELINE_NAME) return ToolboxPlanSchema.parse(options);
   if (name2 === GRID_SPLIT_OPERATION_NAME) {
     if (options && typeof options === "object" && !Array.isArray(options) && options.mode === "assets") throw new Error("\u7D20\u6750\u88C1\u526A\u53EA\u652F\u6301\u624B\u52A8\u5DE5\u5177\u7BB1");
@@ -57250,11 +57325,12 @@ function mediaType(format2) {
     webp: "image/webp",
     pdf: "application/pdf",
     zip: "application/zip",
-    json: "application/json"
+    json: "application/json",
+    txt: "text/plain;charset=utf-8"
   }[format2] ?? "application/octet-stream";
 }
 function safeOutputName(stem, extension) {
-  const cleaned = basename7(stem).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "").slice(0, 180) || "result";
+  const cleaned = basename8(stem).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "").slice(0, 180) || "result";
   return `${cleaned}.${extension}`;
 }
 var NativeLocalToolkit = class {
@@ -57349,7 +57425,7 @@ var NativeLocalToolkit = class {
     await this.assertIdentity(identity2, "process");
     const extension = expected === "jpeg" ? "jpg" : expected;
     const stored = await this.publish({
-      stem: basename7(args.name, extname5(args.name)),
+      stem: basename8(args.name, extname6(args.name)),
       extension,
       bytes,
       width: metadata.width,
@@ -57471,6 +57547,14 @@ var NativeLocalToolkit = class {
     const args = operationArgs.parse(raw), options = ImageSplitOptionsSchema.parse(args.options);
     if (!("mode" in options) && args.ids.length * options.rows * options.cols > 400) throw new Error("\u672C\u6B21\u5206\u5272\u7ED3\u679C\u4E0D\u80FD\u8D85\u8FC7 400 \u5F20");
     return this.idempotent(GRID_SPLIT_OPERATION_NAME, { ...args, options }, opaqueId.parse(sessionId));
+  }
+  /** Explicit UI export recomputes the result; never accepts renderer-supplied lengths. */
+  async exportContourReport(raw, sessionId) {
+    const args = external_exports2.object({ operationId, ids: external_exports2.array(opaqueId).length(1), options: ContourMeasureOptionsSchema }).strict().parse(raw);
+    const identity2 = await this.identity("process", "podplo_outline_images");
+    const reply = await this.idempotent(CONTOUR_REPORT_OPERATION_NAME, args, opaqueId.parse(sessionId));
+    await this.assertIdentity(identity2, "process", "podplo_outline_images");
+    return reply;
   }
   /** UI-only measurement. It does not mutate pixels, publish files, or create an operation receipt. */
   async contourMeasure(raw, sessionId) {
@@ -57608,7 +57692,7 @@ var NativeLocalToolkit = class {
         throw new Error("\u5F52\u6863\u52A0\u5DE5\u8F93\u5165\u65E0\u6548");
       total += input.bytes.length;
       if (total > 250 * 1024 * 1024) throw new Error("\u4E00\u6279\u8F93\u5165\u6700\u591A 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
-      return { id: input.id, name: basename7(input.name), bytes: Buffer.from(input.bytes), kind: input.kind };
+      return { id: input.id, name: basename8(input.name), bytes: Buffer.from(input.bytes), kind: input.kind };
     });
     return this.idempotentResolved(name2, { operationId: args.operationId, ids: args.ids, options }, session2, inputs);
   }
@@ -57721,7 +57805,7 @@ var NativeLocalToolkit = class {
       const png = Buffer.from(preview.dataUrl.slice(preview.dataUrl.indexOf(",") + 1), "base64");
       const images2 = [await this.previewImage(
         "effect",
-        `${basename7(input.name, extname5(input.name))}-\u63CF\u8FB9.png`,
+        `${basename8(input.name, extname6(input.name))}-\u63CF\u8FB9.png`,
         png,
         preview.exportWidth,
         preview.exportHeight,
@@ -57732,7 +57816,7 @@ var NativeLocalToolkit = class {
       )];
       if (options.mirror) images2.push(await this.previewImage(
         "mirror",
-        `${basename7(input.name, extname5(input.name))}-\u63CF\u8FB9-\u955C\u50CF.png`,
+        `${basename8(input.name, extname6(input.name))}-\u63CF\u8FB9-\u955C\u50CF.png`,
         await sharp12(png).flop().png().toBuffer(),
         preview.exportWidth,
         preview.exportHeight,
@@ -57780,7 +57864,7 @@ var NativeLocalToolkit = class {
         ).toBuffer();
         const info = await sharp12(bytes).metadata();
         outputs = [{
-          stem: `${basename7(input.name, extname5(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
+          stem: `${basename8(input.name, extname6(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
           bytes,
           extension: prepared.format === "jpeg" ? "jpg" : prepared.format,
           format: prepared.format,
@@ -57816,7 +57900,7 @@ var NativeLocalToolkit = class {
         if (Math.max(widthPt, heightPt) > 14400) throw new Error("PDF \u7269\u7406\u5C3A\u5BF8\u8FC7\u5927\uFF0C\u8BF7\u63D0\u9AD8 PPI \u6216\u51CF\u5C0F\u56FE\u7247");
         const image = await this.previewImage(
           "effect",
-          `${basename7(input.name, extname5(input.name))}-\u751F\u4EA7\u6587\u4EF6.pdf`,
+          `${basename8(input.name, extname6(input.name))}-\u751F\u4EA7\u6587\u4EF6.pdf`,
           bounded2.bytes,
           sourceSize.width,
           sourceSize.height,
@@ -57827,7 +57911,7 @@ var NativeLocalToolkit = class {
         );
         const file3 = { name: image.name, format: "pdf", summary: `${widthPt.toFixed(1)} \xD7 ${heightPt.toFixed(1)} pt \xB7 ${operation.options.ppi} PPI` };
         await this.assertOperationAuthorization(identity2, name2, args.options);
-        return { toolName: name2, images: [{ ...image, name: basename7(input.name) }], files: [file3], generatedNames: [file3.name] };
+        return { toolName: name2, images: [{ ...image, name: basename8(input.name) }], files: [file3], generatedNames: [file3.name] };
       }
       if (operation.tool === "rotate-flip") {
         const angle = (operation.options.angle % 360 + 360) % 360;
@@ -57945,11 +58029,16 @@ var NativeLocalToolkit = class {
     const inputs = archivedInputs ?? await this.resolveInputs(args.ids, identity2, sessionId, sessionHash, "process");
     await this.assertOperationAuthorization(identity2, name2, args.options);
     let rendered;
-    const tool = name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME ? void 0 : processingTools[name2];
+    const tool = name2 === TOOLBOX_PIPELINE_NAME || name2 === GRID_SPLIT_OPERATION_NAME || name2 === CONTOUR_REPORT_OPERATION_NAME ? void 0 : processingTools[name2];
     let outputs;
     if (name2 === TOOLBOX_PIPELINE_NAME) {
       rendered = await this.renderPipeline(inputs, ToolboxPlanSchema.parse(args.options), sessionId, identity2);
       outputs = rendered.outputs;
+    } else if (name2 === CONTOUR_REPORT_OPERATION_NAME) {
+      const settings = ContourMeasureOptionsSchema.parse(args.options), input = inputs[0];
+      if (inputs.length !== 1 || input.kind === "file") throw new Error("\u8BF7\u9009\u62E9\u4E00\u5F20\u56FE\u7247\u5BFC\u51FA\u6D4B\u957F\u7ED3\u679C\u3002");
+      const measured = await measureImageContours(input, settings);
+      outputs = [contourReport(input.name, measured, settings, this.timestamp())];
     } else if (name2 === GRID_SPLIT_OPERATION_NAME) outputs = await splitImages(inputs, ImageSplitOptionsSchema.parse(args.options));
     else if (tool === "resize") outputs = await this.resize(inputs, args.options);
     else {
@@ -57965,7 +58054,7 @@ var NativeLocalToolkit = class {
       }
       outputs = await processToolkit(inputs, operation, pattern);
     }
-    outputs = outputs.filter((row) => row.kind === "image" || row.format === "pdf");
+    outputs = outputs.filter((row) => row.kind === "image" || row.format === "pdf" || name2 === CONTOUR_REPORT_OPERATION_NAME && row.format === "txt");
     if (!outputs.length) throw new Error("\u672C\u5730\u56FE\u50CF\u5904\u7406\u6CA1\u6709\u4EA7\u751F\u7ED3\u679C");
     if (outputs.length > 400 || outputs.reduce((sum, row) => sum + row.bytes.length, 0) > 250 * 1024 * 1024)
       throw new Error("\u672C\u6279\u8F93\u51FA\u8D85\u8FC7 250 MB\uFF0C\u8BF7\u5206\u6279\u5904\u7406");
@@ -58039,7 +58128,7 @@ var NativeLocalToolkit = class {
         const resolved = await this.options.resolveInput(identity2.ownerId, sessionId, id2);
         await this.assertIdentity(identity2, purpose, toolName);
         if (!resolved || resolved.id !== id2 || !Buffer.isBuffer(resolved.bytes)) throw new Error("\u539F\u751F\u9644\u4EF6\u89E3\u6790\u7ED3\u679C\u65E0\u6548");
-        input = { id: id2, name: basename7(external_exports2.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
+        input = { id: id2, name: basename8(external_exports2.string().min(1).max(1e3).parse(resolved.name)), kind: resolved.kind, bytes: Buffer.from(resolved.bytes) };
       }
       if (!input.bytes.length || input.bytes.length > 50 * 1024 * 1024) throw new Error("\u5355\u6587\u4EF6\u5FC5\u987B\u4E3A 1 B\uFF5E50 MB");
       total += input.bytes.length;
@@ -58054,7 +58143,7 @@ var NativeLocalToolkit = class {
     const inputs = await this.resolveInputs(ids2, identity2, sessionId, sessionHash, "read"), rows = [];
     for (const input of inputs) {
       if (input.kind === "file") {
-        rows.push({ id: input.id, name: input.name, kind: "file", format: extname5(input.name).slice(1).toLowerCase() });
+        rows.push({ id: input.id, name: input.name, kind: "file", format: extname6(input.name).slice(1).toLowerCase() });
         continue;
       }
       const image = sharp12(input.bytes, { limitInputPixels: 1e8, failOn: "error" }).autoOrient();
@@ -58068,7 +58157,7 @@ var NativeLocalToolkit = class {
         kind: "image",
         width: metadata.width,
         height: metadata.height,
-        format: metadata.format ?? extname5(input.name).slice(1).toLowerCase(),
+        format: metadata.format ?? extname6(input.name).slice(1).toLowerCase(),
         density: metadata.density,
         hasAlpha,
         hasTransparency
@@ -58094,7 +58183,7 @@ var NativeLocalToolkit = class {
       const bytes = await image.toBuffer();
       const output = await sharp12(bytes).metadata();
       outputs.push({
-        stem: `${basename7(input.name, extname5(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
+        stem: `${basename8(input.name, extname6(input.name))}-\u5C3A\u5BF8\u8C03\u6574`,
         extension: format2 === "jpeg" ? "jpg" : format2,
         bytes,
         width: output.width,
@@ -58110,7 +58199,7 @@ var NativeLocalToolkit = class {
   }
   async publish(output, principal, session2) {
     const extension = output.extension.toLowerCase();
-    if (!/^(?:png|jpe?g|webp|pdf|zip|json)$/u.test(extension)) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u4EA7\u751F\u4E86\u4E0D\u53D7\u652F\u6301\u7684\u6587\u4EF6\u7C7B\u578B");
+    if (!/^(?:png|jpe?g|webp|pdf|zip|json|txt)$/u.test(extension)) throw new Error("\u672C\u5730\u56FE\u50CF\u5DE5\u5177\u4EA7\u751F\u4E86\u4E0D\u53D7\u652F\u6301\u7684\u6587\u4EF6\u7C7B\u578B");
     const id2 = this.options.id?.() ?? randomUUID8();
     external_exports2.string().uuid().parse(id2);
     const parts = ["results", principal, session2];
@@ -58893,7 +58982,7 @@ async function presetProcessing(input, deps) {
 }
 async function readNativeProcessingPreset(path, deps) {
   if (!deps.isFolderAuthorized(path)) fail4("LOCAL_PRESET_NOT_AUTHORIZED", "\u8BF7\u5728\u5F53\u524D\u6D88\u606F\u4E2D\u63D0\u4F9B\u5DE5\u5177\u7BB1\u9884\u8BBE JSON \u7684\u5B8C\u6574\u8DEF\u5F84\u3002");
-  if (!isAbsolute4(path) || extname6(path).toLowerCase() !== ".json") fail4("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
+  if (!isAbsolute4(path) || extname7(path).toLowerCase() !== ".json") fail4("LOCAL_PRESET_INVALID", "\u9884\u8BBE\u5FC5\u987B\u4E3A JSON \u6587\u4EF6\u7684\u7EDD\u5BF9\u8DEF\u5F84\u3002");
   const handle = await open4(path, constants3.O_RDONLY | (constants3.O_NOFOLLOW ?? 0));
   try {
     const before = await handle.stat();
@@ -58965,7 +59054,7 @@ async function readTrustedImageFolder(input) {
   if (directory === root || directory === home || pathParts.some((part) => part.startsWith(".") && part !== "." && part !== ".."))
     fail4("LOCAL_FOLDER_OUT_OF_SCOPE", "\u4E0D\u80FD\u628A\u78C1\u76D8\u6839\u76EE\u5F55\u3001\u7528\u6237\u4E3B\u76EE\u5F55\u6216\u9690\u85CF\u76EE\u5F55\u4F5C\u4E3A\u56FE\u7247\u6279\u5904\u7406\u6587\u4EF6\u5939\u3002");
   const entries = await readdir(directory, { withFileTypes: true });
-  const imageEntries = entries.filter((entry) => imageExtensions.has(extname6(entry.name).toLocaleLowerCase()));
+  const imageEntries = entries.filter((entry) => imageExtensions.has(extname7(entry.name).toLocaleLowerCase()));
   if (imageEntries.some((entry) => entry.isSymbolicLink() || !entry.isFile())) fail4("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u5FC5\u987B\u662F\u6587\u4EF6\u5939\u4E2D\u7684\u76F4\u63A5\u666E\u901A\u6587\u4EF6\uFF0C\u4E0D\u80FD\u662F\u7B26\u53F7\u94FE\u63A5\u6216\u5B50\u76EE\u5F55\u3002");
   imageEntries.sort((a, b) => a.name.localeCompare(b.name, "en", { numeric: true, sensitivity: "base" }));
   if (!imageEntries.length) fail4("LOCAL_IMAGE_COUNT_MISMATCH", "\u6587\u4EF6\u5939\u4E2D\u6CA1\u6709\u53EF\u7528\u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
@@ -58983,7 +59072,7 @@ async function readTrustedImageFolder(input) {
       const second = await handle.stat();
       if (first.dev !== second.dev || first.ino !== second.ino || first.size !== second.size || first.mtimeMs !== second.mtimeMs)
         fail4("LOCAL_IMAGE_CHANGED", `\u7B2C ${index + 1} \u5F20\u56FE\u7247\u5728\u8BFB\u53D6\u65F6\u53D1\u751F\u53D8\u5316\uFF0C\u8BF7\u91CD\u8BD5\u3002`);
-      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename8(entry.name), bytes });
+      images.push({ id: `trusted-folder-image-${index + 1}`, name: basename9(entry.name), bytes });
     } finally {
       await handle.close();
     }
@@ -59524,7 +59613,7 @@ import { createHash as createHash8, randomInt as randomInt2 } from "node:crypto"
 import { constants as constants4 } from "node:fs";
 import { lstat as lstat4, open as open5, readdir as readdir2, realpath as realpath5 } from "node:fs/promises";
 import { homedir as homedir2 } from "node:os";
-import { extname as extname7, isAbsolute as isAbsolute5, join as join6, parse as parse6, relative as relative4, resolve as resolve2, sep as sep2 } from "node:path";
+import { extname as extname8, isAbsolute as isAbsolute5, join as join6, parse as parse6, relative as relative4, resolve as resolve2, sep as sep2 } from "node:path";
 var imageExtensions2 = /* @__PURE__ */ new Set([".png", ".jpg", ".jpeg", ".webp"]);
 var contentTypes = {
   ".png": "image/png",
@@ -59907,7 +59996,7 @@ async function inspectAuthorizedLocalFolder(path, deps) {
         queue.push({ directory: file3, depth: current.depth + 1 });
         continue;
       }
-      if (!imageExtensions2.has(extname7(entry.name).toLowerCase())) continue;
+      if (!imageExtensions2.has(extname8(entry.name).toLowerCase())) continue;
       if (!entry.isFile()) folderError("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u6765\u6E90\u5305\u542B\u975E\u666E\u901A\u56FE\u7247\u6587\u4EF6");
       let metadata;
       try {
@@ -59917,7 +60006,7 @@ async function inspectAuthorizedLocalFolder(path, deps) {
       }
       if (!metadata.isFile() || metadata.isSymbolicLink()) folderError("LOCAL_IMAGE_UNTRUSTED", "\u56FE\u7247\u6765\u6E90\u5305\u542B\u975E\u666E\u901A\u56FE\u7247\u6587\u4EF6");
       const relativeName = recursive ? relative4(directory, file3).split(sep2).join("/") : entry.name;
-      const extension = extname7(entry.name), stem = entry.name.slice(0, -extension.length);
+      const extension = extname8(entry.name), stem = entry.name.slice(0, -extension.length);
       const name2 = relativeName.length <= 255 ? relativeName : `${stem.slice(0, 220)}-${createHash8("sha256").update(relativeName).digest("hex").slice(0, 16)}${extension}`;
       result.push({ path: file3, name: name2, byteSize: metadata.size, device: metadata.dev, inode: metadata.ino, modifiedAt: metadata.mtimeMs });
       if (result.length > NATIVE_TASK_MAX_INVENTORY_IMAGES)
@@ -60115,7 +60204,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
       processingRuns: receipts,
       files: [...referenceFiles, ...resultFiles]
     }, identity2.ownerId);
-    if (!saved) throw new Error("\u8BE5\u672C\u5730\u4EFB\u52A1\u7684\u5386\u53F2\u8BB0\u5F55\u5DF2\u5220\u9664");
+    if (!saved) throw new Error("\u8BE5\u672C\u5730\u4EFB\u52A1\u7684\u5904\u7406\u8BB0\u5F55\u5DF2\u5220\u9664");
     taskId = saved;
     await deps.archive.wait();
   };
@@ -60139,7 +60228,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
           }
           const admitted = await deps.toolkit.importInput({
             name: input.name,
-            contentType: contentTypes[extname7(input.name).toLowerCase()],
+            contentType: contentTypes[extname8(input.name).toLowerCase()],
             base64: input.bytes.toString("base64")
           }, sessionId, identity2);
           const archived2 = await deps.toolkit.archiveInput(admitted.id, sessionId);
@@ -60181,7 +60270,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
               }
               const stored = await deps.toolkit.importInput({
                 name: input.name,
-                contentType: contentTypes[extname7(input.name).toLowerCase()],
+                contentType: contentTypes[extname8(input.name).toLowerCase()],
                 base64: input.bytes.toString("base64")
               }, sessionId, identity2);
               const archived2 = await deps.toolkit.archiveInput(stored.id, sessionId);
@@ -61169,7 +61258,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.28",
+  version: "0.1.29",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -63221,7 +63310,7 @@ var PodploPluginService = class extends EventEmitter2 {
         resolvedByHost = true;
         resolved = await this.options.resolveGenerationReferences({ ownerId, nativeSessionId, ids: staticIds });
       } else if (staticIds.some((id2) => !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2))) {
-        throw new PodploPluginError("NATIVE_REFERENCE_IMPORT_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u5BFC\u5165\u4F1A\u8BDD\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u4E0A\u4F20\u5230\u201C\u6211\u7684\u7D20\u6750\u201D\u3002");
+        throw new PodploPluginError("NATIVE_REFERENCE_IMPORT_UNAVAILABLE", "\u5F53\u524D Host \u65E0\u6CD5\u5BFC\u5165\u4F1A\u8BDD\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u4E0A\u4F20\u5230\u201C\u6211\u7684\u6536\u85CF\u201D\u3002");
       }
       if (!Array.isArray(resolved) || resolved.length !== staticIds.length || resolved.some((id2) => typeof id2 !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/iu.test(id2)))
         throw new PodploPluginError("INVALID_REFERENCE_IMPORT", "\u53C2\u8003\u56FE\u5BFC\u5165\u7ED3\u679C\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u56FE\u7247\u3002");
@@ -64798,11 +64887,11 @@ async function startPluginMcp(service) {
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
 import sharp14 from "sharp";
-import { basename as basename11, extname as extname10 } from "node:path";
+import { basename as basename12, extname as extname11 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
 import { createHash as createHash12 } from "node:crypto";
-import { basename as basename9, extname as extname8, join as join10 } from "node:path";
+import { basename as basename10, extname as extname9, join as join10 } from "node:path";
 import sharp13 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
@@ -64824,8 +64913,8 @@ var fail6 = (code, message) => {
 };
 var authorizationHash = (identity2) => hash3(`${identity2.ownerId}\0${identity2.namespace ?? ""}`);
 function safeWebpName(value2) {
-  const leaf = basename9(value2.replace(/\\/gu, "/"));
-  const stem = basename9(leaf, extname8(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
+  const leaf = basename10(value2.replace(/\\/gu, "/"));
+  const stem = basename10(leaf, extname9(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
   return `${stem}.webp`;
 }
 async function normalizeNativeReference(input) {
@@ -64962,7 +65051,7 @@ var NativeReferenceBridge = class {
           if (error101 instanceof PodploPluginError && error101.code === "ACCOUNT_CHANGED") throw error101;
         }
       }
-      return fail6("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail6("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u6536\u85CF\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
     await this.assertIdentity(identity2, true);
     await this.store.transaction((state) => {
@@ -64981,7 +65070,7 @@ var NativeReferenceBridge = class {
       if (!CLOUD_ID.test(detail.id)) throw new Error("Invalid uploaded reference id");
       if (detail.status !== "ready") {
         await this.update(mapping, { status: "unknown", cloudAssetId: detail.id });
-        fail6("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+        fail6("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4ECD\u5728\u5904\u7406\u4E2D\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u6536\u85CF\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
       }
       await this.update(mapping, { status: "ready", cloudAssetId: detail.id });
       await this.assertIdentity(identity2, true);
@@ -64990,7 +65079,7 @@ var NativeReferenceBridge = class {
       const latest = this.find(authorization, sessionId, input.fingerprint);
       if (latest?.status === "uploading") await this.update(latest, { status: "unknown" });
       if (error101 instanceof PodploPluginError) throw error101;
-      return fail6("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u7D20\u6750\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
+      return fail6("REFERENCE_UPLOAD_UNKNOWN", "\u53C2\u8003\u56FE\u4E0A\u4F20\u7ED3\u679C\u72B6\u6001\u4E0D\u660E\uFF0C\u8BF7\u5148\u5728\u201C\u6211\u7684\u6536\u85CF\u201D\u786E\u8BA4\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u590D\u4E0A\u4F20\u3002");
     }
   }
   async update(mapping, patch) {
@@ -65008,7 +65097,7 @@ var NativeReferenceBridge = class {
 import { createHash as createHash13, randomUUID as randomUUID13 } from "node:crypto";
 import { constants as constants5 } from "node:fs";
 import { lstat as lstat5, mkdir as mkdir6, open as open6, realpath as realpath6, unlink as unlink2 } from "node:fs/promises";
-import { basename as basename10, dirname as dirname7, extname as extname9, isAbsolute as isAbsolute6, join as join11, relative as relative5 } from "node:path";
+import { basename as basename11, dirname as dirname7, extname as extname10, isAbsolute as isAbsolute6, join as join11, relative as relative5 } from "node:path";
 var hashPattern2 = /^[a-f0-9]{64}$/u;
 var opaqueSession = external_exports2.string().min(1).max(240).regex(/^[^/\\\0\r\n]+$/u);
 var directoryRowSchema = external_exports2.object({
@@ -65032,8 +65121,8 @@ function fingerprint(stat) {
   return `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}`;
 }
 function safeName(value2) {
-  const extension = extname9(basename10(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
-  const rawStem = basename10(value2, extname9(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
+  const extension = extname10(basename11(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
+  const rawStem = basename11(value2, extname10(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
   const stem = Array.from(rawStem || "result").slice(0, 160).join("");
   return `${stem}${extension || ".bin"}`;
 }
@@ -65154,7 +65243,7 @@ var OutputDirectoryManager = class {
     const base2 = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base2, true) : base2;
     const requested = safeName(external_exports2.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
-    const extension = extname9(requested), stem = basename10(requested, extension);
+    const extension = extname10(requested), stem = basename11(requested, extension);
     let published, publishedName = "", publishedFingerprint = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
@@ -65465,7 +65554,7 @@ async function nativeToolkitTransport(options) {
         if (!receipt) return fail7("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         metadata.push({
           id: id2,
-          name: typeof receipt.name === "string" && receipt.name ? basename11(receipt.name) : "\u4F1A\u8BDD\u56FE\u7247",
+          name: typeof receipt.name === "string" && receipt.name ? basename12(receipt.name) : "\u4F1A\u8BDD\u56FE\u7247",
           kind: "reference",
           mediaKind: "image"
         });
@@ -65480,7 +65569,7 @@ async function nativeToolkitTransport(options) {
           if (detail.id !== id2 || detail.status !== "ready") return fail7("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u5143\u6570\u636E\u5C1A\u672A\u5C31\u7EEA\u3002");
           metadata.push({
             id: id2,
-            name: detail.filename ? basename11(detail.filename) : id2,
+            name: detail.filename ? basename12(detail.filename) : id2,
             kind: "reference",
             mediaKind: "image",
             ...typeof detail.bytes === "number" && Number.isSafeInteger(detail.bytes) && detail.bytes > 0 ? { byteSize: detail.bytes } : {}
@@ -65530,6 +65619,12 @@ async function nativeToolkitTransport(options) {
       if (gridSplitStandalone) action = `local.${action.slice("splitter.".length)}`;
       if (toolboxStandalone && action === "local.save") return { ok: true, data: await toolkit.runPipeline(args, scope) };
       if (toolboxStandalone && action === "local.pipelinePreview") return { ok: true, data: await toolkit.toolPreview(TOOLBOX_PIPELINE_NAME, args, scope) };
+      if (toolboxStandalone && action === "local.contourExport") {
+        const data = await toolkit.exportContourReport(args, scope);
+        const id3 = data.files[0].id;
+        const report = await toolkit.readResult(id3, scope, "export");
+        return { ok: true, data: { ...data, report: { name: report.name, dataUrl: `data:text/plain;charset=utf-8;base64,${report.bytes.toString("base64")}` } } };
+      }
       if (toolboxStandalone && action === "local.contourMeasure") return { ok: true, data: await toolkit.contourMeasure(args, scope) };
       if (gridSplitStandalone && action === "local.save") return { ok: true, data: await toolkit.runGridSplit(args, scope) };
       if (gridSplitStandalone && action === "local.preview") return { ok: true, data: await toolkit.gridSplitPreview(args, scope) };
@@ -65595,7 +65690,7 @@ async function nativeToolkitTransport(options) {
         const format2 = (await sharp14(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
         if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail7("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id2}`;
-        const stem = basename11(originalName, extname10(originalName));
+        const stem = basename12(originalName, extname11(originalName));
         const trustedName = `${stem || `\u7D20\u6750-${id2}`}.${format2 === "jpeg" ? "jpg" : format2}`;
         return { ok: true, data: await outputs.export(bytes, trustedName, scope) };
       }
@@ -65677,13 +65772,13 @@ async function registerPodploNativePresets(agentPresets) {
 
 // plugins/podplo-dsh/src/task-archive-host.ts
 import { createHash as createHash17 } from "node:crypto";
-import { basename as basename13, extname as extname12 } from "node:path";
+import { basename as basename14, extname as extname13 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
 import { createHash as createHash15, randomUUID as randomUUID15 } from "node:crypto";
 import { constants as constants7 } from "node:fs";
 import { link, lstat as lstat7, mkdir as mkdir8, open as open8, realpath as realpath8, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
-import { basename as basename12, dirname as dirname8, extname as extname11, isAbsolute as isAbsolute8, join as join13 } from "node:path";
+import { basename as basename13, dirname as dirname8, extname as extname12, isAbsolute as isAbsolute8, join as join13 } from "node:path";
 import sharp15 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
@@ -65887,7 +65982,7 @@ var finalTimestamp = (value2) => {
   return `${date9.getFullYear()}-${String(date9.getMonth() + 1).padStart(2, "0")}-${String(date9.getDate()).padStart(2, "0")}_${String(date9.getHours()).padStart(2, "0")}-${String(date9.getMinutes()).padStart(2, "0")}`;
 };
 var archiveLayout = (task) => task.archiveFormat === 2 || task.archiveFormat === 3;
-var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename12(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
+var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename13(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
 var filesystemNameKey = (value2) => value2.normalize("NFC").toLocaleLowerCase("en-US");
 var sourceSchema = external_exports2.object({ kind: external_exports2.enum(["asset", "local", "input"]), id: external_exports2.string().min(1).max(240), sessionId: external_exports2.string().min(1).max(240) });
 var fileSchema = external_exports2.object({
@@ -66081,7 +66176,7 @@ var TaskArchiveManager = class {
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true, allowHostInputs: true });
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join13(project.directory, basename12(task.directory)) !== task.directory || task.files.some((file3) => [file3.name, file3.cacheName, file3.publishedName].some((name2) => name2 && (basename12(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json)$/iu.test(name2)))) || task.files.some((file3) => file3.publishedFolder !== void 0 && !safeFolder(file3.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file3) => file3.publishedName && !file3.publishedFolder))
+        if (!project || join13(project.directory, basename13(task.directory)) !== task.directory || task.files.some((file3) => [file3.name, file3.cacheName, file3.publishedName].some((name2) => name2 && (basename13(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json|txt)$/iu.test(name2)))) || task.files.some((file3) => file3.publishedFolder !== void 0 && !safeFolder(file3.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file3) => file3.publishedName && !file3.publishedFolder))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
@@ -66411,7 +66506,7 @@ var TaskArchiveManager = class {
   outputStem(task, file3) {
     const item = this.generationItem(task, file3);
     if (item?.sourceName) {
-      const raw = basename12(item.sourceName, extname11(item.sourceName));
+      const raw = basename13(item.sourceName, extname12(item.sourceName));
       return task.archiveFormat === 3 ? sourceStem(raw) : safeLabel(raw, "\u56FE\u7247", 72);
     }
     const root = this.sourceRoot(task, file3);
@@ -66421,13 +66516,13 @@ var TaskArchiveManager = class {
     })).values()];
     const ordinal = Math.max(1, roots.findIndex((row) => row.source.id === root.source.id) + 1);
     if (root.sourceName) {
-      const raw = basename12(root.sourceName, extname11(root.sourceName));
+      const raw = basename13(root.sourceName, extname12(root.sourceName));
       if (task.archiveFormat === 3) return sourceStem(raw);
       const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
       return safeLabel(clean, "\u56FE\u7247", 72);
     }
     for (const value2 of [root.label]) {
-      const raw = basename12(value2, extname11(value2));
+      const raw = basename13(value2, extname12(value2));
       const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
       const cleaned = task.archiveFormat === 3 ? sourceStem(clean, "") : safeLabel(clean, "", 72);
       if (cleaned && !/^(?:原始生成|AI原图|参考(?:原图|图\d*)|图片|AI生成|成品|image|original|generated|result|source)$/iu.test(cleaned)) return cleaned;
@@ -66461,7 +66556,7 @@ var TaskArchiveManager = class {
     });
   }
   preferredOutputName(task, file3) {
-    const slot = file3.outputSlot ?? 1, extension = extname11(file3.cacheName ?? file3.publishedName ?? "") || ".png";
+    const slot = file3.outputSlot ?? 1, extension = extname12(file3.cacheName ?? file3.publishedName ?? "") || ".png";
     if (task.archiveFormat === 2) return `${this.outputStem(task, file3)}_\u6210\u54C1${slot === 1 ? "" : `-${slot}`}${extension}`;
     const folder = this.outputFolder(task, file3), stem = this.outputStem(task, file3);
     const siblings = this.finalLeaves(task).filter((row) => this.outputFolder(task, row) === folder && this.outputStem(task, row) === stem);
@@ -66505,7 +66600,7 @@ var TaskArchiveManager = class {
       const output = this.publishedDirectory(task, file3);
       if (task.archiveFormat === 3) await this.createDirectory(output);
       await this.directory(output);
-      const extension = extname11(file3.cacheName), preferred = this.preferredOutputName(task, file3), base2 = basename12(preferred, extension);
+      const extension = extname12(file3.cacheName), preferred = this.preferredOutputName(task, file3), base2 = basename13(preferred, extension);
       let name2 = preferred, suffix = 2;
       while (await lstat7(join13(output, name2)).catch(() => void 0)) name2 = task.archiveFormat === 3 ? fitFilename(this.outputStem(task, file3), `\uFF08\u526F\u672C${suffix++}\uFF09`, extension) : `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
@@ -66574,7 +66669,7 @@ var TaskArchiveManager = class {
         await this.taskDirectory(initial);
         if (file3.group === "reference") {
           let sourceName;
-          if (file3.source.kind !== "asset") sourceName = await this.options.read(file3.source).then((value2) => basename12(value2.name)).catch(() => void 0);
+          if (file3.source.kind !== "asset") sourceName = await this.options.read(file3.source).then((value2) => basename13(value2.name)).catch(() => void 0);
           await this.same(identity2);
           await this.store.transaction((state) => {
             const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file3.id);
@@ -66586,8 +66681,8 @@ var TaskArchiveManager = class {
         const source = await this.options.read(file3.source);
         stage = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname11(source.name).toLowerCase().slice(1);
-        const image = !["pdf", "zip", "json"].includes(extension);
+        let extension = extname12(source.name).toLowerCase().slice(1);
+        const image = !["pdf", "zip", "json", "txt"].includes(extension);
         if (image) {
           const meta5 = await sharp15(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta5.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
@@ -66603,7 +66698,7 @@ var TaskArchiveManager = class {
           const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file3.id);
           delete row.diagnostic;
           Object.assign(row, {
-            sourceName: basename12(source.name),
+            sourceName: basename13(source.name),
             cacheName,
             image,
             status: "saved",
@@ -66642,14 +66737,14 @@ var TaskArchiveManager = class {
         const source = await this.options.read(file3.source);
         stage = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
-        let extension = extname11(source.name).toLowerCase().slice(1);
-        const image = !["pdf", "zip", "json"].includes(extension);
+        let extension = extname12(source.name).toLowerCase().slice(1);
+        const image = !["pdf", "zip", "json", "txt"].includes(extension);
         if (image) {
           const meta5 = await sharp15(source.bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata();
           if (!["png", "jpeg", "webp"].includes(meta5.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta5.format === "jpeg" ? "jpg" : meta5.format;
         }
-        const label = safeLabel(file3.group === "reference" ? basename12(source.name, extname11(source.name)) : (file3.label || basename12(source.name, extname11(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
+        const label = safeLabel(file3.group === "reference" ? basename13(source.name, extname12(source.name)) : (file3.label || basename13(source.name, extname12(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
         const used = new Set(this.store.snapshot().tasks.find((row) => row.id === id2).files.filter((row) => row.group === file3.group && row.id !== file3.id).map((row) => row.name));
         let name2 = file3.name ?? `${label}.${extension}`, suffix = 2;
         while (used.has(name2)) name2 = `${label}-${suffix++}.${extension}`;
@@ -66700,12 +66795,12 @@ var TaskArchiveManager = class {
       }
     }
   }
-  async readPath(path) {
+  async readPath(path, maxBytes = 250 * 1024 * 1024) {
     if (await realpath8(path) !== path) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8");
     const handle = await open8(path, constants7.O_RDONLY | constants7.O_NOFOLLOW);
     try {
       const stat = await handle.stat();
-      if (!stat.isFile() || stat.size > 250 * 1024 * 1024) throw new Error("\u6210\u679C\u6587\u4EF6\u65E0\u6548");
+      if (!stat.isFile() || stat.size > maxBytes) throw new Error("\u6210\u679C\u6587\u4EF6\u65E0\u6548");
       return await handle.readFile();
     } finally {
       await handle.close();
@@ -67233,10 +67328,11 @@ var TaskArchiveManager = class {
     const directories = /* @__PURE__ */ new Map(), items = [];
     for (const file3 of task.files) {
       if (fileIds && !fileIds.has(file3.id)) continue;
-      if (file3.group !== "result" || file3.status !== "saved" || !file3.image) continue;
+      if (file3.group !== "result" || file3.status !== "saved") continue;
       const name2 = archiveLayout(task) ? file3.publishedName : file3.name;
+      if (!file3.image && !name2?.toLowerCase().endsWith(".txt")) continue;
       const fingerprint3 = archiveLayout(task) ? file3.publishedFingerprint : file3.fingerprint;
-      if (!name2 || !fingerprint3 || basename12(name2) !== name2) continue;
+      if (!name2 || !fingerprint3 || basename13(name2) !== name2) continue;
       const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
       if (!directories.has(directory)) {
         try {
@@ -67258,7 +67354,8 @@ var TaskArchiveManager = class {
         name: name2,
         projectId: task.projectId,
         projectName,
-        createdAt
+        createdAt,
+        ...!file3.image ? { kind: "text" } : {}
       });
     }
     return items;
@@ -67288,7 +67385,7 @@ var TaskArchiveManager = class {
   async historyPage(ids2) {
     const pattern = /^[0-9a-f-]{36}:[0-9a-f-]{36}$/iu;
     if (ids2.length > 20 || new Set(ids2).size !== ids2.length || ids2.some((id2) => !pattern.test(id2)))
-      throw new Error("\u5386\u53F2\u8BB0\u5F55\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
+      throw new Error("\u5904\u7406\u8BB0\u5F55\u5206\u9875\u8BF7\u6C42\u65E0\u6548");
     const identity2 = await this.identity(), state = this.store.snapshot();
     const requested = /* @__PURE__ */ new Map();
     for (const id2 of ids2) {
@@ -67420,14 +67517,14 @@ var TaskArchiveManager = class {
     const directory = archiveLayout(task) ? this.publishedDirectory(task, file3) : this.groupDirectory(task, file3);
     await this.taskDirectory(task);
     await this.directory(directory);
-    const bytes = await this.readPath(join13(directory, name2));
+    const bytes = await this.readPath(join13(directory, name2), preview && !file3.image ? 128 * 1024 : void 0);
     if (hash5(bytes) !== file3.digest) throw new Error("\u6210\u679C\u6587\u4EF6\u5DF2\u6539\u53D8");
     const key = `${identity2.grant}:${task.sessionId}:${task.id}:${file3.id}:${file3.digest}:640:82`, epoch = this.previewCache.revision();
     const cached3 = preview && file3.image ? this.previewCache.get(key) : void 0;
     const result = cached3 ?? (preview && file3.image ? await sharp15(bytes).resize(640, 640, { fit: "inside", withoutEnlargement: true }).webp({ quality: 82 }).toBuffer() : bytes);
     await this.same(identity2);
     if (preview && file3.image && !cached3) this.previewCache.set(key, result, epoch);
-    return { bytes: result, name: name2, image: file3.image, contentType: preview && file3.image ? "image/webp" : `image/${extname11(name2).slice(1)}` };
+    return { bytes: result, name: name2, image: file3.image, contentType: file3.image ? preview ? "image/webp" : `image/${extname12(name2).slice(1)}` : extname12(name2).toLowerCase() === ".txt" ? "text/plain;charset=utf-8" : "application/octet-stream" };
   }
   async openTask(id2) {
     const { identity: identity2, task } = await this.owned(id2);
@@ -67640,6 +67737,7 @@ var labels = {
   podplo_resize_images: "\u8C03\u6574\u5C3A\u5BF8",
   podplo_rotate_flip_images: "\u65CB\u8F6C\u955C\u50CF",
   podplo_adjust_image_colors: "\u8C03\u8272",
+  [CONTOUR_REPORT_OPERATION_NAME]: "\u8F6E\u5ED3\u6D4B\u957F",
   podplo_export_images: "\u56FE\u7247\u5BFC\u51FA",
   podplo_prepare_print_files: "\u5370\u5237\u6587\u4EF6",
   podplo_package_delivery: "\u4EA4\u4ED8\u6253\u5305",
@@ -67804,7 +67902,7 @@ async function taskArchiveHost(options) {
             signatures.set(key, row.operationId);
             continue;
           }
-          const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && row.toolName === TOOLBOX_PIPELINE_NAME || row.sessionId === PODPLO_GRID_SPLIT_WORKSPACE_ID && row.toolName === GRID_SPLIT_OPERATION_NAME;
+          const independentBatch = row.sessionId === PODPLO_TOOLBOX_WORKSPACE_ID && (row.toolName === TOOLBOX_PIPELINE_NAME || row.toolName === CONTOUR_REPORT_OPERATION_NAME) || row.sessionId === PODPLO_GRID_SPLIT_WORKSPACE_ID && row.toolName === GRID_SPLIT_OPERATION_NAME;
           const matches = independentBatch ? [] : await manager.findSource(row.sessionId, row.inputIds);
           const groups = /* @__PURE__ */ new Map();
           const groupKeys = /* @__PURE__ */ new Map();
@@ -67815,7 +67913,7 @@ async function taskArchiveHost(options) {
             groups.set(target, [...groups.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
               group: "result",
-              label: basename13(result.name, extname12(result.name)),
+              label: basename14(result.name, extname13(result.name)),
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
@@ -67834,7 +67932,7 @@ async function taskArchiveHost(options) {
               operationIds: [row.operationId],
               generationAudit: { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
               processingRuns: [receipt],
-              ...row.toolName !== TOOLBOX_PIPELINE_NAME && row.toolName !== GRID_SPLIT_OPERATION_NAME && row.options && typeof row.options === "object" ? { processingPlan: [{ id: "local", label, toolName: row.toolName, options: row.options }] } : {},
+              ...row.toolName !== TOOLBOX_PIPELINE_NAME && row.toolName !== GRID_SPLIT_OPERATION_NAME && row.toolName !== CONTOUR_REPORT_OPERATION_NAME && row.options && typeof row.options === "object" ? { processingPlan: [{ id: "local", label, toolName: row.toolName, options: row.options }] } : {},
               files: [
                 ...row.inputIds.map((id3) => ({ source: { kind: "input", id: id3, sessionId: row.sessionId }, group: "reference", label: "\u53C2\u8003\u539F\u56FE" })),
                 ...files
@@ -68095,12 +68193,12 @@ async function taskArchiveHost(options) {
         let result;
         try {
           const run = () => options.transport.dispatch(action, raw, caller);
-          const loggable = caller.source === "ui" && ["toolbox.save", "toolbox.run", "splitter.save", "local.run"].includes(action);
+          const loggable = caller.source === "ui" && ["toolbox.save", "toolbox.contourExport", "toolbox.run", "splitter.save", "local.run"].includes(action);
           const standaloneScope = action.startsWith("toolbox.") ? PODPLO_TOOLBOX_WORKSPACE_ID : action.startsWith("splitter.") ? PODPLO_GRID_SPLIT_WORKSPACE_ID : caller.sessionId;
           result = loggable ? await logLocal(
             raw,
             standaloneScope,
-            action === "toolbox.save" || action === "splitter.save" ? "toolbox" : "local",
+            action === "toolbox.save" || action === "toolbox.contourExport" || action === "splitter.save" ? "toolbox" : "local",
             run
           ) : await run();
         } catch (cause) {
@@ -68109,6 +68207,16 @@ async function taskArchiveHost(options) {
         }
         if (action === "generation.stopRemaining" && caller.sessionId) await stopSession(caller.sessionId);
         if (action === "local.run") void sync(caller.sessionId);
+        if (action === "toolbox.contourExport") {
+          await sync();
+          await manager.wait();
+          const reply = result;
+          const ids2 = reply.data.files.map((file3) => file3.id);
+          const matches = await manager.findSource(PODPLO_TOOLBOX_WORKSPACE_ID, ids2);
+          const task = matches.length === 1 ? await manager.detail(matches[0].id) : void 0;
+          const archived = ids2.length > 0 && ids2.every((id2) => task?.files.some((file3) => file3.group === "result" && file3.originId === id2 && file3.status === "saved"));
+          return { ...reply, data: { ...reply.data, archived } };
+        }
         if (action === "toolbox.run" || action === "toolbox.save" || action === "splitter.save") void sync();
         if (action === "snapshot") {
           const snapshot = result;
@@ -68133,7 +68241,7 @@ async function taskArchiveHost(options) {
         if (action === "archive.historyPage") {
           archiveInputKeys(input, ["imageIds"]);
           if (!Array.isArray(input.imageIds) || !input.imageIds.every((id2) => typeof id2 === "string"))
-            throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5386\u53F2\u8BB0\u5F55\u5206\u9875\u53C2\u6570\u65E0\u6548\u3002");
+            throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u8BB0\u5F55\u5206\u9875\u53C2\u6570\u65E0\u6548\u3002");
           return { ok: true, data: await manager.historyPage(input.imageIds) };
         }
         if (action === "archive.catalog") {
@@ -68268,6 +68376,12 @@ async function taskArchiveHost(options) {
           return { ok: true, data: { opened: true } };
         }
         const fileId = typeof input.fileId === "string" ? input.fileId : "";
+        if (action === "archive.textPreview") {
+          archiveInputKeys(input, ["taskId", "fileId"]);
+          const file3 = await manager.read(taskId, fileId, true);
+          if (file3.image || !file3.name.toLowerCase().endsWith(".txt") || file3.bytes.length > 128 * 1024) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u662F\u6D4B\u957F\u6587\u672C\u3002");
+          return { ok: true, data: { name: file3.name, text: file3.bytes.toString("utf8").replace(/^\uFEFF/u, "") } };
+        }
         if (action === "archive.preview") {
           const file3 = await manager.read(taskId, fileId, true);
           if (!file3.image) throw new Error("\u8BE5\u6587\u4EF6\u6CA1\u6709\u56FE\u7247\u9884\u89C8");
@@ -69469,7 +69583,7 @@ function reconcilePodploTaskToolRestriction(binding, agent, enabled) {
 
 // plugins/podplo-dsh/src/native-task-read-tools.ts
 import { createHash as createHash20 } from "node:crypto";
-import { basename as basename14, extname as extname13 } from "node:path";
+import { basename as basename15, extname as extname14 } from "node:path";
 import { lstat as lstat8, readdir as readdir3, realpath as realpath9 } from "node:fs/promises";
 
 // plugins/podplo-dsh/src/native-task-capabilities.ts
@@ -70264,7 +70378,7 @@ function nativeTaskReadToolDefinitions(deps) {
               const after = await lstat8(directory);
               if (!after.isDirectory() || after.isSymbolicLink() || before.dev !== after.dev || before.ino !== after.ino || await realpath9(directory) !== directory)
                 throw new PodploPluginError("LOCAL_FOLDER_CHANGED", "\u6765\u6E90\u76EE\u5F55\u5728\u6E05\u70B9\u671F\u95F4\u53D1\u751F\u53D8\u5316\uFF0C\u672A\u6267\u884C\u4EFB\u52A1\u3002");
-              const directImageCount = direct.filter((entry) => !entry.name.startsWith(".") && entry.isFile() && [".jpg", ".jpeg", ".png", ".webp"].includes(extname13(entry.name).toLowerCase())).length;
+              const directImageCount = direct.filter((entry) => !entry.name.startsWith(".") && entry.isFile() && [".jpg", ".jpeg", ".png", ".webp"].includes(extname14(entry.name).toLowerCase())).length;
               const subdirectoryCount = direct.filter((entry) => !entry.name.startsWith(".") && entry.isDirectory() && !entry.isSymbolicLink()).length;
               return {
                 authorization: "passed",
@@ -70276,7 +70390,7 @@ function nativeTaskReadToolDefinitions(deps) {
                   mediaKind: "image"
                 })),
                 snapshot: {
-                  directoryName: basename14(directory),
+                  directoryName: basename15(directory),
                   count: entries.length,
                   directImageCount,
                   subdirectoryCount,
@@ -70365,7 +70479,7 @@ function userAuthorizedFolder(events, folderPath) {
     for (let index = value2.indexOf(folderPath); index >= 0; index = value2.indexOf(folderPath, index + 1)) if (boundary(value2, index)) return true;
     return false;
   };
-  const desktopName = basename15(folderPath);
+  const desktopName = basename16(folderPath);
   const desktopPath = resolve3(homedir3(), "Desktop", desktopName);
   const desktopMention = new RegExp(`(?:\u684C\u9762|Desktop)(?:[\\s/\\\\:\uFF1A]+|(?=["\u201C'\u2018]))["\u201C'\u2018]?${desktopName.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}(?=$|[\\s"'\u201C\u201D\u2018\u2019\uFF0C\u3002\uFF1B\uFF1A\u3001\uFF01\uFF1F\uFF09)\\]}])`, "u");
   const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute9(folderPath) && resolve3(folderPath) === desktopPath && desktopMention.test(value2);
@@ -70434,7 +70548,7 @@ async function apply(ctx, config3 = {}) {
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
   const projectForSession = (id2) => {
     const cwd = id2 ? ctx.sessions?.get(id2)?.header.cwd : void 0;
-    return cwd && isAbsolute9(cwd) ? { key: `cwd:${resolve3(cwd)}`, name: basename15(resolve3(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
+    return cwd && isAbsolute9(cwd) ? { key: `cwd:${resolve3(cwd)}`, name: basename16(resolve3(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
   const galleryFetch = fixtureOrigin ? (input, init) => {
