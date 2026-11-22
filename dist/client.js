@@ -2452,6 +2452,8 @@ function argsForModel(item, model) {
     } : {}
   };
 }
+var supportsTransparentModel = (model) => !!model && (model.supportsTransparentMode === true || list(model.backgroundModes).includes("transparent"));
+var bulkRowSupportsBackground = (item, model) => supportsTransparentModel(model) || "background" in item.args;
 function RowParameters({ item, models, disabled, countMinimum, countMaximum, patch }) {
   const model = models.find((row) => idOf(row) === item.args.modelId) ?? models[0];
   const ratios = list(model?.ratios);
@@ -2597,6 +2599,7 @@ function BatchGenerationPanel({ request, snapshot, capabilities, skills, disable
   const [bulkQuality, setBulkQuality] = (0, import_react4.useState)("");
   const [bulkCount, setBulkCount] = (0, import_react4.useState)(1);
   const [bulkEco, setBulkEco] = (0, import_react4.useState)(true);
+  const [bulkBackground, setBulkBackground] = (0, import_react4.useState)("keep");
   const [bulkFields, setBulkFields] = (0, import_react4.useState)({});
   const [clearConfirm, setClearConfirm] = (0, import_react4.useState)(false);
   const clearTimer = (0, import_react4.useRef)(void 0);
@@ -2981,7 +2984,12 @@ function BatchGenerationPanel({ request, snapshot, capabilities, skills, disable
   }
   async function applyBulk() {
     if (!batch || !selected.length || !Object.values(bulkFields).some(Boolean)) return;
+    if (bulkFields.background && bulkBackground === "keep") {
+      setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u80CC\u666F\uFF1A\u900F\u660E\u6216\u4E0D\u900F\u660E\u3002");
+      return;
+    }
     const expectedEpoch = epoch2.current;
+    const wantsBackground = bulkFields.background && bulkBackground !== "keep";
     const args = {};
     if (bulkFields.model) args.modelId = bulkModel;
     if (bulkFields.ratio) args.ratio = bulkRatio;
@@ -2990,31 +2998,45 @@ function BatchGenerationPanel({ request, snapshot, capabilities, skills, disable
     if (bulkFields.eco) args.ecoMode = bulkEco;
     const skill = bulkFields.skill ? bulkSkill ? await resolveSkill?.(bulkSkill) ?? skills.find((row) => row.key === bulkSkill) ?? null : null : void 0;
     if (!current(expectedEpoch)) return;
-    if (bulkFields.model) {
-      const target2 = models.find((row) => idOf(row) === bulkModel);
-      if (!target2) {
-        setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u6A21\u578B\u3002");
-        return;
-      }
+    const target2 = bulkFields.model ? models.find((row) => idOf(row) === bulkModel) : void 0;
+    if (bulkFields.model && !target2) {
+      setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u6A21\u578B\u3002");
+      return;
+    }
+    if (target2 || wantsBackground) {
       setBusy("bulk");
       setError("");
+      setNotice("");
       let activeBatch = batch;
+      let skipped = 0;
+      let changed2 = 0;
       try {
         for (const item of selected) {
           if (!current(expectedEpoch)) return;
-          const nextArgs = { ...argsForModel(item, target2), ...args };
+          const row = activeBatch.items.find((value2) => value2.id === item.id) ?? item;
+          const rowModel = target2 ?? models.find((value2) => idOf(value2) === row.args.modelId);
+          const nextArgs = target2 ? { ...argsForModel(row, target2), ...args } : { ...args };
+          if (wantsBackground) {
+            if (bulkRowSupportsBackground(row, rowModel)) {
+              nextArgs.background = bulkBackground;
+              if (bulkBackground === "transparent") nextArgs.output_format = "png";
+            } else skipped += 1;
+          }
+          const hasArgs = Object.keys(nextArgs).length > 0;
+          if (!bulkFields.prompt && !bulkFields.skill && !hasArgs) continue;
           const { data } = await request("generation.batch.patchItems", {
             batchId: activeBatch.batchId,
             expectedRevision: activeBatch.revision,
-            itemIds: [item.id],
-            patch: { ...bulkFields.prompt ? { prompt: bulkPrompt } : {}, ...bulkFields.skill ? { skill } : {}, args: nextArgs, replaceArgs: true }
+            itemIds: [row.id],
+            patch: { ...bulkFields.prompt ? { prompt: bulkPrompt } : {}, ...bulkFields.skill ? { skill } : {}, ...hasArgs ? { args: nextArgs, replaceArgs: !!target2 } : {} }
           });
           if (!current(expectedEpoch)) return;
           activeBatch = publish2(data);
+          changed2 += 1;
         }
         if (current(expectedEpoch)) {
           setBulkOpen(false);
-          setNotice(`\u5DF2\u4FEE\u6539 ${selected.length} \u884C\u3002`);
+          setNotice(`\u5DF2\u4FEE\u6539 ${changed2} \u884C${skipped ? `\uFF1B${skipped} \u884C\u6A21\u578B\u4E0D\u652F\u6301\u900F\u660E\u80CC\u666F\uFF0C\u5DF2\u8DF3\u8FC7` : ""}\u3002`);
         }
       } catch (cause) {
         if (current(expectedEpoch)) setError(message(cause));
@@ -3170,6 +3192,15 @@ function BatchGenerationPanel({ request, snapshot, capabilities, skills, disable
           /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkEco ? "on" : "off", disabled: !bulkFields.eco, onChange: (event) => setBulkEco(event.target.value === "on"), children: [
             /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "on", children: "\u5F00\u542F" }),
             /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "off", children: "\u5173\u95ED" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.background, onChange: (event) => setBulkFields((value2) => ({ ...value2, background: event.target.checked })) }),
+          "\u80CC\u666F",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkBackground, disabled: !bulkFields.background || !!busy, onChange: (event) => setBulkBackground(event.target.value), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "keep", children: "\u4FDD\u6301\u539F\u6837" }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "transparent", children: "\u900F\u660E" }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "opaque", children: "\u4E0D\u900F\u660E" })
           ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", disabled: !!busy, onClick: () => void applyBulk(), children: [
@@ -21748,7 +21779,7 @@ var import_react11 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.32",
+  version: "0.1.33",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
