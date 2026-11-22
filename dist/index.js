@@ -22403,7 +22403,7 @@ import { createCipheriv, createDecipheriv, randomBytes as randomBytes4 } from "n
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { homedir as homedir3 } from "node:os";
-import { basename as basename16, isAbsolute as isAbsolute9, resolve as resolve3 } from "node:path";
+import { basename as basename17, isAbsolute as isAbsolute9, resolve as resolve3 } from "node:path";
 import { dshHomePath } from "@deepseek-ai/dsh-home-paths";
 import { credentialKey } from "@deepseek-ai/dsh-credentials";
 import * as NativeMcp from "@deepseek-ai/dsh-mcp-client";
@@ -46745,7 +46745,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.31",
+  version: "0.1.32",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -47080,7 +47080,7 @@ function definiteSubmissionFailure(code) {
 
 // plugins/podplo-dsh/src/service.ts
 import { createHash as createHash11, randomUUID as randomUUID12 } from "node:crypto";
-import { join as join9 } from "node:path";
+import { basename as basename10, join as join9 } from "node:path";
 import { isDeepStrictEqual } from "node:util";
 
 // plugins/podplo-dsh/src/agent-call-policy.ts
@@ -47286,6 +47286,9 @@ function buildGenerationOrder(input) {
     items
   };
 }
+
+// plugins/podplo-dsh/src/generation-batch.ts
+var PENDING_REFERENCE_PREFIX = "pending-";
 
 // plugins/podplo-dsh/src/service.ts
 var objectSchema = (properties, required2 = [], additionalProperties = false) => ({
@@ -47890,6 +47893,9 @@ var PodploPluginService = class extends EventEmitter2 {
         break;
       case "generation.batch.stop":
         data = await this.generationBatchStop(input, caller);
+        break;
+      case "generation.batch.archive":
+        data = await this.generationBatchArchive(input, caller);
         break;
       default:
         throw new PodploPluginError("METHOD_NOT_FOUND", `\u672A\u77E5 PodPlo \u64CD\u4F5C\uFF1A${action}`);
@@ -49822,6 +49828,11 @@ var PodploPluginService = class extends EventEmitter2 {
     const rows = this.store.snapshot().generationBatches.filter((row) => row.ownerId === ownerId);
     return batchId ? rows.find((row) => row.batchId === batchId) : rows.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0];
   }
+  /** Batch results keep the original reference's filename; only the archive folder shows the Skill/tool name. */
+  batchSourceName(row) {
+    const filename = row.references.map((reference) => reference.filename).find((name2) => typeof name2 === "string" && name2.trim() !== "");
+    return filename ? basename10(filename) : `\u6279\u91CF\u884C-${row.order + 1}`;
+  }
   invalidateBatchQuote(saved, draft, now) {
     if (!draft.operationId) return;
     if (this.batchApprovalJobs.has(`${draft.ownerId}:${draft.operationId}`)) {
@@ -49961,7 +49972,7 @@ var PodploPluginService = class extends EventEmitter2 {
     this.requireUi(caller);
     const ownerId = await this.owner(true), batchId = text4(input.batchId, "batchId", 180), now = this.now().toISOString();
     const itemIds = stringArray(input.itemIds, "itemIds", 100), patch = record5(input.patch, "patch");
-    const allowed = /* @__PURE__ */ new Set(["selected", "prompt", "skill", "args", "replaceArgs", "references"]);
+    const allowed = /* @__PURE__ */ new Set(["selected", "prompt", "skill", "args", "replaceArgs", "references", "uploadError"]);
     if (Object.keys(patch).some((key) => !allowed.has(key))) throw new PodploPluginError("INVALID_ARGUMENT", "patch \u542B\u6709\u672A\u652F\u6301\u5B57\u6BB5");
     const prompt = patch.prompt === void 0 ? void 0 : (() => {
       if (typeof patch.prompt !== "string" || patch.prompt.length > 1e4) throw new PodploPluginError("INVALID_ARGUMENT", "prompt \u65E0\u6548");
@@ -49974,6 +49985,8 @@ var PodploPluginService = class extends EventEmitter2 {
     const replaceArgs = patch.replaceArgs === void 0 ? false : bool(patch.replaceArgs);
     if (replaceArgs && !args) throw new PodploPluginError("INVALID_ARGUMENT", "replaceArgs \u9700\u8981\u540C\u65F6\u63D0\u4F9B args");
     const references = patch.references === void 0 ? void 0 : this.batchReferences(patch.references, "patch.references");
+    const uploadErrorSpecified = Object.prototype.hasOwnProperty.call(patch, "uploadError");
+    const uploadError = uploadErrorSpecified && patch.uploadError !== null && patch.uploadError !== void 0 ? optionalText(patch.uploadError, "patch.uploadError", 500) : void 0;
     await this.store.transaction((saved) => {
       const draft = saved.generationBatches.find((row) => row.ownerId === ownerId && row.batchId === batchId);
       if (!draft) throw new PodploPluginError("BATCH_NOT_FOUND", "\u6279\u91CF\u8349\u7A3F\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
@@ -50000,6 +50013,10 @@ var PodploPluginService = class extends EventEmitter2 {
         if (references) {
           row.references = structuredClone(references);
           delete row.uploadError;
+        }
+        if (uploadErrorSpecified) {
+          if (uploadError) row.uploadError = uploadError;
+          else delete row.uploadError;
         }
         row.args.prompt = row.prompt;
         row.args.referenceAssetIds = row.references.map((value2) => value2.id);
@@ -50036,6 +50053,35 @@ var PodploPluginService = class extends EventEmitter2 {
     this.publish();
     return this.batchView(this.findBatch(ownerId, batchId));
   }
+  /**
+   * Dismiss a finished batch table. The operation, its receipts and the archived
+   * result files are untouched; only this draft row disappears from the panel.
+   */
+  async generationBatchArchive(input, caller) {
+    this.requireUi(caller);
+    const ownerId = await this.owner(true), batchId = text4(input.batchId, "batchId", 180), now = this.now().toISOString();
+    await this.store.transaction((saved) => {
+      const draft = saved.generationBatches.find((row) => row.ownerId === ownerId && row.batchId === batchId);
+      if (!draft) throw new PodploPluginError("BATCH_NOT_FOUND", "\u6279\u91CF\u8349\u7A3F\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7");
+      this.expectedBatchRevision(input, draft);
+      const operation = draft.operationId ? saved.operations.find((row) => row.ownerId === ownerId && row.operationId === draft.operationId) : void 0;
+      if (operation && this.batchApprovalJobs.has(`${ownerId}:${operation.operationId}`))
+        throw new PodploPluginError("BATCH_APPROVAL_IN_PROGRESS", "\u6B63\u5728\u786E\u8BA4\u8BE5\u6279\u91CF\u62A5\u4EF7\uFF0C\u8BF7\u7B49\u5F85\u786E\u8BA4\u7ED3\u679C\u540E\u518D\u6E05\u9664\u3002");
+      if (operation?.approvedAt && !operation.stoppedAt && !operation.items.every((item) => ["completed", "failed", "cancelled"].includes(item.status)))
+        throw new PodploPluginError("BATCH_STILL_RUNNING", "\u6279\u91CF\u4EFB\u52A1\u4ECD\u5728\u8FDB\u884C\uFF0C\u8BF7\u5148\u505C\u6B62\u5269\u4F59\u4EFB\u52A1\u3002");
+      if (operation && !operation.approvedAt && operation.items.some((item) => !["quoted", "cancelled"].includes(item.status)))
+        throw new PodploPluginError("BATCH_STILL_RUNNING", "\u6279\u91CF\u4EFB\u52A1\u4ECD\u5728\u8FDB\u884C\uFF0C\u8BF7\u7B49\u5F85\u4EFB\u52A1\u7ED3\u675F\u3002");
+      if (operation && !operation.approvedAt) {
+        for (const item of operation.items) if (item.status === "quoted") item.status = "cancelled";
+        operation.status = operationStatus(operation);
+        operation.updatedAt = now;
+      }
+      saved.generationBatches.splice(saved.generationBatches.indexOf(draft), 1);
+    });
+    await this.assertOwner(ownerId, true);
+    this.publish();
+    return { batchId, archived: true };
+  }
   async generationBatchPrepare(input, caller) {
     this.requireUi(caller);
     const ownerId = await this.owner(true), batchId = text4(input.batchId, "batchId", 180);
@@ -50068,12 +50114,14 @@ var PodploPluginService = class extends EventEmitter2 {
     const rows = draft.rows.filter((row) => row.selected).sort((a, b) => a.order - b.order);
     if (!rows.length) throw new PodploPluginError("INVALID_ARGUMENT", "\u8BF7\u81F3\u5C11\u9009\u62E9\u4E00\u884C");
     if (rows.some((row) => row.uploadError)) throw new PodploPluginError("BATCH_UPLOAD_INCOMPLETE", "\u9009\u4E2D\u884C\u4ECD\u6709\u4E0A\u4F20\u5931\u8D25\u7684\u53C2\u8003\u56FE\uFF0C\u8BF7\u66FF\u6362\u6216\u53D6\u6D88\u9009\u4E2D\u3002");
+    if (rows.some((row) => row.references.some((reference) => reference.id.startsWith(PENDING_REFERENCE_PREFIX))))
+      throw new PodploPluginError("BATCH_UPLOAD_INCOMPLETE", "\u9009\u4E2D\u884C\u4ECD\u6709\u53C2\u8003\u56FE\u6B63\u5728\u4E0A\u4F20\uFF0C\u8BF7\u7B49\u5F85\u4E0A\u4F20\u5B8C\u6210\u540E\u518D\u6838\u9A8C\u79EF\u5206\u3002");
     const items = rows.map((row) => ({
       ...row.skill ? {
         skillId: row.skill.id,
         ...row.skill.pricingReferenceCount === void 0 ? {} : { pricingReferenceCount: row.skill.pricingReferenceCount + row.references.length }
       } : {},
-      sourceName: `\u6279\u91CF\u884C-${row.order + 1}`,
+      sourceName: this.batchSourceName(row),
       args: {
         ...structuredClone(row.args),
         prompt: row.prompt,
@@ -50871,11 +50919,11 @@ async function startPluginMcp(service) {
 
 // plugins/podplo-dsh/src/native-toolkit-adapter.ts
 import sharp14 from "sharp";
-import { basename as basename12, extname as extname11 } from "node:path";
+import { basename as basename13, extname as extname11 } from "node:path";
 
 // plugins/podplo-dsh/src/native-reference-bridge.ts
 import { createHash as createHash13 } from "node:crypto";
-import { basename as basename10, extname as extname9, join as join10 } from "node:path";
+import { basename as basename11, extname as extname9, join as join10 } from "node:path";
 import sharp13 from "sharp";
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
@@ -50897,8 +50945,8 @@ var fail6 = (code, message) => {
 };
 var authorizationHash = (identity2) => hash2(`${identity2.ownerId}\0${identity2.namespace ?? ""}`);
 function safeWebpName(value2) {
-  const leaf = basename10(value2.replace(/\\/gu, "/"));
-  const stem = basename10(leaf, extname9(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
+  const leaf = basename11(value2.replace(/\\/gu, "/"));
+  const stem = basename11(leaf, extname9(leaf)).replace(/[^\p{L}\p{N}_.() -]+/gu, "-").trim().slice(0, 220) || "reference-image";
   return `${stem}.webp`;
 }
 async function normalizeNativeReference(input) {
@@ -51081,7 +51129,7 @@ var NativeReferenceBridge = class {
 import { createHash as createHash14, randomUUID as randomUUID13 } from "node:crypto";
 import { constants as constants5 } from "node:fs";
 import { lstat as lstat5, mkdir as mkdir6, open as open6, realpath as realpath6, unlink as unlink2 } from "node:fs/promises";
-import { basename as basename11, dirname as dirname7, extname as extname10, isAbsolute as isAbsolute6, join as join11, relative as relative5 } from "node:path";
+import { basename as basename12, dirname as dirname7, extname as extname10, isAbsolute as isAbsolute6, join as join11, relative as relative5 } from "node:path";
 var hashPattern2 = /^[a-f0-9]{64}$/u;
 var opaqueSession = external_exports.string().min(1).max(240).regex(/^[^/\\\0\r\n]+$/u);
 var directoryRowSchema = external_exports.object({
@@ -51105,8 +51153,8 @@ function fingerprint(stat) {
   return `${stat.dev}:${stat.ino}:${stat.size}:${stat.mtimeMs}`;
 }
 function safeName(value2) {
-  const extension = extname10(basename11(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
-  const rawStem = basename11(value2, extname10(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
+  const extension = extname10(basename12(value2)).slice(0, 16).replace(/[^.a-z0-9]/giu, "").toLowerCase();
+  const rawStem = basename12(value2, extname10(value2)).replace(/[^\p{L}\p{N}_.-]+/gu, "-").replace(/^[-.]+|[-.]+$/gu, "");
   const stem = Array.from(rawStem || "result").slice(0, 160).join("");
   return `${stem}${extension || ".bin"}`;
 }
@@ -51227,7 +51275,7 @@ var OutputDirectoryManager = class {
     const base2 = await this.verifyRoot(row.path), root = reviewRequired ? await this.reviewDirectory(base2, true) : base2;
     const requested = safeName(external_exports.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
-    const extension = extname10(requested), stem = basename11(requested, extension);
+    const extension = extname10(requested), stem = basename12(requested, extension);
     let published, publishedName = "", publishedFingerprint = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
@@ -51538,7 +51586,7 @@ async function nativeToolkitTransport(options) {
         if (!receipt) return fail7("ATTACHMENT_NOT_IN_SESSION", "\u5F53\u524D\u4F1A\u8BDD\u6CA1\u6709\u8FD9\u5F20\u56FE\u7247\uFF0C\u8BF7\u5148\u5C06\u56FE\u7247\u52A0\u5165\u4F1A\u8BDD\u3002");
         metadata.push({
           id: id2,
-          name: typeof receipt.name === "string" && receipt.name ? basename12(receipt.name) : "\u4F1A\u8BDD\u56FE\u7247",
+          name: typeof receipt.name === "string" && receipt.name ? basename13(receipt.name) : "\u4F1A\u8BDD\u56FE\u7247",
           kind: "reference",
           mediaKind: "image"
         });
@@ -51553,7 +51601,7 @@ async function nativeToolkitTransport(options) {
           if (detail.id !== id2 || detail.status !== "ready") return fail7("ORIGINAL_UNAVAILABLE", "\u7D20\u6750\u5143\u6570\u636E\u5C1A\u672A\u5C31\u7EEA\u3002");
           metadata.push({
             id: id2,
-            name: detail.filename ? basename12(detail.filename) : id2,
+            name: detail.filename ? basename13(detail.filename) : id2,
             kind: "reference",
             mediaKind: "image",
             ...typeof detail.bytes === "number" && Number.isSafeInteger(detail.bytes) && detail.bytes > 0 ? { byteSize: detail.bytes } : {}
@@ -51674,7 +51722,7 @@ async function nativeToolkitTransport(options) {
         const format2 = (await sharp14(bytes, { limitInputPixels: 1e8, failOn: "error" }).metadata()).format;
         if (format2 !== "png" && format2 !== "jpeg" && format2 !== "webp") return fail7("INVALID_IMAGE", "\u539F\u56FE\u683C\u5F0F\u4E0D\u53D7\u652F\u6301\u3002");
         const originalName = detail.filename ?? `\u7D20\u6750-${id2}`;
-        const stem = basename12(originalName, extname11(originalName));
+        const stem = basename13(originalName, extname11(originalName));
         const trustedName = `${stem || `\u7D20\u6750-${id2}`}.${format2 === "jpeg" ? "jpg" : format2}`;
         return { ok: true, data: await outputs.export(bytes, trustedName, scope) };
       }
@@ -51756,13 +51804,13 @@ async function registerPodploNativePresets(agentPresets) {
 
 // plugins/podplo-dsh/src/task-archive-host.ts
 import { createHash as createHash18 } from "node:crypto";
-import { basename as basename14, extname as extname13 } from "node:path";
+import { basename as basename15, extname as extname13 } from "node:path";
 
 // plugins/podplo-dsh/src/task-archive.ts
 import { createHash as createHash16, randomUUID as randomUUID15 } from "node:crypto";
 import { constants as constants7 } from "node:fs";
 import { link, lstat as lstat7, mkdir as mkdir8, open as open8, realpath as realpath8, rename as rename5, rm as rm4, unlink as unlink4 } from "node:fs/promises";
-import { basename as basename13, dirname as dirname8, extname as extname12, isAbsolute as isAbsolute8, join as join13 } from "node:path";
+import { basename as basename14, dirname as dirname8, extname as extname12, isAbsolute as isAbsolute8, join as join13 } from "node:path";
 import sharp15 from "sharp";
 
 // plugins/podplo-dsh/src/operation-log.ts
@@ -51966,7 +52014,7 @@ var finalTimestamp = (value2) => {
   return `${date5.getFullYear()}-${String(date5.getMonth() + 1).padStart(2, "0")}-${String(date5.getDate()).padStart(2, "0")}_${String(date5.getHours()).padStart(2, "0")}-${String(date5.getMinutes()).padStart(2, "0")}`;
 };
 var archiveLayout = (task) => task.archiveFormat === 2 || task.archiveFormat === 3;
-var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename13(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
+var safeFolder = (value2) => value2.length > 0 && value2.length <= 96 && basename14(value2) === value2 && value2 !== "." && value2 !== ".." && !/[<>:"/\\|?*\x00-\x1f\x7f]/u.test(value2) && !/[. ]$/u.test(value2);
 var filesystemNameKey = (value2) => value2.normalize("NFC").toLocaleLowerCase("en-US");
 var sourceSchema = external_exports.object({ kind: external_exports.enum(["asset", "local", "input"]), id: external_exports.string().min(1).max(240), sessionId: external_exports.string().min(1).max(240) });
 var fileSchema = external_exports.object({
@@ -52160,7 +52208,7 @@ var TaskArchiveManager = class {
       for (const task of state.tasks) {
         if (task.processingPlan !== void 0) task.processingPlan = parseProcessingPlan(task.processingPlan, { allowRemovedTools: true, allowHostInputs: true });
         const project = state.projects.find((row) => row.owner === task.owner && row.id === task.projectId);
-        if (!project || join13(project.directory, basename13(task.directory)) !== task.directory || task.files.some((file2) => [file2.name, file2.cacheName, file2.publishedName].some((name2) => name2 && (basename13(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json|txt)$/iu.test(name2)))) || task.files.some((file2) => file2.publishedFolder !== void 0 && !safeFolder(file2.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file2) => file2.publishedName && !file2.publishedFolder))
+        if (!project || join13(project.directory, basename14(task.directory)) !== task.directory || task.files.some((file2) => [file2.name, file2.cacheName, file2.publishedName].some((name2) => name2 && (basename14(name2) !== name2 || !/\.(png|jpe?g|webp|pdf|zip|json|txt)$/iu.test(name2)))) || task.files.some((file2) => file2.publishedFolder !== void 0 && !safeFolder(file2.publishedFolder)) || task.archiveFormat === 3 && task.files.some((file2) => file2.publishedName && !file2.publishedFolder))
           throw new Error("\u6210\u679C\u5F52\u6863\u8DEF\u5F84\u6216\u6240\u6709\u6743\u65E0\u6548");
       }
       return state;
@@ -52490,7 +52538,7 @@ var TaskArchiveManager = class {
   outputStem(task, file2) {
     const item = this.generationItem(task, file2);
     if (item?.sourceName) {
-      const raw = basename13(item.sourceName, extname12(item.sourceName));
+      const raw = basename14(item.sourceName, extname12(item.sourceName));
       return task.archiveFormat === 3 ? sourceStem(raw) : safeLabel(raw, "\u56FE\u7247", 72);
     }
     const root = this.sourceRoot(task, file2);
@@ -52500,13 +52548,13 @@ var TaskArchiveManager = class {
     })).values()];
     const ordinal = Math.max(1, roots.findIndex((row) => row.source.id === root.source.id) + 1);
     if (root.sourceName) {
-      const raw = basename13(root.sourceName, extname12(root.sourceName));
+      const raw = basename14(root.sourceName, extname12(root.sourceName));
       if (task.archiveFormat === 3) return sourceStem(raw);
       const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
       return safeLabel(clean, "\u56FE\u7247", 72);
     }
     for (const value2 of [root.label]) {
-      const raw = basename13(value2, extname12(value2));
+      const raw = basename14(value2, extname12(value2));
       const clean = raw.replace(/(?:[ _-]+(?:AI生成|生成图|尺寸调整|描边|含出血|转换|成品(?:-\d+)?))+$/u, "");
       const cleaned = task.archiveFormat === 3 ? sourceStem(clean, "") : safeLabel(clean, "", 72);
       if (cleaned && !/^(?:原始生成|AI原图|参考(?:原图|图\d*)|图片|AI生成|成品|image|original|generated|result|source)$/iu.test(cleaned)) return cleaned;
@@ -52584,7 +52632,7 @@ var TaskArchiveManager = class {
       const output = this.publishedDirectory(task, file2);
       if (task.archiveFormat === 3) await this.createDirectory(output);
       await this.directory(output);
-      const extension = extname12(file2.cacheName), preferred = this.preferredOutputName(task, file2), base2 = basename13(preferred, extension);
+      const extension = extname12(file2.cacheName), preferred = this.preferredOutputName(task, file2), base2 = basename14(preferred, extension);
       let name2 = preferred, suffix = 2;
       while (await lstat7(join13(output, name2)).catch(() => void 0)) name2 = task.archiveFormat === 3 ? fitFilename(this.outputStem(task, file2), `\uFF08\u526F\u672C${suffix++}\uFF09`, extension) : `${base2}-\u526F\u672C${suffix++}${extension}`;
       await this.taskDirectory(task);
@@ -52653,7 +52701,7 @@ var TaskArchiveManager = class {
         await this.taskDirectory(initial);
         if (file2.group === "reference") {
           let sourceName;
-          if (file2.source.kind !== "asset") sourceName = await this.options.read(file2.source).then((value2) => basename13(value2.name)).catch(() => void 0);
+          if (file2.source.kind !== "asset") sourceName = await this.options.read(file2.source).then((value2) => basename14(value2.name)).catch(() => void 0);
           await this.same(identity2);
           await this.store.transaction((state) => {
             const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file2.id);
@@ -52682,7 +52730,7 @@ var TaskArchiveManager = class {
           const row = state.tasks.find((row2) => row2.id === id2).files.find((row2) => row2.id === file2.id);
           delete row.diagnostic;
           Object.assign(row, {
-            sourceName: basename13(source.name),
+            sourceName: basename14(source.name),
             cacheName,
             image,
             status: "saved",
@@ -52728,7 +52776,7 @@ var TaskArchiveManager = class {
           if (!["png", "jpeg", "webp"].includes(meta3.format ?? "")) throw new Error("\u56FE\u7247\u683C\u5F0F\u65E0\u6548");
           extension = meta3.format === "jpeg" ? "jpg" : meta3.format;
         }
-        const label = safeLabel(file2.group === "reference" ? basename13(source.name, extname12(source.name)) : (file2.label || basename13(source.name, extname12(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
+        const label = safeLabel(file2.group === "reference" ? basename14(source.name, extname12(source.name)) : (file2.label || basename14(source.name, extname12(source.name))).replace(/\.(?:png|jpg|jpeg|webp|pdf)$/iu, ""), "\u56FE\u7247", 72);
         const used = new Set(this.store.snapshot().tasks.find((row) => row.id === id2).files.filter((row) => row.group === file2.group && row.id !== file2.id).map((row) => row.name));
         let name2 = file2.name ?? `${label}.${extension}`, suffix = 2;
         while (used.has(name2)) name2 = `${label}-${suffix++}.${extension}`;
@@ -53316,7 +53364,7 @@ var TaskArchiveManager = class {
       const name2 = archiveLayout(task) ? file2.publishedName : file2.name;
       if (!file2.image && !name2?.toLowerCase().endsWith(".txt")) continue;
       const fingerprint3 = archiveLayout(task) ? file2.publishedFingerprint : file2.fingerprint;
-      if (!name2 || !fingerprint3 || basename13(name2) !== name2) continue;
+      if (!name2 || !fingerprint3 || basename14(name2) !== name2) continue;
       const directory = archiveLayout(task) ? this.publishedDirectory(task, file2) : this.groupDirectory(task, file2);
       if (!directories.has(directory)) {
         try {
@@ -53897,7 +53945,7 @@ async function taskArchiveHost(options) {
             groups.set(target, [...groups.get(target) ?? [], {
               source: { kind: "local", id: result.id, sessionId: row.sessionId },
               group: "result",
-              label: basename14(result.name, extname13(result.name)),
+              label: basename15(result.name, extname13(result.name)),
               ...result.sourceId ? { sourceId: result.sourceId } : {}
             }]);
           }
@@ -55567,7 +55615,7 @@ function reconcilePodploTaskToolRestriction(binding, agent, enabled) {
 
 // plugins/podplo-dsh/src/native-task-read-tools.ts
 import { createHash as createHash21 } from "node:crypto";
-import { basename as basename15, extname as extname14 } from "node:path";
+import { basename as basename16, extname as extname14 } from "node:path";
 import { lstat as lstat8, readdir as readdir3, realpath as realpath9 } from "node:fs/promises";
 
 // plugins/podplo-dsh/src/native-task-capabilities.ts
@@ -56374,7 +56422,7 @@ function nativeTaskReadToolDefinitions(deps) {
                   mediaKind: "image"
                 })),
                 snapshot: {
-                  directoryName: basename15(directory),
+                  directoryName: basename16(directory),
                   count: entries.length,
                   directImageCount,
                   subdirectoryCount,
@@ -56463,7 +56511,7 @@ function userAuthorizedFolder(events, folderPath) {
     for (let index = value2.indexOf(folderPath); index >= 0; index = value2.indexOf(folderPath, index + 1)) if (boundary(value2, index)) return true;
     return false;
   };
-  const desktopName = basename16(folderPath);
+  const desktopName = basename17(folderPath);
   const desktopPath = resolve3(homedir3(), "Desktop", desktopName);
   const desktopMention = new RegExp(`(?:\u684C\u9762|Desktop)(?:[\\s/\\\\:\uFF1A]+|(?=["\u201C'\u2018]))["\u201C'\u2018]?${desktopName.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&")}(?=$|[\\s"'\u201C\u201D\u2018\u2019\uFF0C\u3002\uFF1B\uFF1A\u3001\uFF01\uFF1F\uFF09)\\]}])`, "u");
   const userTextAuthorizes = (value2) => containsExactPath(value2) || isAbsolute9(folderPath) && resolve3(folderPath) === desktopPath && desktopMention.test(value2);
@@ -56532,7 +56580,7 @@ async function apply(ctx, config2 = {}) {
   const online = new OnlineService(`${directory}/online-v1`, cipher, openBrowser, http);
   const projectForSession = (id2) => {
     const cwd = id2 ? ctx.sessions?.get(id2)?.header.cwd : void 0;
-    return cwd && isAbsolute9(cwd) ? { key: `cwd:${resolve3(cwd)}`, name: basename16(resolve3(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
+    return cwd && isAbsolute9(cwd) ? { key: `cwd:${resolve3(cwd)}`, name: basename17(resolve3(cwd)) || "\u9879\u76EE\u6210\u679C" } : void 0;
   };
   const workbench = new DesktopWorkbench(`${directory}/workbench-v1`);
   const galleryFetch = fixtureOrigin ? (input, init) => {
