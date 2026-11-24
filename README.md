@@ -1,4 +1,6 @@
-# PodPlo Plugin v0.1.36
+# PodPlo Plugin v0.1.37
+
+本版新增 GPT-6 Luna 与 Doubao Seed 2.0 Mini。可在同一生图框中选择模型执行普通图转文或反推 DNA；DNA 结果仍只保存在「我的 DNA」。
 
 Skill 库和收藏中的示例图跟随当前云端 Skill，支持处理前与处理后对照。点击 Skill 族可展开成员，分类可用于筛选。
 
@@ -141,7 +143,7 @@ Skill 库和收藏中的示例图跟随当前云端 Skill，支持处理前与�
 https://github.com/jacksia0409/podplo-dsh-plugin
 
 已安装用户可使用本版标签地址升级：
-https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.36
+https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.37
 
 也可通过官方插件管理器选择本地 TGZ。生成或加工任务运行时不要更新；管理器支持热安装时无需重启。不修改 DSH 核心、账号或模型配置。
 
