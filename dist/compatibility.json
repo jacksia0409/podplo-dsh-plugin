@@ -2,6 +2,6 @@
   "dsh": "*",
   "dshVersionPolicy": "attempt-any-version",
   "buildCommit": "c59d10aff167ad7eefead4b3a9082fb57c8fbfe8",
-  "plugin": "0.1.34",
+  "plugin": "0.1.35",
   "coreModified": false
 }

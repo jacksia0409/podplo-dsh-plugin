@@ -36944,6 +36944,13 @@ function combinedReferenceIds(preset, additional) {
   return [.../* @__PURE__ */ new Set([...preset, ...additional])];
 }
 
+// packages/online/credits.ts
+function isCreditAmount(value2) {
+  if (typeof value2 !== "number" || !Number.isFinite(value2) || value2 < 0) return false;
+  const cents = Math.round(value2 * 100);
+  return Number.isSafeInteger(cents) && Math.abs(value2 - cents / 100) <= Number.EPSILON * Math.max(1, Math.abs(value2)) * 4;
+}
+
 // packages/online/contracts.ts
 var PODPLO_ORIGIN = "https://podplo.app";
 var MCP_RESOURCE = `${PODPLO_ORIGIN}/api/mcp`;
@@ -36963,10 +36970,11 @@ var OAUTH_SCOPES = [
 ];
 var METADATA_GATED_OAUTH_SCOPES = ["mcp:skills:write", "mcp:favorites:read", "mcp:favorites:write"];
 var integer2 = external_exports.number().int().nonnegative();
+var CreditAmountSchema = external_exports.number().refine(isCreditAmount, "\u79EF\u5206\u91D1\u989D\u6700\u591A\u4E24\u4F4D\u5C0F\u6570");
 var BalanceSchema = external_exports.object({
-  availableCredits: integer2,
-  reservedCredits: integer2,
-  creditDebt: integer2,
+  availableCredits: CreditAmountSchema,
+  reservedCredits: CreditAmountSchema,
+  creditDebt: CreditAmountSchema,
   mcpSubscriptionMonthlyCredits: integer2
 });
 var SkillSchema = external_exports.object({
@@ -37394,7 +37402,18 @@ var OnlineError = class extends Error {
       SKILLS_WRITE_SCOPE_REQUIRED: "\u5F53\u524D\u6388\u6743\u4EC5\u53EF\u67E5\u770B\u548C\u4F7F\u7528\u6A21\u677F\uFF1B\u7BA1\u7406\u6A21\u677F\u9700\u8981\u91CD\u65B0\u767B\u5F55\u6388\u6743",
       REFERENCE_UNAVAILABLE: "\u53C2\u8003\u56FE\u5DF2\u5931\u6548\u3001\u672A\u5C31\u7EEA\u6216\u65E0\u6743\u8BBF\u95EE\uFF0C\u8BF7\u79FB\u9664\u6216\u91CD\u65B0\u9009\u62E9",
       REFERENCE_LIMIT_EXCEEDED: "\u9884\u8BBE\u4E0E\u672C\u6B21\u53C2\u8003\u56FE\u5408\u8BA1\u8D85\u8FC7\u5F53\u524D\u6A21\u578B\u6216 Eco \u4E0A\u9650\uFF0C\u8BF7\u8C03\u6574\u540E\u91CD\u8BD5",
-      TEXT_CONFIG_UNAVAILABLE: "\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u914D\u7F6E\u53EF\u7528\u7684\u6587\u672C\u6A21\u578B\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9"
+      TEXT_CONFIG_UNAVAILABLE: "\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u914D\u7F6E\u53EF\u7528\u7684\u6587\u672C\u6A21\u578B\uFF0C\u8BF7\u5728\u4E3B\u7AD9\u6838\u5BF9",
+      IMAGE_TO_TEXT_PRICING_UNAVAILABLE: "\u56FE\u8F6C\u6587\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4",
+      DNA_PRICING_UNAVAILABLE: "DNA \u63D0\u53D6\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4",
+      DNA_RESPONSE_INVALID: "DNA \u54CD\u5E94\u65E0\u6CD5\u6838\u9A8C\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1\uFF1B\u672A\u91CD\u65B0\u63D0\u4EA4",
+      DNA_NOT_FOUND: "DNA \u5DF2\u5220\u9664\u3001\u672A\u5C31\u7EEA\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9",
+      DNA_SKILL_CHANGED: "DNA \u63D0\u53D6 Skill \u5DF2\u66F4\u65B0\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7",
+      DNA_CHANGED: "DNA \u5DF2\u5728\u5176\u4ED6\u9875\u9762\u66F4\u65B0\uFF0C\u8BF7\u5237\u65B0\u540E\u64CD\u4F5C",
+      DNA_IDEMPOTENCY_CONFLICT: "\u540C\u4E00\u4E2A DNA \u8BF7\u6C42\u7F16\u53F7\u5DF2\u7ED1\u5B9A\u5176\u4ED6\u5185\u5BB9\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1",
+      IMAGE_TO_TEXT_UNAVAILABLE: "\u56FE\u8F6C\u6587\u670D\u52A1\u5C1A\u672A\u914D\u7F6E\u6216\u5F00\u653E\uFF0C\u8BF7\u66F4\u65B0\u4E3B\u7AD9\u670D\u52A1\u540E\u91CD\u8BD5",
+      IMAGE_TO_TEXT_QUOTE_EXPIRED: "\u56FE\u8F6C\u6587\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u9A8C",
+      IMAGE_TO_TEXT_RESPONSE_INVALID: "\u56FE\u8F6C\u6587\u8FD4\u56DE\u5185\u5BB9\u65E0\u6CD5\u6838\u9A8C\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1\uFF1B\u672A\u91CD\u65B0\u63D0\u4EA4",
+      IMAGE_TO_TEXT_IDEMPOTENCY_CONFLICT: "\u6B64\u56FE\u8F6C\u6587\u8BF7\u6C42\u5DF2\u7ED1\u5B9A\u5176\u4ED6\u5185\u5BB9\uFF0C\u8BF7\u5148\u6838\u5BF9\u539F\u4EFB\u52A1"
     };
     super(`${labels2[code] ?? "\u4E3B\u7AD9\u8BF7\u6C42\u672A\u5B8C\u6210"}\uFF08${code}${status ? `\uFF0CHTTP ${status}` : ""}\uFF09`);
     this.code = code;
@@ -38003,7 +38022,7 @@ var tool_registry_default = {
     {
       id: "image-processing-outline",
       name: "\u56FE\u7247\u5904\u7406\u4E0E\u63CF\u8FB9",
-      description: "\u56FE\u7247\u65CB\u8F6C\u3001\u8C03\u8272\u3001\u63CF\u8FB9\u3001\u900F\u660E\u8FB9\u88C1\u526A\u3001\u5C3A\u5BF8\u3001\u51FA\u8840\u3001\u8F93\u51FA\u8BBE\u7F6E\uFF0C\u4EE5\u53CA\u5BF9\u767D\u5E95\u6216\u900F\u660E\u56FE\u7684\u5916\u8F6E\u5ED3\u8FD1\u4F3C\u6D4B\u957F\u3002",
+      description: "\u56FE\u7247\u65CB\u8F6C\u3001\u8C03\u8272\u3001\u63CF\u8FB9\u3001\u900F\u660E\u8FB9\u88C1\u526A\u3001\u5C3A\u5BF8\u3001\u51FA\u8840\u4E0E\u8F93\u51FA\u8BBE\u7F6E\u3002",
       operations: [
         { id: "rotate-flip", name: "\u65CB\u8F6C\u7FFB\u8F6C", token: "podplo_rotate_flip_images" },
         { id: "basic-color-adjustment", name: "\u8C03\u8272", token: "podplo_adjust_image_colors" },
@@ -38302,6 +38321,85 @@ var CloudFavorites = class {
   }
 };
 
+// packages/online/image-to-text.ts
+var IMAGE_TO_TEXT_MODEL = "claude-haiku-5-5";
+var IMAGE_TO_TEXT_MAX_BYTES = 128 * 1024 - 3;
+var ImageToTextInputSchema = external_exports.object({
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  referenceAssetIds: external_exports.array(external_exports.string().uuid()).min(1).max(4).refine((ids2) => new Set(ids2).size === ids2.length),
+  prompt: external_exports.string().min(1).max(8e3).refine((value2) => value2.trim().length > 0)
+}).strict();
+var ImageToTextQuoteSchema = external_exports.object({
+  quoteId: external_exports.string().uuid(),
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  totalCredits: external_exports.number().positive(),
+  expiresAt: external_exports.string().datetime(),
+  maxOutputTokens: external_exports.literal(4096),
+  confirmationText: external_exports.string().min(1).max(1e3)
+});
+var ImageToTextSubmitSchema = external_exports.object({
+  quoteId: external_exports.string().uuid(),
+  clientRequestId: external_exports.string().uuid(),
+  approvedCredits: external_exports.number().positive()
+}).strict();
+var ImageToTextTaskSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  status: external_exports.enum(["queued", "running", "completed", "failed", "submission_unknown"]),
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  totalCredits: external_exports.number().positive(),
+  inputCount: external_exports.number().int().min(1).max(4),
+  text: external_exports.string().optional(),
+  failureCode: external_exports.string().regex(/^[A-Z0-9_]{1,80}$/).nullable().optional()
+}).superRefine((value2, context) => {
+  if (value2.status === "completed") {
+    if (!value2.text?.trim() || new TextEncoder().encode(value2.text).byteLength > IMAGE_TO_TEXT_MAX_BYTES)
+      context.addIssue({ code: "custom", message: "\u56FE\u8F6C\u6587\u7ED3\u679C\u4E3A\u7A7A\u6216\u8D85\u8FC7 TXT \u5927\u5C0F\u9650\u5236" });
+  } else if (value2.text !== void 0) context.addIssue({ code: "custom", message: "\u672A\u5B8C\u6210\u4EFB\u52A1\u4E0D\u80FD\u5305\u542B\u6210\u529F\u6587\u672C" });
+});
+
+// packages/online/dna.ts
+var DnaSkillSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  name: external_exports.string().min(1).max(160),
+  description: external_exports.string().max(3e3).optional(),
+  updatedAt: external_exports.string().datetime()
+}).strict();
+var DnaSkillsSchema = external_exports.object({ items: external_exports.array(DnaSkillSchema) }).strict();
+var DnaProfileSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  name: external_exports.string().min(1).max(80),
+  description: external_exports.string().max(1e3).default(""),
+  coverAssetId: external_exports.string().uuid(),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime()
+}).strict();
+var DnaPageSchema = external_exports.object({ items: external_exports.array(DnaProfileSchema), nextCursor: external_exports.string().nullable() }).strict();
+var DnaQuoteInputSchema = external_exports.object({ skillId: external_exports.string().uuid(), sourceAssetId: external_exports.string().uuid(), name: external_exports.string().trim().min(1).max(80) }).strict();
+var DnaTaskSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  status: external_exports.enum(["queued", "running", "completed", "failed", "submission_unknown"]),
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  totalCredits: external_exports.number().positive(),
+  inputCount: external_exports.literal(1),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  dnaId: external_exports.string().uuid().optional(),
+  failureCode: external_exports.string().regex(/^[A-Z0-9_]{1,80}$/).nullable().optional()
+}).strict().superRefine((row, ctx) => {
+  if (row.status === "completed" && !row.dnaId || row.status !== "completed" && row.dnaId)
+    ctx.addIssue({ code: "custom", message: "DNA \u72B6\u6001\u4E0E\u4FDD\u5B58\u56DE\u6267\u4E0D\u4E00\u81F4" });
+});
+var DnaRenameSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  name: external_exports.string().trim().min(1).max(80),
+  description: external_exports.string().trim().max(1e3).optional(),
+  expectedUpdatedAt: external_exports.string().datetime()
+}).strict();
+var DnaDeleteSchema = external_exports.object({ id: external_exports.string().uuid(), expectedUpdatedAt: external_exports.string().datetime(), confirmed: external_exports.literal(true) }).strict();
+var DnaPageInputSchema = external_exports.object({ cursor: external_exports.string().max(1e3).optional(), limit: external_exports.number().int().min(1).max(50).optional() }).strict();
+
 // packages/online/service.ts
 function taskSkillDetails(skill) {
   const { slug: slug2, title, summary, description, inputs, keeps, changes, output, tags } = skill;
@@ -38555,15 +38653,15 @@ var OnlineService = class extends EventEmitter {
     const receivedAt = performance.now();
     const serverTime = Date.parse(context.serverTime) + Math.max(0, receivedAt - requestedAt);
     const expiresAt = context.subscription.expiresAt ? Date.parse(context.subscription.expiresAt) : Number.NEGATIVE_INFINITY;
-    const active = context.subscription.active && expiresAt > serverTime;
+    const active2 = context.subscription.active && expiresAt > serverTime;
     this.state.desktopContextStatus = "verified";
     this.state.desktopContextError = void 0;
     this.state.identity = context.identity;
-    this.state.subscription = { ...context.subscription, active };
+    this.state.subscription = { ...context.subscription, active: active2 };
     this.state.authorizedToolGroups = context.authorizedToolGroups;
-    this.state.authorizedTools = active ? context.authorizedTools : [];
-    this.state.clientConfig = active ? context.clientConfig : void 0;
-    if (!active) this.invalidateTextConfig();
+    this.state.authorizedTools = active2 ? context.authorizedTools : [];
+    this.state.clientConfig = active2 ? context.clientConfig : void 0;
+    if (!active2) this.invalidateTextConfig();
     this.contextAnchor = { serverTime, expiresAt, receivedAt, leaseExpiresAt: receivedAt + this.contextLeaseMs, groupSignature: "" };
     this.contextAnchor.groupSignature = this.activeToolGroupSignature();
     this.scheduleContextExpiry();
@@ -38661,6 +38759,60 @@ var OnlineService = class extends EventEmitter {
       if (!definition || !group || !this.groupHasExpectedTools(group) || !group.tools.includes(toolName)) throw new OnlineError("TOOL_GROUP_REQUIRED");
     }
     return identity2.userId;
+  }
+  async imageToTextRequest(path, input, method) {
+    const ownerId = await this.workspaceIdentity(true);
+    if (!["mcp:generations:write", "mcp:assets:read"].every((scope) => this.auth.scope.includes(scope))) throw new OnlineError("INSUFFICIENT_SCOPE");
+    const revision = this.revision;
+    const result = await this.bearerRequest(async (refresh) => this.auth.http.json(path, {
+      method: method ?? (input === void 0 ? "GET" : "POST"),
+      headers: { Authorization: `Bearer ${await this.auth.token(refresh)}`, ...input === void 0 ? {} : { "Content-Type": "application/json" } },
+      ...input === void 0 ? {} : { body: JSON.stringify(input) }
+    }));
+    if (revision !== this.revision || ownerId !== await this.workspaceIdentity(true)) throw new OnlineError("SESSION_CHANGED");
+    return result;
+  }
+  async imageToTextQuote(input) {
+    return ImageToTextQuoteSchema.parse(await this.imageToTextRequest("/api/desktop/image-to-text/quote", ImageToTextInputSchema.parse(input)));
+  }
+  async imageToTextSubmit(input) {
+    return ImageToTextTaskSchema.parse(await this.imageToTextRequest("/api/desktop/image-to-text", ImageToTextSubmitSchema.parse(input)));
+  }
+  async imageToTextTask(id2) {
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(id2)) throw new OnlineError("INVALID_ARGUMENT");
+    const task = ImageToTextTaskSchema.parse(await this.imageToTextRequest(`/api/desktop/image-to-text/${id2}`));
+    if (task.id !== id2) throw new OnlineError("IMAGE_TO_TEXT_RESPONSE_INVALID");
+    return task;
+  }
+  async dnaSkills() {
+    return DnaSkillsSchema.parse(await this.imageToTextRequest("/api/desktop/dna/skills"));
+  }
+  async dnaList(input = {}) {
+    const parsed = DnaPageInputSchema.parse(input), params = new URLSearchParams();
+    if (parsed.cursor) params.set("cursor", parsed.cursor);
+    if (parsed.limit) params.set("limit", String(parsed.limit));
+    return DnaPageSchema.parse(await this.imageToTextRequest(`/api/desktop/dna${params.size ? `?${params}` : ""}`));
+  }
+  async dnaQuote(input) {
+    return ImageToTextQuoteSchema.parse(await this.imageToTextRequest("/api/desktop/dna/quote", DnaQuoteInputSchema.parse(input)));
+  }
+  async dnaSubmit(input) {
+    return DnaTaskSchema.parse(await this.imageToTextRequest("/api/desktop/dna", ImageToTextSubmitSchema.parse(input)));
+  }
+  async dnaTask(id2) {
+    const parsed = DnaProfileSchema.shape.id.parse(id2), task = DnaTaskSchema.parse(await this.imageToTextRequest(`/api/desktop/dna/tasks/${parsed}`));
+    if (task.id !== id2) throw new OnlineError("DNA_RESPONSE_INVALID");
+    return task;
+  }
+  async dnaRename(input) {
+    const { id: id2, ...body } = DnaRenameSchema.parse(input);
+    const result = DnaProfileSchema.parse(await this.imageToTextRequest(`/api/desktop/dna/${id2}`, body, "PATCH"));
+    if (result.id !== id2) throw new OnlineError("DNA_RESPONSE_INVALID");
+    return result;
+  }
+  async dnaDelete(input) {
+    const { id: id2, ...body } = DnaDeleteSchema.parse(input);
+    return external_exports.object({ deleted: external_exports.literal(true) }).strict().parse(await this.imageToTextRequest(`/api/desktop/dna/${id2}`, body, "DELETE"));
   }
   async textRuntimeConfig() {
     const ownerId = await this.workspaceIdentity(true);
@@ -40626,7 +40778,7 @@ var IMAGE_TOOLKIT_CATALOG = [
   { id: "resize", name: "\u5370\u5237\u5C3A\u5BF8\u8C03\u6574", slug: "print-size-adjustment", agent: "podplo_resize_images", description: "\u50CF\u7D20\u4E0E\u7269\u7406\u5C3A\u5BF8\u3001DPI/PPI\u3001\u6309\u6A2A\u7AD6\u56FE\u5B9A\u5355\u8FB9\u7B49\u6BD4\u7F29\u653E\u548C\u900F\u660E\u8FB9\u88C1\u5207" },
   { id: "rotate-flip", name: "\u65CB\u8F6C\u4E0E\u7FFB\u8F6C", slug: "rotate-flip", agent: "podplo_rotate_flip_images", description: "\u4EFB\u610F\u89D2\u5EA6\u65CB\u8F6C\u3001\u6C34\u5E73\u955C\u50CF\u548C\u5782\u76F4\u7FFB\u8F6C" },
   { id: "color-adjust", name: "\u57FA\u7840\u8C03\u8272", slug: "basic-color-adjustment", agent: "podplo_adjust_image_colors", description: "\u4EAE\u5EA6\u3001\u5BF9\u6BD4\u5EA6\u3001\u9971\u548C\u5EA6\u548C\u51B7\u6696\u8C03\u6574" },
-  { id: "export", name: "\u683C\u5F0F\u8F6C\u6362", slug: "image-format-conversion", agent: "podplo_export_images", description: "PNG\u3001JPEG\u3001WebP \u548C\u6309 PPI \u5B9A\u5C3A\u5BF8\u7684\u56FE\u7247 PDF" },
+  { id: "export", name: "\u8F93\u51FA\u8BBE\u7F6E", slug: "output-settings", agent: "podplo_export_images", description: "PNG\u3001JPEG\u3001WebP\u3001PDF \u53CA\u8F93\u51FA\u955C\u50CF" },
   { id: "print-bleed", name: "\u51FA\u8840", slug: "print-bleed-safety", agent: "podplo_prepare_print_files", description: "\u6309\u4EA7\u54C1\u5C3A\u5BF8\u6DFB\u52A0\u56DB\u8FB9\u51FA\u8840\uFF0C\u8F93\u51FA\u751F\u4EA7\u56FE" },
   { id: "outline", name: "\u81EA\u52A8\u63CF\u8FB9", slug: "auto-outline", agent: "podplo_outline_images", description: "\u5E73\u6ED1\u8F6E\u5ED3\u3001\u72EC\u7ACB\u95F4\u8DDD\u4E0E\u7EBF\u5BBD\u3001\u5355\u5F20\u56FE\u6848\u586B\u5145\u548C\u955C\u50CF" }
 ];
@@ -42340,12 +42492,24 @@ function smooth1(x, v0, v1, value2) {
 
 // packages/tools/contour-measure.ts
 import sharp11 from "sharp";
-var ContourMeasureOptionsSchema = external_exports.object({
-  actualWidthCm: external_exports.number().finite().min(0.01).max(1e5),
-  actualHeightCm: external_exports.number().finite().min(0.01).max(1e5),
+var physicalDimension = external_exports.number().finite().min(0.01).max(1e5);
+var contourThresholds = {
   backgroundTolerance: external_exports.number().finite().min(4).max(40).default(18),
   alphaThreshold: external_exports.number().int().min(0).max(254).default(16)
+};
+var ContourMeasureOptionsSchema = external_exports.object({
+  actualWidthCm: physicalDimension,
+  actualHeightCm: physicalDimension,
+  ...contourThresholds
 }).strict();
+var ContourMeasurePreviewOptionsSchema = external_exports.object({
+  actualWidthCm: physicalDimension.optional(),
+  actualHeightCm: physicalDimension.optional(),
+  ...contourThresholds
+}).strict().superRefine((value2, context) => {
+  if (value2.actualWidthCm === void 0 !== (value2.actualHeightCm === void 0))
+    context.addIssue({ code: "custom", message: "\u5B9E\u9645\u5BBD\u9AD8\u5FC5\u987B\u540C\u65F6\u586B\u5199\u3002" });
+});
 var MAX_CONTOUR_SOURCE_PIXELS = 1e8;
 var MAX_COMPONENTS = 200;
 var MAX_RAW_POINTS = 5e5;
@@ -42559,8 +42723,106 @@ async function cropForegroundMask(values, width2, height2, isForeground, signal)
     touchesEdge: x0 === 0 || y0 === 0 || x1 === width2 || y1 === height2
   };
 }
+function boundedResolution(horizontalDpi, verticalDpi) {
+  if (!Number.isFinite(horizontalDpi) || !Number.isFinite(verticalDpi) || horizontalDpi <= 0 || verticalDpi <= 0 || horizontalDpi > 1e6 || verticalDpi > 1e6) return;
+  return { horizontalDpi, verticalDpi };
+}
+function tiffResolution(bytes) {
+  const start = 0;
+  if (bytes.length < 8) return;
+  const little = bytes[start] === 73 && bytes[start + 1] === 73;
+  if (!little && !(bytes[start] === 77 && bytes[start + 1] === 77)) return;
+  const u16 = (offset) => offset >= start && offset + 2 <= bytes.length ? little ? bytes[offset] | bytes[offset + 1] << 8 : bytes[offset] << 8 | bytes[offset + 1] : void 0;
+  const u32 = (offset) => offset >= start && offset + 4 <= bytes.length ? little ? (bytes[offset] | bytes[offset + 1] << 8 | bytes[offset + 2] << 16 | bytes[offset + 3] << 24) >>> 0 : bytes[offset] * 16777216 + (bytes[offset + 1] << 16 | bytes[offset + 2] << 8 | bytes[offset + 3]) >>> 0 : void 0;
+  if (u16(start + 2) !== 42) return;
+  const ifdOffset = u32(start + 4);
+  if (ifdOffset === void 0) return;
+  const directory = start + ifdOffset, count3 = u16(directory);
+  if (count3 === void 0 || count3 > 512 || directory + 2 + count3 * 12 > bytes.length) return;
+  let horizontal, vertical, unit;
+  for (let index = 0; index < count3; index++) {
+    const entry = directory + 2 + index * 12, tag = u16(entry), type = u16(entry + 2), values = u32(entry + 4);
+    if (tag === void 0 || type === void 0 || values !== 1) continue;
+    if (tag === 296 && type === 3) unit = u16(entry + 8);
+    if ((tag === 282 || tag === 283) && type === 5) {
+      const valueOffset = u32(entry + 8);
+      if (valueOffset === void 0) continue;
+      const numerator = u32(start + valueOffset), denominator = u32(start + valueOffset + 4);
+      if (numerator === void 0 || denominator === void 0 || !denominator) continue;
+      const value2 = numerator / denominator;
+      if (tag === 282) horizontal = value2;
+      else vertical = value2;
+    }
+  }
+  if (horizontal === void 0 || vertical === void 0 || unit !== 2 && unit !== 3) return;
+  const toDpi = unit === 3 ? 2.54 : 1;
+  return boundedResolution(horizontal * toDpi, vertical * toDpi);
+}
+function pngResolution(bytes) {
+  const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  if (bytes.length < 8 || !buffer.subarray(1, 4).equals(Buffer.from("PNG"))) return;
+  let exif, physical;
+  for (let offset = 8; offset + 12 <= bytes.length; ) {
+    const length = buffer.readUInt32BE(offset), data = offset + 8, end = data + length;
+    if (end + 4 > bytes.length) return;
+    const type = buffer.subarray(offset + 4, offset + 8).toString("ascii");
+    if (type === "pHYs" && length === 9 && bytes[data + 8] === 1) {
+      const horizontalPixelsPerMetre = buffer.readUInt32BE(data);
+      const verticalPixelsPerMetre = buffer.readUInt32BE(data + 4);
+      if (horizontalPixelsPerMetre !== 1e3 || verticalPixelsPerMetre !== 1e3)
+        physical = boundedResolution(horizontalPixelsPerMetre * 0.0254, verticalPixelsPerMetre * 0.0254) ?? physical;
+    }
+    if (type === "eXIf") exif = tiffResolution(bytes.subarray(data, end)) ?? exif;
+    offset = end + 4;
+  }
+  return physical ?? exif;
+}
+function jpegResolution(bytes) {
+  const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  if (bytes[0] !== 255 || bytes[1] !== 216) return;
+  let exif, jfif;
+  for (let offset = 2; offset + 4 <= bytes.length; ) {
+    if (bytes[offset] !== 255) break;
+    while (offset < bytes.length && bytes[offset] === 255) offset++;
+    const marker = bytes[offset++];
+    if (marker === 217 || marker === 218) break;
+    if (marker === 1 || marker >= 208 && marker <= 215) continue;
+    if (offset + 2 > bytes.length) break;
+    const length = bytes[offset] << 8 | bytes[offset + 1], data = offset + 2, end = offset + length;
+    if (length < 2 || end > bytes.length) break;
+    if (marker === 225 && length >= 8 && buffer.subarray(data, data + 6).toString("binary") === "Exif\0\0")
+      exif = tiffResolution(bytes.subarray(data + 6, end)) ?? exif;
+    if (marker === 224 && length >= 16 && buffer.subarray(data, data + 5).toString("binary") === "JFIF\0") {
+      const unit = bytes[data + 7], horizontal = bytes[data + 8] << 8 | bytes[data + 9];
+      const vertical = bytes[data + 10] << 8 | bytes[data + 11];
+      if (unit === 1 || unit === 2) jfif = boundedResolution(horizontal * (unit === 2 ? 2.54 : 1), vertical * (unit === 2 ? 2.54 : 1)) ?? jfif;
+    }
+    offset = end;
+  }
+  return exif ?? jfif;
+}
+function webpResolution(bytes) {
+  const buffer = Buffer.from(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  if (bytes.length < 12 || buffer.subarray(0, 4).toString("ascii") !== "RIFF" || buffer.subarray(8, 12).toString("ascii") !== "WEBP") return;
+  for (let offset = 12; offset + 8 <= bytes.length; ) {
+    const type = buffer.subarray(offset, offset + 4).toString("ascii");
+    const length = buffer.readUInt32LE(offset + 4), data = offset + 8, end = data + length;
+    if (end > bytes.length) return;
+    if (type === "EXIF") {
+      const tiff = length >= 6 && buffer.subarray(data, data + 6).toString("binary") === "Exif\0\0" ? data + 6 : data;
+      const resolution = tiffResolution(bytes.subarray(tiff, end));
+      if (resolution) return resolution;
+    }
+    offset = end + (length & 1);
+  }
+}
+function explicitImageResolution(bytes, format2, orientation) {
+  const stored = format2 === "png" ? pngResolution(bytes) : format2 === "jpeg" ? jpegResolution(bytes) : format2 === "webp" ? webpResolution(bytes) : void 0;
+  if (!stored) return;
+  return orientation !== void 0 && orientation >= 5 && orientation <= 8 ? { horizontalDpi: stored.verticalDpi, verticalDpi: stored.horizontalDpi } : stored;
+}
 async function measureImageContours(input, raw, signal) {
-  const options = ContourMeasureOptionsSchema.parse(raw);
+  const options = ContourMeasurePreviewOptionsSchema.parse(raw);
   if (input.kind === "file") throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u53EA\u63A5\u53D7\u56FE\u7247\u3002");
   signal?.throwIfAborted();
   const header = await sharp11(input.bytes, { limitInputPixels: false, failOn: "error" }).metadata();
@@ -42568,6 +42830,7 @@ async function measureImageContours(input, raw, signal) {
   const sourceWidth = header.autoOrient.width ?? header.width;
   const sourceHeight = header.autoOrient.height ?? header.height;
   if (!sourceWidth || !sourceHeight) throw new Error("\u65E0\u6CD5\u8BFB\u53D6\u56FE\u7247\u5C3A\u5BF8\u3002");
+  const embeddedResolution = explicitImageResolution(input.bytes, header.format, header.orientation);
   if (sourceWidth * sourceHeight > MAX_CONTOUR_SOURCE_PIXELS)
     throw new Error("\u8F6E\u5ED3\u6D4B\u957F\u6682\u4E0D\u652F\u6301\u8D85\u8FC7 1 \u4EBF\u50CF\u7D20\u7684\u56FE\u7247\u3002");
   const image = sharp11(input.bytes, { limitInputPixels: MAX_CONTOUR_SOURCE_PIXELS, failOn: "error" }).autoOrient();
@@ -42614,9 +42877,17 @@ async function measureImageContours(input, raw, signal) {
   const paths = simplified.map(pathFor);
   if (paths.reduce((sum, path) => sum + path.length, 0) > MAX_PATH_CHARACTERS)
     throw new Error("\u8F6E\u5ED3\u9884\u89C8\u6570\u636E\u8FC7\u5927\uFF0C\u8BF7\u5148\u4F7F\u7528\u66F4\u5E72\u51C0\u7684\u56FE\u7247\u3002");
-  const scaleX = options.actualWidthCm / bboxWidth, scaleY = options.actualHeightCm / bboxHeight;
-  const totalLengthCm = simplified.reduce((sum, ring) => sum + physicalLength(ring, scaleX, scaleY), 0);
-  if (!Number.isFinite(totalLengthCm) || totalLengthCm <= 0) throw new Error("\u8F6E\u5ED3\u957F\u5EA6\u8BA1\u7B97\u5931\u8D25\u3002");
+  const automatic = embeddedResolution ? {
+    actualWidthCm: Number((bboxWidth / embeddedResolution.horizontalDpi * 2.54).toPrecision(12)),
+    actualHeightCm: Number((bboxHeight / embeddedResolution.verticalDpi * 2.54).toPrecision(12)),
+    horizontalDpi: Number(embeddedResolution.horizontalDpi.toPrecision(12)),
+    verticalDpi: Number(embeddedResolution.verticalDpi.toPrecision(12))
+  } : void 0;
+  const autoDimensions = automatic && automatic.actualWidthCm >= 0.01 && automatic.actualWidthCm <= 1e5 && automatic.actualHeightCm >= 0.01 && automatic.actualHeightCm <= 1e5 ? automatic : void 0;
+  const actualWidthCm = options.actualWidthCm ?? autoDimensions?.actualWidthCm;
+  const actualHeightCm = options.actualHeightCm ?? autoDimensions?.actualHeightCm;
+  const totalLengthCm = actualWidthCm !== void 0 && actualHeightCm !== void 0 ? simplified.reduce((sum, ring) => sum + physicalLength(ring, actualWidthCm / bboxWidth, actualHeightCm / bboxHeight), 0) : void 0;
+  if (totalLengthCm !== void 0 && (!Number.isFinite(totalLengthCm) || totalLengthCm <= 0)) throw new Error("\u8F6E\u5ED3\u957F\u5EA6\u8BA1\u7B97\u5931\u8D25\u3002");
   signal?.throwIfAborted();
   const preview = await image.clone().resize({ width: 1024, height: 1024, fit: "inside", withoutEnlargement: true }).webp({ quality: 84 }).toBuffer();
   const warnings = [];
@@ -42630,7 +42901,9 @@ async function measureImageContours(input, raw, signal) {
     previewDataUrl: `data:image/webp;base64,${preview.toString("base64")}`,
     bbox: { x: x0, y: y0, width: bboxWidth, height: bboxHeight },
     paths,
-    totalLengthCm: Number(totalLengthCm.toPrecision(12)),
+    ...totalLengthCm === void 0 ? {} : { totalLengthCm: Number(totalLengthCm.toPrecision(12)) },
+    ...autoDimensions ? { autoDimensions } : {},
+    dimensionSource: options.actualWidthCm === void 0 ? autoDimensions ? "embedded" : "missing" : "provided",
     componentCount: exteriorRings.length,
     pointCount: simplified.reduce((sum, ring) => sum + ring.length, 0),
     backgroundMode: mode,
@@ -42707,7 +42980,7 @@ var listArgs = external_exports.object({ limit: external_exports.number().int().
 var resizeArgs = external_exports.object({ operationId, ids: uniqueIds, options: ResizeOptionsSchema.strict() }).strict();
 var operationArgs = external_exports.object({ operationId, ids: uniqueIds, options: external_exports.unknown() }).strict();
 var previewArgs = external_exports.object({ ids: uniqueIds, options: external_exports.unknown() }).strict();
-var contourMeasureArgs = external_exports.object({ ids: external_exports.array(opaqueId).length(1), options: ContourMeasureOptionsSchema }).strict();
+var contourMeasureArgs = external_exports.object({ ids: external_exports.array(opaqueId).length(1), options: ContourMeasurePreviewOptionsSchema }).strict();
 var processingTools = {
   podplo_resize_images: "resize",
   podplo_rotate_flip_images: "rotate-flip",
@@ -45731,7 +46004,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
     for (const input of state.inputs) referenceFiles.push({ source: { kind: "input", id: input.id, sessionId }, group: "reference", label: input.name });
   }
   await checkpoint("processing");
-  let active;
+  let active2;
   try {
     for (const [stageIndex, stage] of parsed.stages.entries()) {
       deps.signal?.throwIfAborted();
@@ -45778,7 +46051,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
         deps.signal?.throwIfAborted();
         const stepInputs = step.sourceStepId ? stepOutputs.get(step.sourceStepId) ?? [] : state.inputs;
         if (!stepInputs.length) throw new Error(`stage ${stage.id} \u7684\u6B65\u9AA4 ${step.id} \u6CA1\u6709\u8F93\u5165`);
-        active = { stage, step, inputs: stepInputs };
+        active2 = { stage, step, inputs: stepInputs };
         const operationId2 = `${rootOperationId}:${stage.id}:${step.id}`;
         boundInputs.set(operationId2, stepInputs.map((input) => input.id));
         let reply;
@@ -45810,7 +46083,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
           resultIds: visible.map((row) => row.id)
         });
         if (taskId) await deps.archive.clearProcessingFailures(taskId, archiveStepId(stage.id, step.id), stepInputs.map((input) => input.id));
-        active = void 0;
+        active2 = void 0;
       }
       const referencedSteps = new Set(resolvedPlans.get(stage.id).flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
       state.outputs = resolvedPlans.get(stage.id).filter((step) => !referencedSteps.has(step.id)).flatMap((step) => stepOutputs.get(step.id) ?? []);
@@ -45826,20 +46099,20 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
   } catch (cause) {
     try {
       await assertSameIdentity(deps, identity2);
-      if (taskId && active) {
+      if (taskId && active2) {
         const plan = {
-          ...active.step,
-          id: archiveStepId(active.stage.id, active.step.id),
-          label: archiveStepLabel(active.stage.name, active.step.label),
-          ...active.step.sourceStepId ? { sourceStepId: archiveStepId(active.stage.id, active.step.sourceStepId) } : {},
-          inputIds: active.inputs.map((input) => input.id)
+          ...active2.step,
+          id: archiveStepId(active2.stage.id, active2.step.id),
+          label: archiveStepLabel(active2.stage.name, active2.step.label),
+          ...active2.step.sourceStepId ? { sourceStepId: archiveStepId(active2.stage.id, active2.step.sourceStepId) } : {},
+          inputIds: active2.inputs.map((input) => input.id)
         };
         const failedAt = (deps.now ?? (() => /* @__PURE__ */ new Date()))().toISOString();
         const code = cause instanceof PodploPluginError ? cause.code : "LOCAL_PROCESSING_FAILED";
-        for (const input of active.inputs) await deps.archive.recordProcessingFailure(taskId, {
+        for (const input of active2.inputs) await deps.archive.recordProcessingFailure(taskId, {
           stepId: plan.id,
           inputId: input.id,
-          toolName: active.step.toolName,
+          toolName: active2.step.toolName,
           code,
           failedAt,
           planDigest: processingStepDigest(plan)
@@ -46745,7 +47018,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.34",
+  version: "0.1.35",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -48632,6 +48905,8 @@ var PodploPluginService = class extends EventEmitter2 {
     if (!Number.isInteger(planVersion) || planVersion < 1 || planVersion > 1e6) throw new PodploPluginError("INVALID_ARGUMENT", "planVersion \u65E0\u6548");
     const operationId2 = optionalText(input.operationId, "operationId", 180);
     const preparedItems = this.preparedItems(input.items);
+    if (preparedItems.some((item) => item.args.dnaId !== void 0) && caller.source !== "ui")
+      throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u6211\u7684 DNA \u9009\u62E9\u5E76\u4F7F\u7528 DNA\u3002");
     const mixedPlan = input.mixedPlan === void 0 ? void 0 : validateNativeMixedTaskPlan(input.mixedPlan);
     this.assertMixedItems(mixedPlan, preparedItems);
     if (mixedPlan && !this.options.reconcileMixedTask) throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u5F53\u524D Host \u4E0D\u652F\u6301\u6DF7\u5408\u4EFB\u52A1\u6267\u884C\u3002");
@@ -48676,19 +48951,19 @@ var PodploPluginService = class extends EventEmitter2 {
       return safeOperation2(previous);
     }
     const key = `${ownerId}:${nativeSessionId}:${intentId}:${planVersion}`;
-    const active = this.preparing.get(key);
-    if (active) {
-      if (!isDeepStrictEqual(comparableGenerationItems(active.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
-      if (!isDeepStrictEqual(active.mixedPlan, mixedPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u6DF7\u5408\u4EFB\u52A1\u5B8C\u6574\u65B9\u6848\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u4F7F\u7528\u65B0\u7248\u672C\u91CD\u65B0\u786E\u8BA4\u3002");
-      if (processingPlan !== void 0 && !isDeepStrictEqual(active.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u540C\u4E00\u65B9\u6848\u7684\u52A0\u5DE5\u8981\u6C42\u4E0D\u4E00\u81F4\u3002");
-      if (active.expectedOutputCount !== void 0 && expectedOutputCount !== void 0 && active.expectedOutputCount !== expectedOutputCount) {
-        throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u540C\u4E00\u65B9\u6848\u6B63\u5728\u6309 ${active.expectedOutputCount} \u5F20\u62A5\u4EF7\uFF0C\u4E0D\u80FD\u6539\u4E3A ${expectedOutputCount} \u5F20\u590D\u7528\u3002\u8BF7\u6536\u9F50\u5B8C\u6574\u6279\u6B21\u5E76\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u3002`);
+    const active2 = this.preparing.get(key);
+    if (active2) {
+      if (!isDeepStrictEqual(comparableGenerationItems(active2.items), comparableGenerationItems(items))) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u751F\u56FE\u53C2\u6570\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u63D0\u9AD8 planVersion \u540E\u91CD\u65B0\u62A5\u4EF7");
+      if (!isDeepStrictEqual(active2.mixedPlan, mixedPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u6DF7\u5408\u4EFB\u52A1\u5B8C\u6574\u65B9\u6848\u5DF2\u53D8\u66F4\uFF0C\u8BF7\u4F7F\u7528\u65B0\u7248\u672C\u91CD\u65B0\u786E\u8BA4\u3002");
+      if (processingPlan !== void 0 && !isDeepStrictEqual(active2.processingPlan, processingPlan)) throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u540C\u4E00\u65B9\u6848\u7684\u52A0\u5DE5\u8981\u6C42\u4E0D\u4E00\u81F4\u3002");
+      if (active2.expectedOutputCount !== void 0 && expectedOutputCount !== void 0 && active2.expectedOutputCount !== expectedOutputCount) {
+        throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u540C\u4E00\u65B9\u6848\u6B63\u5728\u6309 ${active2.expectedOutputCount} \u5F20\u62A5\u4EF7\uFF0C\u4E0D\u80FD\u6539\u4E3A ${expectedOutputCount} \u5F20\u590D\u7528\u3002\u8BF7\u6536\u9F50\u5B8C\u6574\u6279\u6B21\u5E76\u4F7F\u7528\u65B0\u65B9\u6848\u7248\u672C\u3002`);
       }
-      if (active.batchId !== batchContext?.batchId || active.batchRevision !== batchContext?.batchRevision)
+      if (active2.batchId !== batchContext?.batchId || active2.batchRevision !== batchContext?.batchRevision)
         throw new PodploPluginError("PLAN_VERSION_CONFLICT", "\u540C\u4E00\u65B9\u6848\u7684\u6279\u91CF\u672C\u5730\u6392\u961F\u7ED1\u5B9A\u4E0D\u4E00\u81F4\u3002");
-      const operation2 = await active.promise;
-      await this.assertProcessingPlanAuthorized(ownerId, active.processingPlan);
-      if (expectedOutputCount !== void 0 && active.expectedOutputCount !== expectedOutputCount && operation2.quote.outputCount !== expectedOutputCount) {
+      const operation2 = await active2.promise;
+      await this.assertProcessingPlanAuthorized(ownerId, active2.processingPlan);
+      if (expectedOutputCount !== void 0 && active2.expectedOutputCount !== expectedOutputCount && operation2.quote.outputCount !== expectedOutputCount) {
         throw new PodploPluginError("INCOMPLETE_GENERATION_BATCH", `\u5728\u9014\u62A5\u4EF7\u9884\u8BA1\u8F93\u51FA ${operation2.quote.outputCount} \u5F20\uFF0C\u4E0E\u7528\u6237\u8981\u6C42\u5B8C\u6574\u6267\u884C\u7684 ${expectedOutputCount} \u5F20\u4E0D\u4E00\u81F4\u3002\u672A\u590D\u7528\u8BE5\u79EF\u5206\u786E\u8BA4\u3002`);
       }
       return operation2;
@@ -48869,7 +49144,10 @@ var PodploPluginService = class extends EventEmitter2 {
       capabilities2 = await gateway.capabilities(true);
     }
     await this.assertOwner(ownerId, true);
-    const wholeOrderAvailable = capabilities2.supportsGenerationOrders === true && !!gateway.balance && !!gateway.reserveOrder && !!gateway.submitOrderItem && !!gateway.getOrder;
+    const dna = items.some((item) => item.args.dnaId !== void 0);
+    if (dna && (items.length !== 1 || items[0].skillId || wholeOrderRequired || mixedPlan || processingPlan?.length || !Array.isArray(items[0].args.referenceAssetIds) || !items[0].args.referenceAssetIds.length))
+      throw new PodploPluginError("INVALID_DNA_GENERATION", "\u8BF7\u9009\u4E00\u4E2A DNA \u5E76\u4E0A\u4F20\u65B0\u56FE\uFF0C\u518D\u5355\u72EC\u6838\u9A8C\u751F\u56FE\u79EF\u5206\u3002");
+    const wholeOrderAvailable = !dna && capabilities2.supportsGenerationOrders === true && !!gateway.balance && !!gateway.reserveOrder && !!gateway.submitOrderItem && !!gateway.getOrder;
     const unsupportedOrdinaryOrder = wholeOrderAvailable && items.some((item) => !item.skillId) && capabilities2.supportsOrdinaryGenerationOrders !== true;
     if (unsupportedOrdinaryOrder && !allowLegacyOrdinaryFallback)
       throw new PodploPluginError("ORDINARY_ORDER_BACKEND_UNAVAILABLE", "\u4E3B\u7AD9\u5C1A\u672A\u5F00\u653E\u76F4\u63A5\u751F\u56FE\u6574\u5355\uFF0C\u8BF7\u66F4\u65B0\u670D\u52A1\u540E\u91CD\u8BD5\uFF1B\u672A\u521B\u5EFA\u786E\u8BA4\u6216\u9884\u7559\u3002");
@@ -49828,6 +50106,16 @@ var PodploPluginService = class extends EventEmitter2 {
     const rows = this.store.snapshot().generationBatches.filter((row) => row.ownerId === ownerId);
     return batchId ? rows.find((row) => row.batchId === batchId) : rows.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))[0];
   }
+  /** Without an explicit id the editor only resumes a batch the user has not approved yet.
+   *  Approved batches keep running in the background and are surfaced in the task ledger. */
+  findEditableBatch(ownerId) {
+    const state = this.store.snapshot();
+    const rows = state.generationBatches.filter((row) => row.ownerId === ownerId).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+    return rows.find((row) => {
+      const operation = row.operationId ? state.operations.find((value2) => value2.ownerId === ownerId && value2.operationId === row.operationId) : void 0;
+      return !operation?.approvedAt;
+    });
+  }
   /** Batch results keep the original reference's filename; only the archive folder shows the Skill/tool name. */
   batchSourceName(row) {
     const filename = row.references.map((reference) => reference.filename).find((name2) => typeof name2 === "string" && name2.trim() !== "");
@@ -49902,7 +50190,7 @@ var PodploPluginService = class extends EventEmitter2 {
     this.requireUi(caller);
     const ownerId = await this.owner(false);
     const batchId = input.batchId === void 0 ? void 0 : text4(input.batchId, "batchId", 180);
-    const draft = this.findBatch(ownerId, batchId);
+    const draft = batchId ? this.findBatch(ownerId, batchId) : this.findEditableBatch(ownerId);
     await this.assertOwner(ownerId, false);
     return draft ? this.batchView(draft) : null;
   }
@@ -50419,7 +50707,7 @@ var PodploPluginService = class extends EventEmitter2 {
 import { createHash as createHash12 } from "node:crypto";
 var object6 = (value2) => !!value2 && typeof value2 === "object" && !Array.isArray(value2);
 var SAFE_ERROR_CODE = /^[A-Z_]{1,80}$/u;
-var ORDINARY_KEYS = /* @__PURE__ */ new Set(["prompt", "modelId", "referenceAssetIds", "ratio", "quality", "resolution", "thinkingLevel", "webSearch", "imageSearch", "ecoMode", "count", "background", "output_format"]);
+var ORDINARY_KEYS = /* @__PURE__ */ new Set(["prompt", "modelId", "referenceAssetIds", "ratio", "quality", "resolution", "thinkingLevel", "webSearch", "imageSearch", "ecoMode", "count", "background", "output_format", "dnaId"]);
 function safeErrorCode(value2) {
   if (!object6(value2)) return void 0;
   const nested = object6(value2.error) ? value2.error.code : void 0;
@@ -50582,14 +50870,14 @@ var NativeGenerationGateway = class {
   }
   async balance() {
     const output = await this.call("get_credit_balance", {});
-    if (!Number.isSafeInteger(output.availableCredits) || Number(output.availableCredits) < 0 || !Number.isSafeInteger(output.reservedCredits) || Number(output.reservedCredits) < 0 || typeof output.billingContextId !== "string" || !/^(?:personal|team:[0-9a-f-]{36})$/iu.test(output.billingContextId)) throw new OnlineError("INVALID_TOOL_RESPONSE");
+    if (!isCreditAmount(output.availableCredits) || !isCreditAmount(output.reservedCredits) || typeof output.billingContextId !== "string" || !/^(?:personal|team:[0-9a-f-]{36})$/iu.test(output.billingContextId)) throw new OnlineError("INVALID_TOOL_RESPONSE");
     return { availableCredits: Number(output.availableCredits), reservedCredits: Number(output.reservedCredits), billingContextId: output.billingContextId };
   }
   async reserveOrder(input) {
     await this.capabilities();
     if (!this.cached?.orderTools) throw new OnlineError("ORDER_RESERVATION_UNAVAILABLE");
     const output = await this.call("reserve_generation_order", input);
-    if (typeof output.orderId !== "string" || !output.orderId || output.reservationToken !== input.reservationToken || output.billingContextId !== input.expectedBillingContextId || output.planDigest !== input.planDigest || output.localQuoteDigest !== input.localQuoteDigest || output.pricingVersion !== input.pricingVersion || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) !== input.approvedTotalCredits || !Number.isSafeInteger(output.reservedCredits) || Number(output.reservedCredits) < 0 || Number(output.reservedCredits) > input.approvedTotalCredits || !Number.isSafeInteger(output.availableCreditsBefore) || Number(output.availableCreditsBefore) < 0 || !Number.isSafeInteger(output.availableCreditsAfter) || Number(output.availableCreditsAfter) < 0 || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Array.isArray(output.items) || output.items.length !== input.items.length || typeof output.idempotent !== "boolean")
+    if (typeof output.orderId !== "string" || !output.orderId || output.reservationToken !== input.reservationToken || output.billingContextId !== input.expectedBillingContextId || output.planDigest !== input.planDigest || output.localQuoteDigest !== input.localQuoteDigest || output.pricingVersion !== input.pricingVersion || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) !== input.approvedTotalCredits || !Number.isSafeInteger(output.reservedCredits) || Number(output.reservedCredits) < 0 || Number(output.reservedCredits) > input.approvedTotalCredits || !isCreditAmount(output.availableCreditsBefore) || !isCreditAmount(output.availableCreditsAfter) || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Array.isArray(output.items) || output.items.length !== input.items.length || typeof output.idempotent !== "boolean")
       throw new OnlineError("INVALID_TOOL_RESPONSE");
     return output;
   }
@@ -50633,6 +50921,8 @@ var NativeGenerationGateway = class {
       else if (value2 !== void 0 && value2 !== null && value2 !== false) throw new OnlineError("ORDINARY_PARAMETER_UNAVAILABLE");
     }
     const output = await this.desktop("/api/desktop/generations/quote", ordinary);
+    if (input.dnaId !== void 0 && (!object6(output.parameters) || output.parameters.dnaId !== input.dnaId))
+      throw new OnlineError("DNA_RESPONSE_INVALID");
     if (typeof output.quoteToken !== "string" || !output.quoteToken || typeof output.expiresAt !== "string" || !Number.isFinite(Date.parse(output.expiresAt)) || !Number.isSafeInteger(output.totalCredits) || Number(output.totalCredits) < 0 || !Number.isSafeInteger(output.outputCount) || Number(output.outputCount) < 1 || typeof output.confirmationText !== "string" || !object6(output.parameters) || output.parameters.templateId !== void 0 && output.parameters.templateId !== null) throw new OnlineError("INVALID_TOOL_RESPONSE");
     this.assertBackgroundQuote(input, output);
     return output;
@@ -51503,13 +51793,13 @@ async function nativeToolkitTransport(options) {
   await toolkit.init();
   const localReferenceIndexes = /* @__PURE__ */ new Map();
   const acquireLocalReferenceIndex = (sessionId) => {
-    let active = localReferenceIndexes.get(sessionId);
-    if (!active) {
-      active = { users: 0, promise: toolkit.referenceOwnership(sessionId) };
-      localReferenceIndexes.set(sessionId, active);
+    let active2 = localReferenceIndexes.get(sessionId);
+    if (!active2) {
+      active2 = { users: 0, promise: toolkit.referenceOwnership(sessionId) };
+      localReferenceIndexes.set(sessionId, active2);
     }
-    active.users++;
-    return active;
+    active2.users++;
+    return active2;
   };
   const referenceBridge = new NativeReferenceBridge(`${options.directory}/reference-import-v1`, {
     async authorize(write) {
@@ -53741,6 +54031,541 @@ async function hasRealTransparency(input) {
   return !(await image.stats()).isOpaque;
 }
 
+// plugins/podplo-dsh/src/image-to-text-host.ts
+import { join as join14 } from "node:path";
+var IMAGE_TO_TEXT_WORKSPACE_ID = "podplo-image-to-text-v1";
+var active = /* @__PURE__ */ new Set(["queued", "running"]);
+var idInput = external_exports.object({ id: external_exports.string().uuid() }).strict();
+var identitySchema = external_exports.object({ ownerId: external_exports.string(), scope: external_exports.string() });
+var localSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  ownerId: external_exports.string(),
+  quoteId: external_exports.string().uuid(),
+  clientRequestId: external_exports.string().uuid(),
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  totalCredits: external_exports.number().positive(),
+  inputCount: external_exports.number().int().min(1).max(4),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  status: external_exports.enum(["submitting", "queued", "running", "completed", "failed", "submission_unknown"]),
+  remoteTaskId: external_exports.string().uuid().optional(),
+  text: external_exports.string().optional(),
+  failureCode: external_exports.string().nullable().optional(),
+  errorCode: external_exports.string().optional(),
+  archiveStatus: external_exports.enum(["pending", "saved", "failed"]).optional(),
+  archiveTaskId: external_exports.string().optional()
+});
+var quoteSchema = identitySchema.extend({ quote: ImageToTextQuoteSchema, inputCount: external_exports.number().int().min(1).max(4) });
+var savedSchema = external_exports.object({ schemaVersion: external_exports.literal(1), quotes: external_exports.array(quoteSchema), tasks: external_exports.array(localSchema) });
+var ImageToTextHost = class {
+  constructor(options) {
+    this.options = options;
+    this.now = options.now ?? (() => /* @__PURE__ */ new Date());
+    this.store = new AtomicStore(
+      join14(options.directory, "image-to-text-v1.json"),
+      () => ({ schemaVersion: 1, quotes: [], tasks: [] }),
+      (value2) => savedSchema.parse(value2)
+    );
+  }
+  options;
+  store;
+  jobs = /* @__PURE__ */ new Map();
+  timer;
+  closed = false;
+  now;
+  async init() {
+    await this.store.load();
+    if (this.store.snapshot().tasks.some((row) => row.status === "submitting")) await this.store.transaction((saved) => {
+      for (const row of saved.tasks) if (row.status === "submitting") {
+        row.status = "submission_unknown";
+        row.errorCode = "IMAGE_TO_TEXT_SUBMISSION_UNKNOWN";
+      }
+    });
+    this.wake();
+  }
+  async identity(write = false) {
+    const scope = this.options.online.uiAuthorizationScope();
+    const ownerId = await this.options.online.workspaceIdentity(write);
+    if (scope !== this.options.online.uiAuthorizationScope() || this.options.online.snapshot().identity?.userId !== ownerId)
+      throw new OnlineError("SESSION_CHANGED");
+    return { ownerId, scope };
+  }
+  current(identity2) {
+    if (this.closed || identity2.scope !== this.options.online.uiAuthorizationScope() || identity2.ownerId !== this.options.online.snapshot().identity?.userId) throw new OnlineError("SESSION_CHANGED");
+  }
+  async same(identity2, write = false) {
+    this.current(identity2);
+    if (identity2.ownerId !== await this.options.online.workspaceIdentity(write)) throw new OnlineError("SESSION_CHANGED");
+    this.current(identity2);
+  }
+  async change(identity2, update) {
+    await this.same(identity2);
+    await this.store.transaction((state) => {
+      this.current(identity2);
+      update(state);
+    });
+    this.options.changed();
+  }
+  view(row) {
+    const { ownerId: _ownerId, quoteId: _quoteId, text: _text, ...safe } = row;
+    return safe;
+  }
+  find(identity2, id2) {
+    const row = this.store.snapshot().tasks.find((task) => task.ownerId === identity2.ownerId && task.id === id2);
+    if (!row) throw new PodploPluginError("IMAGE_TO_TEXT_NOT_FOUND", "\u672A\u627E\u5230\u5F53\u524D\u8D26\u53F7\u7684\u56FE\u8F6C\u6587\u4EFB\u52A1\u3002");
+    return row;
+  }
+  single(identity2, id2, run) {
+    const key = `${identity2.ownerId}:${identity2.scope}:${id2}`;
+    const prior = this.jobs.get(key);
+    if (prior) return prior;
+    const job = run().finally(() => {
+      if (this.jobs.get(key) === job) this.jobs.delete(key);
+      this.wake();
+    });
+    this.jobs.set(key, job);
+    return job;
+  }
+  async reconcileOrphans(identity2) {
+    const orphaned = this.store.snapshot().tasks.filter((row) => row.ownerId === identity2.ownerId && row.status === "submitting" && !this.jobs.has(`${identity2.ownerId}:${identity2.scope}:${row.id}`)).map((row) => row.id);
+    if (!orphaned.length) return;
+    await this.change(identity2, (saved) => {
+      for (const row of saved.tasks) if (row.ownerId === identity2.ownerId && orphaned.includes(row.id) && row.status === "submitting" && !this.jobs.has(`${identity2.ownerId}:${identity2.scope}:${row.id}`)) {
+        row.status = "submission_unknown";
+        row.errorCode = "IMAGE_TO_TEXT_SUBMISSION_UNKNOWN";
+        row.updatedAt = this.now().toISOString();
+      }
+    });
+  }
+  async purgeDeletedResults(identity2) {
+    if (!this.options.deleted) return;
+    for (const row of this.store.snapshot().tasks.filter((task) => task.ownerId === identity2.ownerId && task.text !== void 0)) {
+      const deleted = await this.options.deleted(row);
+      await this.same(identity2);
+      if (deleted) await this.forget(identity2, row.archiveTaskId ?? "", [row.id]);
+    }
+  }
+  async forgetArchivedTask(taskId) {
+    if (!this.store.snapshot().tasks.some((row) => row.archiveTaskId === taskId && row.text !== void 0)) return;
+    await this.forget(await this.identity(), taskId, []);
+  }
+  async forget(identity2, taskId, operationIds) {
+    if (!this.store.snapshot().tasks.some((row) => row.ownerId === identity2.ownerId && row.text !== void 0 && (row.archiveTaskId === taskId || operationIds.includes(row.id)))) return;
+    await this.change(identity2, (saved) => {
+      for (const row of saved.tasks) if (row.ownerId === identity2.ownerId && (row.archiveTaskId === taskId || operationIds.includes(row.id))) {
+        delete row.text;
+        row.archiveStatus = "saved";
+        delete row.errorCode;
+      }
+    });
+  }
+  async dispatch(action, input) {
+    if (action === "imageToText.quote") {
+      const args = ImageToTextInputSchema.parse(input), identity2 = await this.identity(true);
+      const quote = ImageToTextQuoteSchema.parse(await this.options.online.imageToTextQuote(args));
+      if (Date.parse(quote.expiresAt) <= this.now().getTime()) throw new OnlineError("IMAGE_TO_TEXT_QUOTE_EXPIRED");
+      await this.same(identity2, true);
+      await this.change(identity2, (saved) => {
+        saved.quotes = saved.quotes.filter((row) => Date.parse(row.quote.expiresAt) > this.now().getTime()).slice(-199);
+        saved.quotes.push({ ...identity2, quote, inputCount: args.referenceAssetIds.length });
+      });
+      return quote;
+    }
+    if (action === "imageToText.submit") {
+      const args = ImageToTextSubmitSchema.parse(input), identity2 = await this.identity(true);
+      const submitted = await this.single(identity2, args.clientRequestId, async () => {
+        const prior = this.store.snapshot().tasks.find((row2) => row2.ownerId === identity2.ownerId && row2.clientRequestId === args.clientRequestId);
+        if (prior) {
+          if (prior.quoteId !== args.quoteId || prior.totalCredits !== args.approvedCredits) throw new OnlineError("IMAGE_TO_TEXT_IDEMPOTENCY_CONFLICT");
+          return prior;
+        }
+        const quote = this.store.snapshot().quotes.find((row2) => row2.ownerId === identity2.ownerId && row2.scope === identity2.scope && row2.quote.quoteId === args.quoteId);
+        if (!quote || quote.quote.totalCredits !== args.approvedCredits) throw new OnlineError("CONFIRMATION_MISMATCH");
+        if (Date.parse(quote.quote.expiresAt) <= this.now().getTime()) throw new OnlineError("IMAGE_TO_TEXT_QUOTE_EXPIRED");
+        const row = {
+          id: args.clientRequestId,
+          ownerId: identity2.ownerId,
+          quoteId: args.quoteId,
+          clientRequestId: args.clientRequestId,
+          model: IMAGE_TO_TEXT_MODEL,
+          totalCredits: args.approvedCredits,
+          inputCount: quote.inputCount,
+          createdAt: this.now().toISOString(),
+          updatedAt: this.now().toISOString(),
+          status: "submitting"
+        };
+        await this.same(identity2, true);
+        await this.change(identity2, (saved) => {
+          if (saved.tasks.some((task) => task.ownerId === identity2.ownerId && task.quoteId === args.quoteId)) throw new OnlineError("IMAGE_TO_TEXT_IDEMPOTENCY_CONFLICT");
+          saved.tasks.push(row);
+        });
+        return this.create(identity2, row);
+      });
+      if (submitted.quoteId !== args.quoteId || submitted.totalCredits !== args.approvedCredits) throw new OnlineError("IMAGE_TO_TEXT_IDEMPOTENCY_CONFLICT");
+      return this.view(submitted);
+    }
+    if (action === "imageToText.list") {
+      external_exports.object({}).strict().parse(input);
+      const identity2 = await this.identity();
+      await this.purgeDeletedResults(identity2);
+      await this.reconcileOrphans(identity2);
+      const items = this.store.snapshot().tasks.filter((row) => row.ownerId === identity2.ownerId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((row) => this.view(row));
+      await this.same(identity2);
+      return { items };
+    }
+    if (action === "imageToText.refresh" || action === "imageToText.recover") {
+      const { id: id2 } = idInput.parse(input), identity2 = await this.identity(action.endsWith(".recover"));
+      await this.purgeDeletedResults(identity2);
+      await this.reconcileOrphans(identity2);
+      return this.view(await this.single(identity2, id2, async () => {
+        const row = this.find(identity2, id2);
+        if (row.status === "completed") return row.archiveStatus === "saved" ? row : this.archive(identity2, row, true);
+        if (row.status === "failed") return row;
+        if (!row.remoteTaskId) {
+          if (action !== "imageToText.recover") return row;
+          return this.create(identity2, row);
+        }
+        return this.refresh(identity2, row, true);
+      }));
+    }
+    throw new PodploPluginError("INVALID_ARGUMENT", "\u672A\u77E5\u56FE\u8F6C\u6587\u64CD\u4F5C\u3002");
+  }
+  async create(identity2, row) {
+    await this.same(identity2, true);
+    try {
+      const task = ImageToTextTaskSchema.parse(await this.options.online.imageToTextSubmit({
+        quoteId: row.quoteId,
+        clientRequestId: row.clientRequestId,
+        approvedCredits: row.totalCredits
+      }));
+      return await this.accept(identity2, row, task);
+    } catch (cause) {
+      await this.same(identity2);
+      const rejected = cause instanceof OnlineError && [400, 401, 402, 403, 404, 409, 410, 413, 422].includes(cause.status);
+      await this.change(identity2, (saved) => {
+        const value2 = saved.tasks.find((task) => task.ownerId === identity2.ownerId && task.id === row.id);
+        value2.status = rejected ? "failed" : "submission_unknown";
+        value2.updatedAt = this.now().toISOString();
+        value2.errorCode = rejected ? cause.code : "IMAGE_TO_TEXT_SUBMISSION_UNKNOWN";
+      });
+      return this.find(identity2, row.id);
+    }
+  }
+  async accept(identity2, row, raw) {
+    const task = ImageToTextTaskSchema.parse(raw);
+    if (task.model !== row.model || task.totalCredits !== row.totalCredits || task.inputCount !== row.inputCount || row.remoteTaskId && row.remoteTaskId !== task.id) throw new OnlineError("IMAGE_TO_TEXT_RESPONSE_INVALID");
+    await this.same(identity2);
+    await this.change(identity2, (saved) => {
+      const value2 = saved.tasks.find((task2) => task2.ownerId === identity2.ownerId && task2.id === row.id);
+      if (value2.status === "completed") return;
+      value2.remoteTaskId = task.id;
+      value2.status = task.status;
+      value2.updatedAt = task.updatedAt;
+      value2.failureCode = task.failureCode;
+      delete value2.errorCode;
+      if (task.status === "completed") {
+        value2.text = task.text;
+        value2.archiveStatus = "pending";
+      }
+    });
+    const current = this.find(identity2, row.id);
+    return current.status === "completed" && current.archiveStatus !== "saved" ? this.archive(identity2, current, false) : current;
+  }
+  async refresh(identity2, row, explicit = false) {
+    try {
+      return await this.accept(identity2, row, await this.options.online.imageToTextTask(row.remoteTaskId));
+    } catch (cause) {
+      await this.same(identity2);
+      await this.change(identity2, (saved) => {
+        const current = saved.tasks.find((task) => task.ownerId === identity2.ownerId && task.id === row.id);
+        current.errorCode = cause instanceof OnlineError ? cause.code : "IMAGE_TO_TEXT_STATUS_UNAVAILABLE";
+      });
+      if (explicit) throw cause;
+      return this.find(identity2, row.id);
+    }
+  }
+  async archive(identity2, row, retry) {
+    try {
+      await this.same(identity2);
+      const result = await this.options.archive(row, retry);
+      await this.change(identity2, (saved) => {
+        const current = saved.tasks.find((task) => task.ownerId === identity2.ownerId && task.id === row.id);
+        current.archiveStatus = "saved";
+        current.archiveTaskId = result.taskId;
+        delete current.errorCode;
+      });
+    } catch {
+      await this.same(identity2);
+      await this.change(identity2, (saved) => {
+        const current = saved.tasks.find((task) => task.ownerId === identity2.ownerId && task.id === row.id);
+        current.archiveStatus = "failed";
+        current.errorCode = "IMAGE_TO_TEXT_ARCHIVE_FAILED";
+      });
+    }
+    return this.find(identity2, row.id);
+  }
+  async readResult(id2) {
+    const identity2 = await this.identity(), row = this.find(identity2, id2);
+    if (row.status !== "completed" || !row.text?.trim() || Buffer.byteLength(row.text, "utf8") > IMAGE_TO_TEXT_MAX_BYTES)
+      throw new PodploPluginError("IMAGE_TO_TEXT_RESULT_UNAVAILABLE", "\u56FE\u8F6C\u6587\u6587\u672C\u5C1A\u672A\u5C31\u7EEA\u3002");
+    await this.same(identity2);
+    return { name: "\u56FE\u8F6C\u6587\u7ED3\u679C.txt", bytes: Buffer.from(`\uFEFF${row.text}`, "utf8") };
+  }
+  shouldPoll(row) {
+    return active.has(row.status) && !row.errorCode || row.status === "completed" && row.archiveStatus === "pending";
+  }
+  wake() {
+    if (this.closed || this.timer) return;
+    const owner = this.options.online.snapshot().identity?.userId;
+    if (!owner || !this.store.snapshot().tasks.some((row) => row.ownerId === owner && this.shouldPoll(row))) return;
+    this.timer = setTimeout(() => {
+      this.timer = void 0;
+      void this.tick().catch(() => void 0).finally(() => this.wake());
+    }, this.options.pollMs ?? 3e3);
+    this.timer.unref();
+  }
+  async tick() {
+    const identity2 = await this.identity();
+    for (const row of this.store.snapshot().tasks.filter((task) => task.ownerId === identity2.ownerId && this.shouldPoll(task))) {
+      await this.same(identity2);
+      await this.single(identity2, row.id, async () => row.status === "completed" ? this.archive(identity2, row, false) : this.refresh(identity2, row));
+    }
+  }
+  isBusy() {
+    const owner = this.options.online.snapshot().identity?.userId;
+    return this.jobs.size > 0 || this.store.snapshot().tasks.some((row) => row.ownerId === owner && (["submitting", "queued", "running", "submission_unknown"].includes(row.status) || row.archiveStatus === "pending"));
+  }
+  async close() {
+    if (this.timer) clearTimeout(this.timer);
+    this.closed = true;
+    await Promise.allSettled(this.jobs.values());
+    await this.store.flush();
+  }
+};
+
+// plugins/podplo-dsh/src/dna-host.ts
+import { join as join15 } from "node:path";
+var localTaskSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  ownerId: external_exports.string(),
+  quoteId: external_exports.string().uuid(),
+  clientRequestId: external_exports.string().uuid(),
+  name: external_exports.string().max(80),
+  totalCredits: external_exports.number().positive(),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  status: external_exports.enum(["submitting", "queued", "running", "completed", "failed", "submission_unknown"]),
+  remoteTaskId: external_exports.string().uuid().optional(),
+  dnaId: external_exports.string().uuid().optional(),
+  errorCode: external_exports.string().max(80).optional()
+}).strict();
+var savedSchema2 = external_exports.object({
+  schemaVersion: external_exports.literal(1),
+  tasks: external_exports.array(localTaskSchema),
+  quotes: external_exports.array(external_exports.object({ ownerId: external_exports.string(), scope: external_exports.string(), name: external_exports.string(), quote: ImageToTextQuoteSchema }))
+});
+var DnaHost = class {
+  constructor(options) {
+    this.options = options;
+    this.store = new AtomicStore(join15(options.directory, "dna-tasks-v1.json"), () => ({ schemaVersion: 1, tasks: [], quotes: [] }), (value2) => savedSchema2.parse(value2));
+  }
+  options;
+  store;
+  jobs = /* @__PURE__ */ new Map();
+  timer;
+  closed = false;
+  async init() {
+    await this.store.load();
+    if (this.store.snapshot().tasks.some((row) => row.status === "submitting")) await this.store.transaction((saved) => {
+      for (const row of saved.tasks) if (row.status === "submitting") {
+        row.status = "submission_unknown";
+        row.errorCode = "DNA_SUBMISSION_UNKNOWN";
+      }
+    });
+    this.wake();
+  }
+  async identity(write = false) {
+    const scope = this.options.online.uiAuthorizationScope(), ownerId = await this.options.online.workspaceIdentity(write);
+    const identity2 = { scope, ownerId };
+    this.current(identity2);
+    return identity2;
+  }
+  current(identity2) {
+    if (this.closed || identity2.ownerId !== this.options.online.snapshot().identity?.userId || identity2.scope !== this.options.online.uiAuthorizationScope())
+      throw new OnlineError("SESSION_CHANGED");
+  }
+  async same(identity2) {
+    this.current(identity2);
+    if (identity2.ownerId !== await this.options.online.workspaceIdentity(false)) throw new OnlineError("SESSION_CHANGED");
+    this.current(identity2);
+  }
+  async change(identity2, update) {
+    await this.same(identity2);
+    await this.store.transaction((state) => {
+      this.current(identity2);
+      update(state);
+    });
+    this.options.changed();
+  }
+  find(identity2, id2) {
+    const row = this.store.snapshot().tasks.find((task) => task.ownerId === identity2.ownerId && task.id === id2);
+    if (!row) throw new PodploPluginError("DNA_TASK_NOT_FOUND", "\u672A\u627E\u5230\u5F53\u524D\u8D26\u53F7\u7684 DNA \u63D0\u53D6\u4EFB\u52A1\u3002");
+    return row;
+  }
+  view(row) {
+    const { ownerId: _owner, quoteId: _quote, ...safe } = row;
+    return { ...safe, model: "claude-haiku-5-5", inputCount: 1 };
+  }
+  key(identity2, id2) {
+    return `${identity2.ownerId}:${identity2.scope}:${id2}`;
+  }
+  single(identity2, id2, run) {
+    const key = this.key(identity2, id2), prior = this.jobs.get(key);
+    if (prior) return prior;
+    const job = run().finally(() => {
+      if (this.jobs.get(key) === job) this.jobs.delete(key);
+      this.wake();
+    });
+    this.jobs.set(key, job);
+    return job;
+  }
+  async orphans(identity2) {
+    if (!this.store.snapshot().tasks.some((row) => row.ownerId === identity2.ownerId && row.status === "submitting" && !this.jobs.has(this.key(identity2, row.id)))) return;
+    await this.change(identity2, (saved) => {
+      for (const row of saved.tasks) if (row.ownerId === identity2.ownerId && row.status === "submitting" && !this.jobs.has(this.key(identity2, row.id))) {
+        row.status = "submission_unknown";
+        row.errorCode = "DNA_SUBMISSION_UNKNOWN";
+      }
+    });
+  }
+  async dispatch(action, raw) {
+    const online = this.options.online;
+    if (action === "dna.skills.list") {
+      external_exports.object({}).strict().parse(raw);
+      return online.dnaSkills();
+    }
+    if (action === "dna.list") return online.dnaList(raw);
+    if (action === "dna.rename") return online.dnaRename(raw);
+    if (action === "dna.delete") return online.dnaDelete(raw);
+    if (action === "dna.quote") {
+      const input = DnaQuoteInputSchema.parse(raw), identity2 = await this.identity(true), quote = await online.dnaQuote(input);
+      if (Date.parse(quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED");
+      await this.change(identity2, (saved) => {
+        saved.quotes = saved.quotes.filter((row) => Date.parse(row.quote.expiresAt) > Date.now()).slice(-199);
+        saved.quotes.push({ ...identity2, name: input.name, quote });
+      });
+      return quote;
+    }
+    if (action === "dna.submit") {
+      const input = ImageToTextSubmitSchema.parse(raw), identity2 = await this.identity(true);
+      const task = await this.single(identity2, input.clientRequestId, async () => {
+        const prior = this.store.snapshot().tasks.find((row2) => row2.ownerId === identity2.ownerId && row2.clientRequestId === input.clientRequestId);
+        if (prior) return prior;
+        const quoted = this.store.snapshot().quotes.find((row2) => row2.ownerId === identity2.ownerId && row2.scope === identity2.scope && row2.quote.quoteId === input.quoteId);
+        if (!quoted || quoted.quote.totalCredits !== input.approvedCredits) throw new OnlineError("CONFIRMATION_MISMATCH");
+        if (Date.parse(quoted.quote.expiresAt) <= Date.now()) throw new OnlineError("QUOTE_EXPIRED");
+        const row = {
+          id: input.clientRequestId,
+          clientRequestId: input.clientRequestId,
+          quoteId: input.quoteId,
+          ownerId: identity2.ownerId,
+          name: quoted.name,
+          totalCredits: input.approvedCredits,
+          createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+          updatedAt: (/* @__PURE__ */ new Date()).toISOString(),
+          status: "submitting"
+        };
+        await this.change(identity2, (saved) => {
+          if (saved.tasks.some((task2) => task2.ownerId === identity2.ownerId && task2.quoteId === input.quoteId)) throw new OnlineError("DNA_IDEMPOTENCY_CONFLICT");
+          saved.tasks.push(row);
+        });
+        return this.create(identity2, row);
+      });
+      if (task.quoteId !== input.quoteId || task.totalCredits !== input.approvedCredits) throw new OnlineError("DNA_IDEMPOTENCY_CONFLICT");
+      return this.view(task);
+    }
+    if (action === "dna.tasks.list") {
+      external_exports.object({}).strict().parse(raw);
+      const identity2 = await this.identity();
+      await this.orphans(identity2);
+      return { items: this.store.snapshot().tasks.filter((row) => row.ownerId === identity2.ownerId).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map((row) => this.view(row)) };
+    }
+    if (action === "dna.refresh" || action === "dna.recover") {
+      const { id: id2 } = external_exports.object({ id: external_exports.string().uuid() }).strict().parse(raw), identity2 = await this.identity(action === "dna.recover");
+      await this.orphans(identity2);
+      return this.view(await this.single(identity2, id2, async () => {
+        const row = this.find(identity2, id2);
+        if (["completed", "failed"].includes(row.status)) return row;
+        return row.remoteTaskId ? this.refresh(identity2, row) : action === "dna.recover" ? this.create(identity2, row) : row;
+      }));
+    }
+    throw new PodploPluginError("INVALID_ARGUMENT", "\u672A\u77E5 DNA \u64CD\u4F5C\u3002");
+  }
+  async create(identity2, row) {
+    await this.same(identity2);
+    try {
+      return await this.accept(identity2, row, await this.options.online.dnaSubmit({ quoteId: row.quoteId, clientRequestId: row.clientRequestId, approvedCredits: row.totalCredits }));
+    } catch (cause) {
+      await this.same(identity2);
+      const definite = cause instanceof OnlineError && [400, 401, 402, 403, 404, 409, 410, 413, 422].includes(cause.status);
+      await this.change(identity2, (saved) => {
+        const current = saved.tasks.find((task) => task.ownerId === identity2.ownerId && task.id === row.id);
+        current.status = definite ? "failed" : "submission_unknown";
+        current.errorCode = definite ? cause.code : "DNA_SUBMISSION_UNKNOWN";
+      });
+      return this.find(identity2, row.id);
+    }
+  }
+  async accept(identity2, row, value2) {
+    const task = DnaTaskSchema.parse(value2);
+    if (task.totalCredits !== row.totalCredits || row.remoteTaskId && task.id !== row.remoteTaskId) throw new OnlineError("DNA_RESPONSE_INVALID");
+    await this.change(identity2, (saved) => {
+      const current = saved.tasks.find((task2) => task2.ownerId === identity2.ownerId && task2.id === row.id);
+      if (["completed", "failed"].includes(current.status)) return;
+      current.remoteTaskId = task.id;
+      current.status = task.status;
+      current.updatedAt = task.updatedAt;
+      current.dnaId = task.dnaId;
+      if (task.failureCode) current.errorCode = task.failureCode;
+      else delete current.errorCode;
+    });
+    return this.find(identity2, row.id);
+  }
+  async refresh(identity2, row) {
+    try {
+      return await this.accept(identity2, row, await this.options.online.dnaTask(row.remoteTaskId));
+    } catch (cause) {
+      await this.change(identity2, (saved) => {
+        saved.tasks.find((task) => task.ownerId === identity2.ownerId && task.id === row.id).errorCode = "DNA_STATUS_UNAVAILABLE";
+      });
+      throw cause;
+    }
+  }
+  wake() {
+    if (this.closed || this.timer) return;
+    const owner = this.options.online.snapshot().identity?.userId;
+    if (!owner || !this.store.snapshot().tasks.some((row) => row.ownerId === owner && ["queued", "running"].includes(row.status) && !row.errorCode)) return;
+    this.timer = setTimeout(() => {
+      this.timer = void 0;
+      void (async () => {
+        const identity2 = await this.identity();
+        for (const row of this.store.snapshot().tasks.filter((task) => task.ownerId === identity2.ownerId && ["queued", "running"].includes(task.status) && !task.errorCode))
+          await this.single(identity2, row.id, () => this.refresh(identity2, row)).catch(() => void 0);
+      })().catch(() => void 0).finally(() => this.wake());
+    }, this.options.pollMs ?? 3e3);
+    this.timer.unref();
+  }
+  isBusy() {
+    return this.jobs.size > 0 || this.store.snapshot().tasks.some((row) => row.ownerId === this.options.online.snapshot().identity?.userId && ["submitting", "queued", "running", "submission_unknown"].includes(row.status));
+  }
+  async close() {
+    if (this.timer) clearTimeout(this.timer);
+    this.closed = true;
+    await Promise.allSettled(this.jobs.values());
+    await this.store.flush();
+  }
+};
+
 // plugins/podplo-dsh/src/task-archive-host.ts
 var standalone2 = { key: "podplo:standalone", name: "\u72EC\u7ACB\u4EFB\u52A1" };
 var archivePeriods = /* @__PURE__ */ new Set(["all", "today", "7days", "30days", "custom"]);
@@ -53793,6 +54618,7 @@ async function taskArchiveHost(options) {
   let scheduleProcessing = (_taskId) => {
   };
   let taskRevision = 0;
+  let imageToText;
   const manager = new TaskArchiveManager({
     directory: options.directory,
     async authorize() {
@@ -53818,6 +54644,10 @@ async function taskArchiveHost(options) {
       });
     },
     async read(source) {
+      if (source.kind === "local" && source.sessionId === IMAGE_TO_TEXT_WORKSPACE_ID) {
+        if (!imageToText) throw new Error("\u56FE\u8F6C\u6587\u670D\u52A1\u5C1A\u672A\u521D\u59CB\u5316");
+        return imageToText.readResult(source.id);
+      }
       if (source.kind === "local") return toolkit.readResult(source.id, source.sessionId);
       if (source.kind === "input") return toolkit.archiveInput(source.id, source.sessionId);
       const namespace = online.auth.namespace, owner = await online.workspaceIdentity(false);
@@ -53835,6 +54665,40 @@ async function taskArchiveHost(options) {
     revealPath: options.revealPath
   });
   await manager.init();
+  imageToText = new ImageToTextHost({
+    directory: options.directory,
+    online,
+    changed() {
+      taskRevision++;
+    },
+    deleted: (row) => manager.deletedOperation(IMAGE_TO_TEXT_WORKSPACE_ID, row.id),
+    async archive(row, retry) {
+      const taskId = await manager.upsert({
+        key: `image-to-text:${row.id}`,
+        sessionId: IMAGE_TO_TEXT_WORKSPACE_ID,
+        project: standalone2,
+        name: "\u56FE\u8F6C\u6587",
+        createdAt: row.createdAt,
+        status: "completed",
+        operationIds: [row.id],
+        generationAudit: { planned: 0, succeeded: 0, failed: 0, pending: 0, cancelled: 0, unknown: 0 },
+        processingRuns: [{ operationId: row.id, toolName: "podplo_image_to_text", label: "\u56FE\u8F6C\u6587", inputIds: [], resultIds: [row.id] }],
+        files: [{ source: { kind: "local", id: row.id, sessionId: IMAGE_TO_TEXT_WORKSPACE_ID }, group: "result", label: "\u56FE\u8F6C\u6587\u7ED3\u679C" }]
+      }, row.ownerId);
+      if (!taskId) return {};
+      if (retry) await manager.retry(taskId);
+      await manager.wait();
+      const task = await manager.detail(taskId);
+      if (!task?.files.some((file2) => file2.group === "result" && file2.originId === row.id && file2.status === "saved"))
+        throw new Error("\u56FE\u8F6C\u6587\u5DF2\u5B8C\u6210\uFF0C\u6587\u5B57\u4FDD\u5B58\u672A\u5B8C\u6210");
+      return { taskId };
+    }
+  });
+  await imageToText.init();
+  const dnaHost = new DnaHost({ directory: options.directory, online, changed() {
+    taskRevision++;
+  } });
+  await dnaHost.init();
   let closed = false, pending, rerun = false;
   let error51 = "";
   let syncDiagnostic;
@@ -54005,6 +54869,8 @@ async function taskArchiveHost(options) {
     void pipeline.schedule(taskId).catch(() => void 0);
   };
   const changed = () => {
+    imageToText?.wake();
+    dnaHost.wake();
     void sync();
   };
   service.on("change", changed);
@@ -54205,6 +55071,25 @@ async function taskArchiveHost(options) {
       return result;
     },
     async dispatch(action, raw, caller) {
+      if (action.startsWith("dna.")) {
+        if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u6211\u7684 DNA \u64CD\u4F5C\u3002");
+        try {
+          return { ok: true, data: await dnaHost.dispatch(action, raw ?? {}) };
+        } catch (cause) {
+          if (cause instanceof PodploPluginError || cause instanceof OnlineError) throw cause;
+          throw new PodploPluginError("DNA_UNAVAILABLE", "DNA \u64CD\u4F5C\u672A\u5B8C\u6210\uFF0C\u8BF7\u6838\u5BF9\u4EFB\u52A1\u6216\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+        }
+      }
+      if (action.startsWith("imageToText.")) {
+        if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u56FE\u8F6C\u6587\u9875\u9762\u64CD\u4F5C\u3002");
+        try {
+          return { ok: true, data: await imageToText.dispatch(action, raw ?? {}) };
+        } catch (cause) {
+          if (cause instanceof PodploPluginError || cause instanceof OnlineError) throw cause;
+          if (cause instanceof Error && cause.name === "ZodError") throw new PodploPluginError("INVALID_ARGUMENT", "\u56FE\u8F6C\u6587\u53C2\u6570\u6216\u670D\u52A1\u54CD\u5E94\u65E0\u6548\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1\u3002");
+          throw new PodploPluginError("IMAGE_TO_TEXT_UNAVAILABLE", "\u56FE\u8F6C\u6587\u64CD\u4F5C\u672A\u5B8C\u6210\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1\uFF1B\u672A\u81EA\u52A8\u91CD\u65B0\u63D0\u4EA4\u3002");
+        }
+      }
       if (action === "toolbox.reveal" || action === "splitter.reveal") {
         const gridSplit = action === "splitter.reveal";
         if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", gridSplit ? "\u8BF7\u4ECE\u56FE\u7247\u5206\u5272\u6253\u5F00\u7ED3\u679C\u3002" : "\u8BF7\u4ECE\u5DE5\u5177\u7BB1\u6253\u5F00\u7ED3\u679C\u3002");
@@ -54252,7 +55137,12 @@ async function taskArchiveHost(options) {
         if (action === "toolbox.run" || action === "toolbox.save" || action === "splitter.save") void sync();
         if (action === "snapshot") {
           const snapshot = result;
-          return { ...snapshot, data: { ...snapshot.data, taskRevision } };
+          const pending2 = snapshot.data.pending;
+          return { ...snapshot, data: {
+            ...snapshot.data,
+            taskRevision,
+            ...pending2 ? { pending: { ...pending2, generations: Number(pending2.generations ?? 0) + (imageToText?.isBusy() ? 1 : 0) + (dnaHost.isBusy() ? 1 : 0) } } : {}
+          } };
         }
         return result;
       }
@@ -54374,7 +55264,9 @@ async function taskArchiveHost(options) {
             throw new PodploPluginError("INVALID_ARCHIVE_DELETE", "\u5220\u9664\u64CD\u4F5C\u53EA\u63A5\u53D7\u5F53\u524D\u6279\u6B21\u7F16\u53F7\u3002");
           if (pipeline.has(taskId) || [...processingJobs.keys()].some((key) => key.endsWith(`:${taskId}`)))
             throw new PodploPluginError("ARCHIVE_TASK_BUSY", "\u8BE5\u4EFB\u52A1\u4ECD\u5728\u52A0\u5DE5\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F\u3002");
-          return { ok: true, data: await manager.deleteTask(taskId, true) };
+          const result = await manager.deleteTask(taskId, true);
+          await imageToText?.forgetArchivedTask(taskId);
+          return { ok: true, data: result };
         }
         if (action === "archive.processPending") return { ok: true, data: await continueProcessing(taskId) };
         if (action === "archive.openSummary") {
@@ -54411,7 +55303,7 @@ async function taskArchiveHost(options) {
         if (action === "archive.textPreview") {
           archiveInputKeys(input, ["taskId", "fileId"]);
           const file2 = await manager.read(taskId, fileId, true);
-          if (file2.image || !file2.name.toLowerCase().endsWith(".txt") || file2.bytes.length > 128 * 1024) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u662F\u6D4B\u957F\u6587\u672C\u3002");
+          if (file2.image || !file2.name.toLowerCase().endsWith(".txt") || file2.bytes.length > 128 * 1024) throw new Error("\u8BE5\u7ED3\u679C\u4E0D\u662F\u53EF\u9884\u89C8\u6587\u672C\u3002");
           return { ok: true, data: { name: file2.name, text: file2.bytes.toString("utf8").replace(/^\uFEFF/u, "") } };
         }
         if (action === "archive.preview") {
@@ -54432,11 +55324,13 @@ async function taskArchiveHost(options) {
     sync,
     operationProgress,
     stopSession,
-    isBusy: () => manager.isBusy() || pipeline.isBusy() || processingJobs.size > 0,
+    isBusy: () => manager.isBusy() || pipeline.isBusy() || processingJobs.size > 0 || imageToText?.isBusy() === true || dnaHost.isBusy(),
     async close() {
       closed = true;
       service.off("change", changed);
       await pending;
+      await dnaHost.close();
+      await imageToText?.close();
       await Promise.allSettled([...processingJobs.values(), ...localLogJobs]);
       await pipeline.close();
       await manager.close();
@@ -55104,7 +55998,7 @@ function startPolling(run, options = {}) {
 
 // plugins/podplo-dsh/src/generation-completion-tracker.ts
 import { randomUUID as randomUUID16 } from "node:crypto";
-import { join as join14 } from "node:path";
+import { join as join16 } from "node:path";
 var validText = (value2, maximum = 180) => typeof value2 === "string" && value2.length > 0 && value2.length <= maximum && !/[\u0000\r\n]/u.test(value2);
 var validDate = (value2) => typeof value2 === "string" && Number.isFinite(Date.parse(value2));
 var validStatus = (value2) => ["reserved", "pending", "notifying", "paused", "delivered", "stopped", "invalidated"].includes(String(value2));
@@ -55130,7 +56024,7 @@ var GenerationCompletionTracker = class {
   now;
   createId;
   constructor(directory, options = {}) {
-    this.store = new AtomicStore(join14(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
+    this.store = new AtomicStore(join16(directory, "intents.json"), () => ({ schemaVersion: 1, intents: [] }), validateState3);
     this.now = options.now ?? (() => /* @__PURE__ */ new Date());
     this.createId = options.createId ?? randomUUID16;
   }
@@ -55344,8 +56238,8 @@ var GenerationProgressRefresh = class {
   }
   async run(operationIds) {
     const now = this.options.now?.() ?? Date.now();
-    const active = new Set(operationIds);
-    for (const operationId2 of this.failures.keys()) if (!active.has(operationId2)) this.failures.delete(operationId2);
+    const active2 = new Set(operationIds);
+    for (const operationId2 of this.failures.keys()) if (!active2.has(operationId2)) this.failures.delete(operationId2);
     const refreshed = [], skipped = [], failed = [];
     for (const operationId2 of operationIds) {
       const previous = this.failures.get(operationId2);
@@ -57282,8 +58176,8 @@ async function apply(ctx, config2 = {}) {
     return next();
   });
   const sessionStop = ctx.on("workspace/session-stop", async ({ sessionId }) => {
-    const active = signals.get(sessionId);
-    if (active) stoppedTurns.set(sessionId, active.turn);
+    const active2 = signals.get(sessionId);
+    if (active2) stoppedTurns.set(sessionId, active2.turn);
     await stopRemaining(sessionId);
   });
   const turnEnd = ctx.on("session/event", (session2, event) => {

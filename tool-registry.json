@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "pluginVersion": "0.1.34",
-  "registrySha256": "c4489c03dff9327d3786bf900c0c940aafe39bcb89e5a1eda91cd0604bf2cecc",
+  "pluginVersion": "0.1.35",
+  "registrySha256": "a4149bc6789dd5ad12e752682d85d4a90a3cbe63418e46bec5e5f46a122a34b0",
   "registry": {
     "schemaVersion": 1,
     "tools": [
       {
         "id": "image-processing-outline",
         "name": "图片处理与描边",
-        "description": "图片旋转、调色、描边、透明边裁剪、尺寸、出血、输出设置，以及对白底或透明图的外轮廓近似测长。",
+        "description": "图片旋转、调色、描边、透明边裁剪、尺寸、出血与输出设置。",
         "operations": [
           {
             "id": "rotate-flip",
