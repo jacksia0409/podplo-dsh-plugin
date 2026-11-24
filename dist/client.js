@@ -35,7 +35,7 @@ __export(client_exports, {
   inject: () => inject
 });
 module.exports = __toCommonJS(client_exports);
-var import_react19 = require("react");
+var import_react20 = require("react");
 
 // plugins/podplo-dsh/src/chat-generation-tasks.tsx
 var import_react3 = require("react");
@@ -1870,7 +1870,19 @@ var GenerationBootstrapCache = class {
   pendingReferences = /* @__PURE__ */ new Map();
   draftListeners = /* @__PURE__ */ new Map();
   referenceUploads = /* @__PURE__ */ new Map();
+  analyses = /* @__PURE__ */ new Map();
   epoch = 0;
+  analysisReceipt(owner, session, intent, plan) {
+    const entry = this.analyses.get(this.draftKey(owner, session));
+    return entry?.intent === intent && entry.plan === plan ? entry.receipt : void 0;
+  }
+  startAnalysis(owner, session, intent, plan, receipt) {
+    const key = this.draftKey(owner, session);
+    const draft = this.drafts.get(key);
+    if (!draft || draft.intentId !== intent || draft.planVersion !== plan || this.analysisReceipt(owner, session, intent, plan)) return false;
+    this.analyses.set(key, { intent, plan, receipt });
+    return true;
+  }
   revision() {
     return this.epoch;
   }
@@ -2095,6 +2107,7 @@ var GenerationBootstrapCache = class {
     this.epoch += 1;
     for (const rows of this.referenceUploads.values()) for (const row of rows) URL.revokeObjectURL(row.previewUrl);
     this.referenceUploads.clear();
+    this.analyses.clear();
     this.values.clear();
     this.jobs.clear();
     this.drafts.clear();
@@ -2175,9 +2188,9 @@ async function uploadReferenceFile(file2, ownerId, sessionId) {
 
 // plugins/podplo-dsh/src/navigation.ts
 var PODPLO_NAVIGATION_STORAGE_KEY = "podplo.native.navigation.v1";
-var PODPLO_SECTIONS = ["generation", "image-to-text", "gallery", "skills", "assets", "results", "toolbox"];
+var PODPLO_SECTIONS = ["generation", "gallery", "skills", "assets", "results", "toolbox"];
 var PODPLO_NAVIGATION_GROUPS = [
-  { id: "create", label: "\u521B\u4F5C", sections: ["generation", "image-to-text"] },
+  { id: "create", label: "\u521B\u4F5C", sections: ["generation"] },
   { id: "resources", label: "\u8D44\u6E90", sections: ["gallery", "skills", "assets"] },
   { id: "tools", label: "\u5DE5\u5177", sections: ["results", "toolbox"] }
 ];
@@ -2257,13 +2270,13 @@ function createPodploSessionStore(initial) {
 }
 
 // plugins/podplo-dsh/src/workspace.tsx
-var import_react18 = require("react");
+var import_react19 = require("react");
 
 // plugins/podplo-dsh/src/panels.tsx
-var import_react17 = require("react");
+var import_react18 = require("react");
 
 // plugins/podplo-dsh/src/generation-panel.tsx
-var import_react6 = require("react");
+var import_react8 = require("react");
 
 // plugins/podplo-dsh/src/generation-background.ts
 var allows = (schema, value2) => schema?.type === "string" && (!schema.enum || schema.enum.includes(value2));
@@ -2368,3064 +2381,6 @@ function calculateLocalGenerationQuote(model, input) {
     return void 0;
   }
 }
-
-// plugins/podplo-dsh/src/generation-approval-failure.ts
-var REQUOTE_WITHOUT_SUBMISSION = /* @__PURE__ */ new Set([
-  "MCP_INVALID_TOOL_ARGUMENTS",
-  "ORDINARY_ORDER_BACKEND_UNAVAILABLE",
-  "ORDER_RESERVATION_UNAVAILABLE",
-  "QUOTE_EXPIRED",
-  "CONFIRMATION_MISMATCH"
-]);
-var RETRY_WITHOUT_SUBMISSION = /* @__PURE__ */ new Set(["INSUFFICIENT_CREDITS"]);
-var errorCode = (error51) => error51 && typeof error51 === "object" && typeof error51.code === "string" ? error51.code : "";
-var errorMessage = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-function generationApprovalFailure(error51) {
-  const detail = errorMessage(error51);
-  const code = errorCode(error51);
-  if (REQUOTE_WITHOUT_SUBMISSION.has(code)) {
-    return {
-      outcome: "not_submitted",
-      message: `\u786E\u8BA4\u672A\u5B8C\u6210\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002${detail} \u8BF7\u91CD\u65B0\u6838\u9A8C\u79EF\u5206\u540E\u518D\u751F\u6210\u3002`,
-      recovery: "requote"
-    };
-  }
-  if (RETRY_WITHOUT_SUBMISSION.has(code)) {
-    return {
-      outcome: "not_submitted",
-      message: `\u786E\u8BA4\u672A\u5B8C\u6210\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002${detail} \u5904\u7406\u540E\u53EF\u6309\u539F\u62A5\u4EF7\u518D\u6B21\u786E\u8BA4\u3002`,
-      recovery: "retry_same_quote"
-    };
-  }
-  return {
-    outcome: "unknown",
-    message: `\u786E\u8BA4\u7ED3\u679C\u5C1A\u672A\u786E\u5B9A\uFF1A${detail} \u8BF7\u5728\u5904\u7406\u8BB0\u5F55\u4E2D\u5237\u65B0\u6838\u5BF9\uFF1B\u4E3A\u9632\u91CD\u590D\u6267\u884C\uFF0C\u672C\u62A5\u4EF7\u4E0D\u4F1A\u518D\u6B21\u63D0\u4EA4\u3002`,
-    recovery: "lock_unknown"
-  };
-}
-
-// plugins/podplo-dsh/src/batch-generation-panel.tsx
-var import_react4 = require("react");
-var import_react_dom = require("react-dom");
-
-// plugins/podplo-dsh/src/generation-batch.ts
-var PENDING_REFERENCE_PREFIX = "pending-";
-var pendingReferenceId = (unique) => `${PENDING_REFERENCE_PREFIX}${unique}`;
-var isPendingReferenceId = (id) => id.startsWith(PENDING_REFERENCE_PREFIX);
-
-// plugins/podplo-dsh/src/batch-generation-ui-state.ts
-function batchUploadOverflow(referenceCounts, entries, maximum = 4) {
-  if (!referenceCounts.length) return void 0;
-  for (const entry of entries) {
-    if (!entry.reference) continue;
-    const current = referenceCounts[entry.selectionIndex] ?? 0;
-    if (current + 1 > maximum) return entry.selectionIndex;
-  }
-  return void 0;
-}
-function filterBatchSkills(skills, query) {
-  const normalized = query.trim().toLocaleLowerCase();
-  if (!normalized) return skills;
-  return skills.filter((row) => `${row.title} ${row.key}`.toLocaleLowerCase().includes(normalized));
-}
-function batchStatusLabel(status) {
-  return {
-    draft: "\u8349\u7A3F",
-    queued: "\u6392\u961F\u4E2D",
-    submitting: "\u6B63\u5728\u63D0\u4EA4",
-    generating: "\u8FDC\u7A0B\u751F\u6210",
-    completed: "\u5DF2\u5B8C\u6210",
-    failed: "\u5931\u8D25",
-    unknown: "\u5F85\u6838\u5BF9",
-    cancelled: "\u5DF2\u53D6\u6D88",
-    quoted: "\u5F85\u786E\u8BA4",
-    running: "\u6267\u884C\u4E2D",
-    blocked: "\u5F85\u6838\u5BF9",
-    partial: "\u90E8\u5206\u5B8C\u6210",
-    stopped: "\u5DF2\u505C\u6B62"
-  }[status] ?? status;
-}
-
-// plugins/podplo-dsh/src/batch-generation-panel.tsx
-var import_jsx_runtime5 = require("react/jsx-runtime");
-var idOf = (model) => String(model.id ?? model.modelId ?? "");
-var nameOf = (model) => String(model.name ?? model.label ?? model.modelName ?? idOf(model));
-var list = (value2) => Array.isArray(value2) ? value2.filter((row) => typeof row === "string") : [];
-var message = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-var countOf = (item) => Number.isSafeInteger(Number(item.args.count)) && Number(item.args.count) > 0 ? Number(item.args.count) : 1;
-function argsForModel(item, model) {
-  const ratios = list(model.ratios), qualities = list(model.qualities), resolutions = list(model.resolutions), thinking = list(model.thinkingLevels);
-  const current = item.args;
-  const supportsTransparent = model.supportsTransparentMode === true || list(model.backgroundModes).includes("transparent");
-  const transparent = current.background === "transparent" || current.transparent === true;
-  const outputFormat = ["png", "webp"].includes(String(current.output_format ?? "").toLowerCase()) ? String(current.output_format).toLowerCase() : "png";
-  const choice = (values, value2, fallback) => values.includes(String(value2 ?? "")) ? String(value2) : values.includes(String(fallback ?? "")) ? String(fallback) : values[0];
-  return {
-    modelId: idOf(model),
-    count: countOf(item),
-    ...ratios.length ? { ratio: choice(ratios, current.ratio, ratios[0]) } : {},
-    ...qualities.length ? { quality: choice(qualities, current.quality, model.defaultQuality) } : {},
-    ...resolutions.length ? { resolution: choice(resolutions, current.resolution, model.defaultResolution) } : {},
-    ...thinking.length ? { thinkingLevel: choice(thinking, current.thinkingLevel, model.defaultThinkingLevel) } : {},
-    ...model.supportsWebSearch === true ? { webSearch: current.webSearch === true } : {},
-    ...model.supportsImageSearch === true ? { imageSearch: current.imageSearch === true } : {},
-    ...Number.isInteger(Number(model.ecoMaximumReferenceImages)) ? { ecoMode: current.ecoMode === true } : {},
-    ...supportsTransparent ? {
-      background: transparent ? "transparent" : current.background === "opaque" ? "opaque" : "opaque",
-      ...transparent ? { output_format: outputFormat } : {}
-    } : {}
-  };
-}
-var supportsTransparentModel = (model) => !!model && (model.supportsTransparentMode === true || list(model.backgroundModes).includes("transparent"));
-var bulkRowSupportsBackground = (item, model) => supportsTransparentModel(model) || "background" in item.args;
-function RowParameters({ item, models, disabled, countMinimum, countMaximum, patch }) {
-  const model = models.find((row) => idOf(row) === item.args.modelId) ?? models[0];
-  const ratios = list(model?.ratios);
-  const qualities = list(model?.qualities);
-  const resolutions = list(model?.resolutions);
-  const thinking = list(model?.thinkingLevels);
-  const transparent = item.args.background === "transparent" || item.args.transparent === true;
-  const summary = [
-    nameOf(model ?? {}),
-    item.args.ratio,
-    item.args.quality || item.args.resolution,
-    `${countOf(item)} \u5F20`,
-    item.args.ecoMode === true ? "Eco" : "",
-    transparent ? "\u900F\u660E" : "",
-    item.args.webSearch === true ? "\u8054\u7F51" : "",
-    item.args.imageSearch === true ? "\u641C\u56FE" : ""
-  ].filter(Boolean).join(" \xB7 ");
-  const update = (key, value2) => patch({ [key]: value2 });
-  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("details", { className: "ppd-batch-parameters", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("summary", { children: summary }),
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-parameter-grid", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-        "\u6A21\u578B",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.modelId ?? ""), onChange: (event) => {
-          const next = models.find((row) => idOf(row) === event.target.value);
-          if (next) patch(argsForModel(item, next), true);
-        }, children: models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: idOf(row), disabled: row.availableForCurrentPlan === false, children: nameOf(row) }, idOf(row))) })
-      ] }),
-      ratios.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-        "\u6BD4\u4F8B",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.ratio ?? ""), onChange: (event) => update("ratio", event.target.value), children: ratios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
-      ] }),
-      qualities.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-        "\u6E05\u6670\u5EA6",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.quality ?? ""), onChange: (event) => update("quality", event.target.value), children: qualities.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
-      ] }),
-      resolutions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-        "\u5206\u8FA8\u7387",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.resolution ?? ""), onChange: (event) => update("resolution", event.target.value), children: resolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
-      ] }),
-      thinking.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-        "\u601D\u8003\u7A0B\u5EA6",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.thinkingLevel ?? ""), onChange: (event) => update("thinkingLevel", event.target.value), children: thinking.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-        "\u6570\u91CF",
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "number", min: countMinimum, max: countMaximum, value: countOf(item), onChange: (event) => update("count", Math.min(countMaximum, Math.max(countMinimum, Number(event.target.value) || countMinimum))) })
-      ] }),
-      Number.isInteger(Number(model?.ecoMaximumReferenceImages)) && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: item.args.ecoMode === true, onChange: (event) => update("ecoMode", event.target.checked) }),
-        "Eco"
-      ] }),
-      model?.supportsWebSearch === true && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: item.args.webSearch === true, onChange: (event) => update("webSearch", event.target.checked) }),
-        "\u8054\u7F51\u641C\u7D22"
-      ] }),
-      model?.supportsImageSearch === true && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: item.args.imageSearch === true, onChange: (event) => update("imageSearch", event.target.checked) }),
-        "\u56FE\u7247\u641C\u7D22"
-      ] }),
-      (model?.supportsTransparentMode === true || list(model?.backgroundModes).includes("transparent") || "background" in item.args) && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: transparent, onChange: (event) => patch({ background: event.target.checked ? "transparent" : "opaque", ...event.target.checked ? { output_format: "png" } : {} }) }),
-        "\u900F\u660E\u80CC\u666F"
-      ] })
-    ] })
-  ] });
-}
-function BatchSkillPicker({ value: value2, skills, disabled, label, onChange }) {
-  const [open, setOpen] = (0, import_react4.useState)(false);
-  const [query, setQuery] = (0, import_react4.useState)("");
-  const selected = skills.find((row) => row.key === value2);
-  const rows = filterBatchSkills(skills, query);
-  const close = () => {
-    setOpen(false);
-    setQuery("");
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-skill", onKeyDown: (event) => {
-    if (event.key === "Escape") {
-      event.stopPropagation();
-      close();
-    }
-  }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
-      "button",
-      {
-        type: "button",
-        className: "ppd-batch-skill-toggle",
-        "aria-label": label,
-        "aria-expanded": open,
-        disabled,
-        onClick: () => {
-          if (disabled) return;
-          if (open) close();
-          else setOpen(true);
-        },
-        children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: selected?.title ?? (value2 ? "Skill \u4E0D\u53EF\u7528" : "\u76F4 AI") }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { "aria-hidden": "true", children: "\u25BE" })
-        ]
-      }
-    ),
-    open && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-skill-menu", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { autoFocus: true, value: query, placeholder: "\u641C\u7D22 Skill", "aria-label": `${label} \u641C\u7D22`, onChange: (event) => setQuery(event.target.value) }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-skill-list", role: "listbox", "aria-label": `${label} \u5217\u8868`, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", role: "option", "aria-selected": !value2, onClick: () => {
-          onChange("");
-          close();
-        }, children: "\u76F4 AI" }),
-        rows.map((row) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
-          "button",
-          {
-            type: "button",
-            role: "option",
-            "aria-selected": row.key === value2,
-            disabled: row.available === false,
-            onClick: () => {
-              onChange(row.key);
-              close();
-            },
-            children: [
-              row.title,
-              row.available === false ? " \xB7 \u4E0D\u53EF\u7528" : ""
-            ]
-          },
-          row.key
-        )),
-        !rows.length && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("small", { children: "\u6CA1\u6709\u5339\u914D\u7684 Skill" })
-      ] })
-    ] })
-  ] });
-}
-function BatchGenerationPanel({ request, snapshot, capabilities, skills, disabled = false, resolveSkill, onChanged, accountKey, contextKey }) {
-  const [batch, setBatch] = (0, import_react4.useState)();
-  const [open, setOpen] = (0, import_react4.useState)(false);
-  const [busy, setBusy] = (0, import_react4.useState)("");
-  const [error51, setError] = (0, import_react4.useState)("");
-  const [notice, setNotice] = (0, import_react4.useState)("");
-  const [bulkOpen, setBulkOpen] = (0, import_react4.useState)(false);
-  const [bulkPrompt, setBulkPrompt] = (0, import_react4.useState)("");
-  const [bulkSkill, setBulkSkill] = (0, import_react4.useState)("");
-  const [bulkModel, setBulkModel] = (0, import_react4.useState)("");
-  const [bulkRatio, setBulkRatio] = (0, import_react4.useState)("");
-  const [bulkQuality, setBulkQuality] = (0, import_react4.useState)("");
-  const [bulkCount, setBulkCount] = (0, import_react4.useState)(1);
-  const [bulkEco, setBulkEco] = (0, import_react4.useState)(true);
-  const [bulkBackground, setBulkBackground] = (0, import_react4.useState)("keep");
-  const [bulkFields, setBulkFields] = (0, import_react4.useState)({});
-  const [clearConfirm, setClearConfirm] = (0, import_react4.useState)(false);
-  const clearTimer = (0, import_react4.useRef)(void 0);
-  const [archiveConfirm, setArchiveConfirm] = (0, import_react4.useState)(false);
-  const archiveTimer = (0, import_react4.useRef)(void 0);
-  const [localPreviews, setLocalPreviews] = (0, import_react4.useState)({});
-  const previewUrls = (0, import_react4.useRef)(/* @__PURE__ */ new Map());
-  const uploadInput = (0, import_react4.useRef)(null);
-  const currentBatch = (0, import_react4.useRef)(batch);
-  currentBatch.current = batch;
-  const epoch2 = (0, import_react4.useRef)(0);
-  const promptDrafts = (0, import_react4.useRef)(/* @__PURE__ */ new Map());
-  const promptJobs = (0, import_react4.useRef)(/* @__PURE__ */ new Map());
-  const changed = (0, import_react4.useRef)(onChanged);
-  changed.current = onChanged;
-  const models = (0, import_react4.useMemo)(() => Array.isArray(capabilities?.models) ? capabilities.models : [], [capabilities]);
-  const countMinimum = Math.max(1, Number(capabilities?.quoteInputSchema?.properties?.count?.minimum) || 1);
-  const countMaximum = Math.max(countMinimum, Number(capabilities?.quoteInputSchema?.properties?.count?.maximum) || 4);
-  const current = (value2) => epoch2.current === value2;
-  const publish2 = (0, import_react4.useCallback)((value2) => {
-    if (!value2 || typeof value2.batchId !== "string" || !Array.isArray(value2.items)) throw new Error("\u6279\u91CF\u4EFB\u52A1\u8FD4\u56DE\u5185\u5BB9\u4E0D\u5B8C\u6574\u3002");
-    currentBatch.current = value2;
-    setBatch(value2);
-    changed.current?.();
-    return value2;
-  }, []);
-  const load = (0, import_react4.useCallback)(async (quiet = false, expectedEpoch = epoch2.current) => {
-    try {
-      const { data } = await request("generation.batch.get", currentBatch.current?.batchId ? { batchId: currentBatch.current.batchId } : {});
-      if (!current(expectedEpoch)) return;
-      if (data?.batchId) publish2(data);
-      else if (!quiet) setBatch(void 0);
-    } catch (cause) {
-      if (!quiet && current(expectedEpoch)) setError(message(cause));
-    }
-  }, [publish2, request]);
-  (0, import_react4.useEffect)(() => {
-    const expectedEpoch = ++epoch2.current;
-    currentBatch.current = void 0;
-    setBatch(void 0);
-    promptDrafts.current.clear();
-    void load(true, expectedEpoch);
-    return () => {
-      if (current(expectedEpoch)) epoch2.current += 1;
-    };
-  }, [accountKey, contextKey, load, request]);
-  (0, import_react4.useEffect)(() => {
-    if (!open) return;
-    const close = (event) => {
-      if (event.key === "Escape") {
-        event.preventDefault();
-        setOpen(false);
-      }
-    };
-    document.addEventListener("keydown", close);
-    return () => document.removeEventListener("keydown", close);
-  }, [open]);
-  (0, import_react4.useEffect)(() => {
-    if (!batch || !["quoted", "running", "blocked", "partial"].includes(batch.status)) return;
-    const loop = startVisiblePolling(async () => {
-      await load(true);
-      return ["quoted", "running", "blocked", "partial"].includes(currentBatch.current?.status ?? "") ? ACTIVE_POLL_MS : null;
-    });
-    return () => loop.stop();
-  }, [batch?.batchId, batch?.status, load]);
-  const write = (0, import_react4.useCallback)(async (action, args) => {
-    const expectedEpoch = epoch2.current;
-    setBusy(action);
-    setError("");
-    setNotice("");
-    try {
-      const { data } = await request(action, args);
-      if (!current(expectedEpoch)) return void 0;
-      return publish2(data);
-    } catch (cause) {
-      if (current(expectedEpoch)) setError(message(cause));
-      return void 0;
-    } finally {
-      if (current(expectedEpoch)) setBusy("");
-    }
-  }, [publish2, request]);
-  const forgetPreview = (0, import_react4.useCallback)((id) => {
-    const url2 = previewUrls.current.get(id);
-    if (!url2) return;
-    URL.revokeObjectURL(url2);
-    previewUrls.current.delete(id);
-    setLocalPreviews((current2) => {
-      if (!(id in current2)) return current2;
-      const next = { ...current2 };
-      delete next[id];
-      return next;
-    });
-  }, []);
-  const previewOf = (reference) => localPreviews[reference.id] || reference.thumbnailUrl || reference.previewUrl;
-  const resolvePendingReference = (0, import_react4.useCallback)(async (pendingId, next, failure) => {
-    for (let attempt = 0; attempt < 2; attempt++) {
-      const target2 = currentBatch.current;
-      if (!target2 || !["draft", "quoted"].includes(target2.status)) return;
-      const row = target2.items.find((item) => item.references.some((reference) => reference.id === pendingId));
-      if (!row) return;
-      const patch = next ? { references: row.references.map((reference) => reference.id === pendingId ? next : reference) } : { uploadError: failure || "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u66FF\u6362\u3002" };
-      try {
-        const { data } = await request("generation.batch.patchItems", { batchId: target2.batchId, expectedRevision: target2.revision, itemIds: [row.id], patch });
-        if (data) publish2(data);
-        return;
-      } catch (cause) {
-        if (attempt) {
-          setError(message(cause));
-          return;
-        }
-      }
-    }
-  }, [publish2, request]);
-  const itemQuote = (0, import_react4.useCallback)((item) => {
-    if (Number.isFinite(Number(item.quote?.totalCredits))) return Number(item.quote.totalCredits);
-    const model = models.find((row) => idOf(row) === item.args.modelId);
-    return calculateLocalGenerationQuote(model, {
-      prompt: item.prompt,
-      quality: String(item.args.quality ?? ""),
-      resolution: String(item.args.resolution ?? ""),
-      count: countOf(item),
-      referenceImageCount: item.references.length + Number(item.skill?.pricingReferenceCount ?? 0),
-      ecoMode: item.args.ecoMode === true,
-      webSearch: item.args.webSearch === true,
-      imageSearch: item.args.imageSearch === true
-    })?.totalCredits;
-  }, [models]);
-  const selected = batch?.items.filter((row) => row.selected) ?? [];
-  const pendingReferences = batch?.items.reduce((sum, item) => sum + item.references.filter((reference) => isPendingReferenceId(reference.id)).length, 0) ?? 0;
-  const editable = !batch || batch.status === "draft" || batch.status === "quoted";
-  (0, import_react4.useEffect)(() => {
-    if (!editable) {
-      setBulkOpen(false);
-      setClearConfirm(false);
-    }
-  }, [editable]);
-  (0, import_react4.useEffect)(() => {
-    setClearConfirm(false);
-    setArchiveConfirm(false);
-  }, [batch?.batchId]);
-  (0, import_react4.useEffect)(() => () => {
-    if (clearTimer.current) clearTimeout(clearTimer.current);
-    if (archiveTimer.current) clearTimeout(archiveTimer.current);
-  }, []);
-  (0, import_react4.useEffect)(() => () => {
-    for (const url2 of previewUrls.current.values()) URL.revokeObjectURL(url2);
-    previewUrls.current.clear();
-  }, []);
-  const totals = (0, import_react4.useMemo)(() => {
-    const quotes = selected.map(itemQuote);
-    return {
-      rows: selected.length,
-      outputs: selected.reduce((sum, row) => sum + countOf(row), 0),
-      credits: quotes.every((value2) => value2 !== void 0) ? quotes.reduce((sum, value2) => sum + value2, 0) : void 0
-    };
-  }, [itemQuote, selected]);
-  async function addCurrent() {
-    const references = Array.isArray(snapshot.args.referenceAssetIds) ? snapshot.args.referenceAssetIds : [];
-    if (references.length > 4) {
-      setError("\u6279\u91CF\u4EFB\u52A1\u6BCF\u884C\u6700\u591A 4 \u5F20\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u51CF\u5C11\u5F53\u524D\u53C2\u8003\u56FE\u3002");
-      return;
-    }
-    const target2 = editable ? batch : void 0;
-    const next = await write("generation.batch.createItem", { ...target2 ? { batchId: target2.batchId, expectedRevision: target2.revision } : {}, snapshot });
-    if (next) {
-      setOpen(true);
-      setNotice("\u5DF2\u5C06\u5F53\u524D\u8BBE\u7F6E\u4F5C\u4E3A\u72EC\u7ACB\u5FEB\u7167\u52A0\u5165\u6279\u91CF\u3002");
-    }
-  }
-  async function patchItems(itemIds, patch) {
-    const target2 = currentBatch.current;
-    if (!target2 || !["draft", "quoted"].includes(target2.status) || !itemIds.length) return;
-    return write("generation.batch.patchItems", { batchId: target2.batchId, expectedRevision: target2.revision, itemIds, patch });
-  }
-  async function patchReferences(item, references) {
-    await patchItems([item.id], { references });
-  }
-  async function removeRows(itemIds) {
-    const target2 = currentBatch.current;
-    if (!target2 || !["draft", "quoted"].includes(target2.status) || !itemIds.length) return;
-    const next = await write("generation.batch.removeItems", { batchId: target2.batchId, expectedRevision: target2.revision, itemIds });
-    setClearConfirm(false);
-    if (next) setNotice(`\u5DF2\u5220\u9664 ${itemIds.length} \u884C\u3002`);
-  }
-  function requestClearAll() {
-    if (!batch?.items.length || !editable || busy) return;
-    if (!clearConfirm) {
-      setClearConfirm(true);
-      if (clearTimer.current) clearTimeout(clearTimer.current);
-      clearTimer.current = setTimeout(() => setClearConfirm(false), 4e3);
-      return;
-    }
-    if (clearTimer.current) clearTimeout(clearTimer.current);
-    void removeRows(batch.items.map((row) => row.id));
-  }
-  async function archiveBatch() {
-    const target2 = currentBatch.current;
-    if (!target2 || !["completed", "partial", "stopped"].includes(target2.status)) return;
-    const expectedEpoch = epoch2.current;
-    setBusy("generation.batch.archive");
-    setError("");
-    setNotice("");
-    try {
-      await request("generation.batch.archive", { batchId: target2.batchId, expectedRevision: target2.revision });
-      if (!current(expectedEpoch)) return;
-      currentBatch.current = void 0;
-      setBatch(void 0);
-      changed.current?.();
-      setNotice("\u5DF2\u6E05\u9664\u8FD9\u6279\u4EFB\u52A1\uFF0C\u751F\u6210\u7684\u56FE\u7247\u4ECD\u4FDD\u7559\u5728\u6210\u679C\u4E2D\u3002");
-    } catch (cause) {
-      if (current(expectedEpoch)) setError(message(cause));
-    } finally {
-      if (current(expectedEpoch)) setBusy("");
-    }
-  }
-  function requestArchive() {
-    if (!batch || !["completed", "partial", "stopped"].includes(batch.status) || busy) return;
-    if (!archiveConfirm) {
-      setArchiveConfirm(true);
-      if (archiveTimer.current) clearTimeout(archiveTimer.current);
-      archiveTimer.current = setTimeout(() => setArchiveConfirm(false), 4e3);
-      return;
-    }
-    if (archiveTimer.current) clearTimeout(archiveTimer.current);
-    setArchiveConfirm(false);
-    void archiveBatch();
-  }
-  async function chooseSkill(itemIds, key) {
-    const expectedEpoch = epoch2.current;
-    const skill = key ? await resolveSkill?.(key) ?? skills.find((row) => row.key === key) ?? null : null;
-    if (!current(expectedEpoch)) return;
-    await patchItems(itemIds, { skill });
-  }
-  async function uploadFile(file2) {
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file2.type)) return { ok: false, error: "\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP" };
-    try {
-      const { data } = await request("assets.upload", { file: file2 });
-      if (!data?.id || data.status !== "ready") throw new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA");
-      return { ok: true, reference: { id: data.id, filename: data.filename ?? file2.name, previewUrl: data.previewUrl, thumbnailUrl: data.thumbnailUrl } };
-    } catch (cause) {
-      return { ok: false, error: message(cause) };
-    }
-  }
-  async function uploadBatch(files) {
-    if (!files.length || files.length > 100 || busy) {
-      if (files.length > 100) setError("\u4E00\u6B21\u6700\u591A\u9009\u62E9 100 \u5F20\u56FE\u7247\u3002");
-      return;
-    }
-    const totalBytes = files.reduce((sum, file2) => sum + file2.size, 0);
-    if (totalBytes > 250 * 1024 * 1024) {
-      setError("\u672C\u6B21\u9009\u62E9\u7684\u56FE\u7247\u5408\u8BA1\u8D85\u8FC7 250MB\uFF0C\u4EFB\u52A1\u8868\u672A\u6539\u52A8\u3002");
-      return;
-    }
-    const eligible = files.map((file2) => ["image/jpeg", "image/png", "image/webp"].includes(file2.type) && file2.size > 0 && file2.size <= 50 * 1024 * 1024);
-    const planned = files.map((file2, selectionIndex) => eligible[selectionIndex] ? { selectionIndex, reference: { id: pendingReferenceId(crypto.randomUUID()), filename: file2.name } } : { selectionIndex, error: file2.size > 50 * 1024 * 1024 ? "\u5355\u5F20\u8D85\u8FC7 50MB" : file2.size === 0 ? "\u6587\u4EF6\u4E3A\u7A7A" : "\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP" });
-    const uploadTarget = editable ? batch : void 0;
-    const preflightOverflow = batchUploadOverflow(uploadTarget?.items.map((row) => row.references.length) ?? [], planned);
-    if (preflightOverflow !== void 0) {
-      setError(`\u7B2C ${preflightOverflow + 1} \u884C\u65E0\u6CD5\u518D\u6DFB\u52A0\u53C2\u8003\u56FE\uFF0C\u672C\u6B21\u56FE\u7247\u672A\u4E0A\u4F20\u3002`);
-      return;
-    }
-    const expectedEpoch = epoch2.current;
-    const previews = {};
-    for (const entry of planned) if (entry.reference) {
-      const url2 = URL.createObjectURL(files[entry.selectionIndex]);
-      previewUrls.current.set(entry.reference.id, url2);
-      previews[entry.reference.id] = url2;
-    }
-    setLocalPreviews((current2) => ({ ...current2, ...previews }));
-    setBusy("upload");
-    setError("");
-    setNotice(`\u6B63\u5728\u52A0\u5165 ${files.length} \u5F20\u56FE\u7247\u2026`);
-    try {
-      const rowSnapshot = { ...snapshot, args: { ...snapshot.args, referenceAssetIds: [] } };
-      const { data } = await request("generation.batch.appendReferences", { ...uploadTarget ? { batchId: uploadTarget.batchId, expectedRevision: uploadTarget.revision } : {}, entries: planned, snapshot: rowSnapshot });
-      if (!current(expectedEpoch)) return;
-      publish2(data);
-      setOpen(true);
-      const pending = planned.filter((entry) => entry.reference);
-      const failures = planned.filter((entry) => entry.error).length;
-      setNotice(failures ? `${files.length - failures} \u5F20\u5DF2\u6309\u539F\u9009\u62E9\u987A\u5E8F\u52A0\u5165\uFF0C${failures} \u5F20\u683C\u5F0F\u4E0D\u7B26\uFF1B\u6B63\u5728\u540E\u53F0\u4E0A\u4F20\u53C2\u8003\u56FE\u3002` : `\u5DF2\u52A0\u5165 ${files.length} \u5F20\u56FE\u7247\uFF0C\u6B63\u5728\u540E\u53F0\u4E0A\u4F20\u53C2\u8003\u56FE\u3002`);
-      void finishUploads(files, pending, expectedEpoch);
-    } catch (cause) {
-      if (current(expectedEpoch)) {
-        setError(message(cause));
-        setNotice("");
-      }
-    } finally {
-      if (current(expectedEpoch)) {
-        setBusy("");
-        if (uploadInput.current) uploadInput.current.value = "";
-      }
-    }
-  }
-  async function finishUploads(files, pending, expectedEpoch) {
-    const results = /* @__PURE__ */ new Map();
-    let cursor = 0;
-    let completed = 0;
-    const worker = async () => {
-      for (; ; ) {
-        const index = cursor++;
-        if (index >= pending.length || !current(expectedEpoch)) return;
-        const entry = pending[index];
-        const id = entry.reference.id;
-        results.set(id, await uploadFile(files[entry.selectionIndex]));
-        completed += 1;
-        if (current(expectedEpoch)) setNotice(`\u6B63\u5728\u4E0A\u4F20\u53C2\u8003\u56FE ${completed} / ${pending.length}\u2026`);
-      }
-    };
-    await Promise.all(Array.from({ length: Math.min(4, pending.length) }, worker));
-    if (!current(expectedEpoch)) return;
-    let failures = 0;
-    for (const entry of pending) {
-      if (!current(expectedEpoch)) return;
-      const id = entry.reference.id;
-      const result = results.get(id);
-      if (result?.ok) {
-        await resolvePendingReference(id, result.reference);
-        forgetPreview(id);
-      } else {
-        failures += 1;
-        await resolvePendingReference(id, void 0, `\u53C2\u8003\u56FE\u4E0A\u4F20\u5931\u8D25\uFF1A${result && !result.ok ? result.error : "\u672A\u77E5\u9519\u8BEF"}`);
-      }
-    }
-    if (current(expectedEpoch)) setNotice(failures ? `${failures} \u5F20\u53C2\u8003\u56FE\u4E0A\u4F20\u5931\u8D25\uFF0C\u53EF\u5728\u5BF9\u5E94\u683C\u5B50\u66FF\u6362\u6216\u5220\u9664\u540E\u91CD\u65B0\u6838\u9A8C\u3002` : "\u53C2\u8003\u56FE\u5DF2\u5168\u90E8\u4E0A\u4F20\uFF0C\u53EF\u6838\u9A8C\u79EF\u5206\u3002");
-  }
-  async function editReference(item, slot, file2) {
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file2.type) || !file2.size || file2.size > 5e7) {
-      setError("\u8BF7\u9009\u62E9\u4E0D\u8D85\u8FC7 50 MB \u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
-      return;
-    }
-    const expectedEpoch = epoch2.current;
-    const id = pendingReferenceId(crypto.randomUUID());
-    const placeholder = { id, filename: file2.name };
-    const url2 = URL.createObjectURL(file2);
-    previewUrls.current.set(id, url2);
-    setLocalPreviews((current2) => ({ ...current2, [id]: url2 }));
-    setError("");
-    const references = [...item.references];
-    if (slot < references.length) references[slot] = placeholder;
-    else references.push(placeholder);
-    const next = await patchItems([item.id], { references });
-    if (!next) {
-      forgetPreview(id);
-      return;
-    }
-    void (async () => {
-      const result = await uploadFile(file2);
-      if (!current(expectedEpoch)) return;
-      if (result.ok) {
-        await resolvePendingReference(id, result.reference);
-        forgetPreview(id);
-      } else await resolvePendingReference(id, void 0, `\u53C2\u8003\u56FE\u4E0A\u4F20\u5931\u8D25\uFF1A${result.error}`);
-    })();
-  }
-  async function savePrompt(item) {
-    const draft = promptDrafts.current.get(item.id);
-    if (draft === void 0 || draft === item.prompt) return currentBatch.current;
-    const existing = promptJobs.current.get(item.id);
-    if (existing) return existing;
-    const job = patchItems([item.id], { prompt: draft }).then((next) => {
-      if (next && promptDrafts.current.get(item.id) === draft) promptDrafts.current.delete(item.id);
-      return next;
-    }).finally(() => promptJobs.current.delete(item.id));
-    promptJobs.current.set(item.id, job);
-    return job;
-  }
-  async function flushPromptDrafts() {
-    const expectedEpoch = epoch2.current;
-    if (promptJobs.current.size) await Promise.all(promptJobs.current.values());
-    let value2 = currentBatch.current;
-    if (!value2) return void 0;
-    for (const item of value2.items) {
-      const draft = promptDrafts.current.get(item.id);
-      if (draft === void 0 || draft === item.prompt) continue;
-      const { data } = await request("generation.batch.patchItems", { batchId: value2.batchId, expectedRevision: value2.revision, itemIds: [item.id], patch: { prompt: draft } });
-      if (!current(expectedEpoch)) return void 0;
-      value2 = publish2(data);
-      promptDrafts.current.delete(item.id);
-    }
-    return value2;
-  }
-  async function applyBulk() {
-    if (!batch || !selected.length || !Object.values(bulkFields).some(Boolean)) return;
-    if (bulkFields.background && bulkBackground === "keep") {
-      setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u80CC\u666F\uFF1A\u900F\u660E\u6216\u4E0D\u900F\u660E\u3002");
-      return;
-    }
-    const expectedEpoch = epoch2.current;
-    const wantsBackground = bulkFields.background && bulkBackground !== "keep";
-    const args = {};
-    if (bulkFields.model) args.modelId = bulkModel;
-    if (bulkFields.ratio) args.ratio = bulkRatio;
-    if (bulkFields.quality) args.quality = bulkQuality;
-    if (bulkFields.count) args.count = bulkCount;
-    if (bulkFields.eco) args.ecoMode = bulkEco;
-    const skill = bulkFields.skill ? bulkSkill ? await resolveSkill?.(bulkSkill) ?? skills.find((row) => row.key === bulkSkill) ?? null : null : void 0;
-    if (!current(expectedEpoch)) return;
-    const target2 = bulkFields.model ? models.find((row) => idOf(row) === bulkModel) : void 0;
-    if (bulkFields.model && !target2) {
-      setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u6A21\u578B\u3002");
-      return;
-    }
-    if (target2 || wantsBackground) {
-      setBusy("bulk");
-      setError("");
-      setNotice("");
-      let activeBatch = batch;
-      let skipped = 0;
-      let changed2 = 0;
-      try {
-        for (const item of selected) {
-          if (!current(expectedEpoch)) return;
-          const row = activeBatch.items.find((value2) => value2.id === item.id) ?? item;
-          const rowModel = target2 ?? models.find((value2) => idOf(value2) === row.args.modelId);
-          const nextArgs = target2 ? { ...argsForModel(row, target2), ...args } : { ...args };
-          if (wantsBackground) {
-            if (bulkRowSupportsBackground(row, rowModel)) {
-              nextArgs.background = bulkBackground;
-              if (bulkBackground === "transparent") nextArgs.output_format = "png";
-            } else skipped += 1;
-          }
-          const hasArgs = Object.keys(nextArgs).length > 0;
-          if (!bulkFields.prompt && !bulkFields.skill && !hasArgs) continue;
-          const { data } = await request("generation.batch.patchItems", {
-            batchId: activeBatch.batchId,
-            expectedRevision: activeBatch.revision,
-            itemIds: [row.id],
-            patch: { ...bulkFields.prompt ? { prompt: bulkPrompt } : {}, ...bulkFields.skill ? { skill } : {}, ...hasArgs ? { args: nextArgs, replaceArgs: !!target2 } : {} }
-          });
-          if (!current(expectedEpoch)) return;
-          activeBatch = publish2(data);
-          changed2 += 1;
-        }
-        if (current(expectedEpoch)) {
-          setBulkOpen(false);
-          setNotice(`\u5DF2\u4FEE\u6539 ${changed2} \u884C${skipped ? `\uFF1B${skipped} \u884C\u6A21\u578B\u4E0D\u652F\u6301\u900F\u660E\u80CC\u666F\uFF0C\u5DF2\u8DF3\u8FC7` : ""}\u3002`);
-        }
-      } catch (cause) {
-        if (current(expectedEpoch)) setError(message(cause));
-      } finally {
-        if (current(expectedEpoch)) setBusy("");
-      }
-      return;
-    }
-    const patch = { ...bulkFields.prompt ? { prompt: bulkPrompt } : {}, ...bulkFields.skill ? { skill } : {}, ...Object.keys(args).length ? { args } : {} };
-    const next = await write("generation.batch.patchItems", { batchId: batch.batchId, expectedRevision: batch.revision, itemIds: selected.map((row) => row.id), patch });
-    if (next) {
-      setBulkOpen(false);
-      setNotice(`\u5DF2\u4FEE\u6539 ${selected.length} \u884C\u3002`);
-    }
-  }
-  async function reconcile() {
-    if (!batch) return;
-    const expectedEpoch = epoch2.current;
-    setBusy("reconcile");
-    setError("");
-    try {
-      if (batch.operationId) await request("generation.status", { operationId: batch.operationId, refresh: true });
-      if (!current(expectedEpoch)) return;
-      await load(false, expectedEpoch);
-      if (current(expectedEpoch)) setNotice("\u5DF2\u6309\u539F\u4EFB\u52A1\u91CD\u65B0\u6838\u5BF9\u72B6\u6001\uFF0C\u672A\u91CD\u590D\u63D0\u4EA4\u3002");
-    } catch (cause) {
-      if (current(expectedEpoch)) setError(message(cause));
-    } finally {
-      if (current(expectedEpoch)) setBusy("");
-    }
-  }
-  async function confirmBatch() {
-    if (!batch || !["draft", "quoted"].includes(batch.status) || !selected.length) return;
-    const expectedEpoch = epoch2.current;
-    setBusy("confirm");
-    setError("");
-    setNotice("");
-    try {
-      let prepared = await flushPromptDrafts();
-      if (!prepared) return;
-      const preparedItems = prepared.items.filter((row) => row.selected);
-      if (!preparedItems.length) return;
-      const expiresAt = Date.parse(prepared.quote?.expiresAt ?? "");
-      const needsQuote = prepared.status !== "quoted" || !Number.isFinite(expiresAt) || expiresAt <= Date.now();
-      if (needsQuote) {
-        const { data: data2 } = await request("generation.batch.prepare", {
-          batchId: prepared.batchId,
-          expectedRevision: prepared.revision,
-          taskName: preparedItems[0]?.prompt.trim().slice(0, 40) || "\u6279\u91CF\u751F\u56FE\u4EFB\u52A1"
-        });
-        if (!current(expectedEpoch)) return;
-        prepared = publish2(data2);
-        setNotice("\u79EF\u5206\u5DF2\u6309\u6700\u65B0\u4EFB\u52A1\u6838\u9A8C\u3002\u8BF7\u67E5\u770B\u6BCF\u884C\u548C\u603B\u8BA1\u540E\uFF0C\u518D\u70B9\u51FB\u300C\u786E\u8BA4\u5E76\u751F\u6210\u300D\u3002");
-        return;
-      }
-      if (!prepared.operationId || !prepared.approvalId) throw new Error("\u672A\u53D6\u5F97\u53EF\u786E\u8BA4\u7684\u6279\u91CF\u62A5\u4EF7\u3002");
-      const { data } = await request("generation.batch.approve", { batchId: prepared.batchId, operationId: prepared.operationId, approvalId: prepared.approvalId });
-      if (!current(expectedEpoch)) return;
-      publish2(data);
-      setOpen(false);
-      currentBatch.current = void 0;
-      setBatch(void 0);
-      promptDrafts.current.clear();
-      setBusy("");
-      epoch2.current += 1;
-      changed.current?.();
-      void request("panel.navigate", { section: "results" }).catch(() => void 0);
-    } catch (cause) {
-      if (current(expectedEpoch)) setError(message(cause));
-    } finally {
-      if (current(expectedEpoch)) setBusy("");
-    }
-  }
-  const firstModel = models[0];
-  const skillKeyOf = (item) => {
-    const skill = item.skill;
-    if (!skill) return "";
-    return skills.find((row) => !!skill.key && row.key === skill.key)?.key ?? skills.find((row) => !!skill.id && row.id === skill.id)?.key ?? skills.find((row) => row.title === skill.title)?.key ?? skill.key ?? "";
-  };
-  const quoteExpiresAt = Date.parse(batch?.quote?.expiresAt ?? "");
-  const quoteExpired = batch?.status === "quoted" && (!Number.isFinite(quoteExpiresAt) || quoteExpiresAt <= Date.now());
-  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-launchers", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "data-generation-add-batch": true, disabled: disabled || !!busy, onClick: () => void addCurrent(), children: editable ? "\u52A0\u5165\u6279\u91CF" : "\u65B0\u5EFA\u6279\u91CF" }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", "data-generation-open-batch": true, "aria-expanded": open, onClick: () => {
-        setOpen(true);
-        void load(true);
-      }, children: [
-        "\u6279\u91CF\u4EFB\u52A1 \xB7 ",
-        batch?.items.length ?? 0
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { ref: uploadInput, hidden: true, type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", onChange: (event) => void uploadBatch(Array.from(event.target.files ?? [])) })
-    ] }),
-    open && typeof document !== "undefined" && (0, import_react_dom.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "ppd-batch-backdrop", role: "presentation", onMouseDown: (event) => {
-      if (event.target === event.currentTarget) setOpen(false);
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("section", { className: "ppd-batch-dialog", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-batch-title", "data-generation-batch": true, tabIndex: -1, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("header", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h2", { id: "ppd-batch-title", children: "\u6279\u91CF\u4EFB\u52A1" }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { children: "\u6BCF\u884C\u4FDD\u7559\u81EA\u5DF1\u7684\u63D0\u793A\u8BCD\u3001Skill\u3001\u53C2\u6570\u548C\u53C2\u8003\u56FE\u5FEB\u7167\u3002" })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "aria-label": "\u5173\u95ED\u6279\u91CF\u4EFB\u52A1", onClick: () => setOpen(false), children: "\xD7" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-tools", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", disabled: !!busy, onClick: () => uploadInput.current?.click(), children: "\u6279\u91CF\u4E0A\u4F20" }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", disabled: !editable || !batch?.items.length || !!busy, onClick: () => void patchItems(batch.items.map((row) => row.id), { selected: !batch.items.every((row) => row.selected) }), children: batch?.items.every((row) => row.selected) ? "\u53D6\u6D88\u5168\u9009" : "\u5168\u9009" }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", disabled: !editable || !selected.length || !!busy, onClick: () => setBulkOpen((value2) => !value2), children: [
-          "\u6279\u91CF\u4FEE\u6539 (",
-          selected.length,
-          ")"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", className: "is-danger", disabled: !editable || !selected.length || !!busy, onClick: () => void removeRows(selected.map((row) => row.id)), children: [
-          "\u5220\u9664\u9009\u4E2D (",
-          selected.length,
-          ")"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-danger", disabled: !editable || !batch?.items.length || !!busy, onClick: requestClearAll, children: clearConfirm ? "\u518D\u6B21\u70B9\u51FB\u6E05\u7A7A\u5168\u90E8" : "\u6E05\u7A7A\u5168\u90E8" }),
-        batch && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: `ppd-batch-state is-${batch.status}`, children: batch.status === "quoted" ? "\u5F85\u786E\u8BA4" : batchStatusLabel(batch.status) })
-      ] }),
-      bulkOpen && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-bulk", "data-generation-bulk-editor": true, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.prompt, onChange: (event) => setBulkFields((value2) => ({ ...value2, prompt: event.target.checked })) }),
-          "\u63D0\u793A\u8BCD",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { value: bulkPrompt, onChange: (event) => setBulkPrompt(event.target.value), disabled: !bulkFields.prompt })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.skill, onChange: (event) => setBulkFields((value2) => ({ ...value2, skill: event.target.checked })) }),
-          "Skill",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BatchSkillPicker, { value: bulkSkill, skills, disabled: !bulkFields.skill || !!busy, label: "\u6279\u91CF Skill", onChange: setBulkSkill })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.model, onChange: (event) => setBulkFields((value2) => ({ ...value2, model: event.target.checked })) }),
-          "\u6A21\u578B",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkModel, disabled: !bulkFields.model, onChange: (event) => setBulkModel(event.target.value), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "", children: "\u9009\u62E9\u6A21\u578B" }),
-            models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: idOf(row), children: nameOf(row) }, idOf(row)))
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.ratio, onChange: (event) => setBulkFields((value2) => ({ ...value2, ratio: event.target.checked })) }),
-          "\u6BD4\u4F8B",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkRatio, disabled: !bulkFields.ratio, onChange: (event) => setBulkRatio(event.target.value), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "", children: "\u9009\u62E9\u6BD4\u4F8B" }),
-            list((models.find((row) => idOf(row) === bulkModel) ?? firstModel)?.ratios).map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2))
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.quality, onChange: (event) => setBulkFields((value2) => ({ ...value2, quality: event.target.checked })) }),
-          "\u6E05\u6670\u5EA6",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { value: bulkQuality, disabled: !bulkFields.quality, onChange: (event) => setBulkQuality(event.target.value) })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.count, onChange: (event) => setBulkFields((value2) => ({ ...value2, count: event.target.checked })) }),
-          "\u6570\u91CF",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "number", min: countMinimum, max: countMaximum, value: bulkCount, disabled: !bulkFields.count, onChange: (event) => setBulkCount(Math.min(countMaximum, Math.max(countMinimum, Number(event.target.value) || countMinimum))) })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.eco, onChange: (event) => setBulkFields((value2) => ({ ...value2, eco: event.target.checked })) }),
-          "Eco",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkEco ? "on" : "off", disabled: !bulkFields.eco, onChange: (event) => setBulkEco(event.target.value === "on"), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "on", children: "\u5F00\u542F" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "off", children: "\u5173\u95ED" })
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.background, onChange: (event) => setBulkFields((value2) => ({ ...value2, background: event.target.checked })) }),
-          "\u80CC\u666F",
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkBackground, disabled: !bulkFields.background || !!busy, onChange: (event) => setBulkBackground(event.target.value), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "keep", children: "\u4FDD\u6301\u539F\u6837" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "transparent", children: "\u900F\u660E" }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "opaque", children: "\u4E0D\u900F\u660E" })
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", disabled: !!busy, onClick: () => void applyBulk(), children: [
-          "\u5E94\u7528\u5230 ",
-          selected.length,
-          " \u884C"
-        ] })
-      ] }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { className: "ppd-batch-feedback is-error", role: "alert", children: error51 }),
-      notice && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { className: "ppd-batch-feedback", role: "status", children: notice }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-table", role: "table", "aria-label": "\u6279\u91CF\u751F\u56FE\u4EFB\u52A1", children: [
-        batch?.items.map((item, index) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("article", { className: "ppd-batch-row", role: "row", "data-batch-item": item.id, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-select", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: item.selected, disabled: !editable || !!busy, onChange: (event) => void patchItems([item.id], { selected: event.target.checked }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: index + 1 })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "ppd-batch-reference-grid", "aria-label": `\u7B2C ${index + 1} \u884C\u53C2\u8003\u56FE`, children: Array.from({ length: 4 }, (_, slot) => {
-            const reference = item.references[slot];
-            const preview = reference ? previewOf(reference) : void 0;
-            return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: `ppd-batch-reference ${reference ? "has-image" : ""}`, children: reference ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
-              preview ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("img", { src: preview, alt: reference.filename || `\u53C2\u8003\u56FE ${slot + 1}` }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: slot + 1 }),
-              isPendingReferenceId(reference.id) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("b", { className: "ppd-batch-reference-pending", children: "\u4E0A\u4F20\u4E2D" }),
-              /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { title: "\u66FF\u6362", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "file", accept: "image/jpeg,image/png,image/webp", disabled: !editable || !!busy, onChange: (event) => {
-                  const file2 = event.target.files?.[0];
-                  if (file2) void editReference(item, slot, file2);
-                } }),
-                "\u21BB"
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "aria-label": `\u5220\u9664\u7B2C ${slot + 1} \u5F20\u53C2\u8003\u56FE`, disabled: !editable || !!busy, onClick: () => void patchReferences(item, item.references.filter((_2, position) => position !== slot)), children: "\xD7" })
-            ] }) : slot === item.references.length ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { title: "\u6DFB\u52A0\u53C2\u8003\u56FE", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "file", accept: "image/jpeg,image/png,image/webp", disabled: !editable || !!busy, onChange: (event) => {
-                const file2 = event.target.files?.[0];
-                if (file2) void editReference(item, slot, file2);
-              } }),
-              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("b", { children: "+" })
-            ] }) : null }, slot);
-          }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-main", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-              "textarea",
-              {
-                "aria-label": `\u7B2C ${index + 1} \u884C\u63D0\u793A\u8BCD`,
-                defaultValue: promptDrafts.current.get(item.id) ?? item.prompt,
-                disabled: !editable || !!busy,
-                onChange: (event) => promptDrafts.current.set(item.id, event.target.value),
-                onBlur: () => void savePrompt(item)
-              },
-              `${item.id}:${item.prompt}`
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-row-controls", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BatchSkillPicker, { value: skillKeyOf(item), skills, disabled: !editable || !!busy, label: `\u7B2C ${index + 1} \u884C Skill`, onChange: (key) => void chooseSkill([item.id], key) }),
-              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
-                RowParameters,
-                {
-                  item,
-                  models,
-                  disabled: !editable || !!busy,
-                  countMinimum,
-                  countMaximum,
-                  patch: (args, replaceArgs) => void patchItems([item.id], { args, ...replaceArgs ? { replaceArgs: true } : {} })
-                }
-              )
-            ] }),
-            (item.uploadError || item.errorCode) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("small", { className: "ppd-batch-row-error", children: item.uploadError || `\u4EFB\u52A1\u5931\u8D25\uFF1A${item.errorCode}` })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-result", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: `is-${item.status}`, children: batchStatusLabel(item.status) }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("strong", { children: itemQuote(item) === void 0 ? "\u79EF\u5206\u672A\u6838\u9A8C" : `${itemQuote(item)} \u79EF\u5206` }),
-            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "aria-label": `\u5220\u9664\u7B2C ${index + 1} \u884C`, disabled: !editable || !!busy || !batch, onClick: () => void removeRows([item.id]), children: "\u5220\u9664" })
-          ] })
-        ] }, item.id)),
-        !batch?.items.length && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-empty", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("strong", { children: "\u8FD8\u6CA1\u6709\u6279\u91CF\u4EFB\u52A1" }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u53EF\u4ECE\u751F\u56FE\u6846\u52A0\u5165\u5F53\u524D\u8BBE\u7F6E\uFF0C\u6216\u6279\u91CF\u4E0A\u4F20\u56FE\u7247\u5EFA\u7ACB\u591A\u884C\u3002" })
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("footer", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("strong", { children: [
-            totals.rows,
-            " \u4E2A\u5DF2\u9009\u4EFB\u52A1"
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { children: [
-            "\u9884\u8BA1 ",
-            totals.outputs,
-            " \u5F20 \xB7 ",
-            totals.credits === void 0 ? "\u79EF\u5206\u672A\u5168\u90E8\u6838\u9A8C" : `${totals.credits} \u79EF\u5206`
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
-          batch?.canStop && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-danger", disabled: !!busy, onClick: () => void write("generation.batch.stop", { batchId: batch.batchId }), children: "\u505C\u6B62\u5269\u4F59" }),
-          batch && ["blocked", "partial", "stopped"].includes(batch.status) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void reconcile(), children: "\u91CD\u65B0\u6838\u5BF9" }),
-          batch && ["completed", "partial", "stopped"].includes(batch.status) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-danger", disabled: !!busy, onClick: requestArchive, children: archiveConfirm ? "\u518D\u6B21\u70B9\u51FB\u6E05\u9664\u8FD9\u6279\u4EFB\u52A1" : "\u6E05\u9664\u8FD9\u6279\u4EFB\u52A1" }),
-          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-primary", disabled: !selected.length || !!busy || !batch || !["draft", "quoted"].includes(batch.status) || pendingReferences > 0, title: pendingReferences ? `\u8FD8\u6709 ${pendingReferences} \u5F20\u53C2\u8003\u56FE\u6B63\u5728\u4E0A\u4F20` : void 0, onClick: () => void confirmBatch(), children: busy === "confirm" ? "\u6B63\u5728\u6838\u9A8C\u2026" : batch?.status === "quoted" && !quoteExpired ? "\u786E\u8BA4\u5E76\u751F\u6210" : quoteExpired ? "\u91CD\u65B0\u6838\u9A8C\u79EF\u5206" : pendingReferences ? `\u7B49\u5F85 ${pendingReferences} \u5F20\u53C2\u8003\u56FE\u4E0A\u4F20` : "\u6838\u9A8C\u79EF\u5206\u5E76\u786E\u8BA4" })
-        ] })
-      ] })
-    ] }) }), document.body)
-  ] });
-}
-
-// plugins/podplo-dsh/src/skill-browser.tsx
-var import_react5 = require("react");
-var import_react_dom2 = require("react-dom");
-
-// plugins/podplo-dsh/src/skill-browser-state.ts
-var text = (value2) => typeof value2 === "string" ? value2 : "";
-var strings = (value2) => Array.isArray(value2) ? value2.filter((row) => typeof row === "string" && !!row) : [];
-var normalizeSkillCategories = (value2) => {
-  const seen = /* @__PURE__ */ new Set();
-  const categories = [];
-  for (const row of Array.isArray(value2) ? value2 : []) {
-    const id = typeof row === "string" ? row : text(row?.id);
-    const label = typeof row === "string" ? row : text(row?.label) || id;
-    if (!id || seen.has(id)) continue;
-    seen.add(id);
-    categories.push({ id, label });
-  }
-  return categories;
-};
-var publicChoices = (rows, families = {}) => {
-  const cover = (row) => text(row?.coverImage) || text(row?.thumbnailUrl) || text(row?.coverUrl) || text(row?.imageUrl) || void 0;
-  const direct = rows.filter((row) => row.executable === true && row.kind !== "family").map((row) => ({
-    id: `library:${row.executionSlug || row.slug}`,
-    slug: row.executionSlug || row.slug,
-    title: row.title,
-    version: row.version || "\u5F53\u524D\u7248\u672C",
-    source: "library",
-    kind: "skill",
-    available: true,
-    coverUrl: cover(row),
-    primaryCategory: text(row.primaryCategory) || void 0,
-    categories: strings(row.categories)
-  }));
-  const familyChoices = rows.filter((row) => row.kind === "family").map((row) => ({
-    id: `family:${row.slug}`,
-    slug: row.slug,
-    title: row.title,
-    version: row.version || "\u5F53\u524D\u7248\u672C",
-    source: "library",
-    kind: "family",
-    available: true,
-    coverUrl: cover(row),
-    primaryCategory: text(row.primaryCategory) || void 0,
-    categories: strings(row.categories)
-  }));
-  const members = Object.values(families).flatMap((data) => (Array.isArray(data?.members) ? data.members : []).filter((member) => member.executable === true).map((member) => ({
-    id: `library:${member.executionSlug || member.slug}`,
-    slug: member.executionSlug || member.slug,
-    title: member.title,
-    version: member.version || "\u5F53\u524D\u7248\u672C",
-    family: data.title,
-    source: "library",
-    kind: "skill",
-    available: true,
-    coverUrl: cover(member),
-    primaryCategory: text(member.primaryCategory) || void 0,
-    categories: strings(member.categories)
-  })));
-  return [...new Map([...direct, ...familyChoices, ...members].map((row) => [row.id, row])).values()];
-};
-var personalChoices = (rows) => rows.map((row) => {
-  const references = strings(row.referenceAssetIds);
-  return {
-    id: `personal:${row.id}`,
-    generationId: row.id,
-    title: row.name,
-    version: row.updatedAt,
-    source: "personal",
-    kind: "skill",
-    available: true,
-    referenceCount: references.length,
-    previewAssetId: references[0]
-  };
-});
-var dnaTitle = (description) => description.split(/\r?\n/u).map((value2) => value2.trim()).find(Boolean)?.slice(0, 80) || "\u6211\u7684 DNA";
-var dnaChoices = (rows) => rows.flatMap((row) => {
-  const id = text(row?.id), coverAssetId = text(row?.coverAssetId);
-  if (!id || !coverAssetId) return [];
-  const description = text(row?.description).slice(0, 1e3);
-  return [{
-    id: `dna:${id}`,
-    dnaId: id,
-    title: dnaTitle(description),
-    description,
-    version: text(row?.updatedAt),
-    source: "dna",
-    kind: "skill",
-    available: true,
-    previewAssetId: coverAssetId
-  }];
-});
-var directDnaChoice = (id, description) => {
-  const safeDescription = text(description).slice(0, 1e3);
-  return {
-    id: `dna:${id}`,
-    dnaId: id,
-    title: dnaTitle(safeDescription),
-    description: safeDescription,
-    version: "",
-    source: "dna",
-    kind: "skill",
-    available: true
-  };
-};
-var directSkillChoice = (id, title, coverUrl) => {
-  const library = id.startsWith("library:");
-  const target2 = id.slice(library ? "library:".length : "personal:".length);
-  return {
-    id,
-    title: title || target2,
-    slug: library ? target2 : void 0,
-    generationId: library ? void 0 : target2,
-    version: "",
-    kind: "skill",
-    source: library ? "library" : "personal",
-    coverUrl,
-    available: true
-  };
-};
-var favoriteChoices = (rows, catalogRows, folders = []) => {
-  const catalog = new Map(catalogRows.filter((row) => row && typeof row.slug === "string").map((row) => [row.slug, row]));
-  const folderName = new Map(folders.map((folder) => [folder.id, folder.name]));
-  const choices = rows.filter((row) => row?.type === "skill").flatMap((row) => {
-    const original = catalog.get(text(row.id));
-    if (!original) return [];
-    const family = original.kind === "family";
-    const executeSlug = text(original.executionSlug) || text(original.slug);
-    return [{
-      id: family ? `family:${original.slug}` : `library:${executeSlug}`,
-      slug: family ? original.slug : executeSlug,
-      title: text(original.title) || text(row.label) || text(row.id),
-      version: text(original.version) || "\u5F53\u524D\u7248\u672C",
-      source: "library",
-      kind: family ? "family" : "skill",
-      available: family || original.executable === true,
-      coverUrl: text(row.imageUrl) || text(original.coverImage) || void 0,
-      primaryCategory: text(original.primaryCategory) || void 0,
-      categories: strings(original.categories),
-      note: text(row.note) || void 0,
-      folderName: row.folderId ? folderName.get(text(row.folderId)) : void 0
-    }];
-  });
-  return [...new Map(choices.map((row) => [row.id, row])).values()];
-};
-var filterSkillChoices = (rows, filters) => {
-  const query = text(filters.query).trim().toLocaleLowerCase();
-  const category = text(filters.category);
-  return rows.filter((row) => {
-    if (category && row.primaryCategory !== category) return false;
-    if (!query) return true;
-    return [row.title, row.slug, row.note, row.folderName, row.family].some((value2) => !!value2 && value2.toLocaleLowerCase().includes(query));
-  });
-};
-var skillChoiceSubtitle = (row, categoryLabels = {}) => {
-  if (row.kind === "family") return row.family || "Skill \u65CF \xB7 \u5C55\u5F00\u6210\u5458";
-  if (row.folderName) return `\u6536\u85CF \xB7 ${row.folderName}`;
-  if (row.note) return `\u6536\u85CF \xB7 ${row.note}`;
-  if (row.source === "dna") return "\u6211\u7684 DNA";
-  if (row.source === "personal") return row.referenceCount ? `\u6211\u7684 \xB7 ${row.referenceCount} \u5F20\u53C2\u8003\u7D20\u6750` : "\u6211\u7684 Skill";
-  if (row.primaryCategory) return categoryLabels[row.primaryCategory] || row.primaryCategory;
-  return row.family || "Skill \u5E93";
-};
-
-// plugins/podplo-dsh/src/skill-browser.tsx
-var import_jsx_runtime6 = require("react/jsx-runtime");
-var errorText = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-var tabLabels = { library: "Skill \u5E93", favorite: "\u6211\u7684\u6536\u85CF", personal: "\u6211\u521B\u5EFA\u7684", dna: "\u6211\u7684 DNA" };
-function PersonalCover({ assetId, request, revision }) {
-  const preview = useDeferredPreview({
-    requestIdentity: request,
-    resourceKey: `private-asset:${assetId}`,
-    revision,
-    cachePolicy: "ttl",
-    ttlMs: 15e3,
-    load: async (signal) => {
-      const { data } = await request("assets.detail", { id: assetId });
-      if (signal.aborted) throw new Error("PREVIEW_CANCELLED");
-      if (typeof data?.previewUrl === "string" && data.previewUrl) return data.previewUrl;
-      throw new Error("PREVIEW_UNAVAILABLE");
-    }
-  });
-  const ref = (0, import_react5.useCallback)((node) => preview.ref(node), [preview.ref]);
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-cover", ref, "data-skill-cover": preview.value ? "ready" : preview.status, children: preview.value ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("img", { src: preview.value, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-fallback", "aria-hidden": "true", children: "\u25A6" }) });
-}
-function SkillCard({ choice, selected, request, previewRevision, categoryLabels, onChoose }) {
-  const disabled = choice.available === false;
-  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-    "button",
-    {
-      type: "button",
-      role: "option",
-      "aria-selected": selected,
-      "data-skill-id": choice.id,
-      className: `ppd-skill-card ${selected ? "is-selected" : ""}`,
-      disabled,
-      title: choice.title,
-      onClick: () => onChoose(choice),
-      children: [
-        (choice.source === "personal" || choice.source === "dna") && choice.previewAssetId ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(PersonalCover, { assetId: choice.previewAssetId, request, revision: previewRevision }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-cover", "data-skill-cover": choice.coverUrl ? "ready" : "empty", children: choice.coverUrl ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("img", { src: choice.coverUrl, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-fallback", "aria-hidden": "true", children: choice.kind === "family" ? "\u25A7" : "\u2726" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "ppd-skill-card-copy", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("strong", { children: choice.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("small", { children: disabled ? "\u5F53\u524D\u4E0D\u53EF\u7528" : skillChoiceSubtitle(choice, categoryLabels) })
-        ] })
-      ]
-    }
-  );
-}
-function SkillBrowser({ open, onClose, value: value2, choices, categories, favorites, personal, dna, loadFamily, onSelect, request, previewRevision, categoryLabels = {} }) {
-  const [tab, setTab] = (0, import_react5.useState)("library");
-  const [query, setQuery] = (0, import_react5.useState)("");
-  const [category, setCategory] = (0, import_react5.useState)("");
-  const [family, setFamily] = (0, import_react5.useState)();
-  const searchRef = (0, import_react5.useRef)(null);
-  const previousFocus = (0, import_react5.useRef)(null);
-  (0, import_react5.useEffect)(() => {
-    if (!open) return;
-    previousFocus.current = document.activeElement;
-    setTab("library");
-    setQuery("");
-    setCategory("");
-    setFamily(void 0);
-    const timer = setTimeout(() => searchRef.current?.focus(), 0);
-    return () => {
-      clearTimeout(timer);
-      const target2 = previousFocus.current;
-      previousFocus.current = null;
-      if (target2 && document.contains(target2)) target2.focus();
-    };
-  }, [open]);
-  (0, import_react5.useEffect)(() => {
-    if (!open) return;
-    const dismiss = (event) => {
-      if (event.key === "Escape") {
-        event.stopPropagation();
-        onClose();
-      }
-    };
-    document.addEventListener("keydown", dismiss, true);
-    return () => document.removeEventListener("keydown", dismiss, true);
-  }, [open, onClose]);
-  (0, import_react5.useEffect)(() => {
-    if (open && tab === "favorite" && favorites.rows === void 0 && !favorites.loading && !favorites.error) favorites.onLoad();
-  }, [open, tab, favorites.rows, favorites.loading, favorites.error, favorites.onLoad]);
-  (0, import_react5.useEffect)(() => {
-    if (open && tab === "dna" && dna.rows === void 0 && !dna.loading && !dna.error) dna.onLoad();
-  }, [open, tab, dna.rows, dna.loading, dna.error, dna.onLoad]);
-  (0, import_react5.useEffect)(() => {
-    if (!open || tab !== "personal") return;
-    const timer = setTimeout(() => personal.onSearch(query.trim()), 250);
-    return () => clearTimeout(timer);
-  }, [open, tab, query, personal.onSearch]);
-  const libraryRows = (0, import_react5.useMemo)(() => filterSkillChoices(choices.filter((row) => row.source === "library" && !row.family), { query, category }), [choices, query, category]);
-  const favoriteRows = (0, import_react5.useMemo)(() => filterSkillChoices(favorites.rows ?? [], { query }), [favorites.rows, query]);
-  const personalRows = (0, import_react5.useMemo)(() => filterSkillChoices(personal.rows, { query }), [personal.rows, query]);
-  const dnaRows = (0, import_react5.useMemo)(() => filterSkillChoices(dna.rows ?? [], { query }), [dna.rows, query]);
-  async function openFamily(choice) {
-    const slug = choice.slug;
-    if (!slug) return;
-    setFamily({ choice, members: [], loading: true, error: "" });
-    try {
-      const members = await loadFamily(slug);
-      setFamily((current) => current && current.choice.slug === slug ? { ...current, members, loading: false } : current);
-    } catch (error51) {
-      setFamily((current) => current && current.choice.slug === slug ? { ...current, loading: false, error: errorText(error51) } : current);
-    }
-  }
-  function choose(choice) {
-    if (choice.kind === "family") {
-      void openFamily(choice);
-      return;
-    }
-    if (choice.available === false) return;
-    onSelect(choice);
-  }
-  if (!open || typeof document === "undefined") return null;
-  const switchTab = (next) => {
-    setTab(next);
-    setQuery("");
-  };
-  const rows = family ? [] : tab === "library" ? libraryRows : tab === "favorite" ? favoriteRows : tab === "personal" ? personalRows : dnaRows;
-  const status = tab === "favorite" ? favorites.rows === void 0 && favorites.loading ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6536\u85CF\u2026" }) : favorites.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
-    favorites.error,
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => favorites.onLoad(), children: "\u91CD\u8BD5" })
-  ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query ? "\u6CA1\u6709\u5339\u914D\u7684\u6536\u85CF\u3002" : "\u6536\u85CF\u5939\u91CC\u8FD8\u6CA1\u6709 Skill\u3002" }) : null : tab === "personal" ? personal.loading && !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6211\u7684 Skill\u2026" }) : personal.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
-    personal.error,
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => personal.onSearch(query.trim()), children: "\u91CD\u8BD5" })
-  ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "\u8FD8\u6CA1\u6709\u521B\u5EFA\u8FC7 Skill\u3002" }) : null : tab === "dna" ? dna.rows === void 0 && dna.loading ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6211\u7684 DNA\u2026" }) : dna.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
-    dna.error,
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => dna.onLoad(), children: "\u91CD\u8BD5" })
-  ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query ? "\u6CA1\u6709\u5339\u914D\u7684 DNA\u3002" : "\u8FD8\u6CA1\u6709\u53EF\u7528\u7684 DNA\u3002" }) : null : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query || category ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "\u6682\u65F6\u6CA1\u6709\u53EF\u7528\u7684 Skill\u3002" }) : null;
-  const footer = family ? null : tab === "favorite" && rows.length > 0 && favorites.hasMore ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-more", disabled: favorites.loadingMore, onClick: () => favorites.onLoadMore(), children: favorites.loadingMore ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }) : tab === "personal" && rows.length > 0 && personal.hasMore ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-more", disabled: personal.loadingMore, onClick: () => personal.onLoadMore(), children: personal.loadingMore ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A" }) : tab === "dna" && rows.length > 0 && dna.hasMore ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-more", disabled: dna.loadingMore, onClick: () => dna.onLoadMore(), children: dna.loadingMore ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A DNA" }) : null;
-  return (0, import_react_dom2.createPortal)(
-    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "ppd-skill-browser-backdrop", role: "presentation", onMouseDown: (event) => {
-      if (event.target === event.currentTarget) onClose();
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("section", { className: "ppd-skill-browser", role: "dialog", "aria-modal": "true", "aria-label": "\u9009\u62E9 Skill \u6216 DNA", "data-skill-browser": true, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("header", { className: "ppd-skill-browser-head", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("strong", { children: family ? family.choice.title : "\u9009\u62E9 Skill \u6216 DNA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-close", "aria-label": "\u5173\u95ED Skill \u9009\u62E9\u5668", onClick: onClose, children: "\xD7" })
-      ] }),
-      family ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_jsx_runtime6.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "ppd-skill-browser-family", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-back", "aria-label": "\u8FD4\u56DE Skill \u5217\u8868", onClick: () => setFamily(void 0), children: "\u2190 \u8FD4\u56DE" }),
-        family.loading ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6210\u5458\u2026" }) : family.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
-          family.error,
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void openFamily(family.choice), children: "\u91CD\u8BD5" })
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "ppd-skill-browser-list", role: "listbox", "aria-label": `${family.choice.title} \u6210\u5458`, children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(SkillCard, { choice: member, selected: member.id === value2, request, previewRevision, categoryLabels, onChoose: choose }, member.id)) })
-      ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "ppd-skill-browser-search", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          "input",
-          {
-            ref: searchRef,
-            value: query,
-            "aria-label": tab === "dna" ? "\u641C\u7D22 DNA" : "\u641C\u7D22 Skill",
-            placeholder: tab === "favorite" ? "\u641C\u7D22\u6536\u85CF\u3001\u5907\u6CE8\u6216\u6587\u4EF6\u5939" : tab === "dna" ? "\u641C\u7D22 DNA \u7B80\u4ECB" : "\u641C\u7D22 Skill",
-            onChange: (event) => setQuery(event.target.value)
-          }
-        ) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("nav", { className: "ppd-tabs ppd-skill-browser-tabs", role: "tablist", "aria-label": "Skill \u5206\u7EC4", children: Object.keys(tabLabels).map((key) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          "button",
-          {
-            type: "button",
-            role: "tab",
-            className: tab === key ? "is-active" : "",
-            "aria-selected": tab === key,
-            onClick: () => switchTab(key),
-            children: tabLabels[key]
-          },
-          key
-        )) }),
-        tab === "library" && categories.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "ppd-skill-browser-categories", role: "group", "aria-label": "Skill \u5206\u7C7B", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: !category ? "is-selected" : "", "aria-pressed": !category, onClick: () => setCategory(""), children: "\u5168\u90E8" }),
-          categories.map((item) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-            "button",
-            {
-              type: "button",
-              className: category === item.id ? "is-selected" : "",
-              "aria-pressed": category === item.id,
-              onClick: () => setCategory(item.id),
-              children: item.label
-            },
-            item.id
-          ))
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "ppd-skill-browser-list", role: "listbox", "aria-label": `${tabLabels[tab]}\u5217\u8868`, children: [
-          rows.map((row) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(SkillCard, { choice: row, selected: row.id === value2, request, previewRevision, categoryLabels, onChoose: choose }, row.id)),
-          status
-        ] }),
-        footer
-      ] })
-    ] }) }),
-    document.body
-  );
-}
-
-// plugins/podplo-dsh/src/generation-panel.tsx
-var import_jsx_runtime7 = require("react/jsx-runtime");
-var imageTypes = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
-var errorText2 = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-var uuid = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
-var stringList = (value2) => Array.isArray(value2) ? value2.filter((item) => typeof item === "string" && !!item) : [];
-var modelId = (model) => String(model.id ?? model.modelId ?? "");
-var modelName = (model) => String(model.name ?? model.label ?? model.modelName ?? modelId(model));
-var modelDisplayOrder = new Map([
-  "GPT Image 2.5 Flare",
-  "GPT Image 2.5 Sunburst",
-  "GPT Image 2",
-  "GPT Image 1.5"
-].map((name, index) => [name.toLowerCase(), index]));
-var normalizedChoice = (options, current, fallback) => {
-  if (options.includes(current)) return current;
-  return typeof fallback === "string" && options.includes(fallback) ? fallback : options[0] ?? "";
-};
-var capabilityModels = (value2) => Array.isArray(value2?.models) ? value2.models : [];
-var availableModel = (value2, preferred) => {
-  const rows = capabilityModels(value2);
-  return rows.find((row) => modelId(row) === preferred && row.availableForCurrentPlan !== false) ?? rows.find((row) => row.availableForCurrentPlan !== false) ?? rows[0];
-};
-var lowestResolution = (values) => {
-  const size = (value2) => {
-    const kilopixels = /^(\d+(?:\.\d+)?)k$/i.exec(value2);
-    if (kilopixels) return Number(kilopixels[1]) * 1024;
-    const pixels = /^(\d+)(?:\s*[x×]\s*(\d+))?(?:px)?$/i.exec(value2);
-    return pixels ? Math.max(Number(pixels[1]), Number(pixels[2] ?? pixels[1])) : Infinity;
-  };
-  return [...values].sort((left, right) => size(left) - size(right))[0] ?? "";
-};
-var exactOperation = (value2, intentId, planVersion) => value2 && typeof value2.operationId === "string" && typeof value2.approvalId === "string" && value2.intentId === intentId && value2.planVersion === planVersion && typeof value2.status === "string" && value2.quote && Number.isFinite(Number(value2.quote.totalCredits)) && Number.isFinite(Number(value2.quote.outputCount)) && typeof value2.quote.confirmationText === "string" && typeof value2.quote.expiresAt === "string" ? value2 : void 0;
-var ratioGlyphStyle = (value2) => {
-  if (!value2.includes(":")) return void 0;
-  const [wide, tall] = value2.split(":").map(Number);
-  if (!wide || !tall) return void 0;
-  const scale = Math.min(18 / wide, 16 / tall);
-  return { width: Math.max(5, wide * scale), height: Math.max(5, tall * scale) };
-};
-var dnaDraft = (choice) => choice?.dnaId ? {
-  id: choice.dnaId,
-  title: choice.title,
-  description: choice.description ?? "",
-  coverAssetId: choice.previewAssetId,
-  updatedAt: choice.version
-} : void 0;
-var dnaFromDraft = (value2) => value2 ? {
-  ...directDnaChoice(value2.id, value2.description),
-  title: value2.title || "\u6211\u7684 DNA",
-  version: value2.updatedAt,
-  ...value2.coverAssetId ? { previewAssetId: value2.coverAssetId } : {}
-} : void 0;
-var argsForCapabilities = (caps, selected, values) => {
-  const props = caps?.quoteInputSchema?.properties ?? {};
-  const args = {};
-  const put = (key, value2) => {
-    if (props[key] !== void 0 && value2 !== "" && value2 !== void 0) args[key] = value2;
-  };
-  if (props.prompt !== void 0) args.prompt = values.prompt;
-  put("modelId", values.model);
-  put("referenceAssetIds", values.references);
-  put("ratio", values.ratio.trim());
-  put("count", values.count);
-  if (stringList(selected?.qualities).length) put("quality", values.quality);
-  if (stringList(selected?.resolutions).length) put("resolution", values.resolution);
-  if (stringList(selected?.thinkingLevels).length) put("thinkingLevel", values.thinkingLevel);
-  if (selected?.supportsWebSearch === true) put("webSearch", values.booleans.webSearch === true);
-  if (selected?.supportsImageSearch === true) put("imageSearch", values.booleans.imageSearch === true);
-  if (Number.isInteger(Number(selected?.ecoMaximumReferenceImages))) put("ecoMode", values.booleans.ecoMode === true);
-  Object.assign(args, backgroundArgs(props, selected, values.transparent));
-  return args;
-};
-function GenerationPanel({ request, onChanged, onSubmission, onVerification, onOperationId, onSelectionConsumed, nativeSessionId, accountKey, placement = "inline", selection, revealSequence = 0 }) {
-  const [capabilities, setCapabilities] = (0, import_react6.useState)();
-  const [skills, setSkills] = (0, import_react6.useState)([]);
-  const [skillId, setSkillId] = (0, import_react6.useState)("");
-  const [skillLoading, setSkillLoading] = (0, import_react6.useState)("");
-  const [skillError, setSkillError] = (0, import_react6.useState)("");
-  const [skillCategories, setSkillCategories] = (0, import_react6.useState)([]);
-  const [publicCatalog, setPublicCatalog] = (0, import_react6.useState)([]);
-  const [personalSkillRows, setPersonalSkillRows] = (0, import_react6.useState)([]);
-  const [personalSkillCursor, setPersonalSkillCursor] = (0, import_react6.useState)(null);
-  const [personalSearchQuery, setPersonalSearchQuery] = (0, import_react6.useState)("");
-  const [personalSearch, setPersonalSearch] = (0, import_react6.useState)({ rows: [], cursor: null });
-  const [personalSkillBusy, setPersonalSkillBusy] = (0, import_react6.useState)(false);
-  const [personalSkillLoadingMore, setPersonalSkillLoadingMore] = (0, import_react6.useState)(false);
-  const [personalSkillError, setPersonalSkillError] = (0, import_react6.useState)("");
-  const [favoriteSkills, setFavoriteSkills] = (0, import_react6.useState)();
-  const [favoriteSkillFolders, setFavoriteSkillFolders] = (0, import_react6.useState)([]);
-  const [favoriteSkillCursor, setFavoriteSkillCursor] = (0, import_react6.useState)(null);
-  const [favoriteSkillBusy, setFavoriteSkillBusy] = (0, import_react6.useState)(false);
-  const [favoriteSkillLoadingMore, setFavoriteSkillLoadingMore] = (0, import_react6.useState)(false);
-  const [favoriteSkillError, setFavoriteSkillError] = (0, import_react6.useState)("");
-  const [dnaRows, setDnaRows] = (0, import_react6.useState)();
-  const [dnaCursor, setDnaCursor] = (0, import_react6.useState)(null);
-  const [dnaBusy, setDnaBusy] = (0, import_react6.useState)(false);
-  const [dnaLoadingMore, setDnaLoadingMore] = (0, import_react6.useState)(false);
-  const [dnaError, setDnaError] = (0, import_react6.useState)("");
-  const [selectedDna, setSelectedDna] = (0, import_react6.useState)();
-  const [skillBrowserOpen, setSkillBrowserOpen] = (0, import_react6.useState)(false);
-  const [assets, setAssets] = (0, import_react6.useState)([]);
-  const [assetCursor, setAssetCursor] = (0, import_react6.useState)(null);
-  const [references, setReferences] = (0, import_react6.useState)([]);
-  const [uploadPreviews, setUploadPreviews] = (0, import_react6.useState)([]);
-  const [prompt, setPrompt] = (0, import_react6.useState)("");
-  const [model, setModel] = (0, import_react6.useState)("");
-  const [ratio, setRatio] = (0, import_react6.useState)("1:1");
-  const [quality, setQuality] = (0, import_react6.useState)("");
-  const [resolution, setResolution] = (0, import_react6.useState)("");
-  const [thinkingLevel, setThinkingLevel] = (0, import_react6.useState)("");
-  const [count, setCount] = (0, import_react6.useState)(1);
-  const [transparent, setTransparent] = (0, import_react6.useState)(false);
-  const [booleans, setBooleans] = (0, import_react6.useState)({});
-  const [intentId, setIntentId] = (0, import_react6.useState)(uuid);
-  const [planVersion, setPlanVersion] = (0, import_react6.useState)(1);
-  const [operation, setOperation] = (0, import_react6.useState)();
-  const [busy, setBusy] = (0, import_react6.useState)("");
-  const [loading, setLoading] = (0, import_react6.useState)(true);
-  const [error51, setError] = (0, import_react6.useState)("");
-  const [notice, setNotice] = (0, import_react6.useState)("");
-  const [priceVerification, setPriceVerification] = (0, import_react6.useState)("");
-  const approving = (0, import_react6.useRef)(false);
-  const [approvalAttempted, setApprovalAttempted] = (0, import_react6.useState)(false);
-  const [uploadWarning, setUploadWarning] = (0, import_react6.useState)("");
-  const [uploadProgress, setUploadProgress] = (0, import_react6.useState)("");
-  const uploading = (0, import_react6.useRef)(false);
-  const [composerFocused, setComposerFocused] = (0, import_react6.useState)(false);
-  const [draftHydrated, setDraftHydrated] = (0, import_react6.useState)(false);
-  const [floatingOpen, setFloatingOpen] = (0, import_react6.useState)(false);
-  const uploadInput = (0, import_react6.useRef)(null);
-  const preparing = (0, import_react6.useRef)(false);
-  const mounted = (0, import_react6.useRef)(true);
-  const ownerId = (0, import_react6.useRef)("");
-  const loadSequence = (0, import_react6.useRef)(0);
-  const skillSequence = (0, import_react6.useRef)(0);
-  const prepareSequence = (0, import_react6.useRef)(0);
-  const draftReady = (0, import_react6.useRef)(false);
-  const restoredSkillId = (0, import_react6.useRef)("");
-  const cacheRevision = (0, import_react6.useRef)(generationBootstrapCache.revision());
-  const currentIntent = (0, import_react6.useRef)(intentId);
-  const currentPlanVersion = (0, import_react6.useRef)(planVersion);
-  currentIntent.current = intentId;
-  currentPlanVersion.current = planVersion;
-  const requestContext = (0, import_react6.useRef)({ request, nativeSessionId, accountKey });
-  requestContext.current = { request, nativeSessionId, accountKey };
-  const selectedSkillId = (0, import_react6.useRef)(skillId);
-  selectedSkillId.current = skillId;
-  const selections = (0, import_react6.useRef)({ model, ratio, quality, resolution, thinkingLevel, booleans, transparent });
-  selections.current = { model, ratio, quality, resolution, thinkingLevel, booleans, transparent };
-  const floatingShell = (0, import_react6.useRef)(null);
-  const consumedSelection = (0, import_react6.useRef)(0);
-  const schema = capabilities?.quoteInputSchema;
-  const properties = schema?.properties ?? {};
-  const models = (0, import_react6.useMemo)(() => [...capabilityModels(capabilities)].sort((a, b) => (modelDisplayOrder.get(modelName(a).toLowerCase()) ?? modelDisplayOrder.size) - (modelDisplayOrder.get(modelName(b).toLowerCase()) ?? modelDisplayOrder.size)), [capabilities]);
-  const selectedModel = models.find((row) => modelId(row) === model);
-  const modelRatios = stringList(selectedModel?.ratios);
-  const modelQualities = stringList(selectedModel?.qualities);
-  const modelResolutions = stringList(selectedModel?.resolutions);
-  const modelThinkingLevels = stringList(selectedModel?.thinkingLevels);
-  const supportsWebSearch = properties.webSearch?.type === "boolean" && selectedModel?.supportsWebSearch === true;
-  const supportsImageSearch = properties.imageSearch?.type === "boolean" && selectedModel?.supportsImageSearch === true;
-  const supportsEcoMode = properties.ecoMode?.type === "boolean" && Number.isInteger(Number(selectedModel?.ecoMaximumReferenceImages));
-  const transparentOption = transparentControl(properties, selectedModel);
-  const transparentKey = transparentOption?.key;
-  const supportsTransparent = !!transparentOption;
-  const selectedSkill = skills.find((row) => row.id === skillId);
-  const selectedModelLabel = selectedModel ? modelName(selectedModel) : "\u9009\u62E9\u6A21\u578B";
-  const localQuote = (0, import_react6.useMemo)(() => selectedDna ? void 0 : calculateLocalGenerationQuote(selectedModel, {
-    prompt,
-    quality,
-    resolution,
-    count,
-    referenceAssetIds: references,
-    presetReferenceAssetIds: selectedSkill?.source === "personal" ? selectedSkill.detail?.referenceAssetIds : void 0,
-    ecoMode: booleans.ecoMode === true,
-    webSearch: booleans.webSearch === true,
-    imageSearch: booleans.imageSearch === true
-  }), [
-    booleans.ecoMode,
-    booleans.imageSearch,
-    booleans.webSearch,
-    count,
-    prompt,
-    quality,
-    references,
-    resolution,
-    selectedDna,
-    selectedModel,
-    selectedSkill?.detail?.referenceAssetIds,
-    selectedSkill?.source
-  ]);
-  const batchSnapshot = (0, import_react6.useMemo)(() => ({
-    prompt,
-    skill: !selectedDna && selectedSkill?.generationId ? {
-      id: selectedSkill.generationId,
-      title: selectedSkill.title,
-      version: selectedSkill.version,
-      pricingReferenceCount: Array.isArray(selectedSkill.detail?.referenceAssetIds) ? selectedSkill.detail.referenceAssetIds.length : void 0
-    } : null,
-    args: argsForCapabilities(capabilities, selectedModel, {
-      prompt,
-      model,
-      ratio,
-      quality,
-      resolution,
-      thinkingLevel,
-      count,
-      references: [...references],
-      booleans: { ...booleans },
-      transparent
-    })
-  }), [
-    booleans,
-    capabilities,
-    count,
-    model,
-    prompt,
-    quality,
-    ratio,
-    references,
-    resolution,
-    selectedDna,
-    selectedModel,
-    selectedSkill?.detail?.referenceAssetIds,
-    selectedSkill?.generationId,
-    selectedSkill?.title,
-    selectedSkill?.version,
-    thinkingLevel,
-    transparent
-  ]);
-  const batchSkills = (0, import_react6.useMemo)(() => skills.filter((row) => row.kind !== "family").map((row) => ({
-    key: row.id,
-    id: row.generationId ?? "",
-    title: row.title,
-    version: row.version,
-    pricingReferenceCount: Array.isArray(row.detail?.referenceAssetIds) ? row.detail.referenceAssetIds.length : void 0,
-    available: row.available
-  })), [skills]);
-  const pendingUploadCount = uploadPreviews.filter((row) => row.status !== "failed").length;
-  const uploadFeedback = uploadWarning || uploadPreviews.filter((row) => row.status === "failed").map((row) => `${row.filename}\uFF1A${row.message || "\u4E0A\u4F20\u672A\u5B8C\u6210"}`).join("\uFF1B");
-  const visibleUploadProgress = uploadProgress || (pendingUploadCount ? `\u6B63\u5728\u4E0A\u4F20\u5904\u7406\u4E2D ${pendingUploadCount} \u5F20\u2026` : "");
-  const referenceLimit = (0, import_react6.useMemo)(() => {
-    const modelLimit = booleans.ecoMode === true && supportsEcoMode ? Number(selectedModel?.ecoMaximumReferenceImages) : Number(selectedModel?.maximumReferenceImages);
-    const schemaLimit = Number(properties.referenceAssetIds?.maxItems);
-    return Math.min(Number.isFinite(modelLimit) ? modelLimit : Infinity, Number.isFinite(schemaLimit) ? schemaLimit : Infinity);
-  }, [booleans.ecoMode, properties.referenceAssetIds?.maxItems, selectedModel?.ecoMaximumReferenceImages, selectedModel?.maximumReferenceImages, supportsEcoMode]);
-  const countMinimum = Math.max(1, Number(properties.count?.minimum) || 1);
-  const countMaximum = Math.max(countMinimum, Number(properties.count?.maximum) || 4);
-  const invalidate = (0, import_react6.useCallback)(() => {
-    const nextPlanVersion = Math.min(1e6, planVersion + 1);
-    if (ownerId.current && nativeSessionId && generationBootstrapCache.isCurrent(cacheRevision.current)) {
-      generationBootstrapCache.advanceDraftPlan(ownerId.current, nativeSessionId, intentId, planVersion, nextPlanVersion);
-    }
-    currentPlanVersion.current = nextPlanVersion;
-    setPlanVersion(nextPlanVersion);
-    setApprovalAttempted(false);
-    setNotice("");
-    setPriceVerification("");
-    setOperation((previous) => {
-      if (previous?.status === "quoted") void request("generation.cancel", { operationId: previous.operationId }).catch(() => {
-      });
-      return void 0;
-    });
-  }, [intentId, nativeSessionId, planVersion, request]);
-  const change = (setter, value2) => {
-    invalidate();
-    setter(value2);
-  };
-  const changeBoolean = (key, value2) => {
-    invalidate();
-    setBooleans((current) => ({ ...current, [key]: value2 }));
-  };
-  const resetComposer = (0, import_react6.useCallback)(() => {
-    const nextModel = availableModel(capabilities, "");
-    const properties2 = capabilities?.quoteInputSchema?.properties ?? {};
-    const defaults = {};
-    for (const [key, value2] of Object.entries(properties2)) if (value2.type === "boolean" && !/transparent/i.test(key)) defaults[key] = value2.default === true;
-    const nextIntent = uuid();
-    const nextModelId = modelId(nextModel ?? {});
-    const nextRatio = normalizedChoice(stringList(nextModel?.ratios), "", stringList(nextModel?.ratios)[0]);
-    const nextQuality = normalizedChoice(stringList(nextModel?.qualities), "", nextModel?.defaultQuality);
-    const nextResolution = normalizedChoice(stringList(nextModel?.resolutions), "", nextModel?.defaultResolution);
-    const nextThinking = normalizedChoice(stringList(nextModel?.thinkingLevels), "", nextModel?.defaultThinkingLevel);
-    if (ownerId.current && nativeSessionId) {
-      for (const row of generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId))
-        generationBootstrapCache.updateReferenceUpload(ownerId.current, nativeSessionId, row.id, null, cacheRevision.current);
-      generationBootstrapCache.writeDraft(ownerId.current, nativeSessionId, {
-        prompt: "",
-        skillId: "",
-        dna: void 0,
-        model: nextModelId,
-        ratio: nextRatio,
-        quality: nextQuality,
-        resolution: nextResolution,
-        thinkingLevel: nextThinking,
-        count: 1,
-        transparent: false,
-        booleans: defaults,
-        references: [],
-        intentId: nextIntent,
-        planVersion: 1,
-        operation: void 0,
-        approvalAttempted: false
-      });
-    } else for (const row of uploadPreviews) URL.revokeObjectURL(row.previewUrl);
-    setUploadPreviews([]);
-    setUploadProgress("");
-    setUploadWarning("");
-    setPrompt("");
-    setReferences([]);
-    setSkillId("");
-    setSelectedDna(void 0);
-    restoredSkillId.current = "";
-    setSkillBrowserOpen(false);
-    setModel(nextModelId);
-    setRatio(nextRatio);
-    setQuality(nextQuality);
-    setResolution(nextResolution);
-    setThinkingLevel(nextThinking);
-    setBooleans(defaults);
-    setCount(1);
-    setTransparent(false);
-    setOperation(void 0);
-    setApprovalAttempted(false);
-    setIntentId(nextIntent);
-    setPlanVersion(1);
-    setError("");
-    setNotice("");
-    setPriceVerification("");
-  }, [capabilities, nativeSessionId, uploadPreviews]);
-  const loadAssets = (0, import_react6.useCallback)(async (append = false) => {
-    const { data } = await request("assets.list", { limit: 50, ...append && assetCursor ? { cursor: assetCursor } : {} });
-    const rows = (Array.isArray(data?.items) ? data.items : []).filter((row) => row.status === "ready");
-    const nextCursor = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null;
-    setAssets((current) => {
-      const next = append ? [...new Map([...current, ...rows].map((row) => [row.id, row])).values()] : rows;
-      const cached2 = ownerId.current ? generationBootstrapCache.update(ownerId.current, { assets: next, assetCursor: nextCursor }) : void 0;
-      return cached2 ? cached2.assets : next;
-    });
-    setAssetCursor(nextCursor);
-  }, [assetCursor, request]);
-  const applyCapabilities = (0, import_react6.useCallback)((nextCapabilities) => {
-    if (nextCapabilities?.available !== true) {
-      setCapabilities(void 0);
-      return;
-    }
-    setCapabilities(nextCapabilities);
-    const current = selections.current;
-    const nextModel = availableModel(nextCapabilities, current.model);
-    setModel(modelId(nextModel ?? {}));
-    setRatio(normalizedChoice(stringList(nextModel?.ratios), current.ratio, stringList(nextModel?.ratios)[0]));
-    setQuality(normalizedChoice(stringList(nextModel?.qualities), current.quality, nextModel?.defaultQuality));
-    setResolution(normalizedChoice(stringList(nextModel?.resolutions), current.resolution, nextModel?.defaultResolution));
-    setThinkingLevel(normalizedChoice(stringList(nextModel?.thinkingLevels), current.thinkingLevel, nextModel?.defaultThinkingLevel));
-    const nextProperties = nextCapabilities.quoteInputSchema?.properties ?? {};
-    const defaults = {};
-    for (const [key, value2] of Object.entries(nextProperties)) if (value2.type === "boolean" && !/transparent/i.test(key)) defaults[key] = value2.default === true;
-    setBooleans({
-      ...defaults,
-      ...current.booleans,
-      webSearch: nextModel?.supportsWebSearch === true && current.booleans.webSearch === true,
-      imageSearch: nextModel?.supportsImageSearch === true && current.booleans.imageSearch === true,
-      ecoMode: Number.isInteger(Number(nextModel?.ecoMaximumReferenceImages)) && current.booleans.ecoMode === true
-    });
-  }, []);
-  const applyBootstrap = (0, import_react6.useCallback)((value2) => {
-    applyCapabilities(value2.capabilities);
-    const nextSkills = [...personalChoices(value2.personalRows), ...publicChoices(value2.publicRows, value2.families)];
-    setSkills((previous) => {
-      const next = nextSkills.map((row) => {
-        const verified = previous.find((item) => item.id === row.id && item.version === row.version && item.detail);
-        return verified ? { ...row, generationId: verified.generationId, detail: verified.detail } : row;
-      });
-      const selected = previous.find((row) => row.id === selectedSkillId.current);
-      return selected && !next.some((row) => row.id === selected.id) ? [...next, selected] : next;
-    });
-    setPublicCatalog(Array.isArray(value2.publicRows) ? value2.publicRows : []);
-    setSkillCategories(normalizeSkillCategories(value2.skillCategories));
-    setPersonalSkillRows(personalChoices(value2.personalRows));
-    setPersonalSkillCursor(value2.personalCursor ?? null);
-    setAssets(value2.assets);
-    setAssetCursor(value2.assetCursor);
-  }, [applyCapabilities]);
-  const load = (0, import_react6.useCallback)(async (force = false) => {
-    const sequence = ++loadSequence.current;
-    let expectedRevision = cacheRevision.current;
-    setLoading(true);
-    setError("");
-    try {
-      const parentOwner = accountKey && accountKey !== "anonymous" ? accountKey : void 0;
-      const snapshot = parentOwner ? void 0 : await request("snapshot", {});
-      const nextOwner2 = parentOwner ?? snapshot?.data?.account?.userId;
-      if (typeof nextOwner2 !== "string" || !nextOwner2) {
-        generationBootstrapCache.clear();
-        expectedRevision = generationBootstrapCache.revision();
-        cacheRevision.current = expectedRevision;
-        throw new Error("\u8BF7\u5148\u767B\u5F55 PodPlo\u3002");
-      }
-      if (!generationBootstrapCache.isCurrent(expectedRevision)) return;
-      ownerId.current = nextOwner2;
-      setUploadPreviews(generationBootstrapCache.readReferenceUploads(nextOwner2, nativeSessionId ?? "podplo-manual"));
-      let restoredDraft;
-      if (!draftReady.current && nativeSessionId) {
-        const draft = generationBootstrapCache.readDraft(nextOwner2, nativeSessionId);
-        if (draft) {
-          restoredDraft = draft;
-          restoredSkillId.current = draft.skillId;
-          selectedSkillId.current = draft.skillId;
-          selections.current = {
-            model: draft.model,
-            ratio: draft.ratio,
-            quality: draft.quality,
-            resolution: draft.resolution,
-            thinkingLevel: draft.thinkingLevel,
-            booleans: draft.booleans,
-            transparent: draft.transparent
-          };
-          setPrompt(draft.prompt);
-          setSkillId(draft.skillId);
-          setSelectedDna(dnaFromDraft(draft.dna));
-          setModel(draft.model);
-          setRatio(draft.ratio);
-          setQuality(draft.quality);
-          setResolution(draft.resolution);
-          setThinkingLevel(draft.thinkingLevel);
-          setCount(draft.count);
-          setTransparent(draft.transparent);
-          setBooleans(draft.booleans);
-          setReferences(draft.references);
-          currentIntent.current = draft.intentId;
-          currentPlanVersion.current = draft.planVersion;
-          if (/^(library|personal):/.test(draft.skillId)) {
-            setSkills((rows) => rows.some((row) => row.id === draft.skillId) ? rows : [...rows, directSkillChoice(draft.skillId)]);
-          }
-          setIntentId(draft.intentId);
-          setPlanVersion(draft.planVersion);
-          const restoredOperation = exactOperation(draft.operation ?? generationBootstrapCache.readOperation(nextOwner2, nativeSessionId, draft.intentId, draft.planVersion), draft.intentId, draft.planVersion);
-          setOperation(restoredOperation);
-          setApprovalAttempted(draft.approvalAttempted === true);
-        }
-        draftReady.current = true;
-        setDraftHydrated(true);
-      }
-      if (restoredDraft && nativeSessionId) {
-        const expectedIntent = restoredDraft.intentId;
-        const expectedPlan = restoredDraft.planVersion;
-        const restore = (candidate) => {
-          const exact = exactOperation(candidate, expectedIntent, expectedPlan);
-          if (!exact || sequence !== loadSequence.current || ownerId.current !== nextOwner2 || !generationBootstrapCache.isCurrent(expectedRevision) || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan) return;
-          if (!generationBootstrapCache.rememberOperation(nextOwner2, nativeSessionId, exact)) return;
-          setOperation(exact);
-        };
-        const pending = generationBootstrapCache.readPendingPrepare(nextOwner2, nativeSessionId, expectedIntent, expectedPlan);
-        if (pending) void pending.then(restore).catch(() => {
-        });
-        if (!restoredDraft.operation && !generationBootstrapCache.readOperation(nextOwner2, nativeSessionId, expectedIntent, expectedPlan)) {
-          void request("generation.list", {}).then((result) => {
-            const exact = (Array.isArray(result.data?.items) ? result.data.items : []).find((row) => row.intentId === expectedIntent && row.planVersion === expectedPlan);
-            restore(exact);
-          }).catch(() => {
-          });
-        }
-      }
-      const cached2 = generationBootstrapCache.read(nextOwner2);
-      const seeded = cached2 ?? generationBootstrapCache.ensure(nextOwner2);
-      if (cached2 && generationBootstrapCache.isCurrent(expectedRevision)) applyBootstrap(cached2);
-      const value2 = await generationBootstrapCache.refresh(nextOwner2, async (publishCache) => {
-        const publish2 = (patch) => {
-          const value3 = publishCache(patch);
-          if (value3 && sequence === loadSequence.current && ownerId.current === nextOwner2 && generationBootstrapCache.isCurrent(expectedRevision)) applyBootstrap(value3);
-        };
-        const warnings = [];
-        const settle = async (label, task, apply2) => {
-          try {
-            const result = await task;
-            apply2(result.data);
-          } catch (error52) {
-            warnings.push(`${label}\uFF1A${errorText2(error52)}`);
-          }
-        };
-        await Promise.all([
-          settle("\u751F\u56FE\u80FD\u529B", request("generation.capabilities", { refresh: force }), (data) => {
-            if (data?.available !== true) warnings.push("\u751F\u56FE\u80FD\u529B\uFF1A\u5F53\u524D\u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u62A5\u4EF7\u80FD\u529B");
-            publish2({ capabilities: data });
-          }),
-          settle("Skill \u5E93", request("skills.list", { query: "" }), (data) => publish2({
-            publicRows: Array.isArray(data?.items) ? data.items : [],
-            skillCategories: normalizeSkillCategories(data?.categories)
-          })),
-          settle("\u6211\u7684 Skill", request("mySkills.list", { query: "" }), (data) => publish2({
-            personalRows: Array.isArray(data?.items) ? data.items : [],
-            personalCursor: typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null
-          })),
-          settle("\u53C2\u8003\u7D20\u6750", request("assets.list", { limit: 50 }), (data) => publish2({
-            assets: (Array.isArray(data?.items) ? data.items : []).filter((row) => row.status === "ready"),
-            assetCursor: typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null
-          }))
-        ]);
-        const confirmed = await request("snapshot", {});
-        if (confirmed.data?.account?.userId !== nextOwner2) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u52A0\u8F7D\u751F\u56FE\u5DE5\u4F5C\u53F0\u3002");
-        const current = generationBootstrapCache.read(nextOwner2) ?? seeded;
-        return {
-          capabilities: current.capabilities,
-          publicRows: current.publicRows,
-          personalRows: current.personalRows,
-          personalCursor: current.personalCursor,
-          skillCategories: current.skillCategories,
-          assets: current.assets,
-          assetCursor: current.assetCursor,
-          warnings
-        };
-      });
-      if (sequence === loadSequence.current && ownerId.current === nextOwner2 && generationBootstrapCache.isCurrent(expectedRevision)) {
-        applyBootstrap(value2);
-        if (value2.warnings.length) setError(`\u90E8\u5206\u5185\u5BB9\u66F4\u65B0\u5931\u8D25\uFF1A${value2.warnings.join("\uFF1B")}\u3002\u53EF\u7EE7\u7EED\u4F7F\u7528\u5DF2\u52A0\u8F7D\u5185\u5BB9\u6216\u91CD\u8BD5\u3002`);
-      }
-    } catch (error52) {
-      if (sequence === loadSequence.current && generationBootstrapCache.isCurrent(expectedRevision)) setError(`\u751F\u56FE\u5DE5\u4F5C\u53F0\u66F4\u65B0\u5931\u8D25\uFF1A${errorText2(error52)} \u53EF\u4FDD\u7559\u5F53\u524D\u5185\u5BB9\u5E76\u91CD\u8BD5\u3002`);
-    } finally {
-      if (sequence === loadSequence.current && generationBootstrapCache.isCurrent(expectedRevision)) setLoading(false);
-    }
-  }, [accountKey, applyBootstrap, nativeSessionId, request]);
-  (0, import_react6.useEffect)(() => {
-    mounted.current = true;
-    void load(false);
-    return () => {
-      mounted.current = false;
-      loadSequence.current += 1;
-      skillSequence.current += 1;
-      prepareSequence.current += 1;
-    };
-  }, []);
-  (0, import_react6.useEffect)(() => {
-    if (!draftHydrated || !nativeSessionId || !ownerId.current) return;
-    const owner = ownerId.current;
-    return generationBootstrapCache.subscribeDraft(owner, nativeSessionId, () => {
-      if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current)) return;
-      setUploadPreviews(generationBootstrapCache.readReferenceUploads(owner, nativeSessionId));
-      const draft = generationBootstrapCache.readDraft(owner, nativeSessionId);
-      if (!draft) return;
-      currentPlanVersion.current = draft.planVersion;
-      setReferences(draft.references);
-      setPlanVersion(draft.planVersion);
-      setOperation(draft.operation);
-      setApprovalAttempted(draft.approvalAttempted === true);
-      const bootstrap = generationBootstrapCache.read(owner);
-      if (bootstrap) setAssets(bootstrap.assets);
-    });
-  }, [accountKey, draftHydrated, nativeSessionId]);
-  (0, import_react6.useEffect)(() => {
-    if (!draftHydrated || !draftReady.current || !nativeSessionId || !ownerId.current || !generationBootstrapCache.isCurrent(cacheRevision.current)) return;
-    generationBootstrapCache.writeDraft(ownerId.current, nativeSessionId, {
-      prompt,
-      skillId,
-      dna: dnaDraft(selectedDna),
-      model,
-      ratio,
-      quality,
-      resolution,
-      thinkingLevel,
-      count,
-      transparent,
-      booleans,
-      references,
-      intentId,
-      planVersion,
-      operation: exactOperation(operation, intentId, planVersion),
-      approvalAttempted
-    });
-  }, [approvalAttempted, booleans, count, draftHydrated, intentId, model, nativeSessionId, operation, planVersion, prompt, quality, ratio, references, resolution, selectedDna, skillId, thinkingLevel, transparent]);
-  (0, import_react6.useEffect)(() => {
-    if (!operation || !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(operation.status)) return;
-    let active = true;
-    const refresh = async () => {
-      try {
-        const { data } = await request("generation.list", {});
-        const latest = (Array.isArray(data?.items) ? data.items : []).find((row) => row.operationId === operation.operationId);
-        if (active && generationBootstrapCache.isCurrent(cacheRevision.current) && latest) {
-          const exact = exactOperation(latest, operation.intentId, operation.planVersion);
-          if (exact) {
-            if (ownerId.current && nativeSessionId) generationBootstrapCache.rememberOperation(ownerId.current, nativeSessionId, exact);
-            setOperation((current) => current?.operationId === exact.operationId ? exact : current);
-          }
-        }
-      } catch (error52) {
-        throw error52;
-      }
-      return ACTIVE_POLL_MS;
-    };
-    const polling = startVisiblePolling(refresh);
-    return () => {
-      active = false;
-      polling.stop();
-    };
-  }, [nativeSessionId, operation?.intentId, operation?.operationId, operation?.planVersion, operation?.status, request]);
-  (0, import_react6.useEffect)(() => {
-    if (operation?.status !== "quoted") return;
-    const delay = Date.parse(operation.quote.expiresAt) - Date.now();
-    if (!Number.isFinite(delay)) return;
-    const timer = setTimeout(() => {
-      setNotice("\u670D\u52A1\u7AEF\u6838\u9A8C\u79EF\u5206\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u70B9\u51FB\u751F\u6210\u3002");
-      invalidate();
-    }, Math.max(0, delay) + 25);
-    return () => clearTimeout(timer);
-  }, [invalidate, operation?.operationId, operation?.quote.expiresAt, operation?.status]);
-  (0, import_react6.useEffect)(() => {
-    if (!draftReady.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || !selectedSkill || restoredSkillId.current !== selectedSkill.id || selectedSkill.kind === "family" || selectedSkill.detail || skillLoading) return;
-    restoredSkillId.current = "";
-    const sequence = ++skillSequence.current;
-    const expectedOwner = ownerId.current;
-    const expectedId = selectedSkill.id;
-    setSkillLoading(expectedId);
-    void fetchSkillDetail(selectedSkill).then((latest) => {
-      if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || sequence !== skillSequence.current || expectedOwner !== ownerId.current) return;
-      setSkills((rows) => rows.map((row) => row.id === expectedId ? latest : row));
-    }).catch((error52) => {
-      if (mounted.current && generationBootstrapCache.isCurrent(cacheRevision.current) && sequence === skillSequence.current && expectedOwner === ownerId.current) setSkillError(`\u65E0\u6CD5\u6062\u590D\u5DF2\u9009 Skill \u7684\u5B8C\u6574\u8BE6\u60C5\uFF1A${errorText2(error52)}`);
-    }).finally(() => {
-      if (mounted.current && generationBootstrapCache.isCurrent(cacheRevision.current) && sequence === skillSequence.current) setSkillLoading("");
-    });
-  }, [selectedSkill?.detail, selectedSkill?.id, selectedSkill?.kind, selectedSkill?.version, skillLoading]);
-  (0, import_react6.useEffect)(() => {
-    if (!selection || consumedSelection.current === selection.sequence || !draftHydrated) return;
-    if (selection.kind === "dna") {
-      consumedSelection.current = selection.sequence;
-      onSelectionConsumed?.(selection.sequence);
-      if (selection.private && selection.ownerId !== ownerId.current) {
-        setSkillError("\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9 DNA\u3002");
-        return;
-      }
-      const id = selection.locator.dnaId || selection.id;
-      if (!id) {
-        setSkillError("DNA \u8EAB\u4EFD\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
-        return;
-      }
-      selectDna(directDnaChoice(id, selection.label));
-      return;
-    }
-    if (selection.kind === "skill") {
-      const targetId = selection.locator.skillSlug ? `library:${selection.locator.skillSlug}` : `personal:${selection.id}`;
-      consumedSelection.current = selection.sequence;
-      onSelectionConsumed?.(selection.sequence);
-      if (selection.private && selection.ownerId !== ownerId.current) {
-        setSkillError("\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9 Skill\u3002");
-        return;
-      }
-      const choice = skills.find((row) => row.id === targetId) ?? directSkillChoice(targetId, selection.label, selection.previewUrl);
-      void selectSkill(targetId, choice);
-      return;
-    }
-    if (selection.kind === "gallery") {
-      consumedSelection.current = selection.sequence;
-      const expected = selection.sequence;
-      onSelectionConsumed?.(selection.sequence);
-      void request("gallery.importReference", { id: selection.locator.galleryId || selection.id }).then(({ data }) => {
-        if (consumedSelection.current !== expected) return;
-        const asset = data?.asset ?? data;
-        if (!asset || typeof asset.id !== "string" || !asset.id || asset.status !== "ready") throw new Error("\u56FE\u5E93\u7D20\u6750\u672A\u80FD\u5BFC\u5165\u4E3A\u53EF\u7528\u53C2\u8003\u56FE\u3002");
-        setAssets((current) => current.some((row) => row.id === asset.id) ? current : [...current, asset]);
-        addReference(asset.id);
-      }).catch((error52) => {
-        if (consumedSelection.current === expected) setError(errorText2(error52));
-      });
-      return;
-    }
-    if (selection.kind === "asset") {
-      consumedSelection.current = selection.sequence;
-      onSelectionConsumed?.(selection.sequence);
-      const id = selection.locator.assetId || selection.id;
-      setAssets((current) => current.some((row) => row.id === id) ? current : [...current, { id, filename: selection.label, status: "ready", previewUrl: selection.previewUrl }]);
-      addReference(id);
-    }
-  }, [draftHydrated, onSelectionConsumed, selection, skills]);
-  (0, import_react6.useEffect)(() => {
-    if (placement === "floating" && revealSequence > 0) setFloatingOpen(true);
-  }, [placement, revealSequence]);
-  (0, import_react6.useEffect)(() => {
-    if (placement !== "floating" || !floatingOpen) return;
-    const close = (event) => {
-      const portalOpen = typeof document !== "undefined" && !!document.querySelector(".ppd-batch-backdrop, .ppd-skill-browser-backdrop");
-      if (event instanceof KeyboardEvent) {
-        if (event.key === "Escape" && !portalOpen) setFloatingOpen(false);
-        return;
-      }
-      const target2 = event.target;
-      if (target2 instanceof Element && target2.closest(".ppd-batch-backdrop, .ppd-skill-browser-backdrop")) return;
-      if (!floatingShell.current?.contains(target2)) setFloatingOpen(false);
-    };
-    document.addEventListener("pointerdown", close);
-    document.addEventListener("keydown", close);
-    return () => {
-      document.removeEventListener("pointerdown", close);
-      document.removeEventListener("keydown", close);
-    };
-  }, [floatingOpen, placement]);
-  (0, import_react6.useEffect)(() => {
-    onOperationId?.(operation?.status === "quoted" ? operation.operationId : void 0);
-    return () => onOperationId?.(void 0);
-  }, [onOperationId, operation?.operationId, operation?.status]);
-  function selectModel(nextId) {
-    const next = models.find((row) => modelId(row) === nextId);
-    if (!next) return;
-    invalidate();
-    setModel(nextId);
-    setRatio((current) => normalizedChoice(stringList(next.ratios), current, stringList(next.ratios)[0]));
-    setQuality((current) => normalizedChoice(stringList(next.qualities), current, next.defaultQuality));
-    setResolution((current) => normalizedChoice(stringList(next.resolutions), current, next.defaultResolution));
-    setThinkingLevel((current) => normalizedChoice(stringList(next.thinkingLevels), current, next.defaultThinkingLevel));
-    setBooleans((current) => ({
-      ...current,
-      webSearch: next.supportsWebSearch === true && current.webSearch === true,
-      imageSearch: next.supportsImageSearch === true && current.imageSearch === true,
-      ecoMode: Number.isInteger(Number(next.ecoMaximumReferenceImages)) && current.ecoMode === true
-    }));
-    if (!transparentControl(properties, next)) setTransparent(false);
-  }
-  async function fetchSkillDetail(choice) {
-    const { data } = choice.source === "personal" ? await request("mySkills.get", { id: choice.generationId, ...choice.version ? { expectedUpdatedAt: choice.version } : {} }) : await request("skills.detail", { slug: choice.slug, resolve: true });
-    const generationId = choice.source === "personal" ? choice.generationId : data?.binding?.id;
-    if (typeof generationId !== "string" || !generationId) throw new Error("Skill \u8BE6\u60C5\u672A\u8FD4\u56DE\u53EF\u6838\u5BF9\u7684\u751F\u56FE\u7ED1\u5B9A ID");
-    if (choice.source === "library" && data?.binding?.availableForCurrentPlan === false) throw new Error("\u8BE5 Skill \u5F53\u524D\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u6743\u9650\u540E\u91CD\u8BD5");
-    return {
-      ...choice,
-      note: void 0,
-      folderName: void 0,
-      title: data?.title || data?.name || choice.title,
-      coverUrl: data?.coverImage || choice.coverUrl,
-      generationId,
-      detail: data,
-      version: data?.version || data?.updatedAt || choice.version,
-      available: true
-    };
-  }
-  async function selectSkill(nextId, suppliedChoice) {
-    const sequence = ++skillSequence.current;
-    const expectedOwner = ownerId.current;
-    const expectedRevision = cacheRevision.current;
-    const current = () => mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && sequence === skillSequence.current && expectedOwner === ownerId.current;
-    invalidate();
-    setSelectedDna(void 0);
-    setError("");
-    setSkillError("");
-    setNotice("");
-    const choice = suppliedChoice ?? skills.find((row) => row.id === nextId);
-    selectedSkillId.current = choice ? nextId : "";
-    if (!choice) {
-      setSkillId("");
-      setSkillLoading("");
-      return;
-    }
-    if (suppliedChoice) setSkills((rows) => rows.some((row) => row.id === nextId) ? rows : [...rows, suppliedChoice]);
-    if (choice.kind === "family") {
-      setSkillId(nextId);
-      setSkillLoading(nextId);
-      try {
-        const { data } = await request("skills.family", { slug: choice.slug });
-        if (!current()) return;
-        if (ownerId.current && choice.slug) generationBootstrapCache.rememberFamily(ownerId.current, choice.slug, data);
-        const members = publicChoices([], { [choice.slug]: data });
-        setSkills((rows) => [...new Map([...rows, ...members].map((row) => [row.id, row])).values()]);
-        setSkillId("");
-        setNotice(`\u5DF2\u52A0\u8F7D\u300C${choice.title}\u300D\u7684\u53EF\u7528 Skill\uFF0C\u8BF7\u9009\u62E9\u5177\u4F53\u6210\u5458\u3002`);
-      } catch (error52) {
-        if (current()) setSkillError(`\u65E0\u6CD5\u5C55\u5F00\u8BE5 Skill \u65CF\uFF1A${errorText2(error52)}`);
-      } finally {
-        if (current()) setSkillLoading("");
-      }
-      return;
-    }
-    setSkillId(nextId);
-    setSkillLoading(nextId);
-    try {
-      const latest = await fetchSkillDetail(choice);
-      if (!current()) return;
-      setSkills((rows) => rows.map((row) => row.id === nextId ? latest : row));
-    } catch (error52) {
-      if (current()) {
-        setSkills((rows) => rows.map((row) => row.id === nextId ? { ...row, detail: void 0, generationId: row.source === "personal" ? row.generationId : void 0 } : row));
-        setSkillError(`\u65E0\u6CD5\u53D6\u5F97\u8BE5 Skill \u7684\u5B8C\u6574\u8BE6\u60C5\uFF1A${errorText2(error52)}`);
-      }
-    } finally {
-      if (current()) setSkillLoading("");
-    }
-  }
-  function selectDna(choice) {
-    if (!choice.dnaId) return;
-    invalidate();
-    skillSequence.current += 1;
-    selectedSkillId.current = "";
-    setSkillId("");
-    setSkillLoading("");
-    setSkillError("");
-    setError("");
-    setNotice("");
-    setSelectedDna(choice);
-    const qualities = stringList(selectedModel?.qualities), resolutions = stringList(selectedModel?.resolutions);
-    if (qualities.includes("low")) setQuality("low");
-    if (resolutions.length) setResolution(lowestResolution(resolutions));
-  }
-  async function fetchDnaChoice(id) {
-    let cursor;
-    const seen = /* @__PURE__ */ new Set();
-    for (; ; ) {
-      const { data } = await request("dna.list", { limit: 50, ...cursor ? { cursor } : {} });
-      const page = dnaChoices(Array.isArray(data?.items) ? data.items : []);
-      const found = page.find((row) => row.dnaId === id);
-      if (found) return found;
-      const next = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : void 0;
-      if (!next || seen.has(next)) break;
-      seen.add(next);
-      cursor = next;
-    }
-    throw new Error("\u6240\u9009 DNA \u5DF2\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
-  }
-  async function resolveBatchSkill(key) {
-    const choice = skills.find((row) => row.id === key && row.kind !== "family");
-    if (!choice) return null;
-    const expectedOwner = ownerId.current;
-    const expectedRevision = cacheRevision.current;
-    const latest = await fetchSkillDetail(choice);
-    if (!mounted.current || ownerId.current !== expectedOwner || !generationBootstrapCache.isCurrent(expectedRevision)) return null;
-    setSkills((rows) => rows.map((row) => row.id === choice.id ? latest : row));
-    return {
-      id: latest.generationId,
-      title: latest.title,
-      version: latest.version,
-      pricingReferenceCount: Array.isArray(latest.detail?.referenceAssetIds) ? latest.detail.referenceAssetIds.length : void 0
-    };
-  }
-  const loadFavoriteSkills = (0, import_react6.useCallback)(async (append = false) => {
-    if (append ? favoriteSkillLoadingMore : favoriteSkillBusy) return;
-    const owner = ownerId.current;
-    const revision = cacheRevision.current;
-    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
-    if (append && !favoriteSkillCursor) return;
-    if (append) setFavoriteSkillLoadingMore(true);
-    else setFavoriteSkillBusy(true);
-    setFavoriteSkillError("");
-    try {
-      const folders = append ? favoriteSkillFolders : await request("favorites.folders.list", {}).then(({ data: data2 }) => Array.isArray(data2?.items) ? data2.items : []).catch(() => []);
-      const { data } = await request("favorites.list", { limit: 100, ...append && favoriteSkillCursor ? { cursor: favoriteSkillCursor } : {} });
-      if (!mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
-      const catalog = Array.isArray(generationBootstrapCache.read(owner)?.publicRows) ? generationBootstrapCache.read(owner).publicRows : publicCatalog;
-      const next = favoriteChoices(Array.isArray(data?.items) ? data.items : [], catalog, folders);
-      setFavoriteSkillFolders(folders);
-      setFavoriteSkills((current) => append && current ? [...new Map([...current, ...next].map((row) => [row.id, row])).values()] : next);
-      setFavoriteSkillCursor(typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null);
-    } catch (error52) {
-      if (mounted.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) setFavoriteSkillError(errorText2(error52));
-    } finally {
-      if (mounted.current && ownerId.current === owner) {
-        setFavoriteSkillBusy(false);
-        setFavoriteSkillLoadingMore(false);
-      }
-    }
-  }, [favoriteSkillBusy, favoriteSkillCursor, favoriteSkillFolders, favoriteSkillLoadingMore, publicCatalog, request]);
-  const loadDnas = (0, import_react6.useCallback)(async (append = false) => {
-    if (append ? dnaLoadingMore : dnaBusy) return;
-    const owner = ownerId.current, revision = cacheRevision.current;
-    if (!owner || !generationBootstrapCache.isCurrent(revision) || append && !dnaCursor) return;
-    if (append) setDnaLoadingMore(true);
-    else setDnaBusy(true);
-    setDnaError("");
-    try {
-      const { data } = await request("dna.list", { limit: 24, ...append && dnaCursor ? { cursor: dnaCursor } : {} });
-      if (!mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
-      const next = dnaChoices(Array.isArray(data?.items) ? data.items : []);
-      setDnaRows((current) => append && current ? [...new Map([...current, ...next].map((row) => [row.id, row])).values()] : next);
-      setDnaCursor(typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null);
-    } catch (error52) {
-      if (mounted.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) setDnaError(errorText2(error52));
-    } finally {
-      if (mounted.current && ownerId.current === owner) {
-        setDnaBusy(false);
-        setDnaLoadingMore(false);
-      }
-    }
-  }, [dnaBusy, dnaCursor, dnaLoadingMore, request]);
-  (0, import_react6.useEffect)(() => {
-    if (!skillBrowserOpen) return;
-    const query = personalSearchQuery.trim();
-    if (!query) {
-      setPersonalSearch({ rows: [], cursor: null });
-      setPersonalSkillBusy(false);
-      setPersonalSkillError("");
-      return;
-    }
-    const owner = ownerId.current;
-    const revision = cacheRevision.current;
-    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
-    let cancelled = false;
-    setPersonalSkillBusy(true);
-    setPersonalSkillError("");
-    void request("mySkills.list", { query }).then(({ data }) => {
-      if (cancelled || !mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
-      setPersonalSearch({
-        rows: personalChoices(Array.isArray(data?.items) ? data.items : []),
-        cursor: typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null
-      });
-    }).catch((error52) => {
-      if (!cancelled) setPersonalSkillError(errorText2(error52));
-    }).finally(() => {
-      if (!cancelled) setPersonalSkillBusy(false);
-    });
-    return () => {
-      cancelled = true;
-    };
-  }, [personalSearchQuery, request, skillBrowserOpen]);
-  const loadMorePersonalSkills = (0, import_react6.useCallback)(async () => {
-    if (personalSkillLoadingMore) return;
-    const query = personalSearchQuery.trim();
-    const cursor = query ? personalSearch.cursor : personalSkillCursor;
-    if (!cursor) return;
-    const owner = ownerId.current;
-    const revision = cacheRevision.current;
-    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
-    setPersonalSkillLoadingMore(true);
-    setPersonalSkillError("");
-    try {
-      const { data } = await request("mySkills.list", { query, cursor });
-      if (!mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
-      const next = personalChoices(Array.isArray(data?.items) ? data.items : []);
-      const nextCursor = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null;
-      if (query) setPersonalSearch((current) => ({ rows: [...new Map([...current.rows, ...next].map((row) => [row.id, row])).values()], cursor: nextCursor }));
-      else {
-        setPersonalSkillRows((current) => [...new Map([...current, ...next].map((row) => [row.id, row])).values()]);
-        setPersonalSkillCursor(nextCursor);
-        setSkills((current) => [...new Map([...current, ...next].map((row) => [row.id, row])).values()]);
-      }
-    } catch (error52) {
-      if (mounted.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) setPersonalSkillError(errorText2(error52));
-    } finally {
-      if (mounted.current && ownerId.current === owner) setPersonalSkillLoadingMore(false);
-    }
-  }, [personalSearch, personalSkillCursor, personalSkillLoadingMore, personalSearchQuery, request]);
-  const loadFamilyChoices = (0, import_react6.useCallback)(async (slug) => {
-    const { data } = await request("skills.family", { slug });
-    if (ownerId.current) generationBootstrapCache.rememberFamily(ownerId.current, slug, data);
-    return publicChoices([], { [slug]: data });
-  }, [request]);
-  const favoriteBrowser = {
-    rows: favoriteSkills,
-    loading: favoriteSkillBusy,
-    error: favoriteSkillError,
-    loadingMore: favoriteSkillLoadingMore,
-    hasMore: !!favoriteSkillCursor,
-    onLoad: () => void loadFavoriteSkills(false),
-    onLoadMore: () => void loadFavoriteSkills(true)
-  };
-  const personalBrowser = {
-    rows: personalSearchQuery.trim() ? personalSearch.rows : personalSkillRows,
-    loading: personalSkillBusy,
-    error: personalSkillError,
-    loadingMore: personalSkillLoadingMore,
-    hasMore: !!(personalSearchQuery.trim() ? personalSearch.cursor : personalSkillCursor),
-    onSearch: setPersonalSearchQuery,
-    onLoadMore: () => void loadMorePersonalSkills()
-  };
-  const dnaBrowser = {
-    rows: dnaRows,
-    loading: dnaBusy,
-    error: dnaError,
-    loadingMore: dnaLoadingMore,
-    hasMore: !!dnaCursor,
-    onLoad: () => void loadDnas(false),
-    onLoadMore: () => void loadDnas(true)
-  };
-  function addReference(id) {
-    const normalized = id.trim();
-    if (!normalized || references.includes(normalized)) return;
-    change(setReferences, [...references, normalized]);
-  }
-  function moveReference(index, offset) {
-    const target2 = index + offset;
-    if (target2 < 0 || target2 >= references.length) return;
-    const next = [...references];
-    [next[index], next[target2]] = [next[target2], next[index]];
-    change(setReferences, next);
-  }
-  async function upload(files) {
-    if (!files.length || busy || uploading.current || !draftReady.current || !ownerId.current || generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId ?? "podplo-manual").some((row) => row.status !== "failed")) return;
-    uploading.current = true;
-    const expectedOwner = ownerId.current;
-    const expectedRevision = cacheRevision.current;
-    const sessionId = nativeSessionId;
-    const supported = files.filter((file2) => imageTypes.has(file2.type));
-    const invalid = files.length - supported.length;
-    const previewSession = sessionId ?? "podplo-manual";
-    const previewRows = supported.map((file2) => ({ id: uuid(), filename: file2.name, previewUrl: URL.createObjectURL(file2), status: "queued" }));
-    generationBootstrapCache.addReferenceUploads(expectedOwner, previewSession, previewRows, expectedRevision);
-    if (mounted.current) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, previewSession));
-    const updatePreview = (index, patch) => {
-      generationBootstrapCache.updateReferenceUpload(expectedOwner, previewSession, previewRows[index].id, patch, expectedRevision);
-      if (mounted.current && current()) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, previewSession));
-    };
-    const current = () => generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner;
-    const visible2 = () => current() && mounted.current;
-    setBusy("upload");
-    setError("");
-    setUploadWarning("");
-    setUploadProgress(supported.length ? `\u6B63\u5728\u4E0A\u4F20\u5E76\u5904\u7406 0 / ${supported.length} \u5F20\u2026` : "");
-    const results = new Array(supported.length);
-    const failed = [];
-    let cursor = 0;
-    let completed = 0;
-    let published = 0;
-    const worker = async () => {
-      for (; ; ) {
-        const index = cursor++;
-        if (index >= supported.length || !current()) return;
-        const file2 = supported[index];
-        updatePreview(index, { status: "uploading" });
-        try {
-          if (!current()) return;
-          const { data } = await request("assets.upload", { file: file2 });
-          if (!current()) return;
-          if (data?.id && data.status === "ready") results[index] = data;
-          else {
-            const message2 = "\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u7A0D\u540E\u4ECE\u6211\u7684\u6536\u85CF\u9009\u62E9";
-            failed.push(`${file2.name}\uFF1A${message2}`);
-            updatePreview(index, { status: "failed", message: message2 });
-          }
-        } catch (error52) {
-          if (current()) {
-            const message2 = errorText2(error52);
-            failed.push(`${file2.name}\uFF1A${message2}`);
-            updatePreview(index, { status: "failed", message: message2 });
-          }
-        } finally {
-          completed += 1;
-        }
-        if (!current()) return;
-        done.add(index);
-        while (done.has(published)) {
-          const resultIndex = published++;
-          const asset = results[resultIndex];
-          if (!asset) continue;
-          if (sessionId) {
-            const displaced = generationBootstrapCache.readDraft(expectedOwner, sessionId)?.operation;
-            if (!generationBootstrapCache.mergeReadyReference(expectedOwner, sessionId, asset, expectedRevision)) continue;
-            if (displaced?.status === "quoted") void request("generation.cancel", { operationId: displaced.operationId }).catch(() => {
-            });
-          }
-          if (visible2()) {
-            setAssets((rows) => [...new Map([...rows, asset].map((row) => [row.id, row])).values()]);
-            if (!sessionId) {
-              invalidate();
-              setReferences((ids2) => [.../* @__PURE__ */ new Set([...ids2, asset.id])]);
-            }
-          }
-          updatePreview(resultIndex, null);
-        }
-        if (visible2()) setUploadProgress(`\u6B63\u5728\u4E0A\u4F20\u5E76\u5904\u7406 ${completed} / ${supported.length} \u5F20\u2026`);
-      }
-    };
-    const done = /* @__PURE__ */ new Set();
-    try {
-      await Promise.all(Array.from({ length: Math.min(4, supported.length) }, () => worker()));
-      if (!visible2()) return;
-      const warnings = [invalid ? `${invalid} \u4E2A\u683C\u5F0F\u4E0D\u652F\u6301\uFF0C\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP` : "", ...failed].filter(Boolean);
-      setUploadWarning(warnings.join("\uFF1B"));
-      setUploadProgress("");
-      onChanged?.();
-    } finally {
-      uploading.current = false;
-      if (visible2()) {
-        setBusy("");
-        if (uploadInput.current) uploadInput.current.value = "";
-      }
-    }
-  }
-  function validationError() {
-    if (uploadPreviews.length) return uploadPreviews.some((row) => row.status !== "failed") ? "\u53C2\u8003\u56FE\u6B63\u5728\u4E0A\u4F20\u5904\u7406\u4E2D\uFF0C\u8BF7\u7A0D\u5019\u3002" : "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u79FB\u9664\u5931\u8D25\u9879\u540E\u91CD\u8BD5\u3002";
-    if (selectedSkill?.kind === "family") return "\u8BF7\u7B49\u5F85\u65CF\u6210\u5458\u52A0\u8F7D\u540E\u9009\u62E9\u4E00\u4E2A\u5177\u4F53 Skill\u3002";
-    if (selectedSkill?.available === false) return "\u8BE5 Skill \u5DF2\u4E0D\u5728\u5F53\u524D\u8D26\u53F7\u7684\u53EF\u7528\u5217\u8868\u4E2D\uFF0C\u8BF7\u5237\u65B0\u6216\u91CD\u65B0\u9009\u62E9\u3002";
-    if (selectedSkill && skillLoading === selectedSkill.id) return "\u6B63\u5728\u6838\u5BF9 Skill \u7684\u6700\u65B0\u8BE6\u60C5\u3002";
-    if (selectedSkill && (!selectedSkill.detail || !selectedSkill.generationId)) return "\u8BF7\u7B49\u5F85 Skill \u5B8C\u6574\u8BE6\u60C5\u3001\u7248\u672C\u548C\u751F\u56FE\u7ED1\u5B9A\u8BFB\u53D6\u5B8C\u6210\u3002";
-    if (selectedDna && !selectedDna.dnaId) return "\u6240\u9009 DNA \u8EAB\u4EFD\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002";
-    if (selectedDna && references.length === 0) return "\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002";
-    if (!skillId && !selectedDna && properties.prompt && !prompt.trim()) return "\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002";
-    if (properties.modelId && !model) return "\u8BF7\u9009\u62E9\u670D\u52A1\u7AEF\u5F53\u524D\u63D0\u4F9B\u7684\u6A21\u578B\u3002";
-    if (selectedModel?.availableForCurrentPlan === false) return "\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u5F00\u901A\u8FD9\u4E2A\u6A21\u578B\uFF0C\u8BF7\u9009\u62E9\u5176\u4ED6\u6A21\u578B\u3002";
-    if (properties.ratio && (!ratio.trim() || modelRatios.length && !modelRatios.includes(ratio))) return "\u8BF7\u9009\u62E9\u5F53\u524D\u6A21\u578B\u652F\u6301\u7684\u56FE\u7247\u6BD4\u4F8B\u3002";
-    const modelReferenceLimit = booleans.ecoMode === true && supportsEcoMode ? Number(selectedModel?.ecoMaximumReferenceImages) : Number(selectedModel?.maximumReferenceImages);
-    const schemaReferenceLimit = Number(properties.referenceAssetIds?.maxItems);
-    const maxRefs = Math.min(Number.isFinite(modelReferenceLimit) ? modelReferenceLimit : Infinity, Number.isFinite(schemaReferenceLimit) ? schemaReferenceLimit : Infinity);
-    if (Number.isFinite(maxRefs) && references.length > maxRefs) return `\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`;
-    return "";
-  }
-  async function prepare() {
-    if (preparing.current || busy) return void 0;
-    const problem = validationError();
-    if (problem) {
-      setError(problem);
-      return void 0;
-    }
-    const sequence = ++prepareSequence.current;
-    const expectedOwner = ownerId.current;
-    const expectedIntent = intentId;
-    const expectedPlan = planVersion;
-    const expectedRevision = cacheRevision.current;
-    const expectedContext = requestContext.current;
-    const sameContext = () => mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && sequence === prepareSequence.current && ownerId.current === expectedOwner && requestContext.current.request === expectedContext.request && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && requestContext.current.accountKey === expectedContext.accountKey;
-    const current = () => sameContext() && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan;
-    preparing.current = true;
-    setBusy("prepare");
-    setError("");
-    setNotice("");
-    setPriceVerification("");
-    try {
-      const chosen = selectedSkill;
-      const chosenDna = selectedDna;
-      const selectedValues = selections.current;
-      const intendedArgs = argsForCapabilities(capabilities, selectedModel, {
-        ...selectedValues,
-        prompt,
-        count,
-        references: [...references]
-      });
-      if (chosenDna?.dnaId) intendedArgs.dnaId = chosenDna.dnaId;
-      const [capsResult, latestSkill, latestDna] = await Promise.all([
-        request("generation.capabilities", { refresh: true }),
-        chosen ? fetchSkillDetail(chosen) : Promise.resolve(void 0),
-        chosenDna?.dnaId ? fetchDnaChoice(chosenDna.dnaId) : Promise.resolve(void 0)
-      ]);
-      if (!current()) return;
-      const latestCaps = capsResult.data;
-      if (latestCaps?.available !== true) throw new Error("\u5F53\u524D PodPlo \u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u751F\u56FE\u62A5\u4EF7\u80FD\u529B\u3002");
-      const latestModel = capabilityModels(latestCaps).find((row) => modelId(row) === selectedValues.model);
-      if (!latestModel || latestModel.availableForCurrentPlan === false) throw new Error("\u6A21\u578B\u6743\u9650\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u6A21\u578B\u540E\u518D\u62A5\u4EF7\u3002");
-      const latestValues = {
-        prompt,
-        model: selectedValues.model,
-        ratio: normalizedChoice(stringList(latestModel.ratios), selectedValues.ratio, stringList(latestModel.ratios)[0]),
-        quality: normalizedChoice(stringList(latestModel.qualities), selectedValues.quality, latestModel.defaultQuality),
-        resolution: normalizedChoice(stringList(latestModel.resolutions), selectedValues.resolution, latestModel.defaultResolution),
-        thinkingLevel: normalizedChoice(stringList(latestModel.thinkingLevels), selectedValues.thinkingLevel, latestModel.defaultThinkingLevel),
-        count,
-        references: [...references],
-        booleans: {
-          ...selectedValues.booleans,
-          webSearch: latestModel.supportsWebSearch === true && selectedValues.booleans.webSearch === true,
-          imageSearch: latestModel.supportsImageSearch === true && selectedValues.booleans.imageSearch === true,
-          ecoMode: Number.isInteger(Number(latestModel.ecoMaximumReferenceImages)) && selectedValues.booleans.ecoMode === true
-        },
-        transparent: selectedValues.transparent
-      };
-      const latestProperties = latestCaps.quoteInputSchema?.properties ?? {};
-      if (!skillId && !chosenDna && latestProperties.prompt && !latestValues.prompt.trim()) throw new Error("\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002");
-      if (chosenDna && latestValues.references.length === 0) throw new Error("\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002");
-      if (latestProperties.ratio && stringList(latestModel.ratios).length && !stringList(latestModel.ratios).includes(latestValues.ratio)) throw new Error("\u6A21\u578B\u652F\u6301\u7684\u6BD4\u4F8B\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
-      const modelReferenceLimit = latestValues.booleans.ecoMode === true && Number.isInteger(Number(latestModel.ecoMaximumReferenceImages)) ? Number(latestModel.ecoMaximumReferenceImages) : Number(latestModel.maximumReferenceImages);
-      const schemaReferenceLimit = Number(latestProperties.referenceAssetIds?.maxItems);
-      const maxRefs = Math.min(Number.isFinite(modelReferenceLimit) ? modelReferenceLimit : Infinity, Number.isFinite(schemaReferenceLimit) ? schemaReferenceLimit : Infinity);
-      if (Number.isFinite(maxRefs) && references.length > maxRefs) throw new Error(`\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`);
-      setCapabilities(latestCaps);
-      if (chosen && latestSkill) setSkills((rows) => rows.map((row) => row.id === chosen.id ? latestSkill : row));
-      if (chosenDna && latestDna) setSelectedDna(latestDna);
-      setRatio(latestValues.ratio);
-      setQuality(latestValues.quality);
-      setResolution(latestValues.resolution);
-      setThinkingLevel(latestValues.thinkingLevel);
-      setBooleans(latestValues.booleans);
-      if (ownerId.current) generationBootstrapCache.update(ownerId.current, { capabilities: latestCaps });
-      if (!current()) return;
-      const verifiedArgs = argsForCapabilities(latestCaps, latestModel, latestValues);
-      if (latestDna?.dnaId) verifiedArgs.dnaId = latestDna.dnaId;
-      if (JSON.stringify(intendedArgs) !== JSON.stringify(verifiedArgs) || chosen && latestSkill && (chosen.generationId !== latestSkill.generationId || chosen.version !== latestSkill.version)) {
-        setPriceVerification("\u6A21\u578B\u53C2\u6570\u6216 Skill \u7248\u672C\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u6838\u5BF9\u540E\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002");
-        return;
-      }
-      const prepareRequest = async () => {
-        const item = { ...!latestDna && latestSkill?.generationId ? { skillId: latestSkill.generationId } : {}, args: verifiedArgs };
-        const { data } = await request("generation.prepare", { intentId: expectedIntent, planVersion: expectedPlan, items: [item], taskName: latestValues.prompt.trim().slice(0, 40) || latestDna?.title || "\u751F\u56FE\u4EFB\u52A1", processingPlan: [] });
-        const exact = exactOperation(data, expectedIntent, expectedPlan);
-        if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u62A5\u4EF7\u4E0E\u5F53\u524D\u610F\u56FE\u4E0D\u5339\u914D\u3002");
-        return exact;
-      };
-      let quote;
-      if (expectedContext.nativeSessionId) {
-        generationBootstrapCache.writeDraft(expectedOwner, expectedContext.nativeSessionId, {
-          prompt: latestValues.prompt,
-          skillId,
-          dna: dnaDraft(latestDna),
-          model: latestValues.model,
-          ratio: latestValues.ratio,
-          quality: latestValues.quality,
-          resolution: latestValues.resolution,
-          thinkingLevel: latestValues.thinkingLevel,
-          count: latestValues.count,
-          transparent: latestValues.transparent,
-          booleans: latestValues.booleans,
-          references: latestValues.references,
-          intentId: expectedIntent,
-          planVersion: expectedPlan,
-          operation: exactOperation(operation, expectedIntent, expectedPlan),
-          approvalAttempted
-        });
-        quote = await generationBootstrapCache.prepare(expectedOwner, expectedContext.nativeSessionId, expectedIntent, expectedPlan, prepareRequest);
-      } else quote = await prepareRequest();
-      if (!current()) return;
-      setOperation(quote);
-      setApprovalAttempted(false);
-      onChanged?.();
-      setNotice("\u670D\u52A1\u7AEF\u79EF\u5206\u5DF2\u6838\u9A8C\u3002");
-      return quote;
-    } catch (error52) {
-      if (current()) setError(errorText2(error52));
-    } finally {
-      preparing.current = false;
-      if (sameContext()) setBusy("");
-    }
-    return void 0;
-  }
-  async function approve(candidate, navigate = true) {
-    const approvedOperation = candidate ?? operation;
-    if (!approvedOperation || approvedOperation.status !== "quoted" || approvalAttempted || busy || approving.current) return;
-    if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || approvedOperation.intentId !== currentIntent.current || approvedOperation.planVersion !== currentPlanVersion.current) return;
-    const expiresAt = Date.parse(approvedOperation.quote.expiresAt);
-    if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
-      invalidate();
-      return;
-    }
-    const expectedOperation = approvedOperation;
-    const expectedOwner = ownerId.current;
-    const expectedContext = requestContext.current;
-    const expectedRevision = cacheRevision.current;
-    approving.current = true;
-    setApprovalAttempted(true);
-    setBusy("approve");
-    setError("");
-    setNotice("");
-    setPriceVerification("");
-    if (expectedContext.nativeSessionId) generationBootstrapCache.rememberApprovalAttempt(expectedOwner, expectedContext.nativeSessionId, expectedOperation.intentId, expectedOperation.planVersion);
-    onSubmission?.({ ...expectedOperation, status: "submitting", createdAt: (/* @__PURE__ */ new Date()).toISOString() }, void 0, navigate);
-    try {
-      const { data } = await request("generation.approve", { operationId: expectedOperation.operationId, approvalId: expectedOperation.approvalId });
-      const exact = exactOperation(data, expectedOperation.intentId, expectedOperation.planVersion);
-      if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u6279\u6B21\u4E0E\u5F53\u524D\u62A5\u4EF7\u4E0D\u5339\u914D\u3002");
-      if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, exact);
-      if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId) return;
-      setOperation(exact);
-      onChanged?.();
-      onSubmission?.(exact);
-      resetComposer();
-      void request("panel.navigate", { section: "results" }).catch(() => void 0);
-    } catch (error52) {
-      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.nativeSessionId === expectedContext.nativeSessionId) {
-        const failure = generationApprovalFailure(error52);
-        if (failure.outcome === "not_submitted") {
-          if (expectedContext.nativeSessionId) generationBootstrapCache.clearApprovalAttempt(
-            expectedOwner,
-            expectedContext.nativeSessionId,
-            expectedOperation.intentId,
-            expectedOperation.planVersion
-          );
-          setApprovalAttempted(false);
-          if (failure.recovery === "requote") invalidate();
-          setError(failure.message);
-          onVerification?.();
-          onChanged?.();
-        } else {
-          setError(failure.message);
-          onSubmission?.({ ...expectedOperation, status: "submission_unknown" }, failure.message);
-          onChanged?.();
-        }
-      }
-    } finally {
-      approving.current = false;
-      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setBusy("");
-    }
-  }
-  async function generate() {
-    if (busy || preparing.current || approving.current || approvalAttempted) return;
-    if (operation?.status === "quoted") {
-      await approve(operation);
-      return;
-    }
-    const expectedOwner = ownerId.current;
-    const expectedContext = requestContext.current;
-    const expectedRevision = cacheRevision.current;
-    const expectedIntent = currentIntent.current;
-    const expectedPlan = currentPlanVersion.current;
-    const expectedLocalQuote = localQuote;
-    if (validationError()) return;
-    onVerification?.({
-      operationId: `verification:${expectedIntent}`,
-      intentId: expectedIntent,
-      planVersion: expectedPlan,
-      approvalId: "",
-      status: "verifying",
-      createdAt: (/* @__PURE__ */ new Date()).toISOString(),
-      quote: {
-        totalCredits: expectedLocalQuote?.totalCredits ?? 0,
-        outputCount: expectedLocalQuote?.outputCount ?? count,
-        confirmationText: "",
-        expiresAt: ""
-      }
-    });
-    let approvalStarted = false;
-    try {
-      const verified = await prepare();
-      if (!verified) return;
-      if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan || verified.intentId !== expectedIntent || verified.planVersion !== expectedPlan) return;
-      if (!expectedLocalQuote || verified.quote.totalCredits !== expectedLocalQuote.totalCredits || verified.quote.outputCount !== expectedLocalQuote.outputCount) {
-        setPriceVerification(expectedLocalQuote ? `\u670D\u52A1\u7AEF\u6838\u9A8C\u79EF\u5206\u5DF2\u66F4\u65B0\u4E3A ${verified.quote.totalCredits}\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002` : `\u670D\u52A1\u7AEF\u6838\u9A8C\u4E3A ${verified.quote.totalCredits} \u79EF\u5206\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002`);
-        return;
-      }
-      approvalStarted = true;
-      await approve(verified, false);
-    } finally {
-      if (!approvalStarted && mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan) onVerification?.();
-    }
-  }
-  async function cancelQuote() {
-    if (!operation || operation.status !== "quoted" || busy) return;
-    const expectedOperation = operation;
-    const expectedOwner = ownerId.current;
-    const expectedContext = requestContext.current;
-    const expectedRevision = cacheRevision.current;
-    setBusy("cancel");
-    setError("");
-    setNotice("");
-    try {
-      const { data } = await request("generation.cancel", { operationId: expectedOperation.operationId });
-      const exact = exactOperation(data, expectedOperation.intentId, expectedOperation.planVersion);
-      if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u53D6\u6D88\u7ED3\u679C\u4E0E\u5F53\u524D\u62A5\u4EF7\u4E0D\u5339\u914D\u3002");
-      if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, exact);
-      if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId) return;
-      setOperation(exact);
-      setApprovalAttempted(false);
-      setNotice("\u62A5\u4EF7\u5DF2\u53D6\u6D88\uFF0C\u672A\u6267\u884C\u4E5F\u672A\u6263\u9664\u79EF\u5206\u3002");
-      onChanged?.();
-    } catch (error52) {
-      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setError(errorText2(error52));
-    } finally {
-      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setBusy("");
-    }
-  }
-  function clearComposer() {
-    if (!prompt && !skillId && !selectedDna && references.length === 0) return;
-    invalidate();
-    skillSequence.current += 1;
-    setPrompt("");
-    setSkillId("");
-    setSelectedDna(void 0);
-    setSkillLoading("");
-    setSkillError("");
-    setReferences([]);
-  }
-  const chevron = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "13", height: "13", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m7 10 5 5 5-5" }) });
-  const plus = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "22", height: "22", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M12 5v14M5 12h14" }) });
-  const imageIcon = /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("circle", { cx: "8.5", cy: "9", r: "1.5" }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m21 15-5-5L5 20" })
-  ] });
-  const broomIcon = /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("svg", { width: "19", height: "19", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M13.5 10.5 22 2" }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M14.734 13.841a2 2 0 0 0-.314-2.42L12.58 9.58a2 2 0 0 0-2.421-.314l-7.657 4.461A1 1 0 0 0 2.3 15.3l6.403 6.403a1 1 0 0 0 1.571-.204z" }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m5 18 2-2" }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m7.699 10.7 5.602 5.601" })
-  ] });
-  const openSkillBrowser = (event) => {
-    event?.currentTarget.closest("details")?.removeAttribute("open");
-    setSkillBrowserOpen(true);
-  };
-  if (placement === "floating" && !floatingOpen) return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { ref: floatingShell, className: "ppd-generation-shell is-floating is-collapsed", "data-generation-composer": "floating", "data-generation-composer-collapsed": true, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", className: "ppd-generation-collapsed", "aria-expanded": "false", onClick: () => setFloatingOpen(true), children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-collapsed-add", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "17", height: "17", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.9", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M12 5v14M5 12h14" }) }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-collapsed-placeholder", children: "Create image" }),
-    (references.length > 0 || uploadPreviews.length > 0 || uploadProgress || uploadWarning) && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { "data-generation-reference-count": true, title: uploadFeedback || void 0, children: uploadPreviews.some((row) => row.status !== "failed") ? `\u6B63\u5728\u4E0A\u4F20 ${uploadPreviews.length} \u5F20\u2026` : uploadPreviews.length || uploadWarning ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : `${references.length} \u5F20\u53C2\u8003\u56FE` }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-collapsed-expand", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m12 19V5m-6 6 6-6 6 6" }) }) })
-  ] }) });
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { ref: floatingShell, className: `ppd-generation ppd-generation-shell is-${placement}`, "data-generation-composer": placement, "data-generation-composer-expanded": true, "aria-busy": loading, children: [
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-visually-hidden", role: "alert", children: error51 }),
-    notice && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-visually-hidden", role: "status", children: notice }),
-    priceVerification && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-price-verification", "data-generation-price-verification": true, role: "status", children: priceVerification }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("fieldset", { className: "ppd-generation-form", disabled: busy === "upload" || busy === "approve" || busy === "cancel", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("legend", { className: "ppd-visually-hidden", children: "\u672C\u6279\u8BBE\u7F6E" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `ppd-web-composer ${composerFocused ? "is-focused" : ""}`, "data-ui": "podplo-web-composer", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-actions", children: [
-          placement === "floating" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": "\u6536\u8D77\u751F\u56FE\u6846", onClick: () => setFloatingOpen(false), children: "\u2014" }),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": "\u6E05\u7A7A\u8F93\u5165", title: "\u6E05\u7A7A", onClick: clearComposer, children: broomIcon })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-media-row", children: [
-          selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedSkill.title, children: [
-            selectedSkill?.coverUrl ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("img", { className: "ppd-skill-cover", src: selectedSkill.coverUrl, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-token-mark", children: "\u2726" }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "ppd-skill-copy", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: skillLoading === selectedSkill.id ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "Skill" }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: selectedSkill?.title || "\u9009\u62E9 Skill" })
-            ] }),
-            chevron,
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
-          ] }),
-          selectedDna && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedDna.description || "\u6211\u7684 DNA", "data-generation-dna": selectedDna.dnaId, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-token-mark", children: "\u25C8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "ppd-skill-copy", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: "DNA" }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: selectedDna.title })
-            ] }),
-            chevron,
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill \u6216 DNA", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `ppd-reference-tray ${references.length || uploadPreviews.length ? "has-references" : ""}`, "aria-label": references.length ? `${references.length} \u5F20\u53C2\u8003\u7D20\u6750` : "\u6DFB\u52A0\u53C2\u8003\u7D20\u6750", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-upload-tile", "data-generation-upload": true, "aria-label": "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", title: "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", onClick: () => uploadInput.current?.click(), children: plus }),
-            references.map((id, index) => {
-              const asset = assets.find((row) => row.id === id);
-              const preview = asset?.thumbnailUrl || asset?.previewUrl;
-              return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-reference-token", title: asset?.filename || id, children: [
-                preview ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("img", { src: preview, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: index + 1 }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: index + 1 }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-reference-actions", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: index === 0, "aria-label": "\u4E0A\u79FB", onClick: () => moveReference(index, -1), children: "\u2190" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: index === references.length - 1, "aria-label": "\u4E0B\u79FB", onClick: () => moveReference(index, 1), children: "\u2192" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": "\u79FB\u9664", onClick: () => change(setReferences, references.filter((value2) => value2 !== id)), children: "\xD7" })
-                ] })
-              ] }, id);
-            }),
-            uploadPreviews.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `ppd-reference-token ppd-upload-preview is-${row.status}`, "data-generation-upload-preview": row.status, title: `${row.filename}\uFF1A${row.message || "\u4E0A\u4F20\u4E2D"}`, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("img", { src: row.previewUrl, alt: row.filename }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-upload-preview-status", role: row.status === "failed" ? "alert" : "status", children: row.status === "failed" ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : "\u4E0A\u4F20\u4E2D\u2026" }),
-              row.status === "failed" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-upload-preview-remove", "aria-label": `\u79FB\u9664\u672A\u4E0A\u4F20\u56FE\u7247 ${row.filename}`, onClick: () => {
-                setUploadWarning("");
-                generationBootstrapCache.updateReferenceUpload(ownerId.current, nativeSessionId ?? "podplo-manual", row.id, null, cacheRevision.current);
-                setUploadPreviews(generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId ?? "podplo-manual"));
-              }, children: "\xD7" })
-            ] }, row.id)),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { ref: uploadInput, className: "ppd-file-input", type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", onChange: (event) => void upload(Array.from(event.target.files ?? [])) })
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("textarea", { value: prompt, maxLength: Number(properties.prompt?.maxLength) || 4e3, "aria-label": "\u751F\u56FE\u63CF\u8FF0", placeholder: "\u63CF\u8FF0\u4F60\u60F3\u751F\u6210\u7684\u753B\u9762\u2026", onFocus: () => setComposerFocused(true), onBlur: () => setComposerFocused(false), onChange: (event) => change(setPrompt, event.target.value) }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-toolbar", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbar-left", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { className: "ppd-add-menu", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("summary", { className: "ppd-toolbar-icon", "aria-label": "\u6DFB\u52A0\u7D20\u6750\u3001Skill \u6216 DNA", children: plus }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-add-popover", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": selectedSkill || selectedDna ? "\u6D4F\u89C8 Skill \u548C DNA" : "\u9009\u62E9 Skill \u6216 DNA", "aria-haspopup": "dialog", onClick: openSkillBrowser, children: "\u6D4F\u89C8 Skill \u548C DNA" }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: (event) => {
-                  uploadInput.current?.click();
-                  event.currentTarget.closest("details")?.removeAttribute("open");
-                }, children: "\u672C\u5730\u4E0A\u4F20" })
-              ] })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-toolbar-divider" }),
-            properties.modelId && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { className: "ppd-model-menu", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("summary", { className: "ppd-toolbar-select ppd-model-select", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: `ppd-model-dot ${/^gpt/i.test(selectedModelLabel) ? "is-gpt" : ""}` }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: selectedModelLabel }),
-                chevron
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "modelId", "aria-hidden": "true", tabIndex: -1, value: model, onChange: (event) => selectModel(event.target.value), children: models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("option", { value: modelId(row), disabled: row.availableForCurrentPlan === false, children: [
-                modelName(row),
-                row.availableForCurrentPlan === false ? " \xB7 \u672A\u5F00\u901A" : ""
-              ] }, modelId(row))) }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-model-popover", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("header", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: "\u56FE\u7247\u6A21\u578B" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("small", { children: [
-                    models.length,
-                    " \u4E2A\u53EF\u7528\u6A21\u578B"
-                  ] })
-                ] }),
-                models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", className: modelId(row) === model ? "is-selected" : "", "aria-pressed": modelId(row) === model, disabled: row.availableForCurrentPlan === false, onClick: (event) => {
-                  selectModel(modelId(row));
-                  event.currentTarget.closest("details")?.removeAttribute("open");
-                }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: `ppd-model-brand ${/^gpt/i.test(modelName(row)) ? "is-gpt" : ""}`, children: /^gpt/i.test(modelName(row)) ? "GPT" : "AI" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: modelName(row) }),
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: row.availableForCurrentPlan === false ? "\u5F53\u524D\u65B9\u6848\u672A\u5F00\u901A" : `${stringList(row.ratios).length} \u79CD\u6BD4\u4F8B \xB7 \u6700\u591A ${Number(row.maximumReferenceImages) || 0} \u5F20\u53C2\u8003\u56FE` })
-                  ] }),
-                  modelId(row) === model && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: "\u2713" })
-                ] }, modelId(row)))
-              ] })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { className: "ppd-settings-menu", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("summary", { className: "ppd-toolbar-button", children: [
-                imageIcon,
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: ratio || "\u6BD4\u4F8B" }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", {}),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
-                  count,
-                  " \u5F20"
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", {}),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: [resolution, quality].filter(Boolean).join(" \xB7 ") || "\u9ED8\u8BA4" }),
-                chevron
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-settings-popover", children: [
-                properties.ratio && modelRatios.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u6BD4\u4F8B" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "ratio", "aria-hidden": "true", tabIndex: -1, value: ratio, onChange: (event) => change(setRatio, event.target.value), children: modelRatios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-ratio-grid", children: modelRatios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", className: ratio === value2 ? "is-selected" : "", "aria-pressed": ratio === value2, onClick: () => change(setRatio, value2), children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { className: "ppd-ratio-glyph", style: ratioGlyphStyle(value2) }),
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: value2 })
-                  ] }, value2)) })
-                ] }),
-                properties.count && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u6570\u91CF" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { className: "ppd-contract-control", type: "number", "aria-hidden": "true", tabIndex: -1, min: countMinimum, max: countMaximum, value: count, onChange: (event) => change(setCount, Math.max(1, Number(event.target.value) || 1)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: Array.from({ length: countMaximum - countMinimum + 1 }, (_, index) => countMinimum + index).map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: count === value2 ? "is-selected" : "", "aria-pressed": count === value2, onClick: () => change(setCount, value2), children: value2 }, value2)) })
-                ] }),
-                properties.resolution && modelResolutions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u5206\u8FA8\u7387" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "resolution", "aria-hidden": "true", tabIndex: -1, value: resolution, onChange: (event) => change(setResolution, event.target.value), children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: resolution === value2 ? "is-selected" : "", "aria-pressed": resolution === value2, onClick: () => change(setResolution, value2), children: value2 }, value2)) })
-                ] }),
-                properties.quality && modelQualities.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u6E05\u6670\u5EA6" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "quality", "aria-hidden": "true", tabIndex: -1, value: quality, onChange: (event) => change(setQuality, event.target.value), children: modelQualities.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: modelQualities.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: quality === value2 ? "is-selected" : "", "aria-pressed": quality === value2, onClick: () => change(setQuality, value2), children: value2 === "xhigh" ? "Ultra" : value2 }, value2)) })
-                ] }),
-                properties.thinkingLevel && modelThinkingLevels.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u601D\u8003\u7A0B\u5EA6" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "thinkingLevel", "aria-hidden": "true", tabIndex: -1, value: thinkingLevel, onChange: (event) => change(setThinkingLevel, event.target.value), children: modelThinkingLevels.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: modelThinkingLevels.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: thinkingLevel === value2 ? "is-selected" : "", "aria-pressed": thinkingLevel === value2, onClick: () => change(setThinkingLevel, value2), children: value2 }, value2)) })
-                ] }),
-                supportsTransparent && transparentKey && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u80CC\u666F" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: "ppd-settings-check", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": transparentKey, checked: transparent, onChange: (event) => change(setTransparent, event.target.checked) }),
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) }),
-                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "\u900F\u660E\u80CC\u666F" })
-                  ] })
-                ] })
-              ] })
-            ] }),
-            supportsWebSearch && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: `ppd-search-chip ${booleans.webSearch ? "is-selected" : ""}`, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "\u8054\u7F51\u641C\u7D22" }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": "webSearch", checked: booleans.webSearch === true, onChange: (event) => changeBoolean("webSearch", event.target.checked) }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) })
-            ] }),
-            supportsImageSearch && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: `ppd-search-chip ${booleans.imageSearch ? "is-selected" : ""}`, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "\u56FE\u7247\u641C\u7D22" }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": "imageSearch", checked: booleans.imageSearch === true, onChange: (event) => changeBoolean("imageSearch", event.target.checked) }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) })
-            ] })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbar-right", children: [
-            supportsEcoMode && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: `ppd-eco-control ${booleans.ecoMode ? "is-selected" : ""}`, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": "ecoMode", checked: booleans.ecoMode === true, onChange: (event) => changeBoolean("ecoMode", event.target.checked) }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "Eco" })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-              BatchGenerationPanel,
-              {
-                request,
-                snapshot: batchSnapshot,
-                capabilities,
-                skills: batchSkills,
-                disabled: !!selectedDna || !!validationError() || busy === "prepare" || busy === "approve" || approvalAttempted,
-                resolveSkill: resolveBatchSkill,
-                onChanged,
-                accountKey,
-                contextKey: cacheRevision.current
-              }
-            ),
-            (operation?.status === "quoted" || localQuote) && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "ppd-generation-cost", "aria-label": `${operation?.status === "quoted" ? operation.quote.totalCredits : localQuote.totalCredits} \u79EF\u5206`, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { "aria-hidden": "true", children: "\u2727" }),
-              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { "data-generation-credits": true, children: operation?.status === "quoted" ? operation.quote.totalCredits : localQuote.totalCredits })
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-generate-button", "data-generation-submit": true, "aria-label": operation?.status === "quoted" || localQuote ? `\u751F\u6210 \xB7 ${operation?.status === "quoted" ? operation.quote.totalCredits : localQuote.totalCredits} \u79EF\u5206` : "\u751F\u6210 \xB7 \u70B9\u51FB\u6838\u9A8C\u79EF\u5206", disabled: busy === "prepare" || busy === "approve" || approvalAttempted || !!validationError(), onClick: () => void generate(), children: busy === "prepare" || busy === "approve" ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-spinner" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m12 19V5m-6 6 6-6 6 6" }) }) })
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-meta", children: [
-        selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-skill-proof", role: "status", children: skillLoading === selectedSkill.id ? selectedSkill.kind === "family" ? "\u6B63\u5728\u52A0\u8F7D\u65CF\u6210\u5458\u2026" : "\u6B63\u5728\u8BFB\u53D6\u5B8C\u6574\u8BE6\u60C5\u2026" : selectedSkill.detail ? `\u8BE6\u60C5\u5DF2\u6838\u5BF9 \xB7 \u7248\u672C ${selectedSkill.version}` : selectedSkill.kind === "family" ? "\u8BF7\u9009\u62E9\u65CF\u6210\u5458" : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void selectSkill(selectedSkill.id), children: "\u91CD\u8BD5 Skill \u8BE6\u60C5" }) }),
-        selectedDna && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-skill-proof", role: "status", children: "DNA \u6A21\u5F0F \xB7 \u8BF7\u6DFB\u52A0\u4E00\u5F20\u65B0\u56FE" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
-          references.length,
-          Number.isFinite(referenceLimit) ? ` / ${referenceLimit}` : "",
-          " \u5F20\u53C2\u8003\u7D20\u6750"
-        ] }),
-        assetCursor && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadAssets(true), children: "\u52A0\u8F7D\u66F4\u591A\u7D20\u6750" })
-      ] })
-    ] }),
-    skillError && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-skill-feedback", "data-generation-skill-feedback": true, role: "alert", children: [
-      skillError,
-      selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", disabled: !!skillLoading, onClick: () => void selectSkill(selectedSkill.id), children: "\u91CD\u8BD5" })
-    ] }),
-    (visibleUploadProgress || uploadFeedback) && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-upload-feedback", role: uploadFeedback ? "alert" : "status", "data-generation-upload-feedback": true, children: [
-      visibleUploadProgress,
-      visibleUploadProgress && uploadFeedback ? "\uFF1B" : "",
-      uploadFeedback
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
-      SkillBrowser,
-      {
-        open: skillBrowserOpen,
-        onClose: () => setSkillBrowserOpen(false),
-        value: selectedDna?.id || skillId,
-        choices: skills,
-        categories: skillCategories,
-        favorites: favoriteBrowser,
-        personal: personalBrowser,
-        dna: dnaBrowser,
-        categoryLabels: Object.fromEntries(skillCategories.map((row) => [row.id, row.label])),
-        loadFamily: loadFamilyChoices,
-        request,
-        previewRevision: cacheRevision.current,
-        onSelect: (choice) => {
-          setSkillBrowserOpen(false);
-          if (choice.source === "dna") selectDna(choice);
-          else void selectSkill(choice.id, choice);
-        }
-      }
-    )
-  ] });
-}
-
-// plugins/podplo-dsh/src/generation-history.tsx
-var import_react7 = require("react");
-var import_jsx_runtime8 = require("react/jsx-runtime");
-var labels = {
-  verifying: "\u6B63\u5728\u6838\u9A8C\u79EF\u5206",
-  quoted: "\u6B63\u5728\u63D0\u4EA4",
-  submitting: "\u6B63\u5728\u63D0\u4EA4",
-  submitted: "\u6B63\u5728\u751F\u6210",
-  completed: "\u5DF2\u5B8C\u6210",
-  failed: "\u751F\u6210\u5931\u8D25",
-  partial_failure: "\u90E8\u5206\u751F\u6210\u5931\u8D25",
-  cancelled: "\u5DF2\u505C\u6B62",
-  partial_cancelled: "\u90E8\u5206\u5B8C\u6210",
-  submission_unknown: "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9",
-  partial_unknown: "\u90E8\u5206\u7ED3\u679C\u5F85\u6838\u5BF9"
-};
-var running = /* @__PURE__ */ new Set(["verifying", "quoted", "submitting", "submitted"]);
-function GenerationHistory({ request, submission, onBack, renderAsset }) {
-  const [items, setItems] = (0, import_react7.useState)([]);
-  const [loading, setLoading] = (0, import_react7.useState)(true);
-  const [error51, setError] = (0, import_react7.useState)("");
-  const [refreshVersion, setRefreshVersion] = (0, import_react7.useState)(0);
-  const [folders, setFolders] = (0, import_react7.useState)([]);
-  const [folderId, setFolderId] = (0, import_react7.useState)();
-  (0, import_react7.useEffect)(() => {
-    let alive = true, reading = false;
-    const load = async () => {
-      if (reading) return;
-      reading = true;
-      try {
-        const { data } = await request("archive.list", { scope: "session" });
-        if (alive) setFolders(data.items ?? []);
-      } catch {
-        if (alive) setFolders([]);
-      } finally {
-        reading = false;
-      }
-    };
-    void load();
-    const timer = setInterval(() => void load(), 1800);
-    return () => {
-      alive = false;
-      clearInterval(timer);
-    };
-  }, [request]);
-  (0, import_react7.useEffect)(() => {
-    let alive = true;
-    let reading = false;
-    const refresh = async () => {
-      if (reading) return;
-      reading = true;
-      try {
-        const { data } = await request("generation.list", { scope: "manual" });
-        if (!alive) return;
-        setItems((Array.isArray(data?.items) ? data.items : []).filter((row) => row.approvedAt));
-        setError("");
-      } catch (error52) {
-        if (alive) setError(error52 instanceof Error ? error52.message : "\u5904\u7406\u8BB0\u5F55\u8BFB\u53D6\u5931\u8D25\uFF0C\u8BF7\u5237\u65B0\u3002");
-      } finally {
-        reading = false;
-        if (alive) setLoading(false);
-      }
-    };
-    void refresh();
-    const timer = window.setInterval(() => void refresh(), 1500);
-    return () => {
-      alive = false;
-      window.clearInterval(timer);
-    };
-  }, [request, refreshVersion]);
-  const recent = submission && items.find((row) => row.operationId === submission.operation.operationId);
-  const rows = submission && !recent ? [submission.operation, ...items] : items;
-  const submissionError = recent ? void 0 : submission?.error;
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: "ppd-history", "data-generation-history": true, "aria-label": "\u5904\u7406\u8BB0\u5F55", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ArchiveStyles, {}),
-    folderId && folders.find((row) => row.id === folderId) ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ArchiveDetail, { task: folders.find((row) => row.id === folderId), request, onBack: () => setFolderId(void 0) }) : null,
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-history-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: "\u5904\u7406\u8BB0\u5F55" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button", onClick: () => setRefreshVersion((value2) => value2 + 1), children: "\u5237\u65B0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE" })
-      ] })
-    ] }),
-    (error51 || submissionError) && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 || submissionError }),
-    loading && !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-state", role: "status", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "ppd-spinner" }),
-      "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026"
-    ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-state", children: "\u8FD8\u6CA1\u6709\u751F\u6210\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-history-list", children: rows.map((row) => {
-      const pending = running.has(row.status);
-      const summary = row.summary;
-      const outputs = [...new Set(row.items?.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []) ?? [])];
-      const failures = [...new Set(row.items?.flatMap((item) => [item.errorCode, ...item.outputs?.map((output) => output.failureCode) ?? []].filter(Boolean)) ?? [])];
-      return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("article", { className: "ppd-history-record", "data-operation-id": row.operationId, "data-generation-status": row.status, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-history-record-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("strong", { role: "status", children: [
-            pending && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "ppd-spinner" }),
-            labels[row.status] ?? row.status
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
-            row.quote.outputCount,
-            " \u5F20",
-            row.status !== "verifying" && ` \xB7 ${row.quote.totalCredits} \u79EF\u5206`
-          ] })
-        ] }),
-        row.createdAt && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
-        summary && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("progress", { "aria-label": "\u751F\u6210\u8FDB\u5EA6", max: Math.max(1, summary.itemCount), value: summary.completedCount + summary.failedCount + summary.cancelledCount }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("small", { children: [
-            "\u5B8C\u6210 ",
-            summary.completedCount,
-            " / ",
-            summary.itemCount,
-            summary.failedCount > 0 && ` \xB7 \u5931\u8D25 ${summary.failedCount}`
-          ] })
-        ] }),
-        failures.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-alert", children: failures.join(" \xB7 ") }),
-        outputs.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-history-results", children: outputs.map((id) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { "data-history-asset": id, children: renderAsset(id) }, `${id}:${refreshVersion}`)) }),
-        folders.filter((folder) => folder.operationIds.includes(row.operationId)).map((folder) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(TaskFolderCard, { task: folder, request, onView: () => setFolderId(folder.id), library: true }, folder.id))
-      ] }, row.operationId);
-    }) })
-  ] });
-}
-
-// plugins/podplo-dsh/src/ToolboxPanel.tsx
-var import_react11 = require("react");
-
-// plugins/podplo-dsh/src/ManualToolboxPanel.tsx
-var import_react8 = __toESM(require("react"), 1);
 
 // ../../../node_modules/zod/v4/classic/external.js
 var external_exports = {};
@@ -5661,7 +2616,7 @@ __export(external_exports, {
   uppercase: () => _uppercase,
   url: () => url,
   util: () => util_exports,
-  uuid: () => uuid3,
+  uuid: () => uuid2,
   uuidv4: () => uuidv4,
   uuidv6: () => uuidv6,
   uuidv7: () => uuidv7,
@@ -7006,7 +3961,7 @@ __export(regexes_exports, {
   undefined: () => _undefined,
   unicodeEmail: () => unicodeEmail,
   uppercase: () => uppercase,
-  uuid: () => uuid2,
+  uuid: () => uuid,
   uuid4: () => uuid4,
   uuid6: () => uuid6,
   uuid7: () => uuid7,
@@ -7021,14 +3976,14 @@ var nanoid = /^[a-zA-Z0-9_-]{21}$/;
 var duration = /^P(?:(\d+W)|(?!.*W)(?=\d|T\d)(\d+Y)?(\d+M)?(\d+D)?(T(?=\d)(\d+H)?(\d+M)?(\d+([.,]\d+)?S)?)?)$/;
 var extendedDuration = /^[-+]?P(?!$)(?:(?:[-+]?\d+Y)|(?:[-+]?\d+[.,]\d+Y$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:(?:[-+]?\d+W)|(?:[-+]?\d+[.,]\d+W$))?(?:(?:[-+]?\d+D)|(?:[-+]?\d+[.,]\d+D$))?(?:T(?=[\d+-])(?:(?:[-+]?\d+H)|(?:[-+]?\d+[.,]\d+H$))?(?:(?:[-+]?\d+M)|(?:[-+]?\d+[.,]\d+M$))?(?:[-+]?\d+(?:[.,]\d+)?S)?)??$/;
 var guid = /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})$/;
-var uuid2 = (version2) => {
+var uuid = (version2) => {
   if (!version2)
     return /^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$/;
   return new RegExp(`^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-${version2}[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12})$`);
 };
-var uuid4 = /* @__PURE__ */ uuid2(4);
-var uuid6 = /* @__PURE__ */ uuid2(6);
-var uuid7 = /* @__PURE__ */ uuid2(7);
+var uuid4 = /* @__PURE__ */ uuid(4);
+var uuid6 = /* @__PURE__ */ uuid(6);
+var uuid7 = /* @__PURE__ */ uuid(7);
 var email = /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\-]*\.)+[A-Za-z]{2,}$/;
 var html5Email = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 var rfc5322Email = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -7854,9 +4809,9 @@ var $ZodUUID = /* @__PURE__ */ $constructor("$ZodUUID", (inst, def) => {
     const v = versionMap[def.version];
     if (v === void 0)
       throw new Error(`Invalid UUID version: "${def.version}"`);
-    def.pattern ?? (def.pattern = uuid2(v));
+    def.pattern ?? (def.pattern = uuid(v));
   } else
-    def.pattern ?? (def.pattern = uuid2());
+    def.pattern ?? (def.pattern = uuid());
   $ZodStringFormat.init(inst, def);
 });
 var $ZodEmail = /* @__PURE__ */ $constructor("$ZodEmail", (inst, def) => {
@@ -17979,7 +14934,7 @@ __export(schemas_exports2, {
   union: () => union,
   unknown: () => unknown,
   url: () => url,
-  uuid: () => uuid3,
+  uuid: () => uuid2,
   uuidv4: () => uuidv4,
   uuidv6: () => uuidv6,
   uuidv7: () => uuidv7,
@@ -18396,7 +15351,7 @@ var ZodUUID = /* @__PURE__ */ $constructor("ZodUUID", (inst, def) => {
   $ZodUUID.init(inst, def);
   ZodStringFormat.init(inst, def);
 });
-function uuid3(params) {
+function uuid2(params) {
   return _uuid(ZodUUID, params);
 }
 function uuidv4(params) {
@@ -19941,6 +16896,3392 @@ function date4(params) {
 // ../../../node_modules/zod/v4/classic/external.js
 config(en_default());
 
+// packages/online/image-to-text.ts
+var IMAGE_TO_TEXT_MODEL = "claude-haiku-5-5";
+var IMAGE_TO_TEXT_MAX_BYTES = 128 * 1024 - 3;
+var ImageToTextInputSchema = external_exports.object({
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  referenceAssetIds: external_exports.array(external_exports.string().uuid()).min(1).max(4).refine((ids2) => new Set(ids2).size === ids2.length),
+  prompt: external_exports.string().min(1).max(8e3).refine((value2) => value2.trim().length > 0)
+}).strict();
+var ImageToTextQuoteSchema = external_exports.object({
+  quoteId: external_exports.string().uuid(),
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  totalCredits: external_exports.number().positive(),
+  expiresAt: external_exports.string().datetime(),
+  maxOutputTokens: external_exports.literal(4096),
+  confirmationText: external_exports.string().min(1).max(1e3)
+});
+var ImageToTextSubmitSchema = external_exports.object({
+  quoteId: external_exports.string().uuid(),
+  clientRequestId: external_exports.string().uuid(),
+  approvedCredits: external_exports.number().positive()
+}).strict();
+var ImageToTextTaskSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  status: external_exports.enum(["queued", "running", "completed", "failed", "submission_unknown"]),
+  model: external_exports.literal(IMAGE_TO_TEXT_MODEL),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  totalCredits: external_exports.number().positive(),
+  inputCount: external_exports.number().int().min(1).max(4),
+  text: external_exports.string().optional(),
+  failureCode: external_exports.string().regex(/^[A-Z0-9_]{1,80}$/).nullable().optional()
+}).superRefine((value2, context) => {
+  if (value2.status === "completed") {
+    if (!value2.text?.trim() || new TextEncoder().encode(value2.text).byteLength > IMAGE_TO_TEXT_MAX_BYTES)
+      context.addIssue({ code: "custom", message: "\u56FE\u8F6C\u6587\u7ED3\u679C\u4E3A\u7A7A\u6216\u8D85\u8FC7 TXT \u5927\u5C0F\u9650\u5236" });
+  } else if (value2.text !== void 0) context.addIssue({ code: "custom", message: "\u672A\u5B8C\u6210\u4EFB\u52A1\u4E0D\u80FD\u5305\u542B\u6210\u529F\u6587\u672C" });
+});
+
+// plugins/podplo-dsh/src/use-analysis-generation.ts
+var import_react4 = require("react");
+var quoteMessage = (error51) => {
+  const code = error51 && typeof error51 === "object" && "code" in error51 ? error51.code : "";
+  if (code === "IMAGE_TO_TEXT_PRICING_UNAVAILABLE") return "\u56FE\u8F6C\u6587\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4\u3002";
+  if (code === "DNA_PRICING_UNAVAILABLE") return "DNA \u53CD\u63A8\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4\u3002";
+  return error51 instanceof Error ? error51.message : "\u6838\u4EF7\u5931\u8D25\u3002";
+};
+function useAnalysisGeneration(input, owner, session, intent, plan, request, onText, onChanged) {
+  const revision = generationBootstrapCache.revision();
+  const key = JSON.stringify([revision, owner, session, intent, plan, input]);
+  const latest = (0, import_react4.useRef)({ key, onText, onChanged });
+  latest.current = { key, onText, onChanged };
+  const [quote, setQuote] = (0, import_react4.useState)();
+  const [state, setState] = (0, import_react4.useState)({ busy: false, message: "", error: "" });
+  const [retry, setRetry] = (0, import_react4.useState)(0);
+  const [watch, setWatch] = (0, import_react4.useState)(0);
+  const alive = (0, import_react4.useRef)(true);
+  const lock = (0, import_react4.useRef)(false);
+  const receipt = generationBootstrapCache.analysisReceipt(owner, session, intent, plan);
+  const mode = input?.mode;
+  const args = JSON.stringify(input?.args);
+  const current = (expected) => alive.current && latest.current.key === expected && generationBootstrapCache.isCurrent(revision);
+  (0, import_react4.useEffect)(() => {
+    alive.current = true;
+    return () => {
+      alive.current = false;
+    };
+  }, []);
+  (0, import_react4.useEffect)(() => {
+    let cancelled = false;
+    let expiration;
+    setQuote(void 0);
+    setState({ busy: false, message: "", error: "" });
+    if (!mode || !owner || !args || receipt) return;
+    const timer = setTimeout(async () => {
+      try {
+        const { data } = await request(mode + ".quote", JSON.parse(args));
+        if (cancelled || !current(key)) return;
+        if (typeof data?.quoteId !== "string" || data.model !== IMAGE_TO_TEXT_MODEL || !Number.isFinite(data.totalCredits) || data.totalCredits <= 0 || !Number.isFinite(Date.parse(data.expiresAt)) || Date.parse(data.expiresAt) <= Date.now())
+          throw new Error("\u62A5\u4EF7\u5DF2\u8FC7\u671F\u6216\u65E0\u6548\u3002");
+        if (mode === "imageToText") ImageToTextQuoteSchema.parse(data);
+        setQuote({ key, id: data.quoteId, credits: data.totalCredits, expires: Date.parse(data.expiresAt) });
+        expiration = setTimeout(() => {
+          setQuote(void 0);
+          setState({ busy: false, error: "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002", message: "" });
+        }, Date.parse(data.expiresAt) - Date.now());
+      } catch (error51) {
+        if (!cancelled && current(key)) setState({ busy: false, message: "", error: quoteMessage(error51) });
+      }
+    }, 350);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+      clearTimeout(expiration);
+    };
+  }, [key, mode, args, retry, !!receipt, request]);
+  (0, import_react4.useEffect)(() => {
+    if (!receipt || !mode || receipt.mode !== mode || !owner) return;
+    let cancelled = false;
+    const active = () => !cancelled && current(key);
+    const report = (message2, error51 = "") => {
+      if (active()) setState({ busy: false, message: message2, error: error51 });
+    };
+    const loop = startVisiblePolling(async () => {
+      if (!active()) return null;
+      try {
+        const list2 = await request(mode === "dna" ? "dna.tasks.list" : "imageToText.list", {});
+        if (!active()) return null;
+        const row = list2.data?.items?.find((r) => r.id === receipt.id);
+        if (!row) {
+          if (lock.current) {
+            report("\u6B63\u5728\u63D0\u4EA4\u2026");
+            return ACTIVE_POLL_MS;
+          }
+          report("", "\u672A\u627E\u5230\u539F\u63D0\u4EA4\u7684\u56DE\u6267\u3002\u8BF7\u6838\u5BF9\u72B6\u6001\u3002");
+          return null;
+        }
+        if (row.status === "failed" || row.status === "submission_unknown" || row.errorCode || row.archiveStatus === "failed") {
+          report("", mode === "dna" ? "\u63D0\u53D6\u672A\u5B8C\u6210\uFF0C\u8BF7\u5728\u6211\u7684 DNA \u6838\u5BF9\u539F\u4EFB\u52A1\u3002" : "\u8BC6\u522B\u6216\u4FDD\u5B58\u672A\u5B8C\u6210\uFF0C\u8BF7\u5230\u5904\u7406\u8BB0\u5F55\u6838\u5BF9\u539F\u4EFB\u52A1\u3002");
+          return null;
+        }
+        if (row.status !== "completed") {
+          report(mode === "dna" ? "\u6B63\u5728\u63D0\u53D6 DNA\u2026" : "\u6B63\u5728\u8BC6\u522B\u6587\u5B57\u2026");
+          return ACTIVE_POLL_MS;
+        }
+        if (mode === "dna") {
+          report("\u5DF2\u5B58\u5165\u6211\u7684 DNA\u3002");
+          return null;
+        }
+        if (!row.archiveTaskId || row.archiveStatus !== "saved") return ACTIVE_POLL_MS;
+        const { data: task } = await request("archive.detail", { taskId: row.archiveTaskId });
+        if (!active()) return null;
+        const file2 = task?.files?.find((f) => f.group === "result" && f.originId === receipt.id && f.status === "saved" && !f.image);
+        if (!file2) throw new Error("\u6587\u5B57\u6587\u4EF6\u6682\u4E0D\u53EF\u7528\u3002");
+        const { data } = await request("archive.textPreview", { taskId: row.archiveTaskId, fileId: file2.id });
+        if (!active()) return null;
+        if (typeof data?.text !== "string" || !data.text.trim()) throw new Error("\u6587\u5B57\u7ED3\u679C\u6682\u4E0D\u53EF\u7528\u3002");
+        const draft = generationBootstrapCache.readDraft(owner, session);
+        if (draft?.intentId === intent && draft.planVersion === plan) latest.current.onText(data.text);
+        return null;
+      } catch (error51) {
+        if (active()) report("", error51 instanceof Error ? error51.message : "\u8BFB\u53D6\u7ED3\u679C\u5931\u8D25\u3002");
+        return null;
+      }
+    }, false);
+    return () => {
+      cancelled = true;
+      loop.stop();
+    };
+  }, [key, receipt?.id, request, watch]);
+  const submit = async () => {
+    if (lock.current || !mode || !current(key) || !quote || quote.key !== key || quote.expires <= Date.now()) return;
+    const id = crypto.randomUUID();
+    if (!generationBootstrapCache.startAnalysis(owner, session, intent, plan, { mode, id })) return;
+    lock.current = true;
+    setState({ busy: true, message: "\u6B63\u5728\u63D0\u4EA4\u2026", error: "" });
+    setQuote(void 0);
+    try {
+      const { data } = await request(mode + ".submit", { quoteId: quote.id, approvedCredits: quote.credits, clientRequestId: id });
+      if (data?.id !== id) throw new Error("\u4EFB\u52A1\u56DE\u6267\u5F85\u6838\u5BF9\u3002");
+      if (current(key)) latest.current.onChanged?.();
+    } catch (error51) {
+      if (current(key)) {
+        setState({ busy: false, error: error51 instanceof Error ? error51.message : "\u539F\u63D0\u4EA4\u72B6\u6001\u5F85\u6838\u5BF9\u3002", message: "" });
+        setWatch((n) => n + 1);
+      }
+    } finally {
+      lock.current = false;
+    }
+  };
+  return {
+    ...state,
+    price: quote?.key === key ? quote.credits : void 0,
+    submitted: !!receipt,
+    submit,
+    retry: () => receipt ? setWatch((n) => n + 1) : setRetry((n) => n + 1)
+  };
+}
+
+// plugins/podplo-dsh/src/generation-approval-failure.ts
+var REQUOTE_WITHOUT_SUBMISSION = /* @__PURE__ */ new Set([
+  "MCP_INVALID_TOOL_ARGUMENTS",
+  "ORDINARY_ORDER_BACKEND_UNAVAILABLE",
+  "ORDER_RESERVATION_UNAVAILABLE",
+  "QUOTE_EXPIRED",
+  "CONFIRMATION_MISMATCH"
+]);
+var RETRY_WITHOUT_SUBMISSION = /* @__PURE__ */ new Set(["INSUFFICIENT_CREDITS"]);
+var errorCode = (error51) => error51 && typeof error51 === "object" && typeof error51.code === "string" ? error51.code : "";
+var errorMessage = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
+function generationApprovalFailure(error51) {
+  const detail = errorMessage(error51);
+  const code = errorCode(error51);
+  if (REQUOTE_WITHOUT_SUBMISSION.has(code)) {
+    return {
+      outcome: "not_submitted",
+      message: `\u786E\u8BA4\u672A\u5B8C\u6210\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002${detail} \u8BF7\u91CD\u65B0\u6838\u9A8C\u79EF\u5206\u540E\u518D\u751F\u6210\u3002`,
+      recovery: "requote"
+    };
+  }
+  if (RETRY_WITHOUT_SUBMISSION.has(code)) {
+    return {
+      outcome: "not_submitted",
+      message: `\u786E\u8BA4\u672A\u5B8C\u6210\uFF0C\u672A\u63D0\u4EA4\u751F\u56FE\u3002${detail} \u5904\u7406\u540E\u53EF\u6309\u539F\u62A5\u4EF7\u518D\u6B21\u786E\u8BA4\u3002`,
+      recovery: "retry_same_quote"
+    };
+  }
+  return {
+    outcome: "unknown",
+    message: `\u786E\u8BA4\u7ED3\u679C\u5C1A\u672A\u786E\u5B9A\uFF1A${detail} \u8BF7\u5728\u5904\u7406\u8BB0\u5F55\u4E2D\u5237\u65B0\u6838\u5BF9\uFF1B\u4E3A\u9632\u91CD\u590D\u6267\u884C\uFF0C\u672C\u62A5\u4EF7\u4E0D\u4F1A\u518D\u6B21\u63D0\u4EA4\u3002`,
+    recovery: "lock_unknown"
+  };
+}
+
+// plugins/podplo-dsh/src/batch-generation-panel.tsx
+var import_react5 = require("react");
+var import_react_dom = require("react-dom");
+
+// plugins/podplo-dsh/src/generation-batch.ts
+var PENDING_REFERENCE_PREFIX = "pending-";
+var pendingReferenceId = (unique) => `${PENDING_REFERENCE_PREFIX}${unique}`;
+var isPendingReferenceId = (id) => id.startsWith(PENDING_REFERENCE_PREFIX);
+
+// plugins/podplo-dsh/src/batch-generation-ui-state.ts
+function batchUploadOverflow(referenceCounts, entries, maximum = 4) {
+  if (!referenceCounts.length) return void 0;
+  for (const entry of entries) {
+    if (!entry.reference) continue;
+    const current = referenceCounts[entry.selectionIndex] ?? 0;
+    if (current + 1 > maximum) return entry.selectionIndex;
+  }
+  return void 0;
+}
+function filterBatchSkills(skills, query) {
+  const normalized = query.trim().toLocaleLowerCase();
+  if (!normalized) return skills;
+  return skills.filter((row) => `${row.title} ${row.key}`.toLocaleLowerCase().includes(normalized));
+}
+function batchStatusLabel(status) {
+  return {
+    draft: "\u8349\u7A3F",
+    queued: "\u6392\u961F\u4E2D",
+    submitting: "\u6B63\u5728\u63D0\u4EA4",
+    generating: "\u8FDC\u7A0B\u751F\u6210",
+    completed: "\u5DF2\u5B8C\u6210",
+    failed: "\u5931\u8D25",
+    unknown: "\u5F85\u6838\u5BF9",
+    cancelled: "\u5DF2\u53D6\u6D88",
+    quoted: "\u5F85\u786E\u8BA4",
+    running: "\u6267\u884C\u4E2D",
+    blocked: "\u5F85\u6838\u5BF9",
+    partial: "\u90E8\u5206\u5B8C\u6210",
+    stopped: "\u5DF2\u505C\u6B62"
+  }[status] ?? status;
+}
+
+// plugins/podplo-dsh/src/batch-generation-panel.tsx
+var import_jsx_runtime5 = require("react/jsx-runtime");
+var idOf = (model) => String(model.id ?? model.modelId ?? "");
+var nameOf = (model) => String(model.name ?? model.label ?? model.modelName ?? idOf(model));
+var list = (value2) => Array.isArray(value2) ? value2.filter((row) => typeof row === "string") : [];
+var message = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
+var countOf = (item) => Number.isSafeInteger(Number(item.args.count)) && Number(item.args.count) > 0 ? Number(item.args.count) : 1;
+function argsForModel(item, model) {
+  const ratios = list(model.ratios), qualities = list(model.qualities), resolutions = list(model.resolutions), thinking = list(model.thinkingLevels);
+  const current = item.args;
+  const supportsTransparent = model.supportsTransparentMode === true || list(model.backgroundModes).includes("transparent");
+  const transparent = current.background === "transparent" || current.transparent === true;
+  const outputFormat = ["png", "webp"].includes(String(current.output_format ?? "").toLowerCase()) ? String(current.output_format).toLowerCase() : "png";
+  const choice = (values, value2, fallback) => values.includes(String(value2 ?? "")) ? String(value2) : values.includes(String(fallback ?? "")) ? String(fallback) : values[0];
+  return {
+    modelId: idOf(model),
+    count: countOf(item),
+    ...ratios.length ? { ratio: choice(ratios, current.ratio, ratios[0]) } : {},
+    ...qualities.length ? { quality: choice(qualities, current.quality, model.defaultQuality) } : {},
+    ...resolutions.length ? { resolution: choice(resolutions, current.resolution, model.defaultResolution) } : {},
+    ...thinking.length ? { thinkingLevel: choice(thinking, current.thinkingLevel, model.defaultThinkingLevel) } : {},
+    ...model.supportsWebSearch === true ? { webSearch: current.webSearch === true } : {},
+    ...model.supportsImageSearch === true ? { imageSearch: current.imageSearch === true } : {},
+    ...Number.isInteger(Number(model.ecoMaximumReferenceImages)) ? { ecoMode: current.ecoMode === true } : {},
+    ...supportsTransparent ? {
+      background: transparent ? "transparent" : current.background === "opaque" ? "opaque" : "opaque",
+      ...transparent ? { output_format: outputFormat } : {}
+    } : {}
+  };
+}
+var supportsTransparentModel = (model) => !!model && (model.supportsTransparentMode === true || list(model.backgroundModes).includes("transparent"));
+var bulkRowSupportsBackground = (item, model) => supportsTransparentModel(model) || "background" in item.args;
+function RowParameters({ item, models, disabled, countMinimum, countMaximum, patch }) {
+  const model = models.find((row) => idOf(row) === item.args.modelId) ?? models[0];
+  const ratios = list(model?.ratios);
+  const qualities = list(model?.qualities);
+  const resolutions = list(model?.resolutions);
+  const thinking = list(model?.thinkingLevels);
+  const transparent = item.args.background === "transparent" || item.args.transparent === true;
+  const summary = [
+    nameOf(model ?? {}),
+    item.args.ratio,
+    item.args.quality || item.args.resolution,
+    `${countOf(item)} \u5F20`,
+    item.args.ecoMode === true ? "Eco" : "",
+    transparent ? "\u900F\u660E" : "",
+    item.args.webSearch === true ? "\u8054\u7F51" : "",
+    item.args.imageSearch === true ? "\u641C\u56FE" : ""
+  ].filter(Boolean).join(" \xB7 ");
+  const update = (key, value2) => patch({ [key]: value2 });
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("details", { className: "ppd-batch-parameters", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("summary", { children: summary }),
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-parameter-grid", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+        "\u6A21\u578B",
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.modelId ?? ""), onChange: (event) => {
+          const next = models.find((row) => idOf(row) === event.target.value);
+          if (next) patch(argsForModel(item, next), true);
+        }, children: models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: idOf(row), disabled: row.availableForCurrentPlan === false, children: nameOf(row) }, idOf(row))) })
+      ] }),
+      ratios.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+        "\u6BD4\u4F8B",
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.ratio ?? ""), onChange: (event) => update("ratio", event.target.value), children: ratios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
+      ] }),
+      qualities.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+        "\u6E05\u6670\u5EA6",
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.quality ?? ""), onChange: (event) => update("quality", event.target.value), children: qualities.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
+      ] }),
+      resolutions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+        "\u5206\u8FA8\u7387",
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.resolution ?? ""), onChange: (event) => update("resolution", event.target.value), children: resolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
+      ] }),
+      thinking.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+        "\u601D\u8003\u7A0B\u5EA6",
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("select", { disabled, value: String(item.args.thinkingLevel ?? ""), onChange: (event) => update("thinkingLevel", event.target.value), children: thinking.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2)) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+        "\u6570\u91CF",
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "number", min: countMinimum, max: countMaximum, value: countOf(item), onChange: (event) => update("count", Math.min(countMaximum, Math.max(countMinimum, Number(event.target.value) || countMinimum))) })
+      ] }),
+      Number.isInteger(Number(model?.ecoMaximumReferenceImages)) && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: item.args.ecoMode === true, onChange: (event) => update("ecoMode", event.target.checked) }),
+        "Eco"
+      ] }),
+      model?.supportsWebSearch === true && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: item.args.webSearch === true, onChange: (event) => update("webSearch", event.target.checked) }),
+        "\u8054\u7F51\u641C\u7D22"
+      ] }),
+      model?.supportsImageSearch === true && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: item.args.imageSearch === true, onChange: (event) => update("imageSearch", event.target.checked) }),
+        "\u56FE\u7247\u641C\u7D22"
+      ] }),
+      (model?.supportsTransparentMode === true || list(model?.backgroundModes).includes("transparent") || "background" in item.args) && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-check", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { disabled, type: "checkbox", checked: transparent, onChange: (event) => patch({ background: event.target.checked ? "transparent" : "opaque", ...event.target.checked ? { output_format: "png" } : {} }) }),
+        "\u900F\u660E\u80CC\u666F"
+      ] })
+    ] })
+  ] });
+}
+function BatchSkillPicker({ value: value2, skills, disabled, label, onChange }) {
+  const [open, setOpen] = (0, import_react5.useState)(false);
+  const [query, setQuery] = (0, import_react5.useState)("");
+  const selected = skills.find((row) => row.key === value2);
+  const rows = filterBatchSkills(skills, query);
+  const close = () => {
+    setOpen(false);
+    setQuery("");
+  };
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-skill", onKeyDown: (event) => {
+    if (event.key === "Escape") {
+      event.stopPropagation();
+      close();
+    }
+  }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+      "button",
+      {
+        type: "button",
+        className: "ppd-batch-skill-toggle",
+        "aria-label": label,
+        "aria-expanded": open,
+        disabled,
+        onClick: () => {
+          if (disabled) return;
+          if (open) close();
+          else setOpen(true);
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: selected?.title ?? (value2 ? "Skill \u4E0D\u53EF\u7528" : "\u76F4 AI") }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { "aria-hidden": "true", children: "\u25BE" })
+        ]
+      }
+    ),
+    open && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-skill-menu", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { autoFocus: true, value: query, placeholder: "\u641C\u7D22 Skill", "aria-label": `${label} \u641C\u7D22`, onChange: (event) => setQuery(event.target.value) }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-skill-list", role: "listbox", "aria-label": `${label} \u5217\u8868`, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", role: "option", "aria-selected": !value2, onClick: () => {
+          onChange("");
+          close();
+        }, children: "\u76F4 AI" }),
+        rows.map((row) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(
+          "button",
+          {
+            type: "button",
+            role: "option",
+            "aria-selected": row.key === value2,
+            disabled: row.available === false,
+            onClick: () => {
+              onChange(row.key);
+              close();
+            },
+            children: [
+              row.title,
+              row.available === false ? " \xB7 \u4E0D\u53EF\u7528" : ""
+            ]
+          },
+          row.key
+        )),
+        !rows.length && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("small", { children: "\u6CA1\u6709\u5339\u914D\u7684 Skill" })
+      ] })
+    ] })
+  ] });
+}
+function BatchGenerationPanel({ request, snapshot, capabilities, skills, disabled = false, resolveSkill, onChanged, accountKey, contextKey }) {
+  const [batch, setBatch] = (0, import_react5.useState)();
+  const [open, setOpen] = (0, import_react5.useState)(false);
+  const [busy, setBusy] = (0, import_react5.useState)("");
+  const [error51, setError] = (0, import_react5.useState)("");
+  const [notice, setNotice] = (0, import_react5.useState)("");
+  const [bulkOpen, setBulkOpen] = (0, import_react5.useState)(false);
+  const [bulkPrompt, setBulkPrompt] = (0, import_react5.useState)("");
+  const [bulkSkill, setBulkSkill] = (0, import_react5.useState)("");
+  const [bulkModel, setBulkModel] = (0, import_react5.useState)("");
+  const [bulkRatio, setBulkRatio] = (0, import_react5.useState)("");
+  const [bulkQuality, setBulkQuality] = (0, import_react5.useState)("");
+  const [bulkCount, setBulkCount] = (0, import_react5.useState)(1);
+  const [bulkEco, setBulkEco] = (0, import_react5.useState)(true);
+  const [bulkBackground, setBulkBackground] = (0, import_react5.useState)("keep");
+  const [bulkFields, setBulkFields] = (0, import_react5.useState)({});
+  const [clearConfirm, setClearConfirm] = (0, import_react5.useState)(false);
+  const clearTimer = (0, import_react5.useRef)(void 0);
+  const [archiveConfirm, setArchiveConfirm] = (0, import_react5.useState)(false);
+  const archiveTimer = (0, import_react5.useRef)(void 0);
+  const [localPreviews, setLocalPreviews] = (0, import_react5.useState)({});
+  const previewUrls = (0, import_react5.useRef)(/* @__PURE__ */ new Map());
+  const uploadInput = (0, import_react5.useRef)(null);
+  const currentBatch = (0, import_react5.useRef)(batch);
+  currentBatch.current = batch;
+  const epoch2 = (0, import_react5.useRef)(0);
+  const promptDrafts = (0, import_react5.useRef)(/* @__PURE__ */ new Map());
+  const promptJobs = (0, import_react5.useRef)(/* @__PURE__ */ new Map());
+  const changed = (0, import_react5.useRef)(onChanged);
+  changed.current = onChanged;
+  const models = (0, import_react5.useMemo)(() => Array.isArray(capabilities?.models) ? capabilities.models : [], [capabilities]);
+  const countMinimum = Math.max(1, Number(capabilities?.quoteInputSchema?.properties?.count?.minimum) || 1);
+  const countMaximum = Math.max(countMinimum, Number(capabilities?.quoteInputSchema?.properties?.count?.maximum) || 4);
+  const current = (value2) => epoch2.current === value2;
+  const publish2 = (0, import_react5.useCallback)((value2) => {
+    if (!value2 || typeof value2.batchId !== "string" || !Array.isArray(value2.items)) throw new Error("\u6279\u91CF\u4EFB\u52A1\u8FD4\u56DE\u5185\u5BB9\u4E0D\u5B8C\u6574\u3002");
+    currentBatch.current = value2;
+    setBatch(value2);
+    changed.current?.();
+    return value2;
+  }, []);
+  const load = (0, import_react5.useCallback)(async (quiet = false, expectedEpoch = epoch2.current) => {
+    try {
+      const { data } = await request("generation.batch.get", currentBatch.current?.batchId ? { batchId: currentBatch.current.batchId } : {});
+      if (!current(expectedEpoch)) return;
+      if (data?.batchId) publish2(data);
+      else if (!quiet) setBatch(void 0);
+    } catch (cause) {
+      if (!quiet && current(expectedEpoch)) setError(message(cause));
+    }
+  }, [publish2, request]);
+  (0, import_react5.useEffect)(() => {
+    const expectedEpoch = ++epoch2.current;
+    currentBatch.current = void 0;
+    setBatch(void 0);
+    promptDrafts.current.clear();
+    void load(true, expectedEpoch);
+    return () => {
+      if (current(expectedEpoch)) epoch2.current += 1;
+    };
+  }, [accountKey, contextKey, load, request]);
+  (0, import_react5.useEffect)(() => {
+    if (!open) return;
+    const close = (event) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        setOpen(false);
+      }
+    };
+    document.addEventListener("keydown", close);
+    return () => document.removeEventListener("keydown", close);
+  }, [open]);
+  (0, import_react5.useEffect)(() => {
+    if (!batch || !["quoted", "running", "blocked", "partial"].includes(batch.status)) return;
+    const loop = startVisiblePolling(async () => {
+      await load(true);
+      return ["quoted", "running", "blocked", "partial"].includes(currentBatch.current?.status ?? "") ? ACTIVE_POLL_MS : null;
+    });
+    return () => loop.stop();
+  }, [batch?.batchId, batch?.status, load]);
+  const write = (0, import_react5.useCallback)(async (action, args) => {
+    const expectedEpoch = epoch2.current;
+    setBusy(action);
+    setError("");
+    setNotice("");
+    try {
+      const { data } = await request(action, args);
+      if (!current(expectedEpoch)) return void 0;
+      return publish2(data);
+    } catch (cause) {
+      if (current(expectedEpoch)) setError(message(cause));
+      return void 0;
+    } finally {
+      if (current(expectedEpoch)) setBusy("");
+    }
+  }, [publish2, request]);
+  const forgetPreview = (0, import_react5.useCallback)((id) => {
+    const url2 = previewUrls.current.get(id);
+    if (!url2) return;
+    URL.revokeObjectURL(url2);
+    previewUrls.current.delete(id);
+    setLocalPreviews((current2) => {
+      if (!(id in current2)) return current2;
+      const next = { ...current2 };
+      delete next[id];
+      return next;
+    });
+  }, []);
+  const previewOf = (reference) => localPreviews[reference.id] || reference.thumbnailUrl || reference.previewUrl;
+  const resolvePendingReference = (0, import_react5.useCallback)(async (pendingId, next, failure) => {
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const target2 = currentBatch.current;
+      if (!target2 || !["draft", "quoted"].includes(target2.status)) return;
+      const row = target2.items.find((item) => item.references.some((reference) => reference.id === pendingId));
+      if (!row) return;
+      const patch = next ? { references: row.references.map((reference) => reference.id === pendingId ? next : reference) } : { uploadError: failure || "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u66FF\u6362\u3002" };
+      try {
+        const { data } = await request("generation.batch.patchItems", { batchId: target2.batchId, expectedRevision: target2.revision, itemIds: [row.id], patch });
+        if (data) publish2(data);
+        return;
+      } catch (cause) {
+        if (attempt) {
+          setError(message(cause));
+          return;
+        }
+      }
+    }
+  }, [publish2, request]);
+  const itemQuote = (0, import_react5.useCallback)((item) => {
+    if (Number.isFinite(Number(item.quote?.totalCredits))) return Number(item.quote.totalCredits);
+    const model = models.find((row) => idOf(row) === item.args.modelId);
+    return calculateLocalGenerationQuote(model, {
+      prompt: item.prompt,
+      quality: String(item.args.quality ?? ""),
+      resolution: String(item.args.resolution ?? ""),
+      count: countOf(item),
+      referenceImageCount: item.references.length + Number(item.skill?.pricingReferenceCount ?? 0),
+      ecoMode: item.args.ecoMode === true,
+      webSearch: item.args.webSearch === true,
+      imageSearch: item.args.imageSearch === true
+    })?.totalCredits;
+  }, [models]);
+  const selected = batch?.items.filter((row) => row.selected) ?? [];
+  const pendingReferences = batch?.items.reduce((sum, item) => sum + item.references.filter((reference) => isPendingReferenceId(reference.id)).length, 0) ?? 0;
+  const editable = !batch || batch.status === "draft" || batch.status === "quoted";
+  (0, import_react5.useEffect)(() => {
+    if (!editable) {
+      setBulkOpen(false);
+      setClearConfirm(false);
+    }
+  }, [editable]);
+  (0, import_react5.useEffect)(() => {
+    setClearConfirm(false);
+    setArchiveConfirm(false);
+  }, [batch?.batchId]);
+  (0, import_react5.useEffect)(() => () => {
+    if (clearTimer.current) clearTimeout(clearTimer.current);
+    if (archiveTimer.current) clearTimeout(archiveTimer.current);
+  }, []);
+  (0, import_react5.useEffect)(() => () => {
+    for (const url2 of previewUrls.current.values()) URL.revokeObjectURL(url2);
+    previewUrls.current.clear();
+  }, []);
+  const totals = (0, import_react5.useMemo)(() => {
+    const quotes = selected.map(itemQuote);
+    return {
+      rows: selected.length,
+      outputs: selected.reduce((sum, row) => sum + countOf(row), 0),
+      credits: quotes.every((value2) => value2 !== void 0) ? quotes.reduce((sum, value2) => sum + value2, 0) : void 0
+    };
+  }, [itemQuote, selected]);
+  async function addCurrent() {
+    const references = Array.isArray(snapshot.args.referenceAssetIds) ? snapshot.args.referenceAssetIds : [];
+    if (references.length > 4) {
+      setError("\u6279\u91CF\u4EFB\u52A1\u6BCF\u884C\u6700\u591A 4 \u5F20\u53C2\u8003\u56FE\uFF0C\u8BF7\u5148\u51CF\u5C11\u5F53\u524D\u53C2\u8003\u56FE\u3002");
+      return;
+    }
+    const target2 = editable ? batch : void 0;
+    const next = await write("generation.batch.createItem", { ...target2 ? { batchId: target2.batchId, expectedRevision: target2.revision } : {}, snapshot });
+    if (next) {
+      setOpen(true);
+      setNotice("\u5DF2\u5C06\u5F53\u524D\u8BBE\u7F6E\u4F5C\u4E3A\u72EC\u7ACB\u5FEB\u7167\u52A0\u5165\u6279\u91CF\u3002");
+    }
+  }
+  async function patchItems(itemIds, patch) {
+    const target2 = currentBatch.current;
+    if (!target2 || !["draft", "quoted"].includes(target2.status) || !itemIds.length) return;
+    return write("generation.batch.patchItems", { batchId: target2.batchId, expectedRevision: target2.revision, itemIds, patch });
+  }
+  async function patchReferences(item, references) {
+    await patchItems([item.id], { references });
+  }
+  async function removeRows(itemIds) {
+    const target2 = currentBatch.current;
+    if (!target2 || !["draft", "quoted"].includes(target2.status) || !itemIds.length) return;
+    const next = await write("generation.batch.removeItems", { batchId: target2.batchId, expectedRevision: target2.revision, itemIds });
+    setClearConfirm(false);
+    if (next) setNotice(`\u5DF2\u5220\u9664 ${itemIds.length} \u884C\u3002`);
+  }
+  function requestClearAll() {
+    if (!batch?.items.length || !editable || busy) return;
+    if (!clearConfirm) {
+      setClearConfirm(true);
+      if (clearTimer.current) clearTimeout(clearTimer.current);
+      clearTimer.current = setTimeout(() => setClearConfirm(false), 4e3);
+      return;
+    }
+    if (clearTimer.current) clearTimeout(clearTimer.current);
+    void removeRows(batch.items.map((row) => row.id));
+  }
+  async function archiveBatch() {
+    const target2 = currentBatch.current;
+    if (!target2 || !["completed", "partial", "stopped"].includes(target2.status)) return;
+    const expectedEpoch = epoch2.current;
+    setBusy("generation.batch.archive");
+    setError("");
+    setNotice("");
+    try {
+      await request("generation.batch.archive", { batchId: target2.batchId, expectedRevision: target2.revision });
+      if (!current(expectedEpoch)) return;
+      currentBatch.current = void 0;
+      setBatch(void 0);
+      changed.current?.();
+      setNotice("\u5DF2\u6E05\u9664\u8FD9\u6279\u4EFB\u52A1\uFF0C\u751F\u6210\u7684\u56FE\u7247\u4ECD\u4FDD\u7559\u5728\u6210\u679C\u4E2D\u3002");
+    } catch (cause) {
+      if (current(expectedEpoch)) setError(message(cause));
+    } finally {
+      if (current(expectedEpoch)) setBusy("");
+    }
+  }
+  function requestArchive() {
+    if (!batch || !["completed", "partial", "stopped"].includes(batch.status) || busy) return;
+    if (!archiveConfirm) {
+      setArchiveConfirm(true);
+      if (archiveTimer.current) clearTimeout(archiveTimer.current);
+      archiveTimer.current = setTimeout(() => setArchiveConfirm(false), 4e3);
+      return;
+    }
+    if (archiveTimer.current) clearTimeout(archiveTimer.current);
+    setArchiveConfirm(false);
+    void archiveBatch();
+  }
+  async function chooseSkill(itemIds, key) {
+    const expectedEpoch = epoch2.current;
+    const skill = key ? await resolveSkill?.(key) ?? skills.find((row) => row.key === key) ?? null : null;
+    if (!current(expectedEpoch)) return;
+    await patchItems(itemIds, { skill });
+  }
+  async function uploadFile(file2) {
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file2.type)) return { ok: false, error: "\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP" };
+    try {
+      const { data } = await request("assets.upload", { file: file2 });
+      if (!data?.id || data.status !== "ready") throw new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA");
+      return { ok: true, reference: { id: data.id, filename: data.filename ?? file2.name, previewUrl: data.previewUrl, thumbnailUrl: data.thumbnailUrl } };
+    } catch (cause) {
+      return { ok: false, error: message(cause) };
+    }
+  }
+  async function uploadBatch(files) {
+    if (!files.length || files.length > 100 || busy) {
+      if (files.length > 100) setError("\u4E00\u6B21\u6700\u591A\u9009\u62E9 100 \u5F20\u56FE\u7247\u3002");
+      return;
+    }
+    const totalBytes = files.reduce((sum, file2) => sum + file2.size, 0);
+    if (totalBytes > 250 * 1024 * 1024) {
+      setError("\u672C\u6B21\u9009\u62E9\u7684\u56FE\u7247\u5408\u8BA1\u8D85\u8FC7 250MB\uFF0C\u4EFB\u52A1\u8868\u672A\u6539\u52A8\u3002");
+      return;
+    }
+    const eligible = files.map((file2) => ["image/jpeg", "image/png", "image/webp"].includes(file2.type) && file2.size > 0 && file2.size <= 50 * 1024 * 1024);
+    const planned = files.map((file2, selectionIndex) => eligible[selectionIndex] ? { selectionIndex, reference: { id: pendingReferenceId(crypto.randomUUID()), filename: file2.name } } : { selectionIndex, error: file2.size > 50 * 1024 * 1024 ? "\u5355\u5F20\u8D85\u8FC7 50MB" : file2.size === 0 ? "\u6587\u4EF6\u4E3A\u7A7A" : "\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP" });
+    const uploadTarget = editable ? batch : void 0;
+    const preflightOverflow = batchUploadOverflow(uploadTarget?.items.map((row) => row.references.length) ?? [], planned);
+    if (preflightOverflow !== void 0) {
+      setError(`\u7B2C ${preflightOverflow + 1} \u884C\u65E0\u6CD5\u518D\u6DFB\u52A0\u53C2\u8003\u56FE\uFF0C\u672C\u6B21\u56FE\u7247\u672A\u4E0A\u4F20\u3002`);
+      return;
+    }
+    const expectedEpoch = epoch2.current;
+    const previews = {};
+    for (const entry of planned) if (entry.reference) {
+      const url2 = URL.createObjectURL(files[entry.selectionIndex]);
+      previewUrls.current.set(entry.reference.id, url2);
+      previews[entry.reference.id] = url2;
+    }
+    setLocalPreviews((current2) => ({ ...current2, ...previews }));
+    setBusy("upload");
+    setError("");
+    setNotice(`\u6B63\u5728\u52A0\u5165 ${files.length} \u5F20\u56FE\u7247\u2026`);
+    try {
+      const rowSnapshot = { ...snapshot, args: { ...snapshot.args, referenceAssetIds: [] } };
+      const { data } = await request("generation.batch.appendReferences", { ...uploadTarget ? { batchId: uploadTarget.batchId, expectedRevision: uploadTarget.revision } : {}, entries: planned, snapshot: rowSnapshot });
+      if (!current(expectedEpoch)) return;
+      publish2(data);
+      setOpen(true);
+      const pending = planned.filter((entry) => entry.reference);
+      const failures = planned.filter((entry) => entry.error).length;
+      setNotice(failures ? `${files.length - failures} \u5F20\u5DF2\u6309\u539F\u9009\u62E9\u987A\u5E8F\u52A0\u5165\uFF0C${failures} \u5F20\u683C\u5F0F\u4E0D\u7B26\uFF1B\u6B63\u5728\u540E\u53F0\u4E0A\u4F20\u53C2\u8003\u56FE\u3002` : `\u5DF2\u52A0\u5165 ${files.length} \u5F20\u56FE\u7247\uFF0C\u6B63\u5728\u540E\u53F0\u4E0A\u4F20\u53C2\u8003\u56FE\u3002`);
+      void finishUploads(files, pending, expectedEpoch);
+    } catch (cause) {
+      if (current(expectedEpoch)) {
+        setError(message(cause));
+        setNotice("");
+      }
+    } finally {
+      if (current(expectedEpoch)) {
+        setBusy("");
+        if (uploadInput.current) uploadInput.current.value = "";
+      }
+    }
+  }
+  async function finishUploads(files, pending, expectedEpoch) {
+    const results = /* @__PURE__ */ new Map();
+    let cursor = 0;
+    let completed = 0;
+    const worker = async () => {
+      for (; ; ) {
+        const index = cursor++;
+        if (index >= pending.length || !current(expectedEpoch)) return;
+        const entry = pending[index];
+        const id = entry.reference.id;
+        results.set(id, await uploadFile(files[entry.selectionIndex]));
+        completed += 1;
+        if (current(expectedEpoch)) setNotice(`\u6B63\u5728\u4E0A\u4F20\u53C2\u8003\u56FE ${completed} / ${pending.length}\u2026`);
+      }
+    };
+    await Promise.all(Array.from({ length: Math.min(4, pending.length) }, worker));
+    if (!current(expectedEpoch)) return;
+    let failures = 0;
+    for (const entry of pending) {
+      if (!current(expectedEpoch)) return;
+      const id = entry.reference.id;
+      const result = results.get(id);
+      if (result?.ok) {
+        await resolvePendingReference(id, result.reference);
+        forgetPreview(id);
+      } else {
+        failures += 1;
+        await resolvePendingReference(id, void 0, `\u53C2\u8003\u56FE\u4E0A\u4F20\u5931\u8D25\uFF1A${result && !result.ok ? result.error : "\u672A\u77E5\u9519\u8BEF"}`);
+      }
+    }
+    if (current(expectedEpoch)) setNotice(failures ? `${failures} \u5F20\u53C2\u8003\u56FE\u4E0A\u4F20\u5931\u8D25\uFF0C\u53EF\u5728\u5BF9\u5E94\u683C\u5B50\u66FF\u6362\u6216\u5220\u9664\u540E\u91CD\u65B0\u6838\u9A8C\u3002` : "\u53C2\u8003\u56FE\u5DF2\u5168\u90E8\u4E0A\u4F20\uFF0C\u53EF\u6838\u9A8C\u79EF\u5206\u3002");
+  }
+  async function editReference(item, slot, file2) {
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file2.type) || !file2.size || file2.size > 5e7) {
+      setError("\u8BF7\u9009\u62E9\u4E0D\u8D85\u8FC7 50 MB \u7684 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
+      return;
+    }
+    const expectedEpoch = epoch2.current;
+    const id = pendingReferenceId(crypto.randomUUID());
+    const placeholder = { id, filename: file2.name };
+    const url2 = URL.createObjectURL(file2);
+    previewUrls.current.set(id, url2);
+    setLocalPreviews((current2) => ({ ...current2, [id]: url2 }));
+    setError("");
+    const references = [...item.references];
+    if (slot < references.length) references[slot] = placeholder;
+    else references.push(placeholder);
+    const next = await patchItems([item.id], { references });
+    if (!next) {
+      forgetPreview(id);
+      return;
+    }
+    void (async () => {
+      const result = await uploadFile(file2);
+      if (!current(expectedEpoch)) return;
+      if (result.ok) {
+        await resolvePendingReference(id, result.reference);
+        forgetPreview(id);
+      } else await resolvePendingReference(id, void 0, `\u53C2\u8003\u56FE\u4E0A\u4F20\u5931\u8D25\uFF1A${result.error}`);
+    })();
+  }
+  async function savePrompt(item) {
+    const draft = promptDrafts.current.get(item.id);
+    if (draft === void 0 || draft === item.prompt) return currentBatch.current;
+    const existing = promptJobs.current.get(item.id);
+    if (existing) return existing;
+    const job = patchItems([item.id], { prompt: draft }).then((next) => {
+      if (next && promptDrafts.current.get(item.id) === draft) promptDrafts.current.delete(item.id);
+      return next;
+    }).finally(() => promptJobs.current.delete(item.id));
+    promptJobs.current.set(item.id, job);
+    return job;
+  }
+  async function flushPromptDrafts() {
+    const expectedEpoch = epoch2.current;
+    if (promptJobs.current.size) await Promise.all(promptJobs.current.values());
+    let value2 = currentBatch.current;
+    if (!value2) return void 0;
+    for (const item of value2.items) {
+      const draft = promptDrafts.current.get(item.id);
+      if (draft === void 0 || draft === item.prompt) continue;
+      const { data } = await request("generation.batch.patchItems", { batchId: value2.batchId, expectedRevision: value2.revision, itemIds: [item.id], patch: { prompt: draft } });
+      if (!current(expectedEpoch)) return void 0;
+      value2 = publish2(data);
+      promptDrafts.current.delete(item.id);
+    }
+    return value2;
+  }
+  async function applyBulk() {
+    if (!batch || !selected.length || !Object.values(bulkFields).some(Boolean)) return;
+    if (bulkFields.background && bulkBackground === "keep") {
+      setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u80CC\u666F\uFF1A\u900F\u660E\u6216\u4E0D\u900F\u660E\u3002");
+      return;
+    }
+    const expectedEpoch = epoch2.current;
+    const wantsBackground = bulkFields.background && bulkBackground !== "keep";
+    const args = {};
+    if (bulkFields.model) args.modelId = bulkModel;
+    if (bulkFields.ratio) args.ratio = bulkRatio;
+    if (bulkFields.quality) args.quality = bulkQuality;
+    if (bulkFields.count) args.count = bulkCount;
+    if (bulkFields.eco) args.ecoMode = bulkEco;
+    const skill = bulkFields.skill ? bulkSkill ? await resolveSkill?.(bulkSkill) ?? skills.find((row) => row.key === bulkSkill) ?? null : null : void 0;
+    if (!current(expectedEpoch)) return;
+    const target2 = bulkFields.model ? models.find((row) => idOf(row) === bulkModel) : void 0;
+    if (bulkFields.model && !target2) {
+      setError("\u8BF7\u9009\u62E9\u8981\u6279\u91CF\u5E94\u7528\u7684\u6A21\u578B\u3002");
+      return;
+    }
+    if (target2 || wantsBackground) {
+      setBusy("bulk");
+      setError("");
+      setNotice("");
+      let activeBatch = batch;
+      let skipped = 0;
+      let changed2 = 0;
+      try {
+        for (const item of selected) {
+          if (!current(expectedEpoch)) return;
+          const row = activeBatch.items.find((value2) => value2.id === item.id) ?? item;
+          const rowModel = target2 ?? models.find((value2) => idOf(value2) === row.args.modelId);
+          const nextArgs = target2 ? { ...argsForModel(row, target2), ...args } : { ...args };
+          if (wantsBackground) {
+            if (bulkRowSupportsBackground(row, rowModel)) {
+              nextArgs.background = bulkBackground;
+              if (bulkBackground === "transparent") nextArgs.output_format = "png";
+            } else skipped += 1;
+          }
+          const hasArgs = Object.keys(nextArgs).length > 0;
+          if (!bulkFields.prompt && !bulkFields.skill && !hasArgs) continue;
+          const { data } = await request("generation.batch.patchItems", {
+            batchId: activeBatch.batchId,
+            expectedRevision: activeBatch.revision,
+            itemIds: [row.id],
+            patch: { ...bulkFields.prompt ? { prompt: bulkPrompt } : {}, ...bulkFields.skill ? { skill } : {}, ...hasArgs ? { args: nextArgs, replaceArgs: !!target2 } : {} }
+          });
+          if (!current(expectedEpoch)) return;
+          activeBatch = publish2(data);
+          changed2 += 1;
+        }
+        if (current(expectedEpoch)) {
+          setBulkOpen(false);
+          setNotice(`\u5DF2\u4FEE\u6539 ${changed2} \u884C${skipped ? `\uFF1B${skipped} \u884C\u6A21\u578B\u4E0D\u652F\u6301\u900F\u660E\u80CC\u666F\uFF0C\u5DF2\u8DF3\u8FC7` : ""}\u3002`);
+        }
+      } catch (cause) {
+        if (current(expectedEpoch)) setError(message(cause));
+      } finally {
+        if (current(expectedEpoch)) setBusy("");
+      }
+      return;
+    }
+    const patch = { ...bulkFields.prompt ? { prompt: bulkPrompt } : {}, ...bulkFields.skill ? { skill } : {}, ...Object.keys(args).length ? { args } : {} };
+    const next = await write("generation.batch.patchItems", { batchId: batch.batchId, expectedRevision: batch.revision, itemIds: selected.map((row) => row.id), patch });
+    if (next) {
+      setBulkOpen(false);
+      setNotice(`\u5DF2\u4FEE\u6539 ${selected.length} \u884C\u3002`);
+    }
+  }
+  async function reconcile() {
+    if (!batch) return;
+    const expectedEpoch = epoch2.current;
+    setBusy("reconcile");
+    setError("");
+    try {
+      if (batch.operationId) await request("generation.status", { operationId: batch.operationId, refresh: true });
+      if (!current(expectedEpoch)) return;
+      await load(false, expectedEpoch);
+      if (current(expectedEpoch)) setNotice("\u5DF2\u6309\u539F\u4EFB\u52A1\u91CD\u65B0\u6838\u5BF9\u72B6\u6001\uFF0C\u672A\u91CD\u590D\u63D0\u4EA4\u3002");
+    } catch (cause) {
+      if (current(expectedEpoch)) setError(message(cause));
+    } finally {
+      if (current(expectedEpoch)) setBusy("");
+    }
+  }
+  async function confirmBatch() {
+    if (!batch || !["draft", "quoted"].includes(batch.status) || !selected.length) return;
+    const expectedEpoch = epoch2.current;
+    setBusy("confirm");
+    setError("");
+    setNotice("");
+    try {
+      let prepared = await flushPromptDrafts();
+      if (!prepared) return;
+      const preparedItems = prepared.items.filter((row) => row.selected);
+      if (!preparedItems.length) return;
+      const expiresAt = Date.parse(prepared.quote?.expiresAt ?? "");
+      const needsQuote = prepared.status !== "quoted" || !Number.isFinite(expiresAt) || expiresAt <= Date.now();
+      if (needsQuote) {
+        const { data: data2 } = await request("generation.batch.prepare", {
+          batchId: prepared.batchId,
+          expectedRevision: prepared.revision,
+          taskName: preparedItems[0]?.prompt.trim().slice(0, 40) || "\u6279\u91CF\u751F\u56FE\u4EFB\u52A1"
+        });
+        if (!current(expectedEpoch)) return;
+        prepared = publish2(data2);
+        setNotice("\u79EF\u5206\u5DF2\u6309\u6700\u65B0\u4EFB\u52A1\u6838\u9A8C\u3002\u8BF7\u67E5\u770B\u6BCF\u884C\u548C\u603B\u8BA1\u540E\uFF0C\u518D\u70B9\u51FB\u300C\u786E\u8BA4\u5E76\u751F\u6210\u300D\u3002");
+        return;
+      }
+      if (!prepared.operationId || !prepared.approvalId) throw new Error("\u672A\u53D6\u5F97\u53EF\u786E\u8BA4\u7684\u6279\u91CF\u62A5\u4EF7\u3002");
+      const { data } = await request("generation.batch.approve", { batchId: prepared.batchId, operationId: prepared.operationId, approvalId: prepared.approvalId });
+      if (!current(expectedEpoch)) return;
+      publish2(data);
+      setOpen(false);
+      currentBatch.current = void 0;
+      setBatch(void 0);
+      promptDrafts.current.clear();
+      setBusy("");
+      epoch2.current += 1;
+      changed.current?.();
+      void request("panel.navigate", { section: "results" }).catch(() => void 0);
+    } catch (cause) {
+      if (current(expectedEpoch)) setError(message(cause));
+    } finally {
+      if (current(expectedEpoch)) setBusy("");
+    }
+  }
+  const firstModel = models[0];
+  const skillKeyOf = (item) => {
+    const skill = item.skill;
+    if (!skill) return "";
+    return skills.find((row) => !!skill.key && row.key === skill.key)?.key ?? skills.find((row) => !!skill.id && row.id === skill.id)?.key ?? skills.find((row) => row.title === skill.title)?.key ?? skill.key ?? "";
+  };
+  const quoteExpiresAt = Date.parse(batch?.quote?.expiresAt ?? "");
+  const quoteExpired = batch?.status === "quoted" && (!Number.isFinite(quoteExpiresAt) || quoteExpiresAt <= Date.now());
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-launchers", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "data-generation-add-batch": true, disabled: disabled || !!busy, onClick: () => void addCurrent(), children: editable ? "\u52A0\u5165\u6279\u91CF" : "\u65B0\u5EFA\u6279\u91CF" }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", "data-generation-open-batch": true, "aria-expanded": open, onClick: () => {
+        setOpen(true);
+        void load(true);
+      }, children: [
+        "\u6279\u91CF\u4EFB\u52A1 \xB7 ",
+        batch?.items.length ?? 0
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { ref: uploadInput, hidden: true, type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", onChange: (event) => void uploadBatch(Array.from(event.target.files ?? [])) })
+    ] }),
+    open && typeof document !== "undefined" && (0, import_react_dom.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "ppd-batch-backdrop", role: "presentation", onMouseDown: (event) => {
+      if (event.target === event.currentTarget) setOpen(false);
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("section", { className: "ppd-batch-dialog", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-batch-title", "data-generation-batch": true, tabIndex: -1, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("header", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("h2", { id: "ppd-batch-title", children: "\u6279\u91CF\u4EFB\u52A1" }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { children: "\u6BCF\u884C\u4FDD\u7559\u81EA\u5DF1\u7684\u63D0\u793A\u8BCD\u3001Skill\u3001\u53C2\u6570\u548C\u53C2\u8003\u56FE\u5FEB\u7167\u3002" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "aria-label": "\u5173\u95ED\u6279\u91CF\u4EFB\u52A1", onClick: () => setOpen(false), children: "\xD7" })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-tools", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", disabled: !!busy, onClick: () => uploadInput.current?.click(), children: "\u6279\u91CF\u4E0A\u4F20" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", disabled: !editable || !batch?.items.length || !!busy, onClick: () => void patchItems(batch.items.map((row) => row.id), { selected: !batch.items.every((row) => row.selected) }), children: batch?.items.every((row) => row.selected) ? "\u53D6\u6D88\u5168\u9009" : "\u5168\u9009" }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", disabled: !editable || !selected.length || !!busy, onClick: () => setBulkOpen((value2) => !value2), children: [
+          "\u6279\u91CF\u4FEE\u6539 (",
+          selected.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", className: "is-danger", disabled: !editable || !selected.length || !!busy, onClick: () => void removeRows(selected.map((row) => row.id)), children: [
+          "\u5220\u9664\u9009\u4E2D (",
+          selected.length,
+          ")"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-danger", disabled: !editable || !batch?.items.length || !!busy, onClick: requestClearAll, children: clearConfirm ? "\u518D\u6B21\u70B9\u51FB\u6E05\u7A7A\u5168\u90E8" : "\u6E05\u7A7A\u5168\u90E8" }),
+        batch && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: `ppd-batch-state is-${batch.status}`, children: batch.status === "quoted" ? "\u5F85\u786E\u8BA4" : batchStatusLabel(batch.status) })
+      ] }),
+      bulkOpen && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-bulk", "data-generation-bulk-editor": true, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.prompt, onChange: (event) => setBulkFields((value2) => ({ ...value2, prompt: event.target.checked })) }),
+          "\u63D0\u793A\u8BCD",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { value: bulkPrompt, onChange: (event) => setBulkPrompt(event.target.value), disabled: !bulkFields.prompt })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.skill, onChange: (event) => setBulkFields((value2) => ({ ...value2, skill: event.target.checked })) }),
+          "Skill",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BatchSkillPicker, { value: bulkSkill, skills, disabled: !bulkFields.skill || !!busy, label: "\u6279\u91CF Skill", onChange: setBulkSkill })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.model, onChange: (event) => setBulkFields((value2) => ({ ...value2, model: event.target.checked })) }),
+          "\u6A21\u578B",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkModel, disabled: !bulkFields.model, onChange: (event) => setBulkModel(event.target.value), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "", children: "\u9009\u62E9\u6A21\u578B" }),
+            models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: idOf(row), children: nameOf(row) }, idOf(row)))
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.ratio, onChange: (event) => setBulkFields((value2) => ({ ...value2, ratio: event.target.checked })) }),
+          "\u6BD4\u4F8B",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkRatio, disabled: !bulkFields.ratio, onChange: (event) => setBulkRatio(event.target.value), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "", children: "\u9009\u62E9\u6BD4\u4F8B" }),
+            list((models.find((row) => idOf(row) === bulkModel) ?? firstModel)?.ratios).map((value2) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { children: value2 }, value2))
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.quality, onChange: (event) => setBulkFields((value2) => ({ ...value2, quality: event.target.checked })) }),
+          "\u6E05\u6670\u5EA6",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { value: bulkQuality, disabled: !bulkFields.quality, onChange: (event) => setBulkQuality(event.target.value) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.count, onChange: (event) => setBulkFields((value2) => ({ ...value2, count: event.target.checked })) }),
+          "\u6570\u91CF",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "number", min: countMinimum, max: countMaximum, value: bulkCount, disabled: !bulkFields.count, onChange: (event) => setBulkCount(Math.min(countMaximum, Math.max(countMinimum, Number(event.target.value) || countMinimum))) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.eco, onChange: (event) => setBulkFields((value2) => ({ ...value2, eco: event.target.checked })) }),
+          "Eco",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkEco ? "on" : "off", disabled: !bulkFields.eco, onChange: (event) => setBulkEco(event.target.value === "on"), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "on", children: "\u5F00\u542F" }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "off", children: "\u5173\u95ED" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: !!bulkFields.background, onChange: (event) => setBulkFields((value2) => ({ ...value2, background: event.target.checked })) }),
+          "\u80CC\u666F",
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("select", { value: bulkBackground, disabled: !bulkFields.background || !!busy, onChange: (event) => setBulkBackground(event.target.value), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "keep", children: "\u4FDD\u6301\u539F\u6837" }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "transparent", children: "\u900F\u660E" }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("option", { value: "opaque", children: "\u4E0D\u900F\u660E" })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("button", { type: "button", disabled: !!busy, onClick: () => void applyBulk(), children: [
+          "\u5E94\u7528\u5230 ",
+          selected.length,
+          " \u884C"
+        ] })
+      ] }),
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { className: "ppd-batch-feedback is-error", role: "alert", children: error51 }),
+      notice && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("p", { className: "ppd-batch-feedback", role: "status", children: notice }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-table", role: "table", "aria-label": "\u6279\u91CF\u751F\u56FE\u4EFB\u52A1", children: [
+        batch?.items.map((item, index) => /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("article", { className: "ppd-batch-row", role: "row", "data-batch-item": item.id, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { className: "ppd-batch-select", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "checkbox", checked: item.selected, disabled: !editable || !!busy, onChange: (event) => void patchItems([item.id], { selected: event.target.checked }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: index + 1 })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: "ppd-batch-reference-grid", "aria-label": `\u7B2C ${index + 1} \u884C\u53C2\u8003\u56FE`, children: Array.from({ length: 4 }, (_, slot) => {
+            const reference = item.references[slot];
+            const preview = reference ? previewOf(reference) : void 0;
+            return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("div", { className: `ppd-batch-reference ${reference ? "has-image" : ""}`, children: reference ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)(import_jsx_runtime5.Fragment, { children: [
+              preview ? /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("img", { src: preview, alt: reference.filename || `\u53C2\u8003\u56FE ${slot + 1}` }) : /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: slot + 1 }),
+              isPendingReferenceId(reference.id) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("b", { className: "ppd-batch-reference-pending", children: "\u4E0A\u4F20\u4E2D" }),
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { title: "\u66FF\u6362", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "file", accept: "image/jpeg,image/png,image/webp", disabled: !editable || !!busy, onChange: (event) => {
+                  const file2 = event.target.files?.[0];
+                  if (file2) void editReference(item, slot, file2);
+                } }),
+                "\u21BB"
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "aria-label": `\u5220\u9664\u7B2C ${slot + 1} \u5F20\u53C2\u8003\u56FE`, disabled: !editable || !!busy, onClick: () => void patchReferences(item, item.references.filter((_2, position) => position !== slot)), children: "\xD7" })
+            ] }) : slot === item.references.length ? /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("label", { title: "\u6DFB\u52A0\u53C2\u8003\u56FE", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("input", { type: "file", accept: "image/jpeg,image/png,image/webp", disabled: !editable || !!busy, onChange: (event) => {
+                const file2 = event.target.files?.[0];
+                if (file2) void editReference(item, slot, file2);
+              } }),
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("b", { children: "+" })
+            ] }) : null }, slot);
+          }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-main", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+              "textarea",
+              {
+                "aria-label": `\u7B2C ${index + 1} \u884C\u63D0\u793A\u8BCD`,
+                defaultValue: promptDrafts.current.get(item.id) ?? item.prompt,
+                disabled: !editable || !!busy,
+                onChange: (event) => promptDrafts.current.set(item.id, event.target.value),
+                onBlur: () => void savePrompt(item)
+              },
+              `${item.id}:${item.prompt}`
+            ),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-row-controls", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(BatchSkillPicker, { value: skillKeyOf(item), skills, disabled: !editable || !!busy, label: `\u7B2C ${index + 1} \u884C Skill`, onChange: (key) => void chooseSkill([item.id], key) }),
+              /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(
+                RowParameters,
+                {
+                  item,
+                  models,
+                  disabled: !editable || !!busy,
+                  countMinimum,
+                  countMaximum,
+                  patch: (args, replaceArgs) => void patchItems([item.id], { args, ...replaceArgs ? { replaceArgs: true } : {} })
+                }
+              )
+            ] }),
+            (item.uploadError || item.errorCode) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("small", { className: "ppd-batch-row-error", children: item.uploadError || `\u4EFB\u52A1\u5931\u8D25\uFF1A${item.errorCode}` })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-result", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { className: `is-${item.status}`, children: batchStatusLabel(item.status) }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("strong", { children: itemQuote(item) === void 0 ? "\u79EF\u5206\u672A\u6838\u9A8C" : `${itemQuote(item)} \u79EF\u5206` }),
+            /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", "aria-label": `\u5220\u9664\u7B2C ${index + 1} \u884C`, disabled: !editable || !!busy || !batch, onClick: () => void removeRows([item.id]), children: "\u5220\u9664" })
+          ] })
+        ] }, item.id)),
+        !batch?.items.length && /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { className: "ppd-batch-empty", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("strong", { children: "\u8FD8\u6CA1\u6709\u6279\u91CF\u4EFB\u52A1" }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u53EF\u4ECE\u751F\u56FE\u6846\u52A0\u5165\u5F53\u524D\u8BBE\u7F6E\uFF0C\u6216\u6279\u91CF\u4E0A\u4F20\u56FE\u7247\u5EFA\u7ACB\u591A\u884C\u3002" })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("footer", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("strong", { children: [
+            totals.rows,
+            " \u4E2A\u5DF2\u9009\u4EFB\u52A1"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("span", { children: [
+            "\u9884\u8BA1 ",
+            totals.outputs,
+            " \u5F20 \xB7 ",
+            totals.credits === void 0 ? "\u79EF\u5206\u672A\u5168\u90E8\u6838\u9A8C" : `${totals.credits} \u79EF\u5206`
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime5.jsxs)("div", { children: [
+          batch?.canStop && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-danger", disabled: !!busy, onClick: () => void write("generation.batch.stop", { batchId: batch.batchId }), children: "\u505C\u6B62\u5269\u4F59" }),
+          batch && ["blocked", "partial", "stopped"].includes(batch.status) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void reconcile(), children: "\u91CD\u65B0\u6838\u5BF9" }),
+          batch && ["completed", "partial", "stopped"].includes(batch.status) && /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-danger", disabled: !!busy, onClick: requestArchive, children: archiveConfirm ? "\u518D\u6B21\u70B9\u51FB\u6E05\u9664\u8FD9\u6279\u4EFB\u52A1" : "\u6E05\u9664\u8FD9\u6279\u4EFB\u52A1" }),
+          /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("button", { type: "button", className: "is-primary", disabled: !selected.length || !!busy || !batch || !["draft", "quoted"].includes(batch.status) || pendingReferences > 0, title: pendingReferences ? `\u8FD8\u6709 ${pendingReferences} \u5F20\u53C2\u8003\u56FE\u6B63\u5728\u4E0A\u4F20` : void 0, onClick: () => void confirmBatch(), children: busy === "confirm" ? "\u6B63\u5728\u6838\u9A8C\u2026" : batch?.status === "quoted" && !quoteExpired ? "\u786E\u8BA4\u5E76\u751F\u6210" : quoteExpired ? "\u91CD\u65B0\u6838\u9A8C\u79EF\u5206" : pendingReferences ? `\u7B49\u5F85 ${pendingReferences} \u5F20\u53C2\u8003\u56FE\u4E0A\u4F20` : "\u6838\u9A8C\u79EF\u5206\u5E76\u786E\u8BA4" })
+        ] })
+      ] })
+    ] }) }), document.body)
+  ] });
+}
+
+// plugins/podplo-dsh/src/skill-browser.tsx
+var import_react7 = require("react");
+
+// plugins/podplo-dsh/src/use-extraction-skills.ts
+var import_react6 = require("react");
+
+// plugins/podplo-dsh/src/skill-browser-state.ts
+var text = (value2) => typeof value2 === "string" ? value2 : "";
+var strings = (value2) => Array.isArray(value2) ? value2.filter((row) => typeof row === "string" && !!row) : [];
+var normalizeSkillCategories = (value2) => {
+  const seen = /* @__PURE__ */ new Set();
+  const categories = [];
+  for (const row of Array.isArray(value2) ? value2 : []) {
+    const id = typeof row === "string" ? row : text(row?.id);
+    const label = typeof row === "string" ? row : text(row?.label) || id;
+    if (!id || seen.has(id)) continue;
+    seen.add(id);
+    categories.push({ id, label });
+  }
+  return categories;
+};
+var publicChoices = (rows, families = {}) => {
+  const images = (row) => ({ coverUrl: text(row?.coverImage) || void 0, beforeUrl: text(row?.beforeImage) || void 0 });
+  const direct = rows.filter((row) => row.executable === true && row.kind !== "family").map((row) => ({
+    id: `library:${row.executionSlug || row.slug}`,
+    slug: row.executionSlug || row.slug,
+    title: row.title,
+    version: row.version || "\u5F53\u524D\u7248\u672C",
+    source: "library",
+    kind: "skill",
+    available: true,
+    ...images(row),
+    primaryCategory: text(row.primaryCategory) || void 0,
+    categories: strings(row.categories)
+  }));
+  const familyChoices = rows.filter((row) => row.kind === "family").map((row) => ({
+    id: `family:${row.slug}`,
+    slug: row.slug,
+    title: row.title,
+    version: row.version || "\u5F53\u524D\u7248\u672C",
+    source: "library",
+    kind: "family",
+    available: true,
+    ...images(row),
+    primaryCategory: text(row.primaryCategory) || void 0,
+    categories: strings(row.categories)
+  }));
+  const members = Object.values(families).flatMap((data) => (Array.isArray(data?.members) ? data.members : []).filter((member) => member.executable === true).map((member) => ({
+    id: `library:${member.executionSlug || member.slug}`,
+    slug: member.executionSlug || member.slug,
+    title: member.title,
+    version: member.version || "\u5F53\u524D\u7248\u672C",
+    family: data.title,
+    source: "library",
+    kind: "skill",
+    available: true,
+    ...images(member),
+    primaryCategory: text(member.primaryCategory) || void 0,
+    categories: strings(member.categories)
+  })));
+  return [...new Map([...direct, ...familyChoices, ...members].map((row) => [row.id, row])).values()];
+};
+var personalChoices = (rows) => rows.map((row) => {
+  const references = strings(row.referenceAssetIds);
+  return {
+    id: `personal:${row.id}`,
+    generationId: row.id,
+    title: row.name,
+    version: row.updatedAt,
+    source: "personal",
+    kind: "skill",
+    available: true,
+    referenceCount: references.length,
+    previewAssetId: references[0]
+  };
+});
+var dnaTitle = (description) => description.split(/\r?\n/u).map((value2) => value2.trim()).find(Boolean)?.slice(0, 80) || "\u6211\u7684 DNA";
+var dnaChoices = (rows) => rows.flatMap((row) => {
+  const id = text(row?.id), coverAssetId = text(row?.coverAssetId);
+  if (!id || !coverAssetId) return [];
+  const description = text(row?.description).slice(0, 1e3);
+  return [{
+    id: `dna:${id}`,
+    dnaId: id,
+    title: dnaTitle(description),
+    description,
+    version: text(row?.updatedAt),
+    source: "dna",
+    kind: "skill",
+    available: true,
+    previewAssetId: coverAssetId
+  }];
+});
+function extractionChoices(rows) {
+  return rows.flatMap((value2) => {
+    if (!value2 || typeof value2 !== "object") return [];
+    const row = value2;
+    const id = text(row.id), title = text(row.name).trim(), version2 = text(row.updatedAt);
+    if (!id || !title || !version2) return [];
+    return [{
+      id: `dna-extract:${id}`,
+      extractionSkillId: id,
+      title,
+      version: version2,
+      source: "library",
+      kind: "skill",
+      description: text(row.description),
+      available: row.available !== false
+    }];
+  });
+}
+var directDnaChoice = (id, description) => {
+  const safeDescription = text(description).slice(0, 1e3);
+  return {
+    id: `dna:${id}`,
+    dnaId: id,
+    title: dnaTitle(safeDescription),
+    description: safeDescription,
+    version: "",
+    source: "dna",
+    kind: "skill",
+    available: true
+  };
+};
+var directSkillChoice = (id, title, coverUrl) => {
+  const library = id.startsWith("library:");
+  const target2 = id.slice(library ? "library:".length : "personal:".length);
+  return {
+    id,
+    title: title || target2,
+    slug: library ? target2 : void 0,
+    generationId: library ? void 0 : target2,
+    version: "",
+    kind: "skill",
+    source: library ? "library" : "personal",
+    coverUrl,
+    available: true
+  };
+};
+var favoriteChoices = (rows, catalogRows, folders = []) => {
+  const catalog = new Map(catalogRows.filter((row) => row && typeof row.slug === "string").map((row) => [row.slug, row]));
+  const folderName = new Map(folders.map((folder) => [folder.id, folder.name]));
+  const choices = rows.filter((row) => row?.type === "skill").flatMap((row) => {
+    const original = catalog.get(text(row.id));
+    if (!original) return [];
+    const family = original.kind === "family";
+    const executeSlug = text(original.executionSlug) || text(original.slug);
+    return [{
+      id: family ? `family:${original.slug}` : `library:${executeSlug}`,
+      slug: family ? original.slug : executeSlug,
+      title: text(original.title) || text(row.label) || text(row.id),
+      version: text(original.version) || "\u5F53\u524D\u7248\u672C",
+      source: "library",
+      kind: family ? "family" : "skill",
+      available: family || original.executable === true,
+      coverUrl: text(original.coverImage) || void 0,
+      beforeUrl: text(original.beforeImage) || void 0,
+      primaryCategory: text(original.primaryCategory) || void 0,
+      categories: strings(original.categories),
+      note: text(row.note) || void 0,
+      folderName: row.folderId ? folderName.get(text(row.folderId)) : void 0
+    }];
+  });
+  return [...new Map(choices.map((row) => [row.id, row])).values()];
+};
+var filterSkillChoices = (rows, filters) => {
+  const query = text(filters.query).trim().toLocaleLowerCase();
+  const category = text(filters.category);
+  return rows.filter((row) => {
+    if (category && row.primaryCategory !== category) return false;
+    if (!query) return true;
+    return [row.title, row.slug, row.note, row.folderName, row.family].some((value2) => !!value2 && value2.toLocaleLowerCase().includes(query));
+  });
+};
+var skillChoiceSubtitle = (row, categoryLabels = {}) => {
+  if (row.kind === "family") return row.family || "Skill \u65CF \xB7 \u5C55\u5F00\u6210\u5458";
+  if (row.folderName) return `\u6536\u85CF \xB7 ${row.folderName}`;
+  if (row.note) return `\u6536\u85CF \xB7 ${row.note}`;
+  if (row.source === "dna") return "\u6211\u7684 DNA";
+  if (row.source === "personal") return row.referenceCount ? `\u6211\u7684 \xB7 ${row.referenceCount} \u5F20\u53C2\u8003\u7D20\u6750` : "\u6211\u7684 Skill";
+  if (row.primaryCategory) return categoryLabels[row.primaryCategory] || row.primaryCategory;
+  return row.family || "Skill \u5E93";
+};
+
+// plugins/podplo-dsh/src/use-extraction-skills.ts
+function useExtractionSkills(request, enabled) {
+  const [rows, setRows] = (0, import_react6.useState)([]);
+  const [revision, setRevision] = (0, import_react6.useState)(0);
+  (0, import_react6.useEffect)(() => {
+    let active = true;
+    setRows([]);
+    if (enabled) void request("dna.skills.list", {}).then(({ data }) => {
+      if (active && Array.isArray(data?.items)) setRows(extractionChoices(data.items));
+    }).catch(() => {
+    });
+    return () => {
+      active = false;
+    };
+  }, [request, enabled, revision]);
+  return { rows, reload: () => setRevision((value2) => value2 + 1) };
+}
+
+// plugins/podplo-dsh/src/skill-browser.tsx
+var import_react_dom2 = require("react-dom");
+var import_jsx_runtime6 = require("react/jsx-runtime");
+var errorText = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
+var tabLabels = { library: "Skill \u5E93", favorite: "\u6211\u7684\u6536\u85CF", personal: "\u6211\u521B\u5EFA\u7684", dna: "\u6211\u7684 DNA" };
+function PersonalCover({ assetId, request, revision }) {
+  const preview = useDeferredPreview({
+    requestIdentity: request,
+    resourceKey: `private-asset:${assetId}`,
+    revision,
+    cachePolicy: "ttl",
+    ttlMs: 15e3,
+    load: async (signal) => {
+      const { data } = await request("assets.detail", { id: assetId });
+      if (signal.aborted) throw new Error("PREVIEW_CANCELLED");
+      if (typeof data?.previewUrl === "string" && data.previewUrl) return data.previewUrl;
+      throw new Error("PREVIEW_UNAVAILABLE");
+    }
+  });
+  const ref = (0, import_react7.useCallback)((node) => preview.ref(node), [preview.ref]);
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-cover", ref, "data-skill-cover": preview.value ? "ready" : preview.status, children: preview.value ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("img", { src: preview.value, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-fallback", "aria-hidden": "true", children: "\u25A6" }) });
+}
+function SkillCard({ choice, selected, request, previewRevision, categoryLabels, onChoose }) {
+  const disabled = choice.available === false;
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
+    "button",
+    {
+      type: "button",
+      role: "option",
+      "aria-selected": selected,
+      "data-skill-id": choice.id,
+      className: `ppd-skill-card ${selected ? "is-selected" : ""}`,
+      disabled,
+      title: choice.title,
+      onClick: () => onChoose(choice),
+      children: [
+        (choice.source === "personal" || choice.source === "dna") && choice.previewAssetId ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(PersonalCover, { assetId: choice.previewAssetId, request, revision: previewRevision }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "ppd-skill-card-cover", "data-image-pair": choice.beforeUrl ? true : void 0, "data-skill-cover": choice.coverUrl ? "ready" : "empty", children: [
+          choice.beforeUrl && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("img", { src: choice.beforeUrl, alt: "\u5904\u7406\u524D", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }),
+          choice.coverUrl ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("img", { src: choice.coverUrl, alt: "\u5904\u7406\u540E", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { className: "ppd-skill-card-fallback", "aria-hidden": "true", children: choice.kind === "family" ? "\u25A7" : "\u2726" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("span", { className: "ppd-skill-card-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("strong", { children: choice.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("small", { children: disabled ? choice.extractionSkillId ? "\u5F85\u914D\u7F6E" : "\u5F53\u524D\u4E0D\u53EF\u7528" : skillChoiceSubtitle(choice, categoryLabels) })
+        ] })
+      ]
+    }
+  );
+}
+function SkillBrowser({ open, onClose, value: value2, choices, categories, favorites, personal, dna, loadFamily, onSelect, request, previewRevision, categoryLabels = {} }) {
+  const [tab, setTab] = (0, import_react7.useState)("library");
+  const [query, setQuery] = (0, import_react7.useState)("");
+  const [category, setCategory] = (0, import_react7.useState)("");
+  const [family, setFamily] = (0, import_react7.useState)();
+  const searchRef = (0, import_react7.useRef)(null);
+  const previousFocus = (0, import_react7.useRef)(null);
+  (0, import_react7.useEffect)(() => {
+    if (!open) return;
+    previousFocus.current = document.activeElement;
+    setTab("library");
+    setQuery("");
+    setCategory("");
+    setFamily(void 0);
+    const timer = setTimeout(() => searchRef.current?.focus(), 0);
+    return () => {
+      clearTimeout(timer);
+      const target2 = previousFocus.current;
+      previousFocus.current = null;
+      if (target2 && document.contains(target2)) target2.focus();
+    };
+  }, [open]);
+  (0, import_react7.useEffect)(() => {
+    if (!open) return;
+    const dismiss = (event) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        onClose();
+      }
+    };
+    document.addEventListener("keydown", dismiss, true);
+    return () => document.removeEventListener("keydown", dismiss, true);
+  }, [open, onClose]);
+  (0, import_react7.useEffect)(() => {
+    if (open && tab === "favorite" && favorites.rows === void 0 && !favorites.loading && !favorites.error) favorites.onLoad();
+  }, [open, tab, favorites.rows, favorites.loading, favorites.error, favorites.onLoad]);
+  (0, import_react7.useEffect)(() => {
+    if (open && tab === "dna" && dna.rows === void 0 && !dna.loading && !dna.error) dna.onLoad();
+  }, [open, tab, dna.rows, dna.loading, dna.error, dna.onLoad]);
+  (0, import_react7.useEffect)(() => {
+    if (!open || tab !== "personal") return;
+    const timer = setTimeout(() => personal.onSearch(query.trim()), 250);
+    return () => clearTimeout(timer);
+  }, [open, tab, query, personal.onSearch]);
+  const extraction = useExtractionSkills(request, open);
+  const libraryRows = (0, import_react7.useMemo)(() => filterSkillChoices([...extraction.rows, ...choices].filter((row) => row.source === "library" && !row.family), { query, category }), [choices, extraction.rows, query, category]);
+  const favoriteRows = (0, import_react7.useMemo)(() => filterSkillChoices(favorites.rows ?? [], { query }), [favorites.rows, query]);
+  const personalRows = (0, import_react7.useMemo)(() => filterSkillChoices(personal.rows, { query }), [personal.rows, query]);
+  const dnaRows = (0, import_react7.useMemo)(() => filterSkillChoices(dna.rows ?? [], { query }), [dna.rows, query]);
+  async function openFamily(choice) {
+    const slug = choice.slug;
+    if (!slug) return;
+    setFamily({ choice, members: [], loading: true, error: "" });
+    try {
+      const members = await loadFamily(slug);
+      setFamily((current) => current && current.choice.slug === slug ? { ...current, members, loading: false } : current);
+    } catch (error51) {
+      setFamily((current) => current && current.choice.slug === slug ? { ...current, loading: false, error: errorText(error51) } : current);
+    }
+  }
+  function choose(choice) {
+    if (choice.kind === "family") {
+      void openFamily(choice);
+      return;
+    }
+    if (choice.available === false) return;
+    onSelect(choice);
+  }
+  if (!open || typeof document === "undefined") return null;
+  const switchTab = (next) => {
+    setTab(next);
+    setQuery("");
+  };
+  const rows = family ? [] : tab === "library" ? libraryRows : tab === "favorite" ? favoriteRows : tab === "personal" ? personalRows : dnaRows;
+  const status = tab === "favorite" ? favorites.rows === void 0 && favorites.loading ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6536\u85CF\u2026" }) : favorites.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
+    favorites.error,
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => favorites.onLoad(), children: "\u91CD\u8BD5" })
+  ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query ? "\u6CA1\u6709\u5339\u914D\u7684\u6536\u85CF\u3002" : "\u6536\u85CF\u5939\u91CC\u8FD8\u6CA1\u6709 Skill\u3002" }) : null : tab === "personal" ? personal.loading && !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6211\u7684 Skill\u2026" }) : personal.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
+    personal.error,
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => personal.onSearch(query.trim()), children: "\u91CD\u8BD5" })
+  ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "\u8FD8\u6CA1\u6709\u521B\u5EFA\u8FC7 Skill\u3002" }) : null : tab === "dna" ? dna.rows === void 0 && dna.loading ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6211\u7684 DNA\u2026" }) : dna.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
+    dna.error,
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => dna.onLoad(), children: "\u91CD\u8BD5" })
+  ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query ? "\u6CA1\u6709\u5339\u914D\u7684 DNA\u3002" : "\u8FD8\u6CA1\u6709\u53EF\u7528\u7684 DNA\u3002" }) : null : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", children: query || category ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "\u6682\u65F6\u6CA1\u6709\u53EF\u7528\u7684 Skill\u3002" }) : null;
+  const footer = family ? null : tab === "favorite" && rows.length > 0 && favorites.hasMore ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-more", disabled: favorites.loadingMore, onClick: () => favorites.onLoadMore(), children: favorites.loadingMore ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }) : tab === "personal" && rows.length > 0 && personal.hasMore ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-more", disabled: personal.loadingMore, onClick: () => personal.onLoadMore(), children: personal.loadingMore ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A" }) : tab === "dna" && rows.length > 0 && dna.hasMore ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-more", disabled: dna.loadingMore, onClick: () => dna.onLoadMore(), children: dna.loadingMore ? "\u6B63\u5728\u52A0\u8F7D\u2026" : "\u52A0\u8F7D\u66F4\u591A DNA" }) : null;
+  return (0, import_react_dom2.createPortal)(
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "ppd-skill-browser-backdrop", role: "presentation", onMouseDown: (event) => {
+      if (event.target === event.currentTarget) onClose();
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("section", { className: "ppd-skill-browser", role: "dialog", "aria-modal": "true", "aria-label": "\u9009\u62E9 Skill \u6216 DNA", "data-skill-browser": true, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("header", { className: "ppd-skill-browser-head", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("strong", { children: family ? family.choice.title : "\u9009\u62E9 Skill \u6216 DNA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-close", "aria-label": "\u5173\u95ED Skill \u9009\u62E9\u5668", onClick: onClose, children: "\xD7" })
+      ] }),
+      family ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_jsx_runtime6.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "ppd-skill-browser-family", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-skill-browser-back", "aria-label": "\u8FD4\u56DE Skill \u5217\u8868", onClick: () => setFamily(void 0), children: "\u2190 \u8FD4\u56DE" }),
+        family.loading ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { className: "ppd-skill-browser-status", role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u6210\u5458\u2026" }) : family.error ? /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("p", { className: "ppd-skill-browser-status", role: "alert", children: [
+          family.error,
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void openFamily(family.choice), children: "\u91CD\u8BD5" })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "ppd-skill-browser-list", role: "listbox", "aria-label": `${family.choice.title} \u6210\u5458`, children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(SkillCard, { choice: member, selected: member.id === value2, request, previewRevision, categoryLabels, onChoose: choose }, member.id)) })
+      ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_jsx_runtime6.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { className: "ppd-skill-browser-search", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "input",
+          {
+            ref: searchRef,
+            value: query,
+            "aria-label": tab === "dna" ? "\u641C\u7D22 DNA" : "\u641C\u7D22 Skill",
+            placeholder: tab === "favorite" ? "\u641C\u7D22\u6536\u85CF\u3001\u5907\u6CE8\u6216\u6587\u4EF6\u5939" : tab === "dna" ? "\u641C\u7D22 DNA \u7B80\u4ECB" : "\u641C\u7D22 Skill",
+            onChange: (event) => setQuery(event.target.value)
+          }
+        ) }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("nav", { className: "ppd-tabs ppd-skill-browser-tabs", role: "tablist", "aria-label": "Skill \u5206\u7EC4", children: Object.keys(tabLabels).map((key) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          "button",
+          {
+            type: "button",
+            role: "tab",
+            className: tab === key ? "is-active" : "",
+            "aria-selected": tab === key,
+            onClick: () => switchTab(key),
+            children: tabLabels[key]
+          },
+          key
+        )) }),
+        tab === "library" && categories.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "ppd-skill-browser-categories", role: "group", "aria-label": "Skill \u5206\u7C7B", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("button", { type: "button", className: !category ? "is-selected" : "", "aria-pressed": !category, onClick: () => setCategory(""), children: "\u5168\u90E8" }),
+          categories.map((item) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+            "button",
+            {
+              type: "button",
+              className: category === item.id ? "is-selected" : "",
+              "aria-pressed": category === item.id,
+              onClick: () => setCategory(item.id),
+              children: item.label
+            },
+            item.id
+          ))
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { className: "ppd-skill-browser-list", role: "listbox", "aria-label": `${tabLabels[tab]}\u5217\u8868`, children: [
+          rows.map((row) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(SkillCard, { choice: row, selected: row.id === value2, request, previewRevision, categoryLabels, onChoose: choose }, row.id)),
+          status
+        ] }),
+        footer
+      ] })
+    ] }) }),
+    document.body
+  );
+}
+
+// plugins/podplo-dsh/src/generation-panel.tsx
+var import_jsx_runtime7 = require("react/jsx-runtime");
+var imageTypes = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
+var errorText2 = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
+var uuid3 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+var stringList = (value2) => Array.isArray(value2) ? value2.filter((item) => typeof item === "string" && !!item) : [];
+var modelId = (model) => String(model.id ?? model.modelId ?? "");
+var modelName = (model) => String(model.name ?? model.label ?? model.modelName ?? modelId(model));
+var modelDisplayOrder = new Map([
+  "GPT Image 2.5 Flare",
+  "GPT Image 2.5 Sunburst",
+  "GPT Image 2",
+  "GPT Image 1.5"
+].map((name, index) => [name.toLowerCase(), index]));
+var normalizedChoice = (options, current, fallback) => {
+  if (options.includes(current)) return current;
+  return typeof fallback === "string" && options.includes(fallback) ? fallback : options[0] ?? "";
+};
+var capabilityModels = (value2) => Array.isArray(value2?.models) ? value2.models : [];
+var haiku = { id: IMAGE_TO_TEXT_MODEL, name: "Claude Haiku 5.5", maximumReferenceImages: 4 };
+var availableModel = (value2, preferred) => {
+  if (preferred === IMAGE_TO_TEXT_MODEL) return haiku;
+  const rows = capabilityModels(value2);
+  return rows.find((row) => modelId(row) === preferred && row.availableForCurrentPlan !== false) ?? rows.find((row) => row.availableForCurrentPlan !== false) ?? rows[0];
+};
+var lowestResolution = (values) => {
+  const size = (value2) => {
+    const kilopixels = /^(\d+(?:\.\d+)?)k$/i.exec(value2);
+    if (kilopixels) return Number(kilopixels[1]) * 1024;
+    const pixels = /^(\d+)(?:\s*[x×]\s*(\d+))?(?:px)?$/i.exec(value2);
+    return pixels ? Math.max(Number(pixels[1]), Number(pixels[2] ?? pixels[1])) : Infinity;
+  };
+  return [...values].sort((left, right) => size(left) - size(right))[0] ?? "";
+};
+var exactOperation = (value2, intentId, planVersion) => value2 && typeof value2.operationId === "string" && typeof value2.approvalId === "string" && value2.intentId === intentId && value2.planVersion === planVersion && typeof value2.status === "string" && value2.quote && Number.isFinite(Number(value2.quote.totalCredits)) && Number.isFinite(Number(value2.quote.outputCount)) && typeof value2.quote.confirmationText === "string" && typeof value2.quote.expiresAt === "string" ? value2 : void 0;
+var ratioGlyphStyle = (value2) => {
+  if (!value2.includes(":")) return void 0;
+  const [wide, tall] = value2.split(":").map(Number);
+  if (!wide || !tall) return void 0;
+  const scale = Math.min(18 / wide, 16 / tall);
+  return { width: Math.max(5, wide * scale), height: Math.max(5, tall * scale) };
+};
+var dnaDraft = (choice) => choice?.dnaId ? {
+  id: choice.dnaId,
+  title: choice.title,
+  description: choice.description ?? "",
+  coverAssetId: choice.previewAssetId,
+  updatedAt: choice.version
+} : void 0;
+var dnaFromDraft = (value2) => value2 ? {
+  ...directDnaChoice(value2.id, value2.description),
+  title: value2.title || "\u6211\u7684 DNA",
+  version: value2.updatedAt,
+  ...value2.coverAssetId ? { previewAssetId: value2.coverAssetId } : {}
+} : void 0;
+var argsForCapabilities = (caps, selected, values) => {
+  const props = caps?.quoteInputSchema?.properties ?? {};
+  const args = {};
+  const put = (key, value2) => {
+    if (props[key] !== void 0 && value2 !== "" && value2 !== void 0) args[key] = value2;
+  };
+  if (props.prompt !== void 0) args.prompt = values.prompt;
+  put("modelId", values.model);
+  put("referenceAssetIds", values.references);
+  put("ratio", values.ratio.trim());
+  put("count", values.count);
+  if (stringList(selected?.qualities).length) put("quality", values.quality);
+  if (stringList(selected?.resolutions).length) put("resolution", values.resolution);
+  if (stringList(selected?.thinkingLevels).length) put("thinkingLevel", values.thinkingLevel);
+  if (selected?.supportsWebSearch === true) put("webSearch", values.booleans.webSearch === true);
+  if (selected?.supportsImageSearch === true) put("imageSearch", values.booleans.imageSearch === true);
+  if (Number.isInteger(Number(selected?.ecoMaximumReferenceImages))) put("ecoMode", values.booleans.ecoMode === true);
+  Object.assign(args, backgroundArgs(props, selected, values.transparent));
+  return args;
+};
+function GenerationPanel({ request, onChanged, onSubmission, onVerification, onOperationId, onSelectionConsumed, nativeSessionId, accountKey, placement = "inline", selection, revealSequence = 0 }) {
+  const [capabilities, setCapabilities] = (0, import_react8.useState)();
+  const [skills, setSkills] = (0, import_react8.useState)([]);
+  const [skillId, setSkillId] = (0, import_react8.useState)("");
+  const [skillLoading, setSkillLoading] = (0, import_react8.useState)("");
+  const [skillError, setSkillError] = (0, import_react8.useState)("");
+  const [skillCategories, setSkillCategories] = (0, import_react8.useState)([]);
+  const [publicCatalog, setPublicCatalog] = (0, import_react8.useState)([]);
+  const [personalSkillRows, setPersonalSkillRows] = (0, import_react8.useState)([]);
+  const [personalSkillCursor, setPersonalSkillCursor] = (0, import_react8.useState)(null);
+  const [personalSearchQuery, setPersonalSearchQuery] = (0, import_react8.useState)("");
+  const [personalSearch, setPersonalSearch] = (0, import_react8.useState)({ rows: [], cursor: null });
+  const [personalSkillBusy, setPersonalSkillBusy] = (0, import_react8.useState)(false);
+  const [personalSkillLoadingMore, setPersonalSkillLoadingMore] = (0, import_react8.useState)(false);
+  const [personalSkillError, setPersonalSkillError] = (0, import_react8.useState)("");
+  const [favoriteSkills, setFavoriteSkills] = (0, import_react8.useState)();
+  const [favoriteSkillFolders, setFavoriteSkillFolders] = (0, import_react8.useState)([]);
+  const [favoriteSkillCursor, setFavoriteSkillCursor] = (0, import_react8.useState)(null);
+  const [favoriteSkillBusy, setFavoriteSkillBusy] = (0, import_react8.useState)(false);
+  const [favoriteSkillLoadingMore, setFavoriteSkillLoadingMore] = (0, import_react8.useState)(false);
+  const [favoriteSkillError, setFavoriteSkillError] = (0, import_react8.useState)("");
+  const [dnaRows, setDnaRows] = (0, import_react8.useState)();
+  const [dnaCursor, setDnaCursor] = (0, import_react8.useState)(null);
+  const [dnaBusy, setDnaBusy] = (0, import_react8.useState)(false);
+  const [dnaLoadingMore, setDnaLoadingMore] = (0, import_react8.useState)(false);
+  const [dnaError, setDnaError] = (0, import_react8.useState)("");
+  const [selectedDna, setSelectedDna] = (0, import_react8.useState)();
+  const [skillBrowserOpen, setSkillBrowserOpen] = (0, import_react8.useState)(false);
+  const [assets, setAssets] = (0, import_react8.useState)([]);
+  const [assetCursor, setAssetCursor] = (0, import_react8.useState)(null);
+  const [references, setReferences] = (0, import_react8.useState)([]);
+  const [uploadPreviews, setUploadPreviews] = (0, import_react8.useState)([]);
+  const [prompt, setPrompt] = (0, import_react8.useState)("");
+  const [model, setModel] = (0, import_react8.useState)("");
+  const [ratio, setRatio] = (0, import_react8.useState)("1:1");
+  const [quality, setQuality] = (0, import_react8.useState)("");
+  const [resolution, setResolution] = (0, import_react8.useState)("");
+  const [thinkingLevel, setThinkingLevel] = (0, import_react8.useState)("");
+  const [count, setCount] = (0, import_react8.useState)(1);
+  const [transparent, setTransparent] = (0, import_react8.useState)(false);
+  const [booleans, setBooleans] = (0, import_react8.useState)({});
+  const [intentId, setIntentId] = (0, import_react8.useState)(uuid3);
+  const [planVersion, setPlanVersion] = (0, import_react8.useState)(1);
+  const [operation, setOperation] = (0, import_react8.useState)();
+  const [busy, setBusy] = (0, import_react8.useState)("");
+  const [loading, setLoading] = (0, import_react8.useState)(true);
+  const [error51, setError] = (0, import_react8.useState)("");
+  const [notice, setNotice] = (0, import_react8.useState)("");
+  const [priceVerification, setPriceVerification] = (0, import_react8.useState)("");
+  const approving = (0, import_react8.useRef)(false);
+  const [approvalAttempted, setApprovalAttempted] = (0, import_react8.useState)(false);
+  const [uploadWarning, setUploadWarning] = (0, import_react8.useState)("");
+  const [uploadProgress, setUploadProgress] = (0, import_react8.useState)("");
+  const uploading = (0, import_react8.useRef)(false);
+  const [composerFocused, setComposerFocused] = (0, import_react8.useState)(false);
+  const [draftHydrated, setDraftHydrated] = (0, import_react8.useState)(false);
+  const [floatingOpen, setFloatingOpen] = (0, import_react8.useState)(false);
+  const uploadInput = (0, import_react8.useRef)(null);
+  const preparing = (0, import_react8.useRef)(false);
+  const mounted = (0, import_react8.useRef)(true);
+  const ownerId = (0, import_react8.useRef)("");
+  const loadSequence = (0, import_react8.useRef)(0);
+  const skillSequence = (0, import_react8.useRef)(0);
+  const prepareSequence = (0, import_react8.useRef)(0);
+  const draftReady = (0, import_react8.useRef)(false);
+  const restoredSkillId = (0, import_react8.useRef)("");
+  const cacheRevision = (0, import_react8.useRef)(generationBootstrapCache.revision());
+  const currentIntent = (0, import_react8.useRef)(intentId);
+  const currentPlanVersion = (0, import_react8.useRef)(planVersion);
+  currentIntent.current = intentId;
+  currentPlanVersion.current = planVersion;
+  const requestContext = (0, import_react8.useRef)({ request, nativeSessionId, accountKey });
+  requestContext.current = { request, nativeSessionId, accountKey };
+  const selectedSkillId = (0, import_react8.useRef)(skillId);
+  selectedSkillId.current = skillId;
+  const selections = (0, import_react8.useRef)({ model, ratio, quality, resolution, thinkingLevel, booleans, transparent });
+  selections.current = { model, ratio, quality, resolution, thinkingLevel, booleans, transparent };
+  const floatingShell = (0, import_react8.useRef)(null);
+  const consumedSelection = (0, import_react8.useRef)(0);
+  const schema = capabilities?.quoteInputSchema;
+  const properties = schema?.properties ?? {};
+  const models = (0, import_react8.useMemo)(() => [...capabilityModels(capabilities).filter((row) => modelId(row) !== IMAGE_TO_TEXT_MODEL), haiku].sort((a, b) => (modelDisplayOrder.get(modelName(a).toLowerCase()) ?? modelDisplayOrder.size) - (modelDisplayOrder.get(modelName(b).toLowerCase()) ?? modelDisplayOrder.size)), [capabilities]);
+  const selectedModel = models.find((row) => modelId(row) === model);
+  const modelRatios = stringList(selectedModel?.ratios);
+  const modelQualities = stringList(selectedModel?.qualities);
+  const modelResolutions = stringList(selectedModel?.resolutions);
+  const modelThinkingLevels = stringList(selectedModel?.thinkingLevels);
+  const supportsWebSearch = properties.webSearch?.type === "boolean" && selectedModel?.supportsWebSearch === true;
+  const supportsImageSearch = properties.imageSearch?.type === "boolean" && selectedModel?.supportsImageSearch === true;
+  const supportsEcoMode = properties.ecoMode?.type === "boolean" && Number.isInteger(Number(selectedModel?.ecoMaximumReferenceImages));
+  const transparentOption = transparentControl(properties, selectedModel);
+  const transparentKey = transparentOption?.key;
+  const supportsTransparent = !!transparentOption;
+  const selectedSkill = skills.find((row) => row.id === skillId);
+  const extractId = skillId.startsWith("dna-extract:") ? skillId.slice("dna-extract:".length) : void 0;
+  const analysisMode = extractId ? "dna" : model === IMAGE_TO_TEXT_MODEL ? "imageToText" : void 0;
+  const selectedModelLabel = analysisMode === "dna" ? modelName(haiku) : selectedModel ? modelName(selectedModel) : "\u9009\u62E9\u6A21\u578B";
+  const localQuote = (0, import_react8.useMemo)(() => selectedDna || analysisMode ? void 0 : calculateLocalGenerationQuote(selectedModel, {
+    prompt,
+    quality,
+    resolution,
+    count,
+    referenceAssetIds: references,
+    presetReferenceAssetIds: selectedSkill?.source === "personal" ? selectedSkill.detail?.referenceAssetIds : void 0,
+    ecoMode: booleans.ecoMode === true,
+    webSearch: booleans.webSearch === true,
+    imageSearch: booleans.imageSearch === true
+  }), [
+    booleans.ecoMode,
+    booleans.imageSearch,
+    booleans.webSearch,
+    count,
+    prompt,
+    quality,
+    references,
+    resolution,
+    analysisMode,
+    selectedDna,
+    selectedModel,
+    selectedSkill?.detail?.referenceAssetIds,
+    selectedSkill?.source
+  ]);
+  const batchSnapshot = (0, import_react8.useMemo)(() => ({
+    prompt,
+    skill: !selectedDna && selectedSkill?.generationId ? {
+      id: selectedSkill.generationId,
+      title: selectedSkill.title,
+      version: selectedSkill.version,
+      pricingReferenceCount: Array.isArray(selectedSkill.detail?.referenceAssetIds) ? selectedSkill.detail.referenceAssetIds.length : void 0
+    } : null,
+    args: argsForCapabilities(capabilities, selectedModel, {
+      prompt,
+      model,
+      ratio,
+      quality,
+      resolution,
+      thinkingLevel,
+      count,
+      references: [...references],
+      booleans: { ...booleans },
+      transparent
+    })
+  }), [
+    booleans,
+    capabilities,
+    count,
+    model,
+    prompt,
+    quality,
+    ratio,
+    references,
+    resolution,
+    selectedDna,
+    selectedModel,
+    selectedSkill?.detail?.referenceAssetIds,
+    selectedSkill?.generationId,
+    selectedSkill?.title,
+    selectedSkill?.version,
+    thinkingLevel,
+    transparent
+  ]);
+  const batchSkills = (0, import_react8.useMemo)(() => skills.filter((row) => row.kind !== "family" && !row.extractionSkillId).map((row) => ({
+    key: row.id,
+    id: row.generationId ?? "",
+    title: row.title,
+    version: row.version,
+    pricingReferenceCount: Array.isArray(row.detail?.referenceAssetIds) ? row.detail.referenceAssetIds.length : void 0,
+    available: row.available
+  })), [skills]);
+  const pendingUploadCount = uploadPreviews.filter((row) => row.status !== "failed").length;
+  const uploadFeedback = uploadWarning || uploadPreviews.filter((row) => row.status === "failed").map((row) => `${row.filename}\uFF1A${row.message || "\u4E0A\u4F20\u672A\u5B8C\u6210"}`).join("\uFF1B");
+  const visibleUploadProgress = uploadProgress || (pendingUploadCount ? `\u6B63\u5728\u4E0A\u4F20\u5904\u7406\u4E2D ${pendingUploadCount} \u5F20\u2026` : "");
+  const referenceLimit = (0, import_react8.useMemo)(() => {
+    if (analysisMode) return analysisMode === "dna" ? 1 : 4;
+    const modelLimit = booleans.ecoMode === true && supportsEcoMode ? Number(selectedModel?.ecoMaximumReferenceImages) : Number(selectedModel?.maximumReferenceImages);
+    const schemaLimit = Number(properties.referenceAssetIds?.maxItems);
+    return Math.min(Number.isFinite(modelLimit) ? modelLimit : Infinity, Number.isFinite(schemaLimit) ? schemaLimit : Infinity);
+  }, [analysisMode, booleans.ecoMode, properties.referenceAssetIds?.maxItems, selectedModel?.ecoMaximumReferenceImages, selectedModel?.maximumReferenceImages, supportsEcoMode]);
+  const countMinimum = Math.max(1, Number(properties.count?.minimum) || 1);
+  const countMaximum = Math.max(countMinimum, Number(properties.count?.maximum) || 4);
+  const invalidate = (0, import_react8.useCallback)(() => {
+    const nextPlanVersion = Math.min(1e6, planVersion + 1);
+    if (ownerId.current && nativeSessionId && generationBootstrapCache.isCurrent(cacheRevision.current)) {
+      generationBootstrapCache.advanceDraftPlan(ownerId.current, nativeSessionId, intentId, planVersion, nextPlanVersion);
+    }
+    currentPlanVersion.current = nextPlanVersion;
+    setPlanVersion(nextPlanVersion);
+    setApprovalAttempted(false);
+    setNotice("");
+    setPriceVerification("");
+    setOperation((previous) => {
+      if (previous?.status === "quoted") void request("generation.cancel", { operationId: previous.operationId }).catch(() => {
+      });
+      return void 0;
+    });
+  }, [intentId, nativeSessionId, planVersion, request]);
+  const inputError = analysisMode === "dna" ? !selectedSkill?.available ? "\u53CD\u63A8 Skill \u5C1A\u672A\u914D\u7F6E\u597D\u3002" : references.length !== 1 ? "\u8BF7\u9009\u62E9\u4E00\u5F20\u539F\u56FE\u3002" : "" : analysisMode === "imageToText" ? references.length < 1 || references.length > 4 ? "\u8BF7\u9009\u62E9 1\u20134 \u5F20\u56FE\u7247\u3002" : !prompt.trim() || prompt.length > 8e3 ? "\u8BF7\u8F93\u5165 1\u20138000 \u5B57\u7684\u8BC6\u522B\u8981\u6C42\u3002" : "" : "";
+  const analysisInput = !analysisMode || inputError || uploadPreviews.length || !draftHydrated ? void 0 : {
+    mode: analysisMode,
+    args: analysisMode === "dna" ? { skillId: extractId, sourceAssetId: references[0], name: (assets.find((asset) => asset.id === references[0])?.filename?.trim() || "\u6211\u7684 DNA").slice(0, 80) } : { model: IMAGE_TO_TEXT_MODEL, prompt, referenceAssetIds: references }
+  };
+  const analysis = useAnalysisGeneration(
+    analysisInput,
+    ownerId.current,
+    nativeSessionId ?? "podplo-manual",
+    intentId,
+    planVersion,
+    request,
+    (text3) => {
+      if (currentIntent.current !== intentId || currentPlanVersion.current !== planVersion) return;
+      invalidate();
+      setPrompt(text3);
+      setNotice("\u6587\u5B57\u7ED3\u679C\u5DF2\u586B\u5165\u63D0\u793A\u8BCD\u3002");
+    },
+    onChanged
+  );
+  const change = (setter, value2) => {
+    invalidate();
+    setter(value2);
+  };
+  const changeBoolean = (key, value2) => {
+    invalidate();
+    setBooleans((current) => ({ ...current, [key]: value2 }));
+  };
+  const resetComposer = (0, import_react8.useCallback)(() => {
+    const nextModel = availableModel(capabilities, "");
+    const properties2 = capabilities?.quoteInputSchema?.properties ?? {};
+    const defaults = {};
+    for (const [key, value2] of Object.entries(properties2)) if (value2.type === "boolean" && !/transparent/i.test(key)) defaults[key] = value2.default === true;
+    const nextIntent = uuid3();
+    const nextModelId = modelId(nextModel ?? {});
+    const nextRatio = normalizedChoice(stringList(nextModel?.ratios), "", stringList(nextModel?.ratios)[0]);
+    const nextQuality = normalizedChoice(stringList(nextModel?.qualities), "", nextModel?.defaultQuality);
+    const nextResolution = normalizedChoice(stringList(nextModel?.resolutions), "", nextModel?.defaultResolution);
+    const nextThinking = normalizedChoice(stringList(nextModel?.thinkingLevels), "", nextModel?.defaultThinkingLevel);
+    if (ownerId.current && nativeSessionId) {
+      for (const row of generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId))
+        generationBootstrapCache.updateReferenceUpload(ownerId.current, nativeSessionId, row.id, null, cacheRevision.current);
+      generationBootstrapCache.writeDraft(ownerId.current, nativeSessionId, {
+        prompt: "",
+        skillId: "",
+        dna: void 0,
+        model: nextModelId,
+        ratio: nextRatio,
+        quality: nextQuality,
+        resolution: nextResolution,
+        thinkingLevel: nextThinking,
+        count: 1,
+        transparent: false,
+        booleans: defaults,
+        references: [],
+        intentId: nextIntent,
+        planVersion: 1,
+        operation: void 0,
+        approvalAttempted: false
+      });
+    } else for (const row of uploadPreviews) URL.revokeObjectURL(row.previewUrl);
+    setUploadPreviews([]);
+    setUploadProgress("");
+    setUploadWarning("");
+    setPrompt("");
+    setReferences([]);
+    setSkillId("");
+    setSelectedDna(void 0);
+    restoredSkillId.current = "";
+    setSkillBrowserOpen(false);
+    setModel(nextModelId);
+    setRatio(nextRatio);
+    setQuality(nextQuality);
+    setResolution(nextResolution);
+    setThinkingLevel(nextThinking);
+    setBooleans(defaults);
+    setCount(1);
+    setTransparent(false);
+    setOperation(void 0);
+    setApprovalAttempted(false);
+    setIntentId(nextIntent);
+    setPlanVersion(1);
+    setError("");
+    setNotice("");
+    setPriceVerification("");
+  }, [capabilities, nativeSessionId, uploadPreviews]);
+  const loadAssets = (0, import_react8.useCallback)(async (append = false) => {
+    const { data } = await request("assets.list", { limit: 50, ...append && assetCursor ? { cursor: assetCursor } : {} });
+    const rows = (Array.isArray(data?.items) ? data.items : []).filter((row) => row.status === "ready");
+    const nextCursor = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null;
+    setAssets((current) => {
+      const next = append ? [...new Map([...current, ...rows].map((row) => [row.id, row])).values()] : rows;
+      const cached2 = ownerId.current ? generationBootstrapCache.update(ownerId.current, { assets: next, assetCursor: nextCursor }) : void 0;
+      return cached2 ? cached2.assets : next;
+    });
+    setAssetCursor(nextCursor);
+  }, [assetCursor, request]);
+  const applyCapabilities = (0, import_react8.useCallback)((nextCapabilities) => {
+    if (nextCapabilities?.available !== true) {
+      setCapabilities(void 0);
+      return;
+    }
+    setCapabilities(nextCapabilities);
+    const current = selections.current;
+    const nextModel = availableModel(nextCapabilities, current.model);
+    setModel(modelId(nextModel ?? {}));
+    setRatio(normalizedChoice(stringList(nextModel?.ratios), current.ratio, stringList(nextModel?.ratios)[0]));
+    setQuality(normalizedChoice(stringList(nextModel?.qualities), current.quality, nextModel?.defaultQuality));
+    setResolution(normalizedChoice(stringList(nextModel?.resolutions), current.resolution, nextModel?.defaultResolution));
+    setThinkingLevel(normalizedChoice(stringList(nextModel?.thinkingLevels), current.thinkingLevel, nextModel?.defaultThinkingLevel));
+    const nextProperties = nextCapabilities.quoteInputSchema?.properties ?? {};
+    const defaults = {};
+    for (const [key, value2] of Object.entries(nextProperties)) if (value2.type === "boolean" && !/transparent/i.test(key)) defaults[key] = value2.default === true;
+    setBooleans({
+      ...defaults,
+      ...current.booleans,
+      webSearch: nextModel?.supportsWebSearch === true && current.booleans.webSearch === true,
+      imageSearch: nextModel?.supportsImageSearch === true && current.booleans.imageSearch === true,
+      ecoMode: Number.isInteger(Number(nextModel?.ecoMaximumReferenceImages)) && current.booleans.ecoMode === true
+    });
+  }, []);
+  const applyBootstrap = (0, import_react8.useCallback)((value2) => {
+    applyCapabilities(value2.capabilities);
+    const nextSkills = [...personalChoices(value2.personalRows), ...publicChoices(value2.publicRows, value2.families)];
+    setSkills((previous) => {
+      const next = nextSkills.map((row) => {
+        const verified = previous.find((item) => item.id === row.id && item.version === row.version && item.detail);
+        return verified ? { ...row, generationId: verified.generationId, detail: verified.detail } : row;
+      });
+      const selected = previous.find((row) => row.id === selectedSkillId.current);
+      return selected && !next.some((row) => row.id === selected.id) ? [...next, selected] : next;
+    });
+    setPublicCatalog(Array.isArray(value2.publicRows) ? value2.publicRows : []);
+    setSkillCategories(normalizeSkillCategories(value2.skillCategories));
+    setPersonalSkillRows(personalChoices(value2.personalRows));
+    setPersonalSkillCursor(value2.personalCursor ?? null);
+    setAssets(value2.assets);
+    setAssetCursor(value2.assetCursor);
+  }, [applyCapabilities]);
+  const load = (0, import_react8.useCallback)(async (force = false) => {
+    const sequence = ++loadSequence.current;
+    let expectedRevision = cacheRevision.current;
+    setLoading(true);
+    setError("");
+    try {
+      const parentOwner = accountKey && accountKey !== "anonymous" ? accountKey : void 0;
+      const snapshot = parentOwner ? void 0 : await request("snapshot", {});
+      const nextOwner2 = parentOwner ?? snapshot?.data?.account?.userId;
+      if (typeof nextOwner2 !== "string" || !nextOwner2) {
+        generationBootstrapCache.clear();
+        expectedRevision = generationBootstrapCache.revision();
+        cacheRevision.current = expectedRevision;
+        throw new Error("\u8BF7\u5148\u767B\u5F55 PodPlo\u3002");
+      }
+      if (!generationBootstrapCache.isCurrent(expectedRevision)) return;
+      ownerId.current = nextOwner2;
+      setUploadPreviews(generationBootstrapCache.readReferenceUploads(nextOwner2, nativeSessionId ?? "podplo-manual"));
+      let restoredDraft;
+      if (!draftReady.current && nativeSessionId) {
+        const draft = generationBootstrapCache.readDraft(nextOwner2, nativeSessionId);
+        if (draft) {
+          restoredDraft = draft;
+          restoredSkillId.current = draft.skillId;
+          selectedSkillId.current = draft.skillId;
+          selections.current = {
+            model: draft.model,
+            ratio: draft.ratio,
+            quality: draft.quality,
+            resolution: draft.resolution,
+            thinkingLevel: draft.thinkingLevel,
+            booleans: draft.booleans,
+            transparent: draft.transparent
+          };
+          setPrompt(draft.prompt);
+          setSkillId(draft.skillId);
+          setSelectedDna(dnaFromDraft(draft.dna));
+          setModel(draft.model);
+          setRatio(draft.ratio);
+          setQuality(draft.quality);
+          setResolution(draft.resolution);
+          setThinkingLevel(draft.thinkingLevel);
+          setCount(draft.count);
+          setTransparent(draft.transparent);
+          setBooleans(draft.booleans);
+          setReferences(draft.references);
+          currentIntent.current = draft.intentId;
+          currentPlanVersion.current = draft.planVersion;
+          if (draft.extraction && draft.skillId === "dna-extract:" + draft.extraction.id) {
+            const choice = {
+              id: draft.skillId,
+              extractionSkillId: draft.extraction.id,
+              source: "library",
+              kind: "skill",
+              title: draft.extraction.title,
+              version: draft.extraction.version,
+              available: true
+            };
+            setSkills((rows) => rows.some((row) => row.id === choice.id) ? rows : [...rows, choice]);
+          } else if (/^(library|personal):/.test(draft.skillId)) {
+            setSkills((rows) => rows.some((row) => row.id === draft.skillId) ? rows : [...rows, directSkillChoice(draft.skillId)]);
+          }
+          setIntentId(draft.intentId);
+          setPlanVersion(draft.planVersion);
+          const restoredOperation = exactOperation(draft.operation ?? generationBootstrapCache.readOperation(nextOwner2, nativeSessionId, draft.intentId, draft.planVersion), draft.intentId, draft.planVersion);
+          setOperation(restoredOperation);
+          setApprovalAttempted(draft.approvalAttempted === true);
+        }
+        draftReady.current = true;
+        setDraftHydrated(true);
+      }
+      if (restoredDraft && nativeSessionId) {
+        const expectedIntent = restoredDraft.intentId;
+        const expectedPlan = restoredDraft.planVersion;
+        const restore = (candidate) => {
+          const exact = exactOperation(candidate, expectedIntent, expectedPlan);
+          if (!exact || sequence !== loadSequence.current || ownerId.current !== nextOwner2 || !generationBootstrapCache.isCurrent(expectedRevision) || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan) return;
+          if (!generationBootstrapCache.rememberOperation(nextOwner2, nativeSessionId, exact)) return;
+          setOperation(exact);
+        };
+        const pending = generationBootstrapCache.readPendingPrepare(nextOwner2, nativeSessionId, expectedIntent, expectedPlan);
+        if (pending) void pending.then(restore).catch(() => {
+        });
+        if (!restoredDraft.operation && !generationBootstrapCache.readOperation(nextOwner2, nativeSessionId, expectedIntent, expectedPlan)) {
+          void request("generation.list", {}).then((result) => {
+            const exact = (Array.isArray(result.data?.items) ? result.data.items : []).find((row) => row.intentId === expectedIntent && row.planVersion === expectedPlan);
+            restore(exact);
+          }).catch(() => {
+          });
+        }
+      }
+      const cached2 = generationBootstrapCache.read(nextOwner2);
+      const seeded = cached2 ?? generationBootstrapCache.ensure(nextOwner2);
+      if (cached2 && generationBootstrapCache.isCurrent(expectedRevision)) applyBootstrap(cached2);
+      const value2 = await generationBootstrapCache.refresh(nextOwner2, async (publishCache) => {
+        const publish2 = (patch) => {
+          const value3 = publishCache(patch);
+          if (value3 && sequence === loadSequence.current && ownerId.current === nextOwner2 && generationBootstrapCache.isCurrent(expectedRevision)) applyBootstrap(value3);
+        };
+        const warnings = [];
+        const settle = async (label, task, apply2) => {
+          try {
+            const result = await task;
+            apply2(result.data);
+          } catch (error52) {
+            warnings.push(`${label}\uFF1A${errorText2(error52)}`);
+          }
+        };
+        await Promise.all([
+          settle("\u751F\u56FE\u80FD\u529B", request("generation.capabilities", { refresh: force }), (data) => {
+            if (data?.available !== true) warnings.push("\u751F\u56FE\u80FD\u529B\uFF1A\u5F53\u524D\u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u62A5\u4EF7\u80FD\u529B");
+            publish2({ capabilities: data });
+          }),
+          settle("Skill \u5E93", request("skills.list", { query: "" }), (data) => publish2({
+            publicRows: Array.isArray(data?.items) ? data.items : [],
+            skillCategories: normalizeSkillCategories(data?.categories)
+          })),
+          settle("\u6211\u7684 Skill", request("mySkills.list", { query: "" }), (data) => publish2({
+            personalRows: Array.isArray(data?.items) ? data.items : [],
+            personalCursor: typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null
+          })),
+          settle("\u53C2\u8003\u7D20\u6750", request("assets.list", { limit: 50 }), (data) => publish2({
+            assets: (Array.isArray(data?.items) ? data.items : []).filter((row) => row.status === "ready"),
+            assetCursor: typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null
+          }))
+        ]);
+        const confirmed = await request("snapshot", {});
+        if (confirmed.data?.account?.userId !== nextOwner2) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u52A0\u8F7D\u751F\u56FE\u5DE5\u4F5C\u53F0\u3002");
+        const current = generationBootstrapCache.read(nextOwner2) ?? seeded;
+        return {
+          capabilities: current.capabilities,
+          publicRows: current.publicRows,
+          personalRows: current.personalRows,
+          personalCursor: current.personalCursor,
+          skillCategories: current.skillCategories,
+          assets: current.assets,
+          assetCursor: current.assetCursor,
+          warnings
+        };
+      });
+      if (sequence === loadSequence.current && ownerId.current === nextOwner2 && generationBootstrapCache.isCurrent(expectedRevision)) {
+        applyBootstrap(value2);
+        if (value2.warnings.length) setError(`\u90E8\u5206\u5185\u5BB9\u66F4\u65B0\u5931\u8D25\uFF1A${value2.warnings.join("\uFF1B")}\u3002\u53EF\u7EE7\u7EED\u4F7F\u7528\u5DF2\u52A0\u8F7D\u5185\u5BB9\u6216\u91CD\u8BD5\u3002`);
+      }
+    } catch (error52) {
+      if (sequence === loadSequence.current && generationBootstrapCache.isCurrent(expectedRevision)) setError(`\u751F\u56FE\u5DE5\u4F5C\u53F0\u66F4\u65B0\u5931\u8D25\uFF1A${errorText2(error52)} \u53EF\u4FDD\u7559\u5F53\u524D\u5185\u5BB9\u5E76\u91CD\u8BD5\u3002`);
+    } finally {
+      if (sequence === loadSequence.current && generationBootstrapCache.isCurrent(expectedRevision)) setLoading(false);
+    }
+  }, [accountKey, applyBootstrap, nativeSessionId, request]);
+  (0, import_react8.useEffect)(() => {
+    mounted.current = true;
+    void load(false);
+    return () => {
+      mounted.current = false;
+      loadSequence.current += 1;
+      skillSequence.current += 1;
+      prepareSequence.current += 1;
+    };
+  }, []);
+  (0, import_react8.useEffect)(() => {
+    if (!draftHydrated || !nativeSessionId || !ownerId.current) return;
+    const owner = ownerId.current;
+    return generationBootstrapCache.subscribeDraft(owner, nativeSessionId, () => {
+      if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current)) return;
+      setUploadPreviews(generationBootstrapCache.readReferenceUploads(owner, nativeSessionId));
+      const draft = generationBootstrapCache.readDraft(owner, nativeSessionId);
+      if (!draft) return;
+      currentPlanVersion.current = draft.planVersion;
+      setReferences(draft.references);
+      setPlanVersion(draft.planVersion);
+      setOperation(draft.operation);
+      setApprovalAttempted(draft.approvalAttempted === true);
+      const bootstrap = generationBootstrapCache.read(owner);
+      if (bootstrap) setAssets(bootstrap.assets);
+    });
+  }, [accountKey, draftHydrated, nativeSessionId]);
+  (0, import_react8.useEffect)(() => {
+    if (!draftHydrated || !draftReady.current || !nativeSessionId || !ownerId.current || !generationBootstrapCache.isCurrent(cacheRevision.current)) return;
+    generationBootstrapCache.writeDraft(ownerId.current, nativeSessionId, {
+      prompt,
+      skillId,
+      extraction: selectedSkill?.extractionSkillId ? { id: selectedSkill.extractionSkillId, title: selectedSkill.title, version: selectedSkill.version } : void 0,
+      dna: dnaDraft(selectedDna),
+      model,
+      ratio,
+      quality,
+      resolution,
+      thinkingLevel,
+      count,
+      transparent,
+      booleans,
+      references,
+      intentId,
+      planVersion,
+      operation: exactOperation(operation, intentId, planVersion),
+      approvalAttempted
+    });
+  }, [approvalAttempted, booleans, count, draftHydrated, intentId, model, nativeSessionId, operation, planVersion, prompt, quality, ratio, references, resolution, selectedDna, selectedSkill?.extractionSkillId, selectedSkill?.title, selectedSkill?.version, skillId, thinkingLevel, transparent]);
+  (0, import_react8.useEffect)(() => {
+    if (!operation || !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(operation.status)) return;
+    let active = true;
+    const refresh = async () => {
+      try {
+        const { data } = await request("generation.list", {});
+        const latest = (Array.isArray(data?.items) ? data.items : []).find((row) => row.operationId === operation.operationId);
+        if (active && generationBootstrapCache.isCurrent(cacheRevision.current) && latest) {
+          const exact = exactOperation(latest, operation.intentId, operation.planVersion);
+          if (exact) {
+            if (ownerId.current && nativeSessionId) generationBootstrapCache.rememberOperation(ownerId.current, nativeSessionId, exact);
+            setOperation((current) => current?.operationId === exact.operationId ? exact : current);
+          }
+        }
+      } catch (error52) {
+        throw error52;
+      }
+      return ACTIVE_POLL_MS;
+    };
+    const polling = startVisiblePolling(refresh);
+    return () => {
+      active = false;
+      polling.stop();
+    };
+  }, [nativeSessionId, operation?.intentId, operation?.operationId, operation?.planVersion, operation?.status, request]);
+  (0, import_react8.useEffect)(() => {
+    if (operation?.status !== "quoted") return;
+    const delay = Date.parse(operation.quote.expiresAt) - Date.now();
+    if (!Number.isFinite(delay)) return;
+    const timer = setTimeout(() => {
+      setNotice("\u670D\u52A1\u7AEF\u6838\u9A8C\u79EF\u5206\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u70B9\u51FB\u751F\u6210\u3002");
+      invalidate();
+    }, Math.max(0, delay) + 25);
+    return () => clearTimeout(timer);
+  }, [invalidate, operation?.operationId, operation?.quote.expiresAt, operation?.status]);
+  (0, import_react8.useEffect)(() => {
+    if (!draftReady.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || !selectedSkill || restoredSkillId.current !== selectedSkill.id || selectedSkill.kind === "family" || selectedSkill.extractionSkillId || selectedSkill.detail || skillLoading) return;
+    restoredSkillId.current = "";
+    const sequence = ++skillSequence.current;
+    const expectedOwner = ownerId.current;
+    const expectedId = selectedSkill.id;
+    setSkillLoading(expectedId);
+    void fetchSkillDetail(selectedSkill).then((latest) => {
+      if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || sequence !== skillSequence.current || expectedOwner !== ownerId.current) return;
+      setSkills((rows) => rows.map((row) => row.id === expectedId ? latest : row));
+    }).catch((error52) => {
+      if (mounted.current && generationBootstrapCache.isCurrent(cacheRevision.current) && sequence === skillSequence.current && expectedOwner === ownerId.current) setSkillError(`\u65E0\u6CD5\u6062\u590D\u5DF2\u9009 Skill \u7684\u5B8C\u6574\u8BE6\u60C5\uFF1A${errorText2(error52)}`);
+    }).finally(() => {
+      if (mounted.current && generationBootstrapCache.isCurrent(cacheRevision.current) && sequence === skillSequence.current) setSkillLoading("");
+    });
+  }, [selectedSkill?.detail, selectedSkill?.id, selectedSkill?.kind, selectedSkill?.version, skillLoading]);
+  (0, import_react8.useEffect)(() => {
+    if (!selection || consumedSelection.current === selection.sequence || !draftHydrated) return;
+    if (selection.kind === "dna-extract") {
+      consumedSelection.current = selection.sequence;
+      onSelectionConsumed?.(selection.sequence);
+      if (selection.ownerId && selection.ownerId !== ownerId.current) return;
+      const id = selection.locator.dnaSkillId;
+      if (!id) {
+        setSkillError("\u53CD\u63A8 Skill \u5C1A\u672A\u914D\u7F6E\u597D\u3002");
+        return;
+      }
+      void selectSkill("dna-extract:" + id, {
+        id: "dna-extract:" + id,
+        extractionSkillId: id,
+        source: "library",
+        kind: "skill",
+        available: true,
+        title: selection.label || "\u53CD\u63A8 DNA",
+        version: ""
+      });
+      return;
+    }
+    if (selection.kind === "dna") {
+      consumedSelection.current = selection.sequence;
+      onSelectionConsumed?.(selection.sequence);
+      if (selection.private && selection.ownerId !== ownerId.current) {
+        setSkillError("\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9 DNA\u3002");
+        return;
+      }
+      const id = selection.locator.dnaId || selection.id;
+      if (!id) {
+        setSkillError("DNA \u8EAB\u4EFD\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
+        return;
+      }
+      selectDna(directDnaChoice(id, selection.label));
+      return;
+    }
+    if (selection.kind === "skill") {
+      const targetId = selection.locator.skillSlug ? `library:${selection.locator.skillSlug}` : `personal:${selection.id}`;
+      consumedSelection.current = selection.sequence;
+      onSelectionConsumed?.(selection.sequence);
+      if (selection.private && selection.ownerId !== ownerId.current) {
+        setSkillError("\u8D26\u53F7\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9 Skill\u3002");
+        return;
+      }
+      const choice = skills.find((row) => row.id === targetId) ?? directSkillChoice(targetId, selection.label, selection.previewUrl);
+      void selectSkill(targetId, choice);
+      return;
+    }
+    if (selection.kind === "gallery") {
+      consumedSelection.current = selection.sequence;
+      const expected = selection.sequence;
+      onSelectionConsumed?.(selection.sequence);
+      void request("gallery.importReference", { id: selection.locator.galleryId || selection.id }).then(({ data }) => {
+        if (consumedSelection.current !== expected) return;
+        const asset = data?.asset ?? data;
+        if (!asset || typeof asset.id !== "string" || !asset.id || asset.status !== "ready") throw new Error("\u56FE\u5E93\u7D20\u6750\u672A\u80FD\u5BFC\u5165\u4E3A\u53EF\u7528\u53C2\u8003\u56FE\u3002");
+        setAssets((current) => current.some((row) => row.id === asset.id) ? current : [...current, asset]);
+        addReference(asset.id);
+      }).catch((error52) => {
+        if (consumedSelection.current === expected) setError(errorText2(error52));
+      });
+      return;
+    }
+    if (selection.kind === "asset") {
+      consumedSelection.current = selection.sequence;
+      onSelectionConsumed?.(selection.sequence);
+      const id = selection.locator.assetId || selection.id;
+      setAssets((current) => current.some((row) => row.id === id) ? current : [...current, { id, filename: selection.label, status: "ready", previewUrl: selection.previewUrl }]);
+      addReference(id);
+    }
+  }, [draftHydrated, onSelectionConsumed, selection, skills]);
+  (0, import_react8.useEffect)(() => {
+    if (placement === "floating" && revealSequence > 0) setFloatingOpen(true);
+  }, [placement, revealSequence]);
+  (0, import_react8.useEffect)(() => {
+    if (placement !== "floating" || !floatingOpen) return;
+    const close = (event) => {
+      const portalOpen = typeof document !== "undefined" && !!document.querySelector(".ppd-batch-backdrop, .ppd-skill-browser-backdrop");
+      if (event instanceof KeyboardEvent) {
+        if (event.key === "Escape" && !portalOpen) setFloatingOpen(false);
+        return;
+      }
+      const target2 = event.target;
+      if (target2 instanceof Element && target2.closest(".ppd-batch-backdrop, .ppd-skill-browser-backdrop")) return;
+      if (!floatingShell.current?.contains(target2)) setFloatingOpen(false);
+    };
+    document.addEventListener("pointerdown", close);
+    document.addEventListener("keydown", close);
+    return () => {
+      document.removeEventListener("pointerdown", close);
+      document.removeEventListener("keydown", close);
+    };
+  }, [floatingOpen, placement]);
+  (0, import_react8.useEffect)(() => {
+    onOperationId?.(operation?.status === "quoted" ? operation.operationId : void 0);
+    return () => onOperationId?.(void 0);
+  }, [onOperationId, operation?.operationId, operation?.status]);
+  function selectModel(nextId) {
+    const next = models.find((row) => modelId(row) === nextId);
+    if (!next) return;
+    invalidate();
+    setModel(nextId);
+    if (nextId === IMAGE_TO_TEXT_MODEL && (skillId || selectedDna) || extractId) {
+      selectedSkillId.current = "";
+      ++skillSequence.current;
+      setSelectedDna(void 0);
+      setSkillId("");
+      setSkillLoading("");
+      setSkillError("");
+    }
+    setRatio((current) => normalizedChoice(stringList(next.ratios), current, stringList(next.ratios)[0]));
+    setQuality((current) => normalizedChoice(stringList(next.qualities), current, next.defaultQuality));
+    setResolution((current) => normalizedChoice(stringList(next.resolutions), current, next.defaultResolution));
+    setThinkingLevel((current) => normalizedChoice(stringList(next.thinkingLevels), current, next.defaultThinkingLevel));
+    setBooleans((current) => ({
+      ...current,
+      webSearch: next.supportsWebSearch === true && current.webSearch === true,
+      imageSearch: next.supportsImageSearch === true && current.imageSearch === true,
+      ecoMode: Number.isInteger(Number(next.ecoMaximumReferenceImages)) && current.ecoMode === true
+    }));
+    if (!transparentControl(properties, next)) setTransparent(false);
+  }
+  async function fetchSkillDetail(choice) {
+    const { data } = choice.source === "personal" ? await request("mySkills.get", { id: choice.generationId, ...choice.version ? { expectedUpdatedAt: choice.version } : {} }) : await request("skills.detail", { slug: choice.slug, resolve: true });
+    const generationId = choice.source === "personal" ? choice.generationId : data?.binding?.id;
+    if (typeof generationId !== "string" || !generationId) throw new Error("Skill \u8BE6\u60C5\u672A\u8FD4\u56DE\u53EF\u6838\u5BF9\u7684\u751F\u56FE\u7ED1\u5B9A ID");
+    if (choice.source === "library" && data?.binding?.availableForCurrentPlan === false) throw new Error("\u8BE5 Skill \u5F53\u524D\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u6743\u9650\u540E\u91CD\u8BD5");
+    return {
+      ...choice,
+      note: void 0,
+      folderName: void 0,
+      title: data?.title || data?.name || choice.title,
+      coverUrl: data?.coverImage || choice.coverUrl,
+      generationId,
+      detail: data,
+      version: data?.version || data?.updatedAt || choice.version,
+      available: true
+    };
+  }
+  async function selectSkill(nextId, suppliedChoice) {
+    const sequence = ++skillSequence.current;
+    const expectedOwner = ownerId.current;
+    const expectedRevision = cacheRevision.current;
+    const current = () => mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && sequence === skillSequence.current && expectedOwner === ownerId.current;
+    invalidate();
+    setSelectedDna(void 0);
+    setError("");
+    setSkillError("");
+    setNotice("");
+    const choice = suppliedChoice ?? skills.find((row) => row.id === nextId);
+    selectedSkillId.current = choice ? nextId : "";
+    if (!choice) {
+      setSkillId("");
+      setSkillLoading("");
+      return;
+    }
+    if (suppliedChoice) setSkills((rows) => rows.some((row) => row.id === nextId) ? rows : [...rows, suppliedChoice]);
+    if (choice.extractionSkillId) {
+      setSkillId(nextId);
+      setSkillLoading("");
+      return;
+    }
+    if (model === IMAGE_TO_TEXT_MODEL) setModel(modelId(availableModel(capabilities, "") ?? {}));
+    if (choice.kind === "family") {
+      setSkillId(nextId);
+      setSkillLoading(nextId);
+      try {
+        const { data } = await request("skills.family", { slug: choice.slug });
+        if (!current()) return;
+        if (ownerId.current && choice.slug) generationBootstrapCache.rememberFamily(ownerId.current, choice.slug, data);
+        const members = publicChoices([], { [choice.slug]: data });
+        setSkills((rows) => [...new Map([...rows, ...members].map((row) => [row.id, row])).values()]);
+        setSkillId("");
+        setNotice(`\u5DF2\u52A0\u8F7D\u300C${choice.title}\u300D\u7684\u53EF\u7528 Skill\uFF0C\u8BF7\u9009\u62E9\u5177\u4F53\u6210\u5458\u3002`);
+      } catch (error52) {
+        if (current()) setSkillError(`\u65E0\u6CD5\u5C55\u5F00\u8BE5 Skill \u65CF\uFF1A${errorText2(error52)}`);
+      } finally {
+        if (current()) setSkillLoading("");
+      }
+      return;
+    }
+    setSkillId(nextId);
+    setSkillLoading(nextId);
+    try {
+      const latest = await fetchSkillDetail(choice);
+      if (!current()) return;
+      setSkills((rows) => rows.map((row) => row.id === nextId ? latest : row));
+    } catch (error52) {
+      if (current()) {
+        setSkills((rows) => rows.map((row) => row.id === nextId ? { ...row, detail: void 0, generationId: row.source === "personal" ? row.generationId : void 0 } : row));
+        setSkillError(`\u65E0\u6CD5\u53D6\u5F97\u8BE5 Skill \u7684\u5B8C\u6574\u8BE6\u60C5\uFF1A${errorText2(error52)}`);
+      }
+    } finally {
+      if (current()) setSkillLoading("");
+    }
+  }
+  function selectDna(choice) {
+    if (!choice.dnaId) return;
+    if (model === IMAGE_TO_TEXT_MODEL) setModel(modelId(availableModel(capabilities, "") ?? {}));
+    invalidate();
+    skillSequence.current += 1;
+    selectedSkillId.current = "";
+    setSkillId("");
+    setSkillLoading("");
+    setSkillError("");
+    setError("");
+    setNotice("");
+    setSelectedDna(choice);
+    const qualities = stringList(selectedModel?.qualities), resolutions = stringList(selectedModel?.resolutions);
+    if (qualities.includes("low")) setQuality("low");
+    if (resolutions.length) setResolution(lowestResolution(resolutions));
+  }
+  async function fetchDnaChoice(id) {
+    let cursor;
+    const seen = /* @__PURE__ */ new Set();
+    for (; ; ) {
+      const { data } = await request("dna.list", { limit: 50, ...cursor ? { cursor } : {} });
+      const page = dnaChoices(Array.isArray(data?.items) ? data.items : []);
+      const found = page.find((row) => row.dnaId === id);
+      if (found) return found;
+      const next = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : void 0;
+      if (!next || seen.has(next)) break;
+      seen.add(next);
+      cursor = next;
+    }
+    throw new Error("\u6240\u9009 DNA \u5DF2\u4E0D\u5B58\u5728\u6216\u4E0D\u5C5E\u4E8E\u5F53\u524D\u8D26\u53F7\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
+  }
+  async function resolveBatchSkill(key) {
+    const choice = skills.find((row) => row.id === key && row.kind !== "family");
+    if (!choice) return null;
+    const expectedOwner = ownerId.current;
+    const expectedRevision = cacheRevision.current;
+    const latest = await fetchSkillDetail(choice);
+    if (!mounted.current || ownerId.current !== expectedOwner || !generationBootstrapCache.isCurrent(expectedRevision)) return null;
+    setSkills((rows) => rows.map((row) => row.id === choice.id ? latest : row));
+    return {
+      id: latest.generationId,
+      title: latest.title,
+      version: latest.version,
+      pricingReferenceCount: Array.isArray(latest.detail?.referenceAssetIds) ? latest.detail.referenceAssetIds.length : void 0
+    };
+  }
+  const loadFavoriteSkills = (0, import_react8.useCallback)(async (append = false) => {
+    if (append ? favoriteSkillLoadingMore : favoriteSkillBusy) return;
+    const owner = ownerId.current;
+    const revision = cacheRevision.current;
+    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
+    if (append && !favoriteSkillCursor) return;
+    if (append) setFavoriteSkillLoadingMore(true);
+    else setFavoriteSkillBusy(true);
+    setFavoriteSkillError("");
+    try {
+      const folders = append ? favoriteSkillFolders : await request("favorites.folders.list", {}).then(({ data: data2 }) => Array.isArray(data2?.items) ? data2.items : []).catch(() => []);
+      const { data } = await request("favorites.list", { limit: 100, ...append && favoriteSkillCursor ? { cursor: favoriteSkillCursor } : {} });
+      if (!mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
+      const catalog = Array.isArray(generationBootstrapCache.read(owner)?.publicRows) ? generationBootstrapCache.read(owner).publicRows : publicCatalog;
+      const next = favoriteChoices(Array.isArray(data?.items) ? data.items : [], catalog, folders);
+      setFavoriteSkillFolders(folders);
+      setFavoriteSkills((current) => append && current ? [...new Map([...current, ...next].map((row) => [row.id, row])).values()] : next);
+      setFavoriteSkillCursor(typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null);
+    } catch (error52) {
+      if (mounted.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) setFavoriteSkillError(errorText2(error52));
+    } finally {
+      if (mounted.current && ownerId.current === owner) {
+        setFavoriteSkillBusy(false);
+        setFavoriteSkillLoadingMore(false);
+      }
+    }
+  }, [favoriteSkillBusy, favoriteSkillCursor, favoriteSkillFolders, favoriteSkillLoadingMore, publicCatalog, request]);
+  const loadDnas = (0, import_react8.useCallback)(async (append = false) => {
+    if (append ? dnaLoadingMore : dnaBusy) return;
+    const owner = ownerId.current, revision = cacheRevision.current;
+    if (!owner || !generationBootstrapCache.isCurrent(revision) || append && !dnaCursor) return;
+    if (append) setDnaLoadingMore(true);
+    else setDnaBusy(true);
+    setDnaError("");
+    try {
+      const { data } = await request("dna.list", { limit: 24, ...append && dnaCursor ? { cursor: dnaCursor } : {} });
+      if (!mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
+      const next = dnaChoices(Array.isArray(data?.items) ? data.items : []);
+      setDnaRows((current) => append && current ? [...new Map([...current, ...next].map((row) => [row.id, row])).values()] : next);
+      setDnaCursor(typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null);
+    } catch (error52) {
+      if (mounted.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) setDnaError(errorText2(error52));
+    } finally {
+      if (mounted.current && ownerId.current === owner) {
+        setDnaBusy(false);
+        setDnaLoadingMore(false);
+      }
+    }
+  }, [dnaBusy, dnaCursor, dnaLoadingMore, request]);
+  (0, import_react8.useEffect)(() => {
+    if (!skillBrowserOpen) return;
+    const query = personalSearchQuery.trim();
+    if (!query) {
+      setPersonalSearch({ rows: [], cursor: null });
+      setPersonalSkillBusy(false);
+      setPersonalSkillError("");
+      return;
+    }
+    const owner = ownerId.current;
+    const revision = cacheRevision.current;
+    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
+    let cancelled = false;
+    setPersonalSkillBusy(true);
+    setPersonalSkillError("");
+    void request("mySkills.list", { query }).then(({ data }) => {
+      if (cancelled || !mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
+      setPersonalSearch({
+        rows: personalChoices(Array.isArray(data?.items) ? data.items : []),
+        cursor: typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null
+      });
+    }).catch((error52) => {
+      if (!cancelled) setPersonalSkillError(errorText2(error52));
+    }).finally(() => {
+      if (!cancelled) setPersonalSkillBusy(false);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [personalSearchQuery, request, skillBrowserOpen]);
+  const loadMorePersonalSkills = (0, import_react8.useCallback)(async () => {
+    if (personalSkillLoadingMore) return;
+    const query = personalSearchQuery.trim();
+    const cursor = query ? personalSearch.cursor : personalSkillCursor;
+    if (!cursor) return;
+    const owner = ownerId.current;
+    const revision = cacheRevision.current;
+    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
+    setPersonalSkillLoadingMore(true);
+    setPersonalSkillError("");
+    try {
+      const { data } = await request("mySkills.list", { query, cursor });
+      if (!mounted.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
+      const next = personalChoices(Array.isArray(data?.items) ? data.items : []);
+      const nextCursor = typeof data?.nextCursor === "string" && data.nextCursor ? data.nextCursor : null;
+      if (query) setPersonalSearch((current) => ({ rows: [...new Map([...current.rows, ...next].map((row) => [row.id, row])).values()], cursor: nextCursor }));
+      else {
+        setPersonalSkillRows((current) => [...new Map([...current, ...next].map((row) => [row.id, row])).values()]);
+        setPersonalSkillCursor(nextCursor);
+        setSkills((current) => [...new Map([...current, ...next].map((row) => [row.id, row])).values()]);
+      }
+    } catch (error52) {
+      if (mounted.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) setPersonalSkillError(errorText2(error52));
+    } finally {
+      if (mounted.current && ownerId.current === owner) setPersonalSkillLoadingMore(false);
+    }
+  }, [personalSearch, personalSkillCursor, personalSkillLoadingMore, personalSearchQuery, request]);
+  const loadFamilyChoices = (0, import_react8.useCallback)(async (slug) => {
+    const { data } = await request("skills.family", { slug });
+    if (ownerId.current) generationBootstrapCache.rememberFamily(ownerId.current, slug, data);
+    return publicChoices([], { [slug]: data });
+  }, [request]);
+  const favoriteBrowser = {
+    rows: favoriteSkills,
+    loading: favoriteSkillBusy,
+    error: favoriteSkillError,
+    loadingMore: favoriteSkillLoadingMore,
+    hasMore: !!favoriteSkillCursor,
+    onLoad: () => void loadFavoriteSkills(false),
+    onLoadMore: () => void loadFavoriteSkills(true)
+  };
+  const personalBrowser = {
+    rows: personalSearchQuery.trim() ? personalSearch.rows : personalSkillRows,
+    loading: personalSkillBusy,
+    error: personalSkillError,
+    loadingMore: personalSkillLoadingMore,
+    hasMore: !!(personalSearchQuery.trim() ? personalSearch.cursor : personalSkillCursor),
+    onSearch: setPersonalSearchQuery,
+    onLoadMore: () => void loadMorePersonalSkills()
+  };
+  const dnaBrowser = {
+    rows: dnaRows,
+    loading: dnaBusy,
+    error: dnaError,
+    loadingMore: dnaLoadingMore,
+    hasMore: !!dnaCursor,
+    onLoad: () => void loadDnas(false),
+    onLoadMore: () => void loadDnas(true)
+  };
+  function addReference(id) {
+    const normalized = id.trim();
+    if (!normalized || references.includes(normalized)) return;
+    change(setReferences, [...references, normalized]);
+  }
+  function moveReference(index, offset) {
+    const target2 = index + offset;
+    if (target2 < 0 || target2 >= references.length) return;
+    const next = [...references];
+    [next[index], next[target2]] = [next[target2], next[index]];
+    change(setReferences, next);
+  }
+  async function upload(files) {
+    if (!files.length || busy || uploading.current || !draftReady.current || !ownerId.current || generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId ?? "podplo-manual").some((row) => row.status !== "failed")) return;
+    uploading.current = true;
+    const expectedOwner = ownerId.current;
+    const expectedRevision = cacheRevision.current;
+    const sessionId = nativeSessionId;
+    const supported = files.filter((file2) => imageTypes.has(file2.type));
+    const invalid = files.length - supported.length;
+    const previewSession = sessionId ?? "podplo-manual";
+    const previewRows = supported.map((file2) => ({ id: uuid3(), filename: file2.name, previewUrl: URL.createObjectURL(file2), status: "queued" }));
+    generationBootstrapCache.addReferenceUploads(expectedOwner, previewSession, previewRows, expectedRevision);
+    if (mounted.current) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, previewSession));
+    const updatePreview = (index, patch) => {
+      generationBootstrapCache.updateReferenceUpload(expectedOwner, previewSession, previewRows[index].id, patch, expectedRevision);
+      if (mounted.current && current()) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, previewSession));
+    };
+    const current = () => generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner;
+    const visible2 = () => current() && mounted.current;
+    setBusy("upload");
+    setError("");
+    setUploadWarning("");
+    setUploadProgress(supported.length ? `\u6B63\u5728\u4E0A\u4F20\u5E76\u5904\u7406 0 / ${supported.length} \u5F20\u2026` : "");
+    const results = new Array(supported.length);
+    const failed = [];
+    let cursor = 0;
+    let completed = 0;
+    let published = 0;
+    const worker = async () => {
+      for (; ; ) {
+        const index = cursor++;
+        if (index >= supported.length || !current()) return;
+        const file2 = supported[index];
+        updatePreview(index, { status: "uploading" });
+        try {
+          if (!current()) return;
+          const { data } = await request("assets.upload", { file: file2 });
+          if (!current()) return;
+          if (data?.id && data.status === "ready") results[index] = data;
+          else {
+            const message2 = "\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u7A0D\u540E\u4ECE\u6211\u7684\u6536\u85CF\u9009\u62E9";
+            failed.push(`${file2.name}\uFF1A${message2}`);
+            updatePreview(index, { status: "failed", message: message2 });
+          }
+        } catch (error52) {
+          if (current()) {
+            const message2 = errorText2(error52);
+            failed.push(`${file2.name}\uFF1A${message2}`);
+            updatePreview(index, { status: "failed", message: message2 });
+          }
+        } finally {
+          completed += 1;
+        }
+        if (!current()) return;
+        done.add(index);
+        while (done.has(published)) {
+          const resultIndex = published++;
+          const asset = results[resultIndex];
+          if (!asset) continue;
+          if (sessionId) {
+            const displaced = generationBootstrapCache.readDraft(expectedOwner, sessionId)?.operation;
+            if (!generationBootstrapCache.mergeReadyReference(expectedOwner, sessionId, asset, expectedRevision)) continue;
+            if (displaced?.status === "quoted") void request("generation.cancel", { operationId: displaced.operationId }).catch(() => {
+            });
+          }
+          if (visible2()) {
+            setAssets((rows) => [...new Map([...rows, asset].map((row) => [row.id, row])).values()]);
+            if (!sessionId) {
+              invalidate();
+              setReferences((ids2) => [.../* @__PURE__ */ new Set([...ids2, asset.id])]);
+            }
+          }
+          updatePreview(resultIndex, null);
+        }
+        if (visible2()) setUploadProgress(`\u6B63\u5728\u4E0A\u4F20\u5E76\u5904\u7406 ${completed} / ${supported.length} \u5F20\u2026`);
+      }
+    };
+    const done = /* @__PURE__ */ new Set();
+    try {
+      await Promise.all(Array.from({ length: Math.min(4, supported.length) }, () => worker()));
+      if (!visible2()) return;
+      const warnings = [invalid ? `${invalid} \u4E2A\u683C\u5F0F\u4E0D\u652F\u6301\uFF0C\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP` : "", ...failed].filter(Boolean);
+      setUploadWarning(warnings.join("\uFF1B"));
+      setUploadProgress("");
+      onChanged?.();
+    } finally {
+      uploading.current = false;
+      if (visible2()) {
+        setBusy("");
+        if (uploadInput.current) uploadInput.current.value = "";
+      }
+    }
+  }
+  function validationError() {
+    if (uploadPreviews.length) return uploadPreviews.some((row) => row.status !== "failed") ? "\u53C2\u8003\u56FE\u6B63\u5728\u4E0A\u4F20\u5904\u7406\u4E2D\uFF0C\u8BF7\u7A0D\u5019\u3002" : "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u79FB\u9664\u5931\u8D25\u9879\u540E\u91CD\u8BD5\u3002";
+    if (analysisMode) return inputError;
+    if (selectedSkill?.kind === "family") return "\u8BF7\u7B49\u5F85\u65CF\u6210\u5458\u52A0\u8F7D\u540E\u9009\u62E9\u4E00\u4E2A\u5177\u4F53 Skill\u3002";
+    if (selectedSkill?.available === false) return "\u8BE5 Skill \u5DF2\u4E0D\u5728\u5F53\u524D\u8D26\u53F7\u7684\u53EF\u7528\u5217\u8868\u4E2D\uFF0C\u8BF7\u5237\u65B0\u6216\u91CD\u65B0\u9009\u62E9\u3002";
+    if (selectedSkill && skillLoading === selectedSkill.id) return "\u6B63\u5728\u6838\u5BF9 Skill \u7684\u6700\u65B0\u8BE6\u60C5\u3002";
+    if (selectedSkill && (!selectedSkill.detail || !selectedSkill.generationId)) return "\u8BF7\u7B49\u5F85 Skill \u5B8C\u6574\u8BE6\u60C5\u3001\u7248\u672C\u548C\u751F\u56FE\u7ED1\u5B9A\u8BFB\u53D6\u5B8C\u6210\u3002";
+    if (selectedDna && !selectedDna.dnaId) return "\u6240\u9009 DNA \u8EAB\u4EFD\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002";
+    if (selectedDna && references.length === 0) return "\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002";
+    if (!skillId && !selectedDna && properties.prompt && !prompt.trim()) return "\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002";
+    if (properties.modelId && !model) return "\u8BF7\u9009\u62E9\u670D\u52A1\u7AEF\u5F53\u524D\u63D0\u4F9B\u7684\u6A21\u578B\u3002";
+    if (selectedModel?.availableForCurrentPlan === false) return "\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u5F00\u901A\u8FD9\u4E2A\u6A21\u578B\uFF0C\u8BF7\u9009\u62E9\u5176\u4ED6\u6A21\u578B\u3002";
+    if (properties.ratio && (!ratio.trim() || modelRatios.length && !modelRatios.includes(ratio))) return "\u8BF7\u9009\u62E9\u5F53\u524D\u6A21\u578B\u652F\u6301\u7684\u56FE\u7247\u6BD4\u4F8B\u3002";
+    const modelReferenceLimit = booleans.ecoMode === true && supportsEcoMode ? Number(selectedModel?.ecoMaximumReferenceImages) : Number(selectedModel?.maximumReferenceImages);
+    const schemaReferenceLimit = Number(properties.referenceAssetIds?.maxItems);
+    const maxRefs = Math.min(Number.isFinite(modelReferenceLimit) ? modelReferenceLimit : Infinity, Number.isFinite(schemaReferenceLimit) ? schemaReferenceLimit : Infinity);
+    if (Number.isFinite(maxRefs) && references.length > maxRefs) return `\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`;
+    return "";
+  }
+  async function prepare() {
+    if (preparing.current || busy) return void 0;
+    const problem = validationError();
+    if (problem) {
+      setError(problem);
+      return void 0;
+    }
+    const sequence = ++prepareSequence.current;
+    const expectedOwner = ownerId.current;
+    const expectedIntent = intentId;
+    const expectedPlan = planVersion;
+    const expectedRevision = cacheRevision.current;
+    const expectedContext = requestContext.current;
+    const sameContext = () => mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && sequence === prepareSequence.current && ownerId.current === expectedOwner && requestContext.current.request === expectedContext.request && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && requestContext.current.accountKey === expectedContext.accountKey;
+    const current = () => sameContext() && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan;
+    preparing.current = true;
+    setBusy("prepare");
+    setError("");
+    setNotice("");
+    setPriceVerification("");
+    try {
+      const chosen = selectedSkill;
+      const chosenDna = selectedDna;
+      const selectedValues = selections.current;
+      const intendedArgs = argsForCapabilities(capabilities, selectedModel, {
+        ...selectedValues,
+        prompt,
+        count,
+        references: [...references]
+      });
+      if (chosenDna?.dnaId) intendedArgs.dnaId = chosenDna.dnaId;
+      const [capsResult, latestSkill, latestDna] = await Promise.all([
+        request("generation.capabilities", { refresh: true }),
+        chosen ? fetchSkillDetail(chosen) : Promise.resolve(void 0),
+        chosenDna?.dnaId ? fetchDnaChoice(chosenDna.dnaId) : Promise.resolve(void 0)
+      ]);
+      if (!current()) return;
+      const latestCaps = capsResult.data;
+      if (latestCaps?.available !== true) throw new Error("\u5F53\u524D PodPlo \u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u751F\u56FE\u62A5\u4EF7\u80FD\u529B\u3002");
+      const latestModel = capabilityModels(latestCaps).find((row) => modelId(row) === selectedValues.model);
+      if (!latestModel || latestModel.availableForCurrentPlan === false) throw new Error("\u6A21\u578B\u6743\u9650\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u6A21\u578B\u540E\u518D\u62A5\u4EF7\u3002");
+      const latestValues = {
+        prompt,
+        model: selectedValues.model,
+        ratio: normalizedChoice(stringList(latestModel.ratios), selectedValues.ratio, stringList(latestModel.ratios)[0]),
+        quality: normalizedChoice(stringList(latestModel.qualities), selectedValues.quality, latestModel.defaultQuality),
+        resolution: normalizedChoice(stringList(latestModel.resolutions), selectedValues.resolution, latestModel.defaultResolution),
+        thinkingLevel: normalizedChoice(stringList(latestModel.thinkingLevels), selectedValues.thinkingLevel, latestModel.defaultThinkingLevel),
+        count,
+        references: [...references],
+        booleans: {
+          ...selectedValues.booleans,
+          webSearch: latestModel.supportsWebSearch === true && selectedValues.booleans.webSearch === true,
+          imageSearch: latestModel.supportsImageSearch === true && selectedValues.booleans.imageSearch === true,
+          ecoMode: Number.isInteger(Number(latestModel.ecoMaximumReferenceImages)) && selectedValues.booleans.ecoMode === true
+        },
+        transparent: selectedValues.transparent
+      };
+      const latestProperties = latestCaps.quoteInputSchema?.properties ?? {};
+      if (!skillId && !chosenDna && latestProperties.prompt && !latestValues.prompt.trim()) throw new Error("\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002");
+      if (chosenDna && latestValues.references.length === 0) throw new Error("\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002");
+      if (latestProperties.ratio && stringList(latestModel.ratios).length && !stringList(latestModel.ratios).includes(latestValues.ratio)) throw new Error("\u6A21\u578B\u652F\u6301\u7684\u6BD4\u4F8B\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
+      const modelReferenceLimit = latestValues.booleans.ecoMode === true && Number.isInteger(Number(latestModel.ecoMaximumReferenceImages)) ? Number(latestModel.ecoMaximumReferenceImages) : Number(latestModel.maximumReferenceImages);
+      const schemaReferenceLimit = Number(latestProperties.referenceAssetIds?.maxItems);
+      const maxRefs = Math.min(Number.isFinite(modelReferenceLimit) ? modelReferenceLimit : Infinity, Number.isFinite(schemaReferenceLimit) ? schemaReferenceLimit : Infinity);
+      if (Number.isFinite(maxRefs) && references.length > maxRefs) throw new Error(`\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`);
+      setCapabilities(latestCaps);
+      if (chosen && latestSkill) setSkills((rows) => rows.map((row) => row.id === chosen.id ? latestSkill : row));
+      if (chosenDna && latestDna) setSelectedDna(latestDna);
+      setRatio(latestValues.ratio);
+      setQuality(latestValues.quality);
+      setResolution(latestValues.resolution);
+      setThinkingLevel(latestValues.thinkingLevel);
+      setBooleans(latestValues.booleans);
+      if (ownerId.current) generationBootstrapCache.update(ownerId.current, { capabilities: latestCaps });
+      if (!current()) return;
+      const verifiedArgs = argsForCapabilities(latestCaps, latestModel, latestValues);
+      if (latestDna?.dnaId) verifiedArgs.dnaId = latestDna.dnaId;
+      if (JSON.stringify(intendedArgs) !== JSON.stringify(verifiedArgs) || chosen && latestSkill && (chosen.generationId !== latestSkill.generationId || chosen.version !== latestSkill.version)) {
+        setPriceVerification("\u6A21\u578B\u53C2\u6570\u6216 Skill \u7248\u672C\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u6838\u5BF9\u540E\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002");
+        return;
+      }
+      const prepareRequest = async () => {
+        const item = { ...!latestDna && latestSkill?.generationId ? { skillId: latestSkill.generationId } : {}, args: verifiedArgs };
+        const { data } = await request("generation.prepare", { intentId: expectedIntent, planVersion: expectedPlan, items: [item], taskName: latestValues.prompt.trim().slice(0, 40) || latestDna?.title || "\u751F\u56FE\u4EFB\u52A1", processingPlan: [] });
+        const exact = exactOperation(data, expectedIntent, expectedPlan);
+        if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u62A5\u4EF7\u4E0E\u5F53\u524D\u610F\u56FE\u4E0D\u5339\u914D\u3002");
+        return exact;
+      };
+      let quote;
+      if (expectedContext.nativeSessionId) {
+        generationBootstrapCache.writeDraft(expectedOwner, expectedContext.nativeSessionId, {
+          prompt: latestValues.prompt,
+          skillId,
+          dna: dnaDraft(latestDna),
+          model: latestValues.model,
+          ratio: latestValues.ratio,
+          quality: latestValues.quality,
+          resolution: latestValues.resolution,
+          thinkingLevel: latestValues.thinkingLevel,
+          count: latestValues.count,
+          transparent: latestValues.transparent,
+          booleans: latestValues.booleans,
+          references: latestValues.references,
+          intentId: expectedIntent,
+          planVersion: expectedPlan,
+          operation: exactOperation(operation, expectedIntent, expectedPlan),
+          approvalAttempted
+        });
+        quote = await generationBootstrapCache.prepare(expectedOwner, expectedContext.nativeSessionId, expectedIntent, expectedPlan, prepareRequest);
+      } else quote = await prepareRequest();
+      if (!current()) return;
+      setOperation(quote);
+      setApprovalAttempted(false);
+      onChanged?.();
+      setNotice("\u670D\u52A1\u7AEF\u79EF\u5206\u5DF2\u6838\u9A8C\u3002");
+      return quote;
+    } catch (error52) {
+      if (current()) setError(errorText2(error52));
+    } finally {
+      preparing.current = false;
+      if (sameContext()) setBusy("");
+    }
+    return void 0;
+  }
+  async function approve(candidate, navigate = true) {
+    const approvedOperation = candidate ?? operation;
+    if (!approvedOperation || approvedOperation.status !== "quoted" || approvalAttempted || busy || approving.current) return;
+    if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || approvedOperation.intentId !== currentIntent.current || approvedOperation.planVersion !== currentPlanVersion.current) return;
+    const expiresAt = Date.parse(approvedOperation.quote.expiresAt);
+    if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
+      invalidate();
+      return;
+    }
+    const expectedOperation = approvedOperation;
+    const expectedOwner = ownerId.current;
+    const expectedContext = requestContext.current;
+    const expectedRevision = cacheRevision.current;
+    approving.current = true;
+    setApprovalAttempted(true);
+    setBusy("approve");
+    setError("");
+    setNotice("");
+    setPriceVerification("");
+    if (expectedContext.nativeSessionId) generationBootstrapCache.rememberApprovalAttempt(expectedOwner, expectedContext.nativeSessionId, expectedOperation.intentId, expectedOperation.planVersion);
+    onSubmission?.({ ...expectedOperation, status: "submitting", createdAt: (/* @__PURE__ */ new Date()).toISOString() }, void 0, navigate);
+    try {
+      const { data } = await request("generation.approve", { operationId: expectedOperation.operationId, approvalId: expectedOperation.approvalId });
+      const exact = exactOperation(data, expectedOperation.intentId, expectedOperation.planVersion);
+      if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u6279\u6B21\u4E0E\u5F53\u524D\u62A5\u4EF7\u4E0D\u5339\u914D\u3002");
+      if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, exact);
+      if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId) return;
+      setOperation(exact);
+      onChanged?.();
+      onSubmission?.(exact);
+      resetComposer();
+      void request("panel.navigate", { section: "results" }).catch(() => void 0);
+    } catch (error52) {
+      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.nativeSessionId === expectedContext.nativeSessionId) {
+        const failure = generationApprovalFailure(error52);
+        if (failure.outcome === "not_submitted") {
+          if (expectedContext.nativeSessionId) generationBootstrapCache.clearApprovalAttempt(
+            expectedOwner,
+            expectedContext.nativeSessionId,
+            expectedOperation.intentId,
+            expectedOperation.planVersion
+          );
+          setApprovalAttempted(false);
+          if (failure.recovery === "requote") invalidate();
+          setError(failure.message);
+          onVerification?.();
+          onChanged?.();
+        } else {
+          setError(failure.message);
+          onSubmission?.({ ...expectedOperation, status: "submission_unknown" }, failure.message);
+          onChanged?.();
+        }
+      }
+    } finally {
+      approving.current = false;
+      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setBusy("");
+    }
+  }
+  async function generate() {
+    if (analysisMode) {
+      if (!validationError()) await analysis.submit();
+      return;
+    }
+    if (busy || preparing.current || approving.current || approvalAttempted) return;
+    if (operation?.status === "quoted") {
+      await approve(operation);
+      return;
+    }
+    const expectedOwner = ownerId.current;
+    const expectedContext = requestContext.current;
+    const expectedRevision = cacheRevision.current;
+    const expectedIntent = currentIntent.current;
+    const expectedPlan = currentPlanVersion.current;
+    const expectedLocalQuote = localQuote;
+    if (validationError()) return;
+    onVerification?.({
+      operationId: `verification:${expectedIntent}`,
+      intentId: expectedIntent,
+      planVersion: expectedPlan,
+      approvalId: "",
+      status: "verifying",
+      createdAt: (/* @__PURE__ */ new Date()).toISOString(),
+      quote: {
+        totalCredits: expectedLocalQuote?.totalCredits ?? 0,
+        outputCount: expectedLocalQuote?.outputCount ?? count,
+        confirmationText: "",
+        expiresAt: ""
+      }
+    });
+    let approvalStarted = false;
+    try {
+      const verified = await prepare();
+      if (!verified) return;
+      if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan || verified.intentId !== expectedIntent || verified.planVersion !== expectedPlan) return;
+      if (!expectedLocalQuote || verified.quote.totalCredits !== expectedLocalQuote.totalCredits || verified.quote.outputCount !== expectedLocalQuote.outputCount) {
+        setPriceVerification(expectedLocalQuote ? `\u670D\u52A1\u7AEF\u6838\u9A8C\u79EF\u5206\u5DF2\u66F4\u65B0\u4E3A ${verified.quote.totalCredits}\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002` : `\u670D\u52A1\u7AEF\u6838\u9A8C\u4E3A ${verified.quote.totalCredits} \u79EF\u5206\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002`);
+        return;
+      }
+      approvalStarted = true;
+      await approve(verified, false);
+    } finally {
+      if (!approvalStarted && mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan) onVerification?.();
+    }
+  }
+  async function cancelQuote() {
+    if (!operation || operation.status !== "quoted" || busy) return;
+    const expectedOperation = operation;
+    const expectedOwner = ownerId.current;
+    const expectedContext = requestContext.current;
+    const expectedRevision = cacheRevision.current;
+    setBusy("cancel");
+    setError("");
+    setNotice("");
+    try {
+      const { data } = await request("generation.cancel", { operationId: expectedOperation.operationId });
+      const exact = exactOperation(data, expectedOperation.intentId, expectedOperation.planVersion);
+      if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u53D6\u6D88\u7ED3\u679C\u4E0E\u5F53\u524D\u62A5\u4EF7\u4E0D\u5339\u914D\u3002");
+      if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, exact);
+      if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId) return;
+      setOperation(exact);
+      setApprovalAttempted(false);
+      setNotice("\u62A5\u4EF7\u5DF2\u53D6\u6D88\uFF0C\u672A\u6267\u884C\u4E5F\u672A\u6263\u9664\u79EF\u5206\u3002");
+      onChanged?.();
+    } catch (error52) {
+      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setError(errorText2(error52));
+    } finally {
+      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setBusy("");
+    }
+  }
+  function clearComposer() {
+    if (!prompt && !skillId && !selectedDna && references.length === 0) return;
+    invalidate();
+    skillSequence.current += 1;
+    setPrompt("");
+    setSkillId("");
+    setSelectedDna(void 0);
+    setSkillLoading("");
+    setSkillError("");
+    setReferences([]);
+  }
+  const displayCredits = analysisMode ? analysis.price : operation?.status === "quoted" ? operation.quote.totalCredits : localQuote?.totalCredits;
+  const chevron = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "13", height: "13", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m7 10 5 5 5-5" }) });
+  const plus = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "22", height: "22", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M12 5v14M5 12h14" }) });
+  const imageIcon = /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("rect", { x: "3", y: "4", width: "18", height: "16", rx: "2" }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("circle", { cx: "8.5", cy: "9", r: "1.5" }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m21 15-5-5L5 20" })
+  ] });
+  const broomIcon = /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("svg", { width: "19", height: "19", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M13.5 10.5 22 2" }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M14.734 13.841a2 2 0 0 0-.314-2.42L12.58 9.58a2 2 0 0 0-2.421-.314l-7.657 4.461A1 1 0 0 0 2.3 15.3l6.403 6.403a1 1 0 0 0 1.571-.204z" }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m5 18 2-2" }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m7.699 10.7 5.602 5.601" })
+  ] });
+  const openSkillBrowser = (event) => {
+    event?.currentTarget.closest("details")?.removeAttribute("open");
+    setSkillBrowserOpen(true);
+  };
+  if (placement === "floating" && !floatingOpen) return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { ref: floatingShell, className: "ppd-generation-shell is-floating is-collapsed", "data-generation-composer": "floating", "data-generation-composer-collapsed": true, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", className: "ppd-generation-collapsed", "aria-expanded": "false", onClick: () => setFloatingOpen(true), children: [
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-collapsed-add", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "17", height: "17", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.9", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M12 5v14M5 12h14" }) }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-collapsed-placeholder", children: "Create image" }),
+    (references.length > 0 || uploadPreviews.length > 0 || uploadProgress || uploadWarning) && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { "data-generation-reference-count": true, title: uploadFeedback || void 0, children: uploadPreviews.some((row) => row.status !== "failed") ? `\u6B63\u5728\u4E0A\u4F20 ${uploadPreviews.length} \u5F20\u2026` : uploadPreviews.length || uploadWarning ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : `${references.length} \u5F20\u53C2\u8003\u56FE` }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-collapsed-expand", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m12 19V5m-6 6 6-6 6 6" }) }) })
+  ] }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { ref: floatingShell, className: `ppd-generation ppd-generation-shell is-${placement}`, "data-generation-composer": placement, "data-generation-composer-expanded": true, "aria-busy": loading, children: [
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-visually-hidden", role: "alert", children: error51 }),
+    notice && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-visually-hidden", role: "status", children: notice }),
+    analysisMode && (analysis.error || analysis.message || inputError) && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-price-verification", role: analysis.error ? "alert" : "status", children: [
+      analysis.error || analysis.message || inputError,
+      analysis.error && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", onClick: analysis.retry, children: analysis.submitted ? "\u6838\u5BF9\u72B6\u6001" : "\u91CD\u65B0\u6838\u4EF7" })
+    ] }),
+    priceVerification && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-price-verification", "data-generation-price-verification": true, role: "status", children: priceVerification }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("fieldset", { className: "ppd-generation-form", disabled: busy === "upload" || busy === "approve" || busy === "cancel", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("legend", { className: "ppd-visually-hidden", children: "\u672C\u6279\u8BBE\u7F6E" }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `ppd-web-composer ${composerFocused ? "is-focused" : ""}`, "data-ui": "podplo-web-composer", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-actions", children: [
+          placement === "floating" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": "\u6536\u8D77\u751F\u56FE\u6846", onClick: () => setFloatingOpen(false), children: "\u2014" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": "\u6E05\u7A7A\u8F93\u5165", title: "\u6E05\u7A7A", onClick: clearComposer, children: broomIcon })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-media-row", children: [
+          selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedSkill.title, children: [
+            selectedSkill?.coverUrl ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("img", { className: "ppd-skill-cover", src: selectedSkill.coverUrl, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-token-mark", children: "\u2726" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "ppd-skill-copy", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: skillLoading === selectedSkill.id ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "Skill" }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: selectedSkill?.title || "\u9009\u62E9 Skill" })
+            ] }),
+            chevron,
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
+          ] }),
+          selectedDna && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedDna.description || "\u6211\u7684 DNA", "data-generation-dna": selectedDna.dnaId, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-token-mark", children: "\u25C8" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "ppd-skill-copy", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: "DNA" }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: selectedDna.title })
+            ] }),
+            chevron,
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill \u6216 DNA", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `ppd-reference-tray ${references.length || uploadPreviews.length ? "has-references" : ""}`, "aria-label": references.length ? `${references.length} \u5F20\u53C2\u8003\u7D20\u6750` : "\u6DFB\u52A0\u53C2\u8003\u7D20\u6750", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-upload-tile", "data-generation-upload": true, "aria-label": "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", title: "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", onClick: () => uploadInput.current?.click(), children: plus }),
+            references.map((id, index) => {
+              const asset = assets.find((row) => row.id === id);
+              const preview = asset?.thumbnailUrl || asset?.previewUrl;
+              return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-reference-token", title: asset?.filename || id, children: [
+                preview ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("img", { src: preview, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: index + 1 }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: index + 1 }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-reference-actions", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: index === 0, "aria-label": "\u4E0A\u79FB", onClick: () => moveReference(index, -1), children: "\u2190" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", disabled: index === references.length - 1, "aria-label": "\u4E0B\u79FB", onClick: () => moveReference(index, 1), children: "\u2192" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": "\u79FB\u9664", onClick: () => change(setReferences, references.filter((value2) => value2 !== id)), children: "\xD7" })
+                ] })
+              ] }, id);
+            }),
+            uploadPreviews.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: `ppd-reference-token ppd-upload-preview is-${row.status}`, "data-generation-upload-preview": row.status, title: `${row.filename}\uFF1A${row.message || "\u4E0A\u4F20\u4E2D"}`, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("img", { src: row.previewUrl, alt: row.filename }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-upload-preview-status", role: row.status === "failed" ? "alert" : "status", children: row.status === "failed" ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : "\u4E0A\u4F20\u4E2D\u2026" }),
+              row.status === "failed" && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-upload-preview-remove", "aria-label": `\u79FB\u9664\u672A\u4E0A\u4F20\u56FE\u7247 ${row.filename}`, onClick: () => {
+                setUploadWarning("");
+                generationBootstrapCache.updateReferenceUpload(ownerId.current, nativeSessionId ?? "podplo-manual", row.id, null, cacheRevision.current);
+                setUploadPreviews(generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId ?? "podplo-manual"));
+              }, children: "\xD7" })
+            ] }, row.id)),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { ref: uploadInput, className: "ppd-file-input", type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", onChange: (event) => void upload(Array.from(event.target.files ?? [])) })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          "textarea",
+          {
+            value: prompt,
+            disabled: analysisMode === "dna",
+            maxLength: analysisMode === "imageToText" ? 8e3 : Number(properties.prompt?.maxLength) || 4e3,
+            "aria-label": analysisMode === "imageToText" ? "\u8BC6\u522B\u8981\u6C42" : "\u751F\u56FE\u63CF\u8FF0",
+            placeholder: analysisMode === "dna" ? "\u6DFB\u52A0\u539F\u56FE\u540E\u70B9\u51FB\u751F\u6210" : analysisMode === "imageToText" ? "\u8F93\u5165\u8BC6\u522B\u8981\u6C42\u2026" : "\u63CF\u8FF0\u4F60\u60F3\u751F\u6210\u7684\u753B\u9762\u2026",
+            onFocus: () => setComposerFocused(true),
+            onBlur: () => setComposerFocused(false),
+            onChange: (event) => change(setPrompt, event.target.value)
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-toolbar", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbar-left", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { className: "ppd-add-menu", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("summary", { className: "ppd-toolbar-icon", "aria-label": "\u6DFB\u52A0\u7D20\u6750\u3001Skill \u6216 DNA", children: plus }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-add-popover", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", "aria-label": selectedSkill || selectedDna ? "\u6D4F\u89C8 Skill \u548C DNA" : "\u9009\u62E9 Skill \u6216 DNA", "aria-haspopup": "dialog", onClick: openSkillBrowser, children: "\u6D4F\u89C8 Skill \u548C DNA" }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: (event) => {
+                  uploadInput.current?.click();
+                  event.currentTarget.closest("details")?.removeAttribute("open");
+                }, children: "\u672C\u5730\u4E0A\u4F20" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-toolbar-divider" }),
+            (properties.modelId || ownerId.current) && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { className: "ppd-model-menu", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("summary", { className: "ppd-toolbar-select ppd-model-select", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: `ppd-model-dot ${/^gpt/i.test(selectedModelLabel) ? "is-gpt" : ""}` }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: selectedModelLabel }),
+                chevron
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "modelId", "aria-hidden": "true", tabIndex: -1, value: model, onChange: (event) => selectModel(event.target.value), children: models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("option", { value: modelId(row), disabled: row.availableForCurrentPlan === false, children: [
+                modelName(row),
+                row.availableForCurrentPlan === false ? " \xB7 \u672A\u5F00\u901A" : ""
+              ] }, modelId(row))) }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-model-popover", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("header", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: "\u6A21\u578B" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("small", { children: [
+                    models.length,
+                    " \u4E2A\u53EF\u7528\u6A21\u578B"
+                  ] })
+                ] }),
+                models.map((row) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", className: modelId(row) === model ? "is-selected" : "", "aria-pressed": modelId(row) === model, disabled: row.availableForCurrentPlan === false, onClick: (event) => {
+                  selectModel(modelId(row));
+                  event.currentTarget.closest("details")?.removeAttribute("open");
+                }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: `ppd-model-brand ${/^gpt/i.test(modelName(row)) ? "is-gpt" : ""}`, children: /^gpt/i.test(modelName(row)) ? "GPT" : "AI" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: modelName(row) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("small", { children: modelId(row) === IMAGE_TO_TEXT_MODEL ? "\u56FE\u8F6C\u6587 \xB7 1\u20134 \u5F20\u53C2\u8003\u56FE" : row.availableForCurrentPlan === false ? "\u5F53\u524D\u65B9\u6848\u672A\u5F00\u901A" : `${stringList(row.ratios).length} \u79CD\u6BD4\u4F8B \xB7 \u6700\u591A ${Number(row.maximumReferenceImages) || 0} \u5F20\u53C2\u8003\u56FE` })
+                  ] }),
+                  modelId(row) === model && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: "\u2713" })
+                ] }, modelId(row)))
+              ] })
+            ] }),
+            !analysisMode && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { className: "ppd-settings-menu", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("summary", { className: "ppd-toolbar-button", children: [
+                imageIcon,
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: ratio || "\u6BD4\u4F8B" }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", {}),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
+                  count,
+                  " \u5F20"
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", {}),
+                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: [resolution, quality].filter(Boolean).join(" \xB7 ") || "\u9ED8\u8BA4" }),
+                chevron
+              ] }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-settings-popover", children: [
+                properties.ratio && modelRatios.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u6BD4\u4F8B" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "ratio", "aria-hidden": "true", tabIndex: -1, value: ratio, onChange: (event) => change(setRatio, event.target.value), children: modelRatios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-ratio-grid", children: modelRatios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("button", { type: "button", className: ratio === value2 ? "is-selected" : "", "aria-pressed": ratio === value2, onClick: () => change(setRatio, value2), children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { className: "ppd-ratio-glyph", style: ratioGlyphStyle(value2) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", { children: value2 })
+                  ] }, value2)) })
+                ] }),
+                properties.count && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u6570\u91CF" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { className: "ppd-contract-control", type: "number", "aria-hidden": "true", tabIndex: -1, min: countMinimum, max: countMaximum, value: count, onChange: (event) => change(setCount, Math.max(1, Number(event.target.value) || 1)) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: Array.from({ length: countMaximum - countMinimum + 1 }, (_, index) => countMinimum + index).map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: count === value2 ? "is-selected" : "", "aria-pressed": count === value2, onClick: () => change(setCount, value2), children: value2 }, value2)) })
+                ] }),
+                properties.resolution && modelResolutions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u5206\u8FA8\u7387" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "resolution", "aria-hidden": "true", tabIndex: -1, value: resolution, onChange: (event) => change(setResolution, event.target.value), children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: resolution === value2 ? "is-selected" : "", "aria-pressed": resolution === value2, onClick: () => change(setResolution, value2), children: value2 }, value2)) })
+                ] }),
+                properties.quality && modelQualities.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u6E05\u6670\u5EA6" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "quality", "aria-hidden": "true", tabIndex: -1, value: quality, onChange: (event) => change(setQuality, event.target.value), children: modelQualities.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: modelQualities.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: quality === value2 ? "is-selected" : "", "aria-pressed": quality === value2, onClick: () => change(setQuality, value2), children: value2 === "xhigh" ? "Ultra" : value2 }, value2)) })
+                ] }),
+                properties.thinkingLevel && modelThinkingLevels.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u601D\u8003\u7A0B\u5EA6" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "thinkingLevel", "aria-hidden": "true", tabIndex: -1, value: thinkingLevel, onChange: (event) => change(setThinkingLevel, event.target.value), children: modelThinkingLevels.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("option", { children: value2 }, value2)) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { className: "ppd-segmented", children: modelThinkingLevels.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: thinkingLevel === value2 ? "is-selected" : "", "aria-pressed": thinkingLevel === value2, onClick: () => change(setThinkingLevel, value2), children: value2 }, value2)) })
+                ] }),
+                supportsTransparent && transparentKey && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("label", { children: "\u80CC\u666F" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: "ppd-settings-check", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": transparentKey, checked: transparent, onChange: (event) => change(setTransparent, event.target.checked) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "\u900F\u660E\u80CC\u666F" })
+                  ] })
+                ] })
+              ] })
+            ] }),
+            !analysisMode && supportsWebSearch && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: `ppd-search-chip ${booleans.webSearch ? "is-selected" : ""}`, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "\u8054\u7F51\u641C\u7D22" }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": "webSearch", checked: booleans.webSearch === true, onChange: (event) => changeBoolean("webSearch", event.target.checked) }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) })
+            ] }),
+            !analysisMode && supportsImageSearch && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: `ppd-search-chip ${booleans.imageSearch ? "is-selected" : ""}`, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "\u56FE\u7247\u641C\u7D22" }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": "imageSearch", checked: booleans.imageSearch === true, onChange: (event) => changeBoolean("imageSearch", event.target.checked) }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) })
+            ] })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-toolbar-right", children: [
+            !analysisMode && supportsEcoMode && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { className: `ppd-eco-control ${booleans.ecoMode ? "is-selected" : ""}`, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "checkbox", "data-generation-parameter": "ecoMode", checked: booleans.ecoMode === true, onChange: (event) => changeBoolean("ecoMode", event.target.checked) }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("b", {}) }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { children: "Eco" })
+            ] }),
+            !analysisMode && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              BatchGenerationPanel,
+              {
+                request,
+                snapshot: batchSnapshot,
+                capabilities,
+                skills: batchSkills,
+                disabled: !!selectedDna || !!validationError() || busy === "prepare" || busy === "approve" || approvalAttempted,
+                resolveSkill: resolveBatchSkill,
+                onChanged,
+                accountKey,
+                contextKey: cacheRevision.current
+              }
+            ),
+            displayCredits !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { className: "ppd-generation-cost", "aria-label": displayCredits + " \u79EF\u5206", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { "aria-hidden": "true", children: "\u2727" }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { "data-generation-credits": true, children: displayCredits })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+              "button",
+              {
+                type: "button",
+                className: "ppd-generate-button",
+                "data-generation-submit": true,
+                "aria-label": displayCredits !== void 0 ? "\u751F\u6210 \xB7 " + displayCredits + " \u79EF\u5206" : "\u751F\u6210 \xB7 \u70B9\u51FB\u6838\u9A8C\u79EF\u5206",
+                disabled: busy === "prepare" || busy === "approve" || approvalAttempted || !!validationError() || !!analysisMode && (analysis.price === void 0 || analysis.submitted),
+                onClick: () => void generate(),
+                children: busy === "prepare" || busy === "approve" || !!analysisMode && analysis.busy ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-spinner" }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m12 19V5m-6 6 6-6 6 6" }) })
+              }
+            )
+          ] })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { className: "ppd-composer-meta", children: [
+        selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-skill-proof", role: "status", children: skillLoading === selectedSkill.id ? selectedSkill.kind === "family" ? "\u6B63\u5728\u52A0\u8F7D\u65CF\u6210\u5458\u2026" : "\u6B63\u5728\u8BFB\u53D6\u5B8C\u6574\u8BE6\u60C5\u2026" : selectedSkill.extractionSkillId ? "\u53CD\u63A8 DNA" : selectedSkill.detail ? `\u8BE6\u60C5\u5DF2\u6838\u5BF9 \xB7 \u7248\u672C ${selectedSkill.version}` : selectedSkill.kind === "family" ? "\u8BF7\u9009\u62E9\u65CF\u6210\u5458" : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void selectSkill(selectedSkill.id), children: "\u91CD\u8BD5 Skill \u8BE6\u60C5" }) }),
+        selectedDna && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("span", { className: "ppd-skill-proof", role: "status", children: "DNA \u6A21\u5F0F \xB7 \u8BF7\u6DFB\u52A0\u4E00\u5F20\u65B0\u56FE" }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
+          references.length,
+          Number.isFinite(referenceLimit) ? ` / ${referenceLimit}` : "",
+          " \u5F20\u53C2\u8003\u7D20\u6750"
+        ] }),
+        assetCursor && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadAssets(true), children: "\u52A0\u8F7D\u66F4\u591A\u7D20\u6750" })
+      ] })
+    ] }),
+    skillError && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-skill-feedback", "data-generation-skill-feedback": true, role: "alert", children: [
+      skillError,
+      selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", disabled: !!skillLoading, onClick: () => void selectSkill(selectedSkill.id), children: "\u91CD\u8BD5" })
+    ] }),
+    (visibleUploadProgress || uploadFeedback) && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-upload-feedback", role: uploadFeedback ? "alert" : "status", "data-generation-upload-feedback": true, children: [
+      visibleUploadProgress,
+      visibleUploadProgress && uploadFeedback ? "\uFF1B" : "",
+      uploadFeedback
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      SkillBrowser,
+      {
+        open: skillBrowserOpen,
+        onClose: () => setSkillBrowserOpen(false),
+        value: selectedDna?.id || skillId,
+        choices: skills,
+        categories: skillCategories,
+        favorites: favoriteBrowser,
+        personal: personalBrowser,
+        dna: dnaBrowser,
+        categoryLabels: Object.fromEntries(skillCategories.map((row) => [row.id, row.label])),
+        loadFamily: loadFamilyChoices,
+        request,
+        previewRevision: cacheRevision.current,
+        onSelect: (choice) => {
+          setSkillBrowserOpen(false);
+          if (choice.source === "dna") selectDna(choice);
+          else void selectSkill(choice.id, choice);
+        }
+      }
+    )
+  ] });
+}
+
+// plugins/podplo-dsh/src/generation-history.tsx
+var import_react9 = require("react");
+var import_jsx_runtime8 = require("react/jsx-runtime");
+var labels = {
+  verifying: "\u6B63\u5728\u6838\u9A8C\u79EF\u5206",
+  quoted: "\u6B63\u5728\u63D0\u4EA4",
+  submitting: "\u6B63\u5728\u63D0\u4EA4",
+  submitted: "\u6B63\u5728\u751F\u6210",
+  completed: "\u5DF2\u5B8C\u6210",
+  failed: "\u751F\u6210\u5931\u8D25",
+  partial_failure: "\u90E8\u5206\u751F\u6210\u5931\u8D25",
+  cancelled: "\u5DF2\u505C\u6B62",
+  partial_cancelled: "\u90E8\u5206\u5B8C\u6210",
+  submission_unknown: "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9",
+  partial_unknown: "\u90E8\u5206\u7ED3\u679C\u5F85\u6838\u5BF9"
+};
+var running = /* @__PURE__ */ new Set(["verifying", "quoted", "submitting", "submitted"]);
+function GenerationHistory({ request, submission, onBack, renderAsset }) {
+  const [items, setItems] = (0, import_react9.useState)([]);
+  const [loading, setLoading] = (0, import_react9.useState)(true);
+  const [error51, setError] = (0, import_react9.useState)("");
+  const [refreshVersion, setRefreshVersion] = (0, import_react9.useState)(0);
+  const [folders, setFolders] = (0, import_react9.useState)([]);
+  const [folderId, setFolderId] = (0, import_react9.useState)();
+  (0, import_react9.useEffect)(() => {
+    let alive = true, reading = false;
+    const load = async () => {
+      if (reading) return;
+      reading = true;
+      try {
+        const { data } = await request("archive.list", { scope: "session" });
+        if (alive) setFolders(data.items ?? []);
+      } catch {
+        if (alive) setFolders([]);
+      } finally {
+        reading = false;
+      }
+    };
+    void load();
+    const timer = setInterval(() => void load(), 1800);
+    return () => {
+      alive = false;
+      clearInterval(timer);
+    };
+  }, [request]);
+  (0, import_react9.useEffect)(() => {
+    let alive = true;
+    let reading = false;
+    const refresh = async () => {
+      if (reading) return;
+      reading = true;
+      try {
+        const { data } = await request("generation.list", { scope: "manual" });
+        if (!alive) return;
+        setItems((Array.isArray(data?.items) ? data.items : []).filter((row) => row.approvedAt));
+        setError("");
+      } catch (error52) {
+        if (alive) setError(error52 instanceof Error ? error52.message : "\u5904\u7406\u8BB0\u5F55\u8BFB\u53D6\u5931\u8D25\uFF0C\u8BF7\u5237\u65B0\u3002");
+      } finally {
+        reading = false;
+        if (alive) setLoading(false);
+      }
+    };
+    void refresh();
+    const timer = window.setInterval(() => void refresh(), 1500);
+    return () => {
+      alive = false;
+      window.clearInterval(timer);
+    };
+  }, [request, refreshVersion]);
+  const recent = submission && items.find((row) => row.operationId === submission.operation.operationId);
+  const rows = submission && !recent ? [submission.operation, ...items] : items;
+  const submissionError = recent ? void 0 : submission?.error;
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { className: "ppd-history", "data-generation-history": true, "aria-label": "\u5904\u7406\u8BB0\u5F55", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ArchiveStyles, {}),
+    folderId && folders.find((row) => row.id === folderId) ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(ArchiveDetail, { task: folders.find((row) => row.id === folderId), request, onBack: () => setFolderId(void 0) }) : null,
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-history-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { children: "\u5904\u7406\u8BB0\u5F55" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button", onClick: () => setRefreshVersion((value2) => value2 + 1), children: "\u5237\u65B0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE" })
+      ] })
+    ] }),
+    (error51 || submissionError) && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 || submissionError }),
+    loading && !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-state", role: "status", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "ppd-spinner" }),
+      "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026"
+    ] }) : !rows.length ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-state", children: "\u8FD8\u6CA1\u6709\u751F\u6210\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-history-list", children: rows.map((row) => {
+      const pending = running.has(row.status);
+      const summary = row.summary;
+      const outputs = [...new Set(row.items?.flatMap((item) => item.outputs?.flatMap((output) => output.assetId ? [output.assetId] : []) ?? []) ?? [])];
+      const failures = [...new Set(row.items?.flatMap((item) => [item.errorCode, ...item.outputs?.map((output) => output.failureCode) ?? []].filter(Boolean)) ?? [])];
+      return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("article", { className: "ppd-history-record", "data-operation-id": row.operationId, "data-generation-status": row.status, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-history-record-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("strong", { role: "status", children: [
+            pending && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("span", { className: "ppd-spinner" }),
+            labels[row.status] ?? row.status
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
+            row.quote.outputCount,
+            " \u5F20",
+            row.status !== "verifying" && ` \xB7 ${row.quote.totalCredits} \u79EF\u5206`
+          ] })
+        ] }),
+        row.createdAt && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
+        summary && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("progress", { "aria-label": "\u751F\u6210\u8FDB\u5EA6", max: Math.max(1, summary.itemCount), value: summary.completedCount + summary.failedCount + summary.cancelledCount }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("small", { children: [
+            "\u5B8C\u6210 ",
+            summary.completedCount,
+            " / ",
+            summary.itemCount,
+            summary.failedCount > 0 && ` \xB7 \u5931\u8D25 ${summary.failedCount}`
+          ] })
+        ] }),
+        failures.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-alert", children: failures.join(" \xB7 ") }),
+        outputs.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { className: "ppd-history-results", children: outputs.map((id) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { "data-history-asset": id, children: renderAsset(id) }, `${id}:${refreshVersion}`)) }),
+        folders.filter((folder) => folder.operationIds.includes(row.operationId)).map((folder) => /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(TaskFolderCard, { task: folder, request, onView: () => setFolderId(folder.id), library: true }, folder.id))
+      ] }, row.operationId);
+    }) })
+  ] });
+}
+
+// plugins/podplo-dsh/src/ToolboxPanel.tsx
+var import_react13 = require("react");
+
+// plugins/podplo-dsh/src/ManualToolboxPanel.tsx
+var import_react10 = __toESM(require("react"), 1);
+
 // packages/tools/toolkit-contracts.ts
 var color = external_exports.string().regex(/^#[0-9a-f]{6}$/i);
 var RotateOptionsSchema = external_exports.object({
@@ -20880,45 +21221,45 @@ function toBase64(bytes) {
   return btoa(binary);
 }
 function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
-  const request = (0, import_react8.useCallback)((action, args) => hostRequest(
+  const request = (0, import_react10.useCallback)((action, args) => hostRequest(
     action.startsWith("local.") ? `toolbox.${action.slice("local.".length)}` : action,
     args
   ), [hostRequest]);
-  const mounted = (0, import_react8.useRef)(true);
-  (0, import_react8.useEffect)(() => {
+  const mounted = (0, import_react10.useRef)(true);
+  (0, import_react10.useEffect)(() => {
     mounted.current = true;
     return () => {
       mounted.current = false;
     };
   }, []);
-  const [enabled, setEnabled] = (0, import_react8.useState)({ resize: true, rotate: false, color: false, outline: false, print: false, export: false });
-  const [trimTransparent, setTrimTransparent] = (0, import_react8.useState)(true);
-  const [trimThreshold, setTrimThreshold] = (0, import_react8.useState)(22);
-  const trimThresholdId = (0, import_react8.useId)();
-  const resizeEdited = (0, import_react8.useRef)(false);
-  const [options, setOptions] = (0, import_react8.useState)(() => structuredClone(initialOptions));
-  const [images, setImages] = (0, import_react8.useState)([]);
-  const [sourceQueue, setSourceQueue] = (0, import_react8.useState)([]);
-  const [selected, setSelected] = (0, import_react8.useState)([]);
-  const [previewSource, setPreviewSource] = (0, import_react8.useState)("");
-  const [sourcePreview, setSourcePreview] = (0, import_react8.useState)();
-  const [sourcePreviewScope, setSourcePreviewScope] = (0, import_react8.useState)();
-  const [toolPreview, setToolPreview] = (0, import_react8.useState)();
-  const [toolPreviewScope, setToolPreviewScope] = (0, import_react8.useState)();
-  const [resizeSource, setResizeSource] = (0, import_react8.useState)();
-  const [previewBusy, setPreviewBusy] = (0, import_react8.useState)(false);
-  const [previewError, setPreviewError] = (0, import_react8.useState)("");
-  const [previewMode, setPreviewMode] = (0, import_react8.useState)(0);
-  const [latest, setLatest] = (0, import_react8.useState)([]);
-  const [busy, setBusy] = (0, import_react8.useState)("");
-  const [notice, setNotice] = (0, import_react8.useState)("");
-  const [presetNotice, setPresetNotice] = (0, import_react8.useState)("");
-  const [error51, setError] = (0, import_react8.useState)("");
-  const imports = (0, import_react8.useRef)(0);
-  const groupAccess = (0, import_react8.useMemo)(() => toolGroupAccessBySlug(toolGroups), [toolGroups]);
+  const [enabled, setEnabled] = (0, import_react10.useState)({ resize: true, rotate: false, color: false, outline: false, print: false, export: false });
+  const [trimTransparent, setTrimTransparent] = (0, import_react10.useState)(true);
+  const [trimThreshold, setTrimThreshold] = (0, import_react10.useState)(22);
+  const trimThresholdId = (0, import_react10.useId)();
+  const resizeEdited = (0, import_react10.useRef)(false);
+  const [options, setOptions] = (0, import_react10.useState)(() => structuredClone(initialOptions));
+  const [images, setImages] = (0, import_react10.useState)([]);
+  const [sourceQueue, setSourceQueue] = (0, import_react10.useState)([]);
+  const [selected, setSelected] = (0, import_react10.useState)([]);
+  const [previewSource, setPreviewSource] = (0, import_react10.useState)("");
+  const [sourcePreview, setSourcePreview] = (0, import_react10.useState)();
+  const [sourcePreviewScope, setSourcePreviewScope] = (0, import_react10.useState)();
+  const [toolPreview, setToolPreview] = (0, import_react10.useState)();
+  const [toolPreviewScope, setToolPreviewScope] = (0, import_react10.useState)();
+  const [resizeSource, setResizeSource] = (0, import_react10.useState)();
+  const [previewBusy, setPreviewBusy] = (0, import_react10.useState)(false);
+  const [previewError, setPreviewError] = (0, import_react10.useState)("");
+  const [previewMode, setPreviewMode] = (0, import_react10.useState)(0);
+  const [latest, setLatest] = (0, import_react10.useState)([]);
+  const [busy, setBusy] = (0, import_react10.useState)("");
+  const [notice, setNotice] = (0, import_react10.useState)("");
+  const [presetNotice, setPresetNotice] = (0, import_react10.useState)("");
+  const [error51, setError] = (0, import_react10.useState)("");
+  const imports = (0, import_react10.useRef)(0);
+  const groupAccess = (0, import_react10.useMemo)(() => toolGroupAccessBySlug(toolGroups), [toolGroups]);
   const imageProcessingAccess = groupAccess[IMAGE_PROCESSING_TOOL_ID];
-  const panelScope = (0, import_react8.useMemo)(() => ({}), [request, imageProcessingAccess.status, imageProcessingAccess.expiresAt]);
-  const currentScope = (0, import_react8.useRef)(panelScope);
+  const panelScope = (0, import_react10.useMemo)(() => ({}), [request, imageProcessingAccess.status, imageProcessingAccess.expiresAt]);
+  const currentScope = (0, import_react10.useRef)(panelScope);
   currentScope.current = panelScope;
   const effectiveEnabled = Object.fromEntries(tools.map((tool) => [
     tool.key,
@@ -20926,11 +21267,11 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
   ]));
   const trimAccess = imageProcessingAccess;
   const effectiveTrim = trimTransparent && trimAccess.status === "active";
-  const sourceImages = (0, import_react8.useMemo)(() => sourceQueue.flatMap((id) => {
+  const sourceImages = (0, import_react10.useMemo)(() => sourceQueue.flatMap((id) => {
     const row = images.find((image) => image.id === id);
     return row ? [row] : [];
   }), [sourceQueue, images]);
-  const selectedIds = (0, import_react8.useMemo)(() => selected.filter((id) => sourceQueue.includes(id) && images.some((row) => row.id === id)), [selected, sourceQueue, images]);
+  const selectedIds = (0, import_react10.useMemo)(() => selected.filter((id) => sourceQueue.includes(id) && images.some((row) => row.id === id)), [selected, sourceQueue, images]);
   const selectedKey = JSON.stringify(selectedIds);
   const plan = { orderVersion: 2, steps: tools.flatMap((row) => [
     ...row.key === "resize" && effectiveTrim ? [{ tool: "trim", ...trimThreshold ? { threshold: trimThreshold } : {} }] : [],
@@ -20973,7 +21314,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       return { ...current, [tool]: next };
     });
   };
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     if (!source) return;
     if (resizeEdited.current) return;
     setOptions((current) => {
@@ -20986,7 +21327,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       } };
     });
   }, [sourceId, source?.width, source?.height]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     if (!enabled.resize || !resizeBasis) return;
     setOptions((current) => {
       const previous = current.resize;
@@ -21001,7 +21342,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       return previous[field] === value2 ? current : { ...current, resize: { ...previous, [field]: value2 } };
     });
   }, [enabled.resize, resizeBasis?.width, resizeBasis?.height, upstreamKey]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     setSourcePreview(void 0);
     setSourcePreviewScope(void 0);
     setToolPreview(void 0);
@@ -21024,7 +21365,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       alive = false;
     };
   }, [previewIds, request]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     let alive = true;
     setPreviewError("");
     if (bleedError || trimError) {
@@ -21060,14 +21401,14 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       clearTimeout(timer);
     };
   }, [previewIds, previewOptions, upstreamKey, outlineBasisKey, bleedError, trimError, request]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     setLatest([]);
     setNotice("");
   }, [selectedKey]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     setNotice("");
   }, [previewOptions]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     setEnabled((current) => Object.fromEntries(tools.map((tool) => [
       tool.key,
       imageProcessingAccess.status === "active" ? current[tool.key] : false
@@ -21075,7 +21416,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
     if (trimAccess.status !== "active") setTrimTransparent(false);
     setLatest([]);
   }, [toolGroups]);
-  (0, import_react8.useEffect)(() => {
+  (0, import_react10.useEffect)(() => {
     imports.current++;
     setImages([]);
     setSourceQueue([]);
@@ -21220,7 +21561,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
       setError(messageOf(value2));
     }
   };
-  const presetInput = (0, import_react8.useRef)(null);
+  const presetInput = (0, import_react10.useRef)(null);
   const importPreset = async (file2) => {
     if (!file2) return;
     const scope = panelScope;
@@ -21268,7 +21609,7 @@ function ManualToolboxPanel({ request: hostRequest, toolGroups }) {
         ] }) }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "ppd-toolbox__modules", children: tools.map((row) => {
           const access = imageProcessingAccess;
-          return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_react8.default.Fragment, { children: [
+          return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_react10.default.Fragment, { children: [
             /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { className: "ppd-toolbox__module", "data-toolbox-module": row.key, "data-toolbox-access": access.status, children: [
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
                 /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { type: "checkbox", checked: effectiveEnabled[row.key], disabled: !!busy || access.status !== "active", onChange: (event) => setEnabled((current) => ({ ...current, [row.key]: event.target.checked })) }),
@@ -21473,7 +21814,7 @@ function PreviewCard({ title, preview, unit = "px", empty = "\u5C1A\u672A\u751F\
   ] });
 }
 function OutlineRangeField({ name, label, value: value2, min, max, step, longEdge, onChange }) {
-  const id = (0, import_react8.useId)();
+  const id = (0, import_react10.useId)();
   const change = (next) => onChange(next);
   const hasPixels = ["distancePercent", "strokePercent", "roundingPercent"].includes(name);
   const basis = longEdge !== void 0 && Number.isFinite(longEdge) && longEdge > 0 ? longEdge : void 0;
@@ -21702,7 +22043,7 @@ function ToolFields({ tool, values, images, update, importPattern, patternBusy, 
 }
 
 // plugins/podplo-dsh/src/GridSplitPanel.tsx
-var import_react9 = require("react");
+var import_react11 = require("react");
 var import_jsx_runtime10 = require("react/jsx-runtime");
 var MAX_SOURCES = 10;
 var MAX_BATCH_BYTES2 = 250 * 1024 * 1024;
@@ -21717,29 +22058,29 @@ function toBase642(bytes) {
   return btoa(binary);
 }
 function GridSplitPanel({ request, access }) {
-  const scope = (0, import_react9.useMemo)(() => ({}), [request, access.status, access.expiresAt]);
-  const currentScope = (0, import_react9.useRef)(scope);
+  const scope = (0, import_react11.useMemo)(() => ({}), [request, access.status, access.expiresAt]);
+  const currentScope = (0, import_react11.useRef)(scope);
   currentScope.current = scope;
-  const imports = (0, import_react9.useRef)(0);
-  const [sources, setSources] = (0, import_react9.useState)([]);
-  const [selected, setSelected] = (0, import_react9.useState)([]);
-  const [rows, setRows] = (0, import_react9.useState)("2");
-  const [cols, setCols] = (0, import_react9.useState)("2");
-  const [mode, setMode] = (0, import_react9.useState)("grid");
-  const [tolerance, setTolerance] = (0, import_react9.useState)("18");
-  const [gap, setGap] = (0, import_react9.useState)("32");
-  const [padding, setPadding] = (0, import_react9.useState)("16");
-  const [minArea, setMinArea] = (0, import_react9.useState)("160");
-  const [preview, setPreview] = (0, import_react9.useState)([]);
-  const [saved, setSaved] = (0, import_react9.useState)([]);
-  const [busy, setBusy] = (0, import_react9.useState)("");
-  const [loadingSources, setLoadingSources] = (0, import_react9.useState)(true);
-  const [error51, setError] = (0, import_react9.useState)("");
-  const [previewError, setPreviewError] = (0, import_react9.useState)("");
-  const [notice, setNotice] = (0, import_react9.useState)("");
-  const previewSequence = (0, import_react9.useRef)(0);
-  const defaultSource = (0, import_react9.useRef)("");
-  const selectedSources = (0, import_react9.useMemo)(() => selected.flatMap((id) => {
+  const imports = (0, import_react11.useRef)(0);
+  const [sources, setSources] = (0, import_react11.useState)([]);
+  const [selected, setSelected] = (0, import_react11.useState)([]);
+  const [rows, setRows] = (0, import_react11.useState)("2");
+  const [cols, setCols] = (0, import_react11.useState)("2");
+  const [mode, setMode] = (0, import_react11.useState)("grid");
+  const [tolerance, setTolerance] = (0, import_react11.useState)("18");
+  const [gap, setGap] = (0, import_react11.useState)("32");
+  const [padding, setPadding] = (0, import_react11.useState)("16");
+  const [minArea, setMinArea] = (0, import_react11.useState)("160");
+  const [preview, setPreview] = (0, import_react11.useState)([]);
+  const [saved, setSaved] = (0, import_react11.useState)([]);
+  const [busy, setBusy] = (0, import_react11.useState)("");
+  const [loadingSources, setLoadingSources] = (0, import_react11.useState)(true);
+  const [error51, setError] = (0, import_react11.useState)("");
+  const [previewError, setPreviewError] = (0, import_react11.useState)("");
+  const [notice, setNotice] = (0, import_react11.useState)("");
+  const previewSequence = (0, import_react11.useRef)(0);
+  const defaultSource = (0, import_react11.useRef)("");
+  const selectedSources = (0, import_react11.useMemo)(() => selected.flatMap((id) => {
     const source = sources.find((row) => row.id === id);
     return source ? [source] : [];
   }), [sources, selected]);
@@ -21748,7 +22089,7 @@ function GridSplitPanel({ request, access }) {
   const parameterError = mode === "grid" && (!Number.isInteger(rowCount) || rowCount < 1 || rowCount > 6) ? "\u884C\u6570\u8BF7\u586B\u5199 1\uFF5E6 \u7684\u6574\u6570\u3002" : mode === "grid" && (!Number.isInteger(colCount) || colCount < 1 || colCount > 6) ? "\u5217\u6570\u8BF7\u586B\u5199 1\uFF5E6 \u7684\u6574\u6570\u3002" : mode === "grid" && selectedSources.some((source) => rowCount > source.height || colCount > source.width) ? "\u884C\u5217\u6570\u4E0D\u80FD\u8D85\u8FC7\u56FE\u7247\u7684\u50CF\u7D20\u5BBD\u9AD8\u3002" : mode === "assets" && (!Number.isFinite(assetValues.backgroundTolerance) || assetValues.backgroundTolerance < 4 || assetValues.backgroundTolerance > 40) ? "\u80CC\u666F\u5BB9\u5DEE\u8BF7\u586B\u5199 4\uFF5E40\u3002" : mode === "assets" && (!Number.isInteger(assetValues.groupGap) || assetValues.groupGap < 4 || assetValues.groupGap > 100) ? "\u540C\u7EC4\u8DDD\u79BB\u8BF7\u586B\u5199 4\uFF5E100 \u7684\u6574\u6570\u3002" : mode === "assets" && (!Number.isInteger(assetValues.padding) || assetValues.padding < 0 || assetValues.padding > 60) ? "\u900F\u660E\u7559\u767D\u8BF7\u586B\u5199 0\uFF5E60 \u7684\u6574\u6570\u3002" : mode === "assets" && (!Number.isInteger(assetValues.minArea) || assetValues.minArea < 10 || assetValues.minArea > 3e3) ? "\u5FFD\u7565\u5C0F\u788E\u5C51\u8BF7\u586B\u5199 10\uFF5E3000 \u7684\u6574\u6570\u3002" : "";
   const resultCount = mode === "grid" ? selectedSources.length * rowCount * colCount : preview.length;
   const splitOptions = mode === "grid" ? { rows: rowCount, cols: colCount } : { mode: "assets", ...assetValues };
-  const resetAssetDefaults = (0, import_react9.useCallback)((source = selectedSources[0]) => {
+  const resetAssetDefaults = (0, import_react11.useCallback)((source = selectedSources[0]) => {
     if (!source) return;
     const short = Math.min(source.width, source.height);
     setTolerance("18");
@@ -21757,14 +22098,14 @@ function GridSplitPanel({ request, access }) {
     setMinArea(String(Math.min(3e3, Math.max(24, Math.round(source.width * source.height * 4e-5)))));
     setSaved([]);
   }, [selectedSources]);
-  (0, import_react9.useEffect)(() => {
+  (0, import_react11.useEffect)(() => {
     const key = mode === "assets" && selectedSources[0] ? selectedSources[0].id : "";
     if (key && key !== defaultSource.current) {
       defaultSource.current = key;
       resetAssetDefaults(selectedSources[0]);
     }
   }, [mode, selectedSources[0]?.id, resetAssetDefaults]);
-  const load = (0, import_react9.useCallback)(async () => {
+  const load = (0, import_react11.useCallback)(async () => {
     setLoadingSources(true);
     try {
       const response = await request("splitter.list");
@@ -21775,7 +22116,7 @@ function GridSplitPanel({ request, access }) {
       if (currentScope.current === scope) setLoadingSources(false);
     }
   }, [request, scope]);
-  (0, import_react9.useEffect)(() => {
+  (0, import_react11.useEffect)(() => {
     imports.current++;
     previewSequence.current++;
     setSources([]);
@@ -21793,12 +22134,12 @@ function GridSplitPanel({ request, access }) {
       previewSequence.current++;
     };
   }, [scope]);
-  (0, import_react9.useEffect)(() => {
+  (0, import_react11.useEffect)(() => {
     void load().catch((value2) => {
       if (currentScope.current === scope) setError(messageOf2(value2));
     });
   }, [load, scope]);
-  (0, import_react9.useEffect)(() => {
+  (0, import_react11.useEffect)(() => {
     const sequence = ++previewSequence.current;
     let active = true;
     setPreview([]);
@@ -22085,7 +22426,7 @@ function GridSplitPanel({ request, access }) {
 }
 
 // plugins/podplo-dsh/src/ContourMeasurePanel.tsx
-var import_react10 = require("react");
+var import_react12 = require("react");
 var import_jsx_runtime11 = require("react/jsx-runtime");
 var validTypes2 = /* @__PURE__ */ new Set(["image/png", "image/jpeg", "image/webp"]);
 var MAX_SOURCES2 = 100;
@@ -22100,22 +22441,22 @@ function base643(bytes) {
   return btoa(binary);
 }
 function ContourMeasurePanel({ request, access }) {
-  const id = (0, import_react10.useId)();
-  const scope = (0, import_react10.useMemo)(() => ({}), [request, access.status, access.expiresAt]);
-  const currentScope = (0, import_react10.useRef)(scope);
+  const id = (0, import_react12.useId)();
+  const scope = (0, import_react12.useMemo)(() => ({}), [request, access.status, access.expiresAt]);
+  const currentScope = (0, import_react12.useRef)(scope);
   currentScope.current = scope;
-  const sequence = (0, import_react10.useRef)(0), imports = (0, import_react10.useRef)(0), exports = (0, import_react10.useRef)(0);
-  const exportIntent = (0, import_react10.useRef)(void 0);
-  const [exporting, setExporting] = (0, import_react10.useState)();
-  const [sourceState, setSourceState] = (0, import_react10.useState)();
-  const [selection, setSelection] = (0, import_react10.useState)();
-  const [dimensions, setDimensions] = (0, import_react10.useState)({});
-  const [tolerance, setTolerance] = (0, import_react10.useState)("18"), [alpha, setAlpha] = (0, import_react10.useState)("16");
-  const [result, setResult] = (0, import_react10.useState)();
-  const [pending, setPending] = (0, import_react10.useState)();
-  const [importing, setImporting] = (0, import_react10.useState)();
-  const [error51, setError] = (0, import_react10.useState)();
-  const [notice, setNotice] = (0, import_react10.useState)();
+  const sequence = (0, import_react12.useRef)(0), imports = (0, import_react12.useRef)(0), exports = (0, import_react12.useRef)(0);
+  const exportIntent = (0, import_react12.useRef)(void 0);
+  const [exporting, setExporting] = (0, import_react12.useState)();
+  const [sourceState, setSourceState] = (0, import_react12.useState)();
+  const [selection, setSelection] = (0, import_react12.useState)();
+  const [dimensions, setDimensions] = (0, import_react12.useState)({});
+  const [tolerance, setTolerance] = (0, import_react12.useState)("18"), [alpha, setAlpha] = (0, import_react12.useState)("16");
+  const [result, setResult] = (0, import_react12.useState)();
+  const [pending, setPending] = (0, import_react12.useState)();
+  const [importing, setImporting] = (0, import_react12.useState)();
+  const [error51, setError] = (0, import_react12.useState)();
+  const [notice, setNotice] = (0, import_react12.useState)();
   const active = access.status === "active";
   const sources = sourceState?.scope === scope ? sourceState.items : [];
   const source = selection?.scope === scope ? sources.find((row) => row.id === selection.id) : void 0;
@@ -22139,7 +22480,7 @@ function ContourMeasurePanel({ request, access }) {
     actualHeightCm: measuredHeight,
     ...numericThresholds
   } : void 0;
-  (0, import_react10.useEffect)(() => {
+  (0, import_react12.useEffect)(() => {
     const token = ++sequence.current;
     let live = true;
     setResult(void 0);
@@ -22165,7 +22506,7 @@ function ContourMeasurePanel({ request, access }) {
       clearTimeout(timer);
     };
   }, [request, scope, key, active, uploading, parameterError]);
-  (0, import_react10.useEffect)(() => {
+  (0, import_react12.useEffect)(() => {
     setDimensions({});
     setNotice(void 0);
     setSourceState({ scope, items: [] });
@@ -22382,11 +22723,11 @@ function ContourMeasurePanel({ request, access }) {
 // plugins/podplo-dsh/src/ToolboxPanel.tsx
 var import_jsx_runtime12 = require("react/jsx-runtime");
 function ToolboxPanel({ request, onUse, toolGroups }) {
-  const [active, setActive] = (0, import_react11.useState)("processing");
-  const [splitterOpened, setSplitterOpened] = (0, import_react11.useState)(false);
-  const [processingTool, setProcessingTool] = (0, import_react11.useState)("pipeline");
-  const [contourOpened, setContourOpened] = (0, import_react11.useState)(false);
-  const id = (0, import_react11.useId)();
+  const [active, setActive] = (0, import_react13.useState)("processing");
+  const [splitterOpened, setSplitterOpened] = (0, import_react13.useState)(false);
+  const [processingTool, setProcessingTool] = (0, import_react13.useState)("pipeline");
+  const [contourOpened, setContourOpened] = (0, import_react13.useState)(false);
+  const id = (0, import_react13.useId)();
   return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { className: "ppd-toolbox-hub", "data-toolbox-hub": true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { className: "ppd-toolbox-hub__tabs", role: "tablist", "aria-label": "\u5DE5\u5177\u7BB1\u5DE5\u5177", children: [
       /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
@@ -22457,7 +22798,7 @@ function ToolboxPanel({ request, onUse, toolGroups }) {
 }
 
 // plugins/podplo-dsh/src/task-ledger.tsx
-var import_react12 = require("react");
+var import_react14 = require("react");
 var import_jsx_runtime13 = require("react/jsx-runtime");
 var running2 = /* @__PURE__ */ new Set(["submitting", "submitted", "submission_unknown", "partial_unknown"]);
 var labels3 = {
@@ -22467,11 +22808,11 @@ var labels3 = {
   partial_unknown: "\u90E8\u5206\u7ED3\u679C\u5F85\u6838\u5BF9"
 };
 function RunningTaskLedger({ request }) {
-  const [rows, setRows] = (0, import_react12.useState)([]);
-  const [busy, setBusy] = (0, import_react12.useState)("");
-  const [error51, setError] = (0, import_react12.useState)("");
-  const [revision, setRevision] = (0, import_react12.useState)(0);
-  (0, import_react12.useEffect)(() => {
+  const [rows, setRows] = (0, import_react14.useState)([]);
+  const [busy, setBusy] = (0, import_react14.useState)("");
+  const [error51, setError] = (0, import_react14.useState)("");
+  const [revision, setRevision] = (0, import_react14.useState)(0);
+  (0, import_react14.useEffect)(() => {
     const load = async () => {
       try {
         const { data } = await request("generation.list", { scope: "manual" });
@@ -22550,322 +22891,9 @@ function RunningTaskLedger({ request }) {
   ] });
 }
 
-// plugins/podplo-dsh/src/image-to-text-panel.tsx
-var import_react13 = require("react");
-var import_jsx_runtime14 = require("react/jsx-runtime");
-var MODEL = "claude-haiku-5-5";
-var MAX_IMAGES = 4;
-var MAX_PROMPT = 8e3;
-var IMAGE_TYPES = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
-function uuid5() {
-  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
-  const bytes = crypto.getRandomValues(new Uint8Array(16));
-  bytes[6] = bytes[6] & 15 | 64;
-  bytes[8] = bytes[8] & 63 | 128;
-  const hex3 = [...bytes].map((value2) => value2.toString(16).padStart(2, "0")).join("");
-  return `${hex3.slice(0, 8)}-${hex3.slice(8, 12)}-${hex3.slice(12, 16)}-${hex3.slice(16, 20)}-${hex3.slice(20)}`;
-}
-function errorCode2(error51) {
-  return error51 && typeof error51 === "object" && "code" in error51 ? String(error51.code ?? "") : "";
-}
-function imageToTextError(error51) {
-  if (errorCode2(error51) === "IMAGE_TO_TEXT_PRICING_UNAVAILABLE") return "\u56FE\u8F6C\u6587\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4";
-  return error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-}
-function quoteExpiry(value2) {
-  const parsed = value2 ? Date.parse(value2) : Number.NaN;
-  return Number.isFinite(parsed) ? parsed : 0;
-}
-function ImageToTextPanel({ request }) {
-  const [rows, setRows] = (0, import_react13.useState)([]);
-  const [prompt, setPrompt] = (0, import_react13.useState)("");
-  const [quote, setQuote] = (0, import_react13.useState)();
-  const [busy, setBusy] = (0, import_react13.useState)("");
-  const [error51, setError] = (0, import_react13.useState)("");
-  const [notice, setNotice] = (0, import_react13.useState)("");
-  const [now, setNow] = (0, import_react13.useState)(Date.now());
-  const [clientRequestId, setClientRequestId] = (0, import_react13.useState)();
-  const [submitUncertain, setSubmitUncertain] = (0, import_react13.useState)(false);
-  const inputRef = (0, import_react13.useRef)(null);
-  const alive = (0, import_react13.useRef)(true);
-  const uploadInFlight = (0, import_react13.useRef)(false);
-  const quoteInFlight = (0, import_react13.useRef)(false);
-  const submitInFlight = (0, import_react13.useRef)(false);
-  const formRevision = (0, import_react13.useRef)(0);
-  const previewUrls = (0, import_react13.useRef)(/* @__PURE__ */ new Map());
-  (0, import_react13.useEffect)(() => () => {
-    alive.current = false;
-    for (const url2 of previewUrls.current.values()) URL.revokeObjectURL(url2);
-    previewUrls.current.clear();
-  }, []);
-  (0, import_react13.useEffect)(() => {
-    if (!quote) return;
-    const timer = setInterval(() => setNow(Date.now()), 1e3);
-    return () => clearInterval(timer);
-  }, [quote]);
-  const invalidateQuote = () => {
-    formRevision.current += 1;
-    setQuote(void 0);
-    setClientRequestId(void 0);
-    setSubmitUncertain(false);
-  };
-  const clearForm = () => {
-    for (const url2 of previewUrls.current.values()) URL.revokeObjectURL(url2);
-    previewUrls.current.clear();
-    formRevision.current += 1;
-    setRows([]);
-    setPrompt("");
-    setQuote(void 0);
-    setClientRequestId(void 0);
-    setSubmitUncertain(false);
-    if (inputRef.current) inputRef.current.value = "";
-  };
-  const upload = async (files) => {
-    if (busy || uploadInFlight.current || !files.length) return;
-    const remaining = Math.max(0, MAX_IMAGES - rows.length);
-    const supported = files.filter((file2) => IMAGE_TYPES.has(file2.type)).slice(0, remaining);
-    const rejected = files.length - supported.length;
-    if (!supported.length) {
-      setError(remaining ? "\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP \u56FE\u7247\u3002" : `\u6700\u591A\u4E0A\u4F20 ${MAX_IMAGES} \u5F20\u56FE\u7247\u3002`);
-      if (inputRef.current) inputRef.current.value = "";
-      return;
-    }
-    uploadInFlight.current = true;
-    invalidateQuote();
-    setError("");
-    setNotice(rejected ? `\u5DF2\u5FFD\u7565 ${rejected} \u4E2A\u4E0D\u652F\u6301\u6216\u8D85\u51FA\u6570\u91CF\u7684\u6587\u4EF6\u3002` : "");
-    const additions = supported.map((file2) => {
-      const id = uuid5();
-      const previewUrl = URL.createObjectURL(file2);
-      previewUrls.current.set(id, previewUrl);
-      return { id, file: file2, filename: file2.name, previewUrl, status: "uploading" };
-    });
-    setRows((current) => [...current, ...additions]);
-    try {
-      await Promise.all(additions.map(async (row) => {
-        try {
-          const { data } = await request("assets.upload", { file: row.file });
-          if (!alive.current) return;
-          if (!data?.id || data.status !== "ready") throw new Error("\u56FE\u7247\u5C1A\u672A\u4E0A\u4F20\u5B8C\u6210\uFF0C\u8BF7\u79FB\u9664\u540E\u91CD\u8BD5\u3002");
-          setRows((current) => current.map((item) => item.id === row.id ? { ...item, status: "ready", assetId: data.id, error: void 0 } : item));
-        } catch (cause) {
-          if (!alive.current) return;
-          setRows((current) => current.map((item) => item.id === row.id ? { ...item, status: "failed", error: imageToTextError(cause) } : item));
-        }
-      }));
-    } finally {
-      uploadInFlight.current = false;
-      if (inputRef.current) inputRef.current.value = "";
-    }
-  };
-  const remove = (id) => {
-    if (busy) return;
-    const url2 = previewUrls.current.get(id);
-    if (url2) URL.revokeObjectURL(url2);
-    previewUrls.current.delete(id);
-    invalidateQuote();
-    setError("");
-    setNotice("");
-    setRows((current) => current.filter((row) => row.id !== id));
-  };
-  const validationError = () => {
-    if (!rows.length) return "\u8BF7\u5148\u4E0A\u4F20 1 \u81F3 4 \u5F20\u56FE\u7247\u3002";
-    if (rows.some((row) => row.status === "uploading")) return "\u56FE\u7247\u6B63\u5728\u4E0A\u4F20\uFF0C\u8BF7\u7A0D\u5019\u3002";
-    if (rows.some((row) => row.status === "failed" || !row.assetId)) return "\u6709\u56FE\u7247\u4E0A\u4F20\u5931\u8D25\uFF0C\u8BF7\u79FB\u9664\u5931\u8D25\u9879\u540E\u91CD\u8BD5\u3002";
-    if (!prompt.trim()) return "\u8BF7\u8F93\u5165\u8BC6\u522B\u8981\u6C42\u3002";
-    if (prompt.length > MAX_PROMPT) return `\u8BC6\u522B\u8981\u6C42\u4E0D\u80FD\u8D85\u8FC7 ${MAX_PROMPT} \u4E2A\u5B57\u7B26\u3002`;
-    return "";
-  };
-  const requestQuote = async () => {
-    if (busy || quoteInFlight.current) return;
-    const invalid = validationError();
-    if (invalid) {
-      setError(invalid);
-      return;
-    }
-    const revision = formRevision.current;
-    quoteInFlight.current = true;
-    setBusy("quote");
-    setError("");
-    setNotice("");
-    setSubmitUncertain(false);
-    try {
-      const { data } = await request("imageToText.quote", {
-        model: MODEL,
-        referenceAssetIds: rows.map((row) => row.assetId),
-        prompt
-      });
-      if (!alive.current || revision !== formRevision.current) return;
-      const next = data;
-      if (!next?.quoteId || next.model !== MODEL || !Number.isFinite(next.totalCredits) || next.totalCredits <= 0 || !quoteExpiry(next.expiresAt)) throw new Error("\u62A5\u4EF7\u8FD4\u56DE\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002");
-      setQuote(next);
-      setClientRequestId(uuid5());
-      setNow(Date.now());
-    } catch (cause) {
-      if (alive.current && revision === formRevision.current) setError(imageToTextError(cause));
-    } finally {
-      quoteInFlight.current = false;
-      if (alive.current) setBusy("");
-    }
-  };
-  const submit = async () => {
-    if (busy || submitInFlight.current || submitUncertain || !quote) return;
-    if (quoteExpiry(quote.expiresAt) <= Date.now()) {
-      setError("\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002");
-      setQuote(void 0);
-      setClientRequestId(void 0);
-      return;
-    }
-    const invalid = validationError();
-    if (invalid) {
-      setError(invalid);
-      return;
-    }
-    const requestId = clientRequestId ?? uuid5();
-    if (!clientRequestId) setClientRequestId(requestId);
-    submitInFlight.current = true;
-    setBusy("submit");
-    setError("");
-    setNotice("");
-    try {
-      await request("imageToText.submit", { quoteId: quote.quoteId, clientRequestId: requestId, approvedCredits: quote.totalCredits });
-      if (!alive.current) return;
-      clearForm();
-      try {
-        await request("panel.navigate", { section: "results" });
-      } catch {
-        if (alive.current) setNotice("\u4EFB\u52A1\u5DF2\u63D0\u4EA4\uFF0C\u8BF7\u6253\u5F00\u5904\u7406\u8BB0\u5F55\u67E5\u770B\u8FDB\u5EA6\u3002");
-      }
-    } catch (cause) {
-      if (!alive.current) return;
-      setSubmitUncertain(true);
-      setError(`${imageToTextError(cause)}\u3002\u4E3A\u907F\u514D\u91CD\u590D\u6263\u8D39\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\uFF1B\u8BF7\u5230\u5904\u7406\u8BB0\u5F55\u6838\u5BF9\u539F\u63D0\u4EA4\u3002`);
-    } finally {
-      submitInFlight.current = false;
-      if (alive.current) setBusy("");
-    }
-  };
-  const expired = !!quote && quoteExpiry(quote.expiresAt) <= now;
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "ppd-image-to-text", "data-image-to-text-panel": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("header", { className: "ppd-section-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-eyebrow", children: "Evo \xB7 Image to Text" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { children: "\u56FE\u8F6C\u6587" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "\u4E0A\u4F20 1 \u81F3 4 \u5F20\u56FE\u7247\uFF0C\u5199\u4E0B\u8BC6\u522B\u8981\u6C42\uFF0C\u6838\u4EF7\u540E\u518D\u786E\u8BA4\u63D0\u4EA4\u3002" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
-        "\u6A21\u578B\uFF1A",
-        MODEL
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-image-to-text-layout", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "ppd-image-to-text-card", "aria-labelledby": "image-to-text-images", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-form-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { id: "image-to-text-images", children: "\u56FE\u7247" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "\u652F\u6301 JPEG\u3001PNG\u3001WebP\uFF0C\u6309\u9009\u62E9\u987A\u5E8F\u63D0\u4EA4\u3002" })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
-            rows.length,
-            " / ",
-            MAX_IMAGES
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-image-to-text-images", children: [
-          rows.map((row, index) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("article", { "data-image-to-text-upload": row.id, "data-upload-status": row.status, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("img", { src: row.previewUrl, alt: row.filename }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-image-to-text-index", children: index + 1 }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", "aria-label": `\u79FB\u9664 ${row.filename}`, disabled: !!busy, onClick: () => remove(row.id), children: "\xD7" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { title: row.filename, children: row.filename }),
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("small", { children: row.status === "uploading" ? "\u6B63\u5728\u4E0A\u4F20\u2026" : row.status === "ready" ? "\u5DF2\u5C31\u7EEA" : row.error || "\u4E0A\u4F20\u5931\u8D25" })
-            ] })
-          ] }, row.id)),
-          rows.length < MAX_IMAGES && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { className: "ppd-image-to-text-add", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: "\uFF0B" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "\u6DFB\u52A0\u56FE\u7247" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("small", { children: [
-              "\u8FD8\u53EF\u6DFB\u52A0 ",
-              MAX_IMAGES - rows.length,
-              " \u5F20"
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { ref: inputRef, type: "file", accept: "image/jpeg,image/png,image/webp", multiple: true, disabled: !!busy || rows.some((row) => row.status === "uploading"), onChange: (event) => void upload(Array.from(event.currentTarget.files ?? [])) })
-          ] })
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "ppd-image-to-text-card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { className: "ppd-image-to-text-prompt", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: "\u8BC6\u522B\u8981\u6C42" }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-            "textarea",
-            {
-              "data-image-to-text-prompt": true,
-              value: prompt,
-              maxLength: MAX_PROMPT,
-              disabled: busy === "submit" || submitUncertain,
-              placeholder: "\u4F8B\u5982\uFF1A\u5B8C\u6574\u63D0\u53D6\u56FE\u7247\u4E2D\u7684\u6587\u5B57\uFF0C\u5E76\u6309\u539F\u6709\u6BB5\u843D\u7ED3\u6784\u8F93\u51FA\u3002",
-              onChange: (event) => {
-                invalidateQuote();
-                setError("");
-                setNotice("");
-                setPrompt(event.currentTarget.value);
-              }
-            }
-          ),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("small", { children: [
-            prompt.length,
-            " / ",
-            MAX_PROMPT
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("dl", { className: "ppd-image-to-text-model", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("dt", { children: "\u6A21\u578B" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("dd", { children: MODEL })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("dt", { children: "\u7ED3\u679C\u683C\u5F0F" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("dd", { children: "TXT" })
-          ] })
-        ] }),
-        error51 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-        notice && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
-        quote && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: `ppd-image-to-text-quote${expired ? " is-expired" : ""}`, "data-image-to-text-quote": true, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: "\u672C\u6B21\u62A5\u4EF7" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("strong", { children: [
-              quote.totalCredits,
-              " \u79EF\u5206"
-            ] })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: expired ? "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002" : quote.confirmationText }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("small", { children: [
-            "\u6709\u6548\u671F\u81F3 ",
-            new Date(quote.expiresAt).toLocaleString()
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-actions ppd-image-to-text-actions", children: [
-          quote && !expired ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-            "button",
-            {
-              type: "button",
-              className: "ppd-button ppd-button-primary",
-              "data-image-to-text-submit": true,
-              disabled: !!busy || submitUncertain,
-              onClick: () => void submit(),
-              children: busy === "submit" ? "\u6B63\u5728\u63D0\u4EA4\u2026" : "\u786E\u8BA4\u5E76\u8BC6\u522B"
-            }
-          ) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-image-to-text-quote-button": true, disabled: !!busy, onClick: () => void requestQuote(), children: busy === "quote" ? "\u6B63\u5728\u6838\u4EF7\u2026" : quote ? "\u91CD\u65B0\u6838\u4EF7" : "\u6838\u5BF9\u79EF\u5206" }),
-          submitUncertain && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void request("panel.navigate", { section: "results" }), children: "\u524D\u5F80\u5904\u7406\u8BB0\u5F55\u6838\u5BF9" })
-        ] })
-      ] })
-    ] })
-  ] });
-}
-
 // plugins/podplo-dsh/src/image-to-text-ledger.tsx
-var import_react14 = require("react");
-var import_jsx_runtime15 = require("react/jsx-runtime");
+var import_react15 = require("react");
+var import_jsx_runtime14 = require("react/jsx-runtime");
 var statusLabels = {
   submitting: "\u6B63\u5728\u63D0\u4EA4",
   queued: "\u7B49\u5F85\u8BC6\u522B",
@@ -22889,11 +22917,11 @@ function fixedReason(task) {
   return "";
 }
 function ImageToTextLedger({ request }) {
-  const [rows, setRows] = (0, import_react14.useState)([]);
-  const [busy, setBusy] = (0, import_react14.useState)("");
-  const [error51, setError] = (0, import_react14.useState)("");
-  const [revision, setRevision] = (0, import_react14.useState)(0);
-  const load = (0, import_react14.useCallback)(async () => {
+  const [rows, setRows] = (0, import_react15.useState)([]);
+  const [busy, setBusy] = (0, import_react15.useState)("");
+  const [error51, setError] = (0, import_react15.useState)("");
+  const [revision, setRevision] = (0, import_react15.useState)(0);
+  const load = (0, import_react15.useCallback)(async () => {
     try {
       const { data } = await request("imageToText.list", {});
       const items = Array.isArray(data?.items) ? data.items : [];
@@ -22906,7 +22934,7 @@ function ImageToTextLedger({ request }) {
       return null;
     }
   }, [request]);
-  (0, import_react14.useEffect)(() => {
+  (0, import_react15.useEffect)(() => {
     const polling = startVisiblePolling(load);
     return () => polling.stop();
   }, [load, revision]);
@@ -22925,22 +22953,22 @@ function ImageToTextLedger({ request }) {
     }
   };
   if (!rows.length && !error51) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "ppd-running-tasks ppd-image-to-text-ledger", "data-image-to-text-ledger": true, "aria-label": "\u56FE\u8F6C\u6587\u4EFB\u52A1", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-running-label", children: "\u56FE\u8F6C\u6587\u4EFB\u52A1" }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-history-list", children: rows.map((row) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "ppd-running-tasks ppd-image-to-text-ledger", "data-image-to-text-ledger": true, "aria-label": "\u56FE\u8F6C\u6587\u4EFB\u52A1", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-running-label", children: "\u56FE\u8F6C\u6587\u4EFB\u52A1" }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-history-list", children: rows.map((row) => {
       const active = pollable(row);
       const archiveFailed = row.status === "completed" && row.archiveStatus === "failed";
       const needsCheck = !!row.errorCode || row.status === "failed" || row.status === "submission_unknown";
       const label = archiveFailed ? "\u7ED3\u679C\u4FDD\u5B58\u5931\u8D25" : row.status === "completed" && row.archiveStatus === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u7ED3\u679C" : statusLabels[row.status];
       const reason = fixedReason(row);
-      return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-history-record", "data-image-to-text-task": row.id, "data-image-to-text-status": row.status, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-history-record-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("strong", { role: "status", children: [
-            active && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
+      return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("article", { className: "ppd-history-record", "data-image-to-text-task": row.id, "data-image-to-text-status": row.status, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-history-record-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("strong", { role: "status", children: [
+            active && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-spinner" }),
             label
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
             row.model,
             " \xB7 ",
             row.inputCount,
@@ -22949,9 +22977,9 @@ function ImageToTextLedger({ request }) {
             " \u79EF\u5206"
           ] })
         ] }),
-        reason && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-image-to-text-reason", children: reason }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
-        (archiveFailed || needsCheck) && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+        reason && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-image-to-text-reason", children: reason }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
+        (archiveFailed || needsCheck) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
           "button",
           {
             type: "button",
@@ -22967,18 +22995,9 @@ function ImageToTextLedger({ request }) {
 }
 
 // plugins/podplo-dsh/src/my-dna-panel.tsx
-var import_react15 = require("react");
-var import_jsx_runtime16 = require("react/jsx-runtime");
-var IMAGE_TYPES2 = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
+var import_react16 = require("react");
+var import_jsx_runtime15 = require("react/jsx-runtime");
 var PAGE_SIZE = 24;
-function uuid8() {
-  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
-  const bytes = crypto.getRandomValues(new Uint8Array(16));
-  bytes[6] = bytes[6] & 15 | 64;
-  bytes[8] = bytes[8] & 63 | 128;
-  const hex3 = [...bytes].map((value2) => value2.toString(16).padStart(2, "0")).join("");
-  return `${hex3.slice(0, 8)}-${hex3.slice(8, 12)}-${hex3.slice(12, 16)}-${hex3.slice(16, 20)}-${hex3.slice(20)}`;
-}
 function codeOf(error51) {
   return error51 && typeof error51 === "object" && "code" in error51 ? String(error51.code ?? "") : "";
 }
@@ -22990,12 +23009,6 @@ function displayError(error51) {
 }
 function validDate(value2) {
   return typeof value2 === "string" && Number.isFinite(Date.parse(value2));
-}
-function safeSkill(value2) {
-  if (!value2 || typeof value2 !== "object") return;
-  const row = value2;
-  if (typeof row.id !== "string" || !row.id || typeof row.name !== "string" || !row.name.trim() || !validDate(row.updatedAt)) return;
-  return { id: row.id, name: row.name.trim(), ...typeof row.description === "string" && row.description.trim() ? { description: row.description.trim() } : {}, updatedAt: row.updatedAt };
 }
 function safeDna(value2) {
   if (!value2 || typeof value2 !== "object") return;
@@ -23022,10 +23035,6 @@ function safeTask(value2) {
     ...typeof row.failureCode === "string" ? { failureCode: row.failureCode } : {}
   };
 }
-function expiry(value2) {
-  const parsed = value2 ? Date.parse(value2) : Number.NaN;
-  return Number.isFinite(parsed) ? parsed : 0;
-}
 function DnaCover({ assetId, request, retryable = true }) {
   const preview = useDeferredPreview({
     requestIdentity: request,
@@ -23040,7 +23049,7 @@ function DnaCover({ assetId, request, retryable = true }) {
       throw new Error(data?.status === "processing" ? "ASSET_PROCESSING" : "PREVIEW_UNAVAILABLE");
     }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { ref: preview.ref, className: "ppd-dna-cover", children: preview.value ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("img", { src: preview.value, alt: "\u53CD\u63A8\u56FE\u7247\u5C01\u9762", referrerPolicy: "no-referrer", decoding: "async", onError: () => preview.markError() }) : preview.status === "error" ? retryable ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-link-button", onClick: preview.retry, children: "\u91CD\u8BD5\u9884\u89C8" }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u9884\u89C8\u6682\u4E0D\u53EF\u7528" }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u5C01\u9762", children: "\u25A6" }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { ref: preview.ref, className: "ppd-dna-cover", children: preview.value ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("img", { src: preview.value, alt: "\u53CD\u63A8\u56FE\u7247\u5C01\u9762", referrerPolicy: "no-referrer", decoding: "async", onError: () => preview.markError() }) : preview.status === "error" ? retryable ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-link-button", onClick: preview.retry, children: "\u91CD\u8BD5\u9884\u89C8" }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "\u9884\u89C8\u6682\u4E0D\u53EF\u7528" }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u5C01\u9762", children: "\u25A6" }) });
 }
 var activeTask = (task) => ["submitting", "queued", "running"].includes(task.status);
 var pollableTask = (task) => activeTask(task) && !task.errorCode;
@@ -23051,17 +23060,23 @@ function taskReason(task) {
   if (task.status === "failed") return "\u672C\u6B21 DNA \u63D0\u53D6\u672A\u5B8C\u6210\uFF0C\u53EF\u6838\u5BF9\u539F\u4EFB\u52A1\u3002";
   return "";
 }
-function DnaTaskLedger({ request }) {
-  const [rows, setRows] = (0, import_react15.useState)([]);
-  const [busy, setBusy] = (0, import_react15.useState)("");
-  const [error51, setError] = (0, import_react15.useState)("");
-  const [revision, setRevision] = (0, import_react15.useState)(0);
-  const load = (0, import_react15.useCallback)(async () => {
+function DnaTaskLedger({ request, onCompleted }) {
+  const [rows, setRows] = (0, import_react16.useState)([]);
+  const [busy, setBusy] = (0, import_react16.useState)("");
+  const [error51, setError] = (0, import_react16.useState)("");
+  const [revision, setRevision] = (0, import_react16.useState)(0);
+  const completed = (0, import_react16.useRef)(void 0);
+  const refreshList = (0, import_react16.useRef)(onCompleted);
+  refreshList.current = onCompleted;
+  const load = (0, import_react16.useCallback)(async () => {
     try {
       const { data } = await request("dna.tasks.list", {});
       const values = Array.isArray(data?.items) ? data.items : [];
-      const next = values.map(safeTask).filter((row) => !!row).sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 20);
-      setRows(next);
+      const next = values.map(safeTask).filter((row) => !!row).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+      const finished = new Set(next.filter((row) => row.status === "completed").map((row) => row.id));
+      if (completed.current && [...finished].some((id) => !completed.current.has(id))) refreshList.current();
+      completed.current = finished;
+      setRows(next.filter((task) => task.status !== "completed").slice(0, 20));
       setError("");
       return next.some(pollableTask) ? ACTIVE_POLL_MS : null;
     } catch {
@@ -23069,7 +23084,7 @@ function DnaTaskLedger({ request }) {
       return null;
     }
   }, [request]);
-  (0, import_react15.useEffect)(() => {
+  (0, import_react16.useEffect)(() => {
     const polling = startVisiblePolling(load);
     return () => polling.stop();
   }, [load, revision]);
@@ -23086,19 +23101,20 @@ function DnaTaskLedger({ request }) {
       setBusy("");
     }
   };
-  if (!rows.length && !error51) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-running-tasks ppd-dna-ledger", "data-dna-task-ledger": true, "aria-label": "DNA \u63D0\u53D6\u4EFB\u52A1", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-running-label", children: "DNA \u63D0\u53D6\u4EFB\u52A1" }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-history-list", children: rows.map((task) => {
+  const outstanding = rows;
+  if (!outstanding.length && !error51) return null;
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "ppd-running-tasks ppd-dna-ledger", "data-dna-task-ledger": true, "aria-label": "DNA \u63D0\u53D6\u4EFB\u52A1", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-running-label", children: "DNA \u63D0\u53D6\u4EFB\u52A1" }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-history-list", children: outstanding.map((task) => {
       const reason = taskReason(task), needsCheck = !!task.errorCode || task.status === "failed" || task.status === "submission_unknown";
-      return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("article", { className: "ppd-history-record", "data-dna-ledger-task": task.id, "data-dna-ledger-status": task.status, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-history-record-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("strong", { role: "status", children: [
-            pollableTask(task) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "ppd-spinner" }),
+      return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-history-record", "data-dna-ledger-task": task.id, "data-dna-ledger-status": task.status, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-history-record-heading", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("strong", { role: "status", children: [
+            pollableTask(task) && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
             task.name || "DNA \u63D0\u53D6\u4EFB\u52A1"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { children: [
             taskLabel(task),
             " \xB7 ",
             task.model,
@@ -23107,61 +23123,34 @@ function DnaTaskLedger({ request }) {
             " \u79EF\u5206"
           ] })
         ] }),
-        reason && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-dna-task-reason", children: reason }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("time", { dateTime: task.createdAt, children: new Date(task.createdAt).toLocaleString() }),
-        needsCheck && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void reconcile(task), children: busy === task.id ? "\u6B63\u5728\u6838\u5BF9\u2026" : task.status === "submission_unknown" ? "\u6838\u5BF9\u539F\u63D0\u4EA4" : "\u6838\u5BF9\u72B6\u6001" }) })
+        reason && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-dna-task-reason", children: reason }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("time", { dateTime: task.createdAt, children: new Date(task.createdAt).toLocaleString() }),
+        needsCheck && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void reconcile(task), children: busy === task.id ? "\u6B63\u5728\u6838\u5BF9\u2026" : task.status === "submission_unknown" ? "\u6838\u5BF9\u539F\u63D0\u4EA4" : "\u6838\u5BF9\u72B6\u6001" }) })
       ] }, task.id);
     }) })
   ] });
 }
 function MyDnaPanel({ request, onUseDna }) {
-  const [items, setItems] = (0, import_react15.useState)([]);
-  const [nextCursor, setNextCursor] = (0, import_react15.useState)(null);
-  const [skills, setSkills] = (0, import_react15.useState)([]);
-  const [tasks, setTasks] = (0, import_react15.useState)([]);
-  const [loading, setLoading] = (0, import_react15.useState)(true);
-  const [busy, setBusy] = (0, import_react15.useState)("");
-  const [error51, setError] = (0, import_react15.useState)("");
-  const [notice, setNotice] = (0, import_react15.useState)("");
-  const [creating, setCreating] = (0, import_react15.useState)(false);
-  const [name, setName] = (0, import_react15.useState)("");
-  const [skillId, setSkillId] = (0, import_react15.useState)("");
-  const [source, setSource] = (0, import_react15.useState)();
-  const [quote, setQuote] = (0, import_react15.useState)();
-  const [now, setNow] = (0, import_react15.useState)(Date.now());
-  const [clientRequestId, setClientRequestId] = (0, import_react15.useState)();
-  const [submitUncertain, setSubmitUncertain] = (0, import_react15.useState)(false);
-  const [renaming, setRenaming] = (0, import_react15.useState)();
-  const [deleting, setDeleting] = (0, import_react15.useState)();
-  const [detailId, setDetailId] = (0, import_react15.useState)("");
+  const [items, setItems] = (0, import_react16.useState)([]);
+  const [nextCursor, setNextCursor] = (0, import_react16.useState)(null);
+  const [loading, setLoading] = (0, import_react16.useState)(true);
+  const [busy, setBusy] = (0, import_react16.useState)("");
+  const [error51, setError] = (0, import_react16.useState)("");
+  const [notice, setNotice] = (0, import_react16.useState)("");
+  const [renaming, setRenaming] = (0, import_react16.useState)();
+  const [deleting, setDeleting] = (0, import_react16.useState)();
+  const [detailId, setDetailId] = (0, import_react16.useState)("");
   const detail = items.find((row) => row.id === detailId);
-  const alive = (0, import_react15.useRef)(true);
-  const sequence = (0, import_react15.useRef)(0);
-  const formRevision = (0, import_react15.useRef)(0);
-  const actionInFlight = (0, import_react15.useRef)(false);
-  const inputRef = (0, import_react15.useRef)(null);
-  const sourceUrl = (0, import_react15.useRef)(void 0);
-  (0, import_react15.useEffect)(() => {
+  const alive = (0, import_react16.useRef)(true);
+  const sequence = (0, import_react16.useRef)(0);
+  const actionInFlight = (0, import_react16.useRef)(false);
+  (0, import_react16.useEffect)(() => {
     alive.current = true;
     return () => {
       alive.current = false;
-      if (sourceUrl.current) URL.revokeObjectURL(sourceUrl.current);
     };
   }, []);
-  (0, import_react15.useEffect)(() => {
-    if (!quote) return;
-    const timer = setInterval(() => setNow(Date.now()), 1e3);
-    return () => clearInterval(timer);
-  }, [quote]);
-  const loadTasks = (0, import_react15.useCallback)(async () => {
-    const { data } = await request("dna.tasks.list", {});
-    if (!alive.current) return [];
-    const rawItems = Array.isArray(data?.items) ? data.items : [];
-    const next = rawItems.map(safeTask).filter((row) => !!row);
-    setTasks(next);
-    return next;
-  }, [request]);
-  const load = (0, import_react15.useCallback)(async (append = false) => {
+  const load = (0, import_react16.useCallback)(async (append = false) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -23172,195 +23161,18 @@ function MyDnaPanel({ request, onUseDna }) {
       const next = rawDnas.map(safeDna).filter((row) => !!row);
       setItems((current) => append ? [...new Map([...current, ...next].map((row) => [row.id, row])).values()] : next);
       setNextCursor(typeof dnaResult.data?.nextCursor === "string" && dnaResult.data.nextCursor ? dnaResult.data.nextCursor : null);
-      await loadTasks();
     } catch (cause) {
       if (alive.current && token === sequence.current) setError(displayError(cause));
     } finally {
       if (alive.current && token === sequence.current) setLoading(false);
     }
-  }, [loadTasks, nextCursor, request]);
-  (0, import_react15.useEffect)(() => {
+  }, [nextCursor, request]);
+  (0, import_react16.useEffect)(() => {
     void load(false);
     return () => {
       sequence.current++;
     };
   }, []);
-  (0, import_react15.useEffect)(() => {
-    if (!tasks.some(pollableTask)) return;
-    const timer = setInterval(() => {
-      void loadTasks().then((next) => {
-        if (!next.some(pollableTask)) void load(false);
-      }).catch(() => void 0);
-    }, 3e3);
-    return () => clearInterval(timer);
-  }, [load, loadTasks, tasks]);
-  const invalidateQuote = () => {
-    formRevision.current += 1;
-    setQuote(void 0);
-    setClientRequestId(void 0);
-    setSubmitUncertain(false);
-  };
-  const resetCreate = () => {
-    if (sourceUrl.current) URL.revokeObjectURL(sourceUrl.current);
-    sourceUrl.current = void 0;
-    formRevision.current += 1;
-    setName("");
-    setSkillId("");
-    setSource(void 0);
-    setQuote(void 0);
-    setClientRequestId(void 0);
-    setSubmitUncertain(false);
-    if (inputRef.current) inputRef.current.value = "";
-  };
-  const startCreate = async () => {
-    if (busy || actionInFlight.current) return;
-    resetCreate();
-    setCreating(true);
-    setSkills([]);
-    setError("");
-    setNotice("");
-    setBusy("skills");
-    try {
-      const { data } = await request("dna.skills.list", {});
-      if (!alive.current) return;
-      const rawSkills = Array.isArray(data?.items) ? data.items : [];
-      const next = rawSkills.map(safeSkill).filter((row) => !!row);
-      setSkills(next);
-      if (next.length === 1) setSkillId(next[0].id);
-      if (!next.length) setError("\u6682\u65E0\u53EF\u7528\u7684\u53CD\u63A8 DNA Skill\u3002");
-    } catch (cause) {
-      if (alive.current) setError(displayError(cause));
-    } finally {
-      if (alive.current) setBusy("");
-    }
-  };
-  const upload = async (file2) => {
-    if (!file2 || busy || actionInFlight.current) return;
-    if (!IMAGE_TYPES2.has(file2.type)) {
-      setError("\u8BF7\u9009\u62E9 JPEG\u3001PNG \u6216 WebP \u56FE\u7247\u3002");
-      return;
-    }
-    invalidateQuote();
-    setError("");
-    setNotice("");
-    setName(file2.name.replace(/\.[^.]+$/, "").slice(0, 80) || "\u6211\u7684 DNA");
-    if (sourceUrl.current) URL.revokeObjectURL(sourceUrl.current);
-    const previewUrl = URL.createObjectURL(file2);
-    sourceUrl.current = previewUrl;
-    setSource({ filename: file2.name, previewUrl, status: "uploading" });
-    setBusy("upload");
-    try {
-      const revision = formRevision.current;
-      const { data } = await request("assets.upload", { file: file2 });
-      if (!alive.current || revision !== formRevision.current) return;
-      if (typeof data?.id !== "string" || !data.id || data.status !== "ready") throw new Error("\u56FE\u7247\u5C1A\u672A\u4E0A\u4F20\u5B8C\u6210\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
-      setSource({ filename: file2.name, previewUrl, status: "ready", assetId: data.id });
-    } catch (cause) {
-      if (alive.current) {
-        setSource((current) => current ? { ...current, status: "failed", assetId: void 0 } : current);
-        setError(displayError(cause));
-      }
-    } finally {
-      if (alive.current) setBusy("");
-      if (inputRef.current) inputRef.current.value = "";
-    }
-  };
-  const validateCreate = () => {
-    if (!name.trim()) return "\u8BF7\u586B\u5199 DNA \u540D\u79F0\u3002";
-    if (!skillId) return "\u8BF7\u9009\u62E9 DNA \u63D0\u53D6\u65B9\u5F0F\u3002";
-    if (!source) return "\u8BF7\u9009\u62E9\u4E00\u5F20\u539F\u56FE\u3002";
-    if (source.status === "uploading") return "\u539F\u56FE\u6B63\u5728\u4E0A\u4F20\uFF0C\u8BF7\u7A0D\u5019\u3002";
-    if (source.status !== "ready" || !source.assetId) return "\u539F\u56FE\u4E0A\u4F20\u5931\u8D25\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002";
-    return "";
-  };
-  const requestQuote = async () => {
-    if (busy || actionInFlight.current) return;
-    const invalid = validateCreate();
-    if (invalid) {
-      setError(invalid);
-      return;
-    }
-    const revision = formRevision.current;
-    actionInFlight.current = true;
-    setBusy("quote");
-    setError("");
-    setNotice("");
-    try {
-      const { data } = await request("dna.quote", { skillId, sourceAssetId: source.assetId, name: name.trim() });
-      if (!alive.current || revision !== formRevision.current) return;
-      if (typeof data?.quoteId !== "string" || !data.quoteId || typeof data.model !== "string" || !Number.isFinite(data.totalCredits) || Number(data.totalCredits) <= 0 || !validDate(data.expiresAt)) throw new Error("\u62A5\u4EF7\u8FD4\u56DE\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002");
-      setQuote({
-        quoteId: data.quoteId,
-        model: data.model,
-        totalCredits: data.totalCredits,
-        expiresAt: data.expiresAt,
-        maxOutputTokens: Number.isInteger(data.maxOutputTokens) ? data.maxOutputTokens : 0
-      });
-      setClientRequestId(uuid8());
-      setNow(Date.now());
-    } catch (cause) {
-      if (alive.current && revision === formRevision.current) setError(displayError(cause));
-    } finally {
-      actionInFlight.current = false;
-      if (alive.current) setBusy("");
-    }
-  };
-  const submit = async () => {
-    if (!quote || busy || actionInFlight.current || submitUncertain) return;
-    if (expiry(quote.expiresAt) <= Date.now()) {
-      setQuote(void 0);
-      setClientRequestId(void 0);
-      setError("\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002");
-      return;
-    }
-    const invalid = validateCreate();
-    if (invalid) {
-      setError(invalid);
-      return;
-    }
-    const id = clientRequestId ?? uuid8();
-    if (!clientRequestId) setClientRequestId(id);
-    actionInFlight.current = true;
-    setBusy("submit");
-    setError("");
-    setNotice("");
-    try {
-      const { data } = await request("dna.submit", { quoteId: quote.quoteId, clientRequestId: id, approvedCredits: quote.totalCredits });
-      if (!alive.current) return;
-      const task = safeTask(data);
-      if (!task) throw new Error("DNA \u4EFB\u52A1\u8FD4\u56DE\u65E0\u6548\uFF0C\u8BF7\u5230\u4EFB\u52A1\u72B6\u6001\u4E2D\u6838\u5BF9\u3002");
-      resetCreate();
-      setCreating(false);
-      setNotice(task.status === "completed" ? "\u5DF2\u5B58\u5165\u6211\u7684 DNA\u3002" : "\u5DF2\u63D0\u4EA4\uFF0C\u53EF\u5728\u5904\u7406\u8BB0\u5F55\u67E5\u770B\u8FDB\u5EA6\u3002");
-      await load(false);
-    } catch (cause) {
-      if (!alive.current) return;
-      setSubmitUncertain(true);
-      setError(`${displayError(cause)}\u3002\u4E3A\u907F\u514D\u91CD\u590D\u6263\u8D39\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\uFF1B\u8BF7\u6838\u5BF9\u539F\u63D0\u4EA4\u3002`);
-      await loadTasks().catch(() => void 0);
-    } finally {
-      actionInFlight.current = false;
-      if (alive.current) setBusy("");
-    }
-  };
-  const checkTask = async (task) => {
-    if (busy || actionInFlight.current) return;
-    actionInFlight.current = true;
-    setBusy(`task:${task.id}`);
-    setError("");
-    try {
-      const action = "status" in task && task.status !== "submission_unknown" ? "dna.refresh" : "dna.recover";
-      await request(action, { id: task.id });
-      if (!alive.current) return;
-      setSubmitUncertain(false);
-      await load(false);
-    } catch (cause) {
-      if (alive.current) setError(`${displayError(cause)}\u3002\u6CA1\u6709\u521B\u5EFA\u65B0\u7684\u63D0\u4EA4\u3002`);
-    } finally {
-      actionInFlight.current = false;
-      if (alive.current) setBusy("");
-    }
-  };
   const rename = async () => {
     if (!renaming || busy || actionInFlight.current) return;
     const value2 = renaming.value.trim();
@@ -23414,158 +23226,92 @@ function MyDnaPanel({ request, onUseDna }) {
       if (alive.current) setBusy("");
     }
   };
-  const expired = !!quote && expiry(quote.expiresAt) <= now;
-  if (creating) return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-my-dna", "data-my-dna-panel": true, "data-mode": "create", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("header", { className: "ppd-dna-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "\u53CD\u63A8 DNA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u4F7F\u7528\u53CD\u63A8 Skill \u5904\u7406\u56FE\u7247\uFF0C\u5B8C\u6210\u540E\u81EA\u52A8\u5B58\u5165\u300C\u6211\u7684 DNA\u300D\u3002" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => {
-        resetCreate();
-        setCreating(false);
-        setError("");
-      }, children: "\u53D6\u6D88" })
-    ] }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    notice && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-create-grid", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-dna-form-card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u53CD\u63A8 Skill" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("select", { "data-dna-skill": true, value: skillId, disabled: !!busy || submitUncertain, onChange: (event) => {
-            invalidateQuote();
-            setError("");
-            setSkillId(event.currentTarget.value);
-          }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("option", { value: "", children: "\u8BF7\u9009\u62E9" }),
-            skills.map((skill) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("option", { value: skill.id, children: skill.name }, skill.id))
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("label", { className: "ppd-dna-upload", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u539F\u56FE" }),
-          source ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-dna-source", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("img", { src: source.previewUrl, alt: source.filename }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: source.filename }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("small", { children: source.status === "uploading" ? "\u6B63\u5728\u4E0A\u4F20\u2026" : source.status === "ready" ? "\u5DF2\u5C31\u7EEA" : "\u4E0A\u4F20\u5931\u8D25\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9" })
-          ] }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "ppd-dna-upload-empty", children: "\u9009\u62E9\u4E00\u5F20 JPEG\u3001PNG \u6216 WebP \u56FE\u7247" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("input", { ref: inputRef, "data-dna-upload": true, type: "file", accept: "image/jpeg,image/png,image/webp", disabled: !!busy || submitUncertain, onChange: (event) => void upload(event.currentTarget.files?.[0]) })
-        ] })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-dna-form-card ppd-dna-confirm", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "\u786E\u8BA4\u53CD\u63A8" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u5B8C\u6210\u540E\u81EA\u52A8\u4FDD\u5B58\uFF0C\u65E0\u9700\u590D\u5236\u63D0\u793A\u8BCD\u3002" }),
-        quote && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: `ppd-dna-quote${expired ? " is-expired" : ""}`, "data-dna-quote": true, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u672C\u6B21\u62A5\u4EF7" }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("strong", { children: [
-              quote.totalCredits,
-              " \u79EF\u5206"
-            ] })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: expired ? "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002" : `\u786E\u8BA4\u540E\u5C06\u6263\u9664 ${quote.totalCredits} \u79EF\u5206\u5E76\u5F00\u59CB\u63D0\u53D6\u3002` }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("small", { children: [
-            "\u6709\u6548\u671F\u81F3 ",
-            new Date(quote.expiresAt).toLocaleString()
-          ] })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-actions", children: quote && !expired ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-submit": true, disabled: !!busy || submitUncertain, onClick: () => void submit(), children: busy === "submit" ? "\u6B63\u5728\u63D0\u4EA4\u2026" : "\u786E\u8BA4\u5E76\u63D0\u53D6 DNA" }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-quote-button": true, disabled: !!busy || submitUncertain, onClick: () => void requestQuote(), children: busy === "quote" ? "\u6B63\u5728\u6838\u4EF7\u2026" : quote ? "\u91CD\u65B0\u6838\u4EF7" : "\u6838\u5BF9\u79EF\u5206" }) }),
-        submitUncertain && clientRequestId && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-uncertain", role: "status", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "\u539F\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u4E0D\u4F1A\u81EA\u52A8\u521B\u5EFA\u65B0\u7684\u4ED8\u8D39\u8BF7\u6C42\u3002" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void checkTask({ id: clientRequestId }), children: "\u6838\u5BF9\u539F\u63D0\u4EA4" })
-        ] })
-      ] })
-    ] })
-  ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-my-dna", "data-my-dna-panel": true, "data-mode": detail ? "detail" : "list", children: [
-    detail ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("header", { className: "ppd-dna-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "DNA \u8BE6\u60C5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => setDetailId(""), children: "\u8FD4\u56DE\u6211\u7684 DNA" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("header", { className: "ppd-dna-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "\u6211\u7684 DNA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u53CD\u63A8\u7ED3\u679C\u4FDD\u5B58\u5728\u8FD9\u91CC\uFF0C\u9009\u4E00\u4E2A\u642D\u914D\u65B0\u56FE\u4F7F\u7528\u3002" })
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-create": true, onClick: () => void startCreate(), children: "\u53CD\u63A8 DNA" })
-    ] }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    notice && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
-    detail ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-detail", "data-dna-detail": detail.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(DnaCover, { assetId: detail.coverAssetId, request }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { "data-dna-description": true, children: detail.description || "\u6682\u65E0\u7B80\u4ECB" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-use": true, disabled: !!busy, onClick: () => void useDna(detail), children: "\u4F7F\u7528 DNA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => {
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "ppd-my-dna", "data-my-dna-panel": true, "data-mode": detail ? "detail" : "list", children: [
+    detail ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("header", { className: "ppd-dna-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { children: "DNA \u8BE6\u60C5" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", onClick: () => setDetailId(""), children: "\u8FD4\u56DE\u6211\u7684 DNA" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("header", { className: "ppd-dna-heading", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { children: "\u6211\u7684 DNA" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "\u53CD\u63A8\u7ED3\u679C\u4FDD\u5B58\u5728\u8FD9\u91CC\uFF0C\u9009\u4E00\u4E2A\u642D\u914D\u65B0\u56FE\u4F7F\u7528\u3002" })
+    ] }) }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    notice && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
+    detail ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-dna-detail", "data-dna-detail": detail.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(DnaCover, { assetId: detail.coverAssetId, request }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { "data-dna-description": true, children: detail.description || "\u6682\u65E0\u7B80\u4ECB" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-use": true, disabled: !!busy, onClick: () => void useDna(detail), children: "\u4F7F\u7528 DNA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", onClick: () => {
           setRenaming({ row: detail, value: detail.description });
           setError("");
         }, children: "\u7F16\u8F91\u7B80\u4ECB" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => {
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => {
           setDeleting(detail);
           setError("");
         }, children: "\u5220\u9664" })
       ] })
-    ] }) : loading && !items.length ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-state", role: "status", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "ppd-spinner" }),
+    ] }) : loading && !items.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-state", role: "status", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
       "\u6B63\u5728\u8BFB\u53D6\u2026"
-    ] }) : !items.length ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-state", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "\u8FD8\u6CA1\u6709 DNA" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u4E0A\u4F20\u4E00\u5F20\u539F\u56FE\u5E76\u660E\u786E\u786E\u8BA4\u63D0\u53D6\u540E\uFF0C\u4F1A\u4FDD\u5B58\u5728\u8FD9\u91CC\u3002" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dna-grid", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("article", { className: "ppd-dna-card", "data-dna-id": row.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("button", { type: "button", className: "ppd-dna-open", "data-dna-open": row.id, "aria-label": "\u67E5\u770B DNA \u8BE6\u60C5", onClick: () => setDetailId(row.id), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(DnaCover, { assetId: row.coverAssetId, request, retryable: false }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dna-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { "data-dna-description": true, children: row.description || "\u6682\u65E0\u7B80\u4ECB" }) })
+    ] }) : !items.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-state", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "\u8FD8\u6CA1\u6709 DNA" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "\u5728 Skill \u5E93\u9009\u62E9\u300C\u53CD\u63A8 DNA\u300D\uFF0C\u751F\u6210\u7684 DNA \u4F1A\u4FDD\u5B58\u5728\u8FD9\u91CC\u3002" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dna-grid", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-dna-card", "data-dna-id": row.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("button", { type: "button", className: "ppd-dna-open", "data-dna-open": row.id, "aria-label": "\u67E5\u770B DNA \u8BE6\u60C5", onClick: () => setDetailId(row.id), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(DnaCover, { assetId: row.coverAssetId, request, retryable: false }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dna-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { "data-dna-description": true, children: row.description || "\u6682\u65E0\u7B80\u4ECB" }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-card-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => void useDna(row), children: "\u4F7F\u7528" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => {
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-dna-card-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => void useDna(row), children: "\u4F7F\u7528" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", onClick: () => {
           setRenaming({ row, value: row.description });
           setError("");
         }, children: "\u7F16\u8F91\u7B80\u4ECB" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => {
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => {
           setDeleting(row);
           setError("");
         }, children: "\u5220\u9664" })
       ] })
     ] }, row.id)) }),
-    !detail && nextCursor && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
-    renaming && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { className: "ppd-dialog", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-description-title", onSubmit: (event) => {
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { hidden: !!detail, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(DnaTaskLedger, { request, onCompleted: () => void load(false) }) }),
+    !detail && nextCursor && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
+    renaming && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("form", { className: "ppd-dialog", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-description-title", onSubmit: (event) => {
       event.preventDefault();
       void rename();
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { id: "ppd-dna-description-title", children: "\u7F16\u8F91 DNA \u7B80\u4ECB" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u7B80\u4ECB" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("textarea", { autoFocus: true, "data-dna-description-input": true, value: renaming.value, maxLength: 1e3, rows: 5, placeholder: "\u5199\u4E0B\u8FD9\u4E2A DNA \u7684\u7279\u70B9\uFF0C\u65B9\u4FBF\u4E0B\u6B21\u627E\u5230\u3002", onChange: (event) => {
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { id: "ppd-dna-description-title", children: "\u7F16\u8F91 DNA \u7B80\u4ECB" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "\u7B80\u4ECB" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("textarea", { autoFocus: true, "data-dna-description-input": true, value: renaming.value, maxLength: 1e3, rows: 5, placeholder: "\u5199\u4E0B\u8FD9\u4E2A DNA \u7684\u7279\u70B9\uFF0C\u65B9\u4FBF\u4E0B\u6B21\u627E\u5230\u3002", onChange: (event) => {
           const value2 = event.currentTarget.value;
           setRenaming((current) => current ? { ...current, value: value2 } : current);
         } })
       ] }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setRenaming(void 0), children: "\u53D6\u6D88" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: !!busy, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" })
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setRenaming(void 0), children: "\u53D6\u6D88" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: !!busy, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" })
       ] })
     ] }) }),
-    deleting && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-delete-title", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { id: "ppd-dna-delete-title", children: "\u5220\u9664 DNA\uFF1F" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u5220\u9664\u540E\u5C06\u4E0D\u518D\u51FA\u73B0\u5728\u300C\u6211\u7684 DNA\u300D\u3002\u539F\u59CB\u56FE\u7247\u4E0E\u5386\u53F2\u4EFB\u52A1\u4ECD\u4FDD\u7559\u3002" }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setDeleting(void 0), children: "\u53D6\u6D88" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: !!busy, onClick: () => void remove(), children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : "\u786E\u8BA4\u5220\u9664" })
+    deleting && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-delete-title", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { id: "ppd-dna-delete-title", children: "\u5220\u9664 DNA\uFF1F" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "\u5220\u9664\u540E\u5C06\u4E0D\u518D\u51FA\u73B0\u5728\u300C\u6211\u7684 DNA\u300D\u3002\u539F\u59CB\u56FE\u7247\u4E0E\u5386\u53F2\u4EFB\u52A1\u4ECD\u4FDD\u7559\u3002" }),
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setDeleting(void 0), children: "\u53D6\u6D88" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: !!busy, onClick: () => void remove(), children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : "\u786E\u8BA4\u5220\u9664" })
       ] })
     ] }) })
   ] });
 }
 
 // plugins/podplo-dsh/src/plugin-update-control.tsx
-var import_react16 = require("react");
+var import_react17 = require("react");
 
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.35",
+  version: "0.1.36",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -23622,14 +23368,14 @@ var package_default = {
 var PLUGIN_VERSION = package_default.version;
 
 // plugins/podplo-dsh/src/plugin-update-control.tsx
-var import_jsx_runtime17 = require("react/jsx-runtime");
+var import_jsx_runtime16 = require("react/jsx-runtime");
 function PluginUpdateControl({ request, taskBusy = false }) {
-  const [status, setStatus] = (0, import_react16.useState)({ currentVersion: PLUGIN_VERSION, phase: "idle", updateAvailable: false });
-  const [working, setWorking] = (0, import_react16.useState)("");
-  const [checked, setChecked] = (0, import_react16.useState)(false);
-  const [error51, setError] = (0, import_react16.useState)("");
-  const alive = (0, import_react16.useRef)(true), inFlight = (0, import_react16.useRef)(false);
-  (0, import_react16.useEffect)(() => {
+  const [status, setStatus] = (0, import_react17.useState)({ currentVersion: PLUGIN_VERSION, phase: "idle", updateAvailable: false });
+  const [working, setWorking] = (0, import_react17.useState)("");
+  const [checked, setChecked] = (0, import_react17.useState)(false);
+  const [error51, setError] = (0, import_react17.useState)("");
+  const alive = (0, import_react17.useRef)(true), inFlight = (0, import_react17.useRef)(false);
+  (0, import_react17.useEffect)(() => {
     alive.current = true;
     return () => {
       alive.current = false;
@@ -23640,7 +23386,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
     setStatus(data);
     setError(data.error ?? "");
   };
-  (0, import_react16.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     let active = true;
     void request("plugin.status").then(({ data }) => {
       if (active) receive(data);
@@ -23651,7 +23397,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
       active = false;
     };
   }, [request]);
-  (0, import_react16.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     if (!["checking", "installing"].includes(status.phase)) return;
     let active = true, reading = false;
     const timer = setInterval(() => {
@@ -23694,17 +23440,17 @@ function PluginUpdateControl({ request, taskBusy = false }) {
   const pending = !!working || ["checking", "installing"].includes(status.phase);
   const installed = ["applied", "restart-required"].includes(status.phase);
   const message2 = status.phase === "installing" || working === "installing" ? "\u6B63\u5728\u66F4\u65B0\u63D2\u4EF6\u2026" : status.phase === "applied" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u6B63\u5728\u52A0\u8F7D\u65B0\u7248\u2026" : status.phase === "restart-required" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u91CD\u542F DSH \u540E\u751F\u6548\u3002" : checked && status.phase === "idle" && !status.updateAvailable && !error51 ? "\u6682\u65E0\u53EF\u7528\u66F4\u65B0\u3002" : "";
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-plugin-update", "data-podplo-plugin-update": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-plugin-update", "data-podplo-plugin-update": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
       "PodPlo v",
       status.currentVersion.replace(/[-+].*$/u, "")
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
-    status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-plugin-version", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
+    status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", children: [
       "\u53EF\u66F4\u65B0\u81F3 v",
       status.latestVersion
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
       "button",
       {
         type: "button",
@@ -23715,7 +23461,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
         children: working === "installing" || status.phase === "installing" ? "\u66F4\u65B0\u4E2D\u2026" : "\u66F4\u65B0\u7248\u672C"
       }
     ),
-    (error51 || message2) && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: `ppd-plugin-update-message${error51 ? " is-error" : ""}`, role: error51 ? "alert" : "status", children: error51 || message2 })
+    (error51 || message2) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: `ppd-plugin-update-message${error51 ? " is-error" : ""}`, role: error51 ? "alert" : "status", children: error51 || message2 })
   ] });
 }
 
@@ -23935,7 +23681,7 @@ subscribePanelUiInvalidation(() => {
 });
 
 // plugins/podplo-dsh/src/panels.tsx
-var import_jsx_runtime18 = require("react/jsx-runtime");
+var import_jsx_runtime17 = require("react/jsx-runtime");
 var PAGE_SIZE2 = 18;
 var USER_SKILL_REFERENCE_LIMIT2 = 12;
 var CARD_TITLE_LIMIT = 24;
@@ -23983,31 +23729,31 @@ function Icon({ name }) {
     "arrow-up": "\u2191",
     "arrow-down": "\u2193"
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-icon", "aria-hidden": "true", children: values[name] });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-icon", "aria-hidden": "true", children: values[name] });
 }
 function Status({ loading, error: error51, empty, children }) {
-  if (loading) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-state", role: "status", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-spinner" }),
+  if (loading) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-state", role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-spinner" }),
     "\u6B63\u5728\u8BFB\u53D6\u2026"
   ] });
-  if (error51) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-state ppd-error", role: "alert", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8BFB\u53D6\u5931\u8D25" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: error51 })
+  if (error51) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-state ppd-error", role: "alert", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8BFB\u53D6\u5931\u8D25" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: error51 })
   ] });
-  if (empty) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-state", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8FD9\u91CC\u8FD8\u6CA1\u6709\u5185\u5BB9" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: empty })
+  if (empty) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-state", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8FD9\u91CC\u8FD8\u6CA1\u6709\u5185\u5BB9" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: empty })
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_jsx_runtime18.Fragment, { children });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_jsx_runtime17.Fragment, { children });
 }
 function Notice({ error: error51, notice }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    notice && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-notice", role: "status", children: notice })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    notice && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-notice", role: "status", children: notice })
   ] });
 }
 function PageNav({ page, total, onPage }) {
-  const navRef = (0, import_react17.useRef)(null);
+  const navRef = (0, import_react18.useRef)(null);
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE2));
   if (pages <= 1) return null;
   const navigate = (nextPage) => {
@@ -24015,45 +23761,45 @@ function PageNav({ page, total, onPage }) {
     onPage(nextPage);
     requestAnimationFrame(() => panel?.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("nav", { ref: navRef, className: "ppd-pagination", "aria-label": "\u5206\u9875", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", disabled: page <= 1, onClick: () => navigate(page - 1), children: "\u4E0A\u4E00\u9875" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("nav", { ref: navRef, className: "ppd-pagination", "aria-label": "\u5206\u9875", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", disabled: page <= 1, onClick: () => navigate(page - 1), children: "\u4E0A\u4E00\u9875" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
       page,
       " / ",
       pages
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", disabled: page >= pages, onClick: () => navigate(page + 1), children: "\u4E0B\u4E00\u9875" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", disabled: page >= pages, onClick: () => navigate(page + 1), children: "\u4E0B\u4E00\u9875" })
   ] });
 }
 function SearchBar({ value: value2, placeholder, busy, children, navigation, onChange, onSearch, onRefresh }) {
-  const form = /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { className: "ppd-search", onSubmit: (event) => {
+  const form = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { className: "ppd-search", onSubmit: (event) => {
     event.preventDefault();
     onSearch();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-sr-only", children: "\u641C\u7D22" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "search" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { value: value2, maxLength: 120, placeholder, onChange: (event) => onChange(event.target.value) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-sr-only", children: "\u641C\u7D22" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "search" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { value: value2, maxLength: 120, placeholder, onChange: (event) => onChange(event.target.value) })
     ] }),
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "submit", className: "ppd-button", disabled: busy, children: "\u641C\u7D22" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u5237\u65B0", title: "\u5237\u65B0", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "refresh" }) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "submit", className: "ppd-button", disabled: busy, children: "\u641C\u7D22" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u5237\u65B0", title: "\u5237\u65B0", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "refresh" }) })
   ] });
-  return navigation ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-library-toolbar", children: [
+  return navigation ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-library-toolbar", children: [
     navigation,
     form
   ] }) : form;
 }
 function ImageFrame({ src, alt, before }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: `ppd-image ${before ? "ppd-image-pair" : ""}`, children: [
-    before && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src: before, alt: `${alt}\u5904\u7406\u524D`, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }),
-    src ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src, alt, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u25A6" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `ppd-image ${before ? "ppd-image-pair" : ""}`, children: [
+    before && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src: before, alt: `${alt}\u5904\u7406\u524D`, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }),
+    src ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src, alt, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { "aria-hidden": "true", children: "\u25A6" })
   ] });
 }
 function FavoriteMenu({ label, actions, disabled }) {
-  const [open, setOpen] = (0, import_react17.useState)(false);
-  const root = (0, import_react17.useRef)(null);
-  (0, import_react17.useEffect)(() => {
+  const [open, setOpen] = (0, import_react18.useState)(false);
+  const root = (0, import_react18.useRef)(null);
+  (0, import_react18.useEffect)(() => {
     if (!open) return;
     const dismiss = (event) => {
       if (!root.current?.contains(event.target)) setOpen(false);
@@ -24061,7 +23807,7 @@ function FavoriteMenu({ label, actions, disabled }) {
     document.addEventListener("pointerdown", dismiss);
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [open]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { ref: root, className: `ppd-favorite-menu ${open ? "is-open" : ""}`, onBlur: (event) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { ref: root, className: `ppd-favorite-menu ${open ? "is-open" : ""}`, onBlur: (event) => {
     if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
   }, onKeyDown: (event) => {
     if (event.key === "Escape") {
@@ -24075,22 +23821,22 @@ function FavoriteMenu({ label, actions, disabled }) {
       requestAnimationFrame(() => root.current?.querySelector("[role=menuitem]")?.focus());
     }
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-favorite-more", "aria-label": label, "aria-haspopup": "menu", "aria-expanded": open, disabled, onClick: () => setOpen((value2) => !value2), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "5", cy: "12", r: "1.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "12", cy: "12", r: "1.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "19", cy: "12", r: "1.7" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-favorite-more", "aria-label": label, "aria-haspopup": "menu", "aria-expanded": open, disabled, onClick: () => setOpen((value2) => !value2), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "5", cy: "12", r: "1.7" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "12", cy: "12", r: "1.7" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "19", cy: "12", r: "1.7" })
     ] }) }),
-    open && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-favorite-popover", role: "menu", "aria-label": label, children: actions.map((action) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", role: "menuitem", className: action.danger ? "is-danger" : "", onClick: () => {
+    open && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-favorite-popover", role: "menu", "aria-label": label, children: actions.map((action) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", role: "menuitem", className: action.danger ? "is-danger" : "", onClick: () => {
       setOpen(false);
       action.run();
     }, children: action.label }, action.label)) })
   ] });
 }
 function FolderMark() {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.4", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("path", { d: "M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.4", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("path", { d: "M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" }) });
 }
 function PrivateAssetPreview({ id, alt, request, revision }) {
-  const [canRetryHere, setCanRetryHere] = (0, import_react17.useState)(false);
+  const [canRetryHere, setCanRetryHere] = (0, import_react18.useState)(false);
   const preview = useDeferredPreview({
     requestIdentity: request,
     resourceKey: `private-asset:${id}`,
@@ -24104,75 +23850,75 @@ function PrivateAssetPreview({ id, alt, request, revision }) {
       throw new Error(data?.status === "processing" ? "ASSET_PROCESSING" : "PREVIEW_UNAVAILABLE");
     }
   });
-  const previewRef = (0, import_react17.useCallback)((node) => {
+  const previewRef = (0, import_react18.useCallback)((node) => {
     preview.ref(node);
     if (node) setCanRetryHere(!node.closest('button, a, [role="button"]'));
   }, [preview.ref]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { ref: previewRef, className: "ppd-image", children: preview.status === "error" ? preview.error?.message === "ASSET_PROCESSING" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { role: "status", children: "\u56FE\u7247\u5904\u7406\u4E2D\uFF0C\u7A0D\u540E\u5237\u65B0" }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { role: "alert", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { ref: previewRef, className: "ppd-image", children: preview.status === "error" ? preview.error?.message === "ASSET_PROCESSING" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { role: "status", children: "\u56FE\u7247\u5904\u7406\u4E2D\uFF0C\u7A0D\u540E\u5237\u65B0" }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { role: "alert", children: [
     "\u9884\u89C8\u5931\u8D25",
-    canRetryHere ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-link-button", onClick: (event) => {
+    canRetryHere ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-link-button", onClick: (event) => {
       event.stopPropagation();
       preview.retry();
     }, children: "\u91CD\u8BD5\u9884\u89C8" }) : "\uFF0C\u70B9\u5F00\u91CD\u8BD5"
-  ] }) : preview.value ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src: preview.value, alt, decoding: "async", referrerPolicy: "no-referrer", onError: () => preview.markError() }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u9884\u89C8", children: "\u25A6" }) });
+  ] }) : preview.value ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src: preview.value, alt, decoding: "async", referrerPolicy: "no-referrer", onError: () => preview.markError() }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u9884\u89C8", children: "\u25A6" }) });
 }
 function DetailShell({ title, eyebrow, onBack, actions, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-detail", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("header", { className: "ppd-detail-header", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "back" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-detail", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("header", { className: "ppd-detail-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }),
         "\u8FD4\u56DE"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        eyebrow && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-eyebrow", children: eyebrow }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: title })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        eyebrow && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-eyebrow", children: eyebrow }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: title })
       ] }),
-      actions && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-actions", children: actions })
+      actions && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-actions", children: actions })
     ] }),
     children
   ] });
 }
 function FavoriteButton({ active, busy, onClick }) {
   const label = busy ? "\u6B63\u5728\u66F4\u65B0\u6536\u85CF" : active ? "\u53D6\u6D88\u6536\u85CF" : "\u6536\u85CF";
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: `ppd-favorite ${active ? "is-active" : ""}`, "aria-label": label, "aria-busy": busy || void 0, title: label, disabled: busy, onClick: (event) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: `ppd-favorite ${active ? "is-active" : ""}`, "aria-label": label, "aria-busy": busy || void 0, title: label, disabled: busy, onClick: (event) => {
     event.stopPropagation();
     onClick();
-  }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "heart" }) });
+  }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "heart" }) });
 }
 function DetailMedia({ src, alt, label, reference = false }) {
-  const dialog = (0, import_react17.useRef)(null);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("figure", { className: reference ? "ppd-detail-reference" : "ppd-detail-artwork", "data-detail-media": reference ? "reference" : "result", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("figcaption", { children: label }),
-    src ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", "aria-label": `\u653E\u5927${label}`, "aria-haspopup": "dialog", onClick: () => dialog.current?.showModal(), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src, alt, referrerPolicy: "no-referrer" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dialog", { ref: dialog, className: "ppd-media-dialog", "aria-label": `${label}\u9884\u89C8`, onClick: (event) => {
+  const dialog = (0, import_react18.useRef)(null);
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("figure", { className: reference ? "ppd-detail-reference" : "ppd-detail-artwork", "data-detail-media": reference ? "reference" : "result", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("figcaption", { children: label }),
+    src ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", "aria-label": `\u653E\u5927${label}`, "aria-haspopup": "dialog", onClick: () => dialog.current?.showModal(), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src, alt, referrerPolicy: "no-referrer" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dialog", { ref: dialog, className: "ppd-media-dialog", "aria-label": `${label}\u9884\u89C8`, onClick: (event) => {
         if (event.target === event.currentTarget) dialog.current?.close();
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", "aria-label": "\u5173\u95ED\u56FE\u7247\u9884\u89C8", onClick: () => dialog.current?.close(), children: "\u5173\u95ED" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src, alt, referrerPolicy: "no-referrer" })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", "aria-label": "\u5173\u95ED\u56FE\u7247\u9884\u89C8", onClick: () => dialog.current?.close(), children: "\u5173\u95ED" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src, alt, referrerPolicy: "no-referrer" })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-state", children: "\u6682\u65E0\u9884\u89C8\u56FE" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-state", children: "\u6682\u65E0\u9884\u89C8\u56FE" })
   ] });
 }
 function ResourceDetail({ title, kind, onBack, media, actions, notice, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: `ppd-detail ppd-resource-detail ppd-${kind}-detail`, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "back" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: `ppd-detail ppd-resource-detail ppd-${kind}-detail`, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }),
       "\u8FD4\u56DE"
     ] }),
     notice,
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-resource-detail-grid", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-resource-visual", children: media }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("aside", { className: "ppd-resource-info", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: title }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-resource-detail-grid", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-resource-visual", children: media }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("aside", { className: "ppd-resource-info", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: title }),
         children,
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-resource-detail-actions", children: actions })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-resource-detail-actions", children: actions })
       ] })
     ] })
   ] });
 }
 function PublicSkillDetail({ skill, onBack, actions, notice }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
     ResourceDetail,
     {
       title: skill.title,
@@ -24180,21 +23926,21 @@ function PublicSkillDetail({ skill, onBack, actions, notice }) {
       onBack,
       notice,
       actions,
-      media: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DetailMedia, { src: skill.coverImage, alt: `${skill.title}\u7ED3\u679C\u56FE`, label: "\u7ED3\u679C\u56FE" }),
+      media: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(DetailMedia, { src: skill.coverImage, alt: `${skill.title}\u7ED3\u679C\u56FE`, label: "\u7ED3\u679C\u56FE" }),
       children: [
-        skill.beforeImage && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DetailMedia, { src: skill.beforeImage, alt: `${skill.title}\u53C2\u8003\u56FE`, label: "\u53C2\u8003\u56FE", reference: true }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "ppd-resource-about", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u4ECB\u7ECD" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: skill.description || skill.summary })
+        skill.beforeImage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(DetailMedia, { src: skill.beforeImage, alt: `${skill.title}\u53C2\u8003\u56FE`, label: "\u53C2\u8003\u56FE", reference: true }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-resource-about", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u4ECB\u7ECD" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: skill.description || skill.summary })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SkillFacts, { skill }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-tags", children: uniq([...skill.categories || [], ...skill.tags || []]).map((tag) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: tag }, tag)) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillFacts, { skill }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-tags", children: uniq([...skill.categories || [], ...skill.tags || []]).map((tag) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: tag }, tag)) })
       ]
     }
   );
 }
 function GalleryDetail({ item, onBack, actions, notice }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
     ResourceDetail,
     {
       title: item.label,
@@ -24202,20 +23948,20 @@ function GalleryDetail({ item, onBack, actions, notice }) {
       onBack,
       actions,
       notice,
-      media: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DetailMedia, { src: item.previewUrl || item.thumbnailUrl, alt: item.label, label: "\u7D20\u6750\u9884\u89C8" }),
+      media: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(DetailMedia, { src: item.previewUrl || item.thumbnailUrl, alt: item.label, label: "\u7D20\u6750\u9884\u89C8" }),
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "ppd-resource-about", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u6807\u7B7E" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-tags", children: uniq([item.label, item.category, item.style, ...item.keywords || []].filter(Boolean)).map((word) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: word }, word)) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-resource-about", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u6807\u7B7E" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-tags", children: uniq([item.label, item.category, item.style, ...item.keywords || []].filter(Boolean)).map((word) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: word }, word)) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dl", { className: "ppd-resource-facts", children: [
-          item.collectionName && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u5408\u96C6" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dd", { children: item.collectionName })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dl", { className: "ppd-resource-facts", children: [
+          item.collectionName && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u5408\u96C6" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dd", { children: item.collectionName })
           ] }),
-          item.width && item.height ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u5C3A\u5BF8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dd", { children: [
+          item.width && item.height ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u5C3A\u5BF8" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dd", { children: [
               item.width,
               " \xD7 ",
               item.height
@@ -24257,25 +24003,25 @@ async function refreshFavoritesInBackground(request, uiLease, owner) {
   }
 }
 function useFavoriteResponseSnapshot(uiLease) {
-  return (0, import_react17.useSyncExternalStore)(
-    (0, import_react17.useCallback)((listener) => favoriteResponseState.subscribe(uiLease, listener), [uiLease]),
-    (0, import_react17.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease]),
-    (0, import_react17.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease])
+  return (0, import_react18.useSyncExternalStore)(
+    (0, import_react18.useCallback)((listener) => favoriteResponseState.subscribe(uiLease, listener), [uiLease]),
+    (0, import_react18.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease]),
+    (0, import_react18.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease])
   );
 }
 function useFavorites(request, uiLease) {
-  const ownerRef = (0, import_react17.useRef)(0);
+  const ownerRef = (0, import_react18.useRef)(0);
   if (!ownerRef.current) ownerRef.current = favoriteResponseState.createOwner();
   const owner = ownerRef.current;
   const snapshot = useFavoriteResponseSnapshot(uiLease);
-  const refresh = (0, import_react17.useCallback)(() => refreshFavoritesInBackground(request, uiLease, owner), [owner, request, uiLease]);
-  (0, import_react17.useEffect)(() => {
+  const refresh = (0, import_react18.useCallback)(() => refreshFavoritesInBackground(request, uiLease, owner), [owner, request, uiLease]);
+  (0, import_react18.useEffect)(() => {
     void refresh();
     return () => favoriteResponseState.releaseOwner(uiLease, owner);
   }, [owner, refresh, uiLease]);
-  const has = (0, import_react17.useCallback)((type, id) => favoriteResponseState.has(uiLease, type, id), [snapshot.revision, uiLease]);
-  const isBusy = (0, import_react17.useCallback)((type, id) => favoriteResponseState.isBusy(uiLease, type, id), [snapshot.revision, uiLease]);
-  const toggle = (0, import_react17.useCallback)(async (favorite) => {
+  const has = (0, import_react18.useCallback)((type, id) => favoriteResponseState.has(uiLease, type, id), [snapshot.revision, uiLease]);
+  const isBusy = (0, import_react18.useCallback)((type, id) => favoriteResponseState.isBusy(uiLease, type, id), [snapshot.revision, uiLease]);
+  const toggle = (0, import_react18.useCallback)(async (favorite) => {
     const target2 = !favoriteResponseState.has(uiLease, favorite.type, favorite.id);
     const token = favoriteResponseState.beginMutation(uiLease, owner, favorite.type, favorite.id, target2);
     if (!token) return;
@@ -24308,11 +24054,11 @@ var favoriteFromSkill = (item) => ({
 });
 function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
   const connected = isConnected(snapshot?.account.status);
-  const menu = (0, import_react17.useRef)(null);
+  const menu = (0, import_react18.useRef)(null);
   const phase2 = connectionLabel(snapshot);
   const accountName = connected ? snapshot?.account.name || snapshot?.account.email || "PodPlo \u5DF2\u8FDE\u63A5" : "\u5C1A\u672A\u767B\u5F55 PodPlo";
   const connectionMessage = snapshot?.connection.message && phase2 !== "\u5DF2\u8FDE\u63A5" ? snapshot.connection.message : "";
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     const closeOutside = (event) => {
       if (menu.current?.open && event.target instanceof Node && !menu.current.contains(event.target)) menu.current.open = false;
     };
@@ -24328,40 +24074,40 @@ function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, []);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     if (menu.current) menu.current.open = false;
   }, [snapshot?.account.userId, snapshot?.account.uiScope]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-row", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-connection", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: `ppd-dot ${phase2 === "\u5DF2\u8FDE\u63A5" ? "is-online" : ""}`, title: phase2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: accountName, children: accountName }) })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-connection", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: `ppd-dot ${phase2 === "\u5DF2\u8FDE\u63A5" ? "is-online" : ""}`, title: phase2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: accountName, children: accountName }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-meta", children: [
-        typeof availableCredits(snapshot) === "number" && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-account-balance", title: "\u53EF\u7528\u79EF\u5206", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-meta", children: [
+        typeof availableCredits(snapshot) === "number" && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-account-balance", title: "\u53EF\u7528\u79EF\u5206", children: [
           availableCredits(snapshot),
           " \u79EF\u5206"
         ] }),
-        !!snapshot?.pending.confirmations && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { title: "\u5F85\u786E\u8BA4\u7684\u5220\u9664\u64CD\u4F5C", children: [
+        !!snapshot?.pending.confirmations && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { title: "\u5F85\u786E\u8BA4\u7684\u5220\u9664\u64CD\u4F5C", children: [
           snapshot.pending.confirmations,
           " \u9879\u5F85\u786E\u8BA4"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-phase", children: phase2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", title: "\u540C\u6B65\u72B6\u6001", "aria-label": "\u540C\u6B65\u72B6\u6001", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "refresh" }) }),
-        !connected && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: () => onAccountAction("login"), children: "\u767B\u5F55" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("details", { className: "ppd-account-menu", ref: menu, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("summary", { "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C", title: "\u8D26\u53F7\u4E0E\u7248\u672C", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "currentColor", "aria-hidden": "true", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "5", cy: "12", r: "1.5" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "12", cy: "12", r: "1.5" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "19", cy: "12", r: "1.5" })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-phase", children: phase2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", title: "\u540C\u6B65\u72B6\u6001", "aria-label": "\u540C\u6B65\u72B6\u6001", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "refresh" }) }),
+        !connected && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: () => onAccountAction("login"), children: "\u767B\u5F55" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("details", { className: "ppd-account-menu", ref: menu, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("summary", { "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C", title: "\u8D26\u53F7\u4E0E\u7248\u672C", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "currentColor", "aria-hidden": "true", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "5", cy: "12", r: "1.5" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "12", cy: "12", r: "1.5" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "19", cy: "12", r: "1.5" })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-menu-panel", role: "region", "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C\u8BBE\u7F6E", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-menu-heading", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8D26\u53F7\u4E0E\u7248\u672C" }),
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: accountName })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-menu-panel", role: "region", "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C\u8BBE\u7F6E", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-menu-heading", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8D26\u53F7\u4E0E\u7248\u672C" }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: accountName })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PluginUpdateControl, { request, taskBusy: !!snapshot?.pending.generations }),
-            connected && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet ppd-account-logout", disabled: busy, onClick: () => {
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PluginUpdateControl, { request, taskBusy: !!snapshot?.pending.generations }),
+            connected && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet ppd-account-logout", disabled: busy, onClick: () => {
               if (menu.current) menu.current.open = false;
               onAccountAction("logout");
             }, children: "\u9000\u51FA" })
@@ -24369,29 +24115,29 @@ function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
         ] })
       ] })
     ] }),
-    connectionMessage && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-account-warning", role: "status", children: connectionMessage })
+    connectionMessage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-account-warning", role: "status", children: connectionMessage })
   ] });
 }
 function GalleryPanel({ request, onUse, uiLease }) {
-  const cached2 = (0, import_react17.useMemo)(() => readPanelUiState(uiLease, "gallery"), [uiLease]);
-  const [query, setQuery] = (0, import_react17.useState)(cached2?.query ?? "");
-  const [appliedQuery, setAppliedQuery] = (0, import_react17.useState)(cached2?.appliedQuery ?? "");
-  const [category, setCategory] = (0, import_react17.useState)(cached2?.category ?? "");
-  const [items, setItems] = (0, import_react17.useState)(cached2?.items ?? []);
-  const [categories, setCategories] = (0, import_react17.useState)(cached2?.categories ?? []);
-  const [cursor, setCursor] = (0, import_react17.useState)(cached2?.cursor ?? null);
-  const [total, setTotal] = (0, import_react17.useState)(cached2?.total ?? 0);
-  const [detail, setDetail] = (0, import_react17.useState)(cached2?.detail);
-  const [loading, setLoading] = (0, import_react17.useState)(true);
-  const [busy, setBusy] = (0, import_react17.useState)("");
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [notice, setNotice] = (0, import_react17.useState)("");
+  const cached2 = (0, import_react18.useMemo)(() => readPanelUiState(uiLease, "gallery"), [uiLease]);
+  const [query, setQuery] = (0, import_react18.useState)(cached2?.query ?? "");
+  const [appliedQuery, setAppliedQuery] = (0, import_react18.useState)(cached2?.appliedQuery ?? "");
+  const [category, setCategory] = (0, import_react18.useState)(cached2?.category ?? "");
+  const [items, setItems] = (0, import_react18.useState)(cached2?.items ?? []);
+  const [categories, setCategories] = (0, import_react18.useState)(cached2?.categories ?? []);
+  const [cursor, setCursor] = (0, import_react18.useState)(cached2?.cursor ?? null);
+  const [total, setTotal] = (0, import_react18.useState)(cached2?.total ?? 0);
+  const [detail, setDetail] = (0, import_react18.useState)(cached2?.detail);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
   const favorites = useFavorites(request, uiLease);
-  const sequence = (0, import_react17.useRef)(0);
-  const detailSequence = (0, import_react17.useRef)(0);
-  const [detailLoading, setDetailLoading] = (0, import_react17.useState)("");
-  const [detailError, setDetailError] = (0, import_react17.useState)("");
-  const load = (0, import_react17.useCallback)(async (append = false, nextQuery = appliedQuery, nextCategory = category, preserveCount = 0) => {
+  const sequence = (0, import_react18.useRef)(0);
+  const detailSequence = (0, import_react18.useRef)(0);
+  const [detailLoading, setDetailLoading] = (0, import_react18.useState)("");
+  const [detailError, setDetailError] = (0, import_react18.useState)("");
+  const load = (0, import_react18.useCallback)(async (append = false, nextQuery = appliedQuery, nextCategory = category, preserveCount = 0) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -24438,7 +24184,7 @@ function GalleryPanel({ request, onUse, uiLease }) {
       if (token === sequence.current) setLoading(false);
     }
   }, [appliedQuery, category, cursor, request]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(false, appliedQuery, category, cached2?.items.length ?? 0);
     if (cached2?.detail) void open(cached2.detail);
     return () => {
@@ -24446,7 +24192,7 @@ function GalleryPanel({ request, onUse, uiLease }) {
       detailSequence.current++;
     };
   }, []);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "gallery", { query, appliedQuery, category, items, categories, cursor, total, detail });
   }, [uiLease, query, appliedQuery, category, items, categories, cursor, total, detail]);
   async function open(item) {
@@ -24478,81 +24224,82 @@ function GalleryPanel({ request, onUse, uiLease }) {
       setBusy("");
     }
   }
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GalleryDetail, { item: detail, onBack: () => {
+  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryDetail, { item: detail, onBack: () => {
     detailSequence.current++;
     setDetailLoading("");
     setDetail(void 0);
     setDetailError("");
-  }, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u2026" : "\u52A0\u5165\u53C2\u8003\u56FE" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("gallery", detail.id), busy: favorites.isBusy("gallery", detail.id), onClick: () => void favorites.toggle(favoriteFromGallery(detail)) })
-  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: detailError || favorites.error, notice: detailLoading === detail.id ? "\u6B63\u5728\u8865\u9F50\u7D20\u6750\u8BE6\u60C5\u2026" : busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u53C2\u8003\u56FE\uFF0C\u8BF7\u7A0D\u5019\u2026" : notice }),
-    detailError && detailLoading !== detail.id && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(detail), children: "\u91CD\u8BD5\u8BE6\u60C5" })
+  }, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u2026" : "\u52A0\u5165\u53C2\u8003\u56FE" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("gallery", detail.id), busy: favorites.isBusy("gallery", detail.id), onClick: () => void favorites.toggle(favoriteFromGallery(detail)) })
+  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: detailError || favorites.error, notice: detailLoading === detail.id ? "\u6B63\u5728\u8865\u9F50\u7D20\u6750\u8BE6\u60C5\u2026" : busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u53C2\u8003\u56FE\uFF0C\u8BF7\u7A0D\u5019\u2026" : notice }),
+    detailError && detailLoading !== detail.id && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(detail), children: "\u91CD\u8BD5\u8BE6\u60C5" })
   ] }) });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favorites.error, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u56FE\u5E93", busy: loading, onChange: setQuery, onSearch: () => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favorites.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u56FE\u5E93", busy: loading, onChange: setQuery, onSearch: () => {
       const next = query.trim();
       setAppliedQuery(next);
       void load(false, next, category);
-    }, onRefresh: () => void load(false, appliedQuery, category, items.length), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("select", { "aria-label": "\u56FE\u5E93\u5206\u7C7B", value: category, onChange: (event) => {
+    }, onRefresh: () => void load(false, appliedQuery, category, items.length), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("select", { "aria-label": "\u56FE\u5E93\u5206\u7C7B", value: category, onChange: (event) => {
       const value2 = event.target.value;
       setCategory(value2);
       void load(false, appliedQuery, value2);
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
-      categories.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: value2, children: value2 }, value2))
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
+      categories.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: value2, children: value2 }, value2))
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u6362\u4E2A\u5173\u952E\u8BCD\u6216\u5206\u7C7B\u8BD5\u8BD5\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.label}`, disabled: busy === item.id, onClick: () => void open(item), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: item.thumbnailUrl, alt: item.label }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: item.label, children: cardTitle(item.label) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u6362\u4E2A\u5173\u952E\u8BCD\u6216\u5206\u7C7B\u8BD5\u8BD5\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.label}`, disabled: busy === item.id, onClick: () => void open(item), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: item.thumbnailUrl, alt: item.label }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: item.label, children: cardTitle(item.label) }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("gallery", item.id), busy: favorites.isBusy("gallery", item.id), onClick: () => void favorites.toggle(favoriteFromGallery(item)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === item.id, onClick: () => void use(item), children: "\u52A0\u5165" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("gallery", item.id), busy: favorites.isBusy("gallery", item.id), onClick: () => void favorites.toggle(favoriteFromGallery(item)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === item.id, onClick: () => void use(item), children: "\u52A0\u5165" })
     ] }, item.id)) }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: loading ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\u52A0\u8F7D\u66F4\u591A" }) })
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: loading ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\u52A0\u8F7D\u66F4\u591A" }) })
   ] });
 }
 function SkillFacts({ skill }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-skill-facts", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dl", { className: "ppd-resource-facts", children: [
-      skill.inputs?.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u9002\u7528\u8F93\u5165" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dd", { children: skill.inputs.join(" \xB7 ") })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-skill-facts", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dl", { className: "ppd-resource-facts", children: [
+      skill.inputs?.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u9002\u7528\u8F93\u5165" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dd", { children: skill.inputs.join(" \xB7 ") })
       ] }),
-      skill.output && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u8F93\u51FA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dd", { children: skill.output })
+      skill.output && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u8F93\u51FA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dd", { children: skill.output })
       ] })
     ] }),
-    [["\u4FDD\u7559\u5185\u5BB9", skill.keeps], ["\u6539\u53D8\u5185\u5BB9", skill.changes]].map(([title, values]) => values?.length ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: title }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: values.join(" \xB7 ") })
+    [["\u4FDD\u7559\u5185\u5BB9", skill.keeps], ["\u6539\u53D8\u5185\u5BB9", skill.changes]].map(([title, values]) => values?.length ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: title }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: values.join(" \xB7 ") })
     ] }, title) : null)
   ] });
 }
 function PublicSkills({ request, onUse, navigation, uiLease }) {
-  const cached2 = (0, import_react17.useMemo)(() => readPanelUiState(uiLease, "public-skills"), [uiLease]);
-  const [query, setQuery] = (0, import_react17.useState)(cached2?.query ?? "");
-  const [appliedQuery, setAppliedQuery] = (0, import_react17.useState)(cached2?.appliedQuery ?? "");
-  const [items, setItems] = (0, import_react17.useState)(cached2?.items ?? []);
-  const [categories, setCategories] = (0, import_react17.useState)(cached2?.categories ?? []);
-  const [category, setCategory] = (0, import_react17.useState)(cached2?.category ?? "");
-  const [page, setPage] = (0, import_react17.useState)(cached2?.page ?? 1);
-  const [detail, setDetail] = (0, import_react17.useState)(cached2?.detail);
-  const [family, setFamily] = (0, import_react17.useState)(cached2?.family);
-  const [loading, setLoading] = (0, import_react17.useState)(true);
-  const [busy, setBusy] = (0, import_react17.useState)("");
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [notice, setNotice] = (0, import_react17.useState)("");
+  const extraction = useExtractionSkills(request, true);
+  const cached2 = (0, import_react18.useMemo)(() => readPanelUiState(uiLease, "public-skills"), [uiLease]);
+  const [query, setQuery] = (0, import_react18.useState)(cached2?.query ?? "");
+  const [appliedQuery, setAppliedQuery] = (0, import_react18.useState)(cached2?.appliedQuery ?? "");
+  const [items, setItems] = (0, import_react18.useState)(cached2?.items ?? []);
+  const [categories, setCategories] = (0, import_react18.useState)(cached2?.categories ?? []);
+  const [category, setCategory] = (0, import_react18.useState)(cached2?.category ?? "");
+  const [page, setPage] = (0, import_react18.useState)(cached2?.page ?? 1);
+  const [detail, setDetail] = (0, import_react18.useState)(cached2?.detail);
+  const [family, setFamily] = (0, import_react18.useState)(cached2?.family);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
   const favorites = useFavorites(request, uiLease);
-  const sequence = (0, import_react17.useRef)(0);
-  const navigationSequence = (0, import_react17.useRef)(0);
-  const [familyLoading, setFamilyLoading] = (0, import_react17.useState)("");
-  const [familyError, setFamilyError] = (0, import_react17.useState)("");
-  const load = (0, import_react17.useCallback)(async (nextQuery = appliedQuery, forceRefresh = false, resetPage = true) => {
+  const sequence = (0, import_react18.useRef)(0);
+  const navigationSequence = (0, import_react18.useRef)(0);
+  const [familyLoading, setFamilyLoading] = (0, import_react18.useState)("");
+  const [familyError, setFamilyError] = (0, import_react18.useState)("");
+  const load = (0, import_react18.useCallback)(async (nextQuery = appliedQuery, forceRefresh = false, resetPage = true) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -24578,7 +24325,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       if (token === sequence.current) setLoading(false);
     }
   }, [appliedQuery, request]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(appliedQuery, false, false);
     if (cached2?.family) void loadFamily(cached2.family);
     return () => {
@@ -24586,14 +24333,18 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       navigationSequence.current++;
     };
   }, []);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "public-skills", { query, appliedQuery, items, categories, category, page, detail, family });
   }, [uiLease, query, appliedQuery, items, categories, category, page, detail, family]);
-  const filtered = (0, import_react17.useMemo)(() => !category || category === "all" ? items : items.filter((item) => item.primaryCategory === category), [category, items]);
-  const visible2 = filtered.slice((page - 1) * PAGE_SIZE2, page * PAGE_SIZE2);
-  (0, import_react17.useEffect)(() => {
-    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(filtered.length / PAGE_SIZE2))));
-  }, [filtered.length]);
+  const filtered = (0, import_react18.useMemo)(() => !category || category === "all" ? items : items.filter((item) => item.primaryCategory === category), [category, items]);
+  const extractRows = !category || category === "all" ? extraction.rows.filter((row) => row.title.toLocaleLowerCase().includes(appliedQuery.trim().toLocaleLowerCase())) : [];
+  const total = filtered.length + extractRows.length;
+  const start = (page - 1) * PAGE_SIZE2, end = page * PAGE_SIZE2;
+  const visibleExtractions = extractRows.slice(start, end);
+  const visible2 = filtered.slice(Math.max(0, start - extractRows.length), Math.max(0, end - extractRows.length));
+  (0, import_react18.useEffect)(() => {
+    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(total / PAGE_SIZE2))));
+  }, [total]);
   async function loadFamily(preview) {
     const token = ++navigationSequence.current;
     setFamily(preview);
@@ -24646,31 +24397,31 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       setBusy("");
     }
   }
-  if (family) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title: family.title, eyebrow: "Skill \u65CF", onBack: () => {
+  if (family) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title: family.title, eyebrow: "Skill \u65CF", onBack: () => {
     navigationSequence.current++;
     setFamilyLoading("");
     setFamily(void 0);
     setFamilyError("");
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: familyError || favorites.error, notice: familyLoading === family.slug ? "\u6B63\u5728\u8865\u9F50 Skill \u65CF\u8BE6\u60C5\u2026" : notice }),
-    familyError && familyLoading !== family.slug && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void loadFamily(family), children: "\u91CD\u8BD5\u8BE6\u60C5" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-family-intro", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: family.summary }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: family.chooseLabel })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: familyError || favorites.error, notice: familyLoading === family.slug ? "\u6B63\u5728\u8865\u9F50 Skill \u65CF\u8BE6\u60C5\u2026" : notice }),
+    familyError && familyLoading !== family.slug && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void loadFamily(family), children: "\u91CD\u8BD5\u8BE6\u60C5" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-family-intro", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: family.summary }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: family.chooseLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid ppd-family-grid", children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => {
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid ppd-family-grid", children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => {
         navigationSequence.current++;
         setFamily(void 0);
         setDetail(member);
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("skill", member.slug), busy: favorites.isBusy("skill", member.slug), onClick: () => void favorites.toggle(favoriteFromSkill(member)) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("skill", member.slug), busy: favorites.isBusy("skill", member.slug), onClick: () => void favorites.toggle(favoriteFromSkill(member)) })
     ] }, member.slug)) })
   ] });
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PublicSkillDetail, { skill: detail, onBack: () => {
+  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PublicSkillDetail, { skill: detail, onBack: () => {
     if (detail.kind === "member" && detail.familySlug) {
       const parent = items.find((item) => item.slug === detail.familySlug);
       void loadFamily({
@@ -24688,48 +24439,79 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       navigationSequence.current++;
       setDetail(void 0);
     }
-  }, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.slug || !detail.executable, onClick: () => void use(detail), children: detail.executable ? "\u4F7F\u7528 Skill" : "\u8BF7\u5148\u9009\u62E9\u65CF\u6210\u5458" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("skill", detail.slug), busy: favorites.isBusy("skill", detail.slug), onClick: () => void favorites.toggle(favoriteFromSkill(detail)) })
-  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favorites.error, notice }) });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favorites.error, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u516C\u5F00 Skill", busy: loading, onChange: setQuery, onSearch: () => {
+  }, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.slug || !detail.executable, onClick: () => void use(detail), children: detail.executable ? "\u4F7F\u7528 Skill" : "\u8BF7\u5148\u9009\u62E9\u65CF\u6210\u5458" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("skill", detail.slug), busy: favorites.isBusy("skill", detail.slug), onClick: () => void favorites.toggle(favoriteFromSkill(detail)) })
+  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favorites.error, notice }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favorites.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u516C\u5F00 Skill", busy: loading, onChange: setQuery, onSearch: () => {
       const next = query.trim();
       setAppliedQuery(next);
       void load(next, false, true);
-    }, onRefresh: () => void load(appliedQuery, true, false), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("select", { "aria-label": "Skill \u5206\u7C7B", value: category, onChange: (event) => {
+    }, onRefresh: () => {
+      extraction.reload();
+      void load(appliedQuery, true, false);
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("select", { "aria-label": "Skill \u5206\u7C7B", value: category, onChange: (event) => {
       setCategory(event.target.value);
       setPage(1);
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
       categories.map((value2) => {
         const id = typeof value2 === "string" ? value2 : value2.id;
         const label = typeof value2 === "string" ? value2 : value2.label;
-        return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: id, children: label }, id);
+        return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: id, children: label }, id);
       })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Status, { loading: loading && !filtered.length, error: !filtered.length ? error51 : "", empty: !loading && !filtered.length ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid", children: visible2.map((item) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.title}`, disabled: busy === item.slug, onClick: () => void open(item), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: item.coverImage, before: item.beforeImage, alt: item.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: item.title, children: cardTitle(item.title) }) })
-        ] }),
-        item.kind !== "family" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("skill", item.slug), busy: favorites.isBusy("skill", item.slug), onClick: () => void favorites.toggle(favoriteFromSkill(item)) })
-      ] }, item.slug)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageNav, { page, total: filtered.length, onPage: setPage })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Status, { loading: loading && !filtered.length && !extractRows.length, error: !filtered.length && !extractRows.length ? error51 : "", empty: !loading && !filtered.length && !extractRows.length ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-grid", children: [
+        visibleExtractions.map((skill) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("article", { className: "ppd-card", "data-extraction-skill": skill.extractionSkillId, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+          "button",
+          {
+            type: "button",
+            className: "ppd-card-open",
+            disabled: !skill.available,
+            title: skill.description,
+            onClick: () => {
+              void onUse({
+                version: 1,
+                kind: "dna-extract",
+                id: skill.extractionSkillId,
+                label: skill.title,
+                locator: { dnaSkillId: skill.extractionSkillId },
+                private: false
+              }).catch((cause) => setError(displayError2(cause)));
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { alt: skill.title }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-card-copy", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: skill.title }),
+                !skill.available && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: "\u5F85\u914D\u7F6E" })
+              ] })
+            ]
+          }
+        ) }, skill.id)),
+        visible2.map((item) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.title}`, disabled: busy === item.slug, onClick: () => void open(item), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: item.coverImage, before: item.beforeImage, alt: item.title }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: item.title, children: cardTitle(item.title) }) })
+          ] }),
+          item.kind !== "family" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("skill", item.slug), busy: favorites.isBusy("skill", item.slug), onClick: () => void favorites.toggle(favoriteFromSkill(item)) })
+        ] }, item.slug))
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PageNav, { page, total, onPage: setPage })
     ] })
   ] });
 }
 function UploadReferencePicker({ request, ids: ids2, disabled, onSelect }) {
-  const [query, setQuery] = (0, import_react17.useState)("");
-  const [items, setItems] = (0, import_react17.useState)([]);
-  const [cursor, setCursor] = (0, import_react17.useState)(null);
-  const [loading, setLoading] = (0, import_react17.useState)(true);
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [search, setSearch] = (0, import_react17.useState)("");
-  const sequence = (0, import_react17.useRef)(0);
-  const inFlight = (0, import_react17.useRef)(false);
+  const [query, setQuery] = (0, import_react18.useState)("");
+  const [items, setItems] = (0, import_react18.useState)([]);
+  const [cursor, setCursor] = (0, import_react18.useState)(null);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [search, setSearch] = (0, import_react18.useState)("");
+  const sequence = (0, import_react18.useRef)(0);
+  const inFlight = (0, import_react18.useRef)(false);
   async function load(append = false, term = query.trim()) {
     if (append && (inFlight.current || !cursor)) return;
     const token = ++sequence.current;
@@ -24756,23 +24538,23 @@ function UploadReferencePicker({ request, ids: ids2, disabled, onSelect }) {
       }
     }
   }
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(false, "");
     return () => {
       sequence.current++;
     };
   }, [request]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-upload-picker", "aria-label": "\u5DF2\u4E0A\u4F20\u56FE\u7247\u9009\u62E9\u5668", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5DF2\u4E0A\u4F20\u56FE\u7247", busy: loading || disabled, onChange: setQuery, onSearch: () => void load(), onRefresh: () => void load(false, search) }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-alert", role: "alert", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-upload-picker", "aria-label": "\u5DF2\u4E0A\u4F20\u56FE\u7247\u9009\u62E9\u5668", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5DF2\u4E0A\u4F20\u56FE\u7247", busy: loading || disabled, onChange: setQuery, onSearch: () => void load(), onRefresh: () => void load(false, search) }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-alert", role: "alert", children: [
       error51,
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(!!items.length && !!cursor, search), children: "\u91CD\u8BD5\u52A0\u8F7D\u56FE\u7247" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(!!items.length && !!cursor, search), children: "\u91CD\u8BD5\u52A0\u8F7D\u56FE\u7247" })
     ] }),
-    loading && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { role: "status", children: "\u6B63\u5728\u52A0\u8F7D\u5DF2\u4E0A\u4F20\u56FE\u7247\u2026" }),
-    !loading && !error51 && !items.length && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: search ? "\u6CA1\u6709\u5339\u914D\u7684\u5DF2\u4E0A\u4F20\u56FE\u7247\u3002" : "\u8FD8\u6CA1\u6709\u4E0A\u4F20\u56FE\u7247\uFF0C\u53EF\u4EE5\u5148\u4ECE\u672C\u5730\u4E0A\u4F20\u3002" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-upload-grid", children: items.map((row, index) => {
+    loading && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "status", children: "\u6B63\u5728\u52A0\u8F7D\u5DF2\u4E0A\u4F20\u56FE\u7247\u2026" }),
+    !loading && !error51 && !items.length && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: search ? "\u6CA1\u6709\u5339\u914D\u7684\u5DF2\u4E0A\u4F20\u56FE\u7247\u3002" : "\u8FD8\u6CA1\u6709\u4E0A\u4F20\u56FE\u7247\uFF0C\u53EF\u4EE5\u5148\u4ECE\u672C\u5730\u4E0A\u4F20\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-upload-grid", children: items.map((row, index) => {
       const selected = ids2.includes(row.id), label = row.filename || `\u4E0A\u4F20\u56FE ${index + 1}`;
-      return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+      return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
         "button",
         {
           type: "button",
@@ -24781,20 +24563,20 @@ function UploadReferencePicker({ request, ids: ids2, disabled, onSelect }) {
           disabled: disabled || selected || row.status !== "ready" || ids2.length >= USER_SKILL_REFERENCE_LIMIT2,
           onClick: () => onSelect(row),
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id: row.id, alt: label, request, revision: 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: label, children: label }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: selected ? "\u5DF2\u6DFB\u52A0" : row.status === "ready" ? "\u70B9\u51FB\u6DFB\u52A0" : row.status === "processing" || row.status === "pending" ? "\u5904\u7406\u4E2D" : "\u6682\u4E0D\u53EF\u7528" })
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id: row.id, alt: label, request, revision: 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: label, children: label }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: selected ? "\u5DF2\u6DFB\u52A0" : row.status === "ready" ? "\u70B9\u51FB\u6DFB\u52A0" : row.status === "processing" || row.status === "pending" ? "\u5904\u7406\u4E2D" : "\u6682\u4E0D\u53EF\u7528" })
           ]
         },
         row.id
       );
     }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(true, search), children: "\u52A0\u8F7D\u66F4\u591A\u56FE\u7247" }) })
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(true, search), children: "\u52A0\u8F7D\u66F4\u591A\u56FE\u7247" }) })
   ] });
 }
 function ReferenceEditor({ ids: ids2, choices, disabled, request, onChange, onUpload, onSelect }) {
-  const [browsing, setBrowsing] = (0, import_react17.useState)(false);
-  const localInput = (0, import_react17.useRef)(null);
+  const [browsing, setBrowsing] = (0, import_react18.useState)(false);
+  const localInput = (0, import_react18.useRef)(null);
   function move(index, offset) {
     const next = [...ids2];
     const target2 = index + offset;
@@ -24802,43 +24584,43 @@ function ReferenceEditor({ ids: ids2, choices, disabled, request, onChange, onUp
     [next[index], next[target2]] = [next[target2], next[index]];
     onChange(next);
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "ppd-reference-editor", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-form-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u53C2\u8003\u56FE\u7247" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "\u4ECE\u672C\u5730\u4E0A\u4F20\u6216\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247\uFF0C\u751F\u56FE\u65F6\u6309\u4E0B\u65B9\u987A\u5E8F\u5F15\u7528\u3002" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-reference-editor", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-form-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u53C2\u8003\u56FE\u7247" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "\u4ECE\u672C\u5730\u4E0A\u4F20\u6216\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247\uFF0C\u751F\u56FE\u65F6\u6309\u4E0B\u65B9\u987A\u5E8F\u5F15\u7528\u3002" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
         ids2.length,
         " / ",
         USER_SKILL_REFERENCE_LIMIT2
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("ol", { children: ids2.map((id, index) => {
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("ol", { children: ids2.map((id, index) => {
       const asset = choices.find((row) => row.id === id);
       const label = asset?.filename || `\u53C2\u8003\u56FE ${index + 1}`;
-      return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: index + 1 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id, alt: label, request, revision: 0 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: label }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0A\u79FB", disabled: disabled || index === 0, onClick: () => move(index, -1), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "arrow-up" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0B\u79FB", disabled: disabled || index === ids2.length - 1, onClick: () => move(index, 1), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "arrow-down" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button ppd-danger", "aria-label": "\u79FB\u9664\u5F15\u7528", disabled, onClick: () => onChange(ids2.filter((value2) => value2 !== id)), children: "\xD7" })
+      return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: index + 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id, alt: label, request, revision: 0 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: label }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0A\u79FB", disabled: disabled || index === 0, onClick: () => move(index, -1), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "arrow-up" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0B\u79FB", disabled: disabled || index === ids2.length - 1, onClick: () => move(index, 1), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "arrow-down" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button ppd-danger", "aria-label": "\u79FB\u9664\u5F15\u7528", disabled, onClick: () => onChange(ids2.filter((value2) => value2 !== id)), children: "\xD7" })
       ] }, id);
     }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions ppd-skill-reference-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-button", disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, onClick: () => localInput.current?.click(), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "upload" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions ppd-skill-reference-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-button", disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, onClick: () => localInput.current?.click(), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "upload" }),
         "\u4ECE\u672C\u5730\u4E0A\u4F20"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled, "aria-expanded": browsing, onClick: () => setBrowsing((value2) => !value2), children: browsing ? "\u6536\u8D77\u5DF2\u4E0A\u4F20\u56FE\u7247" : "\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { ref: localInput, className: "ppd-file-input", type: "file", hidden: true, multiple: true, disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, accept: "image/jpeg,image/png,image/webp", onChange: (event) => {
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled, "aria-expanded": browsing, onClick: () => setBrowsing((value2) => !value2), children: browsing ? "\u6536\u8D77\u5DF2\u4E0A\u4F20\u56FE\u7247" : "\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { ref: localInput, className: "ppd-file-input", type: "file", hidden: true, multiple: true, disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, accept: "image/jpeg,image/png,image/webp", onChange: (event) => {
         const files = Array.from(event.currentTarget.files ?? []);
         event.currentTarget.value = "";
         if (files.length && !disabled) onUpload(files);
       } })
     ] }),
-    browsing && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(UploadReferencePicker, { request, ids: ids2, disabled, onSelect: (asset) => {
+    browsing && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(UploadReferencePicker, { request, ids: ids2, disabled, onSelect: (asset) => {
       if (disabled || ids2.includes(asset.id) || ids2.length >= USER_SKILL_REFERENCE_LIMIT2 || asset.status !== "ready" || asset.kind !== "upload") return;
       onSelect(asset);
       onChange([...ids2, asset.id]);
@@ -24846,60 +24628,60 @@ function ReferenceEditor({ ids: ids2, choices, disabled, request, onChange, onUp
   ] });
 }
 function SkillEditor({ value: value2, mode, choices, busy, error: error51, notice, conflict, request, onChange, onSave, onCancel, onReload, onUpload, onSelect }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-editor", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("header", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-eyebrow", children: mode === "edit" ? "\u7F16\u8F91" : mode === "copy" ? "\u590D\u5236" : "\u65B0\u5EFA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: mode === "edit" ? "\u7F16\u8F91\u6211\u7684 Skill" : "\u521B\u5EFA\u6211\u7684 Skill" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-editor", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("header", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-eyebrow", children: mode === "edit" ? "\u7F16\u8F91" : mode === "copy" ? "\u590D\u5236" : "\u65B0\u5EFA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: mode === "edit" ? "\u7F16\u8F91\u6211\u7684 Skill" : "\u521B\u5EFA\u6211\u7684 Skill" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51, notice }),
-    conflict && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-conflict", role: "alert", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8FD9\u4E2A Skill \u5728\u522B\u5904\u88AB\u66F4\u65B0\u4E86" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u8BF7\u8BFB\u53D6\u6700\u65B0\u7248\u672C\u540E\u518D\u7EE7\u7EED\u7F16\u8F91\uFF0C\u907F\u514D\u8986\u76D6\u65B0\u5185\u5BB9\u3002" }),
-      onReload && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: onReload, children: "\u8BFB\u53D6\u6700\u65B0\u7248\u672C" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51, notice }),
+    conflict && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-conflict", role: "alert", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8FD9\u4E2A Skill \u5728\u522B\u5904\u88AB\u66F4\u65B0\u4E86" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u8BF7\u8BFB\u53D6\u6700\u65B0\u7248\u672C\u540E\u518D\u7EE7\u7EED\u7F16\u8F91\uFF0C\u907F\u514D\u8986\u76D6\u65B0\u5185\u5BB9\u3002" }),
+      onReload && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: onReload, children: "\u8BFB\u53D6\u6700\u65B0\u7248\u672C" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("fieldset", { disabled: busy || conflict, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u540D\u79F0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { value: value2.name, maxLength: 80, placeholder: "\u4F8B\u5982\uFF1A\u6211\u7684\u65C5\u884C\u6D77\u62A5", onChange: (event) => onChange({ ...value2, name: event.target.value }) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("fieldset", { disabled: busy || conflict, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u540D\u79F0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { value: value2.name, maxLength: 80, placeholder: "\u4F8B\u5982\uFF1A\u6211\u7684\u65C5\u884C\u6D77\u62A5", onChange: (event) => onChange({ ...value2, name: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
           "\u8BF4\u660E ",
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: "\u53EF\u9009" })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: "\u53EF\u9009" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("textarea", { value: value2.description, maxLength: 300, rows: 3, onChange: (event) => onChange({ ...value2, description: event.target.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("textarea", { value: value2.description, maxLength: 300, rows: 3, onChange: (event) => onChange({ ...value2, description: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("textarea", { className: "ppd-prompt", value: value2.prompt, maxLength: 5e3, rows: 9, placeholder: "\u5199\u4E0B\u53EF\u4EE5\u91CD\u590D\u4F7F\u7528\u7684\u521B\u4F5C\u8981\u6C42\u2026", onChange: (event) => onChange({ ...value2, prompt: event.target.value }) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("textarea", { className: "ppd-prompt", value: value2.prompt, maxLength: 5e3, rows: 9, placeholder: "\u5199\u4E0B\u53EF\u4EE5\u91CD\u590D\u4F7F\u7528\u7684\u521B\u4F5C\u8981\u6C42\u2026", onChange: (event) => onChange({ ...value2, prompt: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ReferenceEditor, { request, onSelect, ids: value2.referenceAssetIds, choices, disabled: busy || conflict, onChange: (referenceAssetIds) => onChange({ ...value2, referenceAssetIds }), onUpload })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ReferenceEditor, { request, onSelect, ids: value2.referenceAssetIds, choices, disabled: busy || conflict, onChange: (referenceAssetIds) => onChange({ ...value2, referenceAssetIds }), onUpload })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("footer", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u63D0\u793A\u8BCD\u6216\u53C2\u8003\u7D20\u6750\u81F3\u5C11\u63D0\u4F9B\u4E00\u9879\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy || conflict, onClick: onSave, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : mode === "edit" ? "\u4FDD\u5B58\u4FEE\u6539" : mode === "copy" ? "\u53E6\u5B58\u4E3A\u65B0 Skill" : "\u521B\u5EFA Skill" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("footer", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u63D0\u793A\u8BCD\u6216\u53C2\u8003\u7D20\u6750\u81F3\u5C11\u63D0\u4F9B\u4E00\u9879\u3002" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy || conflict, onClick: onSave, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : mode === "edit" ? "\u4FDD\u5B58\u4FEE\u6539" : mode === "copy" ? "\u53E6\u5B58\u4E3A\u65B0 Skill" : "\u521B\u5EFA Skill" })
     ] })
   ] });
 }
 function MySkills({ request, onUse, onChanged, navigation }) {
-  const [query, setQuery] = (0, import_react17.useState)("");
-  const [items, setItems] = (0, import_react17.useState)([]);
-  const [cursor, setCursor] = (0, import_react17.useState)(null);
-  const [detail, setDetail] = (0, import_react17.useState)();
-  const [editor, setEditor] = (0, import_react17.useState)();
-  const [draft, setDraft] = (0, import_react17.useState)(blankDraft);
-  const [choices, setChoices] = (0, import_react17.useState)([]);
-  const [confirmDelete, setConfirmDelete] = (0, import_react17.useState)();
-  const [loading, setLoading] = (0, import_react17.useState)(true);
-  const [busy, setBusy] = (0, import_react17.useState)("");
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [notice, setNotice] = (0, import_react17.useState)("");
-  const [conflict, setConflict] = (0, import_react17.useState)(false);
-  const sequence = (0, import_react17.useRef)(0), saving = (0, import_react17.useRef)(false);
-  const load = (0, import_react17.useCallback)(async (append = false, nextQuery = query.trim()) => {
+  const [query, setQuery] = (0, import_react18.useState)("");
+  const [items, setItems] = (0, import_react18.useState)([]);
+  const [cursor, setCursor] = (0, import_react18.useState)(null);
+  const [detail, setDetail] = (0, import_react18.useState)();
+  const [editor, setEditor] = (0, import_react18.useState)();
+  const [draft, setDraft] = (0, import_react18.useState)(blankDraft);
+  const [choices, setChoices] = (0, import_react18.useState)([]);
+  const [confirmDelete, setConfirmDelete] = (0, import_react18.useState)();
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
+  const [conflict, setConflict] = (0, import_react18.useState)(false);
+  const sequence = (0, import_react18.useRef)(0), saving = (0, import_react18.useRef)(false);
+  const load = (0, import_react18.useCallback)(async (append = false, nextQuery = query.trim()) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -24915,7 +24697,7 @@ function MySkills({ request, onUse, onChanged, navigation }) {
       if (token === sequence.current) setLoading(false);
     }
   }, [cursor, query, request]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(false, "");
   }, []);
   async function uploadReferences(files) {
@@ -25090,91 +24872,91 @@ function MySkills({ request, onUse, onChanged, navigation }) {
       setBusy("");
     }
   }
-  const deleteDialog = confirmDelete ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6211\u7684 Skill\uFF1F", description: `\u201C${confirmDelete.name}\u201D\u5C06\u4ECE\u4F60\u7684 Skill \u5E93\u5220\u9664\u3002\u5DF2\u6709\u7D20\u6750\u4E0E\u5386\u53F2\u751F\u6210\u4E0D\u53D7\u5F71\u54CD\u3002`, confirmLabel: "\u786E\u8BA4\u5220\u9664", busy: busy === confirmDelete.id, error: error51, onCancel: () => void cancelDelete(), onConfirm: () => void deleteConfirmed() }) : null;
-  if (editor) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SkillEditor, { request, notice, onSelect: (asset) => setChoices((current) => [...new Map([...current, asset].map((row) => [row.id, row])).values()]), value: draft, mode: editor.mode, choices, busy: busy === "save" || busy === "reference-upload", error: error51, conflict, onChange: setDraft, onSave: () => void save(), onCancel: () => {
+  const deleteDialog = confirmDelete ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6211\u7684 Skill\uFF1F", description: `\u201C${confirmDelete.name}\u201D\u5C06\u4ECE\u4F60\u7684 Skill \u5E93\u5220\u9664\u3002\u5DF2\u6709\u7D20\u6750\u4E0E\u5386\u53F2\u751F\u6210\u4E0D\u53D7\u5F71\u54CD\u3002`, confirmLabel: "\u786E\u8BA4\u5220\u9664", busy: busy === confirmDelete.id, error: error51, onCancel: () => void cancelDelete(), onConfirm: () => void deleteConfirmed() }) : null;
+  if (editor) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillEditor, { request, notice, onSelect: (asset) => setChoices((current) => [...new Map([...current, asset].map((row) => [row.id, row])).values()]), value: draft, mode: editor.mode, choices, busy: busy === "save" || busy === "reference-upload", error: error51, conflict, onChange: setDraft, onSave: () => void save(), onCancel: () => {
     if (saving.current) return;
     setEditor(void 0);
     setDraft(blankDraft());
     setError("");
     setNotice("");
   }, onReload: editor.source ? () => void reloadSource() : void 0, onUpload: (files) => void uploadReferences(files) });
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title: detail.name, eyebrow: "\u6211\u7684 Skill", onBack: () => setDetail(void 0), actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: "\u9009\u5165\u4F1A\u8BDD" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => start("edit", detail), children: "\u7F16\u8F91" })
+  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title: detail.name, eyebrow: "\u6211\u7684 Skill", onBack: () => setDetail(void 0), actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: "\u9009\u5165\u4F1A\u8BDD" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => start("edit", detail), children: "\u7F16\u8F91" })
     ] }), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51, notice }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-user-skill-detail", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: detail.description || "\u672A\u586B\u5199\u8BF4\u660E" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("pre", { children: detail.prompt || "\u4EC5\u4F7F\u7528\u53C2\u8003\u7D20\u6750" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51, notice }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-user-skill-detail", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: detail.description || "\u672A\u586B\u5199\u8BF4\u660E" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("pre", { children: detail.prompt || "\u4EC5\u4F7F\u7528\u53C2\u8003\u7D20\u6750" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("h3", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h3", { children: [
             "\u6709\u5E8F\u53C2\u8003\u7D20\u6750 \xB7 ",
             detail.referenceAssetIds.length
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("ol", { className: "ppd-skill-reference-detail", children: detail.referenceAssetIds.map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id, alt: `\u53C2\u8003\u56FE ${index + 1}`, request, revision: 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("ol", { className: "ppd-skill-reference-detail", children: detail.referenceAssetIds.map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id, alt: `\u53C2\u8003\u56FE ${index + 1}`, request, revision: 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
               index + 1,
               ". ",
               choices.find((row) => row.id === id)?.filename || "\u53C2\u8003\u56FE\u7247"
             ] })
           ] }, id)) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => start("copy", detail), children: "\u53E6\u5B58\u526F\u672C" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy === detail.id, onClick: () => void askDelete(detail), children: "\u5220\u9664" })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => start("copy", detail), children: "\u53E6\u5B58\u526F\u672C" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy === detail.id, onClick: () => void askDelete(detail), children: "\u5220\u9664" })
         ] })
       ] })
     ] }),
     deleteDialog
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-toolbar-row", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u6211\u7684 Skill", busy: loading, onChange: setQuery, onSearch: () => void load(false), onRefresh: () => void load(false) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => start("create"), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "plus" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-toolbar-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u6211\u7684 Skill", busy: loading, onChange: setQuery, onSearch: () => void load(false), onRefresh: () => void load(false) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => start("create"), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "plus" }),
         "\u521B\u5EFA Skill"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u521B\u5EFA\u4E00\u4E2A\u53EF\u91CD\u590D\u4F7F\u7528\u7684\u79C1\u6709 Skill\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-list", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-list-open", "aria-label": `\u67E5\u770B ${row.name}`, disabled: busy === row.id, onClick: () => void open(row.id), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: row.name, children: cardTitle(row.name) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("small", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u521B\u5EFA\u4E00\u4E2A\u53EF\u91CD\u590D\u4F7F\u7528\u7684\u79C1\u6709 Skill\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-list", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-list-open", "aria-label": `\u67E5\u770B ${row.name}`, disabled: busy === row.id, onClick: () => void open(row.id), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: row.name, children: cardTitle(row.name) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
           row.referenceAssetIds.length,
           " \u5F20\u53C2\u8003\u7D20\u6750 \xB7 \u66F4\u65B0\u4E8E ",
           new Date(row.updatedAt).toLocaleDateString()
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", "aria-label": `\u7F16\u8F91 ${row.name}`, disabled: busy === row.id, onClick: () => start("edit", row), children: "\u7F16\u8F91" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button ppd-danger", "aria-label": "\u5220\u9664", onClick: () => void askDelete(row), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "trash" }) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", "aria-label": `\u7F16\u8F91 ${row.name}`, disabled: busy === row.id, onClick: () => start("edit", row), children: "\u7F16\u8F91" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button ppd-danger", "aria-label": "\u5220\u9664", onClick: () => void askDelete(row), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "trash" }) })
     ] }, row.id)) }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
     deleteDialog
   ] });
 }
 function SkillsPanel({ request, onUse, uiLease }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PublicSkills, { request, onUse, navigation: void 0, uiLease });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PublicSkills, { request, onUse, navigation: void 0, uiLease });
 }
 function CollectionsPanel({ request, ownerId, onUse, onChanged, refreshKey, uiLease }) {
   const savedTab = readPanelUiState(uiLease, "collections-tab");
-  const [tab, setTab] = (0, import_react17.useState)(() => ["favorites", "mine", "dna"].includes(savedTab ?? "") ? savedTab : "favorites");
-  (0, import_react17.useEffect)(() => {
+  const [tab, setTab] = (0, import_react18.useState)(() => ["favorites", "mine", "dna"].includes(savedTab ?? "") ? savedTab : "favorites");
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "collections-tab", tab);
   }, [uiLease, tab]);
   const selectTab = (next) => setTab(next);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { "data-my-collections": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("nav", { className: "ppd-tabs", "aria-label": "\u6211\u7684\u6536\u85CF\u5206\u7EC4", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: tab === "favorites" ? "is-active" : "", "aria-current": tab === "favorites" ? "page" : void 0, onClick: () => selectTab("favorites"), children: "\u6536\u85CF\u5939" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: tab === "mine" ? "is-active" : "", "aria-current": tab === "mine" ? "page" : void 0, onClick: () => selectTab("mine"), children: "\u6211\u7684 Skill" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: tab === "dna" ? "is-active" : "", "aria-current": tab === "dna" ? "page" : void 0, onClick: () => selectTab("dna"), children: "\u6211\u7684 DNA" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { "data-my-collections": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("nav", { className: "ppd-tabs", "aria-label": "\u6211\u7684\u6536\u85CF\u5206\u7EC4", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: tab === "favorites" ? "is-active" : "", "aria-current": tab === "favorites" ? "page" : void 0, onClick: () => selectTab("favorites"), children: "\u6536\u85CF\u5939" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: tab === "mine" ? "is-active" : "", "aria-current": tab === "mine" ? "page" : void 0, onClick: () => selectTab("mine"), children: "\u6211\u7684 Skill" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: tab === "dna" ? "is-active" : "", "aria-current": tab === "dna" ? "page" : void 0, onClick: () => selectTab("dna"), children: "\u6211\u7684 DNA" })
     ] }),
-    tab === "mine" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(MySkills, { request, onUse, onChanged, navigation: void 0 }) : tab === "dna" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(MyDnaPanel, { request, onUseDna: (row) => onUse({
+    tab === "mine" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(MySkills, { request, onUse, onChanged, navigation: void 0 }) : tab === "dna" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(MyDnaPanel, { request, onUseDna: (row) => onUse({
       version: 1,
       kind: "dna",
       id: row.id,
@@ -25182,65 +24964,64 @@ function CollectionsPanel({ request, ownerId, onUse, onChanged, refreshKey, uiLe
       locator: { dnaId: row.id },
       ownerId,
       private: true
-    }) }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(AssetsPanel, { request, onUse, refreshKey, uiLease })
+    }) }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(AssetsPanel, { request, onUse, refreshKey, uiLease })
   ] });
 }
 function ConfirmDialog({ title, description, confirmLabel, busy, error: error51, onCancel, onConfirm }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-dialog-backdrop", role: "presentation", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-confirm-title", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { id: "ppd-confirm-title", children: title }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: description }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy, onClick: onConfirm, children: busy ? "\u6B63\u5728\u5904\u7406\u2026" : confirmLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-dialog-backdrop", role: "presentation", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-confirm-title", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { id: "ppd-confirm-title", children: title }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: description }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy, onClick: onConfirm, children: busy ? "\u6B63\u5728\u5904\u7406\u2026" : confirmLabel })
     ] })
   ] }) });
 }
 function LocalResults({ request, uiLease }) {
-  const archiveSelection = (0, import_react17.useSyncExternalStore)(archiveTarget.subscribe, archiveTarget.getSnapshot, archiveTarget.getSnapshot);
-  (0, import_react17.useEffect)(() => () => archiveTarget.clear(), []);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ArchiveBrowser, { request, targetId: archiveSelection?.id, uiLease, leading: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(RunningTaskLedger, { request }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageToTextLedger, { request }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DnaTaskLedger, { request })
+  const archiveSelection = (0, import_react18.useSyncExternalStore)(archiveTarget.subscribe, archiveTarget.getSnapshot, archiveTarget.getSnapshot);
+  (0, import_react18.useEffect)(() => () => archiveTarget.clear(), []);
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ArchiveBrowser, { request, targetId: archiveSelection?.id, uiLease, leading: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(RunningTaskLedger, { request }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageToTextLedger, { request })
   ] }) });
 }
 function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
-  const cached2 = (0, import_react17.useMemo)(() => readPanelUiState(uiLease, "assets"), [uiLease]);
-  const favoriteOwnerRef = (0, import_react17.useRef)(0);
+  const cached2 = (0, import_react18.useMemo)(() => readPanelUiState(uiLease, "assets"), [uiLease]);
+  const favoriteOwnerRef = (0, import_react18.useRef)(0);
   if (!favoriteOwnerRef.current) favoriteOwnerRef.current = favoriteResponseState.createOwner();
   const favoriteOwner = favoriteOwnerRef.current;
   const favoriteSnapshot = useFavoriteResponseSnapshot(uiLease);
   const favorites = favoriteSnapshot.initialized ? [...favoriteSnapshot.rows] : cached2?.favorites ?? [];
-  const [query, setQuery] = (0, import_react17.useState)(cached2?.query ?? "");
-  const [search, setSearch] = (0, import_react17.useState)(cached2?.search ?? "");
-  const [page, setPage] = (0, import_react17.useState)(cached2?.page ?? 1);
-  const [loading, setLoading] = (0, import_react17.useState)(true);
-  const [busy, setBusy] = (0, import_react17.useState)("");
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [notice, setNotice] = (0, import_react17.useState)("");
-  const [savedResource, setSavedResource] = (0, import_react17.useState)(cached2?.savedResource);
-  const [cursor, setCursor] = (0, import_react17.useState)(cached2?.cursor ?? null);
-  const [migration, setMigration] = (0, import_react17.useState)(cached2?.migration);
-  const [folders, setFolders] = (0, import_react17.useState)(cached2?.folders ?? []);
-  const [folderFilter, setFolderFilter] = (0, import_react17.useState)(() => !cached2?.folderFilter || cached2.folderFilter === "all" ? "overview" : cached2.folderFilter);
-  const [foldersAvailable, setFoldersAvailable] = (0, import_react17.useState)();
-  const [folderMessage, setFolderMessage] = (0, import_react17.useState)("");
-  const [folderEditor, setFolderEditor] = (0, import_react17.useState)();
-  const [folderDelete, setFolderDelete] = (0, import_react17.useState)();
-  const [organizeItem, setOrganizeItem] = (0, import_react17.useState)();
-  const detailSequence = (0, import_react17.useRef)(0);
-  const [detailLoading, setDetailLoading] = (0, import_react17.useState)("");
-  const [detailError, setDetailError] = (0, import_react17.useState)("");
-  const cursorRef = (0, import_react17.useRef)(cached2?.cursor ?? null);
-  const sequence = (0, import_react17.useRef)(0);
-  const folderSequence = (0, import_react17.useRef)(0);
-  const inFlight = (0, import_react17.useRef)(false);
-  (0, import_react17.useEffect)(() => {
+  const [query, setQuery] = (0, import_react18.useState)(cached2?.query ?? "");
+  const [search, setSearch] = (0, import_react18.useState)(cached2?.search ?? "");
+  const [page, setPage] = (0, import_react18.useState)(cached2?.page ?? 1);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
+  const [savedResource, setSavedResource] = (0, import_react18.useState)(cached2?.savedResource);
+  const [cursor, setCursor] = (0, import_react18.useState)(cached2?.cursor ?? null);
+  const [migration, setMigration] = (0, import_react18.useState)(cached2?.migration);
+  const [folders, setFolders] = (0, import_react18.useState)(cached2?.folders ?? []);
+  const [folderFilter, setFolderFilter] = (0, import_react18.useState)(() => !cached2?.folderFilter || cached2.folderFilter === "all" ? "overview" : cached2.folderFilter);
+  const [foldersAvailable, setFoldersAvailable] = (0, import_react18.useState)();
+  const [folderMessage, setFolderMessage] = (0, import_react18.useState)("");
+  const [folderEditor, setFolderEditor] = (0, import_react18.useState)();
+  const [folderDelete, setFolderDelete] = (0, import_react18.useState)();
+  const [organizeItem, setOrganizeItem] = (0, import_react18.useState)();
+  const detailSequence = (0, import_react18.useRef)(0);
+  const [detailLoading, setDetailLoading] = (0, import_react18.useState)("");
+  const [detailError, setDetailError] = (0, import_react18.useState)("");
+  const cursorRef = (0, import_react18.useRef)(cached2?.cursor ?? null);
+  const sequence = (0, import_react18.useRef)(0);
+  const folderSequence = (0, import_react18.useRef)(0);
+  const inFlight = (0, import_react18.useRef)(false);
+  (0, import_react18.useEffect)(() => {
     favoriteResponseState.seed(uiLease, cached2?.favorites ?? []);
   }, [uiLease]);
-  (0, import_react17.useEffect)(() => () => favoriteResponseState.releaseOwner(uiLease, favoriteOwner), [favoriteOwner, uiLease]);
-  const loadFolders = (0, import_react17.useCallback)(async () => {
+  (0, import_react18.useEffect)(() => () => favoriteResponseState.releaseOwner(uiLease, favoriteOwner), [favoriteOwner, uiLease]);
+  const loadFolders = (0, import_react18.useCallback)(async () => {
     const token = ++folderSequence.current;
     setFolderMessage("");
     try {
@@ -25262,13 +25043,13 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
       }
     }
   }, [request]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void loadFolders();
     return () => {
       folderSequence.current++;
     };
   }, [loadFolders, refreshKey]);
-  const load = (0, import_react17.useCallback)(async (append = false) => {
+  const load = (0, import_react18.useCallback)(async (append = false) => {
     if (append && (inFlight.current || !cursorRef.current)) return;
     const token = ++sequence.current;
     inFlight.current = true;
@@ -25324,24 +25105,24 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
       }
     }
   }, [favoriteOwner, request, uiLease]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load();
     return () => {
       sequence.current++;
       inFlight.current = false;
     };
   }, [load, refreshKey]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     if (cached2?.savedResource?.row) void open(cached2.savedResource.row);
     return () => {
       detailSequence.current++;
     };
   }, []);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "assets", { query, search, page, favorites, cursor, migration, savedResource, folders, folderFilter });
   }, [uiLease, query, search, page, favorites, cursor, migration, savedResource, folders, folderFilter]);
-  const folderName = (0, import_react17.useCallback)((folderId) => folders.find((folder) => folder.id === folderId)?.name ?? "", [folders]);
-  const rows = (0, import_react17.useMemo)(() => {
+  const folderName = (0, import_react18.useCallback)((folderId) => folders.find((folder) => folder.id === folderId)?.name ?? "", [folders]);
+  const rows = (0, import_react18.useMemo)(() => {
     let source = favorites;
     if (folderFilter !== "overview") source = source.filter((row) => folderFilter === "unfiled" ? !row.folderId : row.folderId === folderFilter);
     const term = search.trim().toLocaleLowerCase();
@@ -25349,7 +25130,7 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
   }, [favoriteSnapshot.revision, favorites, folderFilter, folderName, search]);
   const folderOverview = foldersAvailable === true && folderFilter === "overview" && !search.trim();
   const visible2 = rows.slice((page - 1) * PAGE_SIZE2, page * PAGE_SIZE2);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(rows.length / PAGE_SIZE2))));
   }, [rows.length]);
   async function open(row) {
@@ -25525,35 +25306,35 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
       setSavedResource(void 0);
       setDetailError("");
     };
-    const noticeBlock = /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: detailError || favoriteSnapshot.error || error51, notice: detailLoading === savedResource.row.id ? "\u6B63\u5728\u8865\u9F50\u6536\u85CF\u8BE6\u60C5\u2026" : notice }),
-      detailError && detailLoading !== savedResource.row.id && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(savedResource.row), children: "\u91CD\u8BD5\u8BE6\u60C5" })
+    const noticeBlock = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: detailError || favoriteSnapshot.error || error51, notice: detailLoading === savedResource.row.id ? "\u6B63\u5728\u8865\u9F50\u6536\u85CF\u8BE6\u60C5\u2026" : notice }),
+      detailError && detailLoading !== savedResource.row.id && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(savedResource.row), children: "\u91CD\u8BD5\u8BE6\u60C5" })
     ] });
-    if (savedResource.skill) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PublicSkillDetail, { skill: savedResource.skill, onBack: () => savedResource.family ? setSavedResource({ ...savedResource, skill: void 0 }) : back(), notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy || !savedResource.skill.executable, onClick: () => void useSavedSkill(savedResource.skill), children: "\u4F7F\u7528 Skill" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", savedResource.skill.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", savedResource.skill.slug), onClick: () => void toggleFavorite(favoriteFromSkill(savedResource.skill)) })
+    if (savedResource.skill) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PublicSkillDetail, { skill: savedResource.skill, onBack: () => savedResource.family ? setSavedResource({ ...savedResource, skill: void 0 }) : back(), notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy || !savedResource.skill.executable, onClick: () => void useSavedSkill(savedResource.skill), children: "\u4F7F\u7528 Skill" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", savedResource.skill.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", savedResource.skill.slug), onClick: () => void toggleFavorite(favoriteFromSkill(savedResource.skill)) })
     ] }) });
-    if (savedResource.gallery) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GalleryDetail, { item: savedResource.gallery, onBack: back, notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy, onClick: () => void use(savedResource.row), children: "\u52A0\u5165\u53C2\u8003\u56FE" }) });
-    if (savedResource.family) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title: savedResource.family.title, onBack: back, children: [
+    if (savedResource.gallery) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryDetail, { item: savedResource.gallery, onBack: back, notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy, onClick: () => void use(savedResource.row), children: "\u52A0\u5165\u53C2\u8003\u56FE" }) });
+    if (savedResource.family) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title: savedResource.family.title, onBack: back, children: [
       noticeBlock,
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-family-intro", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: savedResource.family.summary }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: savedResource.family.chooseLabel })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-family-intro", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: savedResource.family.summary }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: savedResource.family.chooseLabel })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid ppd-family-grid", children: savedResource.family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => setSavedResource({ ...savedResource, skill: member }), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid ppd-family-grid", children: savedResource.family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => setSavedResource({ ...savedResource, skill: member }), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", member.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", member.slug), onClick: () => void toggleFavorite(favoriteFromSkill(member)) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", member.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", member.slug), onClick: () => void toggleFavorite(favoriteFromSkill(member)) })
       ] }, member.slug)) })
     ] });
     const title = savedResource.row.label || savedResource.row.id;
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title, eyebrow: "\u6211\u7684\u6536\u85CF", onBack: back, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title, eyebrow: "\u6211\u7684\u6536\u85CF", onBack: back, children: [
       noticeBlock,
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-detail-grid", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: savedResource.row.imageUrl, alt: title }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-lead", children: "\u8BE6\u60C5\u52A0\u8F7D\u5B8C\u6210\u540E\u5373\u53EF\u7EE7\u7EED\u4F7F\u7528\u3002" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-detail-grid", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: savedResource.row.imageUrl, alt: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-lead", children: "\u8BE6\u60C5\u52A0\u8F7D\u5B8C\u6210\u540E\u5373\u53EF\u7EE7\u7EED\u4F7F\u7528\u3002" })
       ] })
     ] });
   }
@@ -25566,115 +25347,115 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
     setFolderMessage("");
   };
   const activeFolder = folders.find((folder) => folder.id === folderFilter);
-  const folderControls = /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-collection-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-collection-location", children: [
-        !folderOverview && foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-collection-back", "aria-label": "\u8FD4\u56DE\u6536\u85CF\u6587\u4EF6\u5939", onClick: () => enterFolder("overview"), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "back" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: folderOverview ? "\u6211\u7684\u6536\u85CF\u5939" : search.trim() ? "\u641C\u7D22\u7ED3\u679C" : folderFilter === "unfiled" ? "\u672A\u5206\u7C7B" : activeFolder?.name || "\u6211\u7684\u6536\u85CF" }),
-          !folderOverview && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("small", { children: [
+  const folderControls = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-collection-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-collection-location", children: [
+        !folderOverview && foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-collection-back", "aria-label": "\u8FD4\u56DE\u6536\u85CF\u6587\u4EF6\u5939", onClick: () => enterFolder("overview"), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: folderOverview ? "\u6211\u7684\u6536\u85CF\u5939" : search.trim() ? "\u641C\u7D22\u7ED3\u679C" : folderFilter === "unfiled" ? "\u672A\u5206\u7C7B" : activeFolder?.name || "\u6211\u7684\u6536\u85CF" }),
+          !folderOverview && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
             rows.length,
             cursor ? "+" : "",
             " \u9879\u6536\u85CF"
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-        activeFolder && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${activeFolder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: activeFolder.name, folder: activeFolder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder: activeFolder }) }] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+        activeFolder && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${activeFolder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: activeFolder.name, folder: activeFolder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder: activeFolder }) }] }),
         " ",
-        foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-button ppd-new-folder", onClick: () => setFolderEditor({ mode: "create", value: "" }), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "plus" }),
+        foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-button ppd-new-folder", onClick: () => setFolderEditor({ mode: "create", value: "" }), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "plus" }),
           " \u65B0\u5EFA\u6587\u4EF6\u5939"
         ] })
       ] })
     ] }),
-    foldersAvailable !== true && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "ppd-collection-status", role: "status", children: [
+    foldersAvailable !== true && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "ppd-collection-status", role: "status", children: [
       folderMessage || "\u6B63\u5728\u8BFB\u53D6\u6536\u85CF\u6587\u4EF6\u5939\u2026",
-      foldersAvailable === false && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadFolders(), children: "\u91CD\u8BD5" })
+      foldersAvailable === false && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadFolders(), children: "\u91CD\u8BD5" })
     ] }),
-    foldersAvailable === true && folderMessage && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-collection-status", role: "status", children: folderMessage })
+    foldersAvailable === true && folderMessage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-collection-status", role: "status", children: folderMessage })
   ] });
-  const folderCards = /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-collection-grid", "aria-label": "\u6536\u85CF\u6587\u4EF6\u5939", children: [...folders, { id: "unfiled", name: "\u672A\u5206\u7C7B" }].map((folder) => {
+  const folderCards = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-collection-grid", "aria-label": "\u6536\u85CF\u6587\u4EF6\u5939", children: [...folders, { id: "unfiled", name: "\u672A\u5206\u7C7B" }].map((folder) => {
     const members = favorites.filter((row) => folder.id === "unfiled" ? !row.folderId : row.folderId === folder.id);
     const cover = members[0];
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-collection-card", "data-folder-id": folder.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-collection-open", "aria-label": `\u6253\u5F00\u6587\u4EF6\u5939 ${folder.name}`, onClick: () => enterFolder(folder.id), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: `ppd-collection-cover ${cover?.imageUrl ? "" : "is-empty"}`, children: [
-          cover?.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src: cover.imageUrl, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer", onError: (event) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-collection-card", "data-folder-id": folder.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-collection-open", "aria-label": `\u6253\u5F00\u6587\u4EF6\u5939 ${folder.name}`, onClick: () => enterFolder(folder.id), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: `ppd-collection-cover ${cover?.imageUrl ? "" : "is-empty"}`, children: [
+          cover?.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src: cover.imageUrl, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer", onError: (event) => {
             event.currentTarget.hidden = true;
           } }, cover.imageUrl) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-collection-mark", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FolderMark, {}) })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-collection-mark", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FolderMark, {}) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-collection-copy", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: folder.name, children: folder.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("small", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-collection-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: folder.name, children: folder.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
             members.length,
             cursor ? "+" : "",
             " \u9879\u6536\u85CF"
           ] })
         ] })
       ] }),
-      folder.id !== "unfiled" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${folder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: folder.name, folder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder }) }] })
+      folder.id !== "unfiled" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${folder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: folder.name, folder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder }) }] })
     ] }, folder.id);
   }) });
-  const folderEditorDialog = folderEditor ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-folder-editor-title", onSubmit: (event) => {
+  const folderEditorDialog = folderEditor ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-folder-editor-title", onSubmit: (event) => {
     event.preventDefault();
     void saveFolder();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { id: "ppd-folder-editor-title", children: folderEditor.mode === "create" ? "\u65B0\u5EFA\u6536\u85CF\u6587\u4EF6\u5939" : "\u4FEE\u6539\u6587\u4EF6\u5939\u540D\u79F0" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u6587\u4EF6\u5939\u540D\u79F0" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { autoFocus: true, value: folderEditor.value, maxLength: 80, onChange: (event) => setFolderEditor((current) => current ? { ...current, value: event.target.value, error: "" } : current) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { id: "ppd-folder-editor-title", children: folderEditor.mode === "create" ? "\u65B0\u5EFA\u6536\u85CF\u6587\u4EF6\u5939" : "\u4FEE\u6539\u6587\u4EF6\u5939\u540D\u79F0" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u6587\u4EF6\u5939\u540D\u79F0" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { autoFocus: true, value: folderEditor.value, maxLength: 80, onChange: (event) => setFolderEditor((current) => current ? { ...current, value: event.target.value, error: "" } : current) })
     ] }),
-    folderEditor.error && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { role: "alert", children: folderEditor.error }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "folder-editor", onClick: () => setFolderEditor(void 0), children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: busy === "folder-editor", children: "\u4FDD\u5B58" })
+    folderEditor.error && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "alert", children: folderEditor.error }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "folder-editor", onClick: () => setFolderEditor(void 0), children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: busy === "folder-editor", children: "\u4FDD\u5B58" })
     ] })
   ] }) }) : null;
-  const folderDeleteDialog = folderDelete ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6536\u85CF\u6587\u4EF6\u5939\uFF1F", description: `\u201C${folderDelete.folder.name}\u201D\u4E2D\u7684\u6536\u85CF\u4F1A\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\uFF0C\u6536\u85CF\u4E0D\u4F1A\u88AB\u53D6\u6D88\u3002`, confirmLabel: "\u5220\u9664\u6587\u4EF6\u5939", busy: busy === `folder-delete:${folderDelete.folder.id}`, error: folderDelete.error, onCancel: () => setFolderDelete(void 0), onConfirm: () => void deleteFolderConfirmed() }) : null;
+  const folderDeleteDialog = folderDelete ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6536\u85CF\u6587\u4EF6\u5939\uFF1F", description: `\u201C${folderDelete.folder.name}\u201D\u4E2D\u7684\u6536\u85CF\u4F1A\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\uFF0C\u6536\u85CF\u4E0D\u4F1A\u88AB\u53D6\u6D88\u3002`, confirmLabel: "\u5220\u9664\u6587\u4EF6\u5939", busy: busy === `folder-delete:${folderDelete.folder.id}`, error: folderDelete.error, onCancel: () => setFolderDelete(void 0), onConfirm: () => void deleteFolderConfirmed() }) : null;
   const organizationBusy = organizeItem ? favoriteResponseState.isBusy(uiLease, organizeItem.row.type, organizeItem.row.id) : false;
-  const organizeItemDialog = organizeItem ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-favorite-editor-title", onSubmit: (event) => {
+  const organizeItemDialog = organizeItem ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-favorite-editor-title", onSubmit: (event) => {
     event.preventDefault();
     void saveItemOrganization();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { id: "ppd-favorite-editor-title", children: "\u7F16\u8F91\u6536\u85CF" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { id: "ppd-favorite-editor-title", children: "\u7F16\u8F91\u6536\u85CF" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
       "\u539F\u540D\uFF1A",
       organizeItem.row.label || organizeItem.row.id
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u6211\u7684\u5907\u6CE8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { autoFocus: true, value: organizeItem.note, maxLength: 160, placeholder: "\u4E0D\u586B\u5199\u5219\u663E\u793A\u539F\u540D", onChange: (event) => setOrganizeItem((current) => current ? { ...current, note: event.target.value, error: "" } : current) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: "\u5907\u6CE8\u4EC5\u4F9B\u672C\u4EBA\u663E\u793A\u548C\u641C\u7D22\uFF0C\u4E0D\u4FEE\u6539\u539F\u6536\u85CF\u5185\u5BB9\u3002" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u6211\u7684\u5907\u6CE8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { autoFocus: true, value: organizeItem.note, maxLength: 160, placeholder: "\u4E0D\u586B\u5199\u5219\u663E\u793A\u539F\u540D", onChange: (event) => setOrganizeItem((current) => current ? { ...current, note: event.target.value, error: "" } : current) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: "\u5907\u6CE8\u4EC5\u4F9B\u672C\u4EBA\u663E\u793A\u548C\u641C\u7D22\uFF0C\u4E0D\u4FEE\u6539\u539F\u6536\u85CF\u5185\u5BB9\u3002" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u6536\u85CF\u6587\u4EF6\u5939" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("select", { value: organizeItem.folderId, disabled: foldersAvailable !== true, onChange: (event) => setOrganizeItem((current) => current ? { ...current, folderId: event.target.value, error: "" } : current), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "", children: "\u672A\u5206\u7C7B" }),
-        folders.map((folder) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: folder.id, children: folder.name }, folder.id))
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u6536\u85CF\u6587\u4EF6\u5939" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("select", { value: organizeItem.folderId, disabled: foldersAvailable !== true, onChange: (event) => setOrganizeItem((current) => current ? { ...current, folderId: event.target.value, error: "" } : current), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "\u672A\u5206\u7C7B" }),
+        folders.map((folder) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: folder.id, children: folder.name }, folder.id))
       ] })
     ] }),
-    organizeItem.error && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { role: "alert", children: organizeItem.error }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-favorite-editor-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: organizationBusy, onClick: () => void removeOrganizedItem(), children: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: organizationBusy, onClick: () => setOrganizeItem(void 0), children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: organizationBusy, children: "\u4FDD\u5B58" })
+    organizeItem.error && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "alert", children: organizeItem.error }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-favorite-editor-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: organizationBusy, onClick: () => void removeOrganizedItem(), children: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: organizationBusy, onClick: () => setOrganizeItem(void 0), children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: organizationBusy, children: "\u4FDD\u5B58" })
     ] })
   ] }) }) : null;
-  const migrationNotice = migration?.status === "blocked" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u767B\u5F55\u5C1A\u672A\u6388\u6743\u4E91\u7AEF\u6536\u85CF\uFF0C\u8BF7\u9000\u51FA\u540E\u91CD\u65B0\u767B\u5F55\u4E00\u6B21\uFF1B\u5176\u4ED6\u529F\u80FD\u4ECD\u53EF\u4F7F\u7528\u3002" }) : migration?.unknown ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "ppd-alert", role: "status", children: [
+  const migrationNotice = migration?.status === "blocked" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u767B\u5F55\u5C1A\u672A\u6388\u6743\u4E91\u7AEF\u6536\u85CF\uFF0C\u8BF7\u9000\u51FA\u540E\u91CD\u65B0\u767B\u5F55\u4E00\u6B21\uFF1B\u5176\u4ED6\u529F\u80FD\u4ECD\u53EF\u4F7F\u7528\u3002" }) : migration?.unknown ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "ppd-alert", role: "status", children: [
     "\u6709 ",
     migration.unknown,
     " \u9879\u65E7\u6536\u85CF\u7684\u8FC1\u79FB\u7ED3\u679C\u65E0\u6CD5\u786E\u8BA4\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u8BD5\uFF0C\u907F\u514D\u5DF2\u53D6\u6D88\u7684\u6536\u85CF\u88AB\u91CD\u65B0\u52A0\u56DE\u3002"
-  ] }) : migration?.rejected ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "ppd-alert", role: "status", children: [
+  ] }) : migration?.rejected ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "ppd-alert", role: "status", children: [
     migration.rejected,
     " \u9879\u65E7\u6536\u85CF\u5DF2\u5931\u6548\u6216\u65E0\u6743\u8BBF\u95EE\u3002",
-    migration.retryable && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "migration", onClick: () => void retryMigration(), children: busy === "migration" ? "\u6B63\u5728\u91CD\u8BD5\u2026" : "\u91CD\u8BD5\u5931\u8D25\u9879" })
+    migration.retryable && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "migration", onClick: () => void retryMigration(), children: busy === "migration" ? "\u6B63\u5728\u91CD\u8BD5\u2026" : "\u91CD\u8BD5\u5931\u8D25\u9879" })
   ] }) : null;
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favoriteSnapshot.error, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5907\u6CE8\u3001\u539F\u540D\u6216\u6587\u4EF6\u5939", busy: loading, onChange: setQuery, onSearch: () => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favoriteSnapshot.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5907\u6CE8\u3001\u539F\u540D\u6216\u6587\u4EF6\u5939", busy: loading, onChange: setQuery, onSearch: () => {
       const value2 = query.trim();
       setPage(1);
       if (value2 === search) void load();
@@ -25685,29 +25466,29 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
     } }),
     folderControls,
     migrationNotice,
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: loading && !rows.length, error: !rows.length ? error51 : "", empty: !rows.length && !folderOverview ? "\u6536\u85CF\u516C\u5F00 Skill \u6216\u56FE\u5E93\u56FE\u7247\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : "", children: folderOverview ? folderCards : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid", children: visible2.map((row) => {
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: loading && !rows.length, error: !rows.length ? error51 : "", empty: !rows.length && !folderOverview ? "\u6536\u85CF\u516C\u5F00 Skill \u6216\u56FE\u5E93\u56FE\u7247\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : "", children: folderOverview ? folderCards : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid", children: visible2.map((row) => {
         const originalTitle = row.label || row.id;
         const title = row.note || originalTitle;
         const subtitle = [row.note ? `\u539F\u540D\uFF1A${originalTitle}` : "", row.type === "gallery" ? "\u56FE\u5E93\u56FE\u7247" : "Skill", folderName(row.folderId) || "\u672A\u5206\u7C7B"].filter(Boolean).join(" \xB7 ");
         const responseBusy = favoriteResponseState.isBusy(uiLease, row.type, row.id);
-        return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card ppd-favorite-skill-card", "data-asset-id": row.id, "data-favorite-type": row.type, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${title}`, disabled: busy === row.id, onClick: () => void open(row), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: row.imageUrl, alt: title }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-card-copy", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title, children: cardTitle(title) }),
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { title: subtitle, children: subtitle })
+        return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card ppd-favorite-skill-card", "data-asset-id": row.id, "data-favorite-type": row.type, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${title}`, disabled: busy === row.id, onClick: () => void open(row), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: row.imageUrl, alt: title }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-card-copy", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title, children: cardTitle(title) }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { title: subtitle, children: subtitle })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6536\u85CF ${title}`, disabled: responseBusy, actions: [{ label: "\u5907\u6CE8\u4E0E\u6587\u4EF6\u5939", run: () => startOrganizing(row) }, { label: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664", danger: true, run: () => void toggleFavorite(row) }] })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6536\u85CF ${title}`, disabled: responseBusy, actions: [{ label: "\u5907\u6CE8\u4E0E\u6587\u4EF6\u5939", run: () => startOrganizing(row) }, { label: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664", danger: true, run: () => void toggleFavorite(row) }] })
         ] }, `${row.type}:${row.id}`);
       }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageNav, { page, total: rows.length, onPage: setPage })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PageNav, { page, total: rows.length, onPage: setPage })
     ] }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-load-more", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-load-more", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
         "\u5DF2\u52A0\u8F7D ",
         rows.length,
         " \u6761"
@@ -25719,19 +25500,19 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
   ] });
 }
 function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nativeSessionId }) {
-  const requestRef = (0, import_react17.useRef)(request);
-  const onUseRef = (0, import_react17.useRef)(onUse);
+  const requestRef = (0, import_react18.useRef)(request);
+  const onUseRef = (0, import_react18.useRef)(onUse);
   requestRef.current = request;
   onUseRef.current = onUse;
-  const composerRequestRef = (0, import_react17.useRef)(composerRequest);
+  const composerRequestRef = (0, import_react18.useRef)(composerRequest);
   composerRequestRef.current = composerRequest;
-  const stableRequest = (0, import_react17.useCallback)((action, args) => requestRef.current(action, args), []);
-  const stableComposerRequest = (0, import_react17.useCallback)((action, args) => composerRequestRef.current(action, args), []);
-  const stableOnUse = (0, import_react17.useCallback)((selection) => onUseRef.current(selection), []);
-  const selectionSequence = (0, import_react17.useRef)(0);
-  const [composerSelection, setComposerSelection] = (0, import_react17.useState)();
-  const [composerReveal, setComposerReveal] = (0, import_react17.useState)(0);
-  const selectForComposer = (0, import_react17.useCallback)(async (selection) => {
+  const stableRequest = (0, import_react18.useCallback)((action, args) => requestRef.current(action, args), []);
+  const stableComposerRequest = (0, import_react18.useCallback)((action, args) => composerRequestRef.current(action, args), []);
+  const stableOnUse = (0, import_react18.useCallback)((selection) => onUseRef.current(selection), []);
+  const selectionSequence = (0, import_react18.useRef)(0);
+  const [composerSelection, setComposerSelection] = (0, import_react18.useState)();
+  const [composerReveal, setComposerReveal] = (0, import_react18.useState)(0);
+  const selectForComposer = (0, import_react18.useCallback)(async (selection) => {
     if (selection.kind === "asset" || selection.kind === "gallery") {
       let ownerId = selection.ownerId;
       if (selection.kind === "gallery") {
@@ -25755,11 +25536,11 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
     setComposerSelection({ ...selection, sequence: ++selectionSequence.current });
     setComposerReveal((value2) => value2 + 1);
   }, [stableComposerRequest]);
-  const selectionConsumed = (0, import_react17.useCallback)((sequence) => setComposerSelection((current) => current?.sequence === sequence ? void 0 : current), []);
-  const [snapshot, setSnapshot] = (0, import_react17.useState)();
-  const [busy, setBusy] = (0, import_react17.useState)(false);
-  const [error51, setError] = (0, import_react17.useState)("");
-  const loadSnapshot = (0, import_react17.useCallback)(async () => {
+  const selectionConsumed = (0, import_react18.useCallback)((sequence) => setComposerSelection((current) => current?.sequence === sequence ? void 0 : current), []);
+  const [snapshot, setSnapshot] = (0, import_react18.useState)();
+  const [busy, setBusy] = (0, import_react18.useState)(false);
+  const [error51, setError] = (0, import_react18.useState)("");
+  const loadSnapshot = (0, import_react18.useCallback)(async () => {
     try {
       const { data } = await stableRequest("snapshot", {});
       setSnapshot(data);
@@ -25768,7 +25549,7 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       setError(displayError2(error52));
     }
   }, [stableRequest]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     const polling = startVisiblePolling(async () => {
       await loadSnapshot();
       return null;
@@ -25803,10 +25584,10 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
   const pendingCount = snapshot?.pending.generations || 0;
   const accountKey = snapshot?.account.userId || "anonymous";
   const accountUiScope = snapshot ? JSON.stringify([accountKey, snapshot.account.uiScope || "legacy", nativeSessionId || ""]) : "pending";
-  const uiLease = (0, import_react17.useMemo)(() => createPanelUiLease(accountUiScope), [accountUiScope]);
-  const [historyOpen, setHistoryOpen] = (0, import_react17.useState)(false);
-  const panelScroll = (0, import_react17.useRef)(null);
-  (0, import_react17.useLayoutEffect)(() => {
+  const uiLease = (0, import_react18.useMemo)(() => createPanelUiLease(accountUiScope), [accountUiScope]);
+  const [historyOpen, setHistoryOpen] = (0, import_react18.useState)(false);
+  const panelScroll = (0, import_react18.useRef)(null);
+  (0, import_react18.useLayoutEffect)(() => {
     if (!snapshot) return;
     const node = panelScroll.current;
     if (!node) return;
@@ -25815,55 +25596,55 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       writePanelUiState(uiLease, `scroll:${section}`, node.scrollTop);
     };
   }, [section, snapshot?.account.userId, snapshot?.account.uiScope, uiLease]);
-  const [submission, setSubmission] = (0, import_react17.useState)();
-  (0, import_react17.useEffect)(() => {
+  const [submission, setSubmission] = (0, import_react18.useState)();
+  (0, import_react18.useEffect)(() => {
     setHistoryOpen(false);
     setSubmission(void 0);
   }, [section, accountKey]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     if (historyOpen) panelScroll.current?.scrollTo({ top: 0 });
   }, [historyOpen]);
-  const onSubmission = (0, import_react17.useCallback)((operation, error52, starting = false) => {
+  const onSubmission = (0, import_react18.useCallback)((operation, error52, starting = false) => {
     setSubmission({ operation, error: error52, ownerId: accountKey });
     if (starting) setHistoryOpen(false);
   }, [accountKey]);
-  const onVerification = (0, import_react17.useCallback)((operation) => {
+  const onVerification = (0, import_react18.useCallback)((operation) => {
     setSubmission(operation ? { operation, ownerId: accountKey } : void 0);
     setHistoryOpen(!!operation);
   }, [accountKey]);
   const composerSection = section === "generation" || section === "gallery" || section === "skills" || section === "assets";
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("main", { className: `ppd-panel ppd-panel-${section}`, "data-podplo-panel": section, "data-podplo-session": nativeSessionId, "data-podplo-history-open": historyOpen, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { ref: panelScroll, className: "ppd-panel-scroll", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(AccountBar, { snapshot, busy, onAccountAction: (action) => void accountAction(action), onRefresh: () => void refresh(), request: stableRequest }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-      snapshot && section === "generation" && !historyOpen && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => setHistoryOpen(true), children: "\u5904\u7406\u8BB0\u5F55" }) }),
-      snapshot && historyOpen && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-content ppd-history-content", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GenerationHistory, { request: stableComposerRequest, submission: submission?.ownerId === accountKey ? submission : void 0, onBack: () => setHistoryOpen(false), renderAsset: (id) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id, alt: "\u751F\u6210\u7ED3\u679C", request: stableComposerRequest, revision: 0 }) }, accountUiScope) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: !error51, error: error51, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "image-to-text" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageToTextPanel, { request: stableRequest }, accountUiScope) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(LocalResults, { request: stableRequest, uiLease }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(CollectionsPanel, { request: stableRequest, ownerId: accountKey, onUse: selectForComposer, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, uiLease }, accountUiScope) })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("main", { className: `ppd-panel ppd-panel-${section}`, "data-podplo-panel": section, "data-podplo-session": nativeSessionId, "data-podplo-history-open": historyOpen, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { ref: panelScroll, className: "ppd-panel-scroll", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(AccountBar, { snapshot, busy, onAccountAction: (action) => void accountAction(action), onRefresh: () => void refresh(), request: stableRequest }),
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+      snapshot && section === "generation" && !historyOpen && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => setHistoryOpen(true), children: "\u5904\u7406\u8BB0\u5F55" }) }),
+      snapshot && historyOpen && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-content ppd-history-content", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationHistory, { request: stableComposerRequest, submission: submission?.ownerId === accountKey ? submission : void 0, onBack: () => setHistoryOpen(false), renderAsset: (id) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id, alt: "\u751F\u6210\u7ED3\u679C", request: stableComposerRequest, revision: 0 }) }, accountUiScope) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: !error51, error: error51, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(LocalResults, { request: stableRequest, uiLease }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CollectionsPanel, { request: stableRequest, ownerId: accountKey, onUse: selectForComposer, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, uiLease }, accountUiScope) })
     ] }),
-    snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { hidden: historyOpen, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) })
+    snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { hidden: historyOpen, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) })
   ] });
 }
 
 // plugins/podplo-dsh/src/workspace.tsx
-var import_jsx_runtime19 = require("react/jsx-runtime");
+var import_jsx_runtime18 = require("react/jsx-runtime");
 function PodploWorkspace({ request, composerRequest = request, onUse, nativeSessionId, navigator: navigator2, onSelectSection }) {
-  const section = (0, import_react18.useSyncExternalStore)(navigator2.subscribe, navigator2.getSnapshot, navigator2.getSnapshot);
-  const navigate = (0, import_react18.useCallback)((next) => {
+  const section = (0, import_react19.useSyncExternalStore)(navigator2.subscribe, navigator2.getSnapshot, navigator2.getSnapshot);
+  const navigate = (0, import_react19.useCallback)((next) => {
     navigator2.navigate(next);
     onSelectSection?.(next);
   }, [navigator2, onSelectSection]);
-  (0, import_react18.useEffect)(() => {
+  (0, import_react19.useEffect)(() => {
     const current = readPodploNavigationPreferences();
     if (current.lastSection !== section) writePodploNavigationPreferences({ ...current, lastSection: section });
   }, [section]);
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "ppd-workspace", "data-podplo-workspace": true, "data-podplo-section": section, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "ppd-workspace-main", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(PodploPanel, { section, request, composerRequest, onUse, nativeSessionId, onNavigate: navigate }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-workspace", "data-podplo-workspace": true, "data-podplo-section": section, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-workspace-main", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PodploPanel, { section, request, composerRequest, onUse, nativeSessionId, onNavigate: navigate }) }) });
 }
 
 // plugins/podplo-dsh/src/style.css
 var style_default = '.ppd-panel{--ppd-bg:#fff;--ppd-surface:#f7f7f5;--ppd-line:#e5e5e1;--ppd-text:#252522;--ppd-muted:#74746d;--ppd-accent:#252522;--ppd-soft:#efefeb;--ppd-danger:#a53a31;box-sizing:border-box;min-height:100%;background:var(--ppd-bg);color:var(--ppd-text);font:14px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-panel *{box-sizing:border-box}.ppd-panel button,.ppd-panel input,.ppd-panel textarea,.ppd-panel select{font:inherit;color:inherit}.ppd-panel button{cursor:pointer}.ppd-panel button:disabled{cursor:not-allowed;opacity:.48}.ppd-content{max-width:1180px;margin:0 auto;padding:28px 30px 64px}.ppd-account{position:sticky;z-index:20;top:0;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px;border-bottom:1px solid var(--ppd-line);background:#ffffffef;backdrop-filter:blur(14px)}.ppd-connection,.ppd-account-meta,.ppd-actions,.ppd-toolbar-row{display:flex;align-items:center;gap:10px}.ppd-connection>div{display:grid;line-height:1.3}.ppd-connection strong{font-size:12px;font-weight:650}.ppd-connection small{font-size:10px;color:var(--ppd-muted)}.ppd-dot{width:8px;height:8px;border-radius:50%;background:#b7b7b1;box-shadow:0 0 0 3px #b7b7b11c}.ppd-dot.is-online{background:#45a06b;box-shadow:0 0 0 3px #45a06b1c}.ppd-account-meta{font-size:11px;color:var(--ppd-muted)}.ppd-phase{padding:3px 7px;border-radius:999px;background:var(--ppd-soft)}.ppd-button,.ppd-icon-button,.ppd-back{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;text-decoration:none;white-space:nowrap}.ppd-button:hover,.ppd-icon-button:hover,.ppd-back:hover{border-color:#cacac3;background:#fafaf8}.ppd-button-primary{border-color:var(--ppd-accent);background:var(--ppd-accent);color:#fff}.ppd-button-primary:hover{border-color:#000;background:#000}.ppd-button-quiet{min-height:29px;padding:5px 9px;background:transparent}.ppd-button-danger{border-color:#dec0bb;color:var(--ppd-danger);background:#fff9f8}.ppd-button-danger:hover{border-color:var(--ppd-danger);background:#fff4f2}.ppd-icon-button{width:32px;min-height:32px;padding:0}.ppd-icon{display:inline-grid;place-items:center;min-width:1em;font-size:15px;line-height:1}.ppd-danger{color:var(--ppd-danger)}.ppd-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap;border:0}.ppd-alert,.ppd-notice{max-width:1180px;margin:12px auto 0;padding:10px 12px;border-radius:8px;font-size:12px}.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}.ppd-notice{border:1px solid #cbe0d2;background:#f4fbf6;color:#326f48}.ppd-pending{max-width:1180px;margin:12px auto 0;border:1px solid #e6ddc6;border-radius:10px;background:#fffcf5;overflow:hidden}.ppd-pending-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;padding:11px 14px;border:0;background:transparent;text-align:left}.ppd-pending-toggle span{font-weight:620}.ppd-pending-toggle small{color:var(--ppd-muted)}.ppd-pending-list{display:grid;gap:8px;padding:0 12px 12px}.ppd-pending-list>article{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;align-items:center;gap:16px;padding:12px;border-top:1px solid #ece4d2}.ppd-pending-list>article>div:first-child{display:grid}.ppd-pending-list span{font-size:12px;color:var(--ppd-muted)}.ppd-pending-list dl{display:flex;gap:14px;margin:0}.ppd-pending-list dl div{display:grid}.ppd-pending-list dt{font-size:10px;color:var(--ppd-muted)}.ppd-pending-list dd{margin:0;font-weight:650}.ppd-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}.ppd-section-heading h1,.ppd-detail h2,.ppd-editor h2{margin:1px 0 4px;font-size:25px;line-height:1.2;letter-spacing:-.025em}.ppd-section-heading p{margin:0;color:var(--ppd-muted)}.ppd-section-heading>span{font-size:12px;color:var(--ppd-muted)}.ppd-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:700;color:#8b8b84}.ppd-tabs{display:flex;gap:3px;width:max-content;margin:0 0 20px;padding:3px;border-radius:9px;background:var(--ppd-soft)}.ppd-tabs button{min-width:96px;padding:7px 12px;border:0;border-radius:7px;background:transparent;color:var(--ppd-muted)}.ppd-tabs button.is-active{background:#fff;color:var(--ppd-text);box-shadow:0 1px 4px #1111}.ppd-search{display:flex;align-items:center;gap:8px;margin:0 0 20px}.ppd-search label{position:relative;display:flex;align-items:center;flex:1;min-width:180px}.ppd-search label>.ppd-icon{position:absolute;left:11px;color:#8f8f88}.ppd-search input,.ppd-search select,.ppd-inline-input input,.ppd-editor input,.ppd-editor textarea{width:100%;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;outline:none}.ppd-search input{height:38px;padding:8px 12px 8px 34px}.ppd-search select{width:auto;height:38px;padding:7px 31px 7px 10px}.ppd-search input:focus,.ppd-search select:focus,.ppd-inline-input input:focus,.ppd-editor input:focus,.ppd-editor textarea:focus{border-color:#aaa9a1;box-shadow:0 0 0 3px #2221}.ppd-toolbar-row{align-items:flex-start;justify-content:space-between}.ppd-toolbar-row>.ppd-search{flex:1}.ppd-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 13px}.ppd-card{position:relative;min-width:0}.ppd-card-open{display:block;width:100%;padding:0;border:0;background:none;text-align:left}.ppd-card-open:hover .ppd-image img{transform:scale(1.02)}.ppd-image{display:grid;place-items:center;width:100%;aspect-ratio:1;overflow:hidden;border-radius:9px;background:var(--ppd-surface);color:#aaa}.ppd-image img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .18s ease}.ppd-image-pair{grid-template-columns:1fr 1fr}.ppd-image-pair img{min-width:0;object-fit:cover}.ppd-card-copy{display:grid;gap:3px;margin-top:8px;padding-right:28px}.ppd-card-copy strong,.ppd-card-copy span,.ppd-card-copy small{overflow:hidden;text-overflow:ellipsis}.ppd-card-copy strong{white-space:nowrap;font-size:12px;font-weight:650}.ppd-card-copy span{display:-webkit-box;min-height:34px;color:var(--ppd-muted);font-size:11px;-webkit-line-clamp:2;-webkit-box-orient:vertical}.ppd-card-copy small{white-space:nowrap;color:#989891;font-size:10px}.ppd-favorite{position:absolute;top:7px;right:7px;display:grid;place-items:center;width:27px;height:27px;padding:0;border:1px solid #ffffff80;border-radius:50%;background:#ffffffed;color:#666;box-shadow:0 1px 6px #1112}.ppd-favorite.is-active{color:#b14657;background:#fff4f5}.ppd-favorite.is-active .ppd-icon{font-size:0}.ppd-favorite.is-active .ppd-icon::after{content:"\u2665";font-size:15px}.ppd-card-use{position:absolute;right:0;bottom:0;padding:2px 0;border:0;background:none;color:#5e6e91;font-size:10px}.ppd-card-delete{position:absolute;left:0;bottom:0;padding:2px;border:0;background:none;color:var(--ppd-danger)}.ppd-load-more{display:flex;justify-content:center;margin-top:28px}.ppd-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;color:var(--ppd-muted);font-size:11px}.ppd-pagination button{padding:5px 10px;border:1px solid var(--ppd-line);border-radius:7px;background:#fff}.ppd-state{display:grid;place-items:center;gap:6px;min-height:220px;padding:30px;border:1px dashed var(--ppd-line);border-radius:10px;text-align:center;color:var(--ppd-muted)}.ppd-state strong{color:var(--ppd-text)}.ppd-state.ppd-error{color:var(--ppd-danger)}.ppd-spinner{width:18px;height:18px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-spin .75s linear infinite}@keyframes ppd-spin{to{transform:rotate(360deg)}}.ppd-detail-header{display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:start;gap:15px;margin-bottom:25px}.ppd-back{justify-self:start;border-color:transparent;background:transparent;padding-left:0}.ppd-detail-grid{display:grid;grid-template-columns:minmax(320px,1.1fr) minmax(280px,.9fr);gap:30px}.ppd-detail-grid>.ppd-image{aspect-ratio:auto;min-height:360px;max-height:70vh}.ppd-detail-copy{min-width:0}.ppd-detail-copy h3{margin:0 0 10px;font-size:13px}.ppd-detail-copy dl{display:grid;margin:0 0 20px}.ppd-detail-copy dl>div{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--ppd-line)}.ppd-detail-copy dt{color:var(--ppd-muted)}.ppd-detail-copy dd{margin:0}.ppd-lead{margin-top:0;white-space:pre-wrap;color:#55554f}.ppd-tags{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0}.ppd-tags span{padding:3px 7px;border-radius:999px;background:var(--ppd-soft);font-size:10px;color:#676761}.ppd-skill-facts{display:grid;gap:16px;margin-top:24px}.ppd-skill-facts section{border-top:1px solid var(--ppd-line);padding-top:12px}.ppd-skill-facts ul{margin:0;padding-left:18px;color:#575751}.ppd-family-intro{margin:-8px 0 24px}.ppd-family-intro p{max-width:760px;color:var(--ppd-muted)}.ppd-family-grid .ppd-card-copy{padding-right:0}.ppd-list{display:grid;gap:8px}.ppd-list>article{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:8px;padding:12px 13px;border:1px solid var(--ppd-line);border-radius:10px}.ppd-list-open{display:grid;gap:2px;min-width:0;padding:0;border:0;background:none;text-align:left}.ppd-list-open strong,.ppd-list-open span,.ppd-list-open small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-list-open span{color:var(--ppd-muted)}.ppd-list-open small{font-size:10px;color:#999}.ppd-editor{max-width:900px;margin:0 auto}.ppd-editor>header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}.ppd-editor fieldset{display:grid;gap:18px;margin:0;padding:0;border:0}.ppd-editor label{display:grid;gap:6px}.ppd-editor label>span{font-weight:620}.ppd-editor label small{font-weight:400;color:var(--ppd-muted)}.ppd-editor input,.ppd-editor textarea{padding:9px 11px;resize:vertical}.ppd-editor .ppd-prompt{min-height:180px;line-height:1.65}.ppd-editor>footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px;padding-top:16px;border-top:1px solid var(--ppd-line)}.ppd-editor>footer span{font-size:11px;color:var(--ppd-muted)}.ppd-form-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}.ppd-form-heading h3{margin:0;font-size:13px}.ppd-form-heading p{margin:2px 0;color:var(--ppd-muted);font-size:11px}.ppd-form-heading>span{font-size:11px;color:var(--ppd-muted)}.ppd-reference-editor>ol{display:grid;gap:6px;margin:0;padding:0;list-style:none}.ppd-reference-editor>ol li{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto auto;align-items:center;gap:7px;padding:8px;border:1px solid var(--ppd-line);border-radius:8px}.ppd-reference-editor>ol li>span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ppd-soft);font-size:10px}.ppd-reference-editor>ol li>div{display:grid;min-width:0}.ppd-reference-editor>ol strong{font-size:11px}.ppd-reference-editor>ol small{overflow:hidden;text-overflow:ellipsis;color:var(--ppd-muted);font-size:9px}.ppd-reference-choices{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.ppd-reference-choices button{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 8px;border:1px solid var(--ppd-line);border-radius:7px;background:var(--ppd-surface);font-size:10px}.ppd-inline-input{display:flex;gap:7px}.ppd-inline-input input{min-width:0;padding:8px 10px}.ppd-conflict{display:grid;gap:4px;margin-bottom:16px;padding:12px;border:1px solid #e8c9a8;border-radius:9px;background:#fff9f1;color:#7d4e24}.ppd-conflict .ppd-button{justify-self:start;margin-top:6px}.ppd-user-skill-detail{display:grid;gap:18px;max-width:850px;margin-left:105px}.ppd-user-skill-detail>p{color:var(--ppd-muted)}.ppd-user-skill-detail section{padding:15px;border-radius:10px;background:var(--ppd-surface)}.ppd-user-skill-detail h3{margin:0 0 8px;font-size:12px}.ppd-user-skill-detail pre{max-height:300px;margin:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.ppd-user-skill-detail ol{margin:0;padding-left:22px;font-size:11px;color:var(--ppd-muted)}.ppd-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.ppd-break{overflow-wrap:anywhere}.ppd-dialog-backdrop{position:fixed;z-index:100;inset:0;display:grid;place-items:center;padding:24px;background:#16161355;backdrop-filter:blur(2px)}.ppd-dialog{width:min(440px,100%);padding:24px;border:1px solid var(--ppd-line);border-radius:13px;background:#fff;box-shadow:0 24px 80px #1114}.ppd-dialog h2{margin:0 0 9px;font-size:18px}.ppd-dialog p{margin:0 0 22px;color:var(--ppd-muted)}.ppd-dialog .ppd-actions{justify-content:flex-end}\n@media(max-width:980px){.ppd-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ppd-detail-grid{grid-template-columns:1fr}.ppd-detail-grid>.ppd-image{min-height:300px}.ppd-pending-list>article{grid-template-columns:1fr}.ppd-user-skill-detail{margin-left:0}}\n@media(max-width:720px){.ppd-content{padding:20px 16px 48px}.ppd-account{align-items:flex-start;padding:10px 14px}.ppd-connection small,.ppd-phase,.ppd-account-meta>span:first-child{display:none}.ppd-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}.ppd-search,.ppd-toolbar-row,.ppd-section-heading{align-items:stretch;flex-wrap:wrap}.ppd-search label{flex-basis:100%}.ppd-search select{flex:1}.ppd-toolbar-row>.ppd-search{flex-basis:100%}.ppd-detail-header{grid-template-columns:1fr}.ppd-detail-header>.ppd-actions{flex-wrap:wrap}.ppd-detail-grid>.ppd-image{min-height:240px}.ppd-list>article{grid-template-columns:minmax(0,1fr) auto auto}.ppd-list>article>.ppd-button{grid-column:1/-1}.ppd-editor>footer{align-items:stretch;flex-direction:column}.ppd-user-skill-detail{margin-left:0}.ppd-pending{margin-inline:12px}}\n.ppd-pending-list>article{grid-template-columns:minmax(180px,.8fr) auto minmax(240px,1fr) auto}.ppd-batch-copy{display:grid;min-width:0}.ppd-batch-copy small{font-size:10px;color:#9a693c}.ppd-batch-summary{align-self:start}.ppd-batch-progress{display:grid;gap:5px;min-width:0}.ppd-batch-progress progress{width:100%;height:6px;border:0;border-radius:999px;overflow:hidden;background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-bar{background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-value{background:#6b826d}.ppd-batch-progress>span{font-size:10px;color:var(--ppd-muted)}.ppd-batch-progress details{font-size:10px}.ppd-batch-progress summary{cursor:pointer;color:#5d6680}.ppd-batch-progress ol{display:grid;gap:4px;max-height:180px;margin:7px 0 0;padding:0;overflow:auto;list-style:none}.ppd-batch-progress li{display:grid;grid-template-columns:20px minmax(70px,1fr) auto;gap:5px;align-items:center;padding:5px 6px;border-radius:6px;background:#fff}.ppd-batch-progress li>span{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--ppd-soft);font-size:9px}.ppd-batch-progress code{overflow:hidden;text-overflow:ellipsis;font:9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ppd-muted)}.ppd-batch-progress li>strong{font-size:10px}.ppd-batch-progress li>small{grid-column:2/-1;color:var(--ppd-muted);font-size:9px}.ppd-batch-progress li[data-status="submission_unknown"]>strong,.ppd-batch-progress li[data-status="failed"]>strong{color:var(--ppd-danger)}\n.ppd-native-composer{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:6px 8px;border-top:1px solid #e5e5e1;color:#686862;font:11px/1.4 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-native-composer>span{margin-right:3px;font-weight:700;color:#343431}.ppd-native-composer button{min-height:25px;padding:3px 8px;border:1px solid #e1e1dc;border-radius:7px;background:#fff;color:#50504b;font:inherit;cursor:pointer}.ppd-native-composer button:hover{border-color:#c9c9c2;background:#f8f8f5}.ppd-native-composer small{flex-basis:100%;padding:3px 7px;border-radius:6px;background:#f3f6ef;color:#52705a}\n@media(max-width:1180px){.ppd-pending-list>article{grid-template-columns:1fr auto}.ppd-batch-progress{grid-column:1/-1}.ppd-pending-list>article>.ppd-actions{justify-self:end}}@media(max-width:620px){.ppd-pending-list>article{grid-template-columns:1fr}.ppd-pending-list>article>.ppd-actions{justify-self:start}.ppd-batch-progress{grid-column:auto}}\n.ppd-pending-list>article[data-terminal=true]{background:#fafaf7;opacity:.92}.ppd-favorites-import{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:-8px 0 14px}.ppd-favorites-import>small{color:var(--ppd-muted);font-size:10px}.ppd-favorites-import>p{flex-basis:100%;margin:0;padding:7px 9px;border-radius:7px;background:var(--ppd-surface);font-size:11px}.ppd-favorites-import>section{flex-basis:100%;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-favorites-import>section ul{max-height:160px;margin:8px 0;padding-left:20px;overflow:auto}.ppd-favorites-import>section .ppd-button{margin-right:7px}\n.ppd-button-stop{border-color:#dec9a8;background:#fffaf1;color:#81591f}.ppd-button-stop:hover{border-color:#b98b45;background:#fff5e4}\n.ppd-panel .ppd-button-primary,.ppd-panel .ppd-button-primary:hover{color:#fff}\n.ppd-dialog p.ppd-alert{margin:0 0 14px;color:#92352d}.ppd-favorites-import>p.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}\n.ppd-panel{width:100%;height:100%;min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}\n.ppd-card-copy>span,.ppd-card-copy>small{display:none}\n.ppd-export-result{display:grid;gap:8px;margin-top:14px;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-export-result code{font-size:10px;color:var(--ppd-muted)}\n/* Keep Skill previews inside their frame, including tall originals and before/after pairs. */\n.ppd-panel-skills .ppd-image{grid-template-rows:minmax(0,1fr)}\n.ppd-panel-skills .ppd-image img{min-width:0;min-height:0;object-fit:contain}\n.ppd-panel-skills .ppd-card-open:hover .ppd-image img{transform:none}\n\n/* Public Skill card titles use the full card width. */\n.ppd-panel-skills .ppd-grid:not(.ppd-family-grid) .ppd-card-copy{padding-right:0;text-align:center}\n\n/* Personal Skill references: local upload and visual browsing. */\n.ppd-skill-reference-actions{margin:14px 0;flex-wrap:wrap}\n.ppd-reference-editor>ol li{grid-template-columns:24px 52px minmax(0,1fr) auto auto auto}\n.ppd-reference-editor>ol li>.ppd-image{width:52px;height:52px;aspect-ratio:1;border-radius:5px}\n.ppd-reference-editor>ol strong{overflow-wrap:anywhere}\n.ppd-reference-editor .ppd-image span{padding:3px;font-size:10px;text-align:center}\n.ppd-upload-picker{padding:14px;border:1px solid var(--ppd-line);border-radius:9px}\n.ppd-upload-picker .ppd-search{margin-bottom:14px}\n.ppd-upload-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}\n.ppd-upload-grid>button{display:grid;min-width:0;gap:4px;padding:6px;border:1px solid var(--ppd-line);border-radius:8px;background:var(--ppd-surface);text-align:left;cursor:pointer}\n.ppd-upload-grid>button[aria-pressed=true]{border-color:var(--ppd-text)}\n.ppd-upload-grid>button:disabled{cursor:default;opacity:.6}\n.ppd-upload-grid .ppd-image{width:100%;aspect-ratio:1;border-radius:4px}\n.ppd-upload-grid strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}\n.ppd-upload-grid small{color:var(--ppd-muted);font-size:10px}\n.ppd-user-skill-detail .ppd-skill-reference-detail{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;padding:0;list-style:none}\n.ppd-skill-reference-detail li{min-width:0;overflow-wrap:anywhere}\n.ppd-skill-reference-detail .ppd-image{aspect-ratio:1;margin-bottom:5px}\n@media(max-width:600px){.ppd-upload-picker{padding:10px}.ppd-reference-editor>ol li{grid-template-columns:20px 40px minmax(0,1fr) auto auto auto;gap:4px;padding:6px}.ppd-reference-editor>ol li>.ppd-image{width:40px;height:40px}.ppd-reference-editor>ol .ppd-icon-button{padding:3px}}\n\n/* Library controls share one baseline; group navigation belongs only to lists. */\n.ppd-library-toolbar{display:flex;align-items:center;gap:16px;min-width:0;margin:0 0 24px}\n.ppd-library-toolbar>.ppd-tabs{flex:0 0 auto;margin:0}\n.ppd-tabs{max-width:100%;padding:3px;border-radius:999px;background:#f1f1ee;gap:2px}\n.ppd-panel .ppd-tabs button{font-size:12px;line-height:1.4;min-width:64px;min-height:28px;padding:5px 12px;border-radius:999px;white-space:nowrap;transition:background-color .15s ease,color .15s ease}\n.ppd-tabs button.is-active{background:var(--ppd-text);color:#fff;box-shadow:none}\n.ppd-tabs button:not(.is-active){color:#686861}\n.ppd-tabs button:not(.is-active):hover{background:#e7e7e2;color:var(--ppd-text)}\n.ppd-library-toolbar>.ppd-search{flex:0 1 auto;min-width:0;max-width:100%;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar .ppd-search label{min-width:120px;width:224px;max-width:224px;flex:0 1 224px}\n.ppd-library-toolbar .ppd-search input{height:34px;border-radius:999px}\n.ppd-library-toolbar .ppd-search select{max-width:150px;height:32px}\n.ppd-library-toolbar .ppd-search>.ppd-button{min-height:32px;padding-block:5px}\n.ppd-panel .ppd-library-toolbar input,.ppd-panel .ppd-library-toolbar select,.ppd-panel .ppd-library-toolbar button{font-size:12px}\n.ppd-toolbar-row:has(.ppd-library-toolbar){align-items:center;gap:12px;margin-bottom:24px}\n.ppd-toolbar-row>.ppd-library-toolbar{flex:1;margin-bottom:0}\n.ppd-panel button:focus-visible{outline:2px solid var(--ppd-text);outline-offset:3px}\n.ppd-upload-area{display:flex;align-items:center;flex:none}\n.ppd-upload-area>.ppd-icon-button{width:32px;height:32px;border-radius:50%}\n.ppd-upload-area .ppd-icon{font-size:20px}\n.ppd-library-toolbar>.ppd-archive-toolbar{flex:0 1 auto;min-width:0;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;min-width:120px;width:224px;max-width:224px;height:34px;padding-inline:14px;border-radius:999px;font:inherit}\n.ppd-library-toolbar>.ppd-archive-toolbar select,.ppd-library-toolbar>.ppd-archive-toolbar button{min-height:32px;white-space:nowrap}\n\n/* Web detail hierarchy: full result on the left, reference and information on the right. */\n.ppd-resource-detail>.ppd-back{position:sticky;top:64px;z-index:5;margin-bottom:20px;padding-inline:12px;border-radius:999px;background:var(--ppd-bg)}\n.ppd-resource-detail-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);gap:40px;align-items:start}\n.ppd-resource-visual,.ppd-resource-info{min-width:0}\n.ppd-resource-info>h2{margin:0 0 28px;font-size:28px;font-weight:650;line-height:1.2;overflow-wrap:anywhere}\n.ppd-detail-artwork,.ppd-detail-reference{margin:0}\n.ppd-detail-artwork>figcaption,.ppd-detail-reference>figcaption{margin-bottom:10px;font-size:12px;color:var(--ppd-muted)}\n.ppd-detail-artwork>button{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(360px,56vw,660px);padding:24px;border:0;border-radius:14px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-artwork>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-detail-reference{margin-bottom:28px}\n.ppd-detail-reference>button{display:block;width:88px;height:88px;padding:0;overflow:hidden;border:0;border-radius:10px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-reference>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-resource-about{margin-bottom:28px}\n.ppd-resource-info h3{margin:0 0 10px;font-size:13px;font-weight:550;color:var(--ppd-muted)}\n.ppd-resource-about p{margin:0;font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}\n.ppd-resource-info .ppd-skill-facts{margin:0;gap:20px}\n.ppd-resource-info .ppd-skill-facts section{padding:0;border:0}\n.ppd-resource-info .ppd-skill-facts ul{margin:0;padding-left:18px;line-height:1.7}\n.ppd-resource-info .ppd-skill-facts p{margin:0;line-height:1.7}\n.ppd-resource-info .ppd-tags{gap:6px;margin:20px 0}\n.ppd-resource-info .ppd-tags span{padding:5px 10px;font-size:12px}\n.ppd-resource-facts{margin:0}\n.ppd-resource-facts>div{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--ppd-line)}\n.ppd-resource-facts dt{color:var(--ppd-muted)}\n.ppd-resource-facts dd{margin:0;text-align:right;overflow-wrap:anywhere}\n.ppd-resource-detail-actions{display:flex;align-items:center;gap:12px;margin-top:28px}\n.ppd-resource-detail-actions>.ppd-button-primary{flex:1;min-height:44px;border-radius:999px}\n.ppd-resource-detail-actions>.ppd-favorite{position:static;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--ppd-line);box-shadow:none}\n.ppd-media-dialog{position:fixed;inset:0;width:min(980px,92vw);max-width:92vw;height:min(900px,90vh);max-height:90vh;margin:auto;padding:16px;border:0;border-radius:14px;background:var(--ppd-bg);color:var(--ppd-text)}\n.ppd-media-dialog[open]{display:flex;flex-direction:column;gap:12px}\n.ppd-media-dialog::backdrop{background:#0009}\n.ppd-media-dialog>.ppd-button{align-self:flex-end;flex:none}\n.ppd-media-dialog>img{display:block;min-height:0;width:100%;height:100%;flex:1;object-fit:contain}\n@media(max-width:960px){\n .ppd-library-toolbar{gap:12px}\n .ppd-library-toolbar .ppd-search select{max-width:110px}\n .ppd-panel .ppd-tabs button{padding-inline:10px;min-width:60px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:28px}\n .ppd-resource-info>h2{font-size:24px}\n .ppd-toolbar-row:has(.ppd-library-toolbar){flex-wrap:wrap;justify-content:flex-end}\n .ppd-toolbar-row>.ppd-library-toolbar{flex-basis:100%}\n}\n@media(max-width:700px){\n .ppd-library-toolbar{flex-wrap:wrap;gap:14px}\n .ppd-library-toolbar>.ppd-search,.ppd-library-toolbar>.ppd-archive-toolbar{flex-basis:100%;flex-wrap:wrap}\n .ppd-library-toolbar .ppd-search label{flex:0 1 224px;width:224px;max-width:224px}\n .ppd-library-toolbar .ppd-search select{max-width:none}\n .ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;width:224px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1fr);gap:28px}\n .ppd-detail-artwork>button{height:clamp(300px,85vw,520px);padding:18px}\n .ppd-resource-info>h2{font-size:24px;margin-bottom:22px}\n .ppd-resource-detail-actions{margin-top:24px}\n .ppd-media-dialog{padding:12px}\n}\n@media(prefers-reduced-motion:reduce){.ppd-tabs button{transition:none}}\n\n.ppd-archive-empty{margin:24px 0;color:var(--ppd-muted);font-size:12px}\n\n.ppd-account{display:block}.ppd-account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.ppd-plugin-update{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:7px;font-size:11px;color:var(--ppd-muted)}.ppd-plugin-version{min-width:0;max-width:100%;overflow-wrap:anywhere}.ppd-plugin-update-message{flex-basis:100%;line-height:1.5}.ppd-plugin-update-message.is-error{color:#9b3030}.ppd-plugin-update .ppd-button{padding:4px 9px;font-size:11px}.ppd-account-row .ppd-connection{min-width:0}.ppd-account-row .ppd-connection strong{overflow-wrap:anywhere}\n\n/* A single compact account row; secondary account and update actions live in the disclosure. */\n.ppd-account{padding:6px 20px;background:var(--ppd-bg);backdrop-filter:none}\n.ppd-account-row{min-height:28px;gap:12px}\n.ppd-account-row .ppd-connection{flex:1;gap:8px;overflow:hidden}\n.ppd-account-row .ppd-connection>div{min-width:0}\n.ppd-account-row .ppd-connection strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:550}\n.ppd-account-row .ppd-dot{flex:0 0 7px;width:7px;height:7px;box-shadow:none}\n.ppd-account .ppd-account-meta{flex:0 0 auto;gap:8px;font-size:12px;color:#62625c;white-space:nowrap}\n.ppd-account .ppd-account-balance{display:inline-flex;font-variant-numeric:tabular-nums}\n.ppd-account .ppd-phase{display:inline-flex;padding:0;background:none;color:inherit}\n.ppd-account-meta>.ppd-icon-button,.ppd-account-menu>summary{width:28px;height:28px;min-height:28px;border:0;border-radius:6px;background:transparent}\n.ppd-account-menu{flex:none}\n.ppd-account-menu>summary{display:flex;align-items:center;justify-content:center;cursor:pointer;list-style:none;color:#62625c}\n.ppd-account-menu>summary::-webkit-details-marker{display:none}\n.ppd-account-menu>summary:hover,.ppd-account-menu[open]>summary{background:var(--ppd-soft)}\n.ppd-account-menu>summary:focus-visible{outline:2px solid #66665f;outline-offset:2px}\n.ppd-account-menu-panel{position:absolute;z-index:30;top:calc(100% + 6px);right:12px;width:min(300px,calc(100% - 24px));padding:16px;border:1px solid var(--ppd-line);border-radius:10px;background:var(--ppd-bg);box-shadow:0 8px 24px #00000014;color:var(--ppd-text);white-space:normal}\n.ppd-account-menu-heading{display:grid;gap:5px;font-size:13px}\n.ppd-account-menu-heading>span{overflow-wrap:anywhere;font-size:12px;color:#62625c}\n.ppd-account-menu-panel .ppd-plugin-update{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--ppd-line);gap:8px}\n.ppd-account-menu-panel .ppd-plugin-version:first-child{flex-basis:100%;margin-bottom:2px;font-size:12px}\n.ppd-account-menu-panel .ppd-plugin-update .ppd-button{min-height:30px;font-size:12px}\n.ppd-account-menu-panel .ppd-account-logout{margin-top:12px;width:100%;justify-content:flex-start;border:0;border-top:1px solid var(--ppd-line);border-radius:0;padding:12px 0 0;color:#62625c}\n.ppd-account-warning{margin:5px 0 0;color:#92352d;font-size:12px;line-height:1.5;overflow-wrap:anywhere}\n@media(max-width:720px){.ppd-account{padding:6px 12px}.ppd-account-row{gap:8px}.ppd-account .ppd-account-meta{gap:6px}.ppd-account .ppd-account-meta>.ppd-account-balance{display:inline-flex}}\n\n/* Favorite collections: image covers and quiet, contextual controls. */\n.ppd-collection-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:8px 0 26px}\n.ppd-collection-location{display:flex;align-items:center;gap:12px;min-width:0}.ppd-collection-location>div{min-width:0}.ppd-collection-heading h2{margin:0;font-size:21px;line-height:1.3;font-weight:650;letter-spacing:-.5px;overflow-wrap:anywhere}.ppd-collection-heading small{display:block;margin-top:4px;color:var(--ppd-muted);font-size:12px}\n.ppd-collection-back{border:1px solid var(--ppd-line);background:white;border-radius:50%;width:32px;height:32px;flex-shrink:0}.ppd-collection-heading>.ppd-actions{flex-shrink:0;gap:18px}.ppd-collection-heading .ppd-new-folder,.ppd-collection-heading .ppd-new-folder:hover{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:12px;color:var(--ppd-muted)}.ppd-collection-heading .ppd-new-folder:hover{color:var(--ppd-text)}.ppd-collection-heading .ppd-link-button{padding:0;border:0;background:transparent;font-size:12px;color:var(--ppd-muted)}\n.ppd-collection-status{color:var(--ppd-muted);font-size:12px;margin:0 0 18px}\n.ppd-collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,190px));gap:26px 22px;padding-top:9px}\n.ppd-collection-card{position:relative;min-width:0}.ppd-collection-open{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left}\n.ppd-collection-cover{position:relative;display:block;width:100%;aspect-ratio:1.45;border:1px solid #e5e5e0;border-radius:4px 14px 14px 14px;background:#efefeb;isolation:isolate}\n.ppd-collection-cover:before{content:"";position:absolute;top:-9px;left:-1px;width:38%;height:15px;border:1px solid #e0e0da;border-bottom:0;border-radius:8px 12px 0 0;background:#e8e8e2;z-index:-1}\n.ppd-collection-cover>img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;transition:filter .18s ease}.ppd-collection-open:hover img{filter:brightness(.96)}\n.ppd-collection-mark{position:absolute;left:14px;bottom:14px;width:30px;height:26px;display:grid;place-items:center;border-radius:6px;background:#fffffff0;color:#58584f}.ppd-collection-mark svg{width:19px;height:19px}.ppd-collection-cover.is-empty{display:grid;place-items:center;background:#f4f4f0}.ppd-collection-cover.is-empty .ppd-collection-mark{position:static;width:56px;height:48px;background:transparent;color:#b3b3a8}.ppd-collection-cover.is-empty svg{width:48px;height:48px}\n.ppd-collection-copy{display:grid;gap:4px;padding:11px 24px 0;text-align:center}.ppd-collection-copy strong{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ppd-collection-copy small{color:var(--ppd-muted);font-size:11px}\n.ppd-favorite-menu{position:absolute;right:4px;bottom:16px;z-index:3}.ppd-favorite-menu.is-open{z-index:12}.ppd-favorite-more{width:28px;height:28px;display:grid;place-items:center;padding:5px;border:0;border-radius:6px;background:transparent;color:var(--ppd-muted)}.ppd-favorite-more svg{width:18px;height:18px;fill:currentColor}.ppd-favorite-more:hover,.ppd-favorite-more[aria-expanded=true]{background:var(--ppd-soft)}\n.ppd-favorite-popover{position:absolute;right:0;top:calc(100% + 5px);display:grid;min-width:156px;padding:5px;background:white;border:1px solid var(--ppd-line);border-radius:10px;box-shadow:0 8px 24px #20201814}.ppd-favorite-popover button{border:0;background:transparent;text-align:left;white-space:nowrap;padding:9px 12px;border-radius:5px;font-size:12px}.ppd-favorite-popover button:hover,.ppd-favorite-popover button:focus-visible{background:var(--ppd-surface)}.ppd-favorite-popover .is-danger{color:var(--ppd-danger)}\n.ppd-collection-heading .ppd-favorite-menu{position:relative;right:auto;bottom:auto}\n.ppd-favorite-skill-card .ppd-card-copy{padding-right:4px;padding-bottom:31px}.ppd-favorite-skill-card .ppd-card-copy>small{display:block;font-size:10px;color:var(--ppd-muted)}.ppd-favorite-skill-card .ppd-favorite-menu{bottom:0;right:0}.ppd-favorite-skill-card .ppd-card-use{left:0;right:auto;bottom:3px;font-size:11px;color:var(--ppd-text)}\n@media(max-width:720px){.ppd-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}.ppd-collection-heading{align-items:flex-start;margin-bottom:24px}.ppd-collection-heading h2{font-size:18px}.ppd-collection-heading>.ppd-actions{gap:10px;flex-wrap:wrap;justify-content:flex-end}.ppd-collection-heading .ppd-link-button{font-size:11px}.ppd-collection-mark{left:9px;bottom:9px;width:25px;height:23px}.ppd-collection-copy{padding-inline:22px}.ppd-collection-copy strong{font-size:13px}}\n.ppd-favorite-editor{display:grid;gap:16px}.ppd-favorite-editor>p{margin:0}.ppd-favorite-editor>label{display:grid;gap:6px}.ppd-favorite-editor>label>span{font-weight:620}.ppd-favorite-editor>label>small{font-size:11px;color:var(--ppd-muted)}.ppd-favorite-editor input,.ppd-favorite-editor select{width:100%;min-height:38px;padding:8px 10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-favorite-editor-actions{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px}@media(max-width:600px){.ppd-favorite-editor-actions{grid-template-columns:1fr 1fr}.ppd-favorite-editor-actions>span{display:none}.ppd-favorite-editor-actions>.ppd-button-danger{grid-column:1/-1}}\n';
 
 // plugins/podplo-dsh/src/generation-panel.css
-var generation_panel_default = '.ppd-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-skill-feedback{margin:6px 0 0;display:flex;align-items:center;gap:8px;color:#a13d31;font-size:12px;line-height:18px}.ppd-skill-feedback .ppd-link-button{flex:none}\n.ppd-generation-shell.is-floating:has(>.ppd-skill-feedback){height:auto}\n.ppd-generation{min-width:0}.ppd-generation-loading{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--ppd-muted)}.ppd-generation-loading .ppd-spinner{width:12px;height:12px}.ppd-generation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:start}.ppd-generation-form{min-width:0;margin:0;border:0;padding:0;display:grid;gap:9px}.ppd-generation-form:disabled{opacity:1}.ppd-generation-form:disabled .ppd-web-composer{opacity:.72}.ppd-link-button{width:max-content;border:0;background:none;color:var(--ppd-accent);padding:0;font:inherit;cursor:pointer}.ppd-form-hint,.ppd-generation-quote small,.ppd-muted{color:var(--ppd-muted);font-size:12px}\n\n.ppd-web-composer{--composer-line:#e0e4eb;--composer-soft:#f0f2f5;--composer-muted:#676f7e;--composer-faint:#a8afbd;--composer-ink:#0b0d12;position:relative;box-sizing:border-box;width:100%;max-width:720px;height:178px;border:1px solid var(--composer-line);border-radius:16px;background:#fff;box-shadow:0 2px 5px rgba(15,20,28,.04);padding:12px 12px 8px;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}.ppd-web-composer.is-focused{border-color:var(--composer-line);box-shadow:0 2px 5px rgba(15,20,28,.04)}.ppd-composer-media-row{height:64px;display:flex;align-items:flex-start;gap:8px;padding-right:38px;min-width:0}.ppd-composer-clear{position:absolute;z-index:7;top:14px;right:14px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#8b929d;cursor:pointer;font-size:21px;line-height:1;transform:rotate(-20deg);transition:background-color .18s,color .18s,transform .18s}.ppd-composer-clear:hover{background:var(--composer-soft);color:#3f4752;transform:translateY(-1px) rotate(-20deg)}.ppd-web-composer>textarea{flex:1;min-height:0;resize:none;border:0;outline:0;background:transparent;color:var(--composer-ink);font-family:inherit;font-size:12px;line-height:18px;font-weight:500;padding:0 2px}.ppd-web-composer>textarea::placeholder{color:var(--composer-faint)}\n.ppd-skill-token{position:relative;box-sizing:border-box;width:max-content;min-width:170px;max-width:min(300px,calc(100% - 64px));height:56px;flex:0 1 auto;padding:0 13px;display:flex;align-items:center;justify-content:flex-start;gap:10px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-skill-token.has-value{padding-right:12px;border:0;background:#121418;color:#fff}.ppd-skill-copy{position:static;min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:2px}.ppd-skill-token small{color:#7b8290;font-size:9px;line-height:11px;font-weight:700;letter-spacing:.04em}.ppd-skill-token strong{max-width:220px;overflow:hidden;color:inherit;font-size:12px;line-height:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.ppd-token-mark{width:28px;height:28px;display:grid;place-items:center;flex:0 0 28px;border-radius:8px;background:#fff;color:#1a1d24;font-size:16px}.ppd-skill-cover{width:42px;height:42px;flex:0 0 42px;border-radius:8px;object-fit:cover}.ppd-skill-token>select,.ppd-upload-tile>select,.ppd-toolbar-select>select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-reference-tray{position:relative;height:56px;min-width:0;display:flex;flex:0 1 auto;align-items:flex-start;gap:8px;isolation:isolate}.ppd-upload-tile,.ppd-reference-token{position:relative;box-sizing:border-box;width:56px;height:56px;flex:0 0 56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;display:grid;place-items:center;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-upload-tile:hover{border-color:#1597e5;background:#eaf6fd;color:#086eba}.ppd-local-upload{border-style:solid;font-size:22px}.ppd-reference-token{border:0;background:#242830;color:#fff}.ppd-reference-token>img{width:100%;height:100%;object-fit:cover}.ppd-reference-token>span{font-size:17px;font-weight:800}.ppd-reference-token>b{position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.72);display:grid;place-items:center;font-size:10px}.ppd-reference-actions{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;gap:2px;padding:3px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 54%);opacity:0;transition:opacity .14s}.ppd-reference-token:hover .ppd-reference-actions,.ppd-reference-token:focus-within .ppd-reference-actions{opacity:1}.ppd-reference-actions button{width:15px;height:15px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center;font-size:9px;line-height:1;cursor:pointer}.ppd-reference-actions button:disabled{opacity:.35}.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:absolute;z-index:6;left:38px;top:22px;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#242830;color:#fff;box-shadow:0 4px 10px rgba(12,16,22,.24)}.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:-40px}.ppd-reference-tray.has-references>.ppd-reference-token{border:2px solid #fff;border-radius:15px;clip-path:polygon(10% 12%,35% 3%,68% 8%,93% 2%,98% 36%,90% 68%,96% 92%,58% 97%,28% 91%,3% 98%,7% 61%,2% 31%);box-shadow:0 3px 9px rgba(19,24,31,.18);transition:margin-left .24s cubic-bezier(.2,.72,.2,1),clip-path .2s ease,border-radius .2s ease,transform .2s ease}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(2n){transform:rotate(4deg)}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(3n){transform:rotate(-4deg)}.ppd-reference-tray.has-references:is(:hover,:focus-within){z-index:8}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-tray.has-references:not(:hover):not(:focus-within)>.ppd-local-upload{display:none}\n.ppd-composer-toolbar{height:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.ppd-toolbar-left,.ppd-toolbar-right{display:flex;align-items:center;gap:2px;min-width:0}.ppd-toolbar-left{flex:1}.ppd-toolbar-right{flex:none}.ppd-toolbar-divider{width:1px;height:22px;flex:0 0 1px;background:var(--composer-line);margin:0 6px 5px 5px}.ppd-toolbar-icon,.ppd-toolbar-button,.ppd-toolbar-select{position:relative;box-sizing:border-box;height:32px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--composer-muted);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;white-space:nowrap}.ppd-toolbar-icon{width:32px;flex:0 0 32px;padding:0}.ppd-toolbar-button,.ppd-toolbar-select{padding:0 8px;font-size:12px;font-weight:500}.ppd-toolbar-icon:hover,.ppd-toolbar-button:hover,.ppd-toolbar-select:hover{background:var(--composer-soft);color:var(--composer-ink)}.ppd-toolbar-select strong{max-width:118px;overflow:hidden;font-size:12px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.ppd-model-dot{width:14px;height:14px;flex:0 0 14px;border-radius:4px;background:linear-gradient(145deg,#7b8cff,#7557d8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.ppd-model-dot.is-gpt{background:linear-gradient(145deg,#49c970,#138f7e)}\n.ppd-contract-control{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;opacity:.001!important;pointer-events:none!important}.ppd-model-menu,.ppd-settings-menu{position:relative}.ppd-model-menu>summary,.ppd-settings-menu>summary{list-style:none}.ppd-model-menu>summary::-webkit-details-marker,.ppd-settings-menu>summary::-webkit-details-marker{display:none}.ppd-model-menu[open]>summary,.ppd-settings-menu[open]>summary{background:var(--composer-soft);color:var(--composer-ink)}.ppd-settings-menu summary>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu summary>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover,.ppd-settings-popover{position:absolute;z-index:30;left:0;bottom:38px;box-sizing:border-box;border:1px solid #e3e6ea;border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(20,27,38,.14)}.ppd-model-popover{width:390px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px;display:grid;gap:7px}.ppd-model-popover>header{display:flex;flex-direction:column;gap:2px;padding:7px 9px 5px}.ppd-model-popover>header strong{color:#202630;font-size:12px}.ppd-model-popover>header small{color:#959daa;font-size:9px}.ppd-model-popover>button{position:relative;min-height:74px;border:1px solid #e2e6eb;border-radius:12px;padding:9px 38px 9px 9px;background:#fff;display:flex;align-items:center;gap:11px;color:#171b22;text-align:left;cursor:pointer}.ppd-model-popover>button:hover,.ppd-model-popover>button.is-selected{border-color:#b5bdc8;background:#eef1f5}.ppd-model-popover>button:disabled{opacity:.55;cursor:not-allowed}.ppd-model-popover>button>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;gap:4px}.ppd-model-popover>button strong{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover>button small{color:#697383;font-size:10px}.ppd-model-popover>button>b{position:absolute;right:15px}.ppd-model-brand{width:42px;height:42px;flex:0 0 42px;border-radius:11px;background:linear-gradient(145deg,#8798ff,#7053d4);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}.ppd-model-brand.is-gpt{background:linear-gradient(145deg,#58cf78,#168e7e)}.ppd-settings-popover{width:330px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px}.ppd-settings-popover section+section{margin-top:5px}.ppd-settings-popover section>label:first-child{display:block;margin:0 3px 3px;color:#8a929e;font-size:9px;font-weight:650}.ppd-ratio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:4px;border-radius:12px;background:#f6f7f9}.ppd-ratio-grid button{min-height:40px;border:0;border-radius:8px;background:transparent;color:#77808c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}.ppd-ratio-grid button:hover,.ppd-ratio-grid button.is-selected,.ppd-segmented button:hover,.ppd-segmented button.is-selected{background:#fff;color:#202630;box-shadow:0 1px 4px rgba(18,25,35,.08)}.ppd-ratio-grid b{font-size:10px}.ppd-ratio-glyph{width:15px;height:11px;border:1.5px solid currentColor;border-radius:3px}.ppd-segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;border-radius:10px;background:#f6f7f9}.ppd-segmented button{min-width:0;height:28px;border:0;border-radius:7px;background:transparent;color:#74808d;cursor:pointer;font-size:10px;text-transform:capitalize}.ppd-settings-check{position:relative;height:30px;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;color:#687281!important;cursor:pointer}.ppd-settings-check>input{position:absolute;opacity:0}.ppd-settings-check>i{position:relative;width:30px;height:18px;border-radius:999px;background:#dfe3e8}.ppd-settings-check>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-settings-check>input:checked+i{background:#1d2734}.ppd-settings-check>input:checked+i>b{transform:translateX(12px)}\n.ppd-search-chip{position:relative;height:32px;border:1px solid transparent;border-radius:8px;background:#f6f7f9;color:#737d8a;display:flex;align-items:center;gap:8px;padding:0 7px 0 9px;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-search-chip>input,.ppd-eco-control>input{position:absolute;opacity:0;pointer-events:none}.ppd-search-chip>i,.ppd-eco-control>i{position:relative;width:30px;height:18px;flex:0 0 30px;border-radius:999px;background:#dfe3e8;transition:background-color .18s}.ppd-search-chip>i>b,.ppd-eco-control>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-search-chip.is-selected{background:#f0efff;color:#514aab}.ppd-search-chip.is-selected>i{background:#625abd}.ppd-search-chip.is-selected>i>b,.ppd-eco-control.is-selected>i>b{transform:translateX(12px)}.ppd-eco-control{position:relative;height:30px;display:flex;align-items:center;gap:5px;padding:0 4px;color:#7d8794;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-eco-control.is-selected>i{background:#1d2734}.ppd-generation-cost{height:32px;display:flex;align-items:center;gap:4px;padding:0 2px;color:#6f7782;white-space:nowrap}.ppd-generation-cost>strong{min-width:14px;color:#4d5560;font-size:13px;font-weight:700}.ppd-generate-button{width:34px;height:32px;flex:0 0 34px;border:1px solid transparent;border-radius:7px;background:var(--composer-ink);color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .18s,background-color .3s}.ppd-generate-button:hover:not(:disabled){transform:translateY(-1px);background:#232832}.ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint);cursor:not-allowed}.ppd-generate-button .ppd-spinner{width:14px;height:14px}.ppd-composer-meta{min-height:18px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;color:var(--ppd-muted);font-size:11px}.ppd-composer-meta>span+span:before{content:"\xB7";margin-right:12px}.ppd-file-input{display:none}\n.ppd-web-composer .ppd-model-popover,.ppd-web-composer .ppd-settings-popover{top:38px;bottom:auto}\n.ppd-generation-quote{position:sticky;top:0;display:grid;gap:12px;border:1px solid var(--ppd-line);border-radius:16px;background:var(--ppd-bg);padding:18px}.ppd-generation-quote h2{font-size:16px;margin:0}.ppd-generation-quote>strong{font-size:30px;line-height:1}.ppd-generation-quote>span{font-size:13px}.ppd-generation-quote p{margin:0;line-height:1.55}.ppd-generation-state{border-radius:9px;background:var(--ppd-surface);padding:8px 10px;font-weight:650}\n@media(hover:none),(pointer:coarse){.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references>.ppd-reference-token,.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-actions{opacity:1}.ppd-reference-tray.has-references>.ppd-local-upload{display:grid}}\n@media(max-width:1050px){.ppd-generation-grid{grid-template-columns:1fr}.ppd-generation-quote{position:static;max-width:720px}.ppd-web-composer{max-width:none}}\n@media(max-width:720px){.ppd-web-composer{height:auto;min-height:214px}.ppd-composer-media-row{overflow-x:auto}.ppd-composer-toolbar{height:auto;min-height:72px;align-items:stretch;flex-direction:column}.ppd-toolbar-left{flex-wrap:wrap}.ppd-toolbar-right{justify-content:flex-end}.ppd-model-popover{left:0;right:auto;width:min(390px,calc(100vw - 52px))}.ppd-settings-popover{left:auto;right:0;width:min(330px,calc(100vw - 52px))}.ppd-search-chip>span{display:none}}\n@media(max-width:480px){.ppd-skill-token{min-width:138px}.ppd-skill-token strong{max-width:130px}.ppd-model-select strong{max-width:80px}.ppd-eco-control>span{display:none}}\n.ppd-generation-shell.is-inline{position:relative;width:min(720px,100%);margin:0 auto}.ppd-generation-shell.is-floating{position:absolute;z-index:45;left:50%;bottom:18px;width:min(720px,calc(100% - 40px));transform:translateX(-50%)}.ppd-generation-shell.is-floating:before{content:"";position:absolute;z-index:-1;inset:-24px -34px -22px;background:radial-gradient(ellipse at center,rgba(247,248,249,.98) 38%,rgba(247,248,249,.78) 64%,transparent 78%);pointer-events:none}.ppd-generation-shell.is-floating>.ppd-alert,.ppd-generation-shell.is-floating>.ppd-notice{margin:0 0 7px}.ppd-generation-shell.is-collapsed{width:min(620px,calc(100% - 40px))}.ppd-generation-collapsed{width:100%;height:54px;border:1px solid #dde1e6;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 15px 45px rgba(23,30,42,.16);padding:0 12px;display:flex;align-items:center;gap:10px;color:#1d222b;text-align:left}.ppd-generation-collapsed>span:nth-child(2){min-width:0;display:grid;flex:1;gap:2px}.ppd-generation-collapsed strong,.ppd-generation-collapsed small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-generation-collapsed strong{font-size:12px}.ppd-generation-collapsed small{color:#8a929e;font-size:9px}.ppd-generation-collapsed>b{color:#596270;font-size:10px}.ppd-composer-actions{position:absolute;z-index:9;top:9px;right:9px;display:flex;gap:2px}.ppd-composer-actions button{width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#8b929d;display:grid;place-items:center}.ppd-composer-actions button:hover{background:var(--composer-soft);color:#3f4752}.ppd-composer-actions button svg{transform:rotate(-20deg)}.ppd-generation-shell.is-floating .ppd-composer-media-row{padding-right:70px}.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:38px}.ppd-generation-shell.is-inline .ppd-model-popover,.ppd-generation-shell.is-inline .ppd-settings-popover{top:38px;bottom:auto}.ppd-generation-shell.is-floating .ppd-model-popover,.ppd-generation-shell.is-floating .ppd-settings-popover{top:auto;bottom:38px}.ppd-generate-button{width:auto;min-width:104px;padding:0 7px 0 11px;display:flex;gap:8px}.ppd-generate-button>span:not(.ppd-spinner){white-space:nowrap;font-size:11px;font-weight:700}.ppd-generation-shell .ppd-composer-meta{display:none}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-inline{width:100%}}\n\n/* The native resource pages use the same Web dock geometry: a 480\xD740 trigger\n   opens into the 820\xD7200 shell, while the generation page keeps the composer inline. */\n.ppd-generation-shell.is-floating{bottom:76px;width:min(820px,calc(100% - 64px));height:200px;padding:10px;border:1px solid #d8dad5;border-radius:18px;background:rgba(255,255,255,.98);box-shadow:0 22px 64px rgba(16,24,38,.2),0 4px 12px rgba(16,24,38,.08);backdrop-filter:blur(12px);transform-origin:center bottom;animation:ppd-composer-open .28s cubic-bezier(.2,.82,.2,1)}\n@keyframes ppd-composer-open{from{opacity:0;transform:translateX(-50%) scale(.58,.18)}to{opacity:1;transform:translateX(-50%) scale(1)}}\n.ppd-generation-shell.is-floating:before{display:none}.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:none;border-color:transparent;box-shadow:none}.ppd-generation-shell.is-floating .ppd-composer-actions{right:19px;top:19px}\n.ppd-generation-shell.is-collapsed{bottom:24px;width:min(480px,calc(100% - 40px));height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}\n.ppd-generation-collapsed{height:40px;border-color:#d5dbe3;border-radius:16px;padding:4px 5px;gap:9px;box-shadow:0 10px 32px rgba(16,24,38,.18),0 2px 6px rgba(16,24,38,.06)}\n.ppd-collapsed-add,.ppd-collapsed-expand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px}.ppd-collapsed-add{color:#485260}.ppd-collapsed-placeholder{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#737b89;font-size:13px;font-weight:500}.ppd-generation-collapsed>small{color:#8a929e;font-size:9px;white-space:nowrap}.ppd-collapsed-expand{border-radius:50%;background:#e9edf2;color:#7d8998;font-size:16px}\n.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-notice,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{position:absolute;z-index:3;right:12px;bottom:calc(100% + 8px);left:12px;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;text-align:center}.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{color:#a13e3e}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-collapsed{width:calc(100% - 24px)}}\n.ppd-generation .ppd-generate-button{background:var(--composer-ink);color:#fff}.ppd-generation .ppd-generate-button>span,.ppd-generation .ppd-generate-button>svg{color:#fff;stroke:currentColor}.ppd-generation .ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint)}.ppd-generation .ppd-generate-button:disabled>span,.ppd-generation .ppd-generate-button:disabled>svg{color:var(--composer-faint)}\n.ppd-generation .ppd-local-upload{display:none!important}\n\n/* Match Web product-mode selected Skill and empty floating reference tile. */\n.ppd-generation .ppd-skill-token.has-value{background:#eef0f4;color:#252a34}.ppd-generation-shell.is-floating .ppd-reference-tray:not(.has-references)>.ppd-upload-tile{border:0;border-radius:0;background:transparent}\n.ppd-add-menu{position:relative}.ppd-add-menu>summary{list-style:none}.ppd-add-menu>summary::-webkit-details-marker{display:none}.ppd-add-popover{position:absolute;z-index:30;left:0;top:38px;width:160px;padding:5px;border:1px solid var(--composer-line);border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,27,38,.14)}.ppd-generation-shell.is-floating .ppd-add-popover{top:auto;bottom:38px}.ppd-add-popover>label,.ppd-add-popover>button{position:relative;box-sizing:border-box;display:block;width:100%;padding:9px;border:0;border-radius:6px;background:transparent;color:var(--composer-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}.ppd-add-popover>label:hover,.ppd-add-popover>button:hover{background:var(--composer-soft)}.ppd-add-popover select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.ppd-generation .ppd-generate-button{width:34px;min-width:34px;padding:0;justify-content:center}.ppd-generation-cost{margin:0 10px 0 6px}\n\n/* Manual generation history shares the account bar and keeps the draft mounted. */\n.ppd-panel [hidden]{display:none!important}\n.ppd-price-verification{margin:0 12px 10px;color:#866218;font-size:12px;line-height:1.5}\n.ppd-history-shortcut{display:flex;justify-content:flex-end;padding:12px 28px 0}\n.ppd-panel-generation .ppd-content.ppd-history-content{display:block;min-height:0;padding:24px 28px}\n.ppd-history{width:100%;max-width:1120px;margin:0 auto}\n.ppd-history-heading,.ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}\n.ppd-history-heading{margin-bottom:20px}.ppd-history-heading h2{font-size:20px;margin:0}\n.ppd-history-list{display:grid;gap:16px}.ppd-history-record{padding:20px;border:1px solid #e4e4e2;border-radius:12px;background:#fff}\n.ppd-history-record-heading strong{display:flex;align-items:center;gap:8px}.ppd-history-record-heading>span,.ppd-history-record time,.ppd-history-record>small{color:#73736e;font-size:12px}\n.ppd-history-record time{display:block;margin-top:8px}.ppd-history-record progress{display:block;width:100%;height:6px;margin:16px 0 8px;accent-color:#656c49}\n.ppd-history-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}.ppd-history-results .ppd-image{aspect-ratio:1;background:#f5f5f3;border-radius:8px;overflow:hidden}.ppd-history-results img{width:100%;height:100%;object-fit:contain}\n@media(max-width:720px){.ppd-history-shortcut{padding-inline:16px}.ppd-panel-generation .ppd-content.ppd-history-content{padding:20px 16px}.ppd-history-heading,.ppd-history-record-heading{flex-wrap:wrap}.ppd-history-results{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}\n\n/* Confirmed tasks keep running after the composer clears; their progress sits above the saved results. */\n.ppd-running-tasks{margin-bottom:28px}.ppd-running-label{margin:0 0 12px;color:#73736e;font-size:12px;font-weight:600;letter-spacing:.04em}\n.ppd-running-tasks .ppd-history-record progress{margin-top:12px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n@media(max-width:720px){.ppd-running-tasks{margin-bottom:20px}}\n\n/* Local reference previews appear before cloud upload; only ready asset IDs can generate. */\n.ppd-upload-preview{clip-path:none!important;transform:none!important;margin-left:0!important;border-radius:10px!important;outline:1px solid #c8cdd5}\n.ppd-upload-preview>img{opacity:.65}\n.ppd-upload-preview.is-failed{outline-color:#a13e3e}\n.ppd-upload-preview .ppd-upload-preview-status{position:absolute;right:0;bottom:0;left:0;padding:4px 1px;background:rgba(24,28,34,.8);color:#fff;font-size:9px;line-height:12px;text-align:center}\n.ppd-upload-preview.is-failed .ppd-upload-preview-status{background:rgba(139,39,39,.9)}\n.ppd-upload-preview-remove{position:absolute;top:1px;right:1px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#fff;color:#8b2727;cursor:pointer}\n\n/* Manual batch generation stays in the plugin UI and keeps each row compact. */\n.ppd-batch-launchers{display:flex;align-items:center;gap:3px}.ppd-batch-launchers>button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#fff;padding:0 8px;color:#5d6672;font-size:10px;white-space:nowrap;cursor:pointer}.ppd-batch-launchers>button:hover:not(:disabled){border-color:#b8c0ca;background:#f6f7f9;color:#222a34}.ppd-batch-launchers>button:disabled{opacity:.45;cursor:not-allowed}\n.ppd-batch-backdrop{position:fixed;z-index:120;inset:0;display:grid;place-items:center;padding:28px;background:rgba(20,26,34,.36);backdrop-filter:blur(3px)}\n.ppd-batch-dialog{box-sizing:border-box;width:min(1180px,100%);height:min(780px,calc(100vh - 56px));display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.28);color:#252b34;text-align:left}\n.ppd-batch-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:18px 20px 13px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-batch-dialog h2{margin:0;font-size:18px}.ppd-batch-dialog header p{margin:4px 0 0;color:#7c8591;font-size:11px}.ppd-batch-dialog header>button{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;cursor:pointer}\n.ppd-batch-tools{min-height:44px;display:flex;align-items:center;gap:7px;padding:7px 16px;border-bottom:1px solid #e4e7eb;background:#fff}.ppd-batch-tools>button,.ppd-batch-dialog footer button,.ppd-batch-bulk>button{height:30px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 10px;color:#59636f;font-size:11px;cursor:pointer}.ppd-batch-tools>button:disabled,.ppd-batch-dialog footer button:disabled,.ppd-batch-bulk>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-state{margin-left:auto;border-radius:999px;background:#eef1f4;padding:4px 9px;color:#697381;font-size:10px}.ppd-batch-state.is-running{background:#edf4ff;color:#38649a}.ppd-batch-state.is-blocked,.ppd-batch-state.is-partial{background:#fff3dc;color:#8b651d}.ppd-batch-state.is-completed{background:#eaf7ee;color:#33714a}\n.ppd-batch-bulk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:7px;padding:9px 16px;border-bottom:1px solid #e1e5e9;background:#f1f3f5}.ppd-batch-bulk>label{min-width:0;display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:5px;color:#6d7580;font-size:10px}.ppd-batch-bulk input:not([type=checkbox]),.ppd-batch-bulk select{box-sizing:border-box;min-width:0;height:28px;border:1px solid #d8dde3;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font:inherit}.ppd-batch-feedback{margin:0;padding:7px 16px;border-bottom:1px solid #e1e5e9;background:#edf5ff;color:#416a98;font-size:11px}.ppd-batch-feedback.is-error{background:#fff0f0;color:#9a3f3f}\n.ppd-batch-table{min-height:0;overflow:auto;padding:10px 12px;display:grid;align-content:start;gap:8px}.ppd-batch-row{display:grid;grid-template-columns:38px 94px minmax(260px,1fr) 105px;align-items:center;gap:10px;min-height:108px;border:1px solid #e0e4e8;border-radius:12px;background:#fff;padding:9px}.ppd-batch-select{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-right:1px solid #edf0f2;color:#8a929d;font-size:11px}.ppd-batch-select input{width:15px;height:15px;accent-color:#252b34}\n.ppd-batch-reference-grid{width:88px;height:88px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:4px}.ppd-batch-reference{position:relative;overflow:hidden;border:1px dashed #d5dae0;border-radius:7px;background:#f7f8fa;display:grid;place-items:center;color:#a0a7b0}.ppd-batch-reference.has-image{border-style:solid;background:#eceff2}.ppd-batch-reference img{width:100%;height:100%;object-fit:cover}.ppd-batch-reference>label{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer}.ppd-batch-reference.has-image>label{right:18px;bottom:1px;top:auto;left:auto;width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.9);color:#52606f;font-size:10px}.ppd-batch-reference input{display:none}.ppd-batch-reference>button{position:absolute;right:1px;top:1px;width:17px;height:17px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#9a4141;font-size:11px;line-height:17px;cursor:pointer}.ppd-batch-reference b{font-size:17px;font-weight:400}\n.ppd-batch-reference b.ppd-batch-reference-pending{position:absolute;left:2px;bottom:2px;padding:0 3px;border-radius:3px;background:rgba(24,30,38,.72);color:#fff;font-size:9px;line-height:13px;font-weight:500;pointer-events:none}\n.ppd-batch-main{min-width:0;display:grid;gap:7px}.ppd-batch-main>textarea{box-sizing:border-box;width:100%;height:48px;resize:vertical;border:1px solid #dce1e6;border-radius:8px;padding:8px;color:#303741;font:inherit;font-size:11px;line-height:1.4}.ppd-batch-row-controls{display:flex;align-items:center;gap:7px}.ppd-batch-row-controls>select{min-width:140px;max-width:240px;height:28px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px}.ppd-batch-parameters{position:relative;min-width:0;flex:1}.ppd-batch-parameters>summary{overflow:hidden;height:28px;display:flex;align-items:center;border:1px solid #dce1e6;border-radius:7px;padding:0 8px;color:#66707c;font-size:10px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-parameter-grid{position:absolute;z-index:4;left:0;top:34px;width:min(520px,70vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #dce1e6;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:10px}.ppd-batch-parameter-grid label{display:grid;gap:3px;color:#7c8490;font-size:9px}.ppd-batch-parameter-grid select,.ppd-batch-parameter-grid input[type=number]{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font-size:10px}.ppd-batch-parameter-grid .ppd-batch-check{display:flex;align-items:center;gap:6px}.ppd-batch-row-error{color:#a34747;font-size:10px}\n.ppd-batch-skill{position:relative;flex:0 0 auto}.ppd-batch-skill-toggle{min-width:140px;max-width:240px;height:28px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px;cursor:pointer}.ppd-batch-skill-toggle>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-batch-skill-toggle:disabled{opacity:.5;cursor:not-allowed}.ppd-batch-skill-menu{position:absolute;z-index:6;left:0;top:32px;width:260px;display:grid;gap:5px;border:1px solid #dce1e6;border-radius:9px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:7px}.ppd-batch-skill-menu>input{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;padding:0 7px;color:#343b45;font:inherit;font-size:10px}.ppd-batch-skill-list{max-height:220px;display:grid;gap:2px;overflow:auto}.ppd-batch-skill-list>button{height:26px;display:flex;align-items:center;overflow:hidden;border:0;border-radius:6px;background:transparent;padding:0 7px;color:#4d5662;font-size:10px;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-skill-list>button:hover:not(:disabled){background:#f1f3f5}.ppd-batch-skill-list>button[aria-selected=true]{background:#eef1f4;color:#252b34;font-weight:600}.ppd-batch-skill-list>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-skill-list>small{padding:3px 7px;color:#8a929d;font-size:10px}.ppd-batch-bulk .ppd-batch-skill{min-width:0}.ppd-batch-bulk .ppd-batch-skill-toggle{width:100%;max-width:none;min-width:0}.ppd-batch-tools>button.is-danger{color:#a34444}\n.ppd-batch-result{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px;border-left:1px solid #edf0f2;padding-left:9px}.ppd-batch-result>span{border-radius:999px;background:#eef1f4;padding:3px 7px;color:#66717e;font-size:9px}.ppd-batch-result>span.is-generating,.ppd-batch-result>span.is-submitting{background:#edf4ff;color:#3d6695}.ppd-batch-result>span.is-completed{background:#eaf7ee;color:#33714a}.ppd-batch-result>span.is-failed,.ppd-batch-result>span.is-unknown{background:#fff0e7;color:#9a5738}.ppd-batch-result>strong{font-size:11px}.ppd-batch-result>button{border:0;background:transparent;color:#9299a2;font-size:9px;cursor:pointer}.ppd-batch-empty{min-height:210px;display:grid;place-content:center;gap:5px;color:#858e99;text-align:center}.ppd-batch-empty strong{color:#4d5662;font-size:14px}.ppd-batch-empty span{font-size:11px}\n.ppd-batch-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-top:1px solid #dfe3e8;background:#fff}.ppd-batch-dialog>footer>div{display:flex;align-items:center;gap:12px}.ppd-batch-dialog>footer>div:first-child{display:grid;gap:2px}.ppd-batch-dialog>footer strong{font-size:12px}.ppd-batch-dialog>footer span{color:#7b8490;font-size:10px}.ppd-batch-dialog footer .is-primary{border-color:#252b34;background:#252b34;color:#fff}.ppd-batch-dialog footer .is-danger{color:#a34444}\n@media(max-width:900px){.ppd-batch-launchers>button:first-child{display:none}.ppd-batch-backdrop{padding:12px}.ppd-batch-dialog{height:calc(100vh - 24px)}.ppd-batch-bulk{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-batch-row{grid-template-columns:32px 82px minmax(180px,1fr)}.ppd-batch-reference-grid{width:78px;height:78px}.ppd-batch-result{grid-column:3;flex-direction:row;justify-content:flex-end;border-left:0;border-top:1px solid #edf0f2;padding:7px 0 0}.ppd-batch-dialog>footer{align-items:flex-start;flex-direction:column}.ppd-batch-dialog>footer>div:last-child{align-self:flex-end}}\n.ppd-skill-open{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:transparent;cursor:pointer}\n.ppd-skill-browser-backdrop{position:fixed;z-index:140;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.4);backdrop-filter:blur(3px)}\n.ppd-skill-browser{box-sizing:border-box;width:min(920px,100%);max-height:min(680px,calc(100vh - 48px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.3);color:#252b34;text-align:left}\n.ppd-skill-browser-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-skill-browser-head>strong{font-size:15px}.ppd-skill-browser-close{width:28px;height:28px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:18px;line-height:1;cursor:pointer}\n.ppd-skill-browser-search{flex:none;padding:10px 18px 0}.ppd-skill-browser-search>input{box-sizing:border-box;width:100%;height:34px;border:1px solid #dce1e6;border-radius:9px;background:#fff;padding:0 11px;color:#262c35;font:inherit;font-size:12px}.ppd-skill-browser-search>input:focus{outline:none;border-color:#b9c0ca;box-shadow:0 0 0 3px rgba(37,43,52,.07)}\n.ppd-skill-browser-tabs{flex:none;display:flex;gap:4px;padding:10px 18px 0}.ppd-skill-browser-tabs>button{height:28px;border:0;border-radius:8px;background:transparent;padding:0 10px;color:#7b8490;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.ppd-skill-browser-tabs>button:hover{background:#eef0f3;color:#3a4250}.ppd-skill-browser-tabs>button.is-active{background:#252b34;color:#fff}\n.ppd-skill-browser-categories{flex:none;display:flex;flex-wrap:wrap;gap:5px;padding:8px 18px 0}.ppd-skill-browser-categories>button{height:24px;border:1px solid #e1e5ea;border-radius:999px;background:#fff;padding:0 9px;color:#69737f;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-categories>button.is-selected{border-color:#252b34;background:#eef0f3;color:#252b34;font-weight:600}\n.ppd-skill-browser-list{flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));align-content:start;gap:8px;overflow:auto;padding:12px 18px 16px}\n.ppd-skill-browser-status{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;padding:18px 4px;color:#7b8490;font-size:12px}\n.ppd-skill-card{box-sizing:border-box;display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #e3e6ea;border-radius:12px;background:#fff;padding:8px;color:#252b34;font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}.ppd-skill-card:hover:not(:disabled){border-color:#c9ced6;box-shadow:0 6px 18px rgba(20,27,38,.08);transform:translateY(-1px)}.ppd-skill-card.is-selected{border-color:#252b34;box-shadow:inset 0 0 0 1px #252b34}.ppd-skill-card:disabled{opacity:.5;cursor:not-allowed}\n.ppd-skill-card-cover{position:relative;width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:linear-gradient(145deg,#eef0f4,#e2e6ec);color:#98a1ac}.ppd-skill-card-cover>img{display:block;width:100%;height:100%;object-fit:cover}.ppd-skill-card-fallback{font-size:20px}\n.ppd-skill-card-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.ppd-skill-card-copy>strong,.ppd-skill-card-copy>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-skill-card-copy>strong{font-size:12px;font-weight:650}.ppd-skill-card-copy>small{color:#7b8490;font-size:10px}\n.ppd-skill-browser-more{flex:none;align-self:center;margin:0 0 14px;height:30px;border:1px solid #dce1e6;border-radius:999px;background:#fff;padding:0 14px;color:#4d5662;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-more:disabled{opacity:.6;cursor:default}\n.ppd-skill-browser-family{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 18px 0}.ppd-skill-browser-back{align-self:flex-start;height:26px;border:0;border-radius:7px;background:transparent;padding:0 6px;color:#5b6470;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-family>.ppd-skill-browser-list{padding:8px 0 14px}\n@media(max-width:640px){.ppd-skill-browser-backdrop{padding:0}.ppd-skill-browser{width:100%;height:100%;border:0;border-radius:0}.ppd-skill-browser-list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:10px 12px 14px}.ppd-skill-browser-search,.ppd-skill-browser-tabs,.ppd-skill-browser-categories{padding-left:12px;padding-right:12px}}\n';
+var generation_panel_default = '.ppd-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-skill-feedback{margin:6px 0 0;display:flex;align-items:center;gap:8px;color:#a13d31;font-size:12px;line-height:18px}.ppd-skill-feedback .ppd-link-button{flex:none}\n.ppd-generation-shell.is-floating:has(>.ppd-skill-feedback){height:auto}\n.ppd-generation{min-width:0}.ppd-generation-loading{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--ppd-muted)}.ppd-generation-loading .ppd-spinner{width:12px;height:12px}.ppd-generation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:start}.ppd-generation-form{min-width:0;margin:0;border:0;padding:0;display:grid;gap:9px}.ppd-generation-form:disabled{opacity:1}.ppd-generation-form:disabled .ppd-web-composer{opacity:.72}.ppd-link-button{width:max-content;border:0;background:none;color:var(--ppd-accent);padding:0;font:inherit;cursor:pointer}.ppd-form-hint,.ppd-generation-quote small,.ppd-muted{color:var(--ppd-muted);font-size:12px}\n\n.ppd-web-composer{--composer-line:#e0e4eb;--composer-soft:#f0f2f5;--composer-muted:#676f7e;--composer-faint:#a8afbd;--composer-ink:#0b0d12;position:relative;box-sizing:border-box;width:100%;max-width:720px;height:178px;border:1px solid var(--composer-line);border-radius:16px;background:#fff;box-shadow:0 2px 5px rgba(15,20,28,.04);padding:12px 12px 8px;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}.ppd-web-composer.is-focused{border-color:var(--composer-line);box-shadow:0 2px 5px rgba(15,20,28,.04)}.ppd-composer-media-row{height:64px;display:flex;align-items:flex-start;gap:8px;padding-right:38px;min-width:0}.ppd-composer-clear{position:absolute;z-index:7;top:14px;right:14px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#8b929d;cursor:pointer;font-size:21px;line-height:1;transform:rotate(-20deg);transition:background-color .18s,color .18s,transform .18s}.ppd-composer-clear:hover{background:var(--composer-soft);color:#3f4752;transform:translateY(-1px) rotate(-20deg)}.ppd-web-composer>textarea{flex:1;min-height:0;resize:none;border:0;outline:0;background:transparent;color:var(--composer-ink);font-family:inherit;font-size:12px;line-height:18px;font-weight:500;padding:0 2px}.ppd-web-composer>textarea::placeholder{color:var(--composer-faint)}\n.ppd-skill-token{position:relative;box-sizing:border-box;width:max-content;min-width:170px;max-width:min(300px,calc(100% - 64px));height:56px;flex:0 1 auto;padding:0 13px;display:flex;align-items:center;justify-content:flex-start;gap:10px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-skill-token.has-value{padding-right:12px;border:0;background:#121418;color:#fff}.ppd-skill-copy{position:static;min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:2px}.ppd-skill-token small{color:#7b8290;font-size:9px;line-height:11px;font-weight:700;letter-spacing:.04em}.ppd-skill-token strong{max-width:220px;overflow:hidden;color:inherit;font-size:12px;line-height:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.ppd-token-mark{width:28px;height:28px;display:grid;place-items:center;flex:0 0 28px;border-radius:8px;background:#fff;color:#1a1d24;font-size:16px}.ppd-skill-cover{width:42px;height:42px;flex:0 0 42px;border-radius:8px;object-fit:cover}.ppd-skill-token>select,.ppd-upload-tile>select,.ppd-toolbar-select>select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-reference-tray{position:relative;height:56px;min-width:0;display:flex;flex:0 1 auto;align-items:flex-start;gap:8px;isolation:isolate}.ppd-upload-tile,.ppd-reference-token{position:relative;box-sizing:border-box;width:56px;height:56px;flex:0 0 56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;display:grid;place-items:center;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-upload-tile:hover{border-color:#1597e5;background:#eaf6fd;color:#086eba}.ppd-local-upload{border-style:solid;font-size:22px}.ppd-reference-token{border:0;background:#242830;color:#fff}.ppd-reference-token>img{width:100%;height:100%;object-fit:cover}.ppd-reference-token>span{font-size:17px;font-weight:800}.ppd-reference-token>b{position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.72);display:grid;place-items:center;font-size:10px}.ppd-reference-actions{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;gap:2px;padding:3px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 54%);opacity:0;transition:opacity .14s}.ppd-reference-token:hover .ppd-reference-actions,.ppd-reference-token:focus-within .ppd-reference-actions{opacity:1}.ppd-reference-actions button{width:15px;height:15px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center;font-size:9px;line-height:1;cursor:pointer}.ppd-reference-actions button:disabled{opacity:.35}.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:absolute;z-index:6;left:38px;top:22px;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#242830;color:#fff;box-shadow:0 4px 10px rgba(12,16,22,.24)}.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:-40px}.ppd-reference-tray.has-references>.ppd-reference-token{border:2px solid #fff;border-radius:15px;clip-path:polygon(10% 12%,35% 3%,68% 8%,93% 2%,98% 36%,90% 68%,96% 92%,58% 97%,28% 91%,3% 98%,7% 61%,2% 31%);box-shadow:0 3px 9px rgba(19,24,31,.18);transition:margin-left .24s cubic-bezier(.2,.72,.2,1),clip-path .2s ease,border-radius .2s ease,transform .2s ease}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(2n){transform:rotate(4deg)}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(3n){transform:rotate(-4deg)}.ppd-reference-tray.has-references:is(:hover,:focus-within){z-index:8}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-tray.has-references:not(:hover):not(:focus-within)>.ppd-local-upload{display:none}\n.ppd-composer-toolbar{height:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.ppd-toolbar-left,.ppd-toolbar-right{display:flex;align-items:center;gap:2px;min-width:0}.ppd-toolbar-left{flex:1}.ppd-toolbar-right{flex:none}.ppd-toolbar-divider{width:1px;height:22px;flex:0 0 1px;background:var(--composer-line);margin:0 6px 5px 5px}.ppd-toolbar-icon,.ppd-toolbar-button,.ppd-toolbar-select{position:relative;box-sizing:border-box;height:32px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--composer-muted);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;white-space:nowrap}.ppd-toolbar-icon{width:32px;flex:0 0 32px;padding:0}.ppd-toolbar-button,.ppd-toolbar-select{padding:0 8px;font-size:12px;font-weight:500}.ppd-toolbar-icon:hover,.ppd-toolbar-button:hover,.ppd-toolbar-select:hover{background:var(--composer-soft);color:var(--composer-ink)}.ppd-toolbar-select strong{max-width:118px;overflow:hidden;font-size:12px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.ppd-model-dot{width:14px;height:14px;flex:0 0 14px;border-radius:4px;background:linear-gradient(145deg,#7b8cff,#7557d8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.ppd-model-dot.is-gpt{background:linear-gradient(145deg,#49c970,#138f7e)}\n.ppd-contract-control{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;opacity:.001!important;pointer-events:none!important}.ppd-model-menu,.ppd-settings-menu{position:relative}.ppd-model-menu>summary,.ppd-settings-menu>summary{list-style:none}.ppd-model-menu>summary::-webkit-details-marker,.ppd-settings-menu>summary::-webkit-details-marker{display:none}.ppd-model-menu[open]>summary,.ppd-settings-menu[open]>summary{background:var(--composer-soft);color:var(--composer-ink)}.ppd-settings-menu summary>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu summary>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover,.ppd-settings-popover{position:absolute;z-index:30;left:0;bottom:38px;box-sizing:border-box;border:1px solid #e3e6ea;border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(20,27,38,.14)}.ppd-model-popover{width:390px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px;display:grid;gap:7px}.ppd-model-popover>header{display:flex;flex-direction:column;gap:2px;padding:7px 9px 5px}.ppd-model-popover>header strong{color:#202630;font-size:12px}.ppd-model-popover>header small{color:#959daa;font-size:9px}.ppd-model-popover>button{position:relative;min-height:74px;border:1px solid #e2e6eb;border-radius:12px;padding:9px 38px 9px 9px;background:#fff;display:flex;align-items:center;gap:11px;color:#171b22;text-align:left;cursor:pointer}.ppd-model-popover>button:hover,.ppd-model-popover>button.is-selected{border-color:#b5bdc8;background:#eef1f5}.ppd-model-popover>button:disabled{opacity:.55;cursor:not-allowed}.ppd-model-popover>button>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;gap:4px}.ppd-model-popover>button strong{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover>button small{color:#697383;font-size:10px}.ppd-model-popover>button>b{position:absolute;right:15px}.ppd-model-brand{width:42px;height:42px;flex:0 0 42px;border-radius:11px;background:linear-gradient(145deg,#8798ff,#7053d4);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}.ppd-model-brand.is-gpt{background:linear-gradient(145deg,#58cf78,#168e7e)}.ppd-settings-popover{width:330px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px}.ppd-settings-popover section+section{margin-top:5px}.ppd-settings-popover section>label:first-child{display:block;margin:0 3px 3px;color:#8a929e;font-size:9px;font-weight:650}.ppd-ratio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:4px;border-radius:12px;background:#f6f7f9}.ppd-ratio-grid button{min-height:40px;border:0;border-radius:8px;background:transparent;color:#77808c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}.ppd-ratio-grid button:hover,.ppd-ratio-grid button.is-selected,.ppd-segmented button:hover,.ppd-segmented button.is-selected{background:#fff;color:#202630;box-shadow:0 1px 4px rgba(18,25,35,.08)}.ppd-ratio-grid b{font-size:10px}.ppd-ratio-glyph{width:15px;height:11px;border:1.5px solid currentColor;border-radius:3px}.ppd-segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;border-radius:10px;background:#f6f7f9}.ppd-segmented button{min-width:0;height:28px;border:0;border-radius:7px;background:transparent;color:#74808d;cursor:pointer;font-size:10px;text-transform:capitalize}.ppd-settings-check{position:relative;height:30px;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;color:#687281!important;cursor:pointer}.ppd-settings-check>input{position:absolute;opacity:0}.ppd-settings-check>i{position:relative;width:30px;height:18px;border-radius:999px;background:#dfe3e8}.ppd-settings-check>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-settings-check>input:checked+i{background:#1d2734}.ppd-settings-check>input:checked+i>b{transform:translateX(12px)}\n.ppd-search-chip{position:relative;height:32px;border:1px solid transparent;border-radius:8px;background:#f6f7f9;color:#737d8a;display:flex;align-items:center;gap:8px;padding:0 7px 0 9px;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-search-chip>input,.ppd-eco-control>input{position:absolute;opacity:0;pointer-events:none}.ppd-search-chip>i,.ppd-eco-control>i{position:relative;width:30px;height:18px;flex:0 0 30px;border-radius:999px;background:#dfe3e8;transition:background-color .18s}.ppd-search-chip>i>b,.ppd-eco-control>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-search-chip.is-selected{background:#f0efff;color:#514aab}.ppd-search-chip.is-selected>i{background:#625abd}.ppd-search-chip.is-selected>i>b,.ppd-eco-control.is-selected>i>b{transform:translateX(12px)}.ppd-eco-control{position:relative;height:30px;display:flex;align-items:center;gap:5px;padding:0 4px;color:#7d8794;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-eco-control.is-selected>i{background:#1d2734}.ppd-generation-cost{height:32px;display:flex;align-items:center;gap:4px;padding:0 2px;color:#6f7782;white-space:nowrap}.ppd-generation-cost>strong{min-width:14px;color:#4d5560;font-size:13px;font-weight:700}.ppd-generate-button{width:34px;height:32px;flex:0 0 34px;border:1px solid transparent;border-radius:7px;background:var(--composer-ink);color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .18s,background-color .3s}.ppd-generate-button:hover:not(:disabled){transform:translateY(-1px);background:#232832}.ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint);cursor:not-allowed}.ppd-generate-button .ppd-spinner{width:14px;height:14px}.ppd-composer-meta{min-height:18px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;color:var(--ppd-muted);font-size:11px}.ppd-composer-meta>span+span:before{content:"\xB7";margin-right:12px}.ppd-file-input{display:none}\n.ppd-web-composer .ppd-model-popover,.ppd-web-composer .ppd-settings-popover{top:38px;bottom:auto}\n.ppd-generation-quote{position:sticky;top:0;display:grid;gap:12px;border:1px solid var(--ppd-line);border-radius:16px;background:var(--ppd-bg);padding:18px}.ppd-generation-quote h2{font-size:16px;margin:0}.ppd-generation-quote>strong{font-size:30px;line-height:1}.ppd-generation-quote>span{font-size:13px}.ppd-generation-quote p{margin:0;line-height:1.55}.ppd-generation-state{border-radius:9px;background:var(--ppd-surface);padding:8px 10px;font-weight:650}\n@media(hover:none),(pointer:coarse){.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references>.ppd-reference-token,.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-actions{opacity:1}.ppd-reference-tray.has-references>.ppd-local-upload{display:grid}}\n@media(max-width:1050px){.ppd-generation-grid{grid-template-columns:1fr}.ppd-generation-quote{position:static;max-width:720px}.ppd-web-composer{max-width:none}}\n@media(max-width:720px){.ppd-web-composer{height:auto;min-height:214px}.ppd-composer-media-row{overflow-x:auto}.ppd-composer-toolbar{height:auto;min-height:72px;align-items:stretch;flex-direction:column}.ppd-toolbar-left{flex-wrap:wrap}.ppd-toolbar-right{justify-content:flex-end}.ppd-model-popover{left:0;right:auto;width:min(390px,calc(100vw - 52px))}.ppd-settings-popover{left:auto;right:0;width:min(330px,calc(100vw - 52px))}.ppd-search-chip>span{display:none}}\n@media(max-width:480px){.ppd-skill-token{min-width:138px}.ppd-skill-token strong{max-width:130px}.ppd-model-select strong{max-width:80px}.ppd-eco-control>span{display:none}}\n.ppd-generation-shell.is-inline{position:relative;width:min(720px,100%);margin:0 auto}.ppd-generation-shell.is-floating{position:absolute;z-index:45;left:50%;bottom:18px;width:min(720px,calc(100% - 40px));transform:translateX(-50%)}.ppd-generation-shell.is-floating:before{content:"";position:absolute;z-index:-1;inset:-24px -34px -22px;background:radial-gradient(ellipse at center,rgba(247,248,249,.98) 38%,rgba(247,248,249,.78) 64%,transparent 78%);pointer-events:none}.ppd-generation-shell.is-floating>.ppd-alert,.ppd-generation-shell.is-floating>.ppd-notice{margin:0 0 7px}.ppd-generation-shell.is-collapsed{width:min(620px,calc(100% - 40px))}.ppd-generation-collapsed{width:100%;height:54px;border:1px solid #dde1e6;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 15px 45px rgba(23,30,42,.16);padding:0 12px;display:flex;align-items:center;gap:10px;color:#1d222b;text-align:left}.ppd-generation-collapsed>span:nth-child(2){min-width:0;display:grid;flex:1;gap:2px}.ppd-generation-collapsed strong,.ppd-generation-collapsed small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-generation-collapsed strong{font-size:12px}.ppd-generation-collapsed small{color:#8a929e;font-size:9px}.ppd-generation-collapsed>b{color:#596270;font-size:10px}.ppd-composer-actions{position:absolute;z-index:9;top:9px;right:9px;display:flex;gap:2px}.ppd-composer-actions button{width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#8b929d;display:grid;place-items:center}.ppd-composer-actions button:hover{background:var(--composer-soft);color:#3f4752}.ppd-composer-actions button svg{transform:rotate(-20deg)}.ppd-generation-shell.is-floating .ppd-composer-media-row{padding-right:70px}.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:38px}.ppd-generation-shell.is-inline .ppd-model-popover,.ppd-generation-shell.is-inline .ppd-settings-popover{top:38px;bottom:auto}.ppd-generation-shell.is-floating .ppd-model-popover,.ppd-generation-shell.is-floating .ppd-settings-popover{top:auto;bottom:38px}.ppd-generate-button{width:auto;min-width:104px;padding:0 7px 0 11px;display:flex;gap:8px}.ppd-generate-button>span:not(.ppd-spinner){white-space:nowrap;font-size:11px;font-weight:700}.ppd-generation-shell .ppd-composer-meta{display:none}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-inline{width:100%}}\n\n/* The native resource pages use the same Web dock geometry: a 480\xD740 trigger\n   opens into the 820\xD7200 shell, while the generation page keeps the composer inline. */\n.ppd-generation-shell.is-floating{bottom:76px;width:min(820px,calc(100% - 64px));height:200px;padding:10px;border:1px solid #d8dad5;border-radius:18px;background:rgba(255,255,255,.98);box-shadow:0 22px 64px rgba(16,24,38,.2),0 4px 12px rgba(16,24,38,.08);backdrop-filter:blur(12px);transform-origin:center bottom;animation:ppd-composer-open .28s cubic-bezier(.2,.82,.2,1)}\n@keyframes ppd-composer-open{from{opacity:0;transform:translateX(-50%) scale(.58,.18)}to{opacity:1;transform:translateX(-50%) scale(1)}}\n.ppd-generation-shell.is-floating:before{display:none}.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:none;border-color:transparent;box-shadow:none}.ppd-generation-shell.is-floating .ppd-composer-actions{right:19px;top:19px}\n.ppd-generation-shell.is-collapsed{bottom:24px;width:min(480px,calc(100% - 40px));height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}\n.ppd-generation-collapsed{height:40px;border-color:#d5dbe3;border-radius:16px;padding:4px 5px;gap:9px;box-shadow:0 10px 32px rgba(16,24,38,.18),0 2px 6px rgba(16,24,38,.06)}\n.ppd-collapsed-add,.ppd-collapsed-expand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px}.ppd-collapsed-add{color:#485260}.ppd-collapsed-placeholder{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#737b89;font-size:13px;font-weight:500}.ppd-generation-collapsed>small{color:#8a929e;font-size:9px;white-space:nowrap}.ppd-collapsed-expand{border-radius:50%;background:#e9edf2;color:#7d8998;font-size:16px}\n.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-notice,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{position:absolute;z-index:3;right:12px;bottom:calc(100% + 8px);left:12px;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;text-align:center}.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{color:#a13e3e}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-collapsed{width:calc(100% - 24px)}}\n.ppd-generation .ppd-generate-button{background:var(--composer-ink);color:#fff}.ppd-generation .ppd-generate-button>span,.ppd-generation .ppd-generate-button>svg{color:#fff;stroke:currentColor}.ppd-generation .ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint)}.ppd-generation .ppd-generate-button:disabled>span,.ppd-generation .ppd-generate-button:disabled>svg{color:var(--composer-faint)}\n.ppd-generation .ppd-local-upload{display:none!important}\n\n/* Match Web product-mode selected Skill and empty floating reference tile. */\n.ppd-generation .ppd-skill-token.has-value{background:#eef0f4;color:#252a34}.ppd-generation-shell.is-floating .ppd-reference-tray:not(.has-references)>.ppd-upload-tile{border:0;border-radius:0;background:transparent}\n.ppd-add-menu{position:relative}.ppd-add-menu>summary{list-style:none}.ppd-add-menu>summary::-webkit-details-marker{display:none}.ppd-add-popover{position:absolute;z-index:30;left:0;top:38px;width:160px;padding:5px;border:1px solid var(--composer-line);border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,27,38,.14)}.ppd-generation-shell.is-floating .ppd-add-popover{top:auto;bottom:38px}.ppd-add-popover>label,.ppd-add-popover>button{position:relative;box-sizing:border-box;display:block;width:100%;padding:9px;border:0;border-radius:6px;background:transparent;color:var(--composer-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}.ppd-add-popover>label:hover,.ppd-add-popover>button:hover{background:var(--composer-soft)}.ppd-add-popover select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.ppd-generation .ppd-generate-button{width:34px;min-width:34px;padding:0;justify-content:center}.ppd-generation-cost{margin:0 10px 0 6px}\n\n/* Manual generation history shares the account bar and keeps the draft mounted. */\n.ppd-panel [hidden]{display:none!important}\n.ppd-price-verification{margin:0 12px 10px;color:#866218;font-size:12px;line-height:1.5}\n.ppd-history-shortcut{display:flex;justify-content:flex-end;padding:12px 28px 0}\n.ppd-panel-generation .ppd-content.ppd-history-content{display:block;min-height:0;padding:24px 28px}\n.ppd-history{width:100%;max-width:1120px;margin:0 auto}\n.ppd-history-heading,.ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}\n.ppd-history-heading{margin-bottom:20px}.ppd-history-heading h2{font-size:20px;margin:0}\n.ppd-history-list{display:grid;gap:16px}.ppd-history-record{padding:20px;border:1px solid #e4e4e2;border-radius:12px;background:#fff}\n.ppd-history-record-heading strong{display:flex;align-items:center;gap:8px}.ppd-history-record-heading>span,.ppd-history-record time,.ppd-history-record>small{color:#73736e;font-size:12px}\n.ppd-history-record time{display:block;margin-top:8px}.ppd-history-record progress{display:block;width:100%;height:6px;margin:16px 0 8px;accent-color:#656c49}\n.ppd-history-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}.ppd-history-results .ppd-image{aspect-ratio:1;background:#f5f5f3;border-radius:8px;overflow:hidden}.ppd-history-results img{width:100%;height:100%;object-fit:contain}\n@media(max-width:720px){.ppd-history-shortcut{padding-inline:16px}.ppd-panel-generation .ppd-content.ppd-history-content{padding:20px 16px}.ppd-history-heading,.ppd-history-record-heading{flex-wrap:wrap}.ppd-history-results{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}\n\n/* Confirmed tasks keep running after the composer clears; their progress sits above the saved results. */\n.ppd-running-tasks{margin-bottom:28px}.ppd-running-label{margin:0 0 12px;color:#73736e;font-size:12px;font-weight:600;letter-spacing:.04em}\n.ppd-running-tasks .ppd-history-record progress{margin-top:12px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n@media(max-width:720px){.ppd-running-tasks{margin-bottom:20px}}\n\n/* Local reference previews appear before cloud upload; only ready asset IDs can generate. */\n.ppd-upload-preview{clip-path:none!important;transform:none!important;margin-left:0!important;border-radius:10px!important;outline:1px solid #c8cdd5}\n.ppd-upload-preview>img{opacity:.65}\n.ppd-upload-preview.is-failed{outline-color:#a13e3e}\n.ppd-upload-preview .ppd-upload-preview-status{position:absolute;right:0;bottom:0;left:0;padding:4px 1px;background:rgba(24,28,34,.8);color:#fff;font-size:9px;line-height:12px;text-align:center}\n.ppd-upload-preview.is-failed .ppd-upload-preview-status{background:rgba(139,39,39,.9)}\n.ppd-upload-preview-remove{position:absolute;top:1px;right:1px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#fff;color:#8b2727;cursor:pointer}\n\n/* Manual batch generation stays in the plugin UI and keeps each row compact. */\n.ppd-batch-launchers{display:flex;align-items:center;gap:3px}.ppd-batch-launchers>button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#fff;padding:0 8px;color:#5d6672;font-size:10px;white-space:nowrap;cursor:pointer}.ppd-batch-launchers>button:hover:not(:disabled){border-color:#b8c0ca;background:#f6f7f9;color:#222a34}.ppd-batch-launchers>button:disabled{opacity:.45;cursor:not-allowed}\n.ppd-batch-backdrop{position:fixed;z-index:120;inset:0;display:grid;place-items:center;padding:28px;background:rgba(20,26,34,.36);backdrop-filter:blur(3px)}\n.ppd-batch-dialog{box-sizing:border-box;width:min(1180px,100%);height:min(780px,calc(100vh - 56px));display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.28);color:#252b34;text-align:left}\n.ppd-batch-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:18px 20px 13px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-batch-dialog h2{margin:0;font-size:18px}.ppd-batch-dialog header p{margin:4px 0 0;color:#7c8591;font-size:11px}.ppd-batch-dialog header>button{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;cursor:pointer}\n.ppd-batch-tools{min-height:44px;display:flex;align-items:center;gap:7px;padding:7px 16px;border-bottom:1px solid #e4e7eb;background:#fff}.ppd-batch-tools>button,.ppd-batch-dialog footer button,.ppd-batch-bulk>button{height:30px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 10px;color:#59636f;font-size:11px;cursor:pointer}.ppd-batch-tools>button:disabled,.ppd-batch-dialog footer button:disabled,.ppd-batch-bulk>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-state{margin-left:auto;border-radius:999px;background:#eef1f4;padding:4px 9px;color:#697381;font-size:10px}.ppd-batch-state.is-running{background:#edf4ff;color:#38649a}.ppd-batch-state.is-blocked,.ppd-batch-state.is-partial{background:#fff3dc;color:#8b651d}.ppd-batch-state.is-completed{background:#eaf7ee;color:#33714a}\n.ppd-batch-bulk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:7px;padding:9px 16px;border-bottom:1px solid #e1e5e9;background:#f1f3f5}.ppd-batch-bulk>label{min-width:0;display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:5px;color:#6d7580;font-size:10px}.ppd-batch-bulk input:not([type=checkbox]),.ppd-batch-bulk select{box-sizing:border-box;min-width:0;height:28px;border:1px solid #d8dde3;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font:inherit}.ppd-batch-feedback{margin:0;padding:7px 16px;border-bottom:1px solid #e1e5e9;background:#edf5ff;color:#416a98;font-size:11px}.ppd-batch-feedback.is-error{background:#fff0f0;color:#9a3f3f}\n.ppd-batch-table{min-height:0;overflow:auto;padding:10px 12px;display:grid;align-content:start;gap:8px}.ppd-batch-row{display:grid;grid-template-columns:38px 94px minmax(260px,1fr) 105px;align-items:center;gap:10px;min-height:108px;border:1px solid #e0e4e8;border-radius:12px;background:#fff;padding:9px}.ppd-batch-select{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-right:1px solid #edf0f2;color:#8a929d;font-size:11px}.ppd-batch-select input{width:15px;height:15px;accent-color:#252b34}\n.ppd-batch-reference-grid{width:88px;height:88px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:4px}.ppd-batch-reference{position:relative;overflow:hidden;border:1px dashed #d5dae0;border-radius:7px;background:#f7f8fa;display:grid;place-items:center;color:#a0a7b0}.ppd-batch-reference.has-image{border-style:solid;background:#eceff2}.ppd-batch-reference img{width:100%;height:100%;object-fit:cover}.ppd-batch-reference>label{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer}.ppd-batch-reference.has-image>label{right:18px;bottom:1px;top:auto;left:auto;width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.9);color:#52606f;font-size:10px}.ppd-batch-reference input{display:none}.ppd-batch-reference>button{position:absolute;right:1px;top:1px;width:17px;height:17px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#9a4141;font-size:11px;line-height:17px;cursor:pointer}.ppd-batch-reference b{font-size:17px;font-weight:400}\n.ppd-batch-reference b.ppd-batch-reference-pending{position:absolute;left:2px;bottom:2px;padding:0 3px;border-radius:3px;background:rgba(24,30,38,.72);color:#fff;font-size:9px;line-height:13px;font-weight:500;pointer-events:none}\n.ppd-batch-main{min-width:0;display:grid;gap:7px}.ppd-batch-main>textarea{box-sizing:border-box;width:100%;height:48px;resize:vertical;border:1px solid #dce1e6;border-radius:8px;padding:8px;color:#303741;font:inherit;font-size:11px;line-height:1.4}.ppd-batch-row-controls{display:flex;align-items:center;gap:7px}.ppd-batch-row-controls>select{min-width:140px;max-width:240px;height:28px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px}.ppd-batch-parameters{position:relative;min-width:0;flex:1}.ppd-batch-parameters>summary{overflow:hidden;height:28px;display:flex;align-items:center;border:1px solid #dce1e6;border-radius:7px;padding:0 8px;color:#66707c;font-size:10px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-parameter-grid{position:absolute;z-index:4;left:0;top:34px;width:min(520px,70vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #dce1e6;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:10px}.ppd-batch-parameter-grid label{display:grid;gap:3px;color:#7c8490;font-size:9px}.ppd-batch-parameter-grid select,.ppd-batch-parameter-grid input[type=number]{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font-size:10px}.ppd-batch-parameter-grid .ppd-batch-check{display:flex;align-items:center;gap:6px}.ppd-batch-row-error{color:#a34747;font-size:10px}\n.ppd-batch-skill{position:relative;flex:0 0 auto}.ppd-batch-skill-toggle{min-width:140px;max-width:240px;height:28px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px;cursor:pointer}.ppd-batch-skill-toggle>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-batch-skill-toggle:disabled{opacity:.5;cursor:not-allowed}.ppd-batch-skill-menu{position:absolute;z-index:6;left:0;top:32px;width:260px;display:grid;gap:5px;border:1px solid #dce1e6;border-radius:9px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:7px}.ppd-batch-skill-menu>input{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;padding:0 7px;color:#343b45;font:inherit;font-size:10px}.ppd-batch-skill-list{max-height:220px;display:grid;gap:2px;overflow:auto}.ppd-batch-skill-list>button{height:26px;display:flex;align-items:center;overflow:hidden;border:0;border-radius:6px;background:transparent;padding:0 7px;color:#4d5662;font-size:10px;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-skill-list>button:hover:not(:disabled){background:#f1f3f5}.ppd-batch-skill-list>button[aria-selected=true]{background:#eef1f4;color:#252b34;font-weight:600}.ppd-batch-skill-list>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-skill-list>small{padding:3px 7px;color:#8a929d;font-size:10px}.ppd-batch-bulk .ppd-batch-skill{min-width:0}.ppd-batch-bulk .ppd-batch-skill-toggle{width:100%;max-width:none;min-width:0}.ppd-batch-tools>button.is-danger{color:#a34444}\n.ppd-batch-result{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px;border-left:1px solid #edf0f2;padding-left:9px}.ppd-batch-result>span{border-radius:999px;background:#eef1f4;padding:3px 7px;color:#66717e;font-size:9px}.ppd-batch-result>span.is-generating,.ppd-batch-result>span.is-submitting{background:#edf4ff;color:#3d6695}.ppd-batch-result>span.is-completed{background:#eaf7ee;color:#33714a}.ppd-batch-result>span.is-failed,.ppd-batch-result>span.is-unknown{background:#fff0e7;color:#9a5738}.ppd-batch-result>strong{font-size:11px}.ppd-batch-result>button{border:0;background:transparent;color:#9299a2;font-size:9px;cursor:pointer}.ppd-batch-empty{min-height:210px;display:grid;place-content:center;gap:5px;color:#858e99;text-align:center}.ppd-batch-empty strong{color:#4d5662;font-size:14px}.ppd-batch-empty span{font-size:11px}\n.ppd-batch-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-top:1px solid #dfe3e8;background:#fff}.ppd-batch-dialog>footer>div{display:flex;align-items:center;gap:12px}.ppd-batch-dialog>footer>div:first-child{display:grid;gap:2px}.ppd-batch-dialog>footer strong{font-size:12px}.ppd-batch-dialog>footer span{color:#7b8490;font-size:10px}.ppd-batch-dialog footer .is-primary{border-color:#252b34;background:#252b34;color:#fff}.ppd-batch-dialog footer .is-danger{color:#a34444}\n@media(max-width:900px){.ppd-batch-launchers>button:first-child{display:none}.ppd-batch-backdrop{padding:12px}.ppd-batch-dialog{height:calc(100vh - 24px)}.ppd-batch-bulk{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-batch-row{grid-template-columns:32px 82px minmax(180px,1fr)}.ppd-batch-reference-grid{width:78px;height:78px}.ppd-batch-result{grid-column:3;flex-direction:row;justify-content:flex-end;border-left:0;border-top:1px solid #edf0f2;padding:7px 0 0}.ppd-batch-dialog>footer{align-items:flex-start;flex-direction:column}.ppd-batch-dialog>footer>div:last-child{align-self:flex-end}}\n.ppd-skill-open{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:transparent;cursor:pointer}\n.ppd-skill-browser-backdrop{position:fixed;z-index:140;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.4);backdrop-filter:blur(3px)}\n.ppd-skill-browser{box-sizing:border-box;width:min(920px,100%);max-height:min(680px,calc(100vh - 48px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.3);color:#252b34;text-align:left}\n.ppd-skill-browser-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-skill-browser-head>strong{font-size:15px}.ppd-skill-browser-close{width:28px;height:28px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:18px;line-height:1;cursor:pointer}\n.ppd-skill-browser-search{flex:none;padding:10px 18px 0}.ppd-skill-browser-search>input{box-sizing:border-box;width:100%;height:34px;border:1px solid #dce1e6;border-radius:9px;background:#fff;padding:0 11px;color:#262c35;font:inherit;font-size:12px}.ppd-skill-browser-search>input:focus{outline:none;border-color:#b9c0ca;box-shadow:0 0 0 3px rgba(37,43,52,.07)}\n.ppd-skill-browser-tabs{flex:none;display:flex;gap:4px;padding:10px 18px 0}.ppd-skill-browser-tabs>button{height:28px;border:0;border-radius:8px;background:transparent;padding:0 10px;color:#7b8490;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.ppd-skill-browser-tabs>button:hover{background:#eef0f3;color:#3a4250}.ppd-skill-browser-tabs>button.is-active{background:#252b34;color:#fff}\n.ppd-skill-browser-categories{flex:none;display:flex;flex-wrap:wrap;gap:5px;padding:8px 18px 0}.ppd-skill-browser-categories>button{height:24px;border:1px solid #e1e5ea;border-radius:999px;background:#fff;padding:0 9px;color:#69737f;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-categories>button.is-selected{border-color:#252b34;background:#eef0f3;color:#252b34;font-weight:600}\n.ppd-skill-browser-list{flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));align-content:start;gap:8px;overflow:auto;padding:12px 18px 16px}\n.ppd-skill-browser-status{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;padding:18px 4px;color:#7b8490;font-size:12px}\n.ppd-skill-card{box-sizing:border-box;display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #e3e6ea;border-radius:12px;background:#fff;padding:8px;color:#252b34;font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}.ppd-skill-card:hover:not(:disabled){border-color:#c9ced6;box-shadow:0 6px 18px rgba(20,27,38,.08);transform:translateY(-1px)}.ppd-skill-card.is-selected{border-color:#252b34;box-shadow:inset 0 0 0 1px #252b34}.ppd-skill-card:disabled{opacity:.5;cursor:not-allowed}\n.ppd-skill-card-cover{position:relative;width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:linear-gradient(145deg,#eef0f4,#e2e6ec);color:#98a1ac}.ppd-skill-card-cover[data-image-pair]{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-skill-card-cover>img{display:block;width:100%;height:100%;object-fit:cover}.ppd-skill-card-fallback{font-size:20px}\n.ppd-skill-card-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.ppd-skill-card-copy>strong,.ppd-skill-card-copy>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-skill-card-copy>strong{font-size:12px;font-weight:650}.ppd-skill-card-copy>small{color:#7b8490;font-size:10px}\n.ppd-skill-browser-more{flex:none;align-self:center;margin:0 0 14px;height:30px;border:1px solid #dce1e6;border-radius:999px;background:#fff;padding:0 14px;color:#4d5662;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-more:disabled{opacity:.6;cursor:default}\n.ppd-skill-browser-family{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 18px 0}.ppd-skill-browser-back{align-self:flex-start;height:26px;border:0;border-radius:7px;background:transparent;padding:0 6px;color:#5b6470;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-family>.ppd-skill-browser-list{padding:8px 0 14px}\n@media(max-width:640px){.ppd-skill-browser-backdrop{padding:0}.ppd-skill-browser{width:100%;height:100%;border:0;border-radius:0}.ppd-skill-browser-list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:10px 12px 14px}.ppd-skill-browser-search,.ppd-skill-browser-tabs,.ppd-skill-browser-categories{padding-left:12px;padding-right:12px}}\n';
 
 // plugins/podplo-dsh/src/manual-toolbox.css
 var manual_toolbox_default = '.ppd-toolbox{position:relative;height:100%;overflow:hidden;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-toolbox *{box-sizing:border-box}.ppd-toolbox button{cursor:pointer}.ppd-toolbox button:disabled{cursor:default;opacity:.55}\n.ppd-toolbox button,.ppd-toolbox input,.ppd-toolbox select{font:inherit}\n.ppd-toolbox__header,.ppd-toolbox__result,.ppd-toolbox__exported{display:flex;align-items:center;justify-content:space-between;gap:12px}\n.ppd-toolbox__header h2{margin:0 0 8px;font-size:24px;line-height:1.2}.ppd-toolbox__header p,.ppd-toolbox__output p{margin:4px 0 0;color:#777;font-size:12px;line-height:1.6}\n.ppd-toolbox__upload{position:relative;padding:8px 12px;border:1px solid #ddd;border-radius:10px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-toolbox__tabs{display:grid;gap:14px}.ppd-toolbox__tool-group>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ppd-toolbox__tool-group h3{font-size:11px;color:#777;margin:0 0 7px}\n.ppd-toolbox__tabs button{display:flex;flex-direction:column;gap:3px;text-align:left;padding:9px;border:1px solid #ddd;border-radius:11px;background:#fff;color:inherit}\n.ppd-toolbox__tabs button.is-active{border-color:#222;background:#f4f4f1}.ppd-toolbox__tabs small{color:#888;font-size:10px}\n.ppd-toolbox__body{display:grid;height:100%;min-height:0;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:20px;align-items:start}.ppd-toolbox__workspace{min-width:0;min-height:0;height:100%;overflow:auto;padding-bottom:48px}\n.ppd-toolbox__parameters{display:grid;align-content:start;gap:12px;min-width:0;min-height:0;height:100%;overflow:auto;padding-right:4px;padding-bottom:48px}.ppd-toolbox__source-list{max-height:160px;overflow:auto}\n.ppd-toolbox__sources,.ppd-toolbox__controls,.ppd-toolbox__preview-panel,.ppd-toolbox__results,.ppd-toolbox__output{min-width:0;border:1px solid #e4e4df;border-radius:14px;padding:14px;background:#fff}\n.ppd-toolbox__controls fieldset{border:0;min-width:0;padding:0;margin:0}\n.ppd-toolbox h3{margin:0 0 11px;font-size:14px}.ppd-toolbox__source{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid #eee}\n.ppd-toolbox__source span,.ppd-toolbox__result span,.ppd-toolbox__exported span{display:flex;min-width:0;flex-direction:column;gap:3px}.ppd-toolbox__source b,.ppd-toolbox__result b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}\n.ppd-toolbox__source small,.ppd-toolbox__result small,.ppd-toolbox__exported small{color:#888;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.ppd-toolbox__fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 9px}.ppd-toolbox__fields label{display:flex;min-width:0;flex-direction:column;gap:5px;font-size:12px;color:#666}\n.ppd-toolbox__fields input,.ppd-toolbox__fields select,.ppd-toolbox__directory>input{min-width:0;padding:7px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-toolbox__fields input[readonly]{background:#f4f4f1;color:#777}\n.ppd-toolbox__join-option{display:flex;align-items:flex-end;padding-bottom:8px}.ppd-toolbox__join-option .ppd-toolbox__check{white-space:nowrap}.ppd-toolbox__join-option:has(input:disabled){opacity:.5;cursor:default}\n.ppd-toolbox__edge-group{grid-column:1/-1;display:grid;gap:10px;border-top:1px solid #eee;padding-top:12px}.ppd-toolbox__edge-group h4{font-size:12px;margin:0;color:#333}\n.ppd-toolbox__range-field{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 10px;align-items:center}.ppd-toolbox__range-field label{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}.ppd-toolbox__range-field input[type=number]{width:70px}.ppd-toolbox__range-field .ppd-toolbox__pixel-input{grid-column:1/-1;font-variant-numeric:tabular-nums}.ppd-toolbox__pixel-input>span{display:flex;align-items:center;gap:4px}.ppd-toolbox__pixel-input input[type=number]{width:104px}.ppd-toolbox__pixel-input input:disabled{background:#f4f4f1;color:#777}\n.ppd-toolbox__fields .ppd-toolbox__range-field input[type=range]{grid-column:1/-1;width:100%;height:20px;margin:0;padding:0;border:0;background:transparent;accent-color:#333;cursor:ew-resize}.ppd-toolbox__pixel-basis{grid-column:1/-1;margin:0;font-size:11px;line-height:1.5;color:#777}\n.ppd-toolbox__fields .ppd-toolbox__check{flex-direction:row;align-items:center;grid-column:1/-1}.ppd-toolbox .ppd-toolbox__primary{margin-top:16px;width:100%;padding:11px 13px;border:0;border-radius:10px;background:#20201f;color:#fff}\n.ppd-toolbox__preview-heading{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.ppd-toolbox__preview-heading>span{font-size:12px;color:#777}\n.ppd-toolbox__preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.ppd-toolbox__preview-toolbar .ppd-toolbox__upload{margin-left:auto}.ppd-toolbox__preview-tabs{display:flex;gap:6px}.ppd-toolbox__preview-tabs button{border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;padding:6px 14px}.ppd-toolbox__preview-tabs button[aria-pressed=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-toolbox__source-batch{display:grid;gap:8px;margin-bottom:12px;padding:10px;border:1px solid #e4e4df;border-radius:10px;background:#fafaf8}.ppd-toolbox__source-batch-heading{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-toolbox__source-batch-heading strong{font-size:12px}.ppd-toolbox__source-batch-heading span{margin-right:auto;color:#777;font-size:11px}.ppd-toolbox__source-batch-heading button,.ppd-toolbox__source-row>button{padding:4px 7px;border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;font-size:11px}.ppd-toolbox__source-list{display:grid;gap:3px;max-height:180px;overflow:auto}.ppd-toolbox__source-row{display:flex;align-items:center;gap:6px;padding:4px;border-radius:7px}.ppd-toolbox__source-row[data-preview-source=true]{background:#eeeeea}.ppd-toolbox__source-row>label{display:flex;min-width:0;flex:1;align-items:flex-start;gap:7px;cursor:pointer}.ppd-toolbox__source-row>label span{display:flex;min-width:0;flex-direction:column;gap:2px}.ppd-toolbox__source-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.ppd-toolbox__source-row small,.ppd-toolbox__source-batch>small,.ppd-toolbox__source-batch>p{margin:0;color:#777;font-size:10px;line-height:1.5}.ppd-toolbox__source-row>button[aria-pressed=true]{border-color:#292927;background:#292927;color:#fff}\n.ppd-toolbox__previews{position:relative}.ppd-toolbox__previews figure{margin:0;min-width:0}.ppd-toolbox__previews figcaption{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%)}\n.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{display:block;width:100%;height:clamp(300px,52vh,620px);object-fit:contain;border-radius:9px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-toolbox__preview-empty{display:grid;place-items:center;color:#777;font-size:12px;text-align:center}.ppd-toolbox__previews small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:9px;color:#666;font-size:12px}\n.ppd-toolbox__preview-retained{position:absolute;top:10px;left:50%;translate:-50% 0;z-index:1;max-width:calc(100% - 20px);padding:7px 11px;border-radius:999px;background:rgba(32,32,31,.82);color:#fff;font-size:12px;line-height:1.3;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.12);pointer-events:none}\n.ppd-toolbox__preview-note{font-size:12px;color:#666;line-height:1.5;margin:12px 0 0}.ppd-toolbox__preview-error{color:#9d2c23;font-size:12px;line-height:1.5;margin:12px 0 0}\n.ppd-toolbox__preview-files{margin:12px 0 0;padding-left:18px;font-size:12px;overflow-wrap:anywhere}.ppd-toolbox__preview-files li+li{margin-top:8px}.ppd-toolbox__preview-files small{display:block;color:#666;margin-top:3px}\n.ppd-toolbox__results,.ppd-toolbox__output{margin-top:14px}.ppd-toolbox__result{padding:8px 0;border-bottom:1px solid #eee}.ppd-toolbox__result>div{display:flex;gap:6px}.ppd-toolbox__result button,.ppd-toolbox__output button{padding:6px 8px;border:1px solid #ddd;border-radius:8px;background:#fafafa;color:inherit}\n.ppd-toolbox__result>span{flex:1}.ppd-toolbox__result-thumbnail{width:56px;height:56px;object-fit:contain;border-radius:6px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/12px 12px;flex-shrink:0}\n.ppd-toolbox__directory{display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:8px;align-items:center;margin-top:10px}.ppd-toolbox__directory label{grid-column:1/-1;font-size:11px;color:#666}.ppd-toolbox__output code{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#666}\n.ppd-toolbox__exported{margin-top:10px;padding:9px;background:#f6f6f3;border-radius:10px}.ppd-toolbox__notice,.ppd-toolbox__error{position:absolute;left:18px;right:18px;bottom:8px;margin:0;z-index:2;padding:9px 11px;border-radius:9px;font-size:12px}.ppd-toolbox__notice{background:#e9f6ee;color:#246c3b}.ppd-toolbox__error{background:#fff0ef;color:#9d2c23}.ppd-toolbox__empty{color:#999;font-size:11px}\n@media(max-width:900px){.ppd-toolbox__body{grid-template-columns:minmax(230px,290px) minmax(0,1fr);gap:14px}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__result{align-items:flex-start;flex-wrap:wrap}}\n@media(max-width:620px){.ppd-toolbox{padding:12px;overflow:auto}.ppd-toolbox__header{align-items:flex-start;flex-wrap:wrap}.ppd-toolbox__body{height:auto;grid-template-columns:1fr}.ppd-toolbox__parameters,.ppd-toolbox__workspace{height:auto;overflow:visible;padding:0}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__directory label{grid-column:auto}.ppd-toolbox__preview-tabs button{flex:1}.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{height:320px}.ppd-toolbox__notice,.ppd-toolbox__error{position:sticky;left:auto;right:auto;margin-top:12px}}\n\n/* Vertical independent modules; only the left pane scrolls while adjusting parameters. */\n.ppd-toolbox__modules{min-width:0}.ppd-toolbox__module{padding:16px 0;border-top:1px solid #e4e4df}\n.ppd-toolbox__module h3{margin:0 0 14px;font-size:16px}.ppd-toolbox__module h3 label{display:flex;align-items:center;gap:10px;cursor:pointer}\n.ppd-toolbox__module h3 input{width:17px;height:17px;margin:0;accent-color:#292927}\n.ppd-toolbox__module fieldset{border:0;min-width:0;margin:0;padding:0}\n.ppd-toolbox__save-bar{position:sticky;bottom:-48px;background:#fff;padding:8px 0 14px;margin-top:0;z-index:1}\n.ppd-toolbox__save-bar .ppd-toolbox__primary{margin-top:0}.ppd-toolbox__save-bar>small{display:block;margin-top:8px;color:#888;font-size:11px;line-height:1.5}\n.ppd-toolbox__actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}\n.ppd-toolbox__actions>button{padding:10px 13px;border:1px solid #ddd;border-radius:10px;background:#fff;color:inherit}\n.ppd-toolbox__actions>button:last-child{grid-column:1/-1}\n.ppd-toolbox__preview-tabs{flex-wrap:wrap}.ppd-toolbox__result-name{display:flex;flex:1;min-width:0;text-align:left;flex-direction:column;gap:4px;background:none!important;border:0!important}\n@media(max-width:620px){.ppd-toolbox__save-bar{position:static}.ppd-toolbox__module{padding:14px 0}}\n\n/* Bound the toolbox to the native DSH panel, including its account header. */\n.ppd-panel-toolbox{height:100%;min-height:0}\n.ppd-panel-toolbox .ppd-panel-scroll{display:flex;flex-direction:column;min-height:0;overflow:hidden}\n.ppd-panel-toolbox .ppd-account{flex:0 0 auto}\n.ppd-panel-toolbox .ppd-content{flex:1 1 0;min-height:0;width:100%;max-width:none;margin:0;padding:0;overflow:hidden}\n\n.ppd-toolbox-hub{display:flex;flex-direction:column;height:100%;min-height:0}\n.ppd-toolbox-hub__tabs{display:flex;flex:0 0 auto;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e1;overflow-x:auto}\n.ppd-toolbox-hub__tabs button{flex:0 0 auto;border:0;border-bottom:2px solid transparent;padding:12px 0 10px;background:transparent;color:#64645e;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox-hub__tabs button[aria-selected=true]{border-bottom-color:#292927;color:#292927;font-weight:600}\n.ppd-toolbox-hub__tabs button:focus-visible{outline:2px solid #64645e;outline-offset:-3px}\n.ppd-toolbox-hub__panel{flex:1 1 0;min-height:0;overflow:auto}\n.ppd-toolbox-hub__panel[hidden]{display:none!important}\n.ppd-toolbox-hub__panel[id$="-processing"]{display:flex;flex-direction:column;overflow:hidden}\n.ppd-processing-tools{display:flex;flex:0 0 auto;gap:6px;padding:10px 18px;border-bottom:1px solid #e5e5e1}\n.ppd-processing-tools button{border:1px solid #ddd;border-radius:7px;padding:6px 14px;background:#fff;color:#64645e;font:inherit;font-size:12px;cursor:pointer}\n.ppd-processing-tools button[aria-selected=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-processing-tools__panel{flex:1 1 0;min-height:0;overflow:auto}.ppd-processing-tools__panel[hidden]{display:none!important}\n.ppd-contour{height:100%;overflow:auto;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-contour *{box-sizing:border-box}.ppd-contour__header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}\n.ppd-contour h2{font-size:22px;margin:0 0 7px}.ppd-contour__header p{margin:0;color:#777;font-size:12px;line-height:1.6}\n.ppd-contour__upload{position:relative;flex-shrink:0;padding:8px 12px;border:1px solid #ddd;border-radius:9px;cursor:pointer;font-size:12px}\n.ppd-contour__upload:has(input:disabled){opacity:.55;cursor:default}.ppd-contour__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-contour__upload:focus-within{outline:2px solid #64645e;outline-offset:2px}\n.ppd-contour__layout{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:20px;align-items:start}\n.ppd-contour__settings{min-width:0}.ppd-contour fieldset{display:grid;gap:12px;border:0;margin:0;padding:0;min-width:0}\n.ppd-contour fieldset>label,.ppd-contour__dimensions label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;color:#666}\n.ppd-contour input,.ppd-contour select{width:100%;min-width:0;font:inherit;font-size:13px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-contour fieldset:disabled{opacity:.55}.ppd-contour__dimensions{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.ppd-contour__hint{font-size:12px;line-height:1.7;color:#777;margin:4px 0 10px}.ppd-contour__error,.ppd-contour__notice{font-size:12px;line-height:1.6;margin:12px 0;overflow-wrap:anywhere}.ppd-contour__error{color:#9d2c23}.ppd-contour__notice{color:#246c3b}\n.ppd-contour__sources{display:grid;gap:3px;max-height:150px;overflow:auto;padding:6px;border:1px solid #e4e4df;border-radius:9px}.ppd-contour__sources>div{display:flex;gap:5px;border-radius:7px;padding:3px}.ppd-contour__sources>div[data-current=true]{background:#eeeeea}.ppd-contour__sources button{border:0;background:transparent;color:inherit;font-size:11px;cursor:pointer}.ppd-contour__sources button:first-child{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;overflow:hidden;text-align:left}.ppd-contour__sources button:first-child:not(:only-child){white-space:nowrap;text-overflow:ellipsis}.ppd-contour__sources button:last-child{color:#777}.ppd-contour__sources small{color:#777;font-size:10px}\n.ppd-contour__result{display:grid;gap:7px;border:1px solid #e4e4df;border-radius:12px;padding:16px;margin-top:16px;background:#f7f7f4;font-size:12px;color:#666}\n.ppd-contour__result strong{color:#292927;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}\n.ppd-contour__result p{margin:2px 0;line-height:1.6}.ppd-contour__warning{color:#8a5a18}\n.ppd-contour__preview{min-width:0;border:1px solid #e4e4df;border-radius:12px;padding:12px;background:#fff}\n.ppd-contour__preview svg,.ppd-contour__empty{display:block;width:100%;height:clamp(280px,56vh,620px);border-radius:8px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-contour__empty{display:grid;place-items:center;padding:20px;text-align:center;color:#777;font-size:12px}\n.ppd-contour__preview p{font-size:12px;line-height:1.6;margin:10px 0 0;color:#666;overflow-wrap:anywhere}\n@media(max-width:800px){.ppd-contour__layout{grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:14px}}\n@media(max-width:620px){.ppd-contour{padding:12px}.ppd-contour__header{align-items:flex-start;flex-wrap:wrap}.ppd-contour__layout{grid-template-columns:1fr}.ppd-contour__preview svg,.ppd-contour__empty{height:320px}.ppd-processing-tools{padding:8px 12px}}\n\n.ppd-contour__current{display:grid;gap:6px;padding:10px 0;font-size:12px;min-width:0}.ppd-contour__current strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-contour__current small{color:#777}.ppd-contour__current>div{display:flex;gap:8px}.ppd-contour__current button,.ppd-contour__export{padding:8px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:inherit;font:inherit;cursor:pointer}.ppd-contour__export{width:100%;margin-top:12px;background:#292927;color:#fff}.ppd-contour__export:disabled,.ppd-contour__current button:disabled{opacity:.45;cursor:default}\n';
@@ -25887,9 +25668,9 @@ var image_to_text_default = ".ppd-panel-image-to-text .ppd-content{max-width:108
 var my_dna_default = ".ppd-my-dna{display:grid;gap:18px}.ppd-dna-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.ppd-dna-heading h2{margin:3px 0 4px;font-size:22px}.ppd-dna-heading p{max-width:620px;margin:0;color:var(--ppd-muted);font-size:12px;line-height:1.6}\n.ppd-dna-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}.ppd-dna-card{min-width:0;overflow:hidden;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-dna-cover{display:grid;place-items:center;aspect-ratio:4/3;background:var(--ppd-surface);color:var(--ppd-muted)}.ppd-dna-cover img{width:100%;height:100%;object-fit:contain}.ppd-dna-card-copy{display:grid;gap:3px;padding:12px 13px 8px}.ppd-dna-card-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-dna-card-copy small{color:var(--ppd-muted);font-size:10px}.ppd-dna-card-actions{display:flex;gap:6px;padding:0 12px 12px}.ppd-dna-card-actions .ppd-button:first-child{margin-right:auto}\n.ppd-dna-create-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,.8fr);gap:16px;align-items:start}.ppd-dna-form-card{display:grid;gap:16px;padding:18px;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-dna-form-card>label,.ppd-dna-form-card>label>span:first-child{display:grid;gap:7px}.ppd-dna-form-card input,.ppd-dna-form-card select{width:100%;padding:10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-dna-form-card label>small{color:var(--ppd-muted);font-size:10px;line-height:1.5}.ppd-dna-upload{position:relative}.ppd-dna-upload>input{position:absolute;inset:28px 0 0;height:calc(100% - 28px);opacity:0;cursor:pointer}.ppd-dna-upload-empty,.ppd-dna-source{display:grid;place-items:center;align-content:center;min-height:220px;border:1px dashed var(--ppd-line);border-radius:10px;background:var(--ppd-surface);text-align:center}.ppd-dna-source{grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.ppd-dna-source img{width:100%;height:170px;object-fit:contain}.ppd-dna-source strong,.ppd-dna-source small{max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-dna-source small{padding-bottom:10px;color:var(--ppd-muted);font-size:10px}\n.ppd-dna-confirm h3{margin:0}.ppd-dna-confirm>p{margin:-8px 0 0;color:var(--ppd-muted);font-size:11px;line-height:1.6}.ppd-dna-quote{display:grid;gap:6px;padding:13px;border:1px solid #cbe0d2;border-radius:9px;background:#f4fbf6}.ppd-dna-quote.is-expired{border-color:#e6ddc6;background:#fffcf5}.ppd-dna-quote>div{display:flex;justify-content:space-between;gap:12px}.ppd-dna-quote p,.ppd-dna-quote small{margin:0;color:var(--ppd-muted);font-size:10px}.ppd-dna-uncertain{padding:12px;border:1px solid #ead8bd;border-radius:9px;background:#fffaf2}.ppd-dna-uncertain p{margin:4px 0 10px;color:var(--ppd-muted);font-size:10px}\n.ppd-dna-tasks{display:grid;gap:7px;padding:14px;border:1px solid var(--ppd-line);border-radius:11px;background:var(--ppd-surface)}.ppd-dna-tasks h3{margin:0 0 3px;font-size:13px}.ppd-dna-tasks article{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px;border-radius:8px;background:#fff}.ppd-dna-tasks article>div{display:grid;gap:2px}.ppd-dna-tasks small{color:var(--ppd-muted);font-size:10px}.ppd-dna-tasks .ppd-spinner{width:14px;height:14px}\n.ppd-dna-ledger .ppd-history-record-heading strong{display:flex;align-items:center;gap:7px}.ppd-dna-task-reason{margin:6px 0;color:var(--ppd-muted);font-size:11px;line-height:1.5}\n@media(max-width:760px){.ppd-dna-heading{align-items:stretch;flex-direction:column}.ppd-dna-create-grid{grid-template-columns:1fr}.ppd-dna-grid{grid-template-columns:1fr}.ppd-dna-card-actions{flex-wrap:wrap}}\n.ppd-dna-card-copy p{margin:0;min-height:3em;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;line-height:1.5;color:var(--ppd-muted)}.ppd-my-dna .ppd-dialog textarea{width:100%;padding:10px;border:1px solid var(--ppd-line);border-radius:8px;resize:vertical;font:inherit}\n\n.ppd-dna-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}.ppd-dna-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}.ppd-dna-detail{display:grid;gap:16px;max-width:680px}.ppd-dna-detail>.ppd-dna-cover{max-width:520px;border-radius:12px;overflow:hidden}.ppd-dna-detail>[data-dna-description]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}\n";
 
 // plugins/podplo-dsh/src/client.tsx
-var import_jsx_runtime20 = require("react/jsx-runtime");
+var import_jsx_runtime19 = require("react/jsx-runtime");
 var inject = ["slots", "connection", "layout", "uiWorkspace", "sessions"];
-var sectionLabels = { generation: "\u751F\u56FE", "image-to-text": "\u56FE\u8F6C\u6587", gallery: "\u56FE\u5E93", skills: "Skill \u5E93", assets: "\u6211\u7684\u6536\u85CF", results: "\u5904\u7406\u8BB0\u5F55", toolbox: "\u5DE5\u5177\u7BB1" };
+var sectionLabels = { generation: "\u751F\u56FE", gallery: "\u56FE\u5E93", skills: "Skill \u5E93", assets: "\u6211\u7684\u6536\u85CF", results: "\u5904\u7406\u8BB0\u5F55", toolbox: "\u5DE5\u5177\u7BB1" };
 var referenceText = (selection) => `
 \u5DF2\u9009\u62E9 PodPlo ${selection.kind === "skill" ? "Skill" : "\u7D20\u6750"}\uFF1A${selection.label ?? selection.id}
 PodPlo \u5F15\u7528\uFF1A${JSON.stringify(selection)}
@@ -26023,9 +25804,9 @@ ${my_dna_default}`;
     ctx.layout.selectPanel(null);
   };
   function Icon2({ size = 16 }) {
-    const expanded = (0, import_react19.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
-    const marker = (0, import_react19.useRef)(null);
-    (0, import_react19.useEffect)(() => {
+    const expanded = (0, import_react20.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
+    const marker = (0, import_react20.useRef)(null);
+    (0, import_react20.useEffect)(() => {
       const button = marker.current?.closest("button");
       if (!button) return;
       button.setAttribute("aria-expanded", String(expanded));
@@ -26040,42 +25821,38 @@ ${my_dna_default}`;
         button.removeAttribute("aria-expanded");
       };
     }, [expanded]);
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { ref: marker, className: "ppd-sidebar-root-marker ppd-sidebar-nav", "data-podplo-sidebar-root": true, "data-podplo-sidebar-expanded": expanded, "data-podplo-sidebar-wide": size === 16, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M5 4.5h8.2a5.8 5.8 0 0 1 0 11.6H9v3.4H5z" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M9 8v4.6h4a2.3 2.3 0 0 0 0-4.6z" })
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { ref: marker, className: "ppd-sidebar-root-marker ppd-sidebar-nav", "data-podplo-sidebar-root": true, "data-podplo-sidebar-expanded": expanded, "data-podplo-sidebar-wide": size === 16, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M5 4.5h8.2a5.8 5.8 0 0 1 0 11.6H9v3.4H5z" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M9 8v4.6h4a2.3 2.3 0 0 0 0-4.6z" })
     ] }) });
   }
   function SectionIcon({ section, size = 16 }) {
-    const expanded = (0, import_react19.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
+    const expanded = (0, import_react20.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
     const paths = {
-      generation: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z" }),
-      "image-to-text": /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("rect", { x: "4", y: "5", width: "7", height: "7", rx: "1" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m5 11 2-2 3 3M14 7h6M14 11h5M4 16h16M4 20h12" })
+      generation: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z" }),
+      gallery: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("rect", { x: "4", y: "5", width: "16", height: "14", rx: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m7 16 3.5-4 2.5 2 2-2 2 4" })
       ] }),
-      gallery: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("rect", { x: "4", y: "5", width: "16", height: "14", rx: "2" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m7 16 3.5-4 2.5 2 2-2 2 4" })
+      skills: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M12 3 4.5 8 12 13l7.5-5z" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m6.5 11.5-2 1.5 7.5 5 7.5-5-2-1.5" })
       ] }),
-      skills: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M12 3 4.5 8 12 13l7.5-5z" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m6.5 11.5-2 1.5 7.5 5 7.5-5-2-1.5" })
+      assets: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M4 7h6l2 2h8v10H4z" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M4 7V5h6l2 2" })
       ] }),
-      assets: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M4 7h6l2 2h8v10H4z" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M4 7V5h6l2 2" })
+      results: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("rect", { x: "4", y: "4", width: "16", height: "16", rx: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m8 12 3 3 5-6" })
       ] }),
-      results: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("rect", { x: "4", y: "4", width: "16", height: "16", rx: "2" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m8 12 3 3 5-6" })
-      ] }),
-      toolbox: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M4 7h16M4 17h16" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("circle", { cx: "9", cy: "7", r: "2" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("circle", { cx: "15", cy: "17", r: "2" })
+      toolbox: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M4 7h16M4 17h16" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("circle", { cx: "9", cy: "7", r: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("circle", { cx: "15", cy: "17", r: "2" })
       ] })
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       "span",
       {
         className: "ppd-sidebar-child-marker ppd-sidebar-nav",
@@ -26083,19 +25860,19 @@ ${my_dna_default}`;
         "data-podplo-nav-section": section,
         "data-podplo-sidebar-visible": expanded,
         "data-podplo-sidebar-wide": size === 16,
-        children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: paths[section] })
+        children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: paths[section] })
       }
     );
   }
   function NativeWorkspace() {
-    const nativeSessionId = (0, import_react19.useSyncExternalStore)(sessionStore.subscribe, sessionStore.getSnapshot, sessionStore.getSnapshot);
+    const nativeSessionId = (0, import_react20.useSyncExternalStore)(sessionStore.subscribe, sessionStore.getSnapshot, sessionStore.getSnapshot);
     const panelRequest = (action, args) => request(action, args, nativeSessionId ?? "");
     const composerRequest = (action, args) => request(
       action,
       action === "generation.prepare" ? { ...args, archiveSessionId: nativeSessionId } : args,
       ""
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       PodploWorkspace,
       {
         request: panelRequest,
@@ -26113,12 +25890,12 @@ ${my_dna_default}`;
   ctx.slots.inject("sidebar.panellist", () => ctx.slots.register({ name: "sidebar.panellist", id: "podplo", order: 30, label: "PodPlo" }, Icon2));
   for (const [index, section] of PODPLO_SECTIONS.entries()) {
     let SectionWorkspace2 = function() {
-      (0, import_react19.useLayoutEffect)(() => {
+      (0, import_react20.useLayoutEffect)(() => {
         navigator2.navigate(section);
       }, []);
-      return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(NativeWorkspace, {});
+      return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(NativeWorkspace, {});
     }, NativeSectionIcon2 = function({ size = 16 }) {
-      return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(SectionIcon, { section, size });
+      return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(SectionIcon, { section, size });
     };
     var SectionWorkspace = SectionWorkspace2, NativeSectionIcon = NativeSectionIcon2;
     const id = `podplo-${section}`;
@@ -26126,9 +25903,9 @@ ${my_dna_default}`;
     if (section !== "generation") ctx.slots.inject("sidebar.panellist", () => ctx.slots.register({ name: "sidebar.panellist", id, order: 30 + (index + 1) / 10, label: sectionLabels[section] }, NativeSectionIcon2));
   }
   function ComposerBridge({ sessionId, inputActions }) {
-    const [notice, setNotice] = (0, import_react19.useState)("");
-    const chatRequest = (0, import_react19.useCallback)((action, args) => request(action, args, sessionId), [sessionId]);
-    (0, import_react19.useEffect)(() => {
+    const [notice, setNotice] = (0, import_react20.useState)("");
+    const chatRequest = (0, import_react20.useCallback)((action, args) => request(action, args, sessionId), [sessionId]);
+    (0, import_react20.useEffect)(() => {
       lastSessionId = sessionId;
       sessionStore.set(sessionId);
       if (!sessionId) return;
@@ -26163,9 +25940,9 @@ ${my_dna_default}`;
         alive = false;
       };
     }, [sessionId, inputActions]);
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ChatGenerationTasks, { request: chatRequest, sessionId }, sessionId ?? "draft"),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "ppd-visually-hidden ppd-native-composer", role: "status", "data-podplo-session": sessionId, children: notice })
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(ChatGenerationTasks, { request: chatRequest, sessionId }, sessionId ?? "draft"),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "ppd-visually-hidden ppd-native-composer", role: "status", "data-podplo-session": sessionId, children: notice })
     ] });
   }
   ctx.slots.inject("conversation.input.dock", () => ctx.slots.register({ name: "conversation.input.dock", id: "podplo-selection-bridge", order: 30 }, ComposerBridge));

@@ -38090,7 +38090,7 @@ var SkillSchema2 = external_exports.object({
   keeps: strings,
   changes: strings,
   output: external_exports.string(),
-  coverImage: httpsUrl,
+  coverImage: external_exports.union([httpsUrl, external_exports.null(), external_exports.literal("")]).transform((value2) => value2 || ""),
   beforeImage: httpsUrl.nullable(),
   detailUrl: httpsUrl,
   kind: external_exports.enum(["skill", "family", "member"]),
@@ -38160,7 +38160,7 @@ var PublicSkillDirectory = class {
   http;
   changed;
   saved;
-  state = { source: "bundled", refreshing: false };
+  state = { source: "empty", refreshing: false };
   refreshing;
   async init() {
     try {
@@ -38171,7 +38171,7 @@ var PublicSkillDirectory = class {
       this.saved = { schemaVersion: 1, origin: this.http.origin, catalog, etag, checkedAt: value2.checkedAt };
       this.state = { catalog, source: "cache", refreshing: false, checkedAt: value2.checkedAt };
     } catch (error51) {
-      if (error51.code !== "ENOENT") this.state.error = "Skill \u76EE\u5F55\u7F13\u5B58\u65E0\u6CD5\u8BFB\u53D6\uFF0C\u6682\u7528\u5185\u7F6E\u76EE\u5F55\uFF0C\u8BF7\u5237\u65B0\u91CD\u8BD5\u3002";
+      if (error51.code !== "ENOENT") this.state.error = "Skill \u76EE\u5F55\u7F13\u5B58\u65E0\u6CD5\u8BFB\u53D6\uFF0C\u8BF7\u5237\u65B0\u4E91\u7AEF\u76EE\u5F55\u3002";
     }
   }
   snapshot() {
@@ -38364,6 +38364,7 @@ var DnaSkillSchema = external_exports.object({
   id: external_exports.string().uuid(),
   name: external_exports.string().min(1).max(160),
   description: external_exports.string().max(3e3).optional(),
+  available: external_exports.boolean().optional(),
   updatedAt: external_exports.string().datetime()
 }).strict();
 var DnaSkillsSchema = external_exports.object({ items: external_exports.array(DnaSkillSchema) }).strict();
@@ -38785,7 +38786,7 @@ var OnlineService = class extends EventEmitter {
     return task;
   }
   async dnaSkills() {
-    return DnaSkillsSchema.parse(await this.imageToTextRequest("/api/desktop/dna/skills"));
+    return DnaSkillsSchema.parse(await this.imageToTextRequest("/api/desktop/dna/skills?includeUnconfigured=1"));
   }
   async dnaList(input = {}) {
     const parsed = DnaPageInputSchema.parse(input), params = new URLSearchParams();
@@ -47018,7 +47019,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.35",
+  version: "0.1.36",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -48204,13 +48205,13 @@ var PodploPluginService = class extends EventEmitter2 {
     const catalog = directory?.catalog;
     const items = (catalog?.skills ?? []).filter((row) => row.directoryVisible && (!query || `${row.slug} ${row.title} ${row.summary} ${row.tags.join(" ")}`.toLocaleLowerCase().includes(query)));
     if (!compactForAgent) {
-      return { items, categories: catalog?.categories ?? [], contentVersion: catalog?.contentVersion, source: directory?.source ?? "bundled" };
+      return { items, categories: catalog?.categories ?? [], contentVersion: catalog?.contentVersion, source: directory?.source ?? "empty" };
     }
     return {
       items: items.map(compactSkillCandidate),
       contentVersion: catalog?.contentVersion,
       catalogComplete: Boolean(catalog),
-      source: directory?.source ?? "bundled"
+      source: directory?.source ?? "empty"
     };
   }
   async skillDetail(input, resolveBinding2 = true, includeGenerationContext = false) {
