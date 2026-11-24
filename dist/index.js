@@ -47026,7 +47026,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.39",
+  version: "0.1.40",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -47744,6 +47744,7 @@ var PodploPluginService = class extends EventEmitter2 {
   submissionJobs = /* @__PURE__ */ new Map();
   batchApprovalJobs = /* @__PURE__ */ new Map();
   reservationReleaseJobs = /* @__PURE__ */ new Map();
+  activeGenerationStatusReads = 0;
   accountRefreshJobs = /* @__PURE__ */ new Map();
   sessionStopEpochs = /* @__PURE__ */ new Map();
   pendingSessionStops = /* @__PURE__ */ new Map();
@@ -47896,6 +47897,23 @@ var PodploPluginService = class extends EventEmitter2 {
     const state = this.online.snapshot();
     if (!this.initialized || state.status !== "connected" || !state.identity?.userId) return [];
     return this.store.snapshot().operations.filter((row) => row.ownerId === state.identity.userId && !generationIsPaused(row) && (row.items.some((item) => item.generationId && item.status === "submitted") || !!row.approvedAt && row.items.some((item) => item.status === "quoted"))).map((row) => row.operationId);
+  }
+  /**
+   * Host-only update gate. Keep pending counters unchanged for the task UI, but
+   * do not let historical/manual-review work hold the installed runtime forever.
+   * In-memory jobs always win so an unresolved provider call cannot be unloaded
+   * merely because its durable row has already become ambiguous.
+   */
+  isUpdateBlocked() {
+    if (this.preparing.size > 0 || this.submissionJobs.size > 0 || this.batchApprovalJobs.size > 0 || this.activeGenerationStatusReads > 0 || this.reservationReleaseJobs.size > 0 || this.mixedJobs.size > 0) return true;
+    const state = this.online.snapshot(), ownerId = state.identity?.userId;
+    if (!this.initialized || !ownerId) return false;
+    return this.store.snapshot().operations.some((row) => {
+      if (row.ownerId !== ownerId) return false;
+      if (!row.approvedAt) return operationStatus(row) === "quoted";
+      if (generationIsPaused(row)) return false;
+      return row.items.some((item) => ["quoted", "submitting", "submitted"].includes(item.status));
+    });
   }
   refreshPendingGeneration(operationId2) {
     return this.generationStatus({ operationId: operationId2, refresh: true }, { source: "ui" }, true);
@@ -49983,6 +50001,15 @@ var PodploPluginService = class extends EventEmitter2 {
     return safeOperation2(operation);
   }
   async generationStatus(input, caller, pendingOnly = false) {
+    const tracksRemoteRead = pendingOnly || input.refresh === true;
+    if (tracksRemoteRead) this.activeGenerationStatusReads++;
+    try {
+      return await this.readGenerationStatus(input, caller, pendingOnly);
+    } finally {
+      if (tracksRemoteRead) this.activeGenerationStatusReads--;
+    }
+  }
+  async readGenerationStatus(input, caller, pendingOnly = false) {
     const ownerId = await this.owner(false);
     const operationId2 = text4(input.operationId, "operationId", 180);
     const nativeSessionId = caller.source === "agent" ? this.nativeSessionFor(caller) : void 0;
@@ -54372,6 +54399,11 @@ var ImageToTextHost = class {
     const owner = this.options.online.snapshot().identity?.userId;
     return this.jobs.size > 0 || this.store.snapshot().tasks.some((row) => row.ownerId === owner && (["submitting", "queued", "running", "submission_unknown"].includes(row.status) || row.archiveStatus === "pending"));
   }
+  /** Historical/manual-review rows stay visible without preventing a plugin update. */
+  isUpdateBlocked() {
+    const owner = this.options.online.snapshot().identity?.userId;
+    return this.jobs.size > 0 || this.store.snapshot().tasks.some((row) => row.ownerId === owner && (row.status === "submitting" || active.has(row.status) && !row.errorCode || row.archiveStatus === "pending"));
+  }
   async close() {
     if (this.timer) clearTimeout(this.timer);
     this.closed = true;
@@ -54599,6 +54631,11 @@ var DnaHost = class {
   }
   isBusy() {
     return this.jobs.size > 0 || this.store.snapshot().tasks.some((row) => row.ownerId === this.options.online.snapshot().identity?.userId && ["submitting", "queued", "running", "submission_unknown"].includes(row.status));
+  }
+  /** Historical/manual-review rows stay visible without preventing a plugin update. */
+  isUpdateBlocked() {
+    const owner = this.options.online.snapshot().identity?.userId;
+    return this.jobs.size > 0 || this.store.snapshot().tasks.some((row) => row.ownerId === owner && (row.status === "submitting" || ["queued", "running"].includes(row.status) && !row.errorCode));
   }
   async close() {
     if (this.timer) clearTimeout(this.timer);
@@ -55637,6 +55674,7 @@ async function taskArchiveHost(options) {
     operationProgress,
     stopSession,
     isBusy: () => manager.isBusy() || pipeline.isBusy() || processingJobs.size > 0 || localLogJobs.size > 0 || imageToText?.isBusy() === true || dnaHost.isBusy(),
+    isUpdateBlocked: () => manager.isBusy() || pipeline.isBusy() || processingJobs.size > 0 || localLogJobs.size > 0 || imageToText?.isUpdateBlocked() === true || dnaHost.isUpdateBlocked(),
     async close() {
       closed = true;
       service.off("change", changed);
@@ -56133,7 +56171,7 @@ var PluginUpdateService = class {
   constructor(options) {
     this.options = options;
     if (!parseStrictSemver(options.currentVersion)) throw new Error("Current plugin version is not strict SemVer");
-    this.state = { currentVersion: options.currentVersion, phase: "idle", updateAvailable: false };
+    this.state = { currentVersion: options.currentVersion, phase: "idle", updateAvailable: false, updateBlocked: false };
   }
   options;
   state;
@@ -56141,11 +56179,23 @@ var PluginUpdateService = class {
   checking;
   installing;
   closed = false;
+  blocked() {
+    try {
+      return this.options.busy();
+    } catch {
+      return true;
+    }
+  }
   status() {
-    return structuredClone(this.state);
+    const updateBlocked = this.blocked();
+    return structuredClone({
+      ...this.state,
+      updateBlocked,
+      ...updateBlocked ? { updateBlockReason: "\u5F53\u524D\u6709\u6B63\u5728\u63D0\u4EA4\u3001\u751F\u6210\u3001\u5BA1\u6279\u3001\u4E0B\u8F7D\u6216\u672C\u5730\u52A0\u5DE5\uFF0C\u7ED3\u675F\u540E\u5373\u53EF\u66F4\u65B0\u3002" } : { updateBlockReason: void 0 }
+    });
   }
   set(phase, values = {}) {
-    this.state = { currentVersion: this.options.currentVersion, phase, updateAvailable: false, ...values };
+    this.state = { currentVersion: this.options.currentVersion, phase, updateAvailable: false, updateBlocked: false, ...values };
     return this.status();
   }
   async checkUpdate(force = false) {
@@ -56203,16 +56253,15 @@ var PluginUpdateService = class {
       checkedAt: checked.checkedAt,
       error: "\u4E0D\u5141\u8BB8\u5B89\u88C5\u5F53\u524D\u7248\u672C\u6216\u964D\u7EA7\u3002"
     });
-    if (this.options.busy()) return this.set("failed", {
-      latestVersion: version2,
-      checkedAt: checked.checkedAt,
-      updateAvailable: true,
-      error: "\u5F53\u524D\u4ECD\u6709\u751F\u56FE\u3001\u5BA1\u6279\u3001\u4E0B\u8F7D\u6216\u672C\u5730\u52A0\u5DE5\u672A\u5B8C\u6210\uFF0C\u6682\u4E0D\u80FD\u66F4\u65B0\u3002"
-    });
+    if (this.blocked()) return this.set("idle", { latestVersion: version2, checkedAt: checked.checkedAt, updateAvailable: true });
     const tag = `${tagPrefix}${version2}`, spec = `${PODPLO_PLUGIN_REPOSITORY}#${tag}`;
     this.set("installing", { latestVersion: version2, checkedAt: checked.checkedAt, updateAvailable: true });
     const promise2 = Promise.resolve().then(async () => {
       try {
+        if (this.blocked()) {
+          this.set("idle", { latestVersion: version2, checkedAt: checked.checkedAt, updateAvailable: true });
+          return;
+        }
         const result = await this.options.manager.installBundle(spec, { enabled: true });
         if (this.closed) return;
         if (result.application === "applied" || result.application === "restart-required")
@@ -57927,7 +57976,7 @@ async function apply(ctx, config2 = {}) {
     ...updateFetcher ? { fetcher: updateFetcher } : {},
     busy: () => {
       const pending = service.snapshot().pending;
-      return pending.generations > 0 || pending.confirmations > 0 || localTaskJobs.size > 0 || toolkit.isBusy() || archives.isBusy();
+      return service.isUpdateBlocked() || pending.confirmations > 0 || localTaskJobs.size > 0 || toolkit.isBusy() || archives.isUpdateBlocked();
     }
   });
   const transport = {

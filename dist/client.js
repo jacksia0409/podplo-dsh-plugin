@@ -23819,7 +23819,7 @@ var import_react17 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.39",
+  version: "0.1.40",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -23877,8 +23877,8 @@ var PLUGIN_VERSION = package_default.version;
 
 // plugins/podplo-dsh/src/plugin-update-control.tsx
 var import_jsx_runtime16 = require("react/jsx-runtime");
-function PluginUpdateControl({ request, taskBusy = false }) {
-  const [status, setStatus] = (0, import_react17.useState)({ currentVersion: PLUGIN_VERSION, phase: "idle", updateAvailable: false });
+function PluginUpdateControl({ request }) {
+  const [status, setStatus] = (0, import_react17.useState)({ currentVersion: PLUGIN_VERSION, phase: "idle", updateAvailable: false, updateBlocked: false });
   const [working, setWorking] = (0, import_react17.useState)("");
   const [checked, setChecked] = (0, import_react17.useState)(false);
   const [error51, setError] = (0, import_react17.useState)("");
@@ -23906,7 +23906,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
     };
   }, [request]);
   (0, import_react17.useEffect)(() => {
-    if (!["checking", "installing"].includes(status.phase)) return;
+    if (!["checking", "installing"].includes(status.phase) && (!status.updateAvailable || ["applied", "restart-required"].includes(status.phase))) return;
     let active = true, reading = false;
     const timer = setInterval(() => {
       if (reading) return;
@@ -23923,10 +23923,10 @@ function PluginUpdateControl({ request, taskBusy = false }) {
       active = false;
       clearInterval(timer);
     };
-  }, [status.phase, request]);
+  }, [status.phase, status.updateAvailable, request]);
   async function act(install) {
     if (inFlight.current || ["checking", "installing"].includes(status.phase)) return;
-    if (install && (taskBusy || !status.updateAvailable || !status.latestVersion)) return;
+    if (install && (status.updateBlocked || !status.updateAvailable || !status.latestVersion)) return;
     inFlight.current = true;
     setWorking(install ? "installing" : "checking");
     setError("");
@@ -23947,30 +23947,38 @@ function PluginUpdateControl({ request, taskBusy = false }) {
   }
   const pending = !!working || ["checking", "installing"].includes(status.phase);
   const installed = ["applied", "restart-required"].includes(status.phase);
-  const message2 = status.phase === "installing" || working === "installing" ? "\u6B63\u5728\u66F4\u65B0\u63D2\u4EF6\u2026" : status.phase === "applied" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u6B63\u5728\u52A0\u8F7D\u65B0\u7248\u2026" : status.phase === "restart-required" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u91CD\u542F DSH \u540E\u751F\u6548\u3002" : checked && status.phase === "idle" && !status.updateAvailable && !error51 ? "\u6682\u65E0\u53EF\u7528\u66F4\u65B0\u3002" : "";
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-plugin-update", "data-podplo-plugin-update": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
-      "PodPlo v",
-      status.currentVersion.replace(/[-+].*$/u, "")
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
-    status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", children: [
-      "\u53EF\u66F4\u65B0\u81F3 v",
-      status.latestVersion
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-      "button",
-      {
-        type: "button",
-        className: "ppd-button ppd-button-primary",
-        disabled: pending || installed || taskBusy || !status.updateAvailable || !status.latestVersion,
-        title: taskBusy ? "\u8BF7\u7B49\u5F85\u5F53\u524D\u4EFB\u52A1\u7ED3\u675F\u540E\u66F4\u65B0" : status.updateAvailable && status.latestVersion ? `\u66F4\u65B0\u5230 ${status.latestVersion}` : "\u8BF7\u5148\u68C0\u67E5\u662F\u5426\u6709\u53EF\u7528\u66F4\u65B0",
-        onClick: () => void act(true),
-        children: working === "installing" || status.phase === "installing" ? "\u66F4\u65B0\u4E2D\u2026" : "\u66F4\u65B0\u7248\u672C"
-      }
-    ),
-    (error51 || message2) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: `ppd-plugin-update-message${error51 ? " is-error" : ""}`, role: error51 ? "alert" : "status", children: error51 || message2 })
-  ] });
+  const message2 = status.phase === "installing" || working === "installing" ? "\u6B63\u5728\u66F4\u65B0\u63D2\u4EF6\u2026" : status.phase === "applied" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u6B63\u5728\u52A0\u8F7D\u65B0\u7248\u2026" : status.phase === "restart-required" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u91CD\u542F DSH \u540E\u751F\u6548\u3002" : status.updateAvailable && status.updateBlocked ? status.updateBlockReason ?? "\u5F53\u524D\u4EFB\u52A1\u7ED3\u675F\u540E\u5373\u53EF\u66F4\u65B0\u3002" : checked && status.phase === "idle" && !status.updateAvailable && !error51 ? "\u6682\u65E0\u53EF\u7528\u66F4\u65B0\u3002" : "";
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+    "div",
+    {
+      className: "ppd-plugin-update",
+      "data-podplo-plugin-update": true,
+      "data-podplo-update-blocked": status.updateBlocked ? "true" : "false",
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
+          "PodPlo v",
+          status.currentVersion.replace(/[-+].*$/u, "")
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
+        status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", children: [
+          "\u53EF\u66F4\u65B0\u81F3 v",
+          status.latestVersion
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+          "button",
+          {
+            type: "button",
+            className: "ppd-button ppd-button-primary",
+            disabled: pending || installed || status.updateBlocked || !status.updateAvailable || !status.latestVersion,
+            title: status.updateBlocked ? status.updateBlockReason : status.updateAvailable && status.latestVersion ? `\u66F4\u65B0\u5230 ${status.latestVersion}` : "\u8BF7\u5148\u68C0\u67E5\u662F\u5426\u6709\u53EF\u7528\u66F4\u65B0",
+            onClick: () => void act(true),
+            children: working === "installing" || status.phase === "installing" ? "\u66F4\u65B0\u4E2D\u2026" : "\u66F4\u65B0\u7248\u672C"
+          }
+        ),
+        (error51 || message2) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: `ppd-plugin-update-message${error51 ? " is-error" : ""}`, role: error51 ? "alert" : "status", children: error51 || message2 })
+      ]
+    }
+  );
 }
 
 // plugins/podplo-dsh/src/favorite-response-state.ts
@@ -24623,7 +24631,7 @@ function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
               /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8D26\u53F7\u4E0E\u7248\u672C" }),
               /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: accountName })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PluginUpdateControl, { request, taskBusy: !!snapshot?.pending.generations }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PluginUpdateControl, { request }),
             connected && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet ppd-account-logout", disabled: busy, onClick: () => {
               if (menu.current) menu.current.open = false;
               onAccountAction("logout");
