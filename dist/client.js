@@ -35,7 +35,7 @@ __export(client_exports, {
   inject: () => inject
 });
 module.exports = __toCommonJS(client_exports);
-var import_react21 = require("react");
+var import_react20 = require("react");
 
 // plugins/podplo-dsh/src/chat-generation-tasks.tsx
 var import_react3 = require("react");
@@ -398,7 +398,7 @@ function ChatGenerationProgress({ item, archive, busy, onAction }) {
 var import_react2 = require("react");
 
 // plugins/podplo-dsh/src/task-archive.css
-var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}.ppd-archive-browser-heading h2{flex:0 0 100%;font-size:22px;margin:0}\n.ppd-archive-view-switch{display:flex;flex:0 0 auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:2px;gap:2px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:4px 9px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-library-toolbar.ppd-archive-filters{flex:1 1 640px;margin:0}.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar{flex:1;flex-wrap:wrap;justify-content:flex-start}.ppd-archive-filters .ppd-archive-toolbar>select{width:112px;max-width:100%}\n.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar>input{flex:0 1 156px;width:156px;min-width:100px;max-width:100%;height:28px;padding:4px 9px;border-radius:6px}\n.ppd-archive-filters .ppd-archive-toolbar select,.ppd-archive-filters .ppd-archive-toolbar button{min-height:28px;height:28px;padding:4px 8px}\n.ppd-archive-date-toolbar{display:contents}.ppd-archive-date-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:28px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-filters .ppd-archive-date-toolbar input{flex:0 1 auto;width:132px;min-width:0;max-width:100%;height:28px;padding:4px 8px;border-radius:6px}.ppd-archive-date-toolbar>span{align-self:center}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-history-description{flex:0 0 100%;margin:0;color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7}.ppd-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:14px}.ppd-history-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:9px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}.ppd-history-preview{display:flex;width:100%;height:190px;padding:0;border:0;border-radius:6px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-history-preview .ppd-archive-placeholder{width:100%;height:100%}.ppd-history-preview img{width:100%;height:100%;object-fit:contain}.ppd-history-card>strong{margin:10px 0 5px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}.ppd-history-meta{display:flex;flex-direction:column;gap:2px;color:var(--muted-foreground,#6c6c63);font-size:11px;line-height:1.5}.ppd-history-meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-history-card .ppd-archive-actions{margin-top:auto;padding-top:8px}.ppd-archive-lightbox>.ppd-archive-placeholder{width:100%;height:calc(100% - 42px)}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n\n@media(max-width:1100px){.ppd-archive-browser-heading .ppd-archive-filters{flex-basis:100%}.ppd-archive-browser-heading .ppd-archive-view-switch{margin-left:auto}}\n\n.ppd-history-text{width:100%;height:100%;align-items:flex-start;justify-content:flex-start;overflow:hidden;background:#f6f6f3;text-align:left}.ppd-history-text pre{margin:0;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 ui-monospace,monospace;color:inherit}.ppd-archive-lightbox .ppd-history-text{overflow:auto;flex:1;min-height:0;flex-direction:column;align-items:stretch;color:var(--foreground,#272727)}.ppd-archive-lightbox .ppd-history-text pre{font-size:14px}.ppd-archive-lightbox .ppd-history-text>button{align-self:flex-start;flex-shrink:0;margin:10px 14px 0}.ppd-archive-lightbox .ppd-history-text>[role=status]{margin:8px 14px 0}\n.ppd-running-tasks{margin-bottom:24px}.ppd-running-label{margin:0 0 10px;color:var(--ppd-muted,#73736e);font-size:12px;font-weight:600}\n.ppd-running-tasks .ppd-history-list{display:grid;gap:12px}.ppd-running-tasks .ppd-history-record{padding:16px;border:1px solid var(--ppd-line,#e4e4e2);border-radius:10px;background:var(--ppd-bg,#fff);min-width:0}\n.ppd-running-tasks .ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.ppd-running-tasks strong[role=status]{display:flex;align-items:center;gap:8px;font-size:13px;overflow-wrap:anywhere}\n.ppd-running-tasks .ppd-history-record-heading>span,.ppd-running-tasks time,.ppd-running-tasks small{color:var(--ppd-muted,#73736e);font-size:12px}.ppd-running-tasks time{display:block;margin-top:8px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n.ppd-running-tasks progress{display:block;width:100%;height:6px;margin:12px 0 8px;accent-color:#656c49}.ppd-running-tasks p{overflow-wrap:anywhere}.ppd-running-tasks .ppd-spinner{display:inline-block;flex:0 0 14px;width:14px;height:14px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-results-spin .8s linear infinite}@keyframes ppd-results-spin{to{transform:rotate(360deg)}}\n";
+var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}.ppd-archive-browser-heading h2{flex:0 0 100%;font-size:22px;margin:0}\n.ppd-archive-view-switch{display:flex;flex:0 0 auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:2px;gap:2px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:4px 9px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-library-toolbar.ppd-archive-filters{flex:1 1 640px;margin:0}.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar{flex:1;flex-wrap:wrap;justify-content:flex-start}.ppd-archive-filters .ppd-archive-toolbar>select{width:112px;max-width:100%}\n.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar>input{flex:0 1 156px;width:156px;min-width:100px;max-width:100%;height:28px;padding:4px 9px;border-radius:6px}\n.ppd-archive-filters .ppd-archive-toolbar select,.ppd-archive-filters .ppd-archive-toolbar button{min-height:28px;height:28px;padding:4px 8px}\n.ppd-archive-date-toolbar{display:contents}.ppd-archive-date-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:28px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-filters .ppd-archive-date-toolbar input{flex:0 1 auto;width:132px;min-width:0;max-width:100%;height:28px;padding:4px 8px;border-radius:6px}.ppd-archive-date-toolbar>span{align-self:center}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-history-description{flex:0 0 100%;margin:0;color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7}.ppd-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:14px}.ppd-history-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:9px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}.ppd-history-preview{display:flex;width:100%;height:190px;padding:0;border:0;border-radius:6px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-history-preview .ppd-archive-placeholder{width:100%;height:100%}.ppd-history-preview img{width:100%;height:100%;object-fit:contain}.ppd-history-card>strong{margin:10px 0 5px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}.ppd-history-meta{display:flex;flex-direction:column;gap:2px;color:var(--muted-foreground,#6c6c63);font-size:11px;line-height:1.5}.ppd-history-meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-history-card .ppd-archive-actions{margin-top:auto;padding-top:8px}.ppd-archive-lightbox>.ppd-archive-placeholder{width:100%;height:calc(100% - 42px)}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n\n@media(max-width:1100px){.ppd-archive-browser-heading .ppd-archive-filters{flex-basis:100%}.ppd-archive-browser-heading .ppd-archive-view-switch{margin-left:auto}}\n\n.ppd-history-text{width:100%;height:100%;align-items:flex-start;justify-content:flex-start;overflow:hidden;background:#f6f6f3;text-align:left}.ppd-history-text pre{margin:0;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 ui-monospace,monospace;color:inherit}.ppd-archive-lightbox .ppd-history-text{overflow:auto;flex:1;min-height:0;flex-direction:column;align-items:stretch;color:var(--foreground,#272727)}.ppd-archive-lightbox .ppd-history-text pre{font-size:14px}.ppd-archive-lightbox .ppd-history-text>button{align-self:flex-start;flex-shrink:0;margin:10px 14px 0}.ppd-archive-lightbox .ppd-history-text>[role=status]{margin:8px 14px 0}\n.ppd-running-tasks{margin-bottom:24px}.ppd-running-label{margin:0 0 10px;color:var(--ppd-muted,#73736e);font-size:12px;font-weight:600}\n.ppd-running-tasks .ppd-history-list{display:grid;gap:12px}.ppd-running-tasks .ppd-history-record{padding:16px;border:1px solid var(--ppd-line,#e4e4e2);border-radius:10px;background:var(--ppd-bg,#fff);min-width:0}\n.ppd-running-tasks .ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.ppd-running-tasks strong[role=status]{display:flex;align-items:center;gap:8px;font-size:13px;overflow-wrap:anywhere}\n.ppd-running-tasks .ppd-history-record-heading>span,.ppd-running-tasks time,.ppd-running-tasks small{color:var(--ppd-muted,#73736e);font-size:12px}.ppd-running-tasks time{display:block;margin-top:8px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n.ppd-running-tasks progress{display:block;width:100%;height:6px;margin:12px 0 8px;accent-color:#656c49}.ppd-running-tasks p{overflow-wrap:anywhere}.ppd-running-tasks .ppd-spinner{display:inline-block;flex:0 0 14px;width:14px;height:14px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-results-spin .8s linear infinite}@keyframes ppd-results-spin{to{transform:rotate(360deg)}}\n\n.ppd-result-task-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-result-task-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:10px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}\n.ppd-result-card-open{display:block;width:100%;padding:0;border:0;border-radius:7px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-result-cover-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(66px,1fr);aspect-ratio:4/3;gap:2px;background:var(--border,#deded7)}\n.ppd-result-cover-grid>:only-child{grid-column:1/-1;grid-row:1/-1}.ppd-result-slot{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:#f4f4ef;color:var(--muted-foreground,#6c6c63);font-size:11px;overflow:hidden}.ppd-result-slot>.ppd-archive-placeholder,.ppd-result-slot img{width:100%!important;height:100%!important;object-fit:cover!important}\n.ppd-result-slot-loading{background:#f1f1ec}.ppd-result-slot-failed{background:#fbefed;color:#9b3a30}.ppd-result-slot-unknown{background:#f7f2e4;color:#7b6432}.ppd-result-slot-cancelled,.ppd-result-slot-empty{background:#f2f2ef;color:#777}.ppd-result-document{display:flex;align-items:center;justify-content:center;width:44px;height:54px;border:1px solid #c9c9c1;border-radius:5px;background:#fff;font:700 11px/1 ui-monospace,monospace;box-shadow:0 2px 6px #0001}\n.ppd-result-task-card .ppd-spinner,.ppd-result-task-detail .ppd-spinner{display:inline-block;width:19px;height:19px;border:2px solid #d6d6cf;border-top-color:#606853;border-radius:50%;animation:ppd-results-spin .8s linear infinite}.ppd-result-card-body{display:flex;flex-direction:column;gap:3px;padding:9px 1px 8px}.ppd-result-card-body strong{font-size:13px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-result-card-body span,.ppd-result-card-body time{font-size:11px;line-height:1.5;color:var(--muted-foreground,#6c6c63)}\n.ppd-result-detail-button{margin-top:auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px 9px;background:transparent;color:inherit;font:inherit;font-size:11px;cursor:pointer}.ppd-result-task-detail>header{margin:18px 0 22px;padding:18px;border:1px solid var(--border,#deded7);border-radius:10px}.ppd-result-task-detail>header>span,.ppd-result-task-detail time{font-size:11px;color:var(--muted-foreground,#6c6c63)}.ppd-result-task-detail h2{margin:7px 0 8px;font-size:20px}.ppd-result-task-detail header p{margin:0 0 9px;line-height:1.7;color:var(--muted-foreground,#6c6c63)}\n.ppd-result-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:12px}.ppd-result-detail-slot{display:flex;flex-direction:column;gap:5px;min-width:0;padding:10px;border:1px solid var(--border,#deded7);border-radius:9px}.ppd-result-detail-slot>.ppd-result-slot{height:128px;border-radius:6px}.ppd-result-detail-slot>strong{font-size:12px}.ppd-result-detail-slot>span:last-child{font-size:11px;color:var(--muted-foreground,#6c6c63)}\n@media(max-width:1000px){.ppd-result-task-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:720px){.ppd-result-task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){.ppd-result-task-grid{grid-template-columns:1fr}}\n.ppd-result-card-open{display:flex;flex:1;flex-direction:column;background:transparent;color:inherit;font:inherit;text-align:left}.ppd-result-card-open>.ppd-result-cover-grid{width:100%}.ppd-result-card-open>.ppd-result-detail-button{display:block;box-sizing:border-box;width:100%;text-align:center}\n.ppd-archive-detail .ppd-spinner{display:inline-block;width:19px;height:19px;border:2px solid #d6d6cf;border-top-color:#606853;border-radius:50%;animation:ppd-results-spin .8s linear infinite}\n.ppd-result-archive-intro{margin:16px 0 20px;padding:16px;border:1px solid var(--border,#deded7);border-radius:10px;background:var(--background,#fff)}.ppd-result-archive-intro>span,.ppd-result-archive-intro>time{font-size:11px;color:var(--muted-foreground,#6c6c63)}.ppd-result-archive-intro h2{margin:5px 0 3px;font-size:19px}.ppd-result-archive-intro>p{margin:7px 0;color:var(--muted-foreground,#6c6c63);font-size:12px}.ppd-result-archive-intro>.ppd-actions{margin-top:12px}.ppd-result-archive-intro>.ppd-archive-error{color:#9b3a30}\n.ppd-results-toolbar{flex:0 0 100%;width:100%}.ppd-library-toolbar.ppd-results-toolbar>.ppd-archive-toolbar{width:100%;justify-content:flex-end;margin-top:4px}.ppd-results-toolbar .ppd-icon-button{flex:0 0 28px;width:28px;min-width:28px;padding:0}.ppd-result-back{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border,#deded7);border-radius:8px;background:var(--background,#fff);color:inherit;cursor:pointer}.ppd-result-back:hover{background:var(--muted,#f5f5ef)}\n.ppd-task-request-summary{display:grid;gap:4px;margin:11px 0;padding:10px 12px;border-radius:7px;background:var(--muted,#f5f5ef)}.ppd-task-request-summary p,.ppd-result-task-detail header .ppd-task-request-summary p{margin:0;color:inherit;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}\n";
 
 // plugins/podplo-dsh/src/task-result-audit.ts
 function auditLines(audit) {
@@ -469,22 +469,22 @@ function startPolling(run, options = {}) {
       clearTimeout(timer2);
     }
   };
-  let timer, stopped = false, running3 = false, requested = false, failures = 0;
-  const visible2 = () => options.visible?.() !== false;
+  let timer, stopped = false, running2 = false, requested = false, failures = 0;
+  const visible = () => options.visible?.() !== false;
   const clear = () => {
     if (timer !== void 0) timers.clear(timer);
     timer = void 0;
   };
   const schedule = (delay) => {
     clear();
-    if (!stopped && visible2() && delay !== null) timer = timers.set(() => {
+    if (!stopped && visible() && delay !== null) timer = timers.set(() => {
       timer = void 0;
       void tick();
     }, delay);
   };
   const tick = async () => {
-    if (stopped || running3 || !visible2()) return;
-    running3 = true;
+    if (stopped || running2 || !visible()) return;
+    running2 = true;
     requested = false;
     let delay = null;
     try {
@@ -493,15 +493,15 @@ function startPolling(run, options = {}) {
     } catch {
       delay = options.retryOnError?.() === false ? null : Math.min(6e4, (options.failureMs ?? IDLE_POLL_MS) * 2 ** Math.min(failures++, 4));
     } finally {
-      running3 = false;
+      running2 = false;
       schedule(requested ? 0 : delay);
     }
   };
   const loop = {
     wake() {
       clear();
-      if (stopped || !visible2()) return;
-      if (running3) requested = true;
+      if (stopped || !visible()) return;
+      if (running2) requested = true;
       else schedule(0);
     },
     stop() {
@@ -611,7 +611,7 @@ var DeferredPreviewCoordinator = class {
     this.subscribers.set(subscriber.id, subscriber);
     listener(IDLE_STATE);
     return Object.freeze({
-      setVisible: (visible2, priority) => this.setVisible(subscriber, visible2, priority),
+      setVisible: (visible, priority) => this.setVisible(subscriber, visible, priority),
       markError: (cause) => this.markError(subscriber, cause),
       retry: () => this.retry(subscriber),
       dispose: () => this.dispose(subscriber)
@@ -654,15 +654,15 @@ var DeferredPreviewCoordinator = class {
     this.identities.set(value2, identity2);
     return identity2;
   }
-  setVisible(subscriber, visible2, priority) {
+  setVisible(subscriber, visible, priority) {
     if (!subscriber.active || subscriber.epoch !== this.epoch) return;
     if (priority !== void 0 && Number.isFinite(priority)) subscriber.priority = priority;
-    if (subscriber.visible === visible2) {
-      if (visible2 && subscriber.state.status === "queued") this.updateQueuedPriority(subscriber);
+    if (subscriber.visible === visible) {
+      if (visible && subscriber.state.status === "queued") this.updateQueuedPriority(subscriber);
       return;
     }
-    subscriber.visible = visible2;
-    if (!visible2) {
+    subscriber.visible = visible;
+    if (!visible) {
       if (subscriber.state.status === "queued" || subscriber.state.status === "loading") {
         subscriber.generation++;
         this.detachFromJob(subscriber);
@@ -922,10 +922,10 @@ function useDeferredPreview(options) {
       if (observer.current !== current2) return;
       const entry = entries[entries.length - 1];
       if (!entry) return;
-      const visible2 = entry.isIntersecting;
+      const visible = entry.isIntersecting;
       const viewportPriority = priority - Math.max(0, entry.boundingClientRect.top);
-      currentVisibility.current = { visible: visible2, priority: viewportPriority };
-      subscription.current?.setVisible(visible2, viewportPriority);
+      currentVisibility.current = { visible, priority: viewportPriority };
+      subscription.current?.setVisible(visible, viewportPriority);
     }, { root, rootMargin, threshold });
     observer.current = current2;
     current2.observe(node);
@@ -934,18 +934,6 @@ function useDeferredPreview(options) {
   const markError = (0, import_react.useCallback)((cause) => subscription.current?.markError(cause), []);
   const retry = (0, import_react.useCallback)(() => subscription.current?.retry(), []);
   return { ...state, ref, markError, retry };
-}
-
-// plugins/podplo-dsh/src/task-archive-pagination.ts
-function selectArchiveVisiblePage(headers, requestedPage) {
-  const merged = headers.map((header) => ({ id: header.id, createdAt: header.createdAt })).sort((a, b) => {
-    const left = Date.parse(a.createdAt), right = Date.parse(b.createdAt);
-    return (Number.isFinite(right) ? right : -Infinity) - (Number.isFinite(left) ? left : -Infinity) || a.id.localeCompare(b.id);
-  });
-  const pageCount = Math.max(1, Math.ceil(merged.length / 20));
-  const page = Math.max(1, Math.min(Number.isInteger(requestedPage) ? requestedPage : 1, pageCount));
-  const entries = merged.slice((page - 1) * 20, page * 20);
-  return { merged, entries, page, pageCount, localIds: entries.map((entry) => entry.id) };
 }
 
 // plugins/podplo-dsh/src/task-archive-ui.tsx
@@ -971,15 +959,23 @@ var archiveTarget = {
 };
 var saveLabels = { saving: "\u6B63\u5728\u4FDD\u5B58\u5230\u7535\u8111\u2026", saved: "\u5DF2\u4FDD\u5B58\u5230\u7535\u8111", failed: "\u4FDD\u5B58\u672A\u5B8C\u6210", missing: "\u672C\u5730\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8", waiting: "\u7B49\u5F85\u751F\u6210\u7ED3\u679C", cloud: "\u4EC5\u4E91\u7AEF \xB7 \u5C1A\u672A\u4E0B\u8F7D" };
 var visibleResultCode = (value2) => value2 && /^[A-Z0-9_]{1,80}$/u.test(value2) ? value2 : void 0;
+var visibleSkillName = (value2) => {
+  const skill = value2?.trim() ?? "";
+  return skill && !/^(?:library|personal|family):/u.test(skill) && !/^[0-9a-f]{8}-[0-9a-f-]{27,}$/iu.test(skill) ? skill : "";
+};
+var uniqueLines = (values) => [...new Set(values.map((value2) => value2.trim()).filter(Boolean))];
+function ArchiveBackArrow() {
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("svg", { viewBox: "0 0 24 24", width: "18", height: "18", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("path", { d: "m15 18-6-6 6-6" }) });
+}
 function ArchiveStyles() {
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("style", { children: task_archive_default });
 }
-function ArchiveImage({ task, file: file2, request, priority = 0, fill = false, allowRetry = false }) {
+function ArchiveImage({ task, file: file2, request, priority = 0, fill = false, allowRetry = false, localOnly = false }) {
   const preview = useDeferredPreview({
     requestIdentity: request,
     resourceKey: `archive:${task.id}:${file2.id}:${file2.assetId ?? "local"}`,
     revision: `${task.status}:${file2.status}:${file2.image ? 1 : 0}`,
-    enabled: file2.image && (file2.status === "saved" || !!file2.assetId),
+    enabled: file2.image && (file2.status === "saved" || !localOnly && !!file2.assetId),
     cachePolicy: "revalidate",
     rootMargin: "0px",
     priority,
@@ -991,9 +987,10 @@ function ArchiveImage({ task, file: file2, request, priority = 0, fill = false, 
           if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
           if (typeof data2?.dataUrl === "string" && data2.dataUrl) return data2.dataUrl;
         } catch (cause) {
-          if (!file2.assetId || signal.aborted) throw cause;
+          if (localOnly || !file2.assetId || signal.aborted) throw cause;
         }
       }
+      if (localOnly) throw new Error("\u672C\u5730\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
       if (!file2.assetId) throw new Error("\u672C\u5730\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
       const { data } = await request("assets.detail", { id: file2.assetId });
       if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
@@ -1013,6 +1010,21 @@ function ArchiveImage({ task, file: file2, request, priority = 0, fill = false, 
     }
   ) : preview.status === "error" && allowRetry ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => preview.retry(), children: "\u91CD\u8BD5\u9884\u89C8" }) : label });
 }
+function ArchiveFilePreview({ task, file: file2, request }) {
+  if (file2.status === "pending") return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "ppd-spinner", "aria-label": "\u7ED3\u679C\u751F\u6210\u4E2D" });
+  if (file2.status === "failed") return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "\u5931\u8D25" });
+  if (file2.status === "missing") return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "\u672C\u5730\u6210\u679C\u4E0D\u53EF\u7528" });
+  return file2.image ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file2, request, fill: true, localOnly: true }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "ppd-result-document", "aria-label": "\u6587\u5B57\u7ED3\u679C", children: "TXT" });
+}
+function ArchiveResultPlaceholder({ status, name }) {
+  const label = status === "pending" ? "\u5904\u7406\u4E2D" : status === "failed" ? "\u5931\u8D25" : status === "not_executed" ? "\u672A\u6267\u884C" : "\u5F85\u6838\u5BF9";
+  const kind = status === "pending" ? "loading" : status === "needs_review" ? "unknown" : status === "not_executed" ? "cancelled" : "failed";
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: `ppd-archive-file ppd-result-slot-${kind}`, "data-detail-result": kind, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-image", children: status === "pending" ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { className: "ppd-spinner", "aria-label": "\u7ED3\u679C\u751F\u6210\u4E2D" }) : label }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: name, children: name }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: label })
+  ] });
+}
 function TaskFolderCard({ task, request, onView, library = false, view, onDelete }) {
   const [error51, setError] = (0, import_react2.useState)("");
   const [busy, setBusy] = (0, import_react2.useState)(false);
@@ -1029,7 +1041,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
     }
   };
   const images = task.files.filter((file2) => file2.group === "result" && file2.image && (file2.status === "saved" || !!file2.assetId)).slice(view === "list" ? -1 : -3);
-  const running3 = ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status);
+  const running2 = ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status);
   const createdTime = Date.parse(task.createdAt);
   const stageArchive = task.archiveFormat === 2 || task.archiveFormat === 3;
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-card", "data-task-folder": task.id, "data-batch-view": view, children: [
@@ -1038,7 +1050,7 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
       !view && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { "aria-hidden": "true", children: "\u{1F4C1}" }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: task.name }),
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("small", { children: [
-        running3 ? "\u4EFB\u52A1\u8FDB\u884C\u4E2D \xB7 " : "",
+        running2 ? "\u4EFB\u52A1\u8FDB\u884C\u4E2D \xB7 " : "",
         saveLabels[task.saveStatus]
       ] })
     ] }),
@@ -1080,8 +1092,8 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
         {
           type: "button",
           className: "ppd-archive-delete",
-          disabled: busy || running3 || task.saveStatus === "saving",
-          title: running3 || task.saveStatus === "saving" ? "\u4EFB\u52A1\u8FDB\u884C\u4E2D\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u4FDD\u5B58\u7ED3\u675F" : "\u5220\u9664\u6279\u6B21\u8BB0\u5F55\u53CA\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939",
+          disabled: busy || running2 || task.saveStatus === "saving",
+          title: running2 || task.saveStatus === "saving" ? "\u4EFB\u52A1\u8FDB\u884C\u4E2D\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u4FDD\u5B58\u7ED3\u675F" : "\u5220\u9664\u6279\u6B21\u8BB0\u5F55\u53CA\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939",
           onClick: () => onDelete(task),
           children: "\u5220\u9664\u6279\u6B21"
         }
@@ -1091,7 +1103,57 @@ function TaskFolderCard({ task, request, onView, library = false, view, onDelete
     task.summaryError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-error", role: "alert", children: task.summaryError })
   ] });
 }
-function ArchiveDetail({ task, request, onBack, onDelete }) {
+function CompactArchiveIntro({ task, request, onDelete, requestInfo: fallbackRequestInfo }) {
+  const [busy, setBusy] = (0, import_react2.useState)(""), [error51, setError] = (0, import_react2.useState)("");
+  const run = async (action) => {
+    if (busy) return;
+    setBusy(action);
+    setError("");
+    try {
+      await request(action, action === "archive.saveCloud" ? { assetId: task.files[0]?.assetId } : { taskId: task.id });
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210");
+    } finally {
+      setBusy("");
+    }
+  };
+  const results = task.stageResults ?? [], total = Math.max(task.resultCount, results.length, task.audit?.generation.planned ?? 0);
+  const completed = results.length ? results.filter((row) => row.status === "succeeded").length : Math.max(task.savedCount, task.audit?.generation.succeeded ?? 0, ...task.processingResults?.map((row) => row.completed) ?? [0]);
+  const failed = results.length ? results.filter((row) => row.status === "failed").length : Math.max(task.audit?.generation.failed ?? 0, task.processingResults?.reduce((sum, row) => sum + row.failed, 0) ?? 0);
+  const needsReview = results.length ? results.filter((row) => row.status === "needs_review").length : Math.max(task.audit?.generation.unknown ?? 0, task.processingResults?.filter((row) => row.status === "needs_review").length ?? 0);
+  const pending = results.length ? results.filter((row) => row.status === "pending").length : Math.max(task.audit?.generation.pending ?? 0, task.processingResults?.filter((row) => row.status === "pending").length ?? 0);
+  const running2 = ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status);
+  const archiveWarning = task.saveStatus === "missing" ? "\u90E8\u5206\u672C\u5730\u6210\u679C\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\u3002" : task.saveStatus === "failed" ? "\u90E8\u5206\u6210\u679C\u4FDD\u5B58\u672A\u5B8C\u6210\u3002" : task.summaryError ? "\u4EFB\u52A1\u603B\u7ED3\u6682\u4E0D\u53EF\u7528\u3002" : "";
+  const generationRequest = uniqueLines((task.generationCalls ?? []).flatMap((call) => {
+    const skill = visibleSkillName(call.skill), prompt = call.prompt.trim();
+    return [...skill ? [`Skill\uFF1A${skill}`] : [], ...prompt ? [`\u63D0\u793A\u8BCD\uFF1A${prompt}`] : []];
+  }));
+  const toolRequest = !generationRequest.length && task.processingResults?.length ? [`\u5DE5\u5177\u4EFB\u52A1\uFF1A${uniqueLines(task.processingResults.map((result) => result.label)).join("\u3001")}`] : [];
+  const requestInfo = generationRequest.length ? generationRequest : toolRequest.length ? toolRequest : uniqueLines(fallbackRequestInfo ?? []);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("header", { className: "ppd-result-archive-intro", "data-task-intro": task.id, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "\u4EFB\u52A1\u7B80\u4ECB" }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: task.name }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("time", { dateTime: task.createdAt, children: Number.isFinite(Date.parse(task.createdAt)) ? new Date(task.createdAt).toLocaleString() : "\u65F6\u95F4\u672A\u63D0\u4F9B" }),
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("p", { children: [
+      total || 1,
+      " \u9879\u7ED3\u679C \xB7 \u5DF2\u5B8C\u6210 ",
+      completed,
+      pending ? ` \xB7 \u5904\u7406\u4E2D ${pending}` : "",
+      failed ? ` \xB7 \u5931\u8D25 ${failed}` : "",
+      needsReview ? ` \xB7 \u5F85\u6838\u5BF9 ${needsReview}` : ""
+    ] }),
+    requestInfo.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-task-request-summary", "data-task-request": true, children: requestInfo.map((line) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: line }, line)) }) : null,
+    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-actions", children: [
+      task.directory ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void run("archive.openTask"), children: "\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy || task.status !== "completed", onClick: () => void run("archive.saveCloud"), children: "\u4FDD\u5B58\u5230\u7535\u8111" }),
+      task.summaryStatus === "saved" && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void run("archive.openSummary"), children: "\u6253\u5F00\u4EFB\u52A1\u603B\u7ED3" }),
+      task.directory && (task.saveStatus === "failed" || task.audit && task.audit.download.remaining > 0) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void run("archive.retry"), children: "\u5237\u65B0\u4EFB\u52A1" }),
+      !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void run("archive.processPending"), children: busy === "archive.processPending" ? "\u5904\u7406\u4E2D\u2026" : "\u7EE7\u7EED\u5904\u7406" }),
+      task.directory && onDelete && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button ppd-archive-delete", disabled: !!busy || running2 || task.saveStatus === "saving", onClick: () => onDelete(task), children: "\u5220\u9664\u6279\u6B21" })
+    ] }),
+    (error51 || archiveWarning) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-error", role: "alert", children: error51 || archiveWarning })
+  ] });
+}
+function ArchiveDetail({ task, request, onBack, onDelete, compactIntro = false, requestInfo }) {
   const [selected, setSelected] = (0, import_react2.useState)();
   const full = task.files.find((file2) => file2.id === selected);
   const stageArchive = task.archiveFormat === 2 || task.archiveFormat === 3;
@@ -1101,9 +1163,9 @@ function ArchiveDetail({ task, request, onBack, onDelete }) {
     results: task.stageResults.filter((result) => (result.stage?.id ?? "generation") === stage.id)
   })) : [];
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "ppd-archive-detail", "data-archive-detail": task.id, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE\u4EFB\u52A1\u6587\u4EF6\u5939" }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request, onDelete }),
-    !task.processingResults?.length && !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
+    compactIntro ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-result-back", "aria-label": "\u8FD4\u56DE\u5904\u7406\u8BB0\u5F55", title: "\u8FD4\u56DE\u5904\u7406\u8BB0\u5F55", onClick: onBack, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveBackArrow, {}) }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE\u4EFB\u52A1\u6587\u4EF6\u5939" }),
+    compactIntro ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(CompactArchiveIntro, { task, request, onDelete, requestInfo }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(TaskFolderCard, { task, request, onDelete }),
+    !compactIntro && !task.processingResults?.length && !!task.audit?.processing.remaining && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: "\u672C\u5730\u52A0\u5DE5\u7ED3\u679C" }),
       task.audit.processing.steps.filter((step) => step.missingIds.length).map((step) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: step.label }),
@@ -1126,7 +1188,7 @@ function ArchiveDetail({ task, request, onBack, onDelete }) {
         " \xB7 ",
         stage.label
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { className: "ppd-archive-stage-results", children: results.map((result) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { "data-stage-result": result.status, children: [
+      !compactIntro && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { className: "ppd-archive-stage-results", children: results.map((result) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { "data-stage-result": result.status, children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: result.sourceName ?? `\u7B2C ${result.itemIndex + 1} \u9879` }),
         /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
           result.status === "succeeded" ? "\u6210\u529F" : result.status === "failed" ? "\u5931\u8D25" : result.status === "not_executed" ? "\u672A\u6267\u884C" : result.status === "needs_review" ? "\u5F85\u6838\u5BF9" : "\u8FDB\u884C\u4E2D",
@@ -1134,21 +1196,24 @@ function ArchiveDetail({ task, request, onBack, onDelete }) {
         ] })
       ] }, result.itemIndex)) }),
       !files.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u6B64\u9636\u6BB5\u6682\u65E0\u5DF2\u4FDD\u5B58\u6210\u679C\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: files.map((file2) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file2.id, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file2.image || file2.status !== "saved" && !file2.assetId, onClick: () => setSelected(file2.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file2, request, fill: true }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file2.name, children: file2.name }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("small", { children: [
-          file2.sourceName ? `${file2.sourceName} \xB7 ` : "",
-          file2.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file2.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file2.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25"
-        ] })
-      ] }, file2.id)) })
+      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-grid", children: [
+        files.map((file2) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file2.id, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: file2.status !== "saved", onClick: () => setSelected(file2.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveFilePreview, { task, file: file2, request }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file2.name, children: file2.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("small", { children: [
+            file2.sourceName ? `${file2.sourceName} \xB7 ` : "",
+            file2.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file2.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file2.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25"
+          ] })
+        ] }, file2.id)),
+        results.filter((result) => result.status !== "succeeded" && !files.some((file2) => result.fileIds.includes(file2.id))).map((result) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveResultPlaceholder, { status: result.status, name: result.sourceName ?? `\u7ED3\u679C ${result.itemIndex + 1}` }, `result:${result.itemIndex}`))
+      ] })
     ] }, stage.id)) : (stageArchive ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
       const matches = (file2) => group === "final" ? file2.group === "result" : group === "reference" ? file2.group === "reference" : file2.group === "result" && (file2.variant ?? (file2.assetId ? "generated" : "processed")) === group;
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: group === "final" ? "\u6210\u54C1" : group === "generated" ? "\u751F\u6210\u56FE" : group === "processed" ? "\u52A0\u5DE5\u540E\u7684\u6210\u54C1" : "\u53C2\u8003\u56FE" }),
         !task.files.some(matches) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: group === "reference" ? "\u6B64\u4EFB\u52A1\u6CA1\u6709\u53C2\u8003\u56FE\u3002" : "\u6682\u65E0\u6B64\u7C7B\u6210\u679C\u3002" }),
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: task.files.filter(matches).map((file2) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file2.id, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file2.image || file2.status !== "saved" && !file2.assetId, onClick: () => setSelected(file2.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file2, request, fill: true }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: file2.status !== "saved", onClick: () => setSelected(file2.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveFilePreview, { task, file: file2, request }) }),
           /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file2.name, children: file2.name }),
           /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: task.saveStatus === "cloud" ? "\u5C1A\u672A\u4E0B\u8F7D\u5230\u7535\u8111" : file2.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file2.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file2.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" })
         ] }, file2.id)) })
@@ -1170,26 +1235,21 @@ function ArchiveDetail({ task, request, onBack, onDelete }) {
           ` \xB7 \u5DF2\u5B8C\u6210 ${result.completed}/${result.required} \u9879 \xB7 \u5DF2\u4FDD\u5B58 ${files.filter((file2) => file2.status === "saved").length} \u4E2A\u6210\u679C`
         ] }),
         !files.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { children: "\u6B64\u52A0\u5DE5\u9636\u6BB5\u6682\u65E0\u5DF2\u4FDD\u5B58\u6210\u679C\u3002" }),
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-grid", children: files.map((file2) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file2.id, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: !file2.image || file2.status !== "saved" && !file2.assetId, onClick: () => setSelected(file2.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: file2, request, fill: true }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file2.name, children: file2.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: file2.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file2.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file2.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" })
-        ] }, file2.id)) })
+        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-grid", children: [
+          files.map((file2) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-archive-file", "data-archive-file": file2.id, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-archive-image", disabled: file2.status !== "saved", onClick: () => setSelected(file2.id), children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveFilePreview, { task, file: file2, request }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: file2.name, children: file2.name }),
+            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("small", { children: file2.status === "saved" ? "\u5DF2\u4FDD\u5B58\u672C\u5730" : file2.status === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : file2.status === "missing" ? "\u6587\u4EF6\u5DF2\u79FB\u52A8\u6216\u6539\u53D8" : "\u4FDD\u5B58\u5931\u8D25" })
+          ] }, file2.id)),
+          Array.from({ length: result.status === "pending" ? Math.max(1, result.required - result.completed) : result.status === "succeeded" ? 0 : 1 }, (_, pendingIndex) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveResultPlaceholder, { status: result.status, name: `${result.label} ${result.completed + pendingIndex + 1}` }, `processing:${result.stepId}:${pendingIndex}`))
+        ] })
       ] }, stageId);
     }),
-    full && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-lightbox", role: "dialog", "aria-modal": "true", "aria-label": "\u7ED3\u679C\u56FE\u9884\u89C8", children: [
+    full && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-lightbox", role: "dialog", "aria-modal": "true", "aria-label": full.image ? "\u7ED3\u679C\u56FE\u9884\u89C8" : "\u6587\u5B57\u7ED3\u679C\u9884\u89C8", children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => setSelected(void 0), children: "\u5173\u95ED\u9884\u89C8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: full, request, priority: 1e4, fill: true, allowRetry: true })
+      full.image ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveImage, { task, file: full, request, priority: 1e4, fill: true, allowRetry: true, localOnly: true }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryTextPreview, { item: { id: `${task.id}:${full.id}`, taskId: task.id, fileId: full.id, createdAt: task.createdAt }, request, priority: 1e4, allowRetry: true })
     ] })
   ] });
-}
-var VERIFIED_HISTORY_CACHE_LIMIT = 80;
-function mergeVerifiedHistoryItems(previous, rows2) {
-  const incoming = new Set(rows2.map((row) => row.id));
-  return [...previous.filter((row) => !incoming.has(row.id)), ...rows2].slice(-VERIFIED_HISTORY_CACHE_LIMIT);
-}
-function HistoryImagePreview(props) {
-  return props.item.kind === "text" ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryTextPreview, { ...props }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryPicturePreview, { ...props });
 }
 function HistoryTextPreview({ item, request, priority = 0, allowRetry = false }) {
   const [copyStatus, setCopyStatus] = (0, import_react2.useState)("");
@@ -1222,274 +1282,6 @@ function HistoryTextPreview({ item, request, priority = 0, allowRetry = false })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("pre", { children: preview.value })
   ] }) : preview.status === "error" && allowRetry ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => preview.retry(), children: "\u91CD\u8BD5\u9884\u89C8" }) : preview.status === "error" ? "\u672C\u5730\u6587\u672C\u5DF2\u4E0D\u53EF\u7528" : "\u6B63\u5728\u8BFB\u53D6 TXT\u2026" });
-}
-function HistoryPicturePreview({ item, request, priority = 0, allowRetry = false }) {
-  const preview = useDeferredPreview({
-    requestIdentity: request,
-    resourceKey: `history:${item.id}`,
-    revision: item.createdAt,
-    enabled: true,
-    cachePolicy: "revalidate",
-    rootMargin: "0px",
-    priority,
-    async load(signal) {
-      if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
-      const { data } = await request("archive.preview", { taskId: item.taskId, fileId: item.fileId });
-      if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
-      if (typeof data?.dataUrl !== "string" || !data.dataUrl) throw new Error("\u672C\u5730\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
-      return data.dataUrl;
-    }
-  });
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { ref: preview.ref, className: "ppd-archive-placeholder", children: preview.status === "ready" && preview.value ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("img", { src: preview.value, alt: item.name, loading: "lazy", onError: () => preview.markError(new Error("\u56FE\u7247\u89E3\u7801\u5931\u8D25")) }) : preview.status === "error" && allowRetry ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => preview.retry(), children: "\u91CD\u8BD5\u9884\u89C8" }) : preview.status === "error" ? "\u672C\u5730\u56FE\u7247\u5DF2\u4E0D\u53EF\u7528" : "\u6B63\u5728\u52A0\u8F7D\u2026" });
-}
-function HistoryImageCard({ item, request, onPreview, onRefresh }) {
-  const [busy, setBusy] = (0, import_react2.useState)(false), [error51, setError] = (0, import_react2.useState)("");
-  const openTask = async () => {
-    if (busy) return;
-    setBusy(true);
-    setError("");
-    try {
-      await request("archive.openTask", { taskId: item.taskId });
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210");
-      onRefresh();
-    } finally {
-      setBusy(false);
-    }
-  };
-  const createdTime = Date.parse(item.createdAt);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("article", { className: "ppd-history-card", "data-history-image": item.id, "data-processing-record": item.kind === "text" ? "text" : "image", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-history-preview", "aria-label": `\u9884\u89C8 ${item.name}`, onClick: onPreview, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImagePreview, { item, request }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { title: item.name, children: item.name }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-history-meta", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { title: item.projectName, children: item.projectName }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("time", { dateTime: Number.isFinite(createdTime) ? item.createdAt : void 0, children: Number.isFinite(createdTime) ? new Date(createdTime).toLocaleString(void 0, { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "\u65F6\u95F4\u672A\u63D0\u4F9B" })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-archive-actions", children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: busy, onClick: () => void openTask(), children: "\u6253\u5F00\u6240\u5728\u6587\u4EF6\u5939" }) }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error51 })
-  ] });
-}
-function ArchiveBrowser({ request, targetId, navigation, uiLease, leading }) {
-  const cached2 = (0, import_react2.useMemo)(() => uiLease ? readPanelUiState(uiLease, "archive-history-images") : void 0, [uiLease]);
-  const [items, setItems] = (0, import_react2.useState)((cached2?.items ?? []).slice(-VERIFIED_HISTORY_CACHE_LIMIT));
-  const [headers, setHeaders] = (0, import_react2.useState)(cached2?.headers ?? []);
-  const [projects, setProjects] = (0, import_react2.useState)(cached2?.projects ?? []), [catalogKey, setCatalogKey] = (0, import_react2.useState)(cached2?.catalogKey ?? "");
-  const [error51, setError] = (0, import_react2.useState)(""), [pageError, setPageError] = (0, import_react2.useState)("");
-  const [loading, setLoading] = (0, import_react2.useState)(!cached2?.catalogKey), [pageLoading, setPageLoading] = (0, import_react2.useState)(false);
-  const project = "";
-  const [processingType, setProcessingType] = (0, import_react2.useState)(cached2?.processingType ?? "all");
-  const [query, setQuery] = (0, import_react2.useState)(cached2?.query ?? "");
-  const [period, setPeriod] = (0, import_react2.useState)(cached2?.period ?? "all"), [from, setFrom] = (0, import_react2.useState)(cached2?.from ?? ""), [to, setTo] = (0, import_react2.useState)(cached2?.to ?? "");
-  const [page, setPage] = (0, import_react2.useState)(cached2?.page ?? 1), [revision, setRevision] = (0, import_react2.useState)(0);
-  const [selected, setSelected] = (0, import_react2.useState)();
-  const filters = (0, import_react2.useMemo)(() => ({ project, query, processingType, period, from, to }), [project, query, processingType, period, from, to]);
-  const filterKey = (0, import_react2.useMemo)(() => JSON.stringify(filters), [filters]), dateError = archiveDateError(filters);
-  (0, import_react2.useEffect)(() => {
-    if (targetId) {
-      setProcessingType("all");
-      setQuery("");
-      setPeriod("all");
-      setFrom("");
-      setTo("");
-    }
-  }, [targetId]);
-  (0, import_react2.useEffect)(() => {
-    if (dateError) {
-      setLoading(false);
-      return;
-    }
-    let active = true;
-    setLoading(true);
-    const load = async () => {
-      try {
-        const { data } = await request("archive.historyCatalog", { filters });
-        if (active) {
-          const next = data.headers ?? [], ids2 = new Set(next.map((row) => row.id));
-          setHeaders(next);
-          setItems((old) => old.filter((row) => ids2.has(row.id)));
-          setProjects(data.projects ?? []);
-          setCatalogKey(filterKey);
-          setError("");
-        }
-        return null;
-      } catch (cause) {
-        if (active) setError(cause instanceof Error ? cause.message : "\u5904\u7406\u8BB0\u5F55\u8BFB\u53D6\u5931\u8D25");
-        throw cause;
-      } finally {
-        if (active) setLoading(false);
-      }
-    };
-    const poll = startVisiblePolling(load);
-    return () => {
-      active = false;
-      poll.stop();
-    };
-  }, [request, revision, filterKey, dateError]);
-  const currentHeaders = !dateError && catalogKey === filterKey ? headers : [];
-  const selection = (0, import_react2.useMemo)(() => selectArchiveVisiblePage(currentHeaders, page), [currentHeaders, page]);
-  const { merged, entries: visibleEntries, pageCount, page: visiblePage, localIds: visibleImageIds } = selection;
-  const visibleImageKey = visibleImageIds.join(":");
-  (0, import_react2.useEffect)(() => {
-    if (page !== visiblePage) setPage(visiblePage);
-  }, [page, visiblePage]);
-  (0, import_react2.useEffect)(() => {
-    if (selected && !headers.some((row) => row.id === selected.id)) setSelected(void 0);
-  }, [selected, headers]);
-  (0, import_react2.useEffect)(() => {
-    if (!targetId || catalogKey !== filterKey) return;
-    const index = merged.findIndex((row) => row.id === targetId || headers.find((header) => header.id === row.id)?.taskId === targetId);
-    if (index >= 0) setPage(Math.floor(index / 20) + 1);
-  }, [targetId, catalogKey, filterKey, merged, headers]);
-  (0, import_react2.useEffect)(() => {
-    if (!catalogKey || catalogKey !== filterKey || dateError) {
-      setPageError("");
-      return;
-    }
-    let active = true;
-    const load = async () => {
-      if (!visibleImageIds.length) {
-        if (active) {
-          setPageLoading(false);
-          setPageError("");
-        }
-        return null;
-      }
-      setPageLoading(true);
-      try {
-        const { data } = await request("archive.historyPage", { imageIds: visibleImageIds });
-        const rows2 = data.items ?? [], returned = new Set(rows2.map((row) => row.id));
-        if (active) {
-          setItems((old) => mergeVerifiedHistoryItems(old.filter((row) => !visibleImageIds.includes(row.id)), rows2));
-          setHeaders((old) => old.filter((row) => !visibleImageIds.includes(row.id) || returned.has(row.id)));
-          setPageError("");
-        }
-        return null;
-      } catch (cause) {
-        if (active) setPageError(cause instanceof Error ? cause.message : "\u5F53\u524D\u9875\u672C\u5730\u56FE\u7247\u6838\u9A8C\u5931\u8D25");
-        throw cause;
-      } finally {
-        if (active) setPageLoading(false);
-      }
-    };
-    const poll = startVisiblePolling(load);
-    return () => {
-      active = false;
-      poll.stop();
-    };
-  }, [request, revision, filterKey, catalogKey, visibleImageKey, dateError]);
-  (0, import_react2.useEffect)(() => {
-    if (uiLease) writePanelUiState(uiLease, "archive-history-images", {
-      items,
-      headers,
-      projects,
-      catalogKey,
-      project,
-      query,
-      processingType,
-      period,
-      from,
-      to,
-      page
-    });
-  }, [uiLease, items, headers, projects, catalogKey, project, query, processingType, period, from, to, page]);
-  const verified = (0, import_react2.useMemo)(() => new Map(items.map((row) => [row.id, row])), [items]);
-  const visibleImages = visibleEntries.flatMap((entry) => verified.has(entry.id) ? [verified.get(entry.id)] : []);
-  const hasFilters = !!(processingType !== "all" || query || period !== "all");
-  const refresh = () => {
-    setRevision((value2) => value2 + 1);
-    notifyTaskChange();
-  };
-  const clearFilters = () => {
-    setProcessingType("all");
-    setQuery("");
-    setPeriod("all");
-    setFrom("");
-    setTo("");
-    setPage(1);
-  };
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-task-archive-browser": true, "data-history-browser": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveStyles, {}),
-    /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("header", { className: "ppd-archive-browser-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h2", { children: "\u5904\u7406\u8BB0\u5F55" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-history-description", children: "\u67E5\u770B\u4EFB\u52A1\u8FDB\u5EA6\u4E0E\u5DF2\u4FDD\u5B58\u7684\u56FE\u7247\u3001\u6587\u5B57\u6210\u679C\uFF1B\u672C\u5730\u6210\u679C\u65F6\u95F4\u4EE5\u6587\u4EF6\u4FEE\u6539\u65F6\u95F4\u4E3A\u51C6\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-library-toolbar ppd-archive-filters", children: [
-        navigation,
-        /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-toolbar", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { "aria-label": "\u641C\u7D22\u5904\u7406\u8BB0\u5F55", placeholder: "\u641C\u7D22\u7ED3\u679C\u540D\u6216\u9879\u76EE", value: query, onChange: (event) => {
-            setQuery(event.target.value);
-            setPage(1);
-          } }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u5904\u7406\u7C7B\u578B\u7B5B\u9009", value: processingType, onChange: (event) => {
-            setProcessingType(event.target.value);
-            setPage(1);
-          }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "all", children: "\u5168\u90E8\u7C7B\u578B" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "tool", children: "\u5DE5\u5177\u5904\u7406" }),
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "ai", children: "AI\u5904\u7406" })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-date-toolbar", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
-              "\u65F6\u95F4\u8303\u56F4",
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("select", { "aria-label": "\u6309\u672C\u5730\u7ED3\u679C\u65F6\u95F4\u7B5B\u9009", value: period, onChange: (event) => {
-                setPeriod(event.target.value);
-                setPage(1);
-              }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "all", children: "\u5168\u90E8\u65F6\u95F4" }),
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "today", children: "\u4ECA\u5929" }),
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "7days", children: "\u8FD1 7 \u5929" }),
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "30days", children: "\u8FD1 30 \u5929" }),
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("option", { value: "custom", children: "\u81EA\u5B9A\u4E49\u65E5\u671F" })
-              ] })
-            ] }),
-            period === "custom" && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
-                "\u5F00\u59CB\u65E5\u671F",
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { type: "date", value: from, "aria-label": "\u5F00\u59CB\u65E5\u671F", onChange: (event) => {
-                  setFrom(event.target.value);
-                  setPage(1);
-                } })
-              ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { "aria-hidden": "true", children: "\u2014" }),
-              /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("label", { children: [
-                "\u7ED3\u675F\u65E5\u671F",
-                /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("input", { type: "date", value: to, "aria-label": "\u7ED3\u675F\u65E5\u671F", onChange: (event) => {
-                  setTo(event.target.value);
-                  setPage(1);
-                } })
-              ] })
-            ] }),
-            hasFilters && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: clearFilters, children: "\u6E05\u9664\u7B5B\u9009" })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("button", { type: "button", onClick: () => void request("archive.openProject", project ? { projectId: project } : {}).catch((cause) => setError(cause instanceof Error ? cause.message : "\u76EE\u5F55\u6253\u5F00\u5931\u8D25")), children: [
-            "\u6253\u5F00",
-            project ? "\u9879\u76EE" : "\u5F53\u524D\u9879\u76EE",
-            "\u6210\u679C\u76EE\u5F55"
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: refresh, children: "\u5237\u65B0\u8BB0\u5F55" })
-        ] })
-      ] })
-    ] }),
-    typeof leading === "function" ? leading(filters) : leading,
-    dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: dateError }),
-    (error51 || pageError) && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error51 || pageError }),
-    loading && !merged.length ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026" }) : !merged.length ? !dateError && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u5904\u7406\u8BB0\u5F55" : "\u6682\u65E0\u672C\u5730\u5904\u7406\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)(import_jsx_runtime3.Fragment, { children: [
-      pageLoading && visibleImages.length < visibleEntries.length && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("p", { role: "status", children: "\u6B63\u5728\u6838\u9A8C\u5F53\u524D\u9875\u672C\u5730\u7ED3\u679C\u2026" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("div", { className: "ppd-history-grid", children: visibleImages.map((item) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImageCard, { item, request, onPreview: () => setSelected(item), onRefresh: refresh }, item.id)) })
-    ] }),
-    merged.length > 20 && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage === 1, onClick: () => setPage(visiblePage - 1), children: "\u4E0A\u4E00\u9875" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("span", { children: [
-        visiblePage,
-        " / ",
-        pageCount
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", disabled: visiblePage * 20 >= merged.length, onClick: () => setPage(visiblePage + 1), children: "\u4E0B\u4E00\u9875" })
-    ] }),
-    selected && /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("div", { className: "ppd-archive-lightbox", role: "dialog", "aria-modal": "true", "aria-label": "\u5904\u7406\u7ED3\u679C\u9884\u89C8", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", onClick: () => setSelected(void 0), children: "\u5173\u95ED\u9884\u89C8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(HistoryImagePreview, { item: selected, request, priority: 1e4, allowRetry: true })
-    ] })
-  ] });
 }
 
 // plugins/podplo-dsh/src/chat-generation-tasks.tsx
@@ -1705,7 +1497,7 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
     operationId3,
     ...folders.filter((row) => row.operationIds.includes(operationId3)).map((row) => folderHiddenKey(row.id))
   ], false);
-  const visible2 = showDetails ? listedTasks : listedTasks.filter((task) => !hidden.has(task.operationId) && ["pending", "active", "paused"].includes(phase(task, linkedArchive(listedFolders, task.operationId))));
+  const visible = showDetails ? listedTasks : listedTasks.filter((task) => !hidden.has(task.operationId) && ["pending", "active", "paused"].includes(phase(task, linkedArchive(listedFolders, task.operationId))));
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("section", { className: "ppd-chat-tasks", "aria-label": "PodPlo \u4F1A\u8BDD\u4EFB\u52A1", "data-podplo-chat-tasks": true, children: [
     /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(ArchiveStyles, {}),
     (detailCount > 0 || removedCount > 0) && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { className: "ppd-chat-task-toolbar", children: [
@@ -1768,7 +1560,7 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
     (generationReadIssue || archiveReadIssue) && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { role: "status", className: "ppd-chat-task-read-warning", "data-podplo-task-read-warning": true, children: "\u4EFB\u52A1\u72B6\u6001\u8FDE\u63A5\u6682\u4E0D\u53EF\u7528\uFF0C\u5DF2\u4FDD\u7559\u4E0A\u6B21\u8BFB\u53D6\u7ED3\u679C\uFF1B\u8FDE\u63A5\u6062\u590D\u540E\u4F1A\u7EE7\u7EED\u6838\u5BF9\u3002" }),
     error51 && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { role: "alert", children: error51 }),
     /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("div", { id: detailsId, className: "ppd-chat-task-content", "data-details-expanded": showDetails, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "ppd-chat-task-list", "data-podplo-task-view": showDetails ? "details" : "chat", children: visible2.map((task) => {
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("div", { className: "ppd-chat-task-list", "data-podplo-task-view": showDetails ? "details" : "chat", children: visible.map((task) => {
         const archive = linkedArchive(listedFolders, task.operationId);
         const state = phase(task, archive);
         const expandKey = `${task.operationId}:${state}`;
@@ -2299,10 +2091,10 @@ function createPodploSessionStore(initial) {
 }
 
 // plugins/podplo-dsh/src/workspace.tsx
-var import_react20 = require("react");
+var import_react19 = require("react");
 
 // plugins/podplo-dsh/src/panels.tsx
-var import_react19 = require("react");
+var import_react18 = require("react");
 
 // plugins/podplo-dsh/src/generation-panel.tsx
 var import_react8 = __toESM(require("react"), 1);
@@ -17231,7 +17023,7 @@ var import_react_dom = require("react-dom");
 
 // plugins/podplo-dsh/src/generation-batch.ts
 var PENDING_REFERENCE_PREFIX = "pending-";
-var pendingReferenceId = (unique) => `${PENDING_REFERENCE_PREFIX}${unique}`;
+var pendingReferenceId = (unique2) => `${PENDING_REFERENCE_PREFIX}${unique2}`;
 var isPendingReferenceId = (id) => id.startsWith(PENDING_REFERENCE_PREFIX);
 
 // plugins/podplo-dsh/src/batch-generation-ui-state.ts
@@ -19781,7 +19573,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       if (mounted.current && current2()) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, previewSession));
     };
     const current2 = () => generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner;
-    const visible2 = () => current2() && mounted.current;
+    const visible = () => current2() && mounted.current;
     setBusy("upload");
     setError("");
     setUploadWarning("");
@@ -19828,7 +19620,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
             if (displaced?.status === "quoted") void request("generation.cancel", { operationId: displaced.operationId }).catch(() => {
             });
           }
-          if (visible2()) {
+          if (visible()) {
             setAssets((rows2) => [...new Map([...rows2, asset].map((row) => [row.id, row])).values()]);
             if (!sessionId) {
               invalidate();
@@ -19837,20 +19629,20 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           }
           updatePreview(resultIndex, null);
         }
-        if (visible2()) setUploadProgress(`\u6B63\u5728\u4E0A\u4F20\u5E76\u5904\u7406 ${completed} / ${supported.length} \u5F20\u2026`);
+        if (visible()) setUploadProgress(`\u6B63\u5728\u4E0A\u4F20\u5E76\u5904\u7406 ${completed} / ${supported.length} \u5F20\u2026`);
       }
     };
     const done = /* @__PURE__ */ new Set();
     try {
       await Promise.all(Array.from({ length: Math.min(4, supported.length) }, () => worker()));
-      if (!visible2()) return;
+      if (!visible()) return;
       const warnings = [invalid ? `${invalid} \u4E2A\u683C\u5F0F\u4E0D\u652F\u6301\uFF0C\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP` : "", ...failed].filter(Boolean);
       setUploadWarning(warnings.join("\uFF1B"));
       setUploadProgress("");
       onChanged?.();
     } finally {
       uploading.current = false;
-      if (visible2()) {
+      if (visible()) {
         setBusy("");
         if (uploadInput.current) uploadInput.current.value = "";
       }
@@ -22781,10 +22573,10 @@ function ContourMeasurePanel({ request, access }) {
   const parameterError = dimensionError || thresholdError;
   const options = manualDimension && !dimensionError ? { actualWidthCm: measuredWidth, actualHeightCm: measuredHeight, ...numericThresholds } : numericThresholds;
   const uploading = importing === scope;
-  const visible2 = active && !uploading && !parameterError ? matchingResult : void 0;
+  const visible = active && !uploading && !parameterError ? matchingResult : void 0;
   const busy = active && !uploading && pending?.scope === scope && pending.key === key;
   const errorMessage2 = error51?.scope === scope && (!error51.key || error51.key === key) ? error51.message : "";
-  const exportOptions = visible2?.totalLengthCm !== void 0 && width2.trim() && height2.trim() ? {
+  const exportOptions = visible?.totalLengthCm !== void 0 && width2.trim() && height2.trim() ? {
     actualWidthCm: measuredWidth,
     actualHeightCm: measuredHeight,
     ...numericThresholds
@@ -22880,7 +22672,7 @@ function ContourMeasurePanel({ request, access }) {
     setImporting(void 0);
   };
   async function exportReport() {
-    if (!visible2 || !source || !exportOptions || exporting === scope || uploading || busy) return;
+    if (!visible || !source || !exportOptions || exporting === scope || uploading || busy) return;
     const token = ++exports.current;
     const exportKey = JSON.stringify([key, exportOptions.actualWidthCm, exportOptions.actualHeightCm]);
     if (!exportIntent.current || exportIntent.current.scope !== scope || exportIntent.current.key !== exportKey)
@@ -22969,14 +22761,14 @@ function ContourMeasurePanel({ request, access }) {
               } })
             ] })
           ] }),
-          !manualDimension && visible2?.autoDimensions && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "ppd-contour__hint", "data-contour-auto-dimensions": true, children: [
+          !manualDimension && visible?.autoDimensions && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { className: "ppd-contour__hint", "data-contour-auto-dimensions": true, children: [
             "\u5DF2\u6309\u56FE\u7247\u660E\u786E\u8BB0\u5F55\u7684 ",
-            visible2.autoDimensions.horizontalDpi.toLocaleString("zh-CN", { maximumFractionDigits: 4 }),
+            visible.autoDimensions.horizontalDpi.toLocaleString("zh-CN", { maximumFractionDigits: 4 }),
             " \xD7 ",
-            visible2.autoDimensions.verticalDpi.toLocaleString("zh-CN", { maximumFractionDigits: 4 }),
+            visible.autoDimensions.verticalDpi.toLocaleString("zh-CN", { maximumFractionDigits: 4 }),
             " DPI \u548C\u4E3B\u4F53\u8303\u56F4\u81EA\u52A8\u586B\u5199\u3002"
           ] }),
-          !manualDimension && visible2 && !visible2.autoDimensions && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__hint", "data-contour-dimensions-missing": true, children: "\u56FE\u7247\u6CA1\u6709\u53EF\u7528\u7684\u7269\u7406\u5C3A\u5BF8\uFF0C\u8BF7\u586B\u5199\u4E3B\u4F53\u5B9E\u9645\u5BBD\u9AD8\u540E\u6D4B\u91CF\u3002" }),
+          !manualDimension && visible && !visible.autoDimensions && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__hint", "data-contour-dimensions-missing": true, children: "\u56FE\u7247\u6CA1\u6709\u53EF\u7528\u7684\u7269\u7406\u5C3A\u5BF8\uFF0C\u8BF7\u586B\u5199\u4E3B\u4F53\u5B9E\u9645\u5BBD\u9AD8\u540E\u6D4B\u91CF\u3002" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__hint", children: "\u586B\u5199\u4E3B\u4F53\u5916\u63A5\u77E9\u5F62\u7684\u5B9E\u9645\u5BBD\u9AD8\uFF0C\u4E0D\u542B\u56DB\u5468\u7A7A\u767D\u3002\u5BBD\u9AD8\u5206\u522B\u6362\u7B97\uFF0C\u539F\u56FE\u4E0D\u4F1A\u88AB\u62C9\u4F38\u6216\u4FEE\u6539\u3002" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("label", { htmlFor: `${id}-tolerance`, children: [
             "\u767D\u5E95\u80CC\u666F\u5BB9\u5DEE",
@@ -22992,30 +22784,30 @@ function ContourMeasurePanel({ request, access }) {
         notice?.scope === scope && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__notice", role: "status", children: notice.message }),
         active && parameterError && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__error", role: "alert", children: parameterError }),
         errorMessage2 && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__error", role: "alert", children: errorMessage2 }),
-        visible2?.totalLengthCm !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-contour__result", role: "status", children: [
+        visible?.totalLengthCm !== void 0 && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { className: "ppd-contour__result", role: "status", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { children: "\u5916\u8F6E\u5ED3\u603B\u957F\u5EA6\uFF08\u8FD1\u4F3C\u503C\uFF09" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("strong", { "data-contour-total-length": true, children: [
-            visible2.totalLengthCm.toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
+            visible.totalLengthCm.toLocaleString("zh-CN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }),
             " cm"
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { children: [
-            (visible2.totalLengthCm / 100).toLocaleString("zh-CN", { minimumFractionDigits: 3, maximumFractionDigits: 3 }),
+            (visible.totalLengthCm / 100).toLocaleString("zh-CN", { minimumFractionDigits: 3, maximumFractionDigits: 3 }),
             " m"
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { "data-contour-component-count": true, children: [
             "\u5171 ",
-            visible2.componentCount,
+            visible.componentCount,
             " \u6761\u5916\u8F6E\u5ED3\uFF0C\u5185\u90E8\u5B54\u6D1E\u4E0D\u8BA1\u5165\u3002"
           ] }),
-          visible2.warning && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__warning", children: visible2.warning })
+          visible.warning && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__warning", children: visible.warning })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { type: "button", className: "ppd-contour__export", "data-contour-export": true, disabled: !exportOptions || busy || uploading || exporting === scope, onClick: () => void exportReport(), children: exporting === scope ? "\u6B63\u5728\u5BFC\u51FA\u2026" : "\u5BFC\u51FA TXT \u7ED3\u679C" }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { className: "ppd-contour__hint", children: "\u8FD1\u4F3C\u503C\uFF0C\u8BF7\u4EE5\u5F69\u8272\u8F6E\u5ED3\u9884\u89C8\u4E3A\u51C6\u3002\u9634\u5F71\u3001\u6A21\u7CCA\u8FB9\u7F18\u548C\u56FE\u7247\u5206\u8FA8\u7387\u4F1A\u5F71\u54CD\u6D4B\u91CF\u7ED3\u679C\u3002" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-contour__preview", "data-contour-preview": true, "aria-busy": busy || uploading, children: visible2 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("svg", { viewBox: `0 0 ${visible2.sourceWidth} ${visible2.sourceHeight}`, role: "img", "aria-label": "\u56FE\u7247\u5916\u8F6E\u5ED3\u9884\u89C8", preserveAspectRatio: "xMidYMid meet", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("image", { href: visible2.previewDataUrl, width: visible2.sourceWidth, height: visible2.sourceHeight }),
-          visible2.paths.map((d, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("g", { fill: "none", strokeLinejoin: "round", strokeLinecap: "round", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-contour__preview", "data-contour-preview": true, "aria-busy": busy || uploading, children: visible ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("svg", { viewBox: `0 0 ${visible.sourceWidth} ${visible.sourceHeight}`, role: "img", "aria-label": "\u56FE\u7247\u5916\u8F6E\u5ED3\u9884\u89C8", preserveAspectRatio: "xMidYMid meet", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("image", { href: visible.previewDataUrl, width: visible.sourceWidth, height: visible.sourceHeight }),
+          visible.paths.map((d, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("g", { fill: "none", strokeLinejoin: "round", strokeLinecap: "round", children: [
             /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { d, stroke: "#ffffff", strokeWidth: "4", vectorEffect: "non-scaling-stroke" }),
             /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("path", { "data-contour-path": true, d, stroke: "#d32266", strokeWidth: "2", vectorEffect: "non-scaling-stroke" })
           ] }, index))
@@ -23023,7 +22815,7 @@ function ContourMeasurePanel({ request, access }) {
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { children: [
           source?.name,
           " \xB7 ",
-          visible2.backgroundMode === "transparent" ? "\u900F\u660E\u56FE" : "\u767D\u5E95\u56FE",
+          visible.backgroundMode === "transparent" ? "\u900F\u660E\u56FE" : "\u767D\u5E95\u56FE",
           " \xB7 \u5F69\u8272\u7EBF\u4E3A\u8BA1\u5165\u957F\u5EA6\u7684\u5916\u8F6E\u5ED3"
         ] })
       ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { className: "ppd-contour__empty", children: uploading ? "\u6B63\u5728\u8BFB\u53D6\u56FE\u7247\u2026" : busy ? "\u6B63\u5728\u8BC6\u522B\u8F6E\u5ED3\u5E76\u6D4B\u91CF\u2026" : source ? "\u8C03\u6574\u53C2\u6570\u540E\u67E5\u770B\u8F6E\u5ED3\u4E0E\u957F\u5EA6\u3002" : "\u4E0A\u4F20\u767D\u5E95\u56FE\u6216\u900F\u660E\u56FE\u5F00\u59CB\u6D4B\u91CF\u3002" }) })
@@ -23108,7 +22900,7 @@ function ToolboxPanel({ request, onUse, toolGroups }) {
   ] });
 }
 
-// plugins/podplo-dsh/src/task-ledger.tsx
+// plugins/podplo-dsh/src/unified-results-browser.tsx
 var import_react14 = require("react");
 
 // plugins/podplo-dsh/src/result-filters.ts
@@ -23120,276 +22912,193 @@ function matchesResultFilters(row, filters) {
   return filterArchiveTasks([{ name: row.name, projectName: row.projectName ?? "", createdAt: row.createdAt }], dates).length > 0;
 }
 
-// plugins/podplo-dsh/src/task-ledger.tsx
+// plugins/podplo-dsh/src/unified-results-browser.tsx
 var import_jsx_runtime13 = require("react/jsx-runtime");
-var running2 = /* @__PURE__ */ new Set(["submitting", "submitted", "submission_unknown", "partial_unknown"]);
-var labels3 = {
-  completed: "\u5DF2\u5B8C\u6210",
-  failed: "\u751F\u6210\u5931\u8D25",
-  partial_failure: "\u90E8\u5206\u751F\u6210\u5931\u8D25",
-  cancelled: "\u5DF2\u505C\u6B62",
-  partial_cancelled: "\u90E8\u5206\u5B8C\u6210",
+var PAGE_SIZE = 20;
+var activeGeneration = /* @__PURE__ */ new Set(["submitting", "submitted"]);
+var pollableText = (row) => !row.errorCode && (["submitting", "queued", "running"].includes(row.status) || row.archiveStatus === "pending");
+var statusLabel = (status) => ({
+  loading: "\u6B63\u5728\u63D0\u4EA4",
+  accepted: "\u6B63\u5728\u8BFB\u53D6\u4EFB\u52A1",
   submitting: "\u6B63\u5728\u63D0\u4EA4",
   submitted: "\u6B63\u5728\u751F\u6210",
-  submission_unknown: "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9",
-  partial_unknown: "\u90E8\u5206\u7ED3\u679C\u5F85\u6838\u5BF9"
+  queued: "\u7B49\u5F85\u5904\u7406",
+  running: "\u5904\u7406\u4E2D",
+  completed: "\u5DF2\u5B8C\u6210",
+  failed: "\u5904\u7406\u5931\u8D25",
+  submission_unknown: "\u7ED3\u679C\u5F85\u6838\u5BF9",
+  partial_unknown: "\u90E8\u5206\u7ED3\u679C\u5F85\u6838\u5BF9",
+  partial_failure: "\u90E8\u5206\u5B8C\u6210",
+  cancelled: "\u5DF2\u505C\u6B62",
+  partial_cancelled: "\u90E8\u5206\u5B8C\u6210",
+  unknown: "\u7ED3\u679C\u5F85\u6838\u5BF9"
+})[status] ?? status;
+var childStatus = (status) => status === "completed" || status === "succeeded" || status === "saved" ? "completed" : status === "failed" ? "failed" : status === "cancelled" ? "cancelled" : status.includes("unknown") || status === "needs_review" ? "unknown" : "loading";
+var dateLabel = (value2) => Number.isFinite(Date.parse(value2)) ? new Date(value2).toLocaleString(
+  void 0,
+  { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }
+) : "\u65F6\u95F4\u672A\u63D0\u4F9B";
+var unique = (values) => [...new Set(values.map((value2) => value2.trim()).filter(Boolean))];
+var visibleSkill = (value2) => {
+  const skill = value2?.trim() ?? "";
+  return skill && !/^(?:library|personal|family):/u.test(skill) && !/^[0-9a-f]{8}-[0-9a-f-]{27,}$/iu.test(skill) ? skill : "";
 };
-function RunningTaskLedger({ request, ownerId = "", filters }) {
-  const [rows2, setRows] = (0, import_react14.useState)([]);
-  const [busy, setBusy] = (0, import_react14.useState)("");
-  const [error51, setError] = (0, import_react14.useState)("");
-  const [revision, setRevision] = (0, import_react14.useState)(0);
-  (0, import_react14.useEffect)(() => {
-    const load = async () => {
-      try {
-        const { data } = await request("generation.list", { scope: "results" });
-        const items = Array.isArray(data?.items) ? data.items : [];
-        for (const row of items) if (row.status !== "quoted") resolveResultSubmission(ownerId, row.operationId);
-        const eligible = items.filter((row) => row.status !== "quoted" && (running2.has(row.status) || row.approvedAt));
-        const active = eligible.filter((row) => running2.has(row.status));
-        const terminal = eligible.filter((row) => !running2.has(row.status)).sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
-        const next = [...active, ...terminal].sort((a, b) => (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
-        setRows(next);
-        setError("");
-        return next.some((row) => row.status === "submitting" || row.status === "submitted") ? ACTIVE_POLL_MS : null;
-      } catch (cause) {
-        setError(cause instanceof Error ? cause.message : "\u8FDB\u884C\u4E2D\u7684\u4EFB\u52A1\u8BFB\u53D6\u5931\u8D25");
-        return null;
-      }
-    };
-    const poll = startVisiblePolling(load);
-    return () => poll.stop();
-  }, [request, revision, ownerId]);
-  async function stop(row) {
-    if (busy) return;
-    setBusy(row.operationId);
-    setError("");
-    try {
-      if (row.batchId) await request("generation.batch.stop", { batchId: row.batchId });
-      else await request("generation.stopRemaining", { operationId: row.operationId });
-      setRevision((value2) => value2 + 1);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "\u505C\u6B62\u672A\u5B8C\u6210");
-    } finally {
-      setBusy("");
-    }
-  }
-  const visible2 = rows2.filter((row) => matchesResultFilters({ name: row.taskName || (row.batchId ? "\u6279\u91CF\u4EFB\u52A1" : "\u751F\u56FE\u4EFB\u52A1"), createdAt: row.createdAt ?? "", processingType: "ai" }, filters));
-  if (filters?.processingType === "tool" || !visible2.length && !error51) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { className: "ppd-running-tasks", "data-running-tasks": true, "aria-label": "\u8FDB\u884C\u4E2D\u7684\u4EFB\u52A1", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "ppd-running-label", children: "AI\u5904\u7406\u4EFB\u52A1" }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-history-list", children: visible2.map((row) => {
-      const summary = row.summary;
-      const done = summary ? summary.completedCount + summary.failedCount + summary.cancelledCount : 0;
-      const total = Math.max(1, summary?.itemCount ?? row.quote.outputCount ?? 1);
-      const canStop = row.items?.some((item) => item.status === "quoted") === true;
-      return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("article", { className: "ppd-history-record", "data-running-operation": row.operationId, "data-running-status": row.status, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-history-record-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("strong", { role: "status", children: [
-            ["submitting", "submitted"].includes(row.status) && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-spinner" }),
-            labels3[row.status] ?? row.status
-          ] }),
+function BackArrow() {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("svg", { viewBox: "0 0 24 24", width: "18", height: "18", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("path", { d: "m15 18-6-6 6-6" }) });
+}
+function RefreshIcon() {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("svg", { viewBox: "0 0 24 24", width: "16", height: "16", fill: "none", stroke: "currentColor", strokeWidth: "1.8", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("path", { d: "M20 11a8 8 0 1 0-2.3 5.7" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("path", { d: "M20 4v7h-7" })
+  ] });
+}
+function ResultSlot({ status, text: text3 = false }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: `ppd-result-slot ppd-result-slot-${status}`, "data-result-slot": status, children: status === "loading" ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-spinner", "aria-label": "\u7ED3\u679C\u751F\u6210\u4E2D" }) : text3 ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-result-document", children: "TXT" }) : status === "completed" ? "\u2713" : status === "failed" ? "\u5931\u8D25" : status === "cancelled" ? "\u5DF2\u505C\u6B62" : "\u5F85\u6838\u5BF9" });
+}
+function LiveCover({ task }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-result-cover-grid", children: (task.children.length ? task.children : ["unknown"]).slice(0, 4).map((status, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ResultSlot, { status, text: task.kind === "imageToText" }, index)) });
+}
+function ArchiveCover({ task, request, live }) {
+  const files = task.files.filter((file2) => file2.group === "result" && file2.status === "saved").slice(0, 4);
+  const archivedPending = (task.stageResults?.filter((result) => result.status === "pending").length ?? task.audit?.generation.pending ?? 0) + (task.processingResults?.filter((result) => result.status === "pending").length ?? 0);
+  const archivedUnknown = (task.stageResults?.filter((result) => result.status === "needs_review").length ?? task.audit?.generation.unknown ?? 0) + (task.processingResults?.filter((result) => result.status === "needs_review").length ?? 0);
+  const pending = Math.max(archivedPending, live?.children.filter((status) => status === "loading").length ?? 0);
+  const unknown2 = Math.max(archivedUnknown, live?.children.filter((status) => status === "unknown").length ?? 0);
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-result-cover-grid", children: [
+    files.map((file2) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-result-slot", children: file2.image ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ArchiveImage, { task, file: file2, request, fill: true, localOnly: true }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-result-document", children: "TXT" }) }, file2.id)),
+    Array.from({ length: Math.min(4 - files.length, pending) }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ResultSlot, { status: "loading" }, `pending:${index}`)),
+    Array.from({ length: Math.min(Math.max(0, 4 - files.length - pending), unknown2) }, (_, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ResultSlot, { status: "unknown" }, `unknown:${index}`)),
+    !files.length && !pending && !unknown2 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-result-slot ppd-result-slot-empty", children: "\u6682\u65E0\u672C\u5730\u6210\u679C" })
+  ] });
+}
+function ResultCard({ card, request, open }) {
+  const task = card.archive, live = card.live, title = task?.name ?? live.name;
+  const count = task ? Math.max(task.resultCount, task.stageResults?.length ?? 0, live?.children.length ?? 0, 1) : Math.max(live.children.length, 1);
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    "article",
+    {
+      className: "ppd-result-task-card",
+      "data-result-task": task?.id ?? live.id,
+      "data-result-status": task?.status ?? live.status,
+      "data-result-kind": live?.kind ?? "archive",
+      children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("button", { type: "button", className: "ppd-result-card-open", "aria-label": `\u67E5\u770B ${title}`, onClick: open, children: [
+        task ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ArchiveCover, { task, request, live }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(LiveCover, { task: live }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "ppd-result-card-body", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { title, children: title }),
           /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { children: [
-            row.taskName && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
-              row.taskName,
-              " \xB7 "
-            ] }),
-            row.batchId ? "\u6279\u91CF\u4EFB\u52A1" : "\u751F\u56FE\u4EFB\u52A1",
+            statusLabel(task?.status ?? live.status),
             " \xB7 ",
-            row.quote.outputCount,
-            " \u5F20"
-          ] })
-        ] }),
-        summary && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("progress", { "aria-label": "\u751F\u6210\u8FDB\u5EA6", max: total, value: done }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("small", { children: [
-            "\u5B8C\u6210 ",
-            done,
-            " / ",
-            total,
-            summary.failedCount > 0 ? ` \xB7 \u5931\u8D25 ${summary.failedCount}` : ""
-          ] })
-        ] }),
-        row.createdAt && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
-        ["submission_unknown", "partial_unknown"].includes(row.status) && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "\u539F\u4EFB\u52A1\u7ED3\u679C\u5C1A\u672A\u786E\u8BA4\uFF0C\u8BF7\u6838\u5BF9\u72B6\u6001\uFF1B\u4E0D\u4F1A\u521B\u5EFA\u65B0\u7684\u4ED8\u8D39\u4EFB\u52A1\u3002" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: async () => {
-            setBusy(row.operationId);
-            setError("");
-            try {
-              await request("generation.status", { operationId: row.operationId, refresh: true });
-              setRevision((value2) => value2 + 1);
-            } catch (cause) {
-              setError(cause instanceof Error ? cause.message : "\u72B6\u6001\u6838\u5BF9\u5931\u8D25");
-            } finally {
-              setBusy("");
-            }
-          }, children: "\u6838\u5BF9\u72B6\u6001" })
-        ] }),
-        canStop && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-          "button",
-          {
-            type: "button",
-            className: "ppd-button",
-            disabled: !!busy,
-            onClick: () => void stop(row),
-            children: busy === row.operationId ? "\u6B63\u5728\u505C\u6B62\u2026" : "\u505C\u6B62\u5269\u4F59"
-          }
-        ) })
-      ] }, row.operationId);
-    }) })
-  ] });
-}
-
-// plugins/podplo-dsh/src/image-to-text-ledger.tsx
-var import_react15 = require("react");
-var import_jsx_runtime14 = require("react/jsx-runtime");
-var statusLabels = {
-  submitting: "\u6B63\u5728\u63D0\u4EA4",
-  queued: "\u7B49\u5F85\u8BC6\u522B",
-  running: "\u6B63\u5728\u8BC6\u522B",
-  completed: "\u8BC6\u522B\u5B8C\u6210",
-  failed: "\u8BC6\u522B\u5931\u8D25",
-  submission_unknown: "\u63D0\u4EA4\u7ED3\u679C\u5F85\u6838\u5BF9"
-};
-var activeStatuses = /* @__PURE__ */ new Set(["submitting", "queued", "running"]);
-var pollable = (task) => !task.errorCode && (activeStatuses.has(task.status) || task.archiveStatus === "pending");
-var visible = (task) => !(task.status === "completed" && task.archiveStatus === "saved");
-function fixedReason(task) {
-  if (task.status === "completed" && task.archiveStatus === "failed") return "\u6587\u5B57\u5DF2\u8BC6\u522B\uFF0C\u4F46 TXT \u6682\u672A\u4FDD\u5B58\u5230\u5904\u7406\u8BB0\u5F55\uFF0C\u53EF\u91CD\u8BD5\u4FDD\u5B58\u3002";
-  if (task.status === "submission_unknown" || task.errorCode === "IMAGE_TO_TEXT_SUBMISSION_UNKNOWN") return "\u5C1A\u672A\u786E\u8BA4\u4F9B\u5E94\u5546\u662F\u5426\u63A5\u6536\u4E86\u539F\u63D0\u4EA4\uFF0C\u8BF7\u6838\u5BF9\u539F\u63D0\u4EA4\uFF0C\u4E0D\u8981\u91CD\u65B0\u521B\u5EFA\u4EFB\u52A1\u3002";
-  const code = task.failureCode || task.errorCode || "";
-  if (/STATUS_UNAVAILABLE|NETWORK|TIMEOUT|UNAVAILABLE/u.test(code)) return "\u8FDE\u63A5\u6682\u65F6\u4E2D\u65AD\uFF0C\u4EFB\u52A1\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\uFF0C\u53EF\u7A0D\u540E\u6838\u5BF9\u72B6\u6001\u3002";
-  if (/RESULT|EMPTY|INCOMPLETE|PARTIAL|RESPONSE_INVALID/u.test(code)) return "\u4F9B\u5E94\u5546\u672A\u8FD4\u56DE\u5B8C\u6574\u6587\u5B57\uFF0C\u5F53\u524D\u6CA1\u6709\u53EF\u4FDD\u5B58\u7684 TXT\u3002";
-  if (/PROVIDER|REJECT|POLICY|CONTENT|SAFETY|MODERATION/u.test(code)) return "\u4F9B\u5E94\u5546\u672A\u63A5\u53D7\u672C\u6B21\u8BC6\u522B\uFF0C\u672A\u751F\u6210\u6587\u5B57\u7ED3\u679C\u3002";
-  if (task.status === "failed") return "\u672C\u6B21\u8BC6\u522B\u672A\u5B8C\u6210\uFF0C\u53EF\u6838\u5BF9\u72B6\u6001\uFF1B\u7CFB\u7EDF\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002";
-  if (task.errorCode) return "\u72B6\u6001\u8BFB\u53D6\u6682\u65F6\u53D7\u963B\uFF0C\u4EFB\u52A1\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\uFF0C\u53EF\u624B\u52A8\u6838\u5BF9\u72B6\u6001\u3002";
-  return "";
-}
-function ImageToTextLedger({ request, ownerId = "", filters }) {
-  const [rows2, setRows] = (0, import_react15.useState)([]);
-  const [busy, setBusy] = (0, import_react15.useState)("");
-  const [error51, setError] = (0, import_react15.useState)("");
-  const [revision, setRevision] = (0, import_react15.useState)(0);
-  const load = (0, import_react15.useCallback)(async () => {
-    try {
-      const { data } = await request("imageToText.list", {});
-      const items = Array.isArray(data?.items) ? data.items : [];
-      for (const row of items) resolveResultSubmission(ownerId, row.id);
-      const next = items.filter(visible).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-      setRows(next);
-      setError("");
-      return next.some(pollable) ? ACTIVE_POLL_MS : null;
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "\u56FE\u8F6C\u6587\u4EFB\u52A1\u8BFB\u53D6\u5931\u8D25");
-      return null;
-    }
-  }, [request, ownerId]);
-  (0, import_react15.useEffect)(() => {
-    const polling = startVisiblePolling(load);
-    return () => polling.stop();
-  }, [load, revision]);
-  const reconcile = async (row, archiveRetry = false) => {
-    if (busy) return;
-    setBusy(row.id);
-    setError("");
-    try {
-      if (row.status === "submission_unknown" && !row.remoteTaskId) await request("imageToText.recover", { id: row.id });
-      else await request("imageToText.refresh", { id: row.id });
-      setRevision((value2) => value2 + 1);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : archiveRetry ? "\u7ED3\u679C\u4FDD\u5B58\u91CD\u8BD5\u5931\u8D25" : "\u72B6\u6001\u6838\u5BF9\u5931\u8D25");
-    } finally {
-      setBusy("");
-    }
-  };
-  const displayed = rows2.filter((row) => matchesResultFilters({ name: "\u56FE\u8F6C\u6587\u4EFB\u52A1 " + row.model, createdAt: row.createdAt, processingType: "ai" }, filters));
-  if (filters?.processingType === "tool" || !displayed.length && !error51) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { className: "ppd-running-tasks ppd-image-to-text-ledger", "data-image-to-text-ledger": true, "aria-label": "\u56FE\u8F6C\u6587\u4EFB\u52A1", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-running-label", children: "\u56FE\u8F6C\u6587\u4EFB\u52A1" }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-history-list", children: displayed.map((row) => {
-      const active = pollable(row);
-      const archiveFailed = row.status === "completed" && row.archiveStatus === "failed";
-      const needsCheck = !!row.errorCode || row.status === "failed" || row.status === "submission_unknown";
-      const label = archiveFailed ? "\u7ED3\u679C\u4FDD\u5B58\u5931\u8D25" : row.status === "completed" && row.archiveStatus === "pending" ? "\u6B63\u5728\u4FDD\u5B58\u7ED3\u679C" : statusLabels[row.status];
-      const reason = fixedReason(row);
-      return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("article", { className: "ppd-history-record", "data-image-to-text-task": row.id, "data-image-to-text-status": row.status, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-history-record-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("strong", { role: "status", children: [
-            active && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-spinner" }),
-            label
+            count,
+            " \u9879\u7ED3\u679C"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
-            row.model,
-            " \xB7 ",
-            row.inputCount,
-            " \u5F20\u56FE\u7247 \xB7 ",
-            row.totalCredits,
-            " \u79EF\u5206"
-          ] })
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("time", { dateTime: card.createdAt, children: dateLabel(card.createdAt) })
         ] }),
-        reason && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-image-to-text-reason", children: reason }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
-        (archiveFailed || needsCheck) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-          "button",
-          {
-            type: "button",
-            className: "ppd-button",
-            disabled: !!busy,
-            onClick: () => void reconcile(row, archiveFailed),
-            children: busy === row.id ? "\u6B63\u5728\u6838\u5BF9\u2026" : archiveFailed ? "\u91CD\u8BD5\u4FDD\u5B58" : row.status === "submission_unknown" && !row.remoteTaskId ? "\u6838\u5BF9\u539F\u63D0\u4EA4" : "\u6838\u5BF9\u72B6\u6001"
-          }
-        ) })
-      ] }, row.id);
-    }) })
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { className: "ppd-result-detail-button", children: "\u67E5\u770B\u4EFB\u52A1" })
+      ] })
+    }
+  );
+}
+function LiveDetail({ task, busy, back, run }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { className: "ppd-result-task-detail", "data-result-detail": task.id, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { type: "button", className: "ppd-result-back", "aria-label": "\u8FD4\u56DE\u5904\u7406\u8BB0\u5F55", title: "\u8FD4\u56DE\u5904\u7406\u8BB0\u5F55", onClick: back, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(BackArrow, {}) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("header", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: task.processingType === "ai" ? "AI \u5904\u7406" : "\u5DE5\u5177\u5904\u7406" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: task.name }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: task.description }),
+      task.requestInfo?.length ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-task-request-summary", "data-task-request": true, children: task.requestInfo.map((line, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: line }, index)) }) : null,
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("time", { dateTime: task.createdAt, children: dateLabel(task.createdAt) })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "\u4EFB\u52A1\u7ED3\u679C" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-result-detail-grid", children: task.children.map((status, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("article", { className: `ppd-result-detail-slot ppd-result-slot-${status}`, "data-detail-result": status, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ResultSlot, { status, text: task.kind === "imageToText" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("strong", { children: [
+          "\u7ED3\u679C ",
+          index + 1
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: status === "loading" ? "\u5904\u7406\u4E2D" : status === "completed" ? task.kind === "dna" ? "\u5DF2\u5B58\u5165\u6211\u7684 DNA" : "\u5DF2\u5B8C\u6210\uFF0C\u6682\u65E0\u53EF\u7528\u672C\u5730\u6210\u679C" : status === "failed" ? "\u672A\u5B8C\u6210" : status === "cancelled" ? "\u672A\u6267\u884C" : "\u9700\u8981\u6838\u5BF9\u539F\u4EFB\u52A1" })
+      ] }, index)) })
+    ] }),
+    (task.actionLabel || task.secondaryLabel) && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-actions", children: [
+      task.actionLabel && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "button",
+        {
+          className: "ppd-button",
+          type: "button",
+          disabled: busy,
+          onClick: () => run(task.action),
+          children: busy ? "\u6B63\u5728\u5904\u7406\u2026" : task.actionLabel
+        }
+      ),
+      task.secondaryLabel && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "button",
+        {
+          className: "ppd-button",
+          type: "button",
+          disabled: busy,
+          onClick: () => run(task.secondary),
+          children: task.secondaryLabel
+        }
+      )
+    ] })
   ] });
 }
-
-// plugins/podplo-dsh/src/result-ledgers.tsx
-var import_react16 = require("react");
-var import_jsx_runtime15 = require("react/jsx-runtime");
-function SubmissionTaskLedger({ ownerId, filters }) {
-  const rows2 = (0, import_react16.useSyncExternalStore)(subscribeResultSubmissions, () => getResultSubmissions(ownerId));
-  (0, import_react16.useEffect)(() => {
-    notifyTaskChange();
-  }, [rows2]);
-  const visible2 = rows2.filter((row) => matchesResultFilters(row, filters));
-  if (!visible2.length) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("section", { className: "ppd-running-tasks", "aria-label": "\u6B63\u5728\u63D0\u4EA4\u7684\u4EFB\u52A1", "data-submission-ledger": true, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-history-list", children: visible2.map((row) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-history-record", "data-submission-task": row.id, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("strong", { role: "status", children: [
-      row.status !== "failed" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
-      row.name,
-      " \xB7 ",
-      row.status === "failed" ? "\u63D0\u4EA4\u672A\u5B8C\u6210" : row.status === "accepted" ? "\u6B63\u5728\u8BFB\u53D6\u4EFB\u52A1\u72B6\u6001" : "\u6B63\u5728\u63D0\u4EA4"
-    ] }),
-    row.message && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { role: "alert", children: row.message }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() })
-  ] }, row.token)) }) });
-}
-var toolLabels = { running: "\u6B63\u5728\u5904\u7406", completed: "\u5904\u7406\u5B8C\u6210", failed: "\u5904\u7406\u5931\u8D25", unknown: "\u7ED3\u679C\u5F85\u6838\u5BF9" };
-function ToolTaskLedger({ request, ownerId, filters }) {
-  const [rows2, setRows] = (0, import_react16.useState)([]), [error51, setError] = (0, import_react16.useState)(""), [revision, setRevision] = (0, import_react16.useState)(0);
-  const [loading, setLoading] = (0, import_react16.useState)(true), [pending, setPending] = (0, import_react16.useState)(false);
-  (0, import_react16.useEffect)(() => {
+function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna }) {
+  const cached2 = (0, import_react14.useMemo)(() => uiLease ? readPanelUiState(uiLease, "unified-result-cards") : void 0, [uiLease]);
+  const [query, setQuery] = (0, import_react14.useState)(cached2?.query ?? ""), [processingType, setProcessingType] = (0, import_react14.useState)(cached2?.processingType ?? "all");
+  const [page, setPage] = (0, import_react14.useState)(cached2?.page ?? 1), [revision, setRevision] = (0, import_react14.useState)(0), [archiveTick, setArchiveTick] = (0, import_react14.useState)(0);
+  const [headers, setHeaders] = (0, import_react14.useState)([]), [deletedOperationIds, setDeletedOperationIds] = (0, import_react14.useState)([]);
+  const [deletedTaskIds, setDeletedTaskIds] = (0, import_react14.useState)([]);
+  const [archives, setArchives] = (0, import_react14.useState)([]), [generation, setGeneration] = (0, import_react14.useState)([]);
+  const [texts, setTexts] = (0, import_react14.useState)([]), [dnas, setDnas] = (0, import_react14.useState)([]), [tools2, setTools] = (0, import_react14.useState)([]);
+  const [loading, setLoading] = (0, import_react14.useState)(true), [error51, setError] = (0, import_react14.useState)(""), [pageError, setPageError] = (0, import_react14.useState)("");
+  const [busy, setBusy] = (0, import_react14.useState)(""), [selectedKey, setSelectedKey] = (0, import_react14.useState)("");
+  const submissions = (0, import_react14.useSyncExternalStore)(subscribeResultSubmissions, () => getResultSubmissions(ownerId));
+  const filters = (0, import_react14.useMemo)(() => ({ query, processingType, period: "all", from: "", to: "" }), [query, processingType]);
+  const filterKey = (0, import_react14.useMemo)(() => JSON.stringify(filters), [filters]);
+  (0, import_react14.useEffect)(() => {
     let active = true;
     const poll = startVisiblePolling(async () => {
       try {
-        const { data } = await request("archive.toolTasks", {});
+        const [catalog, generationResult, textResult, dnaResult, toolResult] = await Promise.allSettled([
+          request("archive.catalog", { filters }),
+          request("generation.list", { scope: "results" }),
+          request("imageToText.list", {}),
+          request("dna.tasks.list", {}),
+          request("archive.toolTasks", {})
+        ]);
         if (!active) return null;
-        const items = Array.isArray(data?.items) ? data.items : [];
-        items.forEach((row) => resolveResultSubmission(ownerId, row.id));
-        setRows(items);
-        setError("");
+        const generationData = generationResult.status === "fulfilled" ? generationResult.value.data : void 0;
+        const textData = textResult.status === "fulfilled" ? textResult.value.data : void 0;
+        const dnaData = dnaResult.status === "fulfilled" ? dnaResult.value.data : void 0;
+        const toolData = toolResult.status === "fulfilled" ? toolResult.value.data : void 0;
+        const generationRows = Array.isArray(generationData?.items) ? generationData.items : [];
+        const textRows = Array.isArray(textData?.items) ? textData.items : [];
+        const dnaRows = Array.isArray(dnaData?.items) ? dnaData.items : [];
+        const toolRows = Array.isArray(toolData?.items) ? toolData.items : [];
+        generationRows.forEach((row) => resolveResultSubmission(ownerId, row.operationId));
+        textRows.forEach((row) => resolveResultSubmission(ownerId, row.id));
+        dnaRows.forEach((row) => resolveResultSubmission(ownerId, row.id));
+        toolRows.forEach((row) => resolveResultSubmission(ownerId, row.id));
+        if (catalog.status === "fulfilled") {
+          setHeaders(catalog.value.data?.headers ?? []);
+          setDeletedOperationIds(catalog.value.data?.deletedOperationIds ?? []);
+          setDeletedTaskIds(catalog.value.data?.deletedTaskIds ?? []);
+          setArchiveTick((value2) => value2 + 1);
+        }
+        if (generationResult.status === "fulfilled") setGeneration(generationRows.filter((row) => row.status !== "quoted" && (row.approvedAt || activeGeneration.has(row.status) || row.status === "submission_unknown" || row.status === "partial_unknown")));
+        if (textResult.status === "fulfilled") setTexts(textRows);
+        if (dnaResult.status === "fulfilled") setDnas(dnaRows);
+        if (toolResult.status === "fulfilled") setTools(toolRows);
+        const failures = [catalog, generationResult, textResult, dnaResult, toolResult].filter((result) => result.status === "rejected").length;
         setLoading(false);
-        setPending(data?.pending === true);
-        return data?.pending || items.some((row) => row.status === "running") ? ACTIVE_POLL_MS : null;
-      } catch {
+        setError(failures ? `\u6709 ${failures} \u7C7B\u4EFB\u52A1\u6682\u65F6\u8BFB\u53D6\u5931\u8D25\uFF0C\u5DF2\u4FDD\u7559\u5176\u4ED6\u5904\u7406\u8BB0\u5F55\u3002` : "");
+        const pending = generationRows.some((row) => activeGeneration.has(row.status)) || textRows.some(pollableText) || dnaRows.some((row) => ["submitting", "queued", "running"].includes(row.status) && !row.errorCode) || toolRows.some((row) => row.status === "running") || toolData?.pending === true;
+        return pending ? ACTIVE_POLL_MS : null;
+      } catch (cause) {
         if (active) {
           setLoading(false);
-          setPending(false);
-          setError("\u5DE5\u5177\u4EFB\u52A1\u8BFB\u53D6\u5931\u8D25\uFF0C\u8BF7\u5237\u65B0\u8BB0\u5F55\u91CD\u8BD5\u3002");
+          setError(cause instanceof Error ? cause.message : "\u5904\u7406\u8BB0\u5F55\u8BFB\u53D6\u5931\u8D25");
         }
         return null;
       }
@@ -23398,45 +23107,482 @@ function ToolTaskLedger({ request, ownerId, filters }) {
       active = false;
       poll.stop();
     };
-  }, [request, ownerId, revision]);
-  const visible2 = rows2.filter((row) => matchesResultFilters({ ...row, processingType: "tool" }, filters));
-  const submitting = loading || pending && !rows2.some((row) => row.status === "running");
-  if (filters.processingType === "ai" || !visible2.length && !error51 && !submitting) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "ppd-running-tasks", "aria-label": "\u5DE5\u5177\u5904\u7406\u4EFB\u52A1", "data-tool-task-ledger": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-running-label", children: "\u5DE5\u5177\u5904\u7406\u4EFB\u52A1" }),
-    submitting && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("article", { className: "ppd-history-record", "data-tool-task-pending": true, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("strong", { role: "status", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
-      loading ? "\u6B63\u5728\u8BFB\u53D6\u5DE5\u5177\u4EFB\u52A1\u2026" : "\u6B63\u5728\u63D0\u4EA4\u5DE5\u5177\u4EFB\u52A1\u2026"
-    ] }) }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { role: "alert", children: [
-      error51,
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", onClick: () => setRevision((value2) => value2 + 1), children: "\u91CD\u8BD5" })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-history-list", children: visible2.map((row) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-history-record", "data-tool-task": row.id, "data-tool-task-status": row.status, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-history-record-heading", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("strong", { role: "status", children: [
-          row.status === "running" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
-          row.name,
-          " \xB7 ",
-          toolLabels[row.status]
+  }, [request, ownerId, revision, filterKey]);
+  const liveTasks = (0, import_react14.useMemo)(() => {
+    const rows2 = [];
+    for (const row of submissions) rows2.push({
+      id: row.id,
+      name: row.name,
+      kind: "submission",
+      processingType: row.processingType,
+      createdAt: row.createdAt,
+      status: row.status,
+      children: [row.status === "failed" ? "failed" : "loading"],
+      description: row.message || "\u4EFB\u52A1\u5DF2\u7ECF\u63D0\u4EA4\uFF0C\u6B63\u5728\u8BFB\u53D6\u4EFB\u52A1\u4FE1\u606F\u3002"
+    });
+    for (const row of generation) {
+      const total = Math.max(1, row.summary?.itemCount ?? row.quote?.outputCount ?? row.items?.length ?? 1);
+      const children = row.items?.length ? row.items.map((item) => childStatus(item.status)) : Array.from({ length: total }, (_, index) => {
+        const completed = row.summary?.completedCount ?? 0, failed = row.summary?.failedCount ?? 0, cancelled = row.summary?.cancelledCount ?? 0;
+        if (index < completed) return "completed";
+        if (index < completed + failed) return "failed";
+        if (index < completed + failed + cancelled) return "cancelled";
+        return row.status.includes("unknown") ? "unknown" : activeGeneration.has(row.status) ? "loading" : childStatus(row.status);
+      });
+      const canStop = row.items?.some((item) => item.status === "quoted") === true;
+      const skills = unique((row.items ?? []).map((item) => visibleSkill(item.skillName)).filter(Boolean));
+      rows2.push({
+        id: row.operationId,
+        operationId: row.operationId,
+        name: row.taskName || (row.batchId ? "\u6279\u91CF\u751F\u56FE\u4EFB\u52A1" : "\u751F\u56FE\u4EFB\u52A1"),
+        kind: row.batchId ? "batch" : "generation",
+        processingType: "ai",
+        createdAt: row.createdAt ?? "",
+        status: row.status,
+        children,
+        description: row.batchId ? `\u4E00\u6B21\u63D0\u4EA4\u5305\u542B ${total} \u4E2A\u751F\u6210\u4EFB\u52A1\u3002` : "\u4E00\u6B21\u63D0\u4EA4\u5305\u542B 1 \u4E2A\u751F\u6210\u4EFB\u52A1\u3002",
+        requestInfo: skills.length ? skills.map((skill) => `Skill\uFF1A${skill}`) : ["\u4EFB\u52A1\u4FE1\u606F\u6682\u672A\u5305\u542B\u53EF\u663E\u793A\u7684\u63D0\u793A\u8BCD\u6216 Skill\u3002"],
+        ...row.status.includes("unknown") ? { actionLabel: "\u6838\u5BF9\u539F\u4EFB\u52A1", action: async () => {
+          await request("generation.status", { operationId: row.operationId, refresh: true });
+        } } : {},
+        ...canStop ? { secondaryLabel: "\u505C\u6B62\u5269\u4F59", secondary: async () => {
+          await request(
+            row.batchId ? "generation.batch.stop" : "generation.stopRemaining",
+            row.batchId ? { batchId: row.batchId } : { operationId: row.operationId }
+          );
+        } } : {}
+      });
+    }
+    for (const row of texts) {
+      const active = pollableText(row);
+      const unknown2 = row.status === "submission_unknown" || !!row.errorCode;
+      const needsAction = unknown2 || row.status === "failed" || row.archiveStatus === "failed";
+      rows2.push({
+        id: row.id,
+        archiveTaskId: row.archiveTaskId,
+        name: "\u56FE\u8F6C\u6587\u4EFB\u52A1",
+        kind: "imageToText",
+        processingType: "ai",
+        createdAt: row.createdAt,
+        status: row.status,
+        children: [active ? "loading" : unknown2 ? "unknown" : row.status === "completed" ? "completed" : "failed"],
+        description: `${row.model} \xB7 ${row.inputCount} \u5F20\u8F93\u5165\u56FE\u7247\u3002`,
+        requestInfo: ["\u4EFB\u52A1\u7C7B\u578B\uFF1A\u56FE\u8F6C\u6587"],
+        ...needsAction ? {
+          actionLabel: row.archiveStatus === "failed" ? "\u91CD\u8BD5\u4FDD\u5B58" : row.status === "submission_unknown" && !row.remoteTaskId ? "\u6838\u5BF9\u539F\u63D0\u4EA4" : "\u6838\u5BF9\u72B6\u6001",
+          action: async () => {
+            await request(row.status === "submission_unknown" && !row.remoteTaskId ? "imageToText.recover" : "imageToText.refresh", { id: row.id });
+          }
+        } : {}
+      });
+    }
+    for (const row of dnas) {
+      const active = ["submitting", "queued", "running"].includes(row.status) && !row.errorCode;
+      const unknown2 = row.status === "submission_unknown" || !!row.errorCode;
+      const needsAction = unknown2 || row.status === "failed";
+      rows2.push({
+        id: row.id,
+        name: row.name || "DNA \u63D0\u53D6\u4EFB\u52A1",
+        kind: "dna",
+        processingType: "ai",
+        createdAt: row.createdAt,
+        status: row.status,
+        children: [active ? "loading" : unknown2 ? "unknown" : row.status === "completed" ? "completed" : "failed"],
+        description: `${row.model} \xB7 DNA \u63D0\u53D6\u7ED3\u679C\u4F1A\u4FDD\u5B58\u5230\u6211\u7684 DNA\u3002`,
+        requestInfo: ["\u5B98\u65B9 Skill\uFF1A\u53CD\u63A8 DNA"],
+        ...needsAction ? {
+          actionLabel: row.status === "submission_unknown" ? "\u6838\u5BF9\u539F\u63D0\u4EA4" : "\u6838\u5BF9\u72B6\u6001",
+          action: async () => {
+            await request(row.status === "submission_unknown" ? "dna.recover" : "dna.refresh", { id: row.id });
+          }
+        } : {},
+        ...row.status === "completed" && row.dnaId && onOpenDna ? {
+          secondaryLabel: "\u524D\u5F80\u6211\u7684 DNA",
+          secondary: async () => onOpenDna(row.dnaId)
+        } : {}
+      });
+    }
+    for (const row of tools2) rows2.push({
+      id: row.id,
+      archiveTaskId: row.archiveTaskId,
+      name: row.name,
+      kind: "tool",
+      processingType: "tool",
+      createdAt: row.createdAt,
+      status: row.status,
+      children: Array.from({ length: Math.max(1, row.inputCount) }, () => row.status === "running" ? "loading" : row.status === "completed" ? "completed" : row.status === "unknown" ? "unknown" : "failed"),
+      description: `\u4E00\u6B21\u63D0\u4EA4\u5305\u542B ${row.inputCount} \u4E2A\u5DE5\u5177\u5904\u7406\u4EFB\u52A1\u3002`,
+      requestInfo: [`\u5DE5\u5177\u4EFB\u52A1\uFF1A${row.name}`]
+    });
+    return rows2;
+  }, [submissions, generation, texts, dnas, tools2, request, onOpenDna]);
+  const cards = (0, import_react14.useMemo)(() => {
+    const archivedOperations = new Set(headers.flatMap((header) => header.operationIds));
+    const deleted = new Set(deletedOperationIds), deletedTasks = new Set(deletedTaskIds), archivedTaskIds = new Set(headers.map((header) => header.id));
+    const filteredLive = liveTasks.filter((row) => !archivedOperations.has(row.operationId ?? row.id) && !deleted.has(row.operationId ?? row.id) && (!row.archiveTaskId || !archivedTaskIds.has(row.archiveTaskId)) && (!row.archiveTaskId || !deletedTasks.has(row.archiveTaskId)) && matchesResultFilters(row, filters));
+    return [
+      ...headers.map((header) => ({
+        key: `archive:${header.id}`,
+        createdAt: header.createdAt,
+        header,
+        live: liveTasks.find((row) => header.operationIds.includes(row.operationId ?? row.id) || row.archiveTaskId === header.id)
+      })),
+      ...filteredLive.map((live) => ({ key: `live:${live.kind}:${live.id}`, createdAt: live.createdAt, live }))
+    ].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.key.localeCompare(b.key));
+  }, [headers, liveTasks, deletedOperationIds, deletedTaskIds, filters]);
+  const pageCount = Math.max(1, Math.ceil(cards.length / PAGE_SIZE)), visiblePage = Math.max(1, Math.min(page, pageCount));
+  const visibleCards = cards.slice((visiblePage - 1) * PAGE_SIZE, visiblePage * PAGE_SIZE);
+  const visibleArchiveIds = visibleCards.flatMap((card) => card.header ? [card.header.id] : []);
+  const archiveKey = visibleArchiveIds.join(":");
+  (0, import_react14.useEffect)(() => {
+    if (page !== visiblePage) setPage(visiblePage);
+  }, [page, visiblePage]);
+  (0, import_react14.useEffect)(() => {
+    if (!visibleArchiveIds.length) {
+      setArchives([]);
+      return;
+    }
+    let active = true;
+    request("archive.page", { taskIds: visibleArchiveIds }).then(({ data }) => {
+      if (active) {
+        setArchives(data?.items ?? []);
+        setPageError("");
+      }
+    }, (cause) => {
+      if (active) setPageError(cause instanceof Error ? cause.message : "\u5F53\u524D\u9875\u4EFB\u52A1\u6210\u679C\u6838\u9A8C\u5931\u8D25");
+    });
+    return () => {
+      active = false;
+    };
+  }, [request, archiveKey, revision, archiveTick]);
+  const archiveMap = (0, import_react14.useMemo)(() => new Map(archives.map((task) => [task.id, task])), [archives]);
+  const hydrated = visibleCards.flatMap((card) => card.header && archiveMap.has(card.header.id) ? [{ ...card, archive: archiveMap.get(card.header.id) }] : card.live ? [card] : []);
+  const selected = cards.find((card) => card.key === selectedKey);
+  const selectedArchive = selected?.header ? archiveMap.get(selected.header.id) : void 0;
+  (0, import_react14.useEffect)(() => {
+    if (!targetId) return;
+    const index = cards.findIndex((card) => card.header?.id === targetId || card.header?.operationIds.includes(targetId) || card.live?.id === targetId);
+    const match = cards[index];
+    if (match) {
+      setPage(Math.floor(index / PAGE_SIZE) + 1);
+      setSelectedKey(match.key);
+    }
+  }, [targetId, cards]);
+  (0, import_react14.useEffect)(() => {
+    if (!selectedKey.startsWith("live:") || cards.some((card) => card.key === selectedKey)) return;
+    const linked = cards.find((card) => card.header && card.live && selectedKey.endsWith(`:${card.live.id}`));
+    if (linked) setSelectedKey(linked.key);
+  }, [selectedKey, cards]);
+  (0, import_react14.useEffect)(() => {
+    if (uiLease) writePanelUiState(uiLease, "unified-result-cards", { query, processingType, page: visiblePage });
+  }, [uiLease, query, processingType, visiblePage]);
+  const run = (key, action) => {
+    if (!action || busy) return;
+    setBusy(key);
+    setError("");
+    void action().then(
+      () => {
+        setRevision((value2) => value2 + 1);
+        notifyTaskChange();
+      },
+      (cause) => setError(cause instanceof Error ? cause.message : "\u64CD\u4F5C\u672A\u5B8C\u6210")
+    ).finally(() => setBusy(""));
+  };
+  if (!selected?.header && selected?.live) return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ArchiveStyles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      LiveDetail,
+      {
+        task: selected.live,
+        busy: busy === selected.key,
+        back: () => setSelectedKey(""),
+        run: (action) => run(selected.key, action)
+      }
+    ),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error51 })
+  ] });
+  if (selected?.header && selectedArchive) return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ArchiveStyles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ArchiveDetail, { task: selectedArchive, request, onBack: () => setSelectedKey(""), compactIntro: true, requestInfo: selected.live?.requestInfo }),
+    selected.live && !selectedArchive.stageResults?.length && !selectedArchive.processingResults?.length && selected.live.children.some((status) => status !== "completed") && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { className: "ppd-result-task-detail", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "\u672A\u5B8C\u6210\u7684\u4EFB\u52A1\u7ED3\u679C" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-result-detail-grid", children: selected.live.children.map((status, index) => ({ status, index })).filter((row) => row.status !== "completed").map(({ status, index }) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("article", { className: `ppd-result-detail-slot ppd-result-slot-${status}`, "data-detail-result": status, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ResultSlot, { status, text: selected.live?.kind === "imageToText" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("strong", { children: [
+          "\u7ED3\u679C ",
+          index + 1
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { children: [
-          row.inputCount,
-          " \u5F20\u56FE\u7247"
-        ] })
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: status === "loading" ? "\u5904\u7406\u4E2D" : status === "completed" ? "\u5DF2\u5B8C\u6210\uFF0C\u6682\u65E0\u53EF\u7528\u672C\u5730\u6210\u679C" : status === "unknown" ? "\u9700\u8981\u6838\u5BF9\u539F\u4EFB\u52A1" : "\u672A\u5B8C\u6210" })
+      ] }, index)) })
+    ] }),
+    selected.live && (selected.live.actionLabel || selected.live.secondaryLabel) && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-actions", children: [
+      selected.live.actionLabel && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "button",
+        {
+          type: "button",
+          className: "ppd-button",
+          disabled: busy === selected.key,
+          onClick: () => run(selected.key, selected.live?.action),
+          children: busy === selected.key ? "\u6B63\u5728\u5904\u7406\u2026" : selected.live.actionLabel
+        }
+      ),
+      selected.live.secondaryLabel && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "button",
+        {
+          type: "button",
+          className: "ppd-button",
+          disabled: busy === selected.key,
+          onClick: () => run(selected.key, selected.live?.secondary),
+          children: selected.live.secondaryLabel
+        }
+      )
+    ] })
+  ] });
+  const hasFilters = processingType !== "all" || !!query;
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { "data-unified-results-browser": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ArchiveStyles, {}),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("header", { className: "ppd-archive-browser-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "\u5904\u7406\u8BB0\u5F55" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "ppd-history-description", children: "\u6BCF\u6B21\u63D0\u4EA4\u663E\u793A\u4E3A\u4E00\u5F20\u5361\u7247\uFF1B\u6253\u5F00\u5361\u7247\u67E5\u770B\u4EFB\u52A1\u7B80\u4ECB\u548C\u5404\u9879\u7ED3\u679C\u3002" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-library-toolbar ppd-archive-filters ppd-results-toolbar", children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-archive-toolbar", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          "input",
+          {
+            "aria-label": "\u641C\u7D22\u5904\u7406\u8BB0\u5F55",
+            placeholder: "\u641C\u7D22\u4EFB\u52A1\u540D\u6216\u9879\u76EE",
+            value: query,
+            onChange: (event) => {
+              setQuery(event.target.value);
+              setPage(1);
+            }
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          "select",
+          {
+            "aria-label": "\u6309\u5904\u7406\u7C7B\u578B\u7B5B\u9009",
+            value: processingType,
+            onChange: (event) => {
+              setProcessingType(event.target.value);
+              setPage(1);
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "all", children: "\u5168\u90E8\u7C7B\u578B" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "tool", children: "\u5DE5\u5177\u5904\u7406" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "ai", children: "AI\u5904\u7406" })
+            ]
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          "button",
+          {
+            type: "button",
+            className: "ppd-icon-button",
+            "aria-label": "\u5237\u65B0\u8BB0\u5F55",
+            title: "\u5237\u65B0\u8BB0\u5F55",
+            onClick: () => {
+              setRevision((value2) => value2 + 1);
+              notifyTaskChange();
+            },
+            children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(RefreshIcon, {})
+          }
+        )
+      ] }) })
+    ] }),
+    (error51 || pageError) && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error51 || pageError }),
+    loading && !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026" }) : !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u5904\u7406\u8BB0\u5F55" : "\u6682\u65E0\u5904\u7406\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-result-task-grid", children: hydrated.map((card) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(ResultCard, { card, request, open: () => setSelectedKey(card.key) }, card.key)) }),
+    cards.length > PAGE_SIZE && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-archive-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "button",
+        {
+          type: "button",
+          disabled: visiblePage === 1,
+          onClick: () => setPage(visiblePage - 1),
+          children: "\u4E0A\u4E00\u9875"
+        }
+      ),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { children: [
+        visiblePage,
+        " / ",
+        pageCount
       ] }),
-      row.status === "unknown" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "\u4E0A\u6B21\u5904\u7406\u88AB\u4E2D\u65AD\uFF0C\u7ED3\u679C\u5C1A\u672A\u786E\u8BA4\uFF1B\u8BF7\u68C0\u67E5\u5DF2\u4FDD\u5B58\u6210\u679C\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u65B0\u6267\u884C\u3002" }),
-      row.status === "failed" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "\u672C\u6B21\u5DE5\u5177\u5904\u7406\u672A\u5B8C\u6210\uFF0C\u5DF2\u4FDD\u5B58\u7684\u6210\u679C\u4F1A\u7EE7\u7EED\u4FDD\u7559\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("time", { dateTime: row.createdAt, children: new Date(row.createdAt).toLocaleString() }),
-      row.archiveTaskId && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void request("archive.openTask", { taskId: row.archiveTaskId }).catch(() => setError("\u6210\u679C\u76EE\u5F55\u6682\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002")), children: "\u6253\u5F00\u7ED3\u679C\u6587\u4EF6\u5939" })
-    ] }, row.id)) })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        "button",
+        {
+          type: "button",
+          disabled: visiblePage === pageCount,
+          onClick: () => setPage(visiblePage + 1),
+          children: "\u4E0B\u4E00\u9875"
+        }
+      )
+    ] })
   ] });
 }
 
 // plugins/podplo-dsh/src/my-dna-panel.tsx
-var import_react17 = require("react");
-var import_jsx_runtime16 = require("react/jsx-runtime");
-var PAGE_SIZE = 24;
+var import_react16 = require("react");
+
+// plugins/podplo-dsh/src/personal-library-menu.tsx
+var import_react15 = require("react");
+var import_react_dom3 = require("react-dom");
+var import_jsx_runtime14 = require("react/jsx-runtime");
+var closeActivePersonalMenu;
+function PersonalLibraryMenu({ label, actions, disabled }) {
+  const [open, setOpen] = (0, import_react15.useState)(false);
+  const [position, setPosition] = (0, import_react15.useState)({ top: 0, left: 0, ready: false });
+  const root = (0, import_react15.useRef)(null), trigger = (0, import_react15.useRef)(null), popover = (0, import_react15.useRef)(null);
+  const focusAfterOpen = (0, import_react15.useRef)(void 0);
+  const close = (0, import_react15.useCallback)((restoreFocus = false) => {
+    setOpen(false);
+    setPosition((current2) => ({ ...current2, ready: false }));
+    if (closeActivePersonalMenu === close) closeActivePersonalMenu = void 0;
+    if (restoreFocus) requestAnimationFrame(() => trigger.current?.focus());
+  }, []);
+  const openMenu = (focus) => {
+    if (open) {
+      if (focus) requestAnimationFrame(() => {
+        const items = popover.current?.querySelectorAll('[role="menuitem"]');
+        items?.[focus === "first" ? 0 : items.length - 1]?.focus();
+      });
+      return;
+    }
+    closeActivePersonalMenu?.(false);
+    closeActivePersonalMenu = close;
+    focusAfterOpen.current = focus;
+    setOpen(true);
+  };
+  const updatePosition = (0, import_react15.useCallback)(() => {
+    const anchor = trigger.current, menu = popover.current;
+    if (!anchor || !menu) return;
+    const rect = anchor.getBoundingClientRect(), margin = 8, gap = 6, width2 = menu.offsetWidth, height2 = menu.offsetHeight;
+    const below = rect.bottom + gap;
+    const top = below + height2 <= window.innerHeight - margin ? below : Math.max(margin, rect.top - gap - height2);
+    const left = Math.min(Math.max(margin, rect.right - width2), Math.max(margin, window.innerWidth - width2 - margin));
+    setPosition({ top, left, ready: true });
+  }, []);
+  (0, import_react15.useLayoutEffect)(() => {
+    if (!open) return;
+    updatePosition();
+    const focus = focusAfterOpen.current;
+    focusAfterOpen.current = void 0;
+    if (focus) requestAnimationFrame(() => {
+      const items = popover.current?.querySelectorAll('[role="menuitem"]');
+      items?.[focus === "first" ? 0 : items.length - 1]?.focus();
+    });
+  }, [open, updatePosition]);
+  (0, import_react15.useEffect)(() => {
+    if (!open) return;
+    const outside = (target2) => !root.current?.contains(target2) && !popover.current?.contains(target2);
+    const dismiss = (event) => {
+      if (outside(event.target)) close(false);
+    };
+    const key = (event) => {
+      if (event.key === "Escape") {
+        event.stopPropagation();
+        close(true);
+      }
+    };
+    const blur = (event) => {
+      if (outside(event.target)) close(false);
+    };
+    document.addEventListener("pointerdown", dismiss, true);
+    document.addEventListener("keydown", key, true);
+    document.addEventListener("focusin", blur);
+    window.addEventListener("resize", updatePosition);
+    window.addEventListener("scroll", updatePosition, true);
+    return () => {
+      document.removeEventListener("pointerdown", dismiss, true);
+      document.removeEventListener("keydown", key, true);
+      document.removeEventListener("focusin", blur);
+      window.removeEventListener("resize", updatePosition);
+      window.removeEventListener("scroll", updatePosition, true);
+    };
+  }, [close, open, updatePosition]);
+  (0, import_react15.useEffect)(() => () => {
+    if (closeActivePersonalMenu === close) closeActivePersonalMenu = void 0;
+  }, [close]);
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { ref: root, className: `ppd-personal-menu ${open ? "is-open" : ""}`, "data-personal-menu-root": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      "button",
+      {
+        ref: trigger,
+        type: "button",
+        className: "ppd-personal-menu-trigger",
+        "data-personal-menu-trigger": true,
+        "aria-label": label,
+        title: label,
+        "aria-haspopup": "menu",
+        "aria-expanded": open,
+        disabled,
+        onClick: (event) => open ? close(false) : openMenu(event.detail === 0 ? "first" : void 0),
+        onKeyDown: (event) => {
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            openMenu("first");
+          }
+          if (event.key === "ArrowUp") {
+            event.preventDefault();
+            openMenu("last");
+          }
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("circle", { cx: "5", cy: "12", r: "1.7" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("circle", { cx: "12", cy: "12", r: "1.7" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("circle", { cx: "19", cy: "12", r: "1.7" })
+        ] })
+      }
+    ),
+    open && (0, import_react_dom3.createPortal)(/* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      "div",
+      {
+        ref: popover,
+        className: "ppd-personal-menu-popover",
+        "data-personal-menu": true,
+        role: "menu",
+        "aria-label": label,
+        style: { top: position.top, left: position.left, visibility: position.ready ? "visible" : "hidden" },
+        onKeyDown: (event) => {
+          const items = [...event.currentTarget.querySelectorAll('[role="menuitem"]')], index = items.indexOf(document.activeElement);
+          if (event.key === "Home") {
+            event.preventDefault();
+            items[0]?.focus();
+          }
+          if (event.key === "End") {
+            event.preventDefault();
+            items.at(-1)?.focus();
+          }
+          if (event.key === "ArrowDown") {
+            event.preventDefault();
+            items[(index + 1) % items.length]?.focus();
+          }
+          if (event.key === "ArrowUp") {
+            event.preventDefault();
+            items[(index - 1 + items.length) % items.length]?.focus();
+          }
+        },
+        children: actions.map((action) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+          "button",
+          {
+            type: "button",
+            role: "menuitem",
+            className: action.danger ? "is-danger" : "",
+            onClick: () => {
+              closeActivePersonalMenu = void 0;
+              setOpen(false);
+              action.run();
+            },
+            children: action.label
+          },
+          action.label
+        ))
+      }
+    ), root.current?.closest(".ppd-panel") ?? document.body)
+  ] });
+}
+
+// plugins/podplo-dsh/src/my-dna-panel.tsx
+var import_jsx_runtime15 = require("react/jsx-runtime");
+var PAGE_SIZE2 = 24;
 function codeOf(error51) {
   return error51 && typeof error51 === "object" && "code" in error51 ? String(error51.code ?? "") : "";
 }
@@ -23455,25 +23601,6 @@ function safeDna(value2) {
   if (typeof row.id !== "string" || !row.id || typeof row.name !== "string" || !row.name.trim() || typeof row.coverAssetId !== "string" || !row.coverAssetId || !validDate(row.createdAt) || !validDate(row.updatedAt)) return;
   return { id: row.id, name: row.name.trim(), description: typeof row.description === "string" ? row.description : "", coverAssetId: row.coverAssetId, createdAt: row.createdAt, updatedAt: row.updatedAt };
 }
-function safeTask(value2) {
-  if (!value2 || typeof value2 !== "object") return;
-  const row = value2;
-  const statuses = /* @__PURE__ */ new Set(["submitting", "queued", "running", "completed", "failed", "submission_unknown"]);
-  if (typeof row.id !== "string" || !row.id || typeof row.status !== "string" || !statuses.has(row.status) || typeof row.model !== "string" || typeof row.totalCredits !== "number" || !Number.isFinite(row.totalCredits) || row.totalCredits <= 0 || row.inputCount !== 1 || !validDate(row.createdAt) || !validDate(row.updatedAt)) return;
-  return {
-    id: row.id,
-    status: row.status,
-    model: row.model,
-    totalCredits: row.totalCredits,
-    inputCount: 1,
-    createdAt: row.createdAt,
-    updatedAt: row.updatedAt,
-    ...typeof row.name === "string" && row.name.trim() ? { name: row.name.trim() } : {},
-    ...typeof row.dnaId === "string" && row.dnaId ? { dnaId: row.dnaId } : {},
-    ...typeof row.errorCode === "string" ? { errorCode: row.errorCode } : {},
-    ...typeof row.failureCode === "string" ? { failureCode: row.failureCode } : {}
-  };
-}
 function DnaCover({ assetId, request, retryable = true }) {
   const preview = useDeferredPreview({
     requestIdentity: request,
@@ -23488,120 +23615,38 @@ function DnaCover({ assetId, request, retryable = true }) {
       throw new Error(data?.status === "processing" ? "ASSET_PROCESSING" : "PREVIEW_UNAVAILABLE");
     }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { ref: preview.ref, className: "ppd-dna-cover", children: preview.value ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("img", { src: preview.value, alt: "\u53CD\u63A8\u56FE\u7247\u5C01\u9762", referrerPolicy: "no-referrer", decoding: "async", onError: () => preview.markError() }) : preview.status === "error" ? retryable ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-link-button", onClick: preview.retry, children: "\u91CD\u8BD5\u9884\u89C8" }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u9884\u89C8\u6682\u4E0D\u53EF\u7528" }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u5C01\u9762", children: "\u25A6" }) });
-}
-var activeTask = (task) => ["submitting", "queued", "running"].includes(task.status);
-var pollableTask = (task) => activeTask(task) && !task.errorCode;
-var taskLabel = (task) => task.status === "completed" ? "\u5DF2\u5B58\u5165\u6211\u7684DNA" : task.status === "failed" ? "DNA \u63D0\u53D6\u5931\u8D25" : task.status === "submission_unknown" ? "DNA \u63D0\u53D6\u7ED3\u679C\u5F85\u6838\u5BF9" : task.status === "running" ? "\u6B63\u5728\u63D0\u53D6 DNA" : task.status === "queued" ? "\u7B49\u5F85\u63D0\u53D6 DNA" : "\u6B63\u5728\u63D0\u4EA4 DNA \u63D0\u53D6";
-function taskReason(task) {
-  if (task.status === "submission_unknown") return "\u5C1A\u672A\u786E\u8BA4\u539F\u63D0\u4EA4\u7ED3\u679C\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u521B\u5EFA\u65B0\u7684\u4ED8\u8D39\u4EFB\u52A1\u3002";
-  if (task.errorCode && /STATUS|NETWORK|TIMEOUT|UNAVAILABLE/u.test(task.errorCode)) return "\u72B6\u6001\u8BFB\u53D6\u6682\u65F6\u53D7\u963B\uFF0C\u53EF\u624B\u52A8\u6838\u5BF9\u539F\u4EFB\u52A1\u3002";
-  if (task.status === "failed") return "\u672C\u6B21 DNA \u63D0\u53D6\u672A\u5B8C\u6210\uFF0C\u53EF\u6838\u5BF9\u539F\u4EFB\u52A1\u3002";
-  return "";
-}
-function DnaTaskLedger({ request, ownerId, filters, onCompleted, onOpenDna }) {
-  const [rows2, setRows] = (0, import_react17.useState)([]);
-  const [busy, setBusy] = (0, import_react17.useState)("");
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [revision, setRevision] = (0, import_react17.useState)(0);
-  const completed = (0, import_react17.useRef)(void 0);
-  const refreshList = (0, import_react17.useRef)(onCompleted ?? (() => void 0));
-  refreshList.current = onCompleted ?? (() => void 0);
-  const load = (0, import_react17.useCallback)(async () => {
-    if (filters?.processingType === "tool") {
-      setRows([]);
-      setError("");
-      return null;
-    }
-    try {
-      const { data } = await request("dna.tasks.list", {});
-      const values = Array.isArray(data?.items) ? data.items : [];
-      const next = values.map(safeTask).filter((row) => !!row).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
-      if (ownerId) for (const task of next) resolveResultSubmission(ownerId, task.id);
-      const finished = new Set(next.filter((row) => row.status === "completed").map((row) => row.id));
-      if (completed.current && [...finished].some((id) => !completed.current.has(id))) refreshList.current();
-      completed.current = finished;
-      setRows(next.filter((task) => matchesResultFilters({ name: task.name || "DNA \u63D0\u53D6\u4EFB\u52A1", createdAt: task.createdAt, processingType: "ai" }, filters)));
-      setError("");
-      return next.some(pollableTask) ? ACTIVE_POLL_MS : null;
-    } catch {
-      setError("DNA \u63D0\u53D6\u4EFB\u52A1\u8BFB\u53D6\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
-      return null;
-    }
-  }, [filters, ownerId, request]);
-  (0, import_react17.useEffect)(() => {
-    const polling = startVisiblePolling(load);
-    return () => polling.stop();
-  }, [load, revision]);
-  const reconcile = async (task) => {
-    if (busy) return;
-    setBusy(task.id);
-    setError("");
-    try {
-      await request(task.status === "submission_unknown" ? "dna.recover" : "dna.refresh", { id: task.id });
-      setRevision((value2) => value2 + 1);
-    } catch {
-      setError("DNA \u63D0\u53D6\u72B6\u6001\u6838\u5BF9\u5931\u8D25\uFF0C\u6CA1\u6709\u521B\u5EFA\u65B0\u7684\u63D0\u4EA4\u3002");
-    } finally {
-      setBusy("");
-    }
-  };
-  const outstanding = rows2;
-  if (!outstanding.length && !error51) return null;
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-running-tasks ppd-dna-ledger", "data-dna-task-ledger": true, "aria-label": "DNA \u63D0\u53D6\u4EFB\u52A1", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-running-label", children: "DNA \u63D0\u53D6\u4EFB\u52A1" }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-history-list", children: outstanding.map((task) => {
-      const reason = taskReason(task), needsCheck = !!task.errorCode || task.status === "failed" || task.status === "submission_unknown";
-      return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("article", { className: "ppd-history-record", "data-dna-ledger-task": task.id, "data-dna-ledger-status": task.status, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-history-record-heading", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("strong", { role: "status", children: [
-            pollableTask(task) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "ppd-spinner" }),
-            task.name || "DNA \u63D0\u53D6\u4EFB\u52A1"
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { children: [
-            taskLabel(task),
-            " \xB7 ",
-            task.model,
-            " \xB7 ",
-            task.totalCredits,
-            " \u79EF\u5206"
-          ] })
-        ] }),
-        reason && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-dna-task-reason", children: reason }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("time", { dateTime: task.createdAt, children: new Date(task.createdAt).toLocaleString() }),
-        needsCheck && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => void reconcile(task), children: busy === task.id ? "\u6B63\u5728\u6838\u5BF9\u2026" : task.status === "submission_unknown" ? "\u6838\u5BF9\u539F\u63D0\u4EA4" : "\u6838\u5BF9\u72B6\u6001" }) }),
-        task.status === "completed" && task.dnaId && onOpenDna && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => onOpenDna(task.dnaId), children: "\u524D\u5F80\u6211\u7684 DNA" }) })
-      ] }, task.id);
-    }) })
-  ] });
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { ref: preview.ref, className: "ppd-dna-cover", children: preview.value ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("img", { src: preview.value, alt: "\u53CD\u63A8\u56FE\u7247\u5C01\u9762", referrerPolicy: "no-referrer", decoding: "async", onError: () => preview.markError() }) : preview.status === "error" ? retryable ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-link-button", onClick: preview.retry, children: "\u91CD\u8BD5\u9884\u89C8" }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { role: "alert", children: "\u9884\u89C8\u6682\u4E0D\u53EF\u7528" }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { className: "ppd-dna-cover-loading", role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
+    "\u6B63\u5728\u52A0\u8F7D"
+  ] }) });
 }
 function MyDnaPanel({ request, onUseDna }) {
-  const [items, setItems] = (0, import_react17.useState)([]);
-  const [nextCursor, setNextCursor] = (0, import_react17.useState)(null);
-  const [loading, setLoading] = (0, import_react17.useState)(true);
-  const [busy, setBusy] = (0, import_react17.useState)("");
-  const [error51, setError] = (0, import_react17.useState)("");
-  const [notice, setNotice] = (0, import_react17.useState)("");
-  const [renaming, setRenaming] = (0, import_react17.useState)();
-  const [deleting, setDeleting] = (0, import_react17.useState)();
-  const [detailId, setDetailId] = (0, import_react17.useState)("");
+  const [items, setItems] = (0, import_react16.useState)([]);
+  const [nextCursor, setNextCursor] = (0, import_react16.useState)(null);
+  const [loading, setLoading] = (0, import_react16.useState)(true);
+  const [busy, setBusy] = (0, import_react16.useState)("");
+  const [error51, setError] = (0, import_react16.useState)("");
+  const [notice, setNotice] = (0, import_react16.useState)("");
+  const [query, setQuery] = (0, import_react16.useState)("");
+  const [renaming, setRenaming] = (0, import_react16.useState)();
+  const [deleting, setDeleting] = (0, import_react16.useState)();
+  const [detailId, setDetailId] = (0, import_react16.useState)("");
   const detail = items.find((row) => row.id === detailId);
-  const alive = (0, import_react17.useRef)(true);
-  const sequence = (0, import_react17.useRef)(0);
-  const actionInFlight = (0, import_react17.useRef)(false);
-  (0, import_react17.useEffect)(() => {
+  const alive = (0, import_react16.useRef)(true);
+  const sequence = (0, import_react16.useRef)(0);
+  const actionInFlight = (0, import_react16.useRef)(false);
+  (0, import_react16.useEffect)(() => {
     alive.current = true;
     return () => {
       alive.current = false;
     };
   }, []);
-  const load = (0, import_react17.useCallback)(async (append = false) => {
+  const load = (0, import_react16.useCallback)(async (append = false) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
     try {
-      const dnaResult = await request("dna.list", { limit: PAGE_SIZE, ...append && nextCursor ? { cursor: nextCursor } : {} });
+      const dnaResult = await request("dna.list", { limit: PAGE_SIZE2, ...append && nextCursor ? { cursor: nextCursor } : {} });
       if (!alive.current || token !== sequence.current) return;
       const rawDnas = Array.isArray(dnaResult.data?.items) ? dnaResult.data.items : [];
       const next = rawDnas.map(safeDna).filter((row) => !!row);
@@ -23613,7 +23658,7 @@ function MyDnaPanel({ request, onUseDna }) {
       if (alive.current && token === sequence.current) setLoading(false);
     }
   }, [nextCursor, request]);
-  (0, import_react17.useEffect)(() => {
+  (0, import_react16.useEffect)(() => {
     void load(false);
     return () => {
       sequence.current++;
@@ -23672,94 +23717,109 @@ function MyDnaPanel({ request, onUseDna }) {
       if (alive.current) setBusy("");
     }
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("section", { className: "ppd-my-dna", "data-my-dna-panel": true, "data-mode": detail ? "detail" : "list", children: [
-    detail ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("header", { className: "ppd-dna-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "DNA \u8BE6\u60C5" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => setDetailId(""), children: "\u8FD4\u56DE\u6211\u7684 DNA" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("header", { className: "ppd-dna-heading", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "\u6211\u7684 DNA" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u53CD\u63A8\u7ED3\u679C\u4FDD\u5B58\u5728\u8FD9\u91CC\uFF0C\u9009\u4E00\u4E2A\u642D\u914D\u65B0\u56FE\u4F7F\u7528\u3002" })
-    ] }) }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    notice && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
-    detail ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-detail", "data-dna-detail": detail.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(DnaCover, { assetId: detail.coverAssetId, request }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { "data-dna-description": true, children: detail.description || "\u6682\u65E0\u7B80\u4ECB" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-use": true, disabled: !!busy, onClick: () => void useDna(detail), children: "\u4F7F\u7528 DNA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => {
-          setRenaming({ row: detail, value: detail.description });
-          setError("");
-        }, children: "\u7F16\u8F91\u7B80\u4ECB" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => {
-          setDeleting(detail);
-          setError("");
-        }, children: "\u5220\u9664" })
-      ] })
-    ] }) : loading && !items.length ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-state", role: "status", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: "ppd-spinner" }),
-      "\u6B63\u5728\u8BFB\u53D6\u2026"
-    ] }) : !items.length ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-state", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "\u8FD8\u6CA1\u6709 DNA" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u5728 Skill \u5E93\u9009\u62E9\u300C\u53CD\u63A8 DNA\u300D\uFF0C\u751F\u6210\u7684 DNA \u4F1A\u4FDD\u5B58\u5728\u8FD9\u91CC\u3002" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dna-grid", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("article", { className: "ppd-dna-card", "data-dna-id": row.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("button", { type: "button", className: "ppd-dna-open", "data-dna-open": row.id, "aria-label": "\u67E5\u770B DNA \u8BE6\u60C5", onClick: () => setDetailId(row.id), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(DnaCover, { assetId: row.coverAssetId, request, retryable: false }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-card-copy", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { "data-dna-description": true, children: row.description || "\u6682\u65E0\u7B80\u4ECB" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("small", { children: "DNA" })
-        ] })
+  const normalizedQuery = query.trim().toLocaleLowerCase();
+  const visibleItems = normalizedQuery ? items.filter((row) => row.description.toLocaleLowerCase().includes(normalizedQuery)) : items;
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { className: "ppd-my-dna", "data-my-dna-panel": true, "data-mode": detail ? "detail" : "list", children: [
+    !detail && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("header", { className: "ppd-dna-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { children: "\u6211\u7684 DNA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "\u53CD\u63A8\u7ED3\u679C\u4FDD\u5B58\u5728\u8FD9\u91CC\uFF0C\u9009\u4E00\u4E2A\u642D\u914D\u65B0\u56FE\u4F7F\u7528\u3002" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dna-card-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => void useDna(row), children: "\u4F7F\u7528" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", onClick: () => {
-          setRenaming({ row, value: row.description });
-          setError("");
-        }, children: "\u7F16\u8F91" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", onClick: () => {
-          setDeleting(row);
-          setError("");
-        }, children: "\u5220\u9664" })
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-dna-toolbar", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-sr-only", children: "\u641C\u7D22 DNA \u7B80\u4ECB" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("circle", { cx: "11", cy: "11", r: "6" }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("path", { d: "m16 16 4 4" })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("input", { value: query, maxLength: 120, placeholder: "\u641C\u7D22\u7B80\u4ECB", onChange: (event) => setQuery(event.currentTarget.value) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u5237\u65B0", title: "\u5237\u65B0", disabled: loading, onClick: () => void load(false), children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("path", { d: "M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7" }) }) })
       ] })
+    ] }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    notice && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
+    detail ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-detail ppd-personal-detail ppd-dna-detail", "data-dna-detail": detail.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-back ppd-personal-back", "data-personal-back": true, onClick: () => setDetailId(""), children: "\u2190 \u8FD4\u56DE\u6211\u7684 DNA" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-personal-detail-grid", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dna-detail-cover", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(DnaCover, { assetId: detail.coverAssetId, request }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-personal-detail-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-eyebrow", children: "\u6211\u7684 DNA" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { children: "DNA \u8BE6\u60C5" }),
+          detail.description.trim() && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-personal-detail-description", "data-dna-description": true, children: detail.description }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-actions ppd-personal-detail-actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", "data-dna-use": true, disabled: !!busy, onClick: () => void useDna(detail), children: "\u4F7F\u7528 DNA" }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(PersonalLibraryMenu, { label: "DNA \u7BA1\u7406\u64CD\u4F5C", disabled: !!busy, actions: [{ label: "\u7F16\u8F91\u7B80\u4ECB", run: () => {
+              setRenaming({ row: detail, value: detail.description });
+              setError("");
+            } }, { label: "\u5220\u9664", danger: true, run: () => {
+              setDeleting(detail);
+              setError("");
+            } }] })
+          ] })
+        ] })
+      ] })
+    ] }) : loading && !items.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-state", role: "status", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { className: "ppd-spinner" }),
+      "\u6B63\u5728\u8BFB\u53D6\u2026"
+    ] }) : !items.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-state", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "\u8FD8\u6CA1\u6709 DNA" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "\u5728 Skill \u5E93\u9009\u62E9\u300C\u53CD\u63A8 DNA\u300D\uFF0C\u751F\u6210\u7684 DNA \u4F1A\u4FDD\u5B58\u5728\u8FD9\u91CC\u3002" })
+    ] }) : !visibleItems.length ? /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-state", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "\u6CA1\u6709\u5339\u914D\u7684 DNA" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "\u53EF\u4EE5\u6362\u4E00\u4E2A\u7B80\u4ECB\u5173\u952E\u8BCD\uFF0C\u6216\u7EE7\u7EED\u52A0\u8F7D\u66F4\u591A\u7ED3\u679C\u3002" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dna-grid", children: visibleItems.map((row) => /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("article", { className: "ppd-dna-card", "data-dna-id": row.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(PersonalLibraryMenu, { label: "DNA \u7BA1\u7406\u64CD\u4F5C", disabled: !!busy, actions: [{ label: "\u7F16\u8F91\u7B80\u4ECB", run: () => {
+        setRenaming({ row, value: row.description });
+        setError("");
+      } }, { label: "\u5220\u9664", danger: true, run: () => {
+        setDeleting(row);
+        setError("");
+      } }] }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("button", { type: "button", className: "ppd-dna-open", "data-dna-open": row.id, "aria-label": "\u67E5\u770B DNA \u8BE6\u60C5", onClick: () => setDetailId(row.id), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(DnaCover, { assetId: row.coverAssetId, request, retryable: false }),
+        row.description.trim() && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dna-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { "data-dna-description": true, children: row.description }) })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dna-card-actions", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy, onClick: () => void useDna(row), children: "\u4F7F\u7528" }) })
     ] }, row.id)) }),
-    !detail && nextCursor && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
-    renaming && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("form", { className: "ppd-dialog", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-description-title", onSubmit: (event) => {
+    !detail && nextCursor && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
+    renaming && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("form", { className: "ppd-dialog", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-description-title", onSubmit: (event) => {
       event.preventDefault();
       void rename();
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { id: "ppd-dna-description-title", children: "\u7F16\u8F91 DNA \u7B80\u4ECB" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: "\u7B80\u4ECB" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("textarea", { autoFocus: true, "data-dna-description-input": true, value: renaming.value, maxLength: 1e3, rows: 5, placeholder: "\u5199\u4E0B\u8FD9\u4E2A DNA \u7684\u7279\u70B9\uFF0C\u65B9\u4FBF\u4E0B\u6B21\u627E\u5230\u3002", onChange: (event) => {
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { id: "ppd-dna-description-title", children: "\u7F16\u8F91 DNA \u7B80\u4ECB" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: "\u7B80\u4ECB" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("textarea", { autoFocus: true, "data-dna-description-input": true, value: renaming.value, maxLength: 1e3, rows: 5, placeholder: "\u5199\u4E0B\u8FD9\u4E2A DNA \u7684\u7279\u70B9\uFF0C\u65B9\u4FBF\u4E0B\u6B21\u627E\u5230\u3002", onChange: (event) => {
           const value2 = event.currentTarget.value;
           setRenaming((current2) => current2 ? { ...current2, value: value2 } : current2);
         } })
       ] }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setRenaming(void 0), children: "\u53D6\u6D88" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: !!busy, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" })
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setRenaming(void 0), children: "\u53D6\u6D88" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: !!busy, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" })
       ] })
     ] }) }),
-    deleting && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-delete-title", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { id: "ppd-dna-delete-title", children: "\u5220\u9664 DNA\uFF1F" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "\u5220\u9664\u540E\u5C06\u4E0D\u518D\u51FA\u73B0\u5728\u300C\u6211\u7684 DNA\u300D\u3002\u539F\u59CB\u56FE\u7247\u4E0E\u5386\u53F2\u4EFB\u52A1\u4ECD\u4FDD\u7559\u3002" }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setDeleting(void 0), children: "\u53D6\u6D88" }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: !!busy, onClick: () => void remove(), children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : "\u786E\u8BA4\u5220\u9664" })
+    deleting && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-dna-delete-title", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { id: "ppd-dna-delete-title", children: "\u5220\u9664 DNA\uFF1F" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "\u5220\u9664\u540E\u5C06\u4E0D\u518D\u51FA\u73B0\u5728\u300C\u6211\u7684 DNA\u300D\u3002\u539F\u59CB\u56FE\u7247\u4E0E\u5386\u53F2\u4EFB\u52A1\u4ECD\u4FDD\u7559\u3002" }),
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { className: "ppd-actions", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button", disabled: !!busy, onClick: () => setDeleting(void 0), children: "\u53D6\u6D88" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: !!busy, onClick: () => void remove(), children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : "\u786E\u8BA4\u5220\u9664" })
       ] })
     ] }) })
   ] });
 }
 
 // plugins/podplo-dsh/src/plugin-update-control.tsx
-var import_react18 = require("react");
+var import_react17 = require("react");
 
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.38",
+  version: "0.1.39",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -23816,14 +23876,14 @@ var package_default = {
 var PLUGIN_VERSION = package_default.version;
 
 // plugins/podplo-dsh/src/plugin-update-control.tsx
-var import_jsx_runtime17 = require("react/jsx-runtime");
+var import_jsx_runtime16 = require("react/jsx-runtime");
 function PluginUpdateControl({ request, taskBusy = false }) {
-  const [status, setStatus] = (0, import_react18.useState)({ currentVersion: PLUGIN_VERSION, phase: "idle", updateAvailable: false });
-  const [working, setWorking] = (0, import_react18.useState)("");
-  const [checked, setChecked] = (0, import_react18.useState)(false);
-  const [error51, setError] = (0, import_react18.useState)("");
-  const alive = (0, import_react18.useRef)(true), inFlight = (0, import_react18.useRef)(false);
-  (0, import_react18.useEffect)(() => {
+  const [status, setStatus] = (0, import_react17.useState)({ currentVersion: PLUGIN_VERSION, phase: "idle", updateAvailable: false });
+  const [working, setWorking] = (0, import_react17.useState)("");
+  const [checked, setChecked] = (0, import_react17.useState)(false);
+  const [error51, setError] = (0, import_react17.useState)("");
+  const alive = (0, import_react17.useRef)(true), inFlight = (0, import_react17.useRef)(false);
+  (0, import_react17.useEffect)(() => {
     alive.current = true;
     return () => {
       alive.current = false;
@@ -23834,7 +23894,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
     setStatus(data);
     setError(data.error ?? "");
   };
-  (0, import_react18.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     let active = true;
     void request("plugin.status").then(({ data }) => {
       if (active) receive(data);
@@ -23845,7 +23905,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
       active = false;
     };
   }, [request]);
-  (0, import_react18.useEffect)(() => {
+  (0, import_react17.useEffect)(() => {
     if (!["checking", "installing"].includes(status.phase)) return;
     let active = true, reading = false;
     const timer = setInterval(() => {
@@ -23888,17 +23948,17 @@ function PluginUpdateControl({ request, taskBusy = false }) {
   const pending = !!working || ["checking", "installing"].includes(status.phase);
   const installed = ["applied", "restart-required"].includes(status.phase);
   const message2 = status.phase === "installing" || working === "installing" ? "\u6B63\u5728\u66F4\u65B0\u63D2\u4EF6\u2026" : status.phase === "applied" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u6B63\u5728\u52A0\u8F7D\u65B0\u7248\u2026" : status.phase === "restart-required" ? "\u66F4\u65B0\u5DF2\u5B89\u88C5\uFF0C\u91CD\u542F DSH \u540E\u751F\u6548\u3002" : checked && status.phase === "idle" && !status.updateAvailable && !error51 ? "\u6682\u65E0\u53EF\u7528\u66F4\u65B0\u3002" : "";
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-plugin-update", "data-podplo-plugin-update": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { className: "ppd-plugin-update", "data-podplo-plugin-update": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", "data-podplo-plugin-version": true, children: [
       "PodPlo v",
       status.currentVersion.replace(/[-+].*$/u, "")
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
-    status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-plugin-version", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: pending || installed, onClick: () => void act(false), children: working === "checking" || status.phase === "checking" ? "\u68C0\u67E5\u4E2D\u2026" : "\u68C0\u67E5\u66F4\u65B0" }),
+    status.updateAvailable && status.latestVersion && /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("span", { className: "ppd-plugin-version", children: [
       "\u53EF\u66F4\u65B0\u81F3 v",
       status.latestVersion
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
       "button",
       {
         type: "button",
@@ -23909,7 +23969,7 @@ function PluginUpdateControl({ request, taskBusy = false }) {
         children: working === "installing" || status.phase === "installing" ? "\u66F4\u65B0\u4E2D\u2026" : "\u66F4\u65B0\u7248\u672C"
       }
     ),
-    (error51 || message2) && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: `ppd-plugin-update-message${error51 ? " is-error" : ""}`, role: error51 ? "alert" : "status", children: error51 || message2 })
+    (error51 || message2) && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { className: `ppd-plugin-update-message${error51 ? " is-error" : ""}`, role: error51 ? "alert" : "status", children: error51 || message2 })
   ] });
 }
 
@@ -24129,8 +24189,8 @@ subscribePanelUiInvalidation(() => {
 });
 
 // plugins/podplo-dsh/src/panels.tsx
-var import_jsx_runtime18 = require("react/jsx-runtime");
-var PAGE_SIZE2 = 18;
+var import_jsx_runtime17 = require("react/jsx-runtime");
+var PAGE_SIZE3 = 18;
 var USER_SKILL_REFERENCE_LIMIT2 = 12;
 var CARD_TITLE_LIMIT = 24;
 var isConnected = (status) => status === "connected" || status === "authenticated" || status === "ready";
@@ -24177,77 +24237,77 @@ function Icon({ name }) {
     "arrow-up": "\u2191",
     "arrow-down": "\u2193"
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-icon", "aria-hidden": "true", children: values[name] });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-icon", "aria-hidden": "true", children: values[name] });
 }
 function Status({ loading, error: error51, empty, children }) {
-  if (loading) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-state", role: "status", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-spinner" }),
+  if (loading) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-state", role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-spinner" }),
     "\u6B63\u5728\u8BFB\u53D6\u2026"
   ] });
-  if (error51) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-state ppd-error", role: "alert", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8BFB\u53D6\u5931\u8D25" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: error51 })
+  if (error51) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-state ppd-error", role: "alert", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8BFB\u53D6\u5931\u8D25" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: error51 })
   ] });
-  if (empty) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-state", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8FD9\u91CC\u8FD8\u6CA1\u6709\u5185\u5BB9" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: empty })
+  if (empty) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-state", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8FD9\u91CC\u8FD8\u6CA1\u6709\u5185\u5BB9" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: empty })
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_jsx_runtime18.Fragment, { children });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_jsx_runtime17.Fragment, { children });
 }
 function Notice({ error: error51, notice }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    notice && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-notice", role: "status", children: notice })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    notice && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-notice", role: "status", children: notice })
   ] });
 }
 function PageNav({ page, total, onPage }) {
-  const navRef = (0, import_react19.useRef)(null);
-  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE2));
+  const navRef = (0, import_react18.useRef)(null);
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE3));
   if (pages <= 1) return null;
   const navigate = (nextPage) => {
     const panel = navRef.current?.closest(".ppd-panel-scroll");
     onPage(nextPage);
     requestAnimationFrame(() => panel?.scrollTo({ top: 0, left: 0, behavior: "auto" }));
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("nav", { ref: navRef, className: "ppd-pagination", "aria-label": "\u5206\u9875", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", disabled: page <= 1, onClick: () => navigate(page - 1), children: "\u4E0A\u4E00\u9875" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("nav", { ref: navRef, className: "ppd-pagination", "aria-label": "\u5206\u9875", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", disabled: page <= 1, onClick: () => navigate(page - 1), children: "\u4E0A\u4E00\u9875" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
       page,
       " / ",
       pages
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", disabled: page >= pages, onClick: () => navigate(page + 1), children: "\u4E0B\u4E00\u9875" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", disabled: page >= pages, onClick: () => navigate(page + 1), children: "\u4E0B\u4E00\u9875" })
   ] });
 }
 function SearchBar({ value: value2, placeholder, busy, children, navigation, onChange, onSearch, onRefresh }) {
-  const form = /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { className: "ppd-search", onSubmit: (event) => {
+  const form = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { className: "ppd-search", onSubmit: (event) => {
     event.preventDefault();
     onSearch();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-sr-only", children: "\u641C\u7D22" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "search" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { value: value2, maxLength: 120, placeholder, onChange: (event) => onChange(event.target.value) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-sr-only", children: "\u641C\u7D22" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "search" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { value: value2, maxLength: 120, placeholder, onChange: (event) => onChange(event.target.value) })
     ] }),
     children,
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "submit", className: "ppd-button", disabled: busy, children: "\u641C\u7D22" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u5237\u65B0", title: "\u5237\u65B0", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "refresh" }) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "submit", className: "ppd-button", disabled: busy, children: "\u641C\u7D22" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u5237\u65B0", title: "\u5237\u65B0", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "refresh" }) })
   ] });
-  return navigation ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-library-toolbar", children: [
+  return navigation ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-library-toolbar", children: [
     navigation,
     form
   ] }) : form;
 }
 function ImageFrame({ src, alt, before }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: `ppd-image ${before ? "ppd-image-pair" : ""}`, children: [
-    before && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src: before, alt: `${alt}\u5904\u7406\u524D`, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }),
-    src ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src, alt, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u25A6" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: `ppd-image ${before ? "ppd-image-pair" : ""}`, children: [
+    before && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src: before, alt: `${alt}\u5904\u7406\u524D`, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }),
+    src ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src, alt, loading: "lazy", decoding: "async", referrerPolicy: "no-referrer" }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { "aria-hidden": "true", children: "\u25A6" })
   ] });
 }
 function FavoriteMenu({ label, actions, disabled }) {
-  const [open, setOpen] = (0, import_react19.useState)(false);
-  const root = (0, import_react19.useRef)(null);
-  (0, import_react19.useEffect)(() => {
+  const [open, setOpen] = (0, import_react18.useState)(false);
+  const root = (0, import_react18.useRef)(null);
+  (0, import_react18.useEffect)(() => {
     if (!open) return;
     const dismiss = (event) => {
       if (!root.current?.contains(event.target)) setOpen(false);
@@ -24255,7 +24315,7 @@ function FavoriteMenu({ label, actions, disabled }) {
     document.addEventListener("pointerdown", dismiss);
     return () => document.removeEventListener("pointerdown", dismiss);
   }, [open]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { ref: root, className: `ppd-favorite-menu ${open ? "is-open" : ""}`, onBlur: (event) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { ref: root, className: `ppd-favorite-menu ${open ? "is-open" : ""}`, onBlur: (event) => {
     if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
   }, onKeyDown: (event) => {
     if (event.key === "Escape") {
@@ -24269,22 +24329,22 @@ function FavoriteMenu({ label, actions, disabled }) {
       requestAnimationFrame(() => root.current?.querySelector("[role=menuitem]")?.focus());
     }
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-favorite-more", "aria-label": label, "aria-haspopup": "menu", "aria-expanded": open, disabled, onClick: () => setOpen((value2) => !value2), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "5", cy: "12", r: "1.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "12", cy: "12", r: "1.7" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "19", cy: "12", r: "1.7" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-favorite-more", "aria-label": label, "aria-haspopup": "menu", "aria-expanded": open, disabled, onClick: () => setOpen((value2) => !value2), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "5", cy: "12", r: "1.7" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "12", cy: "12", r: "1.7" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "19", cy: "12", r: "1.7" })
     ] }) }),
-    open && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-favorite-popover", role: "menu", "aria-label": label, children: actions.map((action) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", role: "menuitem", className: action.danger ? "is-danger" : "", onClick: () => {
+    open && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-favorite-popover", role: "menu", "aria-label": label, children: actions.map((action) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", role: "menuitem", className: action.danger ? "is-danger" : "", onClick: () => {
       setOpen(false);
       action.run();
     }, children: action.label }, action.label)) })
   ] });
 }
 function FolderMark() {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.4", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("path", { d: "M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("svg", { viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.4", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("path", { d: "M3 7a2 2 0 0 1 2-2h5l2 2h7a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z" }) });
 }
-function PrivateAssetPreview({ id, alt, request, revision }) {
-  const [canRetryHere, setCanRetryHere] = (0, import_react19.useState)(false);
+function PrivateAssetPreview({ id, alt, request, revision, explicitLoading = false }) {
+  const [canRetryHere, setCanRetryHere] = (0, import_react18.useState)(false);
   const preview = useDeferredPreview({
     requestIdentity: request,
     resourceKey: `private-asset:${id}`,
@@ -24298,75 +24358,84 @@ function PrivateAssetPreview({ id, alt, request, revision }) {
       throw new Error(data?.status === "processing" ? "ASSET_PROCESSING" : "PREVIEW_UNAVAILABLE");
     }
   });
-  const previewRef = (0, import_react19.useCallback)((node) => {
+  const previewRef = (0, import_react18.useCallback)((node) => {
     preview.ref(node);
     if (node) setCanRetryHere(!node.closest('button, a, [role="button"]'));
   }, [preview.ref]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { ref: previewRef, className: "ppd-image", children: preview.status === "error" ? preview.error?.message === "ASSET_PROCESSING" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { role: "status", children: "\u56FE\u7247\u5904\u7406\u4E2D\uFF0C\u7A0D\u540E\u5237\u65B0" }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { role: "alert", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { ref: previewRef, className: "ppd-image", children: preview.status === "error" ? preview.error?.message === "ASSET_PROCESSING" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { role: "status", children: "\u56FE\u7247\u5904\u7406\u4E2D\uFF0C\u7A0D\u540E\u5237\u65B0" }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { role: "alert", children: [
     "\u9884\u89C8\u5931\u8D25",
-    canRetryHere ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-link-button", onClick: (event) => {
+    canRetryHere ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-link-button", onClick: (event) => {
       event.stopPropagation();
       preview.retry();
     }, children: "\u91CD\u8BD5\u9884\u89C8" }) : "\uFF0C\u70B9\u5F00\u91CD\u8BD5"
-  ] }) : preview.value ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src: preview.value, alt, decoding: "async", referrerPolicy: "no-referrer", onError: () => preview.markError() }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u9884\u89C8", children: "\u25A6" }) });
+  ] }) : preview.value ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src: preview.value, alt, decoding: "async", referrerPolicy: "no-referrer", onError: () => preview.markError() }) : explicitLoading ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-personal-cover-loading", role: "status", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-spinner" }),
+    "\u6B63\u5728\u52A0\u8F7D"
+  ] }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { "aria-label": "\u6B63\u5728\u52A0\u8F7D\u9884\u89C8", children: "\u25A6" }) });
+}
+function PersonalSkillCover({ row, request, detail = false }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: `ppd-personal-skill-cover ${detail ? "is-detail" : ""} ${row.referenceAssetIds[0] ? "has-image" : "is-text-only"}`, children: row.referenceAssetIds[0] ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id: row.referenceAssetIds[0], alt: `${row.name}\u5C01\u9762`, request, revision: 0, explicitLoading: true }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-personal-skill-text-cover", "aria-label": "\u7EAF\u6587\u5B57 Skill", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: row.name }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "Prompt Skill" })
+  ] }) });
 }
 function DetailShell({ title, eyebrow, onBack, actions, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-detail", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("header", { className: "ppd-detail-header", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "back" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-detail", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("header", { className: "ppd-detail-header", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }),
         "\u8FD4\u56DE"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        eyebrow && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-eyebrow", children: eyebrow }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: title })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        eyebrow && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-eyebrow", children: eyebrow }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: title })
       ] }),
-      actions && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-actions", children: actions })
+      actions && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-actions", children: actions })
     ] }),
     children
   ] });
 }
 function FavoriteButton({ active, busy, onClick }) {
   const label = busy ? "\u6B63\u5728\u66F4\u65B0\u6536\u85CF" : active ? "\u53D6\u6D88\u6536\u85CF" : "\u6536\u85CF";
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: `ppd-favorite ${active ? "is-active" : ""}`, "aria-label": label, "aria-busy": busy || void 0, title: label, disabled: busy, onClick: (event) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: `ppd-favorite ${active ? "is-active" : ""}`, "aria-label": label, "aria-busy": busy || void 0, title: label, disabled: busy, onClick: (event) => {
     event.stopPropagation();
     onClick();
-  }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "heart" }) });
+  }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "heart" }) });
 }
 function DetailMedia({ src, alt, label, reference = false }) {
-  const dialog = (0, import_react19.useRef)(null);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("figure", { className: reference ? "ppd-detail-reference" : "ppd-detail-artwork", "data-detail-media": reference ? "reference" : "result", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("figcaption", { children: label }),
-    src ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", "aria-label": `\u653E\u5927${label}`, "aria-haspopup": "dialog", onClick: () => dialog.current?.showModal(), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src, alt, referrerPolicy: "no-referrer" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dialog", { ref: dialog, className: "ppd-media-dialog", "aria-label": `${label}\u9884\u89C8`, onClick: (event) => {
+  const dialog = (0, import_react18.useRef)(null);
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("figure", { className: reference ? "ppd-detail-reference" : "ppd-detail-artwork", "data-detail-media": reference ? "reference" : "result", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("figcaption", { children: label }),
+    src ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", "aria-label": `\u653E\u5927${label}`, "aria-haspopup": "dialog", onClick: () => dialog.current?.showModal(), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src, alt, referrerPolicy: "no-referrer" }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dialog", { ref: dialog, className: "ppd-media-dialog", "aria-label": `${label}\u9884\u89C8`, onClick: (event) => {
         if (event.target === event.currentTarget) dialog.current?.close();
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", "aria-label": "\u5173\u95ED\u56FE\u7247\u9884\u89C8", onClick: () => dialog.current?.close(), children: "\u5173\u95ED" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src, alt, referrerPolicy: "no-referrer" })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", "aria-label": "\u5173\u95ED\u56FE\u7247\u9884\u89C8", onClick: () => dialog.current?.close(), children: "\u5173\u95ED" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src, alt, referrerPolicy: "no-referrer" })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-state", children: "\u6682\u65E0\u9884\u89C8\u56FE" })
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-state", children: "\u6682\u65E0\u9884\u89C8\u56FE" })
   ] });
 }
 function ResourceDetail({ title, kind, onBack, media, actions, notice, children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: `ppd-detail ppd-resource-detail ppd-${kind}-detail`, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "back" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: `ppd-detail ppd-resource-detail ppd-${kind}-detail`, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-back", onClick: onBack, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }),
       "\u8FD4\u56DE"
     ] }),
     notice,
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-resource-detail-grid", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-resource-visual", children: media }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("aside", { className: "ppd-resource-info", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: title }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-resource-detail-grid", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-resource-visual", children: media }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("aside", { className: "ppd-resource-info", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: title }),
         children,
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-resource-detail-actions", children: actions })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-resource-detail-actions", children: actions })
       ] })
     ] })
   ] });
 }
 function PublicSkillDetail({ skill, onBack, actions, notice }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
     ResourceDetail,
     {
       title: skill.title,
@@ -24374,21 +24443,21 @@ function PublicSkillDetail({ skill, onBack, actions, notice }) {
       onBack,
       notice,
       actions,
-      media: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DetailMedia, { src: skill.coverImage, alt: `${skill.title}\u7ED3\u679C\u56FE`, label: "\u7ED3\u679C\u56FE" }),
+      media: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(DetailMedia, { src: skill.coverImage, alt: `${skill.title}\u7ED3\u679C\u56FE`, label: "\u7ED3\u679C\u56FE" }),
       children: [
-        skill.beforeImage && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DetailMedia, { src: skill.beforeImage, alt: `${skill.title}\u53C2\u8003\u56FE`, label: "\u53C2\u8003\u56FE", reference: true }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "ppd-resource-about", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u4ECB\u7ECD" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: skill.description || skill.summary })
+        skill.beforeImage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(DetailMedia, { src: skill.beforeImage, alt: `${skill.title}\u53C2\u8003\u56FE`, label: "\u53C2\u8003\u56FE", reference: true }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-resource-about", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u4ECB\u7ECD" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: skill.description || skill.summary })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SkillFacts, { skill }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-tags", children: uniq([...skill.categories || [], ...skill.tags || []]).map((tag) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: tag }, tag)) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillFacts, { skill }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-tags", children: uniq([...skill.categories || [], ...skill.tags || []]).map((tag) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: tag }, tag)) })
       ]
     }
   );
 }
 function GalleryDetail({ item, onBack, actions, notice }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
     ResourceDetail,
     {
       title: item.label,
@@ -24396,20 +24465,20 @@ function GalleryDetail({ item, onBack, actions, notice }) {
       onBack,
       actions,
       notice,
-      media: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DetailMedia, { src: item.previewUrl || item.thumbnailUrl, alt: item.label, label: "\u7D20\u6750\u9884\u89C8" }),
+      media: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(DetailMedia, { src: item.previewUrl || item.thumbnailUrl, alt: item.label, label: "\u7D20\u6750\u9884\u89C8" }),
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "ppd-resource-about", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u6807\u7B7E" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-tags", children: uniq([item.label, item.category, item.style, ...item.keywords || []].filter(Boolean)).map((word) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: word }, word)) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-resource-about", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u6807\u7B7E" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-tags", children: uniq([item.label, item.category, item.style, ...item.keywords || []].filter(Boolean)).map((word) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: word }, word)) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dl", { className: "ppd-resource-facts", children: [
-          item.collectionName && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u5408\u96C6" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dd", { children: item.collectionName })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dl", { className: "ppd-resource-facts", children: [
+          item.collectionName && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u5408\u96C6" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dd", { children: item.collectionName })
           ] }),
-          item.width && item.height ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u5C3A\u5BF8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dd", { children: [
+          item.width && item.height ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u5C3A\u5BF8" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dd", { children: [
               item.width,
               " \xD7 ",
               item.height
@@ -24451,25 +24520,25 @@ async function refreshFavoritesInBackground(request, uiLease, owner) {
   }
 }
 function useFavoriteResponseSnapshot(uiLease) {
-  return (0, import_react19.useSyncExternalStore)(
-    (0, import_react19.useCallback)((listener) => favoriteResponseState.subscribe(uiLease, listener), [uiLease]),
-    (0, import_react19.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease]),
-    (0, import_react19.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease])
+  return (0, import_react18.useSyncExternalStore)(
+    (0, import_react18.useCallback)((listener) => favoriteResponseState.subscribe(uiLease, listener), [uiLease]),
+    (0, import_react18.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease]),
+    (0, import_react18.useCallback)(() => favoriteResponseState.snapshot(uiLease), [uiLease])
   );
 }
 function useFavorites(request, uiLease) {
-  const ownerRef = (0, import_react19.useRef)(0);
+  const ownerRef = (0, import_react18.useRef)(0);
   if (!ownerRef.current) ownerRef.current = favoriteResponseState.createOwner();
   const owner = ownerRef.current;
   const snapshot = useFavoriteResponseSnapshot(uiLease);
-  const refresh = (0, import_react19.useCallback)(() => refreshFavoritesInBackground(request, uiLease, owner), [owner, request, uiLease]);
-  (0, import_react19.useEffect)(() => {
+  const refresh = (0, import_react18.useCallback)(() => refreshFavoritesInBackground(request, uiLease, owner), [owner, request, uiLease]);
+  (0, import_react18.useEffect)(() => {
     void refresh();
     return () => favoriteResponseState.releaseOwner(uiLease, owner);
   }, [owner, refresh, uiLease]);
-  const has = (0, import_react19.useCallback)((type, id) => favoriteResponseState.has(uiLease, type, id), [snapshot.revision, uiLease]);
-  const isBusy = (0, import_react19.useCallback)((type, id) => favoriteResponseState.isBusy(uiLease, type, id), [snapshot.revision, uiLease]);
-  const toggle = (0, import_react19.useCallback)(async (favorite) => {
+  const has = (0, import_react18.useCallback)((type, id) => favoriteResponseState.has(uiLease, type, id), [snapshot.revision, uiLease]);
+  const isBusy = (0, import_react18.useCallback)((type, id) => favoriteResponseState.isBusy(uiLease, type, id), [snapshot.revision, uiLease]);
+  const toggle = (0, import_react18.useCallback)(async (favorite) => {
     const target2 = !favoriteResponseState.has(uiLease, favorite.type, favorite.id);
     const token = favoriteResponseState.beginMutation(uiLease, owner, favorite.type, favorite.id, target2);
     if (!token) return;
@@ -24502,11 +24571,11 @@ var favoriteFromSkill = (item) => ({
 });
 function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
   const connected = isConnected(snapshot?.account.status);
-  const menu = (0, import_react19.useRef)(null);
+  const menu = (0, import_react18.useRef)(null);
   const phase2 = connectionLabel(snapshot);
   const accountName = connected ? snapshot?.account.name || snapshot?.account.email || "PodPlo \u5DF2\u8FDE\u63A5" : "\u5C1A\u672A\u767B\u5F55 PodPlo";
   const connectionMessage = snapshot?.connection.message && phase2 !== "\u5DF2\u8FDE\u63A5" ? snapshot.connection.message : "";
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     const closeOutside = (event) => {
       if (menu.current?.open && event.target instanceof Node && !menu.current.contains(event.target)) menu.current.open = false;
     };
@@ -24522,40 +24591,40 @@ function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
       document.removeEventListener("keydown", closeOnEscape);
     };
   }, []);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     if (menu.current) menu.current.open = false;
   }, [snapshot?.account.userId, snapshot?.account.uiScope]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-row", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-connection", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: `ppd-dot ${phase2 === "\u5DF2\u8FDE\u63A5" ? "is-online" : ""}`, title: phase2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: accountName, children: accountName }) })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-row", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-connection", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: `ppd-dot ${phase2 === "\u5DF2\u8FDE\u63A5" ? "is-online" : ""}`, title: phase2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: accountName, children: accountName }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-meta", children: [
-        typeof availableCredits(snapshot) === "number" && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-account-balance", title: "\u53EF\u7528\u79EF\u5206", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-meta", children: [
+        typeof availableCredits(snapshot) === "number" && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-account-balance", title: "\u53EF\u7528\u79EF\u5206", children: [
           availableCredits(snapshot),
           " \u79EF\u5206"
         ] }),
-        !!snapshot?.pending.confirmations && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { title: "\u5F85\u786E\u8BA4\u7684\u5220\u9664\u64CD\u4F5C", children: [
+        !!snapshot?.pending.confirmations && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { title: "\u5F85\u786E\u8BA4\u7684\u5220\u9664\u64CD\u4F5C", children: [
           snapshot.pending.confirmations,
           " \u9879\u5F85\u786E\u8BA4"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-phase", children: phase2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", title: "\u540C\u6B65\u72B6\u6001", "aria-label": "\u540C\u6B65\u72B6\u6001", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "refresh" }) }),
-        !connected && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: () => onAccountAction("login"), children: "\u767B\u5F55" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("details", { className: "ppd-account-menu", ref: menu, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("summary", { "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C", title: "\u8D26\u53F7\u4E0E\u7248\u672C", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "currentColor", "aria-hidden": "true", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "5", cy: "12", r: "1.5" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "12", cy: "12", r: "1.5" }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("circle", { cx: "19", cy: "12", r: "1.5" })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-phase", children: phase2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", title: "\u540C\u6B65\u72B6\u6001", "aria-label": "\u540C\u6B65\u72B6\u6001", disabled: busy, onClick: onRefresh, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "refresh" }) }),
+        !connected && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: () => onAccountAction("login"), children: "\u767B\u5F55" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("details", { className: "ppd-account-menu", ref: menu, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("summary", { "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C", title: "\u8D26\u53F7\u4E0E\u7248\u672C", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "currentColor", "aria-hidden": "true", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "5", cy: "12", r: "1.5" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "12", cy: "12", r: "1.5" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("circle", { cx: "19", cy: "12", r: "1.5" })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-menu-panel", role: "region", "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C\u8BBE\u7F6E", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-account-menu-heading", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8D26\u53F7\u4E0E\u7248\u672C" }),
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: accountName })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-menu-panel", role: "region", "aria-label": "\u8D26\u53F7\u4E0E\u7248\u672C\u8BBE\u7F6E", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-account-menu-heading", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8D26\u53F7\u4E0E\u7248\u672C" }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: accountName })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PluginUpdateControl, { request, taskBusy: !!snapshot?.pending.generations }),
-            connected && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet ppd-account-logout", disabled: busy, onClick: () => {
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PluginUpdateControl, { request, taskBusy: !!snapshot?.pending.generations }),
+            connected && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet ppd-account-logout", disabled: busy, onClick: () => {
               if (menu.current) menu.current.open = false;
               onAccountAction("logout");
             }, children: "\u9000\u51FA" })
@@ -24563,29 +24632,29 @@ function AccountBar({ snapshot, busy, onAccountAction, onRefresh, request }) {
         ] })
       ] })
     ] }),
-    connectionMessage && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-account-warning", role: "status", children: connectionMessage })
+    connectionMessage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-account-warning", role: "status", children: connectionMessage })
   ] });
 }
 function GalleryPanel({ request, onUse, uiLease }) {
-  const cached2 = (0, import_react19.useMemo)(() => readPanelUiState(uiLease, "gallery"), [uiLease]);
-  const [query, setQuery] = (0, import_react19.useState)(cached2?.query ?? "");
-  const [appliedQuery, setAppliedQuery] = (0, import_react19.useState)(cached2?.appliedQuery ?? "");
-  const [category, setCategory] = (0, import_react19.useState)(cached2?.category ?? "");
-  const [items, setItems] = (0, import_react19.useState)(cached2?.items ?? []);
-  const [categories, setCategories] = (0, import_react19.useState)(cached2?.categories ?? []);
-  const [cursor, setCursor] = (0, import_react19.useState)(cached2?.cursor ?? null);
-  const [total, setTotal] = (0, import_react19.useState)(cached2?.total ?? 0);
-  const [detail, setDetail] = (0, import_react19.useState)(cached2?.detail);
-  const [loading, setLoading] = (0, import_react19.useState)(true);
-  const [busy, setBusy] = (0, import_react19.useState)("");
-  const [error51, setError] = (0, import_react19.useState)("");
-  const [notice, setNotice] = (0, import_react19.useState)("");
+  const cached2 = (0, import_react18.useMemo)(() => readPanelUiState(uiLease, "gallery"), [uiLease]);
+  const [query, setQuery] = (0, import_react18.useState)(cached2?.query ?? "");
+  const [appliedQuery, setAppliedQuery] = (0, import_react18.useState)(cached2?.appliedQuery ?? "");
+  const [category, setCategory] = (0, import_react18.useState)(cached2?.category ?? "");
+  const [items, setItems] = (0, import_react18.useState)(cached2?.items ?? []);
+  const [categories, setCategories] = (0, import_react18.useState)(cached2?.categories ?? []);
+  const [cursor, setCursor] = (0, import_react18.useState)(cached2?.cursor ?? null);
+  const [total, setTotal] = (0, import_react18.useState)(cached2?.total ?? 0);
+  const [detail, setDetail] = (0, import_react18.useState)(cached2?.detail);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
   const favorites = useFavorites(request, uiLease);
-  const sequence = (0, import_react19.useRef)(0);
-  const detailSequence = (0, import_react19.useRef)(0);
-  const [detailLoading, setDetailLoading] = (0, import_react19.useState)("");
-  const [detailError, setDetailError] = (0, import_react19.useState)("");
-  const load = (0, import_react19.useCallback)(async (append = false, nextQuery = appliedQuery, nextCategory = category, preserveCount = 0) => {
+  const sequence = (0, import_react18.useRef)(0);
+  const detailSequence = (0, import_react18.useRef)(0);
+  const [detailLoading, setDetailLoading] = (0, import_react18.useState)("");
+  const [detailError, setDetailError] = (0, import_react18.useState)("");
+  const load = (0, import_react18.useCallback)(async (append = false, nextQuery = appliedQuery, nextCategory = category, preserveCount = 0) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -24632,7 +24701,7 @@ function GalleryPanel({ request, onUse, uiLease }) {
       if (token === sequence.current) setLoading(false);
     }
   }, [appliedQuery, category, cursor, request]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(false, appliedQuery, category, cached2?.items.length ?? 0);
     if (cached2?.detail) void open(cached2.detail);
     return () => {
@@ -24640,7 +24709,7 @@ function GalleryPanel({ request, onUse, uiLease }) {
       detailSequence.current++;
     };
   }, []);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "gallery", { query, appliedQuery, category, items, categories, cursor, total, detail });
   }, [uiLease, query, appliedQuery, category, items, categories, cursor, total, detail]);
   async function open(item) {
@@ -24672,82 +24741,82 @@ function GalleryPanel({ request, onUse, uiLease }) {
       setBusy("");
     }
   }
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GalleryDetail, { item: detail, onBack: () => {
+  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryDetail, { item: detail, onBack: () => {
     detailSequence.current++;
     setDetailLoading("");
     setDetail(void 0);
     setDetailError("");
-  }, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u2026" : "\u52A0\u5165\u53C2\u8003\u56FE" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("gallery", detail.id), busy: favorites.isBusy("gallery", detail.id), onClick: () => void favorites.toggle(favoriteFromGallery(detail)) })
-  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: detailError || favorites.error, notice: detailLoading === detail.id ? "\u6B63\u5728\u8865\u9F50\u7D20\u6750\u8BE6\u60C5\u2026" : busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u53C2\u8003\u56FE\uFF0C\u8BF7\u7A0D\u5019\u2026" : notice }),
-    detailError && detailLoading !== detail.id && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(detail), children: "\u91CD\u8BD5\u8BE6\u60C5" })
+  }, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u2026" : "\u52A0\u5165\u53C2\u8003\u56FE" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("gallery", detail.id), busy: favorites.isBusy("gallery", detail.id), onClick: () => void favorites.toggle(favoriteFromGallery(detail)) })
+  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: detailError || favorites.error, notice: detailLoading === detail.id ? "\u6B63\u5728\u8865\u9F50\u7D20\u6750\u8BE6\u60C5\u2026" : busy === detail.id ? "\u6B63\u5728\u52A0\u5165\u53C2\u8003\u56FE\uFF0C\u8BF7\u7A0D\u5019\u2026" : notice }),
+    detailError && detailLoading !== detail.id && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(detail), children: "\u91CD\u8BD5\u8BE6\u60C5" })
   ] }) });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favorites.error, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u56FE\u5E93", busy: loading, onChange: setQuery, onSearch: () => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favorites.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u56FE\u5E93", busy: loading, onChange: setQuery, onSearch: () => {
       const next = query.trim();
       setAppliedQuery(next);
       void load(false, next, category);
-    }, onRefresh: () => void load(false, appliedQuery, category, items.length), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("select", { "aria-label": "\u56FE\u5E93\u5206\u7C7B", value: category, onChange: (event) => {
+    }, onRefresh: () => void load(false, appliedQuery, category, items.length), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("select", { "aria-label": "\u56FE\u5E93\u5206\u7C7B", value: category, onChange: (event) => {
       const value2 = event.target.value;
       setCategory(value2);
       void load(false, appliedQuery, value2);
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
-      categories.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: value2, children: value2 }, value2))
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
+      categories.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: value2, children: value2 }, value2))
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u6362\u4E2A\u5173\u952E\u8BCD\u6216\u5206\u7C7B\u8BD5\u8BD5\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.label}`, disabled: busy === item.id, onClick: () => void open(item), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: item.thumbnailUrl, alt: item.label }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: item.label, children: cardTitle(item.label) }) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u6362\u4E2A\u5173\u952E\u8BCD\u6216\u5206\u7C7B\u8BD5\u8BD5\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid", children: items.map((item) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.label}`, disabled: busy === item.id, onClick: () => void open(item), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: item.thumbnailUrl, alt: item.label }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: item.label, children: cardTitle(item.label) }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("gallery", item.id), busy: favorites.isBusy("gallery", item.id), onClick: () => void favorites.toggle(favoriteFromGallery(item)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === item.id, onClick: () => void use(item), children: "\u52A0\u5165" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("gallery", item.id), busy: favorites.isBusy("gallery", item.id), onClick: () => void favorites.toggle(favoriteFromGallery(item)) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === item.id, onClick: () => void use(item), children: "\u52A0\u5165" })
     ] }, item.id)) }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: loading ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\u52A0\u8F7D\u66F4\u591A" }) })
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: loading ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "\u52A0\u8F7D\u66F4\u591A" }) })
   ] });
 }
 function SkillFacts({ skill }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-skill-facts", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("dl", { className: "ppd-resource-facts", children: [
-      skill.inputs?.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u9002\u7528\u8F93\u5165" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dd", { children: skill.inputs.join(" \xB7 ") })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-skill-facts", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("dl", { className: "ppd-resource-facts", children: [
+      skill.inputs?.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u9002\u7528\u8F93\u5165" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dd", { children: skill.inputs.join(" \xB7 ") })
       ] }),
-      skill.output && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dt", { children: "\u8F93\u51FA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("dd", { children: skill.output })
+      skill.output && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dt", { children: "\u8F93\u51FA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("dd", { children: skill.output })
       ] })
     ] }),
-    [["\u4FDD\u7559\u5185\u5BB9", skill.keeps], ["\u6539\u53D8\u5185\u5BB9", skill.changes]].map(([title, values]) => values?.length ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: title }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: values.join(" \xB7 ") })
+    [["\u4FDD\u7559\u5185\u5BB9", skill.keeps], ["\u6539\u53D8\u5185\u5BB9", skill.changes]].map(([title, values]) => values?.length ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: title }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: values.join(" \xB7 ") })
     ] }, title) : null)
   ] });
 }
 function PublicSkills({ request, onUse, navigation, uiLease }) {
   const extraction = useExtractionSkills(request, true);
-  const cached2 = (0, import_react19.useMemo)(() => readPanelUiState(uiLease, "public-skills"), [uiLease]);
-  const [query, setQuery] = (0, import_react19.useState)(cached2?.query ?? "");
-  const [appliedQuery, setAppliedQuery] = (0, import_react19.useState)(cached2?.appliedQuery ?? "");
-  const [items, setItems] = (0, import_react19.useState)(cached2?.items ?? []);
-  const [categories, setCategories] = (0, import_react19.useState)(cached2?.categories ?? []);
-  const [category, setCategory] = (0, import_react19.useState)(cached2?.category ?? "");
-  const [page, setPage] = (0, import_react19.useState)(cached2?.page ?? 1);
-  const [detail, setDetail] = (0, import_react19.useState)(cached2?.detail);
-  const [family, setFamily] = (0, import_react19.useState)(cached2?.family);
-  const [loading, setLoading] = (0, import_react19.useState)(true);
-  const [busy, setBusy] = (0, import_react19.useState)("");
-  const [error51, setError] = (0, import_react19.useState)("");
-  const [notice, setNotice] = (0, import_react19.useState)("");
+  const cached2 = (0, import_react18.useMemo)(() => readPanelUiState(uiLease, "public-skills"), [uiLease]);
+  const [query, setQuery] = (0, import_react18.useState)(cached2?.query ?? "");
+  const [appliedQuery, setAppliedQuery] = (0, import_react18.useState)(cached2?.appliedQuery ?? "");
+  const [items, setItems] = (0, import_react18.useState)(cached2?.items ?? []);
+  const [categories, setCategories] = (0, import_react18.useState)(cached2?.categories ?? []);
+  const [category, setCategory] = (0, import_react18.useState)(cached2?.category ?? "");
+  const [page, setPage] = (0, import_react18.useState)(cached2?.page ?? 1);
+  const [detail, setDetail] = (0, import_react18.useState)(cached2?.detail);
+  const [family, setFamily] = (0, import_react18.useState)(cached2?.family);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
   const favorites = useFavorites(request, uiLease);
-  const sequence = (0, import_react19.useRef)(0);
-  const navigationSequence = (0, import_react19.useRef)(0);
-  const [familyLoading, setFamilyLoading] = (0, import_react19.useState)("");
-  const [familyError, setFamilyError] = (0, import_react19.useState)("");
-  const load = (0, import_react19.useCallback)(async (nextQuery = appliedQuery, forceRefresh = false, resetPage = true) => {
+  const sequence = (0, import_react18.useRef)(0);
+  const navigationSequence = (0, import_react18.useRef)(0);
+  const [familyLoading, setFamilyLoading] = (0, import_react18.useState)("");
+  const [familyError, setFamilyError] = (0, import_react18.useState)("");
+  const load = (0, import_react18.useCallback)(async (nextQuery = appliedQuery, forceRefresh = false, resetPage = true) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -24773,7 +24842,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       if (token === sequence.current) setLoading(false);
     }
   }, [appliedQuery, request]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(appliedQuery, false, false);
     if (cached2?.family) void loadFamily(cached2.family);
     return () => {
@@ -24781,17 +24850,17 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       navigationSequence.current++;
     };
   }, []);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "public-skills", { query, appliedQuery, items, categories, category, page, detail, family });
   }, [uiLease, query, appliedQuery, items, categories, category, page, detail, family]);
-  const filtered = (0, import_react19.useMemo)(() => !category || category === "all" ? items : items.filter((item) => item.primaryCategory === category), [category, items]);
+  const filtered = (0, import_react18.useMemo)(() => !category || category === "all" ? items : items.filter((item) => item.primaryCategory === category), [category, items]);
   const extractRows = !category || category === "all" ? extraction.rows.filter((row) => row.title.toLocaleLowerCase().includes(appliedQuery.trim().toLocaleLowerCase())) : [];
   const total = filtered.length + extractRows.length;
-  const start = (page - 1) * PAGE_SIZE2, end = page * PAGE_SIZE2;
+  const start = (page - 1) * PAGE_SIZE3, end = page * PAGE_SIZE3;
   const visibleExtractions = extractRows.slice(start, end);
-  const visible2 = filtered.slice(Math.max(0, start - extractRows.length), Math.max(0, end - extractRows.length));
-  (0, import_react19.useEffect)(() => {
-    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(total / PAGE_SIZE2))));
+  const visible = filtered.slice(Math.max(0, start - extractRows.length), Math.max(0, end - extractRows.length));
+  (0, import_react18.useEffect)(() => {
+    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(total / PAGE_SIZE3))));
   }, [total]);
   async function loadFamily(preview) {
     const token = ++navigationSequence.current;
@@ -24845,31 +24914,31 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       setBusy("");
     }
   }
-  if (family) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title: family.title, eyebrow: "Skill \u65CF", onBack: () => {
+  if (family) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title: family.title, eyebrow: "Skill \u65CF", onBack: () => {
     navigationSequence.current++;
     setFamilyLoading("");
     setFamily(void 0);
     setFamilyError("");
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: familyError || favorites.error, notice: familyLoading === family.slug ? "\u6B63\u5728\u8865\u9F50 Skill \u65CF\u8BE6\u60C5\u2026" : notice }),
-    familyError && familyLoading !== family.slug && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void loadFamily(family), children: "\u91CD\u8BD5\u8BE6\u60C5" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-family-intro", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: family.summary }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: family.chooseLabel })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: familyError || favorites.error, notice: familyLoading === family.slug ? "\u6B63\u5728\u8865\u9F50 Skill \u65CF\u8BE6\u60C5\u2026" : notice }),
+    familyError && familyLoading !== family.slug && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void loadFamily(family), children: "\u91CD\u8BD5\u8BE6\u60C5" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-family-intro", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: family.summary }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: family.chooseLabel })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid ppd-family-grid", children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => {
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid ppd-family-grid", children: family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => {
         navigationSequence.current++;
         setFamily(void 0);
         setDetail(member);
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("skill", member.slug), busy: favorites.isBusy("skill", member.slug), onClick: () => void favorites.toggle(favoriteFromSkill(member)) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("skill", member.slug), busy: favorites.isBusy("skill", member.slug), onClick: () => void favorites.toggle(favoriteFromSkill(member)) })
     ] }, member.slug)) })
   ] });
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PublicSkillDetail, { skill: detail, onBack: () => {
+  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PublicSkillDetail, { skill: detail, onBack: () => {
     if (detail.kind === "member" && detail.familySlug) {
       const parent = items.find((item) => item.slug === detail.familySlug);
       void loadFamily({
@@ -24887,33 +24956,33 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       navigationSequence.current++;
       setDetail(void 0);
     }
-  }, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.slug || !detail.executable, onClick: () => void use(detail), children: detail.executable ? "\u4F7F\u7528 Skill" : "\u8BF7\u5148\u9009\u62E9\u65CF\u6210\u5458" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("skill", detail.slug), busy: favorites.isBusy("skill", detail.slug), onClick: () => void favorites.toggle(favoriteFromSkill(detail)) })
-  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favorites.error, notice }) });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favorites.error, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u516C\u5F00 Skill", busy: loading, onChange: setQuery, onSearch: () => {
+  }, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.slug || !detail.executable, onClick: () => void use(detail), children: detail.executable ? "\u4F7F\u7528 Skill" : "\u8BF7\u5148\u9009\u62E9\u65CF\u6210\u5458" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("skill", detail.slug), busy: favorites.isBusy("skill", detail.slug), onClick: () => void favorites.toggle(favoriteFromSkill(detail)) })
+  ] }), notice: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favorites.error, notice }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favorites.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u516C\u5F00 Skill", busy: loading, onChange: setQuery, onSearch: () => {
       const next = query.trim();
       setAppliedQuery(next);
       void load(next, false, true);
     }, onRefresh: () => {
       extraction.reload();
       void load(appliedQuery, true, false);
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("select", { "aria-label": "Skill \u5206\u7C7B", value: category, onChange: (event) => {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("select", { "aria-label": "Skill \u5206\u7C7B", value: category, onChange: (event) => {
       setCategory(event.target.value);
       setPage(1);
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "\u5168\u90E8\u5206\u7C7B" }),
       categories.map((value2) => {
         const id = typeof value2 === "string" ? value2 : value2.id;
         const label = typeof value2 === "string" ? value2 : value2.label;
-        return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: id, children: label }, id);
+        return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: id, children: label }, id);
       })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(Status, { loading: loading && !filtered.length && !extractRows.length, error: !filtered.length && !extractRows.length ? error51 : "", empty: !loading && !filtered.length && !extractRows.length ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-grid", children: [
-        visibleExtractions.map((skill) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("article", { className: "ppd-card", "data-extraction-skill": skill.extractionSkillId, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Status, { loading: loading && !filtered.length && !extractRows.length, error: !filtered.length && !extractRows.length ? error51 : "", empty: !loading && !filtered.length && !extractRows.length ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-grid", children: [
+        visibleExtractions.map((skill) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("article", { className: "ppd-card", "data-extraction-skill": skill.extractionSkillId, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
           "button",
           {
             type: "button",
@@ -24931,35 +25000,35 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
               }).catch((cause) => setError(displayError2(cause)));
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { alt: skill.title }),
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-card-copy", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: skill.title }),
-                !skill.available && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: "\u5F85\u914D\u7F6E" })
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { alt: skill.title }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-card-copy", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: skill.title }),
+                !skill.available && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: "\u5F85\u914D\u7F6E" })
               ] })
             ]
           }
         ) }, skill.id)),
-        visible2.map((item) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.title}`, disabled: busy === item.slug, onClick: () => void open(item), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: item.coverImage, before: item.beforeImage, alt: item.title }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: item.title, children: cardTitle(item.title) }) })
+        visible.map((item) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${item.title}`, disabled: busy === item.slug, onClick: () => void open(item), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: item.coverImage, before: item.beforeImage, alt: item.title }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: item.title, children: cardTitle(item.title) }) })
           ] }),
-          item.kind !== "family" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favorites.has("skill", item.slug), busy: favorites.isBusy("skill", item.slug), onClick: () => void favorites.toggle(favoriteFromSkill(item)) })
+          item.kind !== "family" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favorites.has("skill", item.slug), busy: favorites.isBusy("skill", item.slug), onClick: () => void favorites.toggle(favoriteFromSkill(item)) })
         ] }, item.slug))
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageNav, { page, total, onPage: setPage })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PageNav, { page, total, onPage: setPage })
     ] })
   ] });
 }
 function UploadReferencePicker({ request, ids: ids2, disabled, onSelect }) {
-  const [query, setQuery] = (0, import_react19.useState)("");
-  const [items, setItems] = (0, import_react19.useState)([]);
-  const [cursor, setCursor] = (0, import_react19.useState)(null);
-  const [loading, setLoading] = (0, import_react19.useState)(true);
-  const [error51, setError] = (0, import_react19.useState)("");
-  const [search, setSearch] = (0, import_react19.useState)("");
-  const sequence = (0, import_react19.useRef)(0);
-  const inFlight = (0, import_react19.useRef)(false);
+  const [query, setQuery] = (0, import_react18.useState)("");
+  const [items, setItems] = (0, import_react18.useState)([]);
+  const [cursor, setCursor] = (0, import_react18.useState)(null);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [search, setSearch] = (0, import_react18.useState)("");
+  const sequence = (0, import_react18.useRef)(0);
+  const inFlight = (0, import_react18.useRef)(false);
   async function load(append = false, term = query.trim()) {
     if (append && (inFlight.current || !cursor)) return;
     const token = ++sequence.current;
@@ -24986,23 +25055,23 @@ function UploadReferencePicker({ request, ids: ids2, disabled, onSelect }) {
       }
     }
   }
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(false, "");
     return () => {
       sequence.current++;
     };
   }, [request]);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-upload-picker", "aria-label": "\u5DF2\u4E0A\u4F20\u56FE\u7247\u9009\u62E9\u5668", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5DF2\u4E0A\u4F20\u56FE\u7247", busy: loading || disabled, onChange: setQuery, onSearch: () => void load(), onRefresh: () => void load(false, search) }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-alert", role: "alert", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-upload-picker", "aria-label": "\u5DF2\u4E0A\u4F20\u56FE\u7247\u9009\u62E9\u5668", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5DF2\u4E0A\u4F20\u56FE\u7247", busy: loading || disabled, onChange: setQuery, onSearch: () => void load(), onRefresh: () => void load(false, search) }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-alert", role: "alert", children: [
       error51,
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(!!items.length && !!cursor, search), children: "\u91CD\u8BD5\u52A0\u8F7D\u56FE\u7247" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(!!items.length && !!cursor, search), children: "\u91CD\u8BD5\u52A0\u8F7D\u56FE\u7247" })
     ] }),
-    loading && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { role: "status", children: "\u6B63\u5728\u52A0\u8F7D\u5DF2\u4E0A\u4F20\u56FE\u7247\u2026" }),
-    !loading && !error51 && !items.length && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: search ? "\u6CA1\u6709\u5339\u914D\u7684\u5DF2\u4E0A\u4F20\u56FE\u7247\u3002" : "\u8FD8\u6CA1\u6709\u4E0A\u4F20\u56FE\u7247\uFF0C\u53EF\u4EE5\u5148\u4ECE\u672C\u5730\u4E0A\u4F20\u3002" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-upload-grid", children: items.map((row, index) => {
+    loading && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "status", children: "\u6B63\u5728\u52A0\u8F7D\u5DF2\u4E0A\u4F20\u56FE\u7247\u2026" }),
+    !loading && !error51 && !items.length && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: search ? "\u6CA1\u6709\u5339\u914D\u7684\u5DF2\u4E0A\u4F20\u56FE\u7247\u3002" : "\u8FD8\u6CA1\u6709\u4E0A\u4F20\u56FE\u7247\uFF0C\u53EF\u4EE5\u5148\u4ECE\u672C\u5730\u4E0A\u4F20\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-upload-grid", children: items.map((row, index) => {
       const selected = ids2.includes(row.id), label = row.filename || `\u4E0A\u4F20\u56FE ${index + 1}`;
-      return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
+      return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
         "button",
         {
           type: "button",
@@ -25011,20 +25080,20 @@ function UploadReferencePicker({ request, ids: ids2, disabled, onSelect }) {
           disabled: disabled || selected || row.status !== "ready" || ids2.length >= USER_SKILL_REFERENCE_LIMIT2,
           onClick: () => onSelect(row),
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id: row.id, alt: label, request, revision: 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: label, children: label }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: selected ? "\u5DF2\u6DFB\u52A0" : row.status === "ready" ? "\u70B9\u51FB\u6DFB\u52A0" : row.status === "processing" || row.status === "pending" ? "\u5904\u7406\u4E2D" : "\u6682\u4E0D\u53EF\u7528" })
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id: row.id, alt: label, request, revision: 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: label, children: label }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: selected ? "\u5DF2\u6DFB\u52A0" : row.status === "ready" ? "\u70B9\u51FB\u6DFB\u52A0" : row.status === "processing" || row.status === "pending" ? "\u5904\u7406\u4E2D" : "\u6682\u4E0D\u53EF\u7528" })
           ]
         },
         row.id
       );
     }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(true, search), children: "\u52A0\u8F7D\u66F4\u591A\u56FE\u7247" }) })
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: disabled || loading, onClick: () => void load(true, search), children: "\u52A0\u8F7D\u66F4\u591A\u56FE\u7247" }) })
   ] });
 }
 function ReferenceEditor({ ids: ids2, choices, disabled, request, onChange, onUpload, onSelect }) {
-  const [browsing, setBrowsing] = (0, import_react19.useState)(false);
-  const localInput = (0, import_react19.useRef)(null);
+  const [browsing, setBrowsing] = (0, import_react18.useState)(false);
+  const localInput = (0, import_react18.useRef)(null);
   function move(index, offset) {
     const next = [...ids2];
     const target2 = index + offset;
@@ -25032,43 +25101,43 @@ function ReferenceEditor({ ids: ids2, choices, disabled, request, onChange, onUp
     [next[index], next[target2]] = [next[target2], next[index]];
     onChange(next);
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { className: "ppd-reference-editor", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-form-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u53C2\u8003\u56FE\u7247" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "\u4ECE\u672C\u5730\u4E0A\u4F20\u6216\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247\uFF0C\u751F\u56FE\u65F6\u6309\u4E0B\u65B9\u987A\u5E8F\u5F15\u7528\u3002" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-reference-editor", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-form-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u53C2\u8003\u56FE\u7247" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "\u4ECE\u672C\u5730\u4E0A\u4F20\u6216\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247\uFF0C\u751F\u56FE\u65F6\u6309\u4E0B\u65B9\u987A\u5E8F\u5F15\u7528\u3002" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
         ids2.length,
         " / ",
         USER_SKILL_REFERENCE_LIMIT2
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("ol", { children: ids2.map((id, index) => {
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("ol", { children: ids2.map((id, index) => {
       const asset = choices.find((row) => row.id === id);
       const label = asset?.filename || `\u53C2\u8003\u56FE ${index + 1}`;
-      return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: index + 1 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id, alt: label, request, revision: 0 }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: label }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0A\u79FB", disabled: disabled || index === 0, onClick: () => move(index, -1), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "arrow-up" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0B\u79FB", disabled: disabled || index === ids2.length - 1, onClick: () => move(index, 1), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "arrow-down" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-icon-button ppd-danger", "aria-label": "\u79FB\u9664\u5F15\u7528", disabled, onClick: () => onChange(ids2.filter((value2) => value2 !== id)), children: "\xD7" })
+      return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: index + 1 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id, alt: label, request, revision: 0 }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: label }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0A\u79FB", disabled: disabled || index === 0, onClick: () => move(index, -1), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "arrow-up" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button", "aria-label": "\u4E0B\u79FB", disabled: disabled || index === ids2.length - 1, onClick: () => move(index, 1), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "arrow-down" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-icon-button ppd-danger", "aria-label": "\u79FB\u9664\u5F15\u7528", disabled, onClick: () => onChange(ids2.filter((value2) => value2 !== id)), children: "\xD7" })
       ] }, id);
     }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions ppd-skill-reference-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-button", disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, onClick: () => localInput.current?.click(), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "upload" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions ppd-skill-reference-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-button", disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, onClick: () => localInput.current?.click(), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "upload" }),
         "\u4ECE\u672C\u5730\u4E0A\u4F20"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled, "aria-expanded": browsing, onClick: () => setBrowsing((value2) => !value2), children: browsing ? "\u6536\u8D77\u5DF2\u4E0A\u4F20\u56FE\u7247" : "\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { ref: localInput, className: "ppd-file-input", type: "file", hidden: true, multiple: true, disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, accept: "image/jpeg,image/png,image/webp", onChange: (event) => {
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled, "aria-expanded": browsing, onClick: () => setBrowsing((value2) => !value2), children: browsing ? "\u6536\u8D77\u5DF2\u4E0A\u4F20\u56FE\u7247" : "\u6D4F\u89C8\u5DF2\u4E0A\u4F20\u56FE\u7247" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { ref: localInput, className: "ppd-file-input", type: "file", hidden: true, multiple: true, disabled: disabled || ids2.length >= USER_SKILL_REFERENCE_LIMIT2, accept: "image/jpeg,image/png,image/webp", onChange: (event) => {
         const files = Array.from(event.currentTarget.files ?? []);
         event.currentTarget.value = "";
         if (files.length && !disabled) onUpload(files);
       } })
     ] }),
-    browsing && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(UploadReferencePicker, { request, ids: ids2, disabled, onSelect: (asset) => {
+    browsing && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(UploadReferencePicker, { request, ids: ids2, disabled, onSelect: (asset) => {
       if (disabled || ids2.includes(asset.id) || ids2.length >= USER_SKILL_REFERENCE_LIMIT2 || asset.status !== "ready" || asset.kind !== "upload") return;
       onSelect(asset);
       onChange([...ids2, asset.id]);
@@ -25076,60 +25145,60 @@ function ReferenceEditor({ ids: ids2, choices, disabled, request, onChange, onUp
   ] });
 }
 function SkillEditor({ value: value2, mode, choices, busy, error: error51, notice, conflict, request, onChange, onSave, onCancel, onReload, onUpload, onSelect }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-editor", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("header", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-eyebrow", children: mode === "edit" ? "\u7F16\u8F91" : mode === "copy" ? "\u590D\u5236" : "\u65B0\u5EFA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: mode === "edit" ? "\u7F16\u8F91\u6211\u7684 Skill" : "\u521B\u5EFA\u6211\u7684 Skill" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-editor", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("header", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-eyebrow", children: mode === "edit" ? "\u7F16\u8F91" : mode === "copy" ? "\u590D\u5236" : "\u65B0\u5EFA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: mode === "edit" ? "\u7F16\u8F91\u6211\u7684 Skill" : "\u521B\u5EFA\u6211\u7684 Skill" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-quiet", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51, notice }),
-    conflict && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-conflict", role: "alert", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "\u8FD9\u4E2A Skill \u5728\u522B\u5904\u88AB\u66F4\u65B0\u4E86" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u8BF7\u8BFB\u53D6\u6700\u65B0\u7248\u672C\u540E\u518D\u7EE7\u7EED\u7F16\u8F91\uFF0C\u907F\u514D\u8986\u76D6\u65B0\u5185\u5BB9\u3002" }),
-      onReload && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: onReload, children: "\u8BFB\u53D6\u6700\u65B0\u7248\u672C" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51, notice }),
+    conflict && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-conflict", role: "alert", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "\u8FD9\u4E2A Skill \u5728\u522B\u5904\u88AB\u66F4\u65B0\u4E86" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u8BF7\u8BFB\u53D6\u6700\u65B0\u7248\u672C\u540E\u518D\u7EE7\u7EED\u7F16\u8F91\uFF0C\u907F\u514D\u8986\u76D6\u65B0\u5185\u5BB9\u3002" }),
+      onReload && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: onReload, children: "\u8BFB\u53D6\u6700\u65B0\u7248\u672C" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("fieldset", { disabled: busy || conflict, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u540D\u79F0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { value: value2.name, maxLength: 80, placeholder: "\u4F8B\u5982\uFF1A\u6211\u7684\u65C5\u884C\u6D77\u62A5", onChange: (event) => onChange({ ...value2, name: event.target.value }) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("fieldset", { disabled: busy || conflict, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u540D\u79F0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { value: value2.name, maxLength: 80, placeholder: "\u4F8B\u5982\uFF1A\u6211\u7684\u65C5\u884C\u6D77\u62A5", onChange: (event) => onChange({ ...value2, name: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
           "\u8BF4\u660E ",
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: "\u53EF\u9009" })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: "\u53EF\u9009" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("textarea", { value: value2.description, maxLength: 300, rows: 3, onChange: (event) => onChange({ ...value2, description: event.target.value }) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("textarea", { value: value2.description, maxLength: 300, rows: 3, onChange: (event) => onChange({ ...value2, description: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("textarea", { className: "ppd-prompt", value: value2.prompt, maxLength: 5e3, rows: 9, placeholder: "\u5199\u4E0B\u53EF\u4EE5\u91CD\u590D\u4F7F\u7528\u7684\u521B\u4F5C\u8981\u6C42\u2026", onChange: (event) => onChange({ ...value2, prompt: event.target.value }) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("textarea", { className: "ppd-prompt", value: value2.prompt, maxLength: 5e3, rows: 9, placeholder: "\u5199\u4E0B\u53EF\u4EE5\u91CD\u590D\u4F7F\u7528\u7684\u521B\u4F5C\u8981\u6C42\u2026", onChange: (event) => onChange({ ...value2, prompt: event.target.value }) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ReferenceEditor, { request, onSelect, ids: value2.referenceAssetIds, choices, disabled: busy || conflict, onChange: (referenceAssetIds) => onChange({ ...value2, referenceAssetIds }), onUpload })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ReferenceEditor, { request, onSelect, ids: value2.referenceAssetIds, choices, disabled: busy || conflict, onChange: (referenceAssetIds) => onChange({ ...value2, referenceAssetIds }), onUpload })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("footer", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u63D0\u793A\u8BCD\u6216\u53C2\u8003\u7D20\u6750\u81F3\u5C11\u63D0\u4F9B\u4E00\u9879\u3002" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy || conflict, onClick: onSave, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : mode === "edit" ? "\u4FDD\u5B58\u4FEE\u6539" : mode === "copy" ? "\u53E6\u5B58\u4E3A\u65B0 Skill" : "\u521B\u5EFA Skill" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("footer", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u63D0\u793A\u8BCD\u6216\u53C2\u8003\u7D20\u6750\u81F3\u5C11\u63D0\u4F9B\u4E00\u9879\u3002" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy || conflict, onClick: onSave, children: busy ? "\u6B63\u5728\u4FDD\u5B58\u2026" : mode === "edit" ? "\u4FDD\u5B58\u4FEE\u6539" : mode === "copy" ? "\u53E6\u5B58\u4E3A\u65B0 Skill" : "\u521B\u5EFA Skill" })
     ] })
   ] });
 }
 function MySkills({ request, onUse, onChanged, navigation }) {
-  const [query, setQuery] = (0, import_react19.useState)("");
-  const [items, setItems] = (0, import_react19.useState)([]);
-  const [cursor, setCursor] = (0, import_react19.useState)(null);
-  const [detail, setDetail] = (0, import_react19.useState)();
-  const [editor, setEditor] = (0, import_react19.useState)();
-  const [draft, setDraft] = (0, import_react19.useState)(blankDraft);
-  const [choices, setChoices] = (0, import_react19.useState)([]);
-  const [confirmDelete, setConfirmDelete] = (0, import_react19.useState)();
-  const [loading, setLoading] = (0, import_react19.useState)(true);
-  const [busy, setBusy] = (0, import_react19.useState)("");
-  const [error51, setError] = (0, import_react19.useState)("");
-  const [notice, setNotice] = (0, import_react19.useState)("");
-  const [conflict, setConflict] = (0, import_react19.useState)(false);
-  const sequence = (0, import_react19.useRef)(0), saving = (0, import_react19.useRef)(false);
-  const load = (0, import_react19.useCallback)(async (append = false, nextQuery = query.trim()) => {
+  const [query, setQuery] = (0, import_react18.useState)("");
+  const [items, setItems] = (0, import_react18.useState)([]);
+  const [cursor, setCursor] = (0, import_react18.useState)(null);
+  const [detail, setDetail] = (0, import_react18.useState)();
+  const [editor, setEditor] = (0, import_react18.useState)();
+  const [draft, setDraft] = (0, import_react18.useState)(blankDraft);
+  const [choices, setChoices] = (0, import_react18.useState)([]);
+  const [confirmDelete, setConfirmDelete] = (0, import_react18.useState)();
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
+  const [conflict, setConflict] = (0, import_react18.useState)(false);
+  const sequence = (0, import_react18.useRef)(0), saving = (0, import_react18.useRef)(false);
+  const load = (0, import_react18.useCallback)(async (append = false, nextQuery = query.trim()) => {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
@@ -25145,7 +25214,7 @@ function MySkills({ request, onUse, onChanged, navigation }) {
       if (token === sequence.current) setLoading(false);
     }
   }, [cursor, query, request]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load(false, "");
   }, []);
   async function uploadReferences(files) {
@@ -25320,96 +25389,118 @@ function MySkills({ request, onUse, onChanged, navigation }) {
       setBusy("");
     }
   }
-  const deleteDialog = confirmDelete ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6211\u7684 Skill\uFF1F", description: `\u201C${confirmDelete.name}\u201D\u5C06\u4ECE\u4F60\u7684 Skill \u5E93\u5220\u9664\u3002\u5DF2\u6709\u7D20\u6750\u4E0E\u5386\u53F2\u751F\u6210\u4E0D\u53D7\u5F71\u54CD\u3002`, confirmLabel: "\u786E\u8BA4\u5220\u9664", busy: busy === confirmDelete.id, error: error51, onCancel: () => void cancelDelete(), onConfirm: () => void deleteConfirmed() }) : null;
-  if (editor) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SkillEditor, { request, notice, onSelect: (asset) => setChoices((current2) => [...new Map([...current2, asset].map((row) => [row.id, row])).values()]), value: draft, mode: editor.mode, choices, busy: busy === "save" || busy === "reference-upload", error: error51, conflict, onChange: setDraft, onSave: () => void save(), onCancel: () => {
+  const deleteDialog = confirmDelete ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6211\u7684 Skill\uFF1F", description: `\u201C${confirmDelete.name}\u201D\u5C06\u4ECE\u4F60\u7684 Skill \u5E93\u5220\u9664\u3002\u5DF2\u6709\u7D20\u6750\u4E0E\u5386\u53F2\u751F\u6210\u4E0D\u53D7\u5F71\u54CD\u3002`, confirmLabel: "\u786E\u8BA4\u5220\u9664", busy: busy === confirmDelete.id, error: error51, onCancel: () => void cancelDelete(), onConfirm: () => void deleteConfirmed() }) : null;
+  if (editor) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillEditor, { request, notice, onSelect: (asset) => setChoices((current2) => [...new Map([...current2, asset].map((row) => [row.id, row])).values()]), value: draft, mode: editor.mode, choices, busy: busy === "save" || busy === "reference-upload", error: error51, conflict, onChange: setDraft, onSave: () => void save(), onCancel: () => {
     if (saving.current) return;
     setEditor(void 0);
     setDraft(blankDraft());
     setError("");
     setNotice("");
   }, onReload: editor.source ? () => void reloadSource() : void 0, onUpload: (files) => void uploadReferences(files) });
-  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title: detail.name, eyebrow: "\u6211\u7684 Skill", onBack: () => setDetail(void 0), actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: "\u9009\u5165\u4F1A\u8BDD" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => start("edit", detail), children: "\u7F16\u8F91" })
-    ] }), children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51, notice }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-user-skill-detail", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: detail.description || "\u672A\u586B\u5199\u8BF4\u660E" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("pre", { children: detail.prompt || "\u4EC5\u4F7F\u7528\u53C2\u8003\u7D20\u6750" })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("h3", { children: [
-            "\u6709\u5E8F\u53C2\u8003\u7D20\u6750 \xB7 ",
-            detail.referenceAssetIds.length
+  if (detail) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-detail ppd-personal-detail", "data-personal-skill-detail": detail.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-back ppd-personal-back", "data-personal-back": true, onClick: () => setDetail(void 0), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }),
+        "\u8FD4\u56DE\u6211\u7684 Skill"
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51, notice }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-personal-detail-grid", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PersonalSkillCover, { row: detail, request, detail: true }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-personal-detail-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-eyebrow", children: "\u6211\u7684 Skill" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: detail.name }),
+          (detail.description ?? "").trim() && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-personal-detail-description", children: detail.description }),
+          (detail.prompt ?? "").trim() && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-personal-prompt", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "\u9884\u8BBE\u63D0\u793A\u8BCD" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("pre", { children: detail.prompt })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("ol", { className: "ppd-skill-reference-detail", children: detail.referenceAssetIds.map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id, alt: `\u53C2\u8003\u56FE ${index + 1}`, request, revision: 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
-              index + 1,
-              ". ",
-              choices.find((row) => row.id === id)?.filename || "\u53C2\u8003\u56FE\u7247"
+          detail.referenceAssetIds.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-personal-references", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h3", { children: [
+              "\u53C2\u8003\u7D20\u6750 \xB7 ",
+              detail.referenceAssetIds.length
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("ol", { className: "ppd-skill-reference-detail", children: detail.referenceAssetIds.map((id, index) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id, alt: `\u53C2\u8003\u56FE ${index + 1}`, request, revision: 0 }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
+                index + 1,
+                ". ",
+                choices.find((row) => row.id === id)?.filename || "\u53C2\u8003\u56FE\u7247"
+              ] })
+            ] }, id)) })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions ppd-personal-detail-actions", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === detail.id, onClick: () => void use(detail), children: "\u4F7F\u7528 Skill" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PersonalLibraryMenu, { label: `${detail.name}\u7BA1\u7406\u64CD\u4F5C`, disabled: busy === detail.id, actions: [
+              { label: "\u7F16\u8F91", run: () => start("edit", detail) },
+              { label: "\u53E6\u5B58\u526F\u672C", run: () => start("copy", detail) },
+              { label: "\u5220\u9664", danger: true, run: () => void askDelete(detail) }
             ] })
-          ] }, id)) })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => start("copy", detail), children: "\u53E6\u5B58\u526F\u672C" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy === detail.id, onClick: () => void askDelete(detail), children: "\u5220\u9664" })
+          ] })
         ] })
       ] })
     ] }),
     deleteDialog
   ] });
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-toolbar-row", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u6211\u7684 Skill", busy: loading, onChange: setQuery, onSearch: () => void load(false), onRefresh: () => void load(false) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => start("create"), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "plus" }),
-        "\u521B\u5EFA Skill"
-      ] })
-    ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u521B\u5EFA\u4E00\u4E2A\u53EF\u91CD\u590D\u4F7F\u7528\u7684\u79C1\u6709 Skill\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-personal-skill-grid", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-personal-skill-card", "data-personal-skill-id": row.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-personal-skill-open", "aria-label": `\u67E5\u770B ${row.name}`, disabled: busy === row.id, onClick: () => void open(row.id), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-personal-skill-cover", children: row.referenceAssetIds[0] ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id: row.referenceAssetIds[0], alt: `${row.name}\u5C01\u9762`, request, revision: 0 }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-image", "aria-label": "\u6682\u65E0\u53C2\u8003\u7D20\u6750", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { "aria-hidden": "true", children: "\u25A6" }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-personal-skill-copy", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: row.name, children: cardTitle(row.name) }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: row.description || "\u6682\u65E0\u7B80\u4ECB" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("small", { children: [
-            row.referenceAssetIds.length,
-            " \u5F20\u53C2\u8003\u7D20\u6750"
-          ] })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { className: "ppd-personal-skills", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("header", { className: "ppd-personal-list-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h2", { children: [
+        "\u6211\u7684 Skill ",
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
+          items.length,
+          " \u4E2A"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-personal-skill-actions", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", "aria-label": `\u7F16\u8F91 ${row.name}`, disabled: busy === row.id, onClick: () => start("edit", row), children: "\u7F16\u8F91" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", "aria-label": `\u5220\u9664 ${row.name}`, disabled: busy === row.id, onClick: () => void askDelete(row), children: "\u5220\u9664" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-toolbar-row", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { navigation, value: query, placeholder: "\u641C\u7D22\u6211\u7684 Skill", busy: loading, onChange: setQuery, onSearch: () => void load(false), onRefresh: () => void load(false) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-button ppd-button-primary", onClick: () => start("create"), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "plus" }),
+          "\u521B\u5EFA Skill"
+        ] })
+      ] })
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: loading && !items.length, error: !items.length ? error51 : "", empty: !loading && !items.length ? "\u521B\u5EFA\u4E00\u4E2A\u53EF\u91CD\u590D\u4F7F\u7528\u7684\u79C1\u6709 Skill\u3002" : "", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-personal-skill-grid", children: items.map((row) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-personal-skill-card", "data-personal-skill-id": row.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PersonalLibraryMenu, { label: `${row.name}\u7BA1\u7406\u64CD\u4F5C`, disabled: busy === row.id, actions: [
+        { label: "\u7F16\u8F91", run: () => start("edit", row) },
+        { label: "\u53E6\u5B58\u526F\u672C", run: () => start("copy", row) },
+        { label: "\u5220\u9664", danger: true, run: () => void askDelete(row) }
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-personal-skill-open", "aria-label": `\u67E5\u770B ${row.name}`, disabled: busy === row.id, onClick: () => void open(row.id), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PersonalSkillCover, { row, request }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-personal-skill-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: row.name, children: cardTitle(row.name) }),
+          (row.description ?? "").trim() && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: row.description })
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-personal-skill-actions", children: [
+        row.referenceAssetIds.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
+          row.referenceAssetIds.length,
+          " \u5F20\u53C2\u8003\u7D20\u6750"
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: busy === row.id, onClick: () => void use(row), children: "\u4F7F\u7528" })
       ] })
     ] }, row.id)) }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-load-more", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A" }) }),
     deleteDialog
   ] });
 }
 function SkillsPanel({ request, onUse, uiLease }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PublicSkills, { request, onUse, navigation: void 0, uiLease });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PublicSkills, { request, onUse, navigation: void 0, uiLease });
 }
 function CollectionsPanel({ request, ownerId, onUse, onChanged, refreshKey, uiLease }) {
   const savedTab = readPanelUiState(uiLease, "collections-tab");
-  const [tab, setTab] = (0, import_react19.useState)(() => ["favorites", "mine", "dna"].includes(savedTab ?? "") ? savedTab : "favorites");
-  (0, import_react19.useEffect)(() => {
+  const [tab, setTab] = (0, import_react18.useState)(() => ["favorites", "mine", "dna"].includes(savedTab ?? "") ? savedTab : "favorites");
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "collections-tab", tab);
   }, [uiLease, tab]);
   const selectTab = (next) => setTab(next);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { "data-my-collections": true, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("nav", { className: "ppd-tabs", "aria-label": "\u6211\u7684\u6536\u85CF\u5206\u7EC4", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: tab === "favorites" ? "is-active" : "", "aria-current": tab === "favorites" ? "page" : void 0, onClick: () => selectTab("favorites"), children: "\u6536\u85CF\u5939" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: tab === "mine" ? "is-active" : "", "aria-current": tab === "mine" ? "page" : void 0, onClick: () => selectTab("mine"), children: "\u6211\u7684 Skill" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: tab === "dna" ? "is-active" : "", "aria-current": tab === "dna" ? "page" : void 0, onClick: () => selectTab("dna"), children: "\u6211\u7684 DNA" })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { "data-my-collections": true, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("nav", { className: "ppd-tabs ppd-personal-tabs", "aria-label": "\u6211\u7684\u6536\u85CF\u5206\u7EC4", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: tab === "favorites" ? "is-active" : "", "aria-current": tab === "favorites" ? "page" : void 0, onClick: () => selectTab("favorites"), children: "\u6536\u85CF\u5939" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: tab === "mine" ? "is-active" : "", "aria-current": tab === "mine" ? "page" : void 0, onClick: () => selectTab("mine"), children: "\u6211\u7684 Skill" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: tab === "dna" ? "is-active" : "", "aria-current": tab === "dna" ? "page" : void 0, onClick: () => selectTab("dna"), children: "\u6211\u7684 DNA" })
     ] }),
-    tab === "mine" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(MySkills, { request, onUse, onChanged, navigation: void 0 }) : tab === "dna" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(MyDnaPanel, { request, onUseDna: (row) => onUse({
+    tab === "mine" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(MySkills, { request, onUse, onChanged, navigation: void 0 }) : tab === "dna" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(MyDnaPanel, { request, onUseDna: (row) => onUse({
       version: 1,
       kind: "dna",
       id: row.id,
@@ -25417,70 +25508,73 @@ function CollectionsPanel({ request, ownerId, onUse, onChanged, refreshKey, uiLe
       locator: { dnaId: row.id },
       ownerId,
       private: true
-    }) }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(AssetsPanel, { request, onUse, refreshKey, uiLease })
+    }) }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(AssetsPanel, { request, onUse, refreshKey, uiLease })
   ] });
 }
 function ConfirmDialog({ title, description, confirmLabel, busy, error: error51, onCancel, onConfirm }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-dialog-backdrop", role: "presentation", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-confirm-title", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { id: "ppd-confirm-title", children: title }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: description }),
-    error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy, onClick: onConfirm, children: busy ? "\u6B63\u5728\u5904\u7406\u2026" : confirmLabel })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-dialog-backdrop", role: "presentation", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-confirm-title", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { id: "ppd-confirm-title", children: title }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: description }),
+    error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy, onClick: onCancel, children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: busy, onClick: onConfirm, children: busy ? "\u6B63\u5728\u5904\u7406\u2026" : confirmLabel })
     ] })
   ] }) });
 }
 function LocalResults({ request, uiLease, ownerId }) {
-  const archiveSelection = (0, import_react19.useSyncExternalStore)(archiveTarget.subscribe, archiveTarget.getSnapshot, archiveTarget.getSnapshot);
-  (0, import_react19.useEffect)(() => () => archiveTarget.clear(), []);
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ArchiveBrowser, { request, targetId: archiveSelection?.id, uiLease, leading: (filters) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SubmissionTaskLedger, { ownerId, filters }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(RunningTaskLedger, { request, ownerId, filters }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageToTextLedger, { request, ownerId, filters }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(DnaTaskLedger, { request, ownerId, filters, onOpenDna: () => {
-      writePanelUiState(uiLease, "collections-tab", "dna");
-      void request("panel.navigate", { section: "assets" });
-    } }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ToolTaskLedger, { request, ownerId, filters })
-  ] }) });
+  const archiveSelection = (0, import_react18.useSyncExternalStore)(archiveTarget.subscribe, archiveTarget.getSnapshot, archiveTarget.getSnapshot);
+  (0, import_react18.useEffect)(() => () => archiveTarget.clear(), []);
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    UnifiedResultsBrowser,
+    {
+      request,
+      ownerId,
+      targetId: archiveSelection?.id,
+      uiLease,
+      onOpenDna: () => {
+        writePanelUiState(uiLease, "collections-tab", "dna");
+        void request("panel.navigate", { section: "assets" });
+      }
+    }
+  );
 }
 function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
-  const cached2 = (0, import_react19.useMemo)(() => readPanelUiState(uiLease, "assets"), [uiLease]);
-  const favoriteOwnerRef = (0, import_react19.useRef)(0);
+  const cached2 = (0, import_react18.useMemo)(() => readPanelUiState(uiLease, "assets"), [uiLease]);
+  const favoriteOwnerRef = (0, import_react18.useRef)(0);
   if (!favoriteOwnerRef.current) favoriteOwnerRef.current = favoriteResponseState.createOwner();
   const favoriteOwner = favoriteOwnerRef.current;
   const favoriteSnapshot = useFavoriteResponseSnapshot(uiLease);
   const favorites = favoriteSnapshot.initialized ? [...favoriteSnapshot.rows] : cached2?.favorites ?? [];
-  const [query, setQuery] = (0, import_react19.useState)(cached2?.query ?? "");
-  const [search, setSearch] = (0, import_react19.useState)(cached2?.search ?? "");
-  const [page, setPage] = (0, import_react19.useState)(cached2?.page ?? 1);
-  const [loading, setLoading] = (0, import_react19.useState)(true);
-  const [busy, setBusy] = (0, import_react19.useState)("");
-  const [error51, setError] = (0, import_react19.useState)("");
-  const [notice, setNotice] = (0, import_react19.useState)("");
-  const [savedResource, setSavedResource] = (0, import_react19.useState)(cached2?.savedResource);
-  const [cursor, setCursor] = (0, import_react19.useState)(cached2?.cursor ?? null);
-  const [migration, setMigration] = (0, import_react19.useState)(cached2?.migration);
-  const [folders, setFolders] = (0, import_react19.useState)(cached2?.folders ?? []);
-  const [folderFilter, setFolderFilter] = (0, import_react19.useState)(() => !cached2?.folderFilter || cached2.folderFilter === "all" ? "overview" : cached2.folderFilter);
-  const [foldersAvailable, setFoldersAvailable] = (0, import_react19.useState)();
-  const [folderMessage, setFolderMessage] = (0, import_react19.useState)("");
-  const [folderEditor, setFolderEditor] = (0, import_react19.useState)();
-  const [folderDelete, setFolderDelete] = (0, import_react19.useState)();
-  const [organizeItem, setOrganizeItem] = (0, import_react19.useState)();
-  const detailSequence = (0, import_react19.useRef)(0);
-  const [detailLoading, setDetailLoading] = (0, import_react19.useState)("");
-  const [detailError, setDetailError] = (0, import_react19.useState)("");
-  const cursorRef = (0, import_react19.useRef)(cached2?.cursor ?? null);
-  const sequence = (0, import_react19.useRef)(0);
-  const folderSequence = (0, import_react19.useRef)(0);
-  const inFlight = (0, import_react19.useRef)(false);
-  (0, import_react19.useEffect)(() => {
+  const [query, setQuery] = (0, import_react18.useState)(cached2?.query ?? "");
+  const [search, setSearch] = (0, import_react18.useState)(cached2?.search ?? "");
+  const [page, setPage] = (0, import_react18.useState)(cached2?.page ?? 1);
+  const [loading, setLoading] = (0, import_react18.useState)(true);
+  const [busy, setBusy] = (0, import_react18.useState)("");
+  const [error51, setError] = (0, import_react18.useState)("");
+  const [notice, setNotice] = (0, import_react18.useState)("");
+  const [savedResource, setSavedResource] = (0, import_react18.useState)(cached2?.savedResource);
+  const [cursor, setCursor] = (0, import_react18.useState)(cached2?.cursor ?? null);
+  const [migration, setMigration] = (0, import_react18.useState)(cached2?.migration);
+  const [folders, setFolders] = (0, import_react18.useState)(cached2?.folders ?? []);
+  const [folderFilter, setFolderFilter] = (0, import_react18.useState)(() => !cached2?.folderFilter || cached2.folderFilter === "all" ? "overview" : cached2.folderFilter);
+  const [foldersAvailable, setFoldersAvailable] = (0, import_react18.useState)();
+  const [folderMessage, setFolderMessage] = (0, import_react18.useState)("");
+  const [folderEditor, setFolderEditor] = (0, import_react18.useState)();
+  const [folderDelete, setFolderDelete] = (0, import_react18.useState)();
+  const [organizeItem, setOrganizeItem] = (0, import_react18.useState)();
+  const detailSequence = (0, import_react18.useRef)(0);
+  const [detailLoading, setDetailLoading] = (0, import_react18.useState)("");
+  const [detailError, setDetailError] = (0, import_react18.useState)("");
+  const cursorRef = (0, import_react18.useRef)(cached2?.cursor ?? null);
+  const sequence = (0, import_react18.useRef)(0);
+  const folderSequence = (0, import_react18.useRef)(0);
+  const inFlight = (0, import_react18.useRef)(false);
+  (0, import_react18.useEffect)(() => {
     favoriteResponseState.seed(uiLease, cached2?.favorites ?? []);
   }, [uiLease]);
-  (0, import_react19.useEffect)(() => () => favoriteResponseState.releaseOwner(uiLease, favoriteOwner), [favoriteOwner, uiLease]);
-  const loadFolders = (0, import_react19.useCallback)(async () => {
+  (0, import_react18.useEffect)(() => () => favoriteResponseState.releaseOwner(uiLease, favoriteOwner), [favoriteOwner, uiLease]);
+  const loadFolders = (0, import_react18.useCallback)(async () => {
     const token = ++folderSequence.current;
     setFolderMessage("");
     try {
@@ -25502,13 +25596,13 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
       }
     }
   }, [request]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void loadFolders();
     return () => {
       folderSequence.current++;
     };
   }, [loadFolders, refreshKey]);
-  const load = (0, import_react19.useCallback)(async (append = false) => {
+  const load = (0, import_react18.useCallback)(async (append = false) => {
     if (append && (inFlight.current || !cursorRef.current)) return;
     const token = ++sequence.current;
     inFlight.current = true;
@@ -25564,33 +25658,33 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
       }
     }
   }, [favoriteOwner, request, uiLease]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     void load();
     return () => {
       sequence.current++;
       inFlight.current = false;
     };
   }, [load, refreshKey]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     if (cached2?.savedResource?.row) void open(cached2.savedResource.row);
     return () => {
       detailSequence.current++;
     };
   }, []);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     writePanelUiState(uiLease, "assets", { query, search, page, favorites, cursor, migration, savedResource, folders, folderFilter });
   }, [uiLease, query, search, page, favorites, cursor, migration, savedResource, folders, folderFilter]);
-  const folderName = (0, import_react19.useCallback)((folderId) => folders.find((folder) => folder.id === folderId)?.name ?? "", [folders]);
-  const rows2 = (0, import_react19.useMemo)(() => {
+  const folderName = (0, import_react18.useCallback)((folderId) => folders.find((folder) => folder.id === folderId)?.name ?? "", [folders]);
+  const rows2 = (0, import_react18.useMemo)(() => {
     let source = favorites;
     if (folderFilter !== "overview") source = source.filter((row) => folderFilter === "unfiled" ? !row.folderId : row.folderId === folderFilter);
     const term = search.trim().toLocaleLowerCase();
     return term ? source.filter((row) => `${row.note || ""} ${row.label || ""} ${folderName(row.folderId)} ${row.id}`.toLocaleLowerCase().includes(term)) : source;
   }, [favoriteSnapshot.revision, favorites, folderFilter, folderName, search]);
   const folderOverview = foldersAvailable === true && folderFilter === "overview" && !search.trim();
-  const visible2 = rows2.slice((page - 1) * PAGE_SIZE2, page * PAGE_SIZE2);
-  (0, import_react19.useEffect)(() => {
-    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(rows2.length / PAGE_SIZE2))));
+  const visible = rows2.slice((page - 1) * PAGE_SIZE3, page * PAGE_SIZE3);
+  (0, import_react18.useEffect)(() => {
+    setPage((value2) => Math.min(value2, Math.max(1, Math.ceil(rows2.length / PAGE_SIZE3))));
   }, [rows2.length]);
   async function open(row) {
     const token = ++detailSequence.current;
@@ -25765,35 +25859,35 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
       setSavedResource(void 0);
       setDetailError("");
     };
-    const noticeBlock = /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: detailError || favoriteSnapshot.error || error51, notice: detailLoading === savedResource.row.id ? "\u6B63\u5728\u8865\u9F50\u6536\u85CF\u8BE6\u60C5\u2026" : notice }),
-      detailError && detailLoading !== savedResource.row.id && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(savedResource.row), children: "\u91CD\u8BD5\u8BE6\u60C5" })
+    const noticeBlock = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: detailError || favoriteSnapshot.error || error51, notice: detailLoading === savedResource.row.id ? "\u6B63\u5728\u8865\u9F50\u6536\u85CF\u8BE6\u60C5\u2026" : notice }),
+      detailError && detailLoading !== savedResource.row.id && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", onClick: () => void open(savedResource.row), children: "\u91CD\u8BD5\u8BE6\u60C5" })
     ] });
-    if (savedResource.skill) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PublicSkillDetail, { skill: savedResource.skill, onBack: () => savedResource.family ? setSavedResource({ ...savedResource, skill: void 0 }) : back(), notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy || !savedResource.skill.executable, onClick: () => void useSavedSkill(savedResource.skill), children: "\u4F7F\u7528 Skill" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", savedResource.skill.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", savedResource.skill.slug), onClick: () => void toggleFavorite(favoriteFromSkill(savedResource.skill)) })
+    if (savedResource.skill) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PublicSkillDetail, { skill: savedResource.skill, onBack: () => savedResource.family ? setSavedResource({ ...savedResource, skill: void 0 }) : back(), notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy || !savedResource.skill.executable, onClick: () => void useSavedSkill(savedResource.skill), children: "\u4F7F\u7528 Skill" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", savedResource.skill.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", savedResource.skill.slug), onClick: () => void toggleFavorite(favoriteFromSkill(savedResource.skill)) })
     ] }) });
-    if (savedResource.gallery) return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GalleryDetail, { item: savedResource.gallery, onBack: back, notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy, onClick: () => void use(savedResource.row), children: "\u52A0\u5165\u53C2\u8003\u56FE" }) });
-    if (savedResource.family) return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title: savedResource.family.title, onBack: back, children: [
+    if (savedResource.gallery) return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryDetail, { item: savedResource.gallery, onBack: back, notice: noticeBlock, actions: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-primary", disabled: !!busy, onClick: () => void use(savedResource.row), children: "\u52A0\u5165\u53C2\u8003\u56FE" }) });
+    if (savedResource.family) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title: savedResource.family.title, onBack: back, children: [
       noticeBlock,
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-family-intro", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: savedResource.family.summary }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: savedResource.family.chooseLabel })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-family-intro", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: savedResource.family.summary }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: savedResource.family.chooseLabel })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid ppd-family-grid", children: savedResource.family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => setSavedResource({ ...savedResource, skill: member }), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid ppd-family-grid", children: savedResource.family.members.map((member) => /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${member.title}`, onClick: () => setSavedResource({ ...savedResource, skill: member }), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: member.coverImage, before: member.beforeImage, alt: member.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-card-copy", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: member.title, children: cardTitle(member.title) }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", member.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", member.slug), onClick: () => void toggleFavorite(favoriteFromSkill(member)) })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteButton, { active: favoriteResponseState.has(uiLease, "skill", member.slug), busy: favoriteResponseState.isBusy(uiLease, "skill", member.slug), onClick: () => void toggleFavorite(favoriteFromSkill(member)) })
       ] }, member.slug)) })
     ] });
     const title = savedResource.row.label || savedResource.row.id;
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(DetailShell, { title, eyebrow: "\u6211\u7684\u6536\u85CF", onBack: back, children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(DetailShell, { title, eyebrow: "\u6211\u7684\u6536\u85CF", onBack: back, children: [
       noticeBlock,
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-detail-grid", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: savedResource.row.imageUrl, alt: title }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-lead", children: "\u8BE6\u60C5\u52A0\u8F7D\u5B8C\u6210\u540E\u5373\u53EF\u7EE7\u7EED\u4F7F\u7528\u3002" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-detail-grid", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: savedResource.row.imageUrl, alt: title }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-lead", children: "\u8BE6\u60C5\u52A0\u8F7D\u5B8C\u6210\u540E\u5373\u53EF\u7EE7\u7EED\u4F7F\u7528\u3002" })
       ] })
     ] });
   }
@@ -25806,115 +25900,115 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
     setFolderMessage("");
   };
   const activeFolder = folders.find((folder) => folder.id === folderFilter);
-  const folderControls = /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-collection-heading", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-collection-location", children: [
-        !folderOverview && foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-collection-back", "aria-label": "\u8FD4\u56DE\u6536\u85CF\u6587\u4EF6\u5939", onClick: () => enterFolder("overview"), children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "back" }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: folderOverview ? "\u6211\u7684\u6536\u85CF\u5939" : search.trim() ? "\u641C\u7D22\u7ED3\u679C" : folderFilter === "unfiled" ? "\u672A\u5206\u7C7B" : activeFolder?.name || "\u6211\u7684\u6536\u85CF" }),
-          !folderOverview && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("small", { children: [
+  const folderControls = /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-collection-heading", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-collection-location", children: [
+        !folderOverview && foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-collection-back", "aria-label": "\u8FD4\u56DE\u6536\u85CF\u6587\u4EF6\u5939", onClick: () => enterFolder("overview"), children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "back" }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: folderOverview ? "\u6211\u7684\u6536\u85CF\u5939" : search.trim() ? "\u641C\u7D22\u7ED3\u679C" : folderFilter === "unfiled" ? "\u672A\u5206\u7C7B" : activeFolder?.name || "\u6211\u7684\u6536\u85CF" }),
+          !folderOverview && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
             rows2.length,
             cursor ? "+" : "",
             " \u9879\u6536\u85CF"
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-        activeFolder && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${activeFolder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: activeFolder.name, folder: activeFolder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder: activeFolder }) }] }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+        activeFolder && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${activeFolder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: activeFolder.name, folder: activeFolder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder: activeFolder }) }] }),
         " ",
-        foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-button ppd-new-folder", onClick: () => setFolderEditor({ mode: "create", value: "" }), children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Icon, { name: "plus" }),
+        foldersAvailable === true && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-button ppd-new-folder", onClick: () => setFolderEditor({ mode: "create", value: "" }), children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Icon, { name: "plus" }),
           " \u65B0\u5EFA\u6587\u4EF6\u5939"
         ] })
       ] })
     ] }),
-    foldersAvailable !== true && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "ppd-collection-status", role: "status", children: [
+    foldersAvailable !== true && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "ppd-collection-status", role: "status", children: [
       folderMessage || "\u6B63\u5728\u8BFB\u53D6\u6536\u85CF\u6587\u4EF6\u5939\u2026",
-      foldersAvailable === false && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadFolders(), children: "\u91CD\u8BD5" })
+      foldersAvailable === false && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void loadFolders(), children: "\u91CD\u8BD5" })
     ] }),
-    foldersAvailable === true && folderMessage && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-collection-status", role: "status", children: folderMessage })
+    foldersAvailable === true && folderMessage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-collection-status", role: "status", children: folderMessage })
   ] });
-  const folderCards = /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-collection-grid", "aria-label": "\u6536\u85CF\u6587\u4EF6\u5939", children: [...folders, { id: "unfiled", name: "\u672A\u5206\u7C7B" }].map((folder) => {
+  const folderCards = /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-collection-grid", "aria-label": "\u6536\u85CF\u6587\u4EF6\u5939", children: [...folders, { id: "unfiled", name: "\u672A\u5206\u7C7B" }].map((folder) => {
     const members = favorites.filter((row) => folder.id === "unfiled" ? !row.folderId : row.folderId === folder.id);
     const cover = members[0];
-    return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-collection-card", "data-folder-id": folder.id, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-collection-open", "aria-label": `\u6253\u5F00\u6587\u4EF6\u5939 ${folder.name}`, onClick: () => enterFolder(folder.id), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: `ppd-collection-cover ${cover?.imageUrl ? "" : "is-empty"}`, children: [
-          cover?.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("img", { src: cover.imageUrl, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer", onError: (event) => {
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-collection-card", "data-folder-id": folder.id, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-collection-open", "aria-label": `\u6253\u5F00\u6587\u4EF6\u5939 ${folder.name}`, onClick: () => enterFolder(folder.id), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: `ppd-collection-cover ${cover?.imageUrl ? "" : "is-empty"}`, children: [
+          cover?.imageUrl ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("img", { src: cover.imageUrl, alt: "", loading: "lazy", decoding: "async", referrerPolicy: "no-referrer", onError: (event) => {
             event.currentTarget.hidden = true;
           } }, cover.imageUrl) : null,
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { className: "ppd-collection-mark", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FolderMark, {}) })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { className: "ppd-collection-mark", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FolderMark, {}) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-collection-copy", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title: folder.name, children: folder.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("small", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-collection-copy", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title: folder.name, children: folder.name }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("small", { children: [
             members.length,
             cursor ? "+" : "",
             " \u9879\u6536\u85CF"
           ] })
         ] })
       ] }),
-      folder.id !== "unfiled" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${folder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: folder.name, folder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder }) }] })
+      folder.id !== "unfiled" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6587\u4EF6\u5939 ${folder.name}`, actions: [{ label: "\u91CD\u547D\u540D", run: () => setFolderEditor({ mode: "rename", value: folder.name, folder }) }, { label: "\u5220\u9664\u6587\u4EF6\u5939", danger: true, run: () => setFolderDelete({ folder }) }] })
     ] }, folder.id);
   }) });
-  const folderEditorDialog = folderEditor ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-folder-editor-title", onSubmit: (event) => {
+  const folderEditorDialog = folderEditor ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-folder-editor-title", onSubmit: (event) => {
     event.preventDefault();
     void saveFolder();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { id: "ppd-folder-editor-title", children: folderEditor.mode === "create" ? "\u65B0\u5EFA\u6536\u85CF\u6587\u4EF6\u5939" : "\u4FEE\u6539\u6587\u4EF6\u5939\u540D\u79F0" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u6587\u4EF6\u5939\u540D\u79F0" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { autoFocus: true, value: folderEditor.value, maxLength: 80, onChange: (event) => setFolderEditor((current2) => current2 ? { ...current2, value: event.target.value, error: "" } : current2) })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { id: "ppd-folder-editor-title", children: folderEditor.mode === "create" ? "\u65B0\u5EFA\u6536\u85CF\u6587\u4EF6\u5939" : "\u4FEE\u6539\u6587\u4EF6\u5939\u540D\u79F0" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u6587\u4EF6\u5939\u540D\u79F0" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { autoFocus: true, value: folderEditor.value, maxLength: 80, onChange: (event) => setFolderEditor((current2) => current2 ? { ...current2, value: event.target.value, error: "" } : current2) })
     ] }),
-    folderEditor.error && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { role: "alert", children: folderEditor.error }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "folder-editor", onClick: () => setFolderEditor(void 0), children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: busy === "folder-editor", children: "\u4FDD\u5B58" })
+    folderEditor.error && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "alert", children: folderEditor.error }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "folder-editor", onClick: () => setFolderEditor(void 0), children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: busy === "folder-editor", children: "\u4FDD\u5B58" })
     ] })
   ] }) }) : null;
-  const folderDeleteDialog = folderDelete ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6536\u85CF\u6587\u4EF6\u5939\uFF1F", description: `\u201C${folderDelete.folder.name}\u201D\u4E2D\u7684\u6536\u85CF\u4F1A\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\uFF0C\u6536\u85CF\u4E0D\u4F1A\u88AB\u53D6\u6D88\u3002`, confirmLabel: "\u5220\u9664\u6587\u4EF6\u5939", busy: busy === `folder-delete:${folderDelete.folder.id}`, error: folderDelete.error, onCancel: () => setFolderDelete(void 0), onConfirm: () => void deleteFolderConfirmed() }) : null;
+  const folderDeleteDialog = folderDelete ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ConfirmDialog, { title: "\u5220\u9664\u6536\u85CF\u6587\u4EF6\u5939\uFF1F", description: `\u201C${folderDelete.folder.name}\u201D\u4E2D\u7684\u6536\u85CF\u4F1A\u79FB\u5230\u201C\u672A\u5206\u7C7B\u201D\uFF0C\u6536\u85CF\u4E0D\u4F1A\u88AB\u53D6\u6D88\u3002`, confirmLabel: "\u5220\u9664\u6587\u4EF6\u5939", busy: busy === `folder-delete:${folderDelete.folder.id}`, error: folderDelete.error, onCancel: () => setFolderDelete(void 0), onConfirm: () => void deleteFolderConfirmed() }) : null;
   const organizationBusy = organizeItem ? favoriteResponseState.isBusy(uiLease, organizeItem.row.type, organizeItem.row.id) : false;
-  const organizeItemDialog = organizeItem ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-favorite-editor-title", onSubmit: (event) => {
+  const organizeItemDialog = organizeItem ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-dialog-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { className: "ppd-dialog ppd-favorite-editor", role: "dialog", "aria-modal": "true", "aria-labelledby": "ppd-favorite-editor-title", onSubmit: (event) => {
     event.preventDefault();
     void saveItemOrganization();
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { id: "ppd-favorite-editor-title", children: "\u7F16\u8F91\u6536\u85CF" }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { id: "ppd-favorite-editor-title", children: "\u7F16\u8F91\u6536\u85CF" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
       "\u539F\u540D\uFF1A",
       organizeItem.row.label || organizeItem.row.id
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u6211\u7684\u5907\u6CE8" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("input", { autoFocus: true, value: organizeItem.note, maxLength: 160, placeholder: "\u4E0D\u586B\u5199\u5219\u663E\u793A\u539F\u540D", onChange: (event) => setOrganizeItem((current2) => current2 ? { ...current2, note: event.target.value, error: "" } : current2) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { children: "\u5907\u6CE8\u4EC5\u4F9B\u672C\u4EBA\u663E\u793A\u548C\u641C\u7D22\uFF0C\u4E0D\u4FEE\u6539\u539F\u6536\u85CF\u5185\u5BB9\u3002" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u6211\u7684\u5907\u6CE8" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("input", { autoFocus: true, value: organizeItem.note, maxLength: 160, placeholder: "\u4E0D\u586B\u5199\u5219\u663E\u793A\u539F\u540D", onChange: (event) => setOrganizeItem((current2) => current2 ? { ...current2, note: event.target.value, error: "" } : current2) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { children: "\u5907\u6CE8\u4EC5\u4F9B\u672C\u4EBA\u663E\u793A\u548C\u641C\u7D22\uFF0C\u4E0D\u4FEE\u6539\u539F\u6536\u85CF\u5185\u5BB9\u3002" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("label", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", { children: "\u6536\u85CF\u6587\u4EF6\u5939" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("select", { value: organizeItem.folderId, disabled: foldersAvailable !== true, onChange: (event) => setOrganizeItem((current2) => current2 ? { ...current2, folderId: event.target.value, error: "" } : current2), children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "", children: "\u672A\u5206\u7C7B" }),
-        folders.map((folder) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: folder.id, children: folder.name }, folder.id))
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("label", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", { children: "\u6536\u85CF\u6587\u4EF6\u5939" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("select", { value: organizeItem.folderId, disabled: foldersAvailable !== true, onChange: (event) => setOrganizeItem((current2) => current2 ? { ...current2, folderId: event.target.value, error: "" } : current2), children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "", children: "\u672A\u5206\u7C7B" }),
+        folders.map((folder) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: folder.id, children: folder.name }, folder.id))
       ] })
     ] }),
-    organizeItem.error && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { role: "alert", children: organizeItem.error }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-favorite-editor-actions", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: organizationBusy, onClick: () => void removeOrganizedItem(), children: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("span", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: organizationBusy, onClick: () => setOrganizeItem(void 0), children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: organizationBusy, children: "\u4FDD\u5B58" })
+    organizeItem.error && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "alert", children: organizeItem.error }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-favorite-editor-actions", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button ppd-button-danger", disabled: organizationBusy, onClick: () => void removeOrganizedItem(), children: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("span", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: organizationBusy, onClick: () => setOrganizeItem(void 0), children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "submit", className: "ppd-button ppd-button-primary", disabled: organizationBusy, children: "\u4FDD\u5B58" })
     ] })
   ] }) }) : null;
-  const migrationNotice = migration?.status === "blocked" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u767B\u5F55\u5C1A\u672A\u6388\u6743\u4E91\u7AEF\u6536\u85CF\uFF0C\u8BF7\u9000\u51FA\u540E\u91CD\u65B0\u767B\u5F55\u4E00\u6B21\uFF1B\u5176\u4ED6\u529F\u80FD\u4ECD\u53EF\u4F7F\u7528\u3002" }) : migration?.unknown ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "ppd-alert", role: "status", children: [
+  const migrationNotice = migration?.status === "blocked" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "status", children: "\u5F53\u524D\u767B\u5F55\u5C1A\u672A\u6388\u6743\u4E91\u7AEF\u6536\u85CF\uFF0C\u8BF7\u9000\u51FA\u540E\u91CD\u65B0\u767B\u5F55\u4E00\u6B21\uFF1B\u5176\u4ED6\u529F\u80FD\u4ECD\u53EF\u4F7F\u7528\u3002" }) : migration?.unknown ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "ppd-alert", role: "status", children: [
     "\u6709 ",
     migration.unknown,
     " \u9879\u65E7\u6536\u85CF\u7684\u8FC1\u79FB\u7ED3\u679C\u65E0\u6CD5\u786E\u8BA4\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u8BD5\uFF0C\u907F\u514D\u5DF2\u53D6\u6D88\u7684\u6536\u85CF\u88AB\u91CD\u65B0\u52A0\u56DE\u3002"
-  ] }) : migration?.rejected ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { className: "ppd-alert", role: "status", children: [
+  ] }) : migration?.rejected ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { className: "ppd-alert", role: "status", children: [
     migration.rejected,
     " \u9879\u65E7\u6536\u85CF\u5DF2\u5931\u6548\u6216\u65E0\u6743\u8BBF\u95EE\u3002",
-    migration.retryable && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "migration", onClick: () => void retryMigration(), children: busy === "migration" ? "\u6B63\u5728\u91CD\u8BD5\u2026" : "\u91CD\u8BD5\u5931\u8D25\u9879" })
+    migration.retryable && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: busy === "migration", onClick: () => void retryMigration(), children: busy === "migration" ? "\u6B63\u5728\u91CD\u8BD5\u2026" : "\u91CD\u8BD5\u5931\u8D25\u9879" })
   ] }) : null;
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("section", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Notice, { error: error51 || favoriteSnapshot.error, notice }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5907\u6CE8\u3001\u539F\u540D\u6216\u6587\u4EF6\u5939", busy: loading, onChange: setQuery, onSearch: () => {
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Notice, { error: error51 || favoriteSnapshot.error, notice }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SearchBar, { value: query, placeholder: "\u641C\u7D22\u5907\u6CE8\u3001\u539F\u540D\u6216\u6587\u4EF6\u5939", busy: loading, onChange: setQuery, onSearch: () => {
       const value2 = query.trim();
       setPage(1);
       if (value2 === search) void load();
@@ -25925,29 +26019,29 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
     } }),
     folderControls,
     migrationNotice,
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: loading && !rows2.length, error: !rows2.length ? error51 : "", empty: !rows2.length && !folderOverview ? "\u6536\u85CF\u516C\u5F00 Skill \u6216\u56FE\u5E93\u56FE\u7247\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : "", children: folderOverview ? folderCards : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_jsx_runtime18.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-grid", children: visible2.map((row) => {
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: loading && !rows2.length, error: !rows2.length ? error51 : "", empty: !rows2.length && !folderOverview ? "\u6536\u85CF\u516C\u5F00 Skill \u6216\u56FE\u5E93\u56FE\u7247\u540E\u4F1A\u51FA\u73B0\u5728\u8FD9\u91CC\u3002" : "", children: folderOverview ? folderCards : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-grid", children: visible.map((row) => {
         const originalTitle = row.label || row.id;
         const title = row.note || originalTitle;
         const subtitle = [row.note ? `\u539F\u540D\uFF1A${originalTitle}` : "", row.type === "gallery" ? "\u56FE\u5E93\u56FE\u7247" : "Skill", folderName(row.folderId) || "\u672A\u5206\u7C7B"].filter(Boolean).join(" \xB7 ");
         const responseBusy = favoriteResponseState.isBusy(uiLease, row.type, row.id);
-        return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("article", { className: "ppd-card ppd-favorite-skill-card", "data-asset-id": row.id, "data-favorite-type": row.type, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${title}`, disabled: busy === row.id, onClick: () => void open(row), children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ImageFrame, { src: row.imageUrl, alt: title }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { className: "ppd-card-copy", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { title, children: cardTitle(title) }),
-              /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("small", { title: subtitle, children: subtitle })
+        return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("article", { className: "ppd-card ppd-favorite-skill-card", "data-asset-id": row.id, "data-favorite-type": row.type, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("button", { type: "button", className: "ppd-card-open", "aria-label": `\u67E5\u770B ${title}`, disabled: busy === row.id, onClick: () => void open(row), children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ImageFrame, { src: row.imageUrl, alt: title }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { className: "ppd-card-copy", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { title, children: cardTitle(title) }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("small", { title: subtitle, children: subtitle })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6536\u85CF ${title}`, disabled: responseBusy, actions: [{ label: "\u5907\u6CE8\u4E0E\u6587\u4EF6\u5939", run: () => startOrganizing(row) }, { label: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664", danger: true, run: () => void toggleFavorite(row) }] })
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-card-use", disabled: busy === row.id, onClick: () => void use(row), children: "\u9009\u5165" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(FavoriteMenu, { label: `\u7BA1\u7406\u6536\u85CF ${title}`, disabled: responseBusy, actions: [{ label: "\u5907\u6CE8\u4E0E\u6587\u4EF6\u5939", run: () => startOrganizing(row) }, { label: "\u4ECE\u6536\u85CF\u5939\u79FB\u9664", danger: true, run: () => void toggleFavorite(row) }] })
         ] }, `${row.type}:${row.id}`);
       }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PageNav, { page, total: rows2.length, onPage: setPage })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PageNav, { page, total: rows2.length, onPage: setPage })
     ] }) }),
-    cursor && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { className: "ppd-load-more", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("span", { children: [
+    cursor && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { className: "ppd-load-more", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: loading, onClick: () => void load(true), children: "\u52A0\u8F7D\u66F4\u591A\u6536\u85CF" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("span", { children: [
         "\u5DF2\u52A0\u8F7D ",
         rows2.length,
         " \u6761"
@@ -25959,19 +26053,19 @@ function AssetsPanel({ request, onUse, refreshKey, uiLease }) {
   ] });
 }
 function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nativeSessionId }) {
-  const requestRef = (0, import_react19.useRef)(request);
-  const onUseRef = (0, import_react19.useRef)(onUse);
+  const requestRef = (0, import_react18.useRef)(request);
+  const onUseRef = (0, import_react18.useRef)(onUse);
   requestRef.current = request;
   onUseRef.current = onUse;
-  const composerRequestRef = (0, import_react19.useRef)(composerRequest);
+  const composerRequestRef = (0, import_react18.useRef)(composerRequest);
   composerRequestRef.current = composerRequest;
-  const stableRequest = (0, import_react19.useCallback)((action, args) => requestRef.current(action, args), []);
-  const stableComposerRequest = (0, import_react19.useCallback)((action, args) => composerRequestRef.current(action, args), []);
-  const stableOnUse = (0, import_react19.useCallback)((selection) => onUseRef.current(selection), []);
-  const selectionSequence = (0, import_react19.useRef)(0);
-  const [composerSelection, setComposerSelection] = (0, import_react19.useState)();
-  const [composerReveal, setComposerReveal] = (0, import_react19.useState)(0);
-  const selectForComposer = (0, import_react19.useCallback)(async (selection) => {
+  const stableRequest = (0, import_react18.useCallback)((action, args) => requestRef.current(action, args), []);
+  const stableComposerRequest = (0, import_react18.useCallback)((action, args) => composerRequestRef.current(action, args), []);
+  const stableOnUse = (0, import_react18.useCallback)((selection) => onUseRef.current(selection), []);
+  const selectionSequence = (0, import_react18.useRef)(0);
+  const [composerSelection, setComposerSelection] = (0, import_react18.useState)();
+  const [composerReveal, setComposerReveal] = (0, import_react18.useState)(0);
+  const selectForComposer = (0, import_react18.useCallback)(async (selection) => {
     if (selection.kind === "asset" || selection.kind === "gallery") {
       let ownerId = selection.ownerId;
       if (selection.kind === "gallery") {
@@ -25995,11 +26089,11 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
     setComposerSelection({ ...selection, sequence: ++selectionSequence.current });
     setComposerReveal((value2) => value2 + 1);
   }, [stableComposerRequest]);
-  const selectionConsumed = (0, import_react19.useCallback)((sequence) => setComposerSelection((current2) => current2?.sequence === sequence ? void 0 : current2), []);
-  const [snapshot, setSnapshot] = (0, import_react19.useState)();
-  const [busy, setBusy] = (0, import_react19.useState)(false);
-  const [error51, setError] = (0, import_react19.useState)("");
-  const loadSnapshot = (0, import_react19.useCallback)(async () => {
+  const selectionConsumed = (0, import_react18.useCallback)((sequence) => setComposerSelection((current2) => current2?.sequence === sequence ? void 0 : current2), []);
+  const [snapshot, setSnapshot] = (0, import_react18.useState)();
+  const [busy, setBusy] = (0, import_react18.useState)(false);
+  const [error51, setError] = (0, import_react18.useState)("");
+  const loadSnapshot = (0, import_react18.useCallback)(async () => {
     try {
       const { data } = await stableRequest("snapshot", {});
       setSnapshot(data);
@@ -26008,7 +26102,7 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       setError(displayError2(error52));
     }
   }, [stableRequest]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     const polling = startVisiblePolling(async () => {
       await loadSnapshot();
       return null;
@@ -26044,14 +26138,14 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
   const pendingCount = snapshot?.pending.generations || 0;
   const accountKey = snapshot?.account.userId || "anonymous";
   const accountUiScope = snapshot ? JSON.stringify([accountKey, snapshot.account.uiScope || "legacy", nativeSessionId || ""]) : "pending";
-  const uiLease = (0, import_react19.useMemo)(() => createPanelUiLease(accountUiScope), [accountUiScope]);
-  (0, import_react19.useLayoutEffect)(() => {
+  const uiLease = (0, import_react18.useMemo)(() => createPanelUiLease(accountUiScope), [accountUiScope]);
+  (0, import_react18.useLayoutEffect)(() => {
     clearAllResultSubmissions();
     return () => clearAllResultSubmissions();
   }, [accountUiScope]);
-  const [historyOpen, setHistoryOpen] = (0, import_react19.useState)(false);
-  const panelScroll = (0, import_react19.useRef)(null);
-  (0, import_react19.useLayoutEffect)(() => {
+  const [historyOpen, setHistoryOpen] = (0, import_react18.useState)(false);
+  const panelScroll = (0, import_react18.useRef)(null);
+  (0, import_react18.useLayoutEffect)(() => {
     if (!snapshot) return;
     const node = panelScroll.current;
     if (!node) return;
@@ -26060,52 +26154,52 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       writePanelUiState(uiLease, `scroll:${section}`, node.scrollTop);
     };
   }, [section, snapshot?.account.userId, snapshot?.account.uiScope, uiLease]);
-  const [submission, setSubmission] = (0, import_react19.useState)();
-  (0, import_react19.useEffect)(() => {
+  const [submission, setSubmission] = (0, import_react18.useState)();
+  (0, import_react18.useEffect)(() => {
     setHistoryOpen(false);
     setSubmission(void 0);
   }, [section, accountKey]);
-  (0, import_react19.useEffect)(() => {
+  (0, import_react18.useEffect)(() => {
     if (historyOpen) panelScroll.current?.scrollTo({ top: 0 });
   }, [historyOpen]);
-  const onSubmission = (0, import_react19.useCallback)((operation, error52, starting = false) => {
+  const onSubmission = (0, import_react18.useCallback)((operation, error52, starting = false) => {
     setSubmission({ operation, error: error52, ownerId: accountKey });
     if (starting) setHistoryOpen(false);
   }, [accountKey]);
-  const onVerification = (0, import_react19.useCallback)((operation) => {
+  const onVerification = (0, import_react18.useCallback)((operation) => {
     setSubmission(operation ? { operation, ownerId: accountKey } : void 0);
     setHistoryOpen(!!operation);
   }, [accountKey]);
   const composerSection = section === "generation" || section === "gallery" || section === "skills" || section === "assets";
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("main", { className: `ppd-panel ppd-panel-${section}`, "data-podplo-panel": section, "data-podplo-session": nativeSessionId, "data-podplo-history-open": historyOpen, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { ref: panelScroll, className: "ppd-panel-scroll", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(AccountBar, { snapshot, busy, onAccountAction: (action) => void accountAction(action), onRefresh: () => void refresh(), request: stableRequest }),
-      error51 && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
-      snapshot && section === "generation" && !historyOpen && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => setHistoryOpen(true), children: "\u5904\u7406\u8BB0\u5F55" }) }),
-      snapshot && historyOpen && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-content ppd-history-content", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GenerationHistory, { request: stableComposerRequest, submission: submission?.ownerId === accountKey ? submission : void 0, onBack: () => setHistoryOpen(false), renderAsset: (id) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PrivateAssetPreview, { id, alt: "\u751F\u6210\u7ED3\u679C", request: stableComposerRequest, revision: 0 }) }, accountUiScope) }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(Status, { loading: !error51, error: error51, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(LocalResults, { request: stableRequest, uiLease, ownerId: accountKey }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(CollectionsPanel, { request: stableRequest, ownerId: accountKey, onUse: selectForComposer, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, uiLease }, accountUiScope) })
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("main", { className: `ppd-panel ppd-panel-${section}`, "data-podplo-panel": section, "data-podplo-session": nativeSessionId, "data-podplo-history-open": historyOpen, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { ref: panelScroll, className: "ppd-panel-scroll", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(AccountBar, { snapshot, busy, onAccountAction: (action) => void accountAction(action), onRefresh: () => void refresh(), request: stableRequest }),
+      error51 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error51 }),
+      snapshot && section === "generation" && !historyOpen && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => setHistoryOpen(true), children: "\u5904\u7406\u8BB0\u5F55" }) }),
+      snapshot && historyOpen && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-content ppd-history-content", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationHistory, { request: stableComposerRequest, submission: submission?.ownerId === accountKey ? submission : void 0, onBack: () => setHistoryOpen(false), renderAsset: (id) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(PrivateAssetPreview, { id, alt: "\u751F\u6210\u7ED3\u679C", request: stableComposerRequest, revision: 0 }) }, accountUiScope) }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-content", hidden: historyOpen, children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: !error51, error: error51, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(LocalResults, { request: stableRequest, uiLease, ownerId: accountKey }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CollectionsPanel, { request: stableRequest, ownerId: accountKey, onUse: selectForComposer, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, uiLease }, accountUiScope) })
     ] }),
-    snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { hidden: historyOpen, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) })
+    snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { hidden: historyOpen, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onSubmission, onVerification, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) })
   ] });
 }
 
 // plugins/podplo-dsh/src/workspace.tsx
-var import_jsx_runtime19 = require("react/jsx-runtime");
+var import_jsx_runtime18 = require("react/jsx-runtime");
 function PodploWorkspace({ request, composerRequest = request, onUse, nativeSessionId, navigator: navigator2, onSelectSection }) {
-  const section = (0, import_react20.useSyncExternalStore)(navigator2.subscribe, navigator2.getSnapshot, navigator2.getSnapshot);
-  const navigate = (0, import_react20.useCallback)((next) => {
+  const section = (0, import_react19.useSyncExternalStore)(navigator2.subscribe, navigator2.getSnapshot, navigator2.getSnapshot);
+  const navigate = (0, import_react19.useCallback)((next) => {
     navigator2.navigate(next);
     onSelectSection?.(next);
   }, [navigator2, onSelectSection]);
-  (0, import_react20.useEffect)(() => {
+  (0, import_react19.useEffect)(() => {
     const current2 = readPodploNavigationPreferences();
     if (current2.lastSection !== section) writePodploNavigationPreferences({ ...current2, lastSection: section });
   }, [section]);
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "ppd-workspace", "data-podplo-workspace": true, "data-podplo-section": section, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { className: "ppd-workspace-main", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(PodploPanel, { section, request, composerRequest, onUse, nativeSessionId, onNavigate: navigate }) }) });
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-workspace", "data-podplo-workspace": true, "data-podplo-section": section, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { className: "ppd-workspace-main", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(PodploPanel, { section, request, composerRequest, onUse, nativeSessionId, onNavigate: navigate }) }) });
 }
 
 // plugins/podplo-dsh/src/style.css
-var style_default = '.ppd-panel{--ppd-bg:#fff;--ppd-surface:#f7f7f5;--ppd-line:#e5e5e1;--ppd-text:#252522;--ppd-muted:#74746d;--ppd-accent:#252522;--ppd-soft:#efefeb;--ppd-danger:#a53a31;box-sizing:border-box;min-height:100%;background:var(--ppd-bg);color:var(--ppd-text);font:14px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-panel *{box-sizing:border-box}.ppd-panel button,.ppd-panel input,.ppd-panel textarea,.ppd-panel select{font:inherit;color:inherit}.ppd-panel button{cursor:pointer}.ppd-panel button:disabled{cursor:not-allowed;opacity:.48}.ppd-content{max-width:1180px;margin:0 auto;padding:28px 30px 64px}.ppd-account{position:sticky;z-index:20;top:0;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px;border-bottom:1px solid var(--ppd-line);background:#ffffffef;backdrop-filter:blur(14px)}.ppd-connection,.ppd-account-meta,.ppd-actions,.ppd-toolbar-row{display:flex;align-items:center;gap:10px}.ppd-connection>div{display:grid;line-height:1.3}.ppd-connection strong{font-size:12px;font-weight:650}.ppd-connection small{font-size:10px;color:var(--ppd-muted)}.ppd-dot{width:8px;height:8px;border-radius:50%;background:#b7b7b1;box-shadow:0 0 0 3px #b7b7b11c}.ppd-dot.is-online{background:#45a06b;box-shadow:0 0 0 3px #45a06b1c}.ppd-account-meta{font-size:11px;color:var(--ppd-muted)}.ppd-phase{padding:3px 7px;border-radius:999px;background:var(--ppd-soft)}.ppd-button,.ppd-icon-button,.ppd-back{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;text-decoration:none;white-space:nowrap}.ppd-button:hover,.ppd-icon-button:hover,.ppd-back:hover{border-color:#cacac3;background:#fafaf8}.ppd-button-primary{border-color:var(--ppd-accent);background:var(--ppd-accent);color:#fff}.ppd-button-primary:hover{border-color:#000;background:#000}.ppd-button-quiet{min-height:29px;padding:5px 9px;background:transparent}.ppd-button-danger{border-color:#dec0bb;color:var(--ppd-danger);background:#fff9f8}.ppd-button-danger:hover{border-color:var(--ppd-danger);background:#fff4f2}.ppd-icon-button{width:32px;min-height:32px;padding:0}.ppd-icon{display:inline-grid;place-items:center;min-width:1em;font-size:15px;line-height:1}.ppd-danger{color:var(--ppd-danger)}.ppd-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap;border:0}.ppd-alert,.ppd-notice{max-width:1180px;margin:12px auto 0;padding:10px 12px;border-radius:8px;font-size:12px}.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}.ppd-notice{border:1px solid #cbe0d2;background:#f4fbf6;color:#326f48}.ppd-pending{max-width:1180px;margin:12px auto 0;border:1px solid #e6ddc6;border-radius:10px;background:#fffcf5;overflow:hidden}.ppd-pending-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;padding:11px 14px;border:0;background:transparent;text-align:left}.ppd-pending-toggle span{font-weight:620}.ppd-pending-toggle small{color:var(--ppd-muted)}.ppd-pending-list{display:grid;gap:8px;padding:0 12px 12px}.ppd-pending-list>article{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;align-items:center;gap:16px;padding:12px;border-top:1px solid #ece4d2}.ppd-pending-list>article>div:first-child{display:grid}.ppd-pending-list span{font-size:12px;color:var(--ppd-muted)}.ppd-pending-list dl{display:flex;gap:14px;margin:0}.ppd-pending-list dl div{display:grid}.ppd-pending-list dt{font-size:10px;color:var(--ppd-muted)}.ppd-pending-list dd{margin:0;font-weight:650}.ppd-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}.ppd-section-heading h1,.ppd-detail h2,.ppd-editor h2{margin:1px 0 4px;font-size:25px;line-height:1.2;letter-spacing:-.025em}.ppd-section-heading p{margin:0;color:var(--ppd-muted)}.ppd-section-heading>span{font-size:12px;color:var(--ppd-muted)}.ppd-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:700;color:#8b8b84}.ppd-tabs{display:flex;gap:3px;width:max-content;margin:0 0 20px;padding:3px;border-radius:9px;background:var(--ppd-soft)}.ppd-tabs button{min-width:96px;padding:7px 12px;border:0;border-radius:7px;background:transparent;color:var(--ppd-muted)}.ppd-tabs button.is-active{background:#fff;color:var(--ppd-text);box-shadow:0 1px 4px #1111}.ppd-search{display:flex;align-items:center;gap:8px;margin:0 0 20px}.ppd-search label{position:relative;display:flex;align-items:center;flex:1;min-width:180px}.ppd-search label>.ppd-icon{position:absolute;left:11px;color:#8f8f88}.ppd-search input,.ppd-search select,.ppd-inline-input input,.ppd-editor input,.ppd-editor textarea{width:100%;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;outline:none}.ppd-search input{height:38px;padding:8px 12px 8px 34px}.ppd-search select{width:auto;height:38px;padding:7px 31px 7px 10px}.ppd-search input:focus,.ppd-search select:focus,.ppd-inline-input input:focus,.ppd-editor input:focus,.ppd-editor textarea:focus{border-color:#aaa9a1;box-shadow:0 0 0 3px #2221}.ppd-toolbar-row{align-items:flex-start;justify-content:space-between}.ppd-toolbar-row>.ppd-search{flex:1}.ppd-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 13px}.ppd-card{position:relative;min-width:0}.ppd-card-open{display:block;width:100%;padding:0;border:0;background:none;text-align:left}.ppd-card-open:hover .ppd-image img{transform:scale(1.02)}.ppd-image{display:grid;place-items:center;width:100%;aspect-ratio:1;overflow:hidden;border-radius:9px;background:var(--ppd-surface);color:#aaa}.ppd-image img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .18s ease}.ppd-image-pair{grid-template-columns:1fr 1fr}.ppd-image-pair img{min-width:0;object-fit:cover}.ppd-card-copy{display:grid;gap:3px;margin-top:8px;padding-right:28px}.ppd-card-copy strong,.ppd-card-copy span,.ppd-card-copy small{overflow:hidden;text-overflow:ellipsis}.ppd-card-copy strong{white-space:nowrap;font-size:12px;font-weight:650}.ppd-card-copy span{display:-webkit-box;min-height:34px;color:var(--ppd-muted);font-size:11px;-webkit-line-clamp:2;-webkit-box-orient:vertical}.ppd-card-copy small{white-space:nowrap;color:#989891;font-size:10px}.ppd-favorite{position:absolute;top:7px;right:7px;display:grid;place-items:center;width:27px;height:27px;padding:0;border:1px solid #ffffff80;border-radius:50%;background:#ffffffed;color:#666;box-shadow:0 1px 6px #1112}.ppd-favorite.is-active{color:#b14657;background:#fff4f5}.ppd-favorite.is-active .ppd-icon{font-size:0}.ppd-favorite.is-active .ppd-icon::after{content:"\u2665";font-size:15px}.ppd-card-use{position:absolute;right:0;bottom:0;padding:2px 0;border:0;background:none;color:#5e6e91;font-size:10px}.ppd-card-delete{position:absolute;left:0;bottom:0;padding:2px;border:0;background:none;color:var(--ppd-danger)}.ppd-load-more{display:flex;justify-content:center;margin-top:28px}.ppd-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;color:var(--ppd-muted);font-size:11px}.ppd-pagination button{padding:5px 10px;border:1px solid var(--ppd-line);border-radius:7px;background:#fff}.ppd-state{display:grid;place-items:center;gap:6px;min-height:220px;padding:30px;border:1px dashed var(--ppd-line);border-radius:10px;text-align:center;color:var(--ppd-muted)}.ppd-state strong{color:var(--ppd-text)}.ppd-state.ppd-error{color:var(--ppd-danger)}.ppd-spinner{width:18px;height:18px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-spin .75s linear infinite}@keyframes ppd-spin{to{transform:rotate(360deg)}}.ppd-detail-header{display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:start;gap:15px;margin-bottom:25px}.ppd-back{justify-self:start;border-color:transparent;background:transparent;padding-left:0}.ppd-detail-grid{display:grid;grid-template-columns:minmax(320px,1.1fr) minmax(280px,.9fr);gap:30px}.ppd-detail-grid>.ppd-image{aspect-ratio:auto;min-height:360px;max-height:70vh}.ppd-detail-copy{min-width:0}.ppd-detail-copy h3{margin:0 0 10px;font-size:13px}.ppd-detail-copy dl{display:grid;margin:0 0 20px}.ppd-detail-copy dl>div{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--ppd-line)}.ppd-detail-copy dt{color:var(--ppd-muted)}.ppd-detail-copy dd{margin:0}.ppd-lead{margin-top:0;white-space:pre-wrap;color:#55554f}.ppd-tags{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0}.ppd-tags span{padding:3px 7px;border-radius:999px;background:var(--ppd-soft);font-size:10px;color:#676761}.ppd-skill-facts{display:grid;gap:16px;margin-top:24px}.ppd-skill-facts section{border-top:1px solid var(--ppd-line);padding-top:12px}.ppd-skill-facts ul{margin:0;padding-left:18px;color:#575751}.ppd-family-intro{margin:-8px 0 24px}.ppd-family-intro p{max-width:760px;color:var(--ppd-muted)}.ppd-family-grid .ppd-card-copy{padding-right:0}.ppd-list{display:grid;gap:8px}.ppd-list>article{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:8px;padding:12px 13px;border:1px solid var(--ppd-line);border-radius:10px}.ppd-list-open{display:grid;gap:2px;min-width:0;padding:0;border:0;background:none;text-align:left}.ppd-list-open strong,.ppd-list-open span,.ppd-list-open small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-list-open span{color:var(--ppd-muted)}.ppd-list-open small{font-size:10px;color:#999}.ppd-editor{max-width:900px;margin:0 auto}.ppd-editor>header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}.ppd-editor fieldset{display:grid;gap:18px;margin:0;padding:0;border:0}.ppd-editor label{display:grid;gap:6px}.ppd-editor label>span{font-weight:620}.ppd-editor label small{font-weight:400;color:var(--ppd-muted)}.ppd-editor input,.ppd-editor textarea{padding:9px 11px;resize:vertical}.ppd-editor .ppd-prompt{min-height:180px;line-height:1.65}.ppd-editor>footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px;padding-top:16px;border-top:1px solid var(--ppd-line)}.ppd-editor>footer span{font-size:11px;color:var(--ppd-muted)}.ppd-form-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}.ppd-form-heading h3{margin:0;font-size:13px}.ppd-form-heading p{margin:2px 0;color:var(--ppd-muted);font-size:11px}.ppd-form-heading>span{font-size:11px;color:var(--ppd-muted)}.ppd-reference-editor>ol{display:grid;gap:6px;margin:0;padding:0;list-style:none}.ppd-reference-editor>ol li{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto auto;align-items:center;gap:7px;padding:8px;border:1px solid var(--ppd-line);border-radius:8px}.ppd-reference-editor>ol li>span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ppd-soft);font-size:10px}.ppd-reference-editor>ol li>div{display:grid;min-width:0}.ppd-reference-editor>ol strong{font-size:11px}.ppd-reference-editor>ol small{overflow:hidden;text-overflow:ellipsis;color:var(--ppd-muted);font-size:9px}.ppd-reference-choices{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.ppd-reference-choices button{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 8px;border:1px solid var(--ppd-line);border-radius:7px;background:var(--ppd-surface);font-size:10px}.ppd-inline-input{display:flex;gap:7px}.ppd-inline-input input{min-width:0;padding:8px 10px}.ppd-conflict{display:grid;gap:4px;margin-bottom:16px;padding:12px;border:1px solid #e8c9a8;border-radius:9px;background:#fff9f1;color:#7d4e24}.ppd-conflict .ppd-button{justify-self:start;margin-top:6px}.ppd-user-skill-detail{display:grid;gap:18px;max-width:850px;margin-left:105px}.ppd-user-skill-detail>p{color:var(--ppd-muted)}.ppd-user-skill-detail section{padding:15px;border-radius:10px;background:var(--ppd-surface)}.ppd-user-skill-detail h3{margin:0 0 8px;font-size:12px}.ppd-user-skill-detail pre{max-height:300px;margin:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.ppd-user-skill-detail ol{margin:0;padding-left:22px;font-size:11px;color:var(--ppd-muted)}.ppd-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.ppd-break{overflow-wrap:anywhere}.ppd-dialog-backdrop{position:fixed;z-index:100;inset:0;display:grid;place-items:center;padding:24px;background:#16161355;backdrop-filter:blur(2px)}.ppd-dialog{width:min(440px,100%);padding:24px;border:1px solid var(--ppd-line);border-radius:13px;background:#fff;box-shadow:0 24px 80px #1114}.ppd-dialog h2{margin:0 0 9px;font-size:18px}.ppd-dialog p{margin:0 0 22px;color:var(--ppd-muted)}.ppd-dialog .ppd-actions{justify-content:flex-end}\n@media(max-width:980px){.ppd-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ppd-detail-grid{grid-template-columns:1fr}.ppd-detail-grid>.ppd-image{min-height:300px}.ppd-pending-list>article{grid-template-columns:1fr}.ppd-user-skill-detail{margin-left:0}}\n@media(max-width:720px){.ppd-content{padding:20px 16px 48px}.ppd-account{align-items:flex-start;padding:10px 14px}.ppd-connection small,.ppd-phase,.ppd-account-meta>span:first-child{display:none}.ppd-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}.ppd-search,.ppd-toolbar-row,.ppd-section-heading{align-items:stretch;flex-wrap:wrap}.ppd-search label{flex-basis:100%}.ppd-search select{flex:1}.ppd-toolbar-row>.ppd-search{flex-basis:100%}.ppd-detail-header{grid-template-columns:1fr}.ppd-detail-header>.ppd-actions{flex-wrap:wrap}.ppd-detail-grid>.ppd-image{min-height:240px}.ppd-list>article{grid-template-columns:minmax(0,1fr) auto auto}.ppd-list>article>.ppd-button{grid-column:1/-1}.ppd-editor>footer{align-items:stretch;flex-direction:column}.ppd-user-skill-detail{margin-left:0}.ppd-pending{margin-inline:12px}}\n.ppd-pending-list>article{grid-template-columns:minmax(180px,.8fr) auto minmax(240px,1fr) auto}.ppd-batch-copy{display:grid;min-width:0}.ppd-batch-copy small{font-size:10px;color:#9a693c}.ppd-batch-summary{align-self:start}.ppd-batch-progress{display:grid;gap:5px;min-width:0}.ppd-batch-progress progress{width:100%;height:6px;border:0;border-radius:999px;overflow:hidden;background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-bar{background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-value{background:#6b826d}.ppd-batch-progress>span{font-size:10px;color:var(--ppd-muted)}.ppd-batch-progress details{font-size:10px}.ppd-batch-progress summary{cursor:pointer;color:#5d6680}.ppd-batch-progress ol{display:grid;gap:4px;max-height:180px;margin:7px 0 0;padding:0;overflow:auto;list-style:none}.ppd-batch-progress li{display:grid;grid-template-columns:20px minmax(70px,1fr) auto;gap:5px;align-items:center;padding:5px 6px;border-radius:6px;background:#fff}.ppd-batch-progress li>span{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--ppd-soft);font-size:9px}.ppd-batch-progress code{overflow:hidden;text-overflow:ellipsis;font:9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ppd-muted)}.ppd-batch-progress li>strong{font-size:10px}.ppd-batch-progress li>small{grid-column:2/-1;color:var(--ppd-muted);font-size:9px}.ppd-batch-progress li[data-status="submission_unknown"]>strong,.ppd-batch-progress li[data-status="failed"]>strong{color:var(--ppd-danger)}\n.ppd-native-composer{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:6px 8px;border-top:1px solid #e5e5e1;color:#686862;font:11px/1.4 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-native-composer>span{margin-right:3px;font-weight:700;color:#343431}.ppd-native-composer button{min-height:25px;padding:3px 8px;border:1px solid #e1e1dc;border-radius:7px;background:#fff;color:#50504b;font:inherit;cursor:pointer}.ppd-native-composer button:hover{border-color:#c9c9c2;background:#f8f8f5}.ppd-native-composer small{flex-basis:100%;padding:3px 7px;border-radius:6px;background:#f3f6ef;color:#52705a}\n@media(max-width:1180px){.ppd-pending-list>article{grid-template-columns:1fr auto}.ppd-batch-progress{grid-column:1/-1}.ppd-pending-list>article>.ppd-actions{justify-self:end}}@media(max-width:620px){.ppd-pending-list>article{grid-template-columns:1fr}.ppd-pending-list>article>.ppd-actions{justify-self:start}.ppd-batch-progress{grid-column:auto}}\n.ppd-pending-list>article[data-terminal=true]{background:#fafaf7;opacity:.92}.ppd-favorites-import{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:-8px 0 14px}.ppd-favorites-import>small{color:var(--ppd-muted);font-size:10px}.ppd-favorites-import>p{flex-basis:100%;margin:0;padding:7px 9px;border-radius:7px;background:var(--ppd-surface);font-size:11px}.ppd-favorites-import>section{flex-basis:100%;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-favorites-import>section ul{max-height:160px;margin:8px 0;padding-left:20px;overflow:auto}.ppd-favorites-import>section .ppd-button{margin-right:7px}\n.ppd-button-stop{border-color:#dec9a8;background:#fffaf1;color:#81591f}.ppd-button-stop:hover{border-color:#b98b45;background:#fff5e4}\n.ppd-panel .ppd-button-primary,.ppd-panel .ppd-button-primary:hover{color:#fff}\n.ppd-dialog p.ppd-alert{margin:0 0 14px;color:#92352d}.ppd-favorites-import>p.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}\n.ppd-panel{width:100%;height:100%;min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}\n.ppd-card-copy>span,.ppd-card-copy>small{display:none}\n.ppd-export-result{display:grid;gap:8px;margin-top:14px;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-export-result code{font-size:10px;color:var(--ppd-muted)}\n/* Keep Skill previews inside their frame, including tall originals and before/after pairs. */\n.ppd-panel-skills .ppd-image{grid-template-rows:minmax(0,1fr)}\n.ppd-panel-skills .ppd-image img{min-width:0;min-height:0;object-fit:contain}\n.ppd-panel-skills .ppd-card-open:hover .ppd-image img{transform:none}\n\n/* Public Skill card titles use the full card width. */\n.ppd-panel-skills .ppd-grid:not(.ppd-family-grid) .ppd-card-copy{padding-right:0;text-align:center}\n.ppd-personal-skill-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-personal-skill-card{min-width:0;overflow:hidden;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-personal-skill-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}.ppd-personal-skill-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}.ppd-personal-skill-cover>.ppd-image{aspect-ratio:4/3;border-radius:0}.ppd-personal-skill-copy{display:grid;gap:3px;padding:10px 11px 8px}.ppd-personal-skill-copy strong,.ppd-personal-skill-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-personal-skill-copy strong{font-size:12px}.ppd-personal-skill-copy p{display:-webkit-box;min-height:3em;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}.ppd-personal-skill-copy small{color:var(--ppd-muted);font-size:10px}.ppd-personal-skill-actions{display:flex;gap:5px;padding:0 10px 10px}.ppd-personal-skill-actions .ppd-button{min-width:0;padding:6px 8px}.ppd-personal-skill-actions .ppd-button:first-child{margin-right:auto}\n@media(max-width:980px){.ppd-personal-skill-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:720px){.ppd-personal-skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:460px){.ppd-personal-skill-grid{grid-template-columns:1fr}}\n\n/* Personal Skill references: local upload and visual browsing. */\n.ppd-skill-reference-actions{margin:14px 0;flex-wrap:wrap}\n.ppd-reference-editor>ol li{grid-template-columns:24px 52px minmax(0,1fr) auto auto auto}\n.ppd-reference-editor>ol li>.ppd-image{width:52px;height:52px;aspect-ratio:1;border-radius:5px}\n.ppd-reference-editor>ol strong{overflow-wrap:anywhere}\n.ppd-reference-editor .ppd-image span{padding:3px;font-size:10px;text-align:center}\n.ppd-upload-picker{padding:14px;border:1px solid var(--ppd-line);border-radius:9px}\n.ppd-upload-picker .ppd-search{margin-bottom:14px}\n.ppd-upload-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}\n.ppd-upload-grid>button{display:grid;min-width:0;gap:4px;padding:6px;border:1px solid var(--ppd-line);border-radius:8px;background:var(--ppd-surface);text-align:left;cursor:pointer}\n.ppd-upload-grid>button[aria-pressed=true]{border-color:var(--ppd-text)}\n.ppd-upload-grid>button:disabled{cursor:default;opacity:.6}\n.ppd-upload-grid .ppd-image{width:100%;aspect-ratio:1;border-radius:4px}\n.ppd-upload-grid strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}\n.ppd-upload-grid small{color:var(--ppd-muted);font-size:10px}\n.ppd-user-skill-detail .ppd-skill-reference-detail{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;padding:0;list-style:none}\n.ppd-skill-reference-detail li{min-width:0;overflow-wrap:anywhere}\n.ppd-skill-reference-detail .ppd-image{aspect-ratio:1;margin-bottom:5px}\n@media(max-width:600px){.ppd-upload-picker{padding:10px}.ppd-reference-editor>ol li{grid-template-columns:20px 40px minmax(0,1fr) auto auto auto;gap:4px;padding:6px}.ppd-reference-editor>ol li>.ppd-image{width:40px;height:40px}.ppd-reference-editor>ol .ppd-icon-button{padding:3px}}\n\n/* Library controls share one baseline; group navigation belongs only to lists. */\n.ppd-library-toolbar{display:flex;align-items:center;gap:16px;min-width:0;margin:0 0 24px}\n.ppd-library-toolbar>.ppd-tabs{flex:0 0 auto;margin:0}\n.ppd-tabs{max-width:100%;padding:3px;border-radius:999px;background:#f1f1ee;gap:2px}\n.ppd-panel .ppd-tabs button{font-size:12px;line-height:1.4;min-width:64px;min-height:28px;padding:5px 12px;border-radius:999px;white-space:nowrap;transition:background-color .15s ease,color .15s ease}\n.ppd-tabs button.is-active{background:var(--ppd-text);color:#fff;box-shadow:none}\n.ppd-tabs button:not(.is-active){color:#686861}\n.ppd-tabs button:not(.is-active):hover{background:#e7e7e2;color:var(--ppd-text)}\n.ppd-library-toolbar>.ppd-search{flex:0 1 auto;min-width:0;max-width:100%;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar .ppd-search label{min-width:120px;width:224px;max-width:224px;flex:0 1 224px}\n.ppd-library-toolbar .ppd-search input{height:34px;border-radius:999px}\n.ppd-library-toolbar .ppd-search select{max-width:150px;height:32px}\n.ppd-library-toolbar .ppd-search>.ppd-button{min-height:32px;padding-block:5px}\n.ppd-panel .ppd-library-toolbar input,.ppd-panel .ppd-library-toolbar select,.ppd-panel .ppd-library-toolbar button{font-size:12px}\n.ppd-toolbar-row:has(.ppd-library-toolbar){align-items:center;gap:12px;margin-bottom:24px}\n.ppd-toolbar-row>.ppd-library-toolbar{flex:1;margin-bottom:0}\n.ppd-panel button:focus-visible{outline:2px solid var(--ppd-text);outline-offset:3px}\n.ppd-upload-area{display:flex;align-items:center;flex:none}\n.ppd-upload-area>.ppd-icon-button{width:32px;height:32px;border-radius:50%}\n.ppd-upload-area .ppd-icon{font-size:20px}\n.ppd-library-toolbar>.ppd-archive-toolbar{flex:0 1 auto;min-width:0;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;min-width:120px;width:224px;max-width:224px;height:34px;padding-inline:14px;border-radius:999px;font:inherit}\n.ppd-library-toolbar>.ppd-archive-toolbar select,.ppd-library-toolbar>.ppd-archive-toolbar button{min-height:32px;white-space:nowrap}\n\n/* Web detail hierarchy: full result on the left, reference and information on the right. */\n.ppd-resource-detail>.ppd-back{position:sticky;top:64px;z-index:5;margin-bottom:20px;padding-inline:12px;border-radius:999px;background:var(--ppd-bg)}\n.ppd-resource-detail-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);gap:40px;align-items:start}\n.ppd-resource-visual,.ppd-resource-info{min-width:0}\n.ppd-resource-info>h2{margin:0 0 28px;font-size:28px;font-weight:650;line-height:1.2;overflow-wrap:anywhere}\n.ppd-detail-artwork,.ppd-detail-reference{margin:0}\n.ppd-detail-artwork>figcaption,.ppd-detail-reference>figcaption{margin-bottom:10px;font-size:12px;color:var(--ppd-muted)}\n.ppd-detail-artwork>button{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(360px,56vw,660px);padding:24px;border:0;border-radius:14px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-artwork>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-detail-reference{margin-bottom:28px}\n.ppd-detail-reference>button{display:block;width:88px;height:88px;padding:0;overflow:hidden;border:0;border-radius:10px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-reference>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-resource-about{margin-bottom:28px}\n.ppd-resource-info h3{margin:0 0 10px;font-size:13px;font-weight:550;color:var(--ppd-muted)}\n.ppd-resource-about p{margin:0;font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}\n.ppd-resource-info .ppd-skill-facts{margin:0;gap:20px}\n.ppd-resource-info .ppd-skill-facts section{padding:0;border:0}\n.ppd-resource-info .ppd-skill-facts ul{margin:0;padding-left:18px;line-height:1.7}\n.ppd-resource-info .ppd-skill-facts p{margin:0;line-height:1.7}\n.ppd-resource-info .ppd-tags{gap:6px;margin:20px 0}\n.ppd-resource-info .ppd-tags span{padding:5px 10px;font-size:12px}\n.ppd-resource-facts{margin:0}\n.ppd-resource-facts>div{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--ppd-line)}\n.ppd-resource-facts dt{color:var(--ppd-muted)}\n.ppd-resource-facts dd{margin:0;text-align:right;overflow-wrap:anywhere}\n.ppd-resource-detail-actions{display:flex;align-items:center;gap:12px;margin-top:28px}\n.ppd-resource-detail-actions>.ppd-button-primary{flex:1;min-height:44px;border-radius:999px}\n.ppd-resource-detail-actions>.ppd-favorite{position:static;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--ppd-line);box-shadow:none}\n.ppd-media-dialog{position:fixed;inset:0;width:min(980px,92vw);max-width:92vw;height:min(900px,90vh);max-height:90vh;margin:auto;padding:16px;border:0;border-radius:14px;background:var(--ppd-bg);color:var(--ppd-text)}\n.ppd-media-dialog[open]{display:flex;flex-direction:column;gap:12px}\n.ppd-media-dialog::backdrop{background:#0009}\n.ppd-media-dialog>.ppd-button{align-self:flex-end;flex:none}\n.ppd-media-dialog>img{display:block;min-height:0;width:100%;height:100%;flex:1;object-fit:contain}\n@media(max-width:960px){\n .ppd-library-toolbar{gap:12px}\n .ppd-library-toolbar .ppd-search select{max-width:110px}\n .ppd-panel .ppd-tabs button{padding-inline:10px;min-width:60px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:28px}\n .ppd-resource-info>h2{font-size:24px}\n .ppd-toolbar-row:has(.ppd-library-toolbar){flex-wrap:wrap;justify-content:flex-end}\n .ppd-toolbar-row>.ppd-library-toolbar{flex-basis:100%}\n}\n@media(max-width:700px){\n .ppd-library-toolbar{flex-wrap:wrap;gap:14px}\n .ppd-library-toolbar>.ppd-search,.ppd-library-toolbar>.ppd-archive-toolbar{flex-basis:100%;flex-wrap:wrap}\n .ppd-library-toolbar .ppd-search label{flex:0 1 224px;width:224px;max-width:224px}\n .ppd-library-toolbar .ppd-search select{max-width:none}\n .ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;width:224px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1fr);gap:28px}\n .ppd-detail-artwork>button{height:clamp(300px,85vw,520px);padding:18px}\n .ppd-resource-info>h2{font-size:24px;margin-bottom:22px}\n .ppd-resource-detail-actions{margin-top:24px}\n .ppd-media-dialog{padding:12px}\n}\n@media(prefers-reduced-motion:reduce){.ppd-tabs button{transition:none}}\n\n.ppd-archive-empty{margin:24px 0;color:var(--ppd-muted);font-size:12px}\n\n.ppd-account{display:block}.ppd-account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.ppd-plugin-update{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:7px;font-size:11px;color:var(--ppd-muted)}.ppd-plugin-version{min-width:0;max-width:100%;overflow-wrap:anywhere}.ppd-plugin-update-message{flex-basis:100%;line-height:1.5}.ppd-plugin-update-message.is-error{color:#9b3030}.ppd-plugin-update .ppd-button{padding:4px 9px;font-size:11px}.ppd-account-row .ppd-connection{min-width:0}.ppd-account-row .ppd-connection strong{overflow-wrap:anywhere}\n\n/* A single compact account row; secondary account and update actions live in the disclosure. */\n.ppd-account{padding:6px 20px;background:var(--ppd-bg);backdrop-filter:none}\n.ppd-account-row{min-height:28px;gap:12px}\n.ppd-account-row .ppd-connection{flex:1;gap:8px;overflow:hidden}\n.ppd-account-row .ppd-connection>div{min-width:0}\n.ppd-account-row .ppd-connection strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:550}\n.ppd-account-row .ppd-dot{flex:0 0 7px;width:7px;height:7px;box-shadow:none}\n.ppd-account .ppd-account-meta{flex:0 0 auto;gap:8px;font-size:12px;color:#62625c;white-space:nowrap}\n.ppd-account .ppd-account-balance{display:inline-flex;font-variant-numeric:tabular-nums}\n.ppd-account .ppd-phase{display:inline-flex;padding:0;background:none;color:inherit}\n.ppd-account-meta>.ppd-icon-button,.ppd-account-menu>summary{width:28px;height:28px;min-height:28px;border:0;border-radius:6px;background:transparent}\n.ppd-account-menu{flex:none}\n.ppd-account-menu>summary{display:flex;align-items:center;justify-content:center;cursor:pointer;list-style:none;color:#62625c}\n.ppd-account-menu>summary::-webkit-details-marker{display:none}\n.ppd-account-menu>summary:hover,.ppd-account-menu[open]>summary{background:var(--ppd-soft)}\n.ppd-account-menu>summary:focus-visible{outline:2px solid #66665f;outline-offset:2px}\n.ppd-account-menu-panel{position:absolute;z-index:30;top:calc(100% + 6px);right:12px;width:min(300px,calc(100% - 24px));padding:16px;border:1px solid var(--ppd-line);border-radius:10px;background:var(--ppd-bg);box-shadow:0 8px 24px #00000014;color:var(--ppd-text);white-space:normal}\n.ppd-account-menu-heading{display:grid;gap:5px;font-size:13px}\n.ppd-account-menu-heading>span{overflow-wrap:anywhere;font-size:12px;color:#62625c}\n.ppd-account-menu-panel .ppd-plugin-update{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--ppd-line);gap:8px}\n.ppd-account-menu-panel .ppd-plugin-version:first-child{flex-basis:100%;margin-bottom:2px;font-size:12px}\n.ppd-account-menu-panel .ppd-plugin-update .ppd-button{min-height:30px;font-size:12px}\n.ppd-account-menu-panel .ppd-account-logout{margin-top:12px;width:100%;justify-content:flex-start;border:0;border-top:1px solid var(--ppd-line);border-radius:0;padding:12px 0 0;color:#62625c}\n.ppd-account-warning{margin:5px 0 0;color:#92352d;font-size:12px;line-height:1.5;overflow-wrap:anywhere}\n@media(max-width:720px){.ppd-account{padding:6px 12px}.ppd-account-row{gap:8px}.ppd-account .ppd-account-meta{gap:6px}.ppd-account .ppd-account-meta>.ppd-account-balance{display:inline-flex}}\n\n/* Favorite collections: image covers and quiet, contextual controls. */\n.ppd-collection-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:8px 0 26px}\n.ppd-collection-location{display:flex;align-items:center;gap:12px;min-width:0}.ppd-collection-location>div{min-width:0}.ppd-collection-heading h2{margin:0;font-size:21px;line-height:1.3;font-weight:650;letter-spacing:-.5px;overflow-wrap:anywhere}.ppd-collection-heading small{display:block;margin-top:4px;color:var(--ppd-muted);font-size:12px}\n.ppd-collection-back{border:1px solid var(--ppd-line);background:white;border-radius:50%;width:32px;height:32px;flex-shrink:0}.ppd-collection-heading>.ppd-actions{flex-shrink:0;gap:18px}.ppd-collection-heading .ppd-new-folder,.ppd-collection-heading .ppd-new-folder:hover{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:12px;color:var(--ppd-muted)}.ppd-collection-heading .ppd-new-folder:hover{color:var(--ppd-text)}.ppd-collection-heading .ppd-link-button{padding:0;border:0;background:transparent;font-size:12px;color:var(--ppd-muted)}\n.ppd-collection-status{color:var(--ppd-muted);font-size:12px;margin:0 0 18px}\n.ppd-collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,190px));gap:26px 22px;padding-top:9px}\n.ppd-collection-card{position:relative;min-width:0}.ppd-collection-open{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left}\n.ppd-collection-cover{position:relative;display:block;width:100%;aspect-ratio:1.45;border:1px solid #e5e5e0;border-radius:4px 14px 14px 14px;background:#efefeb;isolation:isolate}\n.ppd-collection-cover:before{content:"";position:absolute;top:-9px;left:-1px;width:38%;height:15px;border:1px solid #e0e0da;border-bottom:0;border-radius:8px 12px 0 0;background:#e8e8e2;z-index:-1}\n.ppd-collection-cover>img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;transition:filter .18s ease}.ppd-collection-open:hover img{filter:brightness(.96)}\n.ppd-collection-mark{position:absolute;left:14px;bottom:14px;width:30px;height:26px;display:grid;place-items:center;border-radius:6px;background:#fffffff0;color:#58584f}.ppd-collection-mark svg{width:19px;height:19px}.ppd-collection-cover.is-empty{display:grid;place-items:center;background:#f4f4f0}.ppd-collection-cover.is-empty .ppd-collection-mark{position:static;width:56px;height:48px;background:transparent;color:#b3b3a8}.ppd-collection-cover.is-empty svg{width:48px;height:48px}\n.ppd-collection-copy{display:grid;gap:4px;padding:11px 24px 0;text-align:center}.ppd-collection-copy strong{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ppd-collection-copy small{color:var(--ppd-muted);font-size:11px}\n.ppd-favorite-menu{position:absolute;right:4px;bottom:16px;z-index:3}.ppd-favorite-menu.is-open{z-index:12}.ppd-favorite-more{width:28px;height:28px;display:grid;place-items:center;padding:5px;border:0;border-radius:6px;background:transparent;color:var(--ppd-muted)}.ppd-favorite-more svg{width:18px;height:18px;fill:currentColor}.ppd-favorite-more:hover,.ppd-favorite-more[aria-expanded=true]{background:var(--ppd-soft)}\n.ppd-favorite-popover{position:absolute;right:0;top:calc(100% + 5px);display:grid;min-width:156px;padding:5px;background:white;border:1px solid var(--ppd-line);border-radius:10px;box-shadow:0 8px 24px #20201814}.ppd-favorite-popover button{border:0;background:transparent;text-align:left;white-space:nowrap;padding:9px 12px;border-radius:5px;font-size:12px}.ppd-favorite-popover button:hover,.ppd-favorite-popover button:focus-visible{background:var(--ppd-surface)}.ppd-favorite-popover .is-danger{color:var(--ppd-danger)}\n.ppd-collection-heading .ppd-favorite-menu{position:relative;right:auto;bottom:auto}\n.ppd-favorite-skill-card .ppd-card-copy{padding-right:4px;padding-bottom:31px}.ppd-favorite-skill-card .ppd-card-copy>small{display:block;font-size:10px;color:var(--ppd-muted)}.ppd-favorite-skill-card .ppd-favorite-menu{bottom:0;right:0}.ppd-favorite-skill-card .ppd-card-use{left:0;right:auto;bottom:3px;font-size:11px;color:var(--ppd-text)}\n@media(max-width:720px){.ppd-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}.ppd-collection-heading{align-items:flex-start;margin-bottom:24px}.ppd-collection-heading h2{font-size:18px}.ppd-collection-heading>.ppd-actions{gap:10px;flex-wrap:wrap;justify-content:flex-end}.ppd-collection-heading .ppd-link-button{font-size:11px}.ppd-collection-mark{left:9px;bottom:9px;width:25px;height:23px}.ppd-collection-copy{padding-inline:22px}.ppd-collection-copy strong{font-size:13px}}\n.ppd-favorite-editor{display:grid;gap:16px}.ppd-favorite-editor>p{margin:0}.ppd-favorite-editor>label{display:grid;gap:6px}.ppd-favorite-editor>label>span{font-weight:620}.ppd-favorite-editor>label>small{font-size:11px;color:var(--ppd-muted)}.ppd-favorite-editor input,.ppd-favorite-editor select{width:100%;min-height:38px;padding:8px 10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-favorite-editor-actions{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px}@media(max-width:600px){.ppd-favorite-editor-actions{grid-template-columns:1fr 1fr}.ppd-favorite-editor-actions>span{display:none}.ppd-favorite-editor-actions>.ppd-button-danger{grid-column:1/-1}}\n';
+var style_default = '.ppd-panel{--ppd-bg:#fff;--ppd-surface:#f7f7f5;--ppd-line:#e5e5e1;--ppd-text:#252522;--ppd-muted:#74746d;--ppd-accent:#252522;--ppd-soft:#efefeb;--ppd-danger:#a53a31;box-sizing:border-box;min-height:100%;background:var(--ppd-bg);color:var(--ppd-text);font:14px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-panel *{box-sizing:border-box}.ppd-panel button,.ppd-panel input,.ppd-panel textarea,.ppd-panel select{font:inherit;color:inherit}.ppd-panel button{cursor:pointer}.ppd-panel button:disabled{cursor:not-allowed;opacity:.48}.ppd-content{max-width:1180px;margin:0 auto;padding:28px 30px 64px}.ppd-account{position:sticky;z-index:20;top:0;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px;border-bottom:1px solid var(--ppd-line);background:#ffffffef;backdrop-filter:blur(14px)}.ppd-connection,.ppd-account-meta,.ppd-actions,.ppd-toolbar-row{display:flex;align-items:center;gap:10px}.ppd-connection>div{display:grid;line-height:1.3}.ppd-connection strong{font-size:12px;font-weight:650}.ppd-connection small{font-size:10px;color:var(--ppd-muted)}.ppd-dot{width:8px;height:8px;border-radius:50%;background:#b7b7b1;box-shadow:0 0 0 3px #b7b7b11c}.ppd-dot.is-online{background:#45a06b;box-shadow:0 0 0 3px #45a06b1c}.ppd-account-meta{font-size:11px;color:var(--ppd-muted)}.ppd-phase{padding:3px 7px;border-radius:999px;background:var(--ppd-soft)}.ppd-button,.ppd-icon-button,.ppd-back{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;text-decoration:none;white-space:nowrap}.ppd-button:hover,.ppd-icon-button:hover,.ppd-back:hover{border-color:#cacac3;background:#fafaf8}.ppd-button-primary{border-color:var(--ppd-accent);background:var(--ppd-accent);color:#fff}.ppd-button-primary:hover{border-color:#000;background:#000}.ppd-button-quiet{min-height:29px;padding:5px 9px;background:transparent}.ppd-button-danger{border-color:#dec0bb;color:var(--ppd-danger);background:#fff9f8}.ppd-button-danger:hover{border-color:var(--ppd-danger);background:#fff4f2}.ppd-icon-button{width:32px;min-height:32px;padding:0}.ppd-icon{display:inline-grid;place-items:center;min-width:1em;font-size:15px;line-height:1}.ppd-danger{color:var(--ppd-danger)}.ppd-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap;border:0}.ppd-alert,.ppd-notice{max-width:1180px;margin:12px auto 0;padding:10px 12px;border-radius:8px;font-size:12px}.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}.ppd-notice{border:1px solid #cbe0d2;background:#f4fbf6;color:#326f48}.ppd-pending{max-width:1180px;margin:12px auto 0;border:1px solid #e6ddc6;border-radius:10px;background:#fffcf5;overflow:hidden}.ppd-pending-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;padding:11px 14px;border:0;background:transparent;text-align:left}.ppd-pending-toggle span{font-weight:620}.ppd-pending-toggle small{color:var(--ppd-muted)}.ppd-pending-list{display:grid;gap:8px;padding:0 12px 12px}.ppd-pending-list>article{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;align-items:center;gap:16px;padding:12px;border-top:1px solid #ece4d2}.ppd-pending-list>article>div:first-child{display:grid}.ppd-pending-list span{font-size:12px;color:var(--ppd-muted)}.ppd-pending-list dl{display:flex;gap:14px;margin:0}.ppd-pending-list dl div{display:grid}.ppd-pending-list dt{font-size:10px;color:var(--ppd-muted)}.ppd-pending-list dd{margin:0;font-weight:650}.ppd-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}.ppd-section-heading h1,.ppd-detail h2,.ppd-editor h2{margin:1px 0 4px;font-size:25px;line-height:1.2;letter-spacing:-.025em}.ppd-section-heading p{margin:0;color:var(--ppd-muted)}.ppd-section-heading>span{font-size:12px;color:var(--ppd-muted)}.ppd-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:700;color:#8b8b84}.ppd-tabs{display:flex;gap:3px;width:max-content;margin:0 0 20px;padding:3px;border-radius:9px;background:var(--ppd-soft)}.ppd-tabs button{min-width:96px;padding:7px 12px;border:0;border-radius:7px;background:transparent;color:var(--ppd-muted)}.ppd-tabs button.is-active{background:#fff;color:var(--ppd-text);box-shadow:0 1px 4px #1111}.ppd-search{display:flex;align-items:center;gap:8px;margin:0 0 20px}.ppd-search label{position:relative;display:flex;align-items:center;flex:1;min-width:180px}.ppd-search label>.ppd-icon{position:absolute;left:11px;color:#8f8f88}.ppd-search input,.ppd-search select,.ppd-inline-input input,.ppd-editor input,.ppd-editor textarea{width:100%;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;outline:none}.ppd-search input{height:38px;padding:8px 12px 8px 34px}.ppd-search select{width:auto;height:38px;padding:7px 31px 7px 10px}.ppd-search input:focus,.ppd-search select:focus,.ppd-inline-input input:focus,.ppd-editor input:focus,.ppd-editor textarea:focus{border-color:#aaa9a1;box-shadow:0 0 0 3px #2221}.ppd-toolbar-row{align-items:flex-start;justify-content:space-between}.ppd-toolbar-row>.ppd-search{flex:1}.ppd-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 13px}.ppd-card{position:relative;min-width:0}.ppd-card-open{display:block;width:100%;padding:0;border:0;background:none;text-align:left}.ppd-card-open:hover .ppd-image img{transform:scale(1.02)}.ppd-image{display:grid;place-items:center;width:100%;aspect-ratio:1;overflow:hidden;border-radius:9px;background:var(--ppd-surface);color:#aaa}.ppd-image img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .18s ease}.ppd-image-pair{grid-template-columns:1fr 1fr}.ppd-image-pair img{min-width:0;object-fit:cover}.ppd-card-copy{display:grid;gap:3px;margin-top:8px;padding-right:28px}.ppd-card-copy strong,.ppd-card-copy span,.ppd-card-copy small{overflow:hidden;text-overflow:ellipsis}.ppd-card-copy strong{white-space:nowrap;font-size:12px;font-weight:650}.ppd-card-copy span{display:-webkit-box;min-height:34px;color:var(--ppd-muted);font-size:11px;-webkit-line-clamp:2;-webkit-box-orient:vertical}.ppd-card-copy small{white-space:nowrap;color:#989891;font-size:10px}.ppd-favorite{position:absolute;top:7px;right:7px;display:grid;place-items:center;width:27px;height:27px;padding:0;border:1px solid #ffffff80;border-radius:50%;background:#ffffffed;color:#666;box-shadow:0 1px 6px #1112}.ppd-favorite.is-active{color:#b14657;background:#fff4f5}.ppd-favorite.is-active .ppd-icon{font-size:0}.ppd-favorite.is-active .ppd-icon::after{content:"\u2665";font-size:15px}.ppd-card-use{position:absolute;right:0;bottom:0;padding:2px 0;border:0;background:none;color:#5e6e91;font-size:10px}.ppd-card-delete{position:absolute;left:0;bottom:0;padding:2px;border:0;background:none;color:var(--ppd-danger)}.ppd-load-more{display:flex;justify-content:center;margin-top:28px}.ppd-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;color:var(--ppd-muted);font-size:11px}.ppd-pagination button{padding:5px 10px;border:1px solid var(--ppd-line);border-radius:7px;background:#fff}.ppd-state{display:grid;place-items:center;gap:6px;min-height:220px;padding:30px;border:1px dashed var(--ppd-line);border-radius:10px;text-align:center;color:var(--ppd-muted)}.ppd-state strong{color:var(--ppd-text)}.ppd-state.ppd-error{color:var(--ppd-danger)}.ppd-spinner{width:18px;height:18px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-spin .75s linear infinite}@keyframes ppd-spin{to{transform:rotate(360deg)}}.ppd-detail-header{display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:start;gap:15px;margin-bottom:25px}.ppd-back{justify-self:start;border-color:transparent;background:transparent;padding-left:0}.ppd-detail-grid{display:grid;grid-template-columns:minmax(320px,1.1fr) minmax(280px,.9fr);gap:30px}.ppd-detail-grid>.ppd-image{aspect-ratio:auto;min-height:360px;max-height:70vh}.ppd-detail-copy{min-width:0}.ppd-detail-copy h3{margin:0 0 10px;font-size:13px}.ppd-detail-copy dl{display:grid;margin:0 0 20px}.ppd-detail-copy dl>div{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--ppd-line)}.ppd-detail-copy dt{color:var(--ppd-muted)}.ppd-detail-copy dd{margin:0}.ppd-lead{margin-top:0;white-space:pre-wrap;color:#55554f}.ppd-tags{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0}.ppd-tags span{padding:3px 7px;border-radius:999px;background:var(--ppd-soft);font-size:10px;color:#676761}.ppd-skill-facts{display:grid;gap:16px;margin-top:24px}.ppd-skill-facts section{border-top:1px solid var(--ppd-line);padding-top:12px}.ppd-skill-facts ul{margin:0;padding-left:18px;color:#575751}.ppd-family-intro{margin:-8px 0 24px}.ppd-family-intro p{max-width:760px;color:var(--ppd-muted)}.ppd-family-grid .ppd-card-copy{padding-right:0}.ppd-list{display:grid;gap:8px}.ppd-list>article{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:8px;padding:12px 13px;border:1px solid var(--ppd-line);border-radius:10px}.ppd-list-open{display:grid;gap:2px;min-width:0;padding:0;border:0;background:none;text-align:left}.ppd-list-open strong,.ppd-list-open span,.ppd-list-open small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-list-open span{color:var(--ppd-muted)}.ppd-list-open small{font-size:10px;color:#999}.ppd-editor{max-width:900px;margin:0 auto}.ppd-editor>header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}.ppd-editor fieldset{display:grid;gap:18px;margin:0;padding:0;border:0}.ppd-editor label{display:grid;gap:6px}.ppd-editor label>span{font-weight:620}.ppd-editor label small{font-weight:400;color:var(--ppd-muted)}.ppd-editor input,.ppd-editor textarea{padding:9px 11px;resize:vertical}.ppd-editor .ppd-prompt{min-height:180px;line-height:1.65}.ppd-editor>footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px;padding-top:16px;border-top:1px solid var(--ppd-line)}.ppd-editor>footer span{font-size:11px;color:var(--ppd-muted)}.ppd-form-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}.ppd-form-heading h3{margin:0;font-size:13px}.ppd-form-heading p{margin:2px 0;color:var(--ppd-muted);font-size:11px}.ppd-form-heading>span{font-size:11px;color:var(--ppd-muted)}.ppd-reference-editor>ol{display:grid;gap:6px;margin:0;padding:0;list-style:none}.ppd-reference-editor>ol li{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto auto;align-items:center;gap:7px;padding:8px;border:1px solid var(--ppd-line);border-radius:8px}.ppd-reference-editor>ol li>span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ppd-soft);font-size:10px}.ppd-reference-editor>ol li>div{display:grid;min-width:0}.ppd-reference-editor>ol strong{font-size:11px}.ppd-reference-editor>ol small{overflow:hidden;text-overflow:ellipsis;color:var(--ppd-muted);font-size:9px}.ppd-reference-choices{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.ppd-reference-choices button{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 8px;border:1px solid var(--ppd-line);border-radius:7px;background:var(--ppd-surface);font-size:10px}.ppd-inline-input{display:flex;gap:7px}.ppd-inline-input input{min-width:0;padding:8px 10px}.ppd-conflict{display:grid;gap:4px;margin-bottom:16px;padding:12px;border:1px solid #e8c9a8;border-radius:9px;background:#fff9f1;color:#7d4e24}.ppd-conflict .ppd-button{justify-self:start;margin-top:6px}.ppd-user-skill-detail{display:grid;gap:18px;max-width:850px;margin-left:105px}.ppd-user-skill-detail>p{color:var(--ppd-muted)}.ppd-user-skill-detail section{padding:15px;border-radius:10px;background:var(--ppd-surface)}.ppd-user-skill-detail h3{margin:0 0 8px;font-size:12px}.ppd-user-skill-detail pre{max-height:300px;margin:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.ppd-user-skill-detail ol{margin:0;padding-left:22px;font-size:11px;color:var(--ppd-muted)}.ppd-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.ppd-break{overflow-wrap:anywhere}.ppd-dialog-backdrop{position:fixed;z-index:100;inset:0;display:grid;place-items:center;padding:24px;background:#16161355;backdrop-filter:blur(2px)}.ppd-dialog{width:min(440px,100%);padding:24px;border:1px solid var(--ppd-line);border-radius:13px;background:#fff;box-shadow:0 24px 80px #1114}.ppd-dialog h2{margin:0 0 9px;font-size:18px}.ppd-dialog p{margin:0 0 22px;color:var(--ppd-muted)}.ppd-dialog .ppd-actions{justify-content:flex-end}\n@media(max-width:980px){.ppd-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ppd-detail-grid{grid-template-columns:1fr}.ppd-detail-grid>.ppd-image{min-height:300px}.ppd-pending-list>article{grid-template-columns:1fr}.ppd-user-skill-detail{margin-left:0}}\n@media(max-width:720px){.ppd-content{padding:20px 16px 48px}.ppd-account{align-items:flex-start;padding:10px 14px}.ppd-connection small,.ppd-phase,.ppd-account-meta>span:first-child{display:none}.ppd-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}.ppd-search,.ppd-toolbar-row,.ppd-section-heading{align-items:stretch;flex-wrap:wrap}.ppd-search label{flex-basis:100%}.ppd-search select{flex:1}.ppd-toolbar-row>.ppd-search{flex-basis:100%}.ppd-detail-header{grid-template-columns:1fr}.ppd-detail-header>.ppd-actions{flex-wrap:wrap}.ppd-detail-grid>.ppd-image{min-height:240px}.ppd-list>article{grid-template-columns:minmax(0,1fr) auto auto}.ppd-list>article>.ppd-button{grid-column:1/-1}.ppd-editor>footer{align-items:stretch;flex-direction:column}.ppd-user-skill-detail{margin-left:0}.ppd-pending{margin-inline:12px}}\n.ppd-pending-list>article{grid-template-columns:minmax(180px,.8fr) auto minmax(240px,1fr) auto}.ppd-batch-copy{display:grid;min-width:0}.ppd-batch-copy small{font-size:10px;color:#9a693c}.ppd-batch-summary{align-self:start}.ppd-batch-progress{display:grid;gap:5px;min-width:0}.ppd-batch-progress progress{width:100%;height:6px;border:0;border-radius:999px;overflow:hidden;background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-bar{background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-value{background:#6b826d}.ppd-batch-progress>span{font-size:10px;color:var(--ppd-muted)}.ppd-batch-progress details{font-size:10px}.ppd-batch-progress summary{cursor:pointer;color:#5d6680}.ppd-batch-progress ol{display:grid;gap:4px;max-height:180px;margin:7px 0 0;padding:0;overflow:auto;list-style:none}.ppd-batch-progress li{display:grid;grid-template-columns:20px minmax(70px,1fr) auto;gap:5px;align-items:center;padding:5px 6px;border-radius:6px;background:#fff}.ppd-batch-progress li>span{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--ppd-soft);font-size:9px}.ppd-batch-progress code{overflow:hidden;text-overflow:ellipsis;font:9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ppd-muted)}.ppd-batch-progress li>strong{font-size:10px}.ppd-batch-progress li>small{grid-column:2/-1;color:var(--ppd-muted);font-size:9px}.ppd-batch-progress li[data-status="submission_unknown"]>strong,.ppd-batch-progress li[data-status="failed"]>strong{color:var(--ppd-danger)}\n.ppd-native-composer{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:6px 8px;border-top:1px solid #e5e5e1;color:#686862;font:11px/1.4 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-native-composer>span{margin-right:3px;font-weight:700;color:#343431}.ppd-native-composer button{min-height:25px;padding:3px 8px;border:1px solid #e1e1dc;border-radius:7px;background:#fff;color:#50504b;font:inherit;cursor:pointer}.ppd-native-composer button:hover{border-color:#c9c9c2;background:#f8f8f5}.ppd-native-composer small{flex-basis:100%;padding:3px 7px;border-radius:6px;background:#f3f6ef;color:#52705a}\n@media(max-width:1180px){.ppd-pending-list>article{grid-template-columns:1fr auto}.ppd-batch-progress{grid-column:1/-1}.ppd-pending-list>article>.ppd-actions{justify-self:end}}@media(max-width:620px){.ppd-pending-list>article{grid-template-columns:1fr}.ppd-pending-list>article>.ppd-actions{justify-self:start}.ppd-batch-progress{grid-column:auto}}\n.ppd-pending-list>article[data-terminal=true]{background:#fafaf7;opacity:.92}.ppd-favorites-import{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:-8px 0 14px}.ppd-favorites-import>small{color:var(--ppd-muted);font-size:10px}.ppd-favorites-import>p{flex-basis:100%;margin:0;padding:7px 9px;border-radius:7px;background:var(--ppd-surface);font-size:11px}.ppd-favorites-import>section{flex-basis:100%;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-favorites-import>section ul{max-height:160px;margin:8px 0;padding-left:20px;overflow:auto}.ppd-favorites-import>section .ppd-button{margin-right:7px}\n.ppd-button-stop{border-color:#dec9a8;background:#fffaf1;color:#81591f}.ppd-button-stop:hover{border-color:#b98b45;background:#fff5e4}\n.ppd-panel .ppd-button-primary,.ppd-panel .ppd-button-primary:hover{color:#fff}\n.ppd-dialog p.ppd-alert{margin:0 0 14px;color:#92352d}.ppd-favorites-import>p.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}\n.ppd-panel{width:100%;height:100%;min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}\n.ppd-card-copy>span,.ppd-card-copy>small{display:none}\n.ppd-export-result{display:grid;gap:8px;margin-top:14px;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-export-result code{font-size:10px;color:var(--ppd-muted)}\n/* Keep Skill previews inside their frame, including tall originals and before/after pairs. */\n.ppd-panel-skills .ppd-image{grid-template-rows:minmax(0,1fr)}\n.ppd-panel-skills .ppd-image img{min-width:0;min-height:0;object-fit:contain}\n.ppd-panel-skills .ppd-card-open:hover .ppd-image img{transform:none}\n\n/* Public Skill card titles use the full card width. */\n.ppd-panel-skills .ppd-grid:not(.ppd-family-grid) .ppd-card-copy{padding-right:0;text-align:center}\n.ppd-personal-skill-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-personal-skill-card{min-width:0;overflow:hidden;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-personal-skill-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}.ppd-personal-skill-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}.ppd-personal-skill-cover>.ppd-image{aspect-ratio:4/3;border-radius:0}.ppd-personal-skill-copy{display:grid;gap:3px;padding:10px 11px 8px}.ppd-personal-skill-copy strong,.ppd-personal-skill-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-personal-skill-copy strong{font-size:12px}.ppd-personal-skill-copy p{display:-webkit-box;min-height:3em;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}.ppd-personal-skill-copy small{color:var(--ppd-muted);font-size:10px}.ppd-personal-skill-actions{display:flex;gap:5px;padding:0 10px 10px}.ppd-personal-skill-actions .ppd-button{min-width:0;padding:6px 8px}.ppd-personal-skill-actions .ppd-button:first-child{margin-right:auto}\n@media(max-width:980px){.ppd-personal-skill-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:720px){.ppd-personal-skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:460px){.ppd-personal-skill-grid{grid-template-columns:1fr}}\n\n/* Personal Skill references: local upload and visual browsing. */\n.ppd-skill-reference-actions{margin:14px 0;flex-wrap:wrap}\n.ppd-reference-editor>ol li{grid-template-columns:24px 52px minmax(0,1fr) auto auto auto}\n.ppd-reference-editor>ol li>.ppd-image{width:52px;height:52px;aspect-ratio:1;border-radius:5px}\n.ppd-reference-editor>ol strong{overflow-wrap:anywhere}\n.ppd-reference-editor .ppd-image span{padding:3px;font-size:10px;text-align:center}\n.ppd-upload-picker{padding:14px;border:1px solid var(--ppd-line);border-radius:9px}\n.ppd-upload-picker .ppd-search{margin-bottom:14px}\n.ppd-upload-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}\n.ppd-upload-grid>button{display:grid;min-width:0;gap:4px;padding:6px;border:1px solid var(--ppd-line);border-radius:8px;background:var(--ppd-surface);text-align:left;cursor:pointer}\n.ppd-upload-grid>button[aria-pressed=true]{border-color:var(--ppd-text)}\n.ppd-upload-grid>button:disabled{cursor:default;opacity:.6}\n.ppd-upload-grid .ppd-image{width:100%;aspect-ratio:1;border-radius:4px}\n.ppd-upload-grid strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}\n.ppd-upload-grid small{color:var(--ppd-muted);font-size:10px}\n.ppd-user-skill-detail .ppd-skill-reference-detail{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;padding:0;list-style:none}\n.ppd-skill-reference-detail li{min-width:0;overflow-wrap:anywhere}\n.ppd-skill-reference-detail .ppd-image{aspect-ratio:1;margin-bottom:5px}\n@media(max-width:600px){.ppd-upload-picker{padding:10px}.ppd-reference-editor>ol li{grid-template-columns:20px 40px minmax(0,1fr) auto auto auto;gap:4px;padding:6px}.ppd-reference-editor>ol li>.ppd-image{width:40px;height:40px}.ppd-reference-editor>ol .ppd-icon-button{padding:3px}}\n\n/* Library controls share one baseline; group navigation belongs only to lists. */\n.ppd-library-toolbar{display:flex;align-items:center;gap:16px;min-width:0;margin:0 0 24px}\n.ppd-library-toolbar>.ppd-tabs{flex:0 0 auto;margin:0}\n.ppd-tabs{max-width:100%;padding:3px;border-radius:999px;background:#f1f1ee;gap:2px}\n.ppd-panel .ppd-tabs button{font-size:12px;line-height:1.4;min-width:64px;min-height:28px;padding:5px 12px;border-radius:999px;white-space:nowrap;transition:background-color .15s ease,color .15s ease}\n.ppd-tabs button.is-active{background:var(--ppd-text);color:#fff;box-shadow:none}\n.ppd-tabs button:not(.is-active){color:#686861}\n.ppd-tabs button:not(.is-active):hover{background:#e7e7e2;color:var(--ppd-text)}\n.ppd-library-toolbar>.ppd-search{flex:0 1 auto;min-width:0;max-width:100%;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar .ppd-search label{min-width:120px;width:224px;max-width:224px;flex:0 1 224px}\n.ppd-library-toolbar .ppd-search input{height:34px;border-radius:999px}\n.ppd-library-toolbar .ppd-search select{max-width:150px;height:32px}\n.ppd-library-toolbar .ppd-search>.ppd-button{min-height:32px;padding-block:5px}\n.ppd-panel .ppd-library-toolbar input,.ppd-panel .ppd-library-toolbar select,.ppd-panel .ppd-library-toolbar button{font-size:12px}\n.ppd-toolbar-row:has(.ppd-library-toolbar){align-items:center;gap:12px;margin-bottom:24px}\n.ppd-toolbar-row>.ppd-library-toolbar{flex:1;margin-bottom:0}\n.ppd-panel button:focus-visible{outline:2px solid var(--ppd-text);outline-offset:3px}\n.ppd-upload-area{display:flex;align-items:center;flex:none}\n.ppd-upload-area>.ppd-icon-button{width:32px;height:32px;border-radius:50%}\n.ppd-upload-area .ppd-icon{font-size:20px}\n.ppd-library-toolbar>.ppd-archive-toolbar{flex:0 1 auto;min-width:0;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;min-width:120px;width:224px;max-width:224px;height:34px;padding-inline:14px;border-radius:999px;font:inherit}\n.ppd-library-toolbar>.ppd-archive-toolbar select,.ppd-library-toolbar>.ppd-archive-toolbar button{min-height:32px;white-space:nowrap}\n\n/* Web detail hierarchy: full result on the left, reference and information on the right. */\n.ppd-resource-detail>.ppd-back{position:sticky;top:64px;z-index:5;margin-bottom:20px;padding-inline:12px;border-radius:999px;background:var(--ppd-bg)}\n.ppd-resource-detail-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);gap:40px;align-items:start}\n.ppd-resource-visual,.ppd-resource-info{min-width:0}\n.ppd-resource-info>h2{margin:0 0 28px;font-size:28px;font-weight:650;line-height:1.2;overflow-wrap:anywhere}\n.ppd-detail-artwork,.ppd-detail-reference{margin:0}\n.ppd-detail-artwork>figcaption,.ppd-detail-reference>figcaption{margin-bottom:10px;font-size:12px;color:var(--ppd-muted)}\n.ppd-detail-artwork>button{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(360px,56vw,660px);padding:24px;border:0;border-radius:14px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-artwork>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-detail-reference{margin-bottom:28px}\n.ppd-detail-reference>button{display:block;width:88px;height:88px;padding:0;overflow:hidden;border:0;border-radius:10px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-reference>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-resource-about{margin-bottom:28px}\n.ppd-resource-info h3{margin:0 0 10px;font-size:13px;font-weight:550;color:var(--ppd-muted)}\n.ppd-resource-about p{margin:0;font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}\n.ppd-resource-info .ppd-skill-facts{margin:0;gap:20px}\n.ppd-resource-info .ppd-skill-facts section{padding:0;border:0}\n.ppd-resource-info .ppd-skill-facts ul{margin:0;padding-left:18px;line-height:1.7}\n.ppd-resource-info .ppd-skill-facts p{margin:0;line-height:1.7}\n.ppd-resource-info .ppd-tags{gap:6px;margin:20px 0}\n.ppd-resource-info .ppd-tags span{padding:5px 10px;font-size:12px}\n.ppd-resource-facts{margin:0}\n.ppd-resource-facts>div{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--ppd-line)}\n.ppd-resource-facts dt{color:var(--ppd-muted)}\n.ppd-resource-facts dd{margin:0;text-align:right;overflow-wrap:anywhere}\n.ppd-resource-detail-actions{display:flex;align-items:center;gap:12px;margin-top:28px}\n.ppd-resource-detail-actions>.ppd-button-primary{flex:1;min-height:44px;border-radius:999px}\n.ppd-resource-detail-actions>.ppd-favorite{position:static;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--ppd-line);box-shadow:none}\n.ppd-media-dialog{position:fixed;inset:0;width:min(980px,92vw);max-width:92vw;height:min(900px,90vh);max-height:90vh;margin:auto;padding:16px;border:0;border-radius:14px;background:var(--ppd-bg);color:var(--ppd-text)}\n.ppd-media-dialog[open]{display:flex;flex-direction:column;gap:12px}\n.ppd-media-dialog::backdrop{background:#0009}\n.ppd-media-dialog>.ppd-button{align-self:flex-end;flex:none}\n.ppd-media-dialog>img{display:block;min-height:0;width:100%;height:100%;flex:1;object-fit:contain}\n@media(max-width:960px){\n .ppd-library-toolbar{gap:12px}\n .ppd-library-toolbar .ppd-search select{max-width:110px}\n .ppd-panel .ppd-tabs button{padding-inline:10px;min-width:60px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:28px}\n .ppd-resource-info>h2{font-size:24px}\n .ppd-toolbar-row:has(.ppd-library-toolbar){flex-wrap:wrap;justify-content:flex-end}\n .ppd-toolbar-row>.ppd-library-toolbar{flex-basis:100%}\n}\n@media(max-width:700px){\n .ppd-library-toolbar{flex-wrap:wrap;gap:14px}\n .ppd-library-toolbar>.ppd-search,.ppd-library-toolbar>.ppd-archive-toolbar{flex-basis:100%;flex-wrap:wrap}\n .ppd-library-toolbar .ppd-search label{flex:0 1 224px;width:224px;max-width:224px}\n .ppd-library-toolbar .ppd-search select{max-width:none}\n .ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;width:224px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1fr);gap:28px}\n .ppd-detail-artwork>button{height:clamp(300px,85vw,520px);padding:18px}\n .ppd-resource-info>h2{font-size:24px;margin-bottom:22px}\n .ppd-resource-detail-actions{margin-top:24px}\n .ppd-media-dialog{padding:12px}\n}\n@media(prefers-reduced-motion:reduce){.ppd-tabs button{transition:none}}\n\n.ppd-archive-empty{margin:24px 0;color:var(--ppd-muted);font-size:12px}\n\n.ppd-account{display:block}.ppd-account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.ppd-plugin-update{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:7px;font-size:11px;color:var(--ppd-muted)}.ppd-plugin-version{min-width:0;max-width:100%;overflow-wrap:anywhere}.ppd-plugin-update-message{flex-basis:100%;line-height:1.5}.ppd-plugin-update-message.is-error{color:#9b3030}.ppd-plugin-update .ppd-button{padding:4px 9px;font-size:11px}.ppd-account-row .ppd-connection{min-width:0}.ppd-account-row .ppd-connection strong{overflow-wrap:anywhere}\n\n/* A single compact account row; secondary account and update actions live in the disclosure. */\n.ppd-account{padding:6px 20px;background:var(--ppd-bg);backdrop-filter:none}\n.ppd-account-row{min-height:28px;gap:12px}\n.ppd-account-row .ppd-connection{flex:1;gap:8px;overflow:hidden}\n.ppd-account-row .ppd-connection>div{min-width:0}\n.ppd-account-row .ppd-connection strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:550}\n.ppd-account-row .ppd-dot{flex:0 0 7px;width:7px;height:7px;box-shadow:none}\n.ppd-account .ppd-account-meta{flex:0 0 auto;gap:8px;font-size:12px;color:#62625c;white-space:nowrap}\n.ppd-account .ppd-account-balance{display:inline-flex;font-variant-numeric:tabular-nums}\n.ppd-account .ppd-phase{display:inline-flex;padding:0;background:none;color:inherit}\n.ppd-account-meta>.ppd-icon-button,.ppd-account-menu>summary{width:28px;height:28px;min-height:28px;border:0;border-radius:6px;background:transparent}\n.ppd-account-menu{flex:none}\n.ppd-account-menu>summary{display:flex;align-items:center;justify-content:center;cursor:pointer;list-style:none;color:#62625c}\n.ppd-account-menu>summary::-webkit-details-marker{display:none}\n.ppd-account-menu>summary:hover,.ppd-account-menu[open]>summary{background:var(--ppd-soft)}\n.ppd-account-menu>summary:focus-visible{outline:2px solid #66665f;outline-offset:2px}\n.ppd-account-menu-panel{position:absolute;z-index:30;top:calc(100% + 6px);right:12px;width:min(300px,calc(100% - 24px));padding:16px;border:1px solid var(--ppd-line);border-radius:10px;background:var(--ppd-bg);box-shadow:0 8px 24px #00000014;color:var(--ppd-text);white-space:normal}\n.ppd-account-menu-heading{display:grid;gap:5px;font-size:13px}\n.ppd-account-menu-heading>span{overflow-wrap:anywhere;font-size:12px;color:#62625c}\n.ppd-account-menu-panel .ppd-plugin-update{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--ppd-line);gap:8px}\n.ppd-account-menu-panel .ppd-plugin-version:first-child{flex-basis:100%;margin-bottom:2px;font-size:12px}\n.ppd-account-menu-panel .ppd-plugin-update .ppd-button{min-height:30px;font-size:12px}\n.ppd-account-menu-panel .ppd-account-logout{margin-top:12px;width:100%;justify-content:flex-start;border:0;border-top:1px solid var(--ppd-line);border-radius:0;padding:12px 0 0;color:#62625c}\n.ppd-account-warning{margin:5px 0 0;color:#92352d;font-size:12px;line-height:1.5;overflow-wrap:anywhere}\n@media(max-width:720px){.ppd-account{padding:6px 12px}.ppd-account-row{gap:8px}.ppd-account .ppd-account-meta{gap:6px}.ppd-account .ppd-account-meta>.ppd-account-balance{display:inline-flex}}\n\n/* Favorite collections: image covers and quiet, contextual controls. */\n.ppd-collection-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:8px 0 26px}\n.ppd-collection-location{display:flex;align-items:center;gap:12px;min-width:0}.ppd-collection-location>div{min-width:0}.ppd-collection-heading h2{margin:0;font-size:21px;line-height:1.3;font-weight:650;letter-spacing:-.5px;overflow-wrap:anywhere}.ppd-collection-heading small{display:block;margin-top:4px;color:var(--ppd-muted);font-size:12px}\n.ppd-collection-back{border:1px solid var(--ppd-line);background:white;border-radius:50%;width:32px;height:32px;flex-shrink:0}.ppd-collection-heading>.ppd-actions{flex-shrink:0;gap:18px}.ppd-collection-heading .ppd-new-folder,.ppd-collection-heading .ppd-new-folder:hover{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:12px;color:var(--ppd-muted)}.ppd-collection-heading .ppd-new-folder:hover{color:var(--ppd-text)}.ppd-collection-heading .ppd-link-button{padding:0;border:0;background:transparent;font-size:12px;color:var(--ppd-muted)}\n.ppd-collection-status{color:var(--ppd-muted);font-size:12px;margin:0 0 18px}\n.ppd-collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,190px));gap:26px 22px;padding-top:9px}\n.ppd-collection-card{position:relative;min-width:0}.ppd-collection-open{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left}\n.ppd-collection-cover{position:relative;display:block;width:100%;aspect-ratio:1.45;border:1px solid #e5e5e0;border-radius:4px 14px 14px 14px;background:#efefeb;isolation:isolate}\n.ppd-collection-cover:before{content:"";position:absolute;top:-9px;left:-1px;width:38%;height:15px;border:1px solid #e0e0da;border-bottom:0;border-radius:8px 12px 0 0;background:#e8e8e2;z-index:-1}\n.ppd-collection-cover>img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;transition:filter .18s ease}.ppd-collection-open:hover img{filter:brightness(.96)}\n.ppd-collection-mark{position:absolute;left:14px;bottom:14px;width:30px;height:26px;display:grid;place-items:center;border-radius:6px;background:#fffffff0;color:#58584f}.ppd-collection-mark svg{width:19px;height:19px}.ppd-collection-cover.is-empty{display:grid;place-items:center;background:#f4f4f0}.ppd-collection-cover.is-empty .ppd-collection-mark{position:static;width:56px;height:48px;background:transparent;color:#b3b3a8}.ppd-collection-cover.is-empty svg{width:48px;height:48px}\n.ppd-collection-copy{display:grid;gap:4px;padding:11px 24px 0;text-align:center}.ppd-collection-copy strong{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ppd-collection-copy small{color:var(--ppd-muted);font-size:11px}\n.ppd-favorite-menu{position:absolute;right:4px;bottom:16px;z-index:3}.ppd-favorite-menu.is-open{z-index:12}.ppd-favorite-more{width:28px;height:28px;display:grid;place-items:center;padding:5px;border:0;border-radius:6px;background:transparent;color:var(--ppd-muted)}.ppd-favorite-more svg{width:18px;height:18px;fill:currentColor}.ppd-favorite-more:hover,.ppd-favorite-more[aria-expanded=true]{background:var(--ppd-soft)}\n.ppd-favorite-popover{position:absolute;right:0;top:calc(100% + 5px);display:grid;min-width:156px;padding:5px;background:white;border:1px solid var(--ppd-line);border-radius:10px;box-shadow:0 8px 24px #20201814}.ppd-favorite-popover button{border:0;background:transparent;text-align:left;white-space:nowrap;padding:9px 12px;border-radius:5px;font-size:12px}.ppd-favorite-popover button:hover,.ppd-favorite-popover button:focus-visible{background:var(--ppd-surface)}.ppd-favorite-popover .is-danger{color:var(--ppd-danger)}\n.ppd-collection-heading .ppd-favorite-menu{position:relative;right:auto;bottom:auto}\n.ppd-favorite-skill-card .ppd-card-copy{padding-right:4px;padding-bottom:31px}.ppd-favorite-skill-card .ppd-card-copy>small{display:block;font-size:10px;color:var(--ppd-muted)}.ppd-favorite-skill-card .ppd-favorite-menu{bottom:0;right:0}.ppd-favorite-skill-card .ppd-card-use{left:0;right:auto;bottom:3px;font-size:11px;color:var(--ppd-text)}\n@media(max-width:720px){.ppd-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}.ppd-collection-heading{align-items:flex-start;margin-bottom:24px}.ppd-collection-heading h2{font-size:18px}.ppd-collection-heading>.ppd-actions{gap:10px;flex-wrap:wrap;justify-content:flex-end}.ppd-collection-heading .ppd-link-button{font-size:11px}.ppd-collection-mark{left:9px;bottom:9px;width:25px;height:23px}.ppd-collection-copy{padding-inline:22px}.ppd-collection-copy strong{font-size:13px}}\n\n/* Personal Skill and DNA library */\n.ppd-personal-tabs{width:100%;margin-bottom:26px;padding:0;border-bottom:1px solid var(--ppd-line);border-radius:0;background:transparent;gap:26px}\n.ppd-panel .ppd-personal-tabs button{min-width:0;padding:9px 0 12px;border-radius:0;background:transparent;color:var(--ppd-muted);box-shadow:none}\n.ppd-panel .ppd-personal-tabs button.is-active{position:relative;background:transparent;color:var(--ppd-text);font-weight:650}\n.ppd-panel .ppd-personal-tabs button.is-active::after{content:"";position:absolute;right:0;bottom:-1px;left:0;height:2px;border-radius:2px;background:var(--ppd-text)}\n.ppd-panel .ppd-personal-tabs button:not(.is-active):hover{background:transparent;color:var(--ppd-text)}\n.ppd-personal-list-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}.ppd-personal-list-heading h2{margin:0;font-size:22px;white-space:nowrap}.ppd-personal-list-heading small{color:var(--ppd-muted);font-size:11px;font-weight:400}.ppd-personal-list-heading>.ppd-toolbar-row{width:min(500px,62%);align-items:center}.ppd-personal-list-heading .ppd-search{margin:0}.ppd-personal-list-heading .ppd-search>button[type="submit"]{display:none}.ppd-personal-list-heading>.ppd-toolbar-row>.ppd-search{min-width:190px;flex:1}.ppd-personal-list-heading .ppd-search label{min-width:150px}\n.ppd-personal-skill-card{position:relative;display:flex;min-width:0;overflow:visible;flex-direction:column;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}\n.ppd-personal-skill-open{display:flex;width:100%;min-width:0;flex:1;flex-direction:column;padding:0;border:0;border-radius:12px 12px 0 0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}\n.ppd-personal-skill-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}\n.ppd-personal-skill-cover{width:100%;min-height:0;aspect-ratio:16/9;overflow:hidden;flex:0 0 auto;border-radius:11px 11px 0 0;background:var(--ppd-surface)}\n.ppd-personal-skill-cover>.ppd-image{width:100%;height:100%;min-height:0;grid-template-rows:minmax(0,1fr);aspect-ratio:auto;border-radius:0}\n.ppd-personal-skill-cover>.ppd-image img{min-width:0;min-height:0;max-width:100%;max-height:100%;object-fit:contain}\n.ppd-personal-skill-text-cover{display:flex;width:100%;height:100%;align-items:flex-start;justify-content:center;flex-direction:column;padding:22px;background:#efeee8;color:#626859}\n.ppd-personal-skill-text-cover strong{display:-webkit-box;max-width:85%;overflow:hidden;font-size:22px;line-height:1.3;letter-spacing:.02em;-webkit-box-orient:vertical;-webkit-line-clamp:2}\n.ppd-personal-skill-text-cover span{margin-top:10px;color:#929789;font-size:9px;font-weight:650;letter-spacing:.18em;text-transform:uppercase}\n.ppd-personal-cover-loading{display:flex;align-items:center;gap:7px;color:var(--ppd-muted);font-size:11px}\n.ppd-personal-cover-loading .ppd-spinner{width:14px;height:14px}\n.ppd-personal-skill-copy{display:grid;gap:5px;min-height:62px;padding:12px 13px 7px}\n.ppd-personal-skill-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}\n.ppd-personal-skill-copy p{display:-webkit-box;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}\n.ppd-personal-skill-actions{display:flex;min-height:48px;align-items:center;justify-content:flex-end;gap:8px;padding:5px 12px 11px}\n.ppd-personal-skill-actions small{margin-right:auto;color:var(--ppd-muted);font-size:10px}\n.ppd-personal-skill-actions .ppd-button{min-width:64px;padding:6px 13px}\n.ppd-personal-skill-actions .ppd-button:first-child{margin-right:0}\n.ppd-personal-menu{position:relative;display:inline-flex;z-index:3}\n.ppd-personal-skill-card>.ppd-personal-menu,.ppd-dna-card>.ppd-personal-menu{position:absolute;top:9px;right:9px}\n.ppd-personal-menu-trigger{display:grid;width:30px;height:30px;place-items:center;padding:0;border:1px solid #ffffffb8;border-radius:8px;background:#fffffff2;color:#555a50;box-shadow:0 1px 5px #2222}\n.ppd-personal-menu-trigger:hover,.ppd-personal-menu-trigger[aria-expanded="true"]{border-color:#d7d9d1;background:#fff}\n.ppd-personal-menu-trigger:focus-visible{outline:2px solid var(--ppd-text);outline-offset:2px}\n.ppd-personal-menu-trigger svg{width:17px;height:17px;fill:currentColor}\n.ppd-personal-menu-popover{position:fixed;z-index:140;display:grid;width:154px;padding:6px;border:1px solid var(--ppd-line,#e5e5e1);border-radius:10px;background:var(--ppd-bg,#fff);box-shadow:0 12px 36px #15171124;color:var(--ppd-text,#252522);font:12px/1.45 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}\n.ppd-personal-menu-popover button{width:100%;min-height:34px;padding:7px 10px;border:0;border-radius:6px;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}\n.ppd-personal-menu-popover button:hover,.ppd-personal-menu-popover button:focus-visible{outline:0;background:var(--ppd-soft,#efefeb)}\n.ppd-personal-menu-popover button.is-danger{margin-top:3px;border-top:1px solid var(--ppd-line,#e5e5e1);border-radius:0 0 6px 6px;color:var(--ppd-danger,#a53a31)}\n.ppd-personal-detail{max-width:1000px;margin:0 auto}\n.ppd-personal-back{margin-bottom:18px;color:var(--ppd-muted)}\n.ppd-personal-detail>.ppd-alert,.ppd-personal-detail>.ppd-notice{margin:0 0 16px}\n.ppd-personal-detail-grid{display:grid;grid-template-columns:minmax(250px,340px) minmax(0,1fr);align-items:start;gap:38px}\n.ppd-personal-detail-grid>.ppd-personal-skill-cover{aspect-ratio:4/3;border-radius:12px}\n.ppd-personal-detail-grid>.ppd-personal-skill-cover>.ppd-personal-skill-text-cover{padding:30px}\n.ppd-personal-detail-grid>.ppd-personal-skill-cover .ppd-personal-skill-text-cover strong{font-size:27px}\n.ppd-personal-detail-copy{min-width:0;padding-top:8px}\n.ppd-personal-detail-copy h2{margin:5px 0 10px;font-size:25px}\n.ppd-personal-detail-description{max-width:560px;margin:0 0 20px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ppd-muted);line-height:1.65}\n.ppd-personal-detail-copy h3{margin:0 0 9px;color:var(--ppd-muted);font-size:11px;font-weight:600}\n.ppd-personal-prompt,.ppd-personal-references{margin-top:18px;padding-top:15px;border-top:1px solid var(--ppd-line)}\n.ppd-personal-prompt pre{max-width:620px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#41413b;font:inherit;line-height:1.7}\n.ppd-personal-detail-actions{margin-top:24px}\n.ppd-personal-references .ppd-skill-reference-detail{grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}\n.ppd-personal-references .ppd-skill-reference-detail li{min-width:0}\n.ppd-personal-references .ppd-skill-reference-detail .ppd-image{aspect-ratio:1;border-radius:8px}\n.ppd-personal-references .ppd-skill-reference-detail span{display:block;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}\n@media(max-width:980px){.ppd-personal-detail-grid{grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:28px}}\n@media(max-width:720px){.ppd-personal-tabs{gap:20px}.ppd-personal-list-heading{align-items:stretch;flex-direction:column}.ppd-personal-list-heading>.ppd-toolbar-row{width:100%}.ppd-personal-detail-grid{grid-template-columns:1fr}.ppd-personal-detail-grid>.ppd-personal-skill-cover{width:min(100%,420px)}.ppd-personal-detail-copy{padding-top:0}}\n@media(max-width:460px){.ppd-personal-skill-text-cover{padding:18px}.ppd-personal-skill-text-cover strong{font-size:20px}.ppd-personal-menu-popover{width:146px}}\n.ppd-favorite-editor{display:grid;gap:16px}.ppd-favorite-editor>p{margin:0}.ppd-favorite-editor>label{display:grid;gap:6px}.ppd-favorite-editor>label>span{font-weight:620}.ppd-favorite-editor>label>small{font-size:11px;color:var(--ppd-muted)}.ppd-favorite-editor input,.ppd-favorite-editor select{width:100%;min-height:38px;padding:8px 10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-favorite-editor-actions{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px}@media(max-width:600px){.ppd-favorite-editor-actions{grid-template-columns:1fr 1fr}.ppd-favorite-editor-actions>span{display:none}.ppd-favorite-editor-actions>.ppd-button-danger{grid-column:1/-1}}\n';
 
 // plugins/podplo-dsh/src/generation-panel.css
 var generation_panel_default = '.ppd-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-skill-feedback{margin:6px 0 0;display:flex;align-items:center;gap:8px;color:#a13d31;font-size:12px;line-height:18px}.ppd-skill-feedback .ppd-link-button{flex:none}\n.ppd-generation-shell.is-floating:has(>.ppd-skill-feedback){height:auto}\n.ppd-generation{min-width:0}.ppd-generation-loading{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--ppd-muted)}.ppd-generation-loading .ppd-spinner{width:12px;height:12px}.ppd-generation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:start}.ppd-generation-form{min-width:0;margin:0;border:0;padding:0;display:grid;gap:9px}.ppd-generation-form:disabled{opacity:1}.ppd-generation-form:disabled .ppd-web-composer{opacity:.72}.ppd-link-button{width:max-content;border:0;background:none;color:var(--ppd-accent);padding:0;font:inherit;cursor:pointer}.ppd-form-hint,.ppd-generation-quote small,.ppd-muted{color:var(--ppd-muted);font-size:12px}\n\n.ppd-web-composer{--composer-line:#e0e4eb;--composer-soft:#f0f2f5;--composer-muted:#676f7e;--composer-faint:#a8afbd;--composer-ink:#0b0d12;position:relative;box-sizing:border-box;width:100%;max-width:720px;height:178px;border:1px solid var(--composer-line);border-radius:16px;background:#fff;box-shadow:0 2px 5px rgba(15,20,28,.04);padding:12px 12px 8px;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}.ppd-web-composer.is-focused{border-color:var(--composer-line);box-shadow:0 2px 5px rgba(15,20,28,.04)}.ppd-composer-media-row{height:64px;display:flex;align-items:flex-start;gap:8px;padding-right:38px;min-width:0}.ppd-composer-clear{position:absolute;z-index:7;top:14px;right:14px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#8b929d;cursor:pointer;font-size:21px;line-height:1;transform:rotate(-20deg);transition:background-color .18s,color .18s,transform .18s}.ppd-composer-clear:hover{background:var(--composer-soft);color:#3f4752;transform:translateY(-1px) rotate(-20deg)}.ppd-web-composer>textarea{flex:1;min-height:0;resize:none;border:0;outline:0;background:transparent;color:var(--composer-ink);font-family:inherit;font-size:12px;line-height:18px;font-weight:500;padding:0 2px}.ppd-web-composer>textarea::placeholder{color:var(--composer-faint)}\n.ppd-skill-token{position:relative;box-sizing:border-box;width:max-content;min-width:170px;max-width:min(300px,calc(100% - 64px));height:56px;flex:0 1 auto;padding:0 13px;display:flex;align-items:center;justify-content:flex-start;gap:10px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-skill-token.has-value{padding-right:12px;border:0;background:#121418;color:#fff}.ppd-skill-copy{position:static;min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:2px}.ppd-skill-token small{color:#7b8290;font-size:9px;line-height:11px;font-weight:700;letter-spacing:.04em}.ppd-skill-token strong{max-width:220px;overflow:hidden;color:inherit;font-size:12px;line-height:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.ppd-token-mark{width:28px;height:28px;display:grid;place-items:center;flex:0 0 28px;border-radius:8px;background:#fff;color:#1a1d24;font-size:16px}.ppd-skill-cover{width:42px;height:42px;flex:0 0 42px;border-radius:8px;object-fit:cover}.ppd-skill-token>select,.ppd-upload-tile>select,.ppd-toolbar-select>select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-reference-tray{position:relative;height:56px;min-width:0;display:flex;flex:0 1 auto;align-items:flex-start;gap:8px;isolation:isolate}.ppd-upload-tile,.ppd-reference-token{position:relative;box-sizing:border-box;width:56px;height:56px;flex:0 0 56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;display:grid;place-items:center;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-upload-tile:hover{border-color:#1597e5;background:#eaf6fd;color:#086eba}.ppd-local-upload{border-style:solid;font-size:22px}.ppd-reference-token{border:0;background:#242830;color:#fff}.ppd-reference-token>img{width:100%;height:100%;object-fit:cover}.ppd-reference-token>span{font-size:17px;font-weight:800}.ppd-reference-token>b{position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.72);display:grid;place-items:center;font-size:10px}.ppd-reference-actions{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;gap:2px;padding:3px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 54%);opacity:0;transition:opacity .14s}.ppd-reference-token:hover .ppd-reference-actions,.ppd-reference-token:focus-within .ppd-reference-actions{opacity:1}.ppd-reference-actions button{width:15px;height:15px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center;font-size:9px;line-height:1;cursor:pointer}.ppd-reference-actions button:disabled{opacity:.35}.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:absolute;z-index:6;left:38px;top:22px;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#242830;color:#fff;box-shadow:0 4px 10px rgba(12,16,22,.24)}.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:-40px}.ppd-reference-tray.has-references>.ppd-reference-token{border:2px solid #fff;border-radius:15px;clip-path:polygon(10% 12%,35% 3%,68% 8%,93% 2%,98% 36%,90% 68%,96% 92%,58% 97%,28% 91%,3% 98%,7% 61%,2% 31%);box-shadow:0 3px 9px rgba(19,24,31,.18);transition:margin-left .24s cubic-bezier(.2,.72,.2,1),clip-path .2s ease,border-radius .2s ease,transform .2s ease}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(2n){transform:rotate(4deg)}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(3n){transform:rotate(-4deg)}.ppd-reference-tray.has-references:is(:hover,:focus-within){z-index:8}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-tray.has-references:not(:hover):not(:focus-within)>.ppd-local-upload{display:none}\n.ppd-composer-toolbar{height:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.ppd-toolbar-left,.ppd-toolbar-right{display:flex;align-items:center;gap:2px;min-width:0}.ppd-toolbar-left{flex:1}.ppd-toolbar-right{flex:none}.ppd-toolbar-divider{width:1px;height:22px;flex:0 0 1px;background:var(--composer-line);margin:0 6px 5px 5px}.ppd-toolbar-icon,.ppd-toolbar-button,.ppd-toolbar-select{position:relative;box-sizing:border-box;height:32px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--composer-muted);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;white-space:nowrap}.ppd-toolbar-icon{width:32px;flex:0 0 32px;padding:0}.ppd-toolbar-button,.ppd-toolbar-select{padding:0 8px;font-size:12px;font-weight:500}.ppd-toolbar-icon:hover,.ppd-toolbar-button:hover,.ppd-toolbar-select:hover{background:var(--composer-soft);color:var(--composer-ink)}.ppd-toolbar-select strong{max-width:118px;overflow:hidden;font-size:12px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.ppd-model-dot{width:14px;height:14px;flex:0 0 14px;border-radius:4px;background:linear-gradient(145deg,#7b8cff,#7557d8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.ppd-model-dot.is-gpt{background:linear-gradient(145deg,#49c970,#138f7e)}\n.ppd-contract-control{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;opacity:.001!important;pointer-events:none!important}.ppd-model-menu,.ppd-settings-menu{position:relative}.ppd-model-menu>summary,.ppd-settings-menu>summary{list-style:none}.ppd-model-menu>summary::-webkit-details-marker,.ppd-settings-menu>summary::-webkit-details-marker{display:none}.ppd-model-menu[open]>summary,.ppd-settings-menu[open]>summary{background:var(--composer-soft);color:var(--composer-ink)}.ppd-settings-menu summary>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu summary>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover,.ppd-settings-popover{position:absolute;z-index:30;left:0;bottom:38px;box-sizing:border-box;border:1px solid #e3e6ea;border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(20,27,38,.14)}.ppd-model-popover{width:390px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px;display:grid;gap:7px}.ppd-model-popover>header{display:flex;flex-direction:column;gap:2px;padding:7px 9px 5px}.ppd-model-popover>header strong{color:#202630;font-size:12px}.ppd-model-popover>header small{color:#959daa;font-size:9px}.ppd-model-popover>button{position:relative;min-height:74px;border:1px solid #e2e6eb;border-radius:12px;padding:9px 38px 9px 9px;background:#fff;display:flex;align-items:center;gap:11px;color:#171b22;text-align:left;cursor:pointer}.ppd-model-popover>button:hover,.ppd-model-popover>button.is-selected{border-color:#b5bdc8;background:#eef1f5}.ppd-model-popover>button:disabled{opacity:.55;cursor:not-allowed}.ppd-model-popover>button>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;gap:4px}.ppd-model-popover>button strong{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover>button small{color:#697383;font-size:10px}.ppd-model-popover>button>b{position:absolute;right:15px}.ppd-model-brand{width:42px;height:42px;flex:0 0 42px;border-radius:11px;background:linear-gradient(145deg,#8798ff,#7053d4);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}.ppd-model-brand.is-gpt{background:linear-gradient(145deg,#58cf78,#168e7e)}.ppd-settings-popover{width:330px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px}.ppd-settings-popover section+section{margin-top:5px}.ppd-settings-popover section>label:first-child{display:block;margin:0 3px 3px;color:#8a929e;font-size:9px;font-weight:650}.ppd-ratio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:4px;border-radius:12px;background:#f6f7f9}.ppd-ratio-grid button{min-height:40px;border:0;border-radius:8px;background:transparent;color:#77808c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}.ppd-ratio-grid button:hover,.ppd-ratio-grid button.is-selected,.ppd-segmented button:hover,.ppd-segmented button.is-selected{background:#fff;color:#202630;box-shadow:0 1px 4px rgba(18,25,35,.08)}.ppd-ratio-grid b{font-size:10px}.ppd-ratio-glyph{width:15px;height:11px;border:1.5px solid currentColor;border-radius:3px}.ppd-segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;border-radius:10px;background:#f6f7f9}.ppd-segmented button{min-width:0;height:28px;border:0;border-radius:7px;background:transparent;color:#74808d;cursor:pointer;font-size:10px;text-transform:capitalize}.ppd-settings-check{position:relative;height:30px;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;color:#687281!important;cursor:pointer}.ppd-settings-check>input{position:absolute;opacity:0}.ppd-settings-check>i{position:relative;width:30px;height:18px;border-radius:999px;background:#dfe3e8}.ppd-settings-check>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-settings-check>input:checked+i{background:#1d2734}.ppd-settings-check>input:checked+i>b{transform:translateX(12px)}\n.ppd-search-chip{position:relative;height:32px;border:1px solid transparent;border-radius:8px;background:#f6f7f9;color:#737d8a;display:flex;align-items:center;gap:8px;padding:0 7px 0 9px;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-search-chip>input,.ppd-eco-control>input{position:absolute;opacity:0;pointer-events:none}.ppd-search-chip>i,.ppd-eco-control>i{position:relative;width:30px;height:18px;flex:0 0 30px;border-radius:999px;background:#dfe3e8;transition:background-color .18s}.ppd-search-chip>i>b,.ppd-eco-control>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-search-chip.is-selected{background:#f0efff;color:#514aab}.ppd-search-chip.is-selected>i{background:#625abd}.ppd-search-chip.is-selected>i>b,.ppd-eco-control.is-selected>i>b{transform:translateX(12px)}.ppd-eco-control{position:relative;height:30px;display:flex;align-items:center;gap:5px;padding:0 4px;color:#7d8794;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-eco-control.is-selected>i{background:#1d2734}.ppd-generation-cost{height:32px;display:flex;align-items:center;gap:4px;padding:0 2px;color:#6f7782;white-space:nowrap}.ppd-generation-cost>strong{min-width:14px;color:#4d5560;font-size:13px;font-weight:700}.ppd-generate-button{width:34px;height:32px;flex:0 0 34px;border:1px solid transparent;border-radius:7px;background:var(--composer-ink);color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .18s,background-color .3s}.ppd-generate-button:hover:not(:disabled){transform:translateY(-1px);background:#232832}.ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint);cursor:not-allowed}.ppd-generate-button .ppd-spinner{width:14px;height:14px}.ppd-composer-meta{min-height:18px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;color:var(--ppd-muted);font-size:11px}.ppd-composer-meta>span+span:before{content:"\xB7";margin-right:12px}.ppd-file-input{display:none}\n.ppd-web-composer .ppd-model-popover,.ppd-web-composer .ppd-settings-popover{top:38px;bottom:auto}\n.ppd-generation-quote{position:sticky;top:0;display:grid;gap:12px;border:1px solid var(--ppd-line);border-radius:16px;background:var(--ppd-bg);padding:18px}.ppd-generation-quote h2{font-size:16px;margin:0}.ppd-generation-quote>strong{font-size:30px;line-height:1}.ppd-generation-quote>span{font-size:13px}.ppd-generation-quote p{margin:0;line-height:1.55}.ppd-generation-state{border-radius:9px;background:var(--ppd-surface);padding:8px 10px;font-weight:650}\n@media(hover:none),(pointer:coarse){.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references>.ppd-reference-token,.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-actions{opacity:1}.ppd-reference-tray.has-references>.ppd-local-upload{display:grid}}\n@media(max-width:1050px){.ppd-generation-grid{grid-template-columns:1fr}.ppd-generation-quote{position:static;max-width:720px}.ppd-web-composer{max-width:none}}\n@media(max-width:720px){.ppd-web-composer{height:auto;min-height:214px}.ppd-composer-media-row{overflow-x:auto}.ppd-composer-toolbar{height:auto;min-height:72px;align-items:stretch;flex-direction:column}.ppd-toolbar-left{flex-wrap:wrap}.ppd-toolbar-right{justify-content:flex-end}.ppd-model-popover{left:0;right:auto;width:min(390px,calc(100vw - 52px))}.ppd-settings-popover{left:auto;right:0;width:min(330px,calc(100vw - 52px))}.ppd-search-chip>span{display:none}}\n@media(max-width:480px){.ppd-skill-token{min-width:138px}.ppd-skill-token strong{max-width:130px}.ppd-model-select strong{max-width:80px}.ppd-eco-control>span{display:none}}\n.ppd-generation-shell.is-inline{position:relative;width:min(720px,100%);margin:0 auto}.ppd-generation-shell.is-floating{position:absolute;z-index:45;left:50%;bottom:18px;width:min(720px,calc(100% - 40px));transform:translateX(-50%)}.ppd-generation-shell.is-floating:before{content:"";position:absolute;z-index:-1;inset:-24px -34px -22px;background:radial-gradient(ellipse at center,rgba(247,248,249,.98) 38%,rgba(247,248,249,.78) 64%,transparent 78%);pointer-events:none}.ppd-generation-shell.is-floating>.ppd-alert,.ppd-generation-shell.is-floating>.ppd-notice{margin:0 0 7px}.ppd-generation-shell.is-collapsed{width:min(620px,calc(100% - 40px))}.ppd-generation-collapsed{width:100%;height:54px;border:1px solid #dde1e6;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 15px 45px rgba(23,30,42,.16);padding:0 12px;display:flex;align-items:center;gap:10px;color:#1d222b;text-align:left}.ppd-generation-collapsed>span:nth-child(2){min-width:0;display:grid;flex:1;gap:2px}.ppd-generation-collapsed strong,.ppd-generation-collapsed small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-generation-collapsed strong{font-size:12px}.ppd-generation-collapsed small{color:#8a929e;font-size:9px}.ppd-generation-collapsed>b{color:#596270;font-size:10px}.ppd-composer-actions{position:absolute;z-index:9;top:9px;right:9px;display:flex;gap:2px}.ppd-composer-actions button{width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#8b929d;display:grid;place-items:center}.ppd-composer-actions button:hover{background:var(--composer-soft);color:#3f4752}.ppd-composer-actions button svg{transform:rotate(-20deg)}.ppd-generation-shell.is-floating .ppd-composer-media-row{padding-right:70px}.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:38px}.ppd-generation-shell.is-inline .ppd-model-popover,.ppd-generation-shell.is-inline .ppd-settings-popover{top:38px;bottom:auto}.ppd-generation-shell.is-floating .ppd-model-popover,.ppd-generation-shell.is-floating .ppd-settings-popover{top:auto;bottom:38px}.ppd-generate-button{width:auto;min-width:104px;padding:0 7px 0 11px;display:flex;gap:8px}.ppd-generate-button>span:not(.ppd-spinner){white-space:nowrap;font-size:11px;font-weight:700}.ppd-generation-shell .ppd-composer-meta{display:none}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-inline{width:100%}}\n\n/* The native resource pages use the same Web dock geometry: a 480\xD740 trigger\n   opens into the 820\xD7200 shell, while the generation page keeps the composer inline. */\n.ppd-generation-shell.is-floating{bottom:76px;width:min(820px,calc(100% - 64px));height:200px;padding:10px;border:1px solid #d8dad5;border-radius:18px;background:rgba(255,255,255,.98);box-shadow:0 22px 64px rgba(16,24,38,.2),0 4px 12px rgba(16,24,38,.08);backdrop-filter:blur(12px);transform-origin:center bottom;animation:ppd-composer-open .28s cubic-bezier(.2,.82,.2,1)}\n@keyframes ppd-composer-open{from{opacity:0;transform:translateX(-50%) scale(.58,.18)}to{opacity:1;transform:translateX(-50%) scale(1)}}\n.ppd-generation-shell.is-floating:before{display:none}.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:none;border-color:transparent;box-shadow:none}.ppd-generation-shell.is-floating .ppd-composer-actions{right:19px;top:19px}\n.ppd-generation-shell.is-collapsed{bottom:24px;width:min(480px,calc(100% - 40px));height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}\n.ppd-generation-collapsed{height:40px;border-color:#d5dbe3;border-radius:16px;padding:4px 5px;gap:9px;box-shadow:0 10px 32px rgba(16,24,38,.18),0 2px 6px rgba(16,24,38,.06)}\n.ppd-collapsed-add,.ppd-collapsed-expand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px}.ppd-collapsed-add{color:#485260}.ppd-collapsed-placeholder{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#737b89;font-size:13px;font-weight:500}.ppd-generation-collapsed>small{color:#8a929e;font-size:9px;white-space:nowrap}.ppd-collapsed-expand{border-radius:50%;background:#e9edf2;color:#7d8998;font-size:16px}\n.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-notice,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{position:absolute;z-index:3;right:12px;bottom:calc(100% + 8px);left:12px;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;text-align:center}.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{color:#a13e3e}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-collapsed{width:calc(100% - 24px)}}\n.ppd-generation .ppd-generate-button{background:var(--composer-ink);color:#fff}.ppd-generation .ppd-generate-button>span,.ppd-generation .ppd-generate-button>svg{color:#fff;stroke:currentColor}.ppd-generation .ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint)}.ppd-generation .ppd-generate-button:disabled>span,.ppd-generation .ppd-generate-button:disabled>svg{color:var(--composer-faint)}\n.ppd-generation .ppd-local-upload{display:none!important}\n\n/* Match Web product-mode selected Skill and empty floating reference tile. */\n.ppd-generation .ppd-skill-token.has-value{background:#eef0f4;color:#252a34}.ppd-generation-shell.is-floating .ppd-reference-tray:not(.has-references)>.ppd-upload-tile{border:0;border-radius:0;background:transparent}\n.ppd-add-menu{position:relative}.ppd-add-menu>summary{list-style:none}.ppd-add-menu>summary::-webkit-details-marker{display:none}.ppd-add-popover{position:absolute;z-index:30;left:0;top:38px;width:160px;padding:5px;border:1px solid var(--composer-line);border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,27,38,.14)}.ppd-generation-shell.is-floating .ppd-add-popover{top:auto;bottom:38px}.ppd-add-popover>label,.ppd-add-popover>button{position:relative;box-sizing:border-box;display:block;width:100%;padding:9px;border:0;border-radius:6px;background:transparent;color:var(--composer-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}.ppd-add-popover>label:hover,.ppd-add-popover>button:hover{background:var(--composer-soft)}.ppd-add-popover select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.ppd-generation .ppd-generate-button{width:34px;min-width:34px;padding:0;justify-content:center}.ppd-generation-cost{margin:0 10px 0 6px}\n.ppd-model-popover:not(:popover-open),.ppd-settings-popover:not(:popover-open),.ppd-add-popover:not(:popover-open){display:none}.ppd-settings-menu .ppd-toolbar-button>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu .ppd-toolbar-button>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}\n\n/* Manual generation history shares the account bar and keeps the draft mounted. */\n.ppd-panel [hidden]{display:none!important}\n.ppd-price-verification{margin:0 12px 10px;color:#866218;font-size:12px;line-height:1.5}\n.ppd-history-shortcut{display:flex;justify-content:flex-end;padding:12px 28px 0}\n.ppd-panel-generation .ppd-content.ppd-history-content{display:block;min-height:0;padding:24px 28px}\n.ppd-history{width:100%;max-width:1120px;margin:0 auto}\n.ppd-history-heading,.ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}\n.ppd-history-heading{margin-bottom:20px}.ppd-history-heading h2{font-size:20px;margin:0}\n.ppd-history-list{display:grid;gap:16px}.ppd-history-record{padding:20px;border:1px solid #e4e4e2;border-radius:12px;background:#fff}\n.ppd-history-record-heading strong{display:flex;align-items:center;gap:8px}.ppd-history-record-heading>span,.ppd-history-record time,.ppd-history-record>small{color:#73736e;font-size:12px}\n.ppd-history-record time{display:block;margin-top:8px}.ppd-history-record progress{display:block;width:100%;height:6px;margin:16px 0 8px;accent-color:#656c49}\n.ppd-history-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}.ppd-history-results .ppd-image{aspect-ratio:1;background:#f5f5f3;border-radius:8px;overflow:hidden}.ppd-history-results img{width:100%;height:100%;object-fit:contain}\n@media(max-width:720px){.ppd-history-shortcut{padding-inline:16px}.ppd-panel-generation .ppd-content.ppd-history-content{padding:20px 16px}.ppd-history-heading,.ppd-history-record-heading{flex-wrap:wrap}.ppd-history-results{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}\n\n/* Confirmed tasks keep running after the composer clears; their progress sits above the saved results. */\n.ppd-running-tasks{margin-bottom:28px}.ppd-running-label{margin:0 0 12px;color:#73736e;font-size:12px;font-weight:600;letter-spacing:.04em}\n.ppd-running-tasks .ppd-history-record progress{margin-top:12px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n@media(max-width:720px){.ppd-running-tasks{margin-bottom:20px}}\n\n/* Local reference previews appear before cloud upload; only ready asset IDs can generate. */\n.ppd-upload-preview{clip-path:none!important;transform:none!important;margin-left:0!important;border-radius:10px!important;outline:1px solid #c8cdd5}\n.ppd-upload-preview>img{opacity:.65}\n.ppd-upload-preview.is-failed{outline-color:#a13e3e}\n.ppd-upload-preview .ppd-upload-preview-status{position:absolute;right:0;bottom:0;left:0;padding:4px 1px;background:rgba(24,28,34,.8);color:#fff;font-size:9px;line-height:12px;text-align:center}\n.ppd-upload-preview.is-failed .ppd-upload-preview-status{background:rgba(139,39,39,.9)}\n.ppd-upload-preview-remove{position:absolute;top:1px;right:1px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#fff;color:#8b2727;cursor:pointer}\n\n/* Manual batch generation stays in the plugin UI and keeps each row compact. */\n.ppd-batch-launchers{display:flex;align-items:center;gap:3px}.ppd-batch-launchers>button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#fff;padding:0 8px;color:#5d6672;font-size:10px;white-space:nowrap;cursor:pointer}.ppd-batch-launchers>button:hover:not(:disabled){border-color:#b8c0ca;background:#f6f7f9;color:#222a34}.ppd-batch-launchers>button:disabled{opacity:.45;cursor:not-allowed}\n.ppd-batch-backdrop{position:fixed;z-index:120;inset:0;display:grid;place-items:center;padding:28px;background:rgba(20,26,34,.36);backdrop-filter:blur(3px)}\n.ppd-batch-dialog{box-sizing:border-box;width:min(1180px,100%);height:min(780px,calc(100vh - 56px));display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.28);color:#252b34;text-align:left}\n.ppd-batch-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:18px 20px 13px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-batch-dialog h2{margin:0;font-size:18px}.ppd-batch-dialog header p{margin:4px 0 0;color:#7c8591;font-size:11px}.ppd-batch-dialog header>button{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;cursor:pointer}\n.ppd-batch-tools{min-height:44px;display:flex;align-items:center;gap:7px;padding:7px 16px;border-bottom:1px solid #e4e7eb;background:#fff}.ppd-batch-tools>button,.ppd-batch-dialog footer button,.ppd-batch-bulk>button{height:30px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 10px;color:#59636f;font-size:11px;cursor:pointer}.ppd-batch-tools>button:disabled,.ppd-batch-dialog footer button:disabled,.ppd-batch-bulk>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-state{margin-left:auto;border-radius:999px;background:#eef1f4;padding:4px 9px;color:#697381;font-size:10px}.ppd-batch-state.is-running{background:#edf4ff;color:#38649a}.ppd-batch-state.is-blocked,.ppd-batch-state.is-partial{background:#fff3dc;color:#8b651d}.ppd-batch-state.is-completed{background:#eaf7ee;color:#33714a}\n.ppd-batch-bulk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:7px;padding:9px 16px;border-bottom:1px solid #e1e5e9;background:#f1f3f5}.ppd-batch-bulk>label{min-width:0;display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:5px;color:#6d7580;font-size:10px}.ppd-batch-bulk input:not([type=checkbox]),.ppd-batch-bulk select{box-sizing:border-box;min-width:0;height:28px;border:1px solid #d8dde3;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font:inherit}.ppd-batch-feedback{margin:0;padding:7px 16px;border-bottom:1px solid #e1e5e9;background:#edf5ff;color:#416a98;font-size:11px}.ppd-batch-feedback.is-error{background:#fff0f0;color:#9a3f3f}\n.ppd-batch-table{min-height:0;overflow:auto;padding:10px 12px;display:grid;align-content:start;gap:8px}.ppd-batch-row{display:grid;grid-template-columns:38px 94px minmax(260px,1fr) 105px;align-items:center;gap:10px;min-height:108px;border:1px solid #e0e4e8;border-radius:12px;background:#fff;padding:9px}.ppd-batch-select{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-right:1px solid #edf0f2;color:#8a929d;font-size:11px}.ppd-batch-select input{width:15px;height:15px;accent-color:#252b34}\n.ppd-batch-reference-grid{width:88px;height:88px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:4px}.ppd-batch-reference{position:relative;overflow:hidden;border:1px dashed #d5dae0;border-radius:7px;background:#f7f8fa;display:grid;place-items:center;color:#a0a7b0}.ppd-batch-reference.has-image{border-style:solid;background:#eceff2}.ppd-batch-reference img{width:100%;height:100%;object-fit:cover}.ppd-batch-reference>label{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer}.ppd-batch-reference.has-image>label{right:18px;bottom:1px;top:auto;left:auto;width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.9);color:#52606f;font-size:10px}.ppd-batch-reference input{display:none}.ppd-batch-reference>button{position:absolute;right:1px;top:1px;width:17px;height:17px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#9a4141;font-size:11px;line-height:17px;cursor:pointer}.ppd-batch-reference b{font-size:17px;font-weight:400}\n.ppd-batch-reference b.ppd-batch-reference-pending{position:absolute;left:2px;bottom:2px;padding:0 3px;border-radius:3px;background:rgba(24,30,38,.72);color:#fff;font-size:9px;line-height:13px;font-weight:500;pointer-events:none}\n.ppd-batch-main{min-width:0;display:grid;gap:7px}.ppd-batch-main>textarea{box-sizing:border-box;width:100%;height:48px;resize:vertical;border:1px solid #dce1e6;border-radius:8px;padding:8px;color:#303741;font:inherit;font-size:11px;line-height:1.4}.ppd-batch-row-controls{display:flex;align-items:center;gap:7px}.ppd-batch-row-controls>select{min-width:140px;max-width:240px;height:28px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px}.ppd-batch-parameters{position:relative;min-width:0;flex:1}.ppd-batch-parameters>summary{overflow:hidden;height:28px;display:flex;align-items:center;border:1px solid #dce1e6;border-radius:7px;padding:0 8px;color:#66707c;font-size:10px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-parameter-grid{position:absolute;z-index:4;left:0;top:34px;width:min(520px,70vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #dce1e6;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:10px}.ppd-batch-parameter-grid label{display:grid;gap:3px;color:#7c8490;font-size:9px}.ppd-batch-parameter-grid select,.ppd-batch-parameter-grid input[type=number]{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font-size:10px}.ppd-batch-parameter-grid .ppd-batch-check{display:flex;align-items:center;gap:6px}.ppd-batch-row-error{color:#a34747;font-size:10px}\n.ppd-batch-skill{position:relative;flex:0 0 auto}.ppd-batch-skill-toggle{min-width:140px;max-width:240px;height:28px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px;cursor:pointer}.ppd-batch-skill-toggle>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-batch-skill-toggle:disabled{opacity:.5;cursor:not-allowed}.ppd-batch-skill-menu{position:absolute;z-index:6;left:0;top:32px;width:260px;display:grid;gap:5px;border:1px solid #dce1e6;border-radius:9px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:7px}.ppd-batch-skill-menu>input{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;padding:0 7px;color:#343b45;font:inherit;font-size:10px}.ppd-batch-skill-list{max-height:220px;display:grid;gap:2px;overflow:auto}.ppd-batch-skill-list>button{height:26px;display:flex;align-items:center;overflow:hidden;border:0;border-radius:6px;background:transparent;padding:0 7px;color:#4d5662;font-size:10px;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-skill-list>button:hover:not(:disabled){background:#f1f3f5}.ppd-batch-skill-list>button[aria-selected=true]{background:#eef1f4;color:#252b34;font-weight:600}.ppd-batch-skill-list>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-skill-list>small{padding:3px 7px;color:#8a929d;font-size:10px}.ppd-batch-bulk .ppd-batch-skill{min-width:0}.ppd-batch-bulk .ppd-batch-skill-toggle{width:100%;max-width:none;min-width:0}.ppd-batch-tools>button.is-danger{color:#a34444}\n.ppd-batch-result{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px;border-left:1px solid #edf0f2;padding-left:9px}.ppd-batch-result>span{border-radius:999px;background:#eef1f4;padding:3px 7px;color:#66717e;font-size:9px}.ppd-batch-result>span.is-generating,.ppd-batch-result>span.is-submitting{background:#edf4ff;color:#3d6695}.ppd-batch-result>span.is-completed{background:#eaf7ee;color:#33714a}.ppd-batch-result>span.is-failed,.ppd-batch-result>span.is-unknown{background:#fff0e7;color:#9a5738}.ppd-batch-result>strong{font-size:11px}.ppd-batch-result>button{border:0;background:transparent;color:#9299a2;font-size:9px;cursor:pointer}.ppd-batch-empty{min-height:210px;display:grid;place-content:center;gap:5px;color:#858e99;text-align:center}.ppd-batch-empty strong{color:#4d5662;font-size:14px}.ppd-batch-empty span{font-size:11px}\n.ppd-batch-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-top:1px solid #dfe3e8;background:#fff}.ppd-batch-dialog>footer>div{display:flex;align-items:center;gap:12px}.ppd-batch-dialog>footer>div:first-child{display:grid;gap:2px}.ppd-batch-dialog>footer strong{font-size:12px}.ppd-batch-dialog>footer span{color:#7b8490;font-size:10px}.ppd-batch-dialog footer .is-primary{border-color:#252b34;background:#252b34;color:#fff}.ppd-batch-dialog footer .is-danger{color:#a34444}\n@media(max-width:900px){.ppd-batch-launchers>button:first-child{display:none}.ppd-batch-backdrop{padding:12px}.ppd-batch-dialog{height:calc(100vh - 24px)}.ppd-batch-bulk{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-batch-row{grid-template-columns:32px 82px minmax(180px,1fr)}.ppd-batch-reference-grid{width:78px;height:78px}.ppd-batch-result{grid-column:3;flex-direction:row;justify-content:flex-end;border-left:0;border-top:1px solid #edf0f2;padding:7px 0 0}.ppd-batch-dialog>footer{align-items:flex-start;flex-direction:column}.ppd-batch-dialog>footer>div:last-child{align-self:flex-end}}\n.ppd-skill-open{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:transparent;cursor:pointer}\n.ppd-skill-browser-backdrop{position:fixed;z-index:140;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.4);backdrop-filter:blur(3px)}\n.ppd-skill-browser{box-sizing:border-box;width:min(920px,100%);max-height:min(680px,calc(100vh - 48px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.3);color:#252b34;text-align:left}\n.ppd-skill-browser-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-skill-browser-head>strong{font-size:15px}.ppd-skill-browser-close{width:28px;height:28px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:18px;line-height:1;cursor:pointer}\n.ppd-skill-browser-search{flex:none;padding:10px 18px 0}.ppd-skill-browser-search>input{box-sizing:border-box;width:100%;height:34px;border:1px solid #dce1e6;border-radius:9px;background:#fff;padding:0 11px;color:#262c35;font:inherit;font-size:12px}.ppd-skill-browser-search>input:focus{outline:none;border-color:#b9c0ca;box-shadow:0 0 0 3px rgba(37,43,52,.07)}\n.ppd-skill-browser-tabs{flex:none;display:flex;gap:4px;padding:10px 18px 0}.ppd-skill-browser-tabs>button{height:28px;border:0;border-radius:8px;background:transparent;padding:0 10px;color:#7b8490;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.ppd-skill-browser-tabs>button:hover{background:#eef0f3;color:#3a4250}.ppd-skill-browser-tabs>button.is-active{background:#252b34;color:#fff}\n.ppd-skill-browser-categories{flex:none;display:flex;flex-wrap:wrap;gap:5px;padding:8px 18px 0}.ppd-skill-browser-categories>button{height:24px;border:1px solid #e1e5ea;border-radius:999px;background:#fff;padding:0 9px;color:#69737f;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-categories>button.is-selected{border-color:#252b34;background:#eef0f3;color:#252b34;font-weight:600}\n.ppd-skill-browser-list{flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));align-content:start;gap:8px;overflow:auto;padding:12px 18px 16px}\n.ppd-skill-browser-status{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;padding:18px 4px;color:#7b8490;font-size:12px}\n.ppd-skill-card{box-sizing:border-box;display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #e3e6ea;border-radius:12px;background:#fff;padding:8px;color:#252b34;font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}.ppd-skill-card:hover:not(:disabled){border-color:#c9ced6;box-shadow:0 6px 18px rgba(20,27,38,.08);transform:translateY(-1px)}.ppd-skill-card.is-selected{border-color:#252b34;box-shadow:inset 0 0 0 1px #252b34}.ppd-skill-card:disabled{opacity:.5;cursor:not-allowed}\n.ppd-skill-card-cover{position:relative;width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:linear-gradient(145deg,#eef0f4,#e2e6ec);color:#98a1ac}.ppd-skill-card-cover[data-image-pair]{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-skill-card-cover>img{display:block;width:100%;height:100%;object-fit:cover}.ppd-skill-card-fallback{font-size:20px}\n.ppd-skill-card-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.ppd-skill-card-copy>strong,.ppd-skill-card-copy>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-skill-card-copy>strong{font-size:12px;font-weight:650}.ppd-skill-card-copy>small{color:#7b8490;font-size:10px}\n.ppd-skill-browser-more{flex:none;align-self:center;margin:0 0 14px;height:30px;border:1px solid #dce1e6;border-radius:999px;background:#fff;padding:0 14px;color:#4d5662;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-more:disabled{opacity:.6;cursor:default}\n.ppd-skill-browser-family{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 18px 0}.ppd-skill-browser-back{align-self:flex-start;height:26px;border:0;border-radius:7px;background:transparent;padding:0 6px;color:#5b6470;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-family>.ppd-skill-browser-list{padding:8px 0 14px}\n@media(max-width:640px){.ppd-skill-browser-backdrop{padding:0}.ppd-skill-browser{width:100%;height:100%;border:0;border-radius:0}.ppd-skill-browser-list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:10px 12px 14px}.ppd-skill-browser-search,.ppd-skill-browser-tabs,.ppd-skill-browser-categories{padding-left:12px;padding-right:12px}}\n';
@@ -26129,10 +26223,10 @@ var chat_generation_progress_default = ".ppd-chat-progress-details{display:grid;
 var image_to_text_default = ".ppd-panel-image-to-text .ppd-content{max-width:1080px}\n.ppd-image-to-text-layout{display:grid;grid-template-columns:minmax(300px,.9fr) minmax(360px,1.1fr);gap:18px;align-items:start}\n.ppd-image-to-text-card{min-width:0;padding:20px;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}\n.ppd-image-to-text-images{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}\n.ppd-image-to-text-images>article,.ppd-image-to-text-add{position:relative;min-width:0;aspect-ratio:1;border:1px solid var(--ppd-line);border-radius:10px;overflow:hidden;background:var(--ppd-surface)}\n.ppd-image-to-text-images>article>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-image-to-text-images>article>button{position:absolute;top:6px;right:6px;width:24px;height:24px;padding:0;border:0;border-radius:50%;background:#111b;color:#fff;font-size:17px;line-height:1}\n.ppd-image-to-text-images>article>div{position:absolute;inset:auto 0 0;display:grid;gap:1px;padding:22px 8px 8px;background:linear-gradient(transparent,#111c);color:#fff}\n.ppd-image-to-text-images>article strong,.ppd-image-to-text-images>article small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.ppd-image-to-text-images>article strong{font-size:11px}.ppd-image-to-text-images>article small{font-size:9px}\n.ppd-image-to-text-index{position:absolute;top:7px;left:7px;display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#fff;color:#333;font-size:10px;font-weight:700;box-shadow:0 1px 5px #1113}\n.ppd-image-to-text-add{display:grid;place-items:center;align-content:center;gap:4px;cursor:pointer;color:var(--ppd-muted);text-align:center}\n.ppd-image-to-text-add>span{font-size:28px;line-height:1}.ppd-image-to-text-add>strong{font-size:12px;color:var(--ppd-text)}.ppd-image-to-text-add>small{font-size:10px}\n.ppd-image-to-text-add>input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-image-to-text-prompt{display:grid;gap:7px}.ppd-image-to-text-prompt>span{font-weight:650}.ppd-image-to-text-prompt textarea{width:100%;min-height:210px;padding:11px;border:1px solid var(--ppd-line);border-radius:9px;outline:none;resize:vertical;line-height:1.6}\n.ppd-image-to-text-prompt textarea:focus{border-color:#aaa9a1;box-shadow:0 0 0 3px #2221}.ppd-image-to-text-prompt>small{justify-self:end;color:var(--ppd-muted);font-size:10px}\n.ppd-image-to-text-model{display:grid;grid-template-columns:1fr 1fr;margin:16px 0 0;border-top:1px solid var(--ppd-line);border-bottom:1px solid var(--ppd-line)}\n.ppd-image-to-text-model>div{padding:11px 0}.ppd-image-to-text-model>div+div{padding-left:15px;border-left:1px solid var(--ppd-line)}.ppd-image-to-text-model dt{color:var(--ppd-muted);font-size:10px}.ppd-image-to-text-model dd{margin:2px 0 0;font-size:12px;font-weight:650}\n.ppd-image-to-text-card>.ppd-alert,.ppd-image-to-text-card>.ppd-notice{margin:12px 0 0}\n.ppd-image-to-text-quote{display:grid;gap:5px;margin-top:14px;padding:13px;border:1px solid #cbe0d2;border-radius:9px;background:#f4fbf6}.ppd-image-to-text-quote.is-expired{border-color:#e6ddc6;background:#fffcf5}.ppd-image-to-text-quote>div{display:flex;align-items:center;justify-content:space-between;gap:14px}.ppd-image-to-text-quote p{margin:0;color:var(--ppd-muted);font-size:11px}.ppd-image-to-text-quote small{color:var(--ppd-muted);font-size:9px}\n.ppd-image-to-text-actions{justify-content:flex-end;margin-top:16px}.ppd-image-to-text-ledger{margin-bottom:18px}.ppd-image-to-text-ledger .ppd-history-record-heading strong{display:flex;align-items:center;gap:7px}.ppd-image-to-text-ledger .ppd-spinner{width:14px;height:14px}\n.ppd-image-to-text-reason{margin:7px 0 0;color:var(--ppd-muted);font-size:11px;line-height:1.55}\n@media(max-width:760px){.ppd-image-to-text-layout{grid-template-columns:1fr}.ppd-image-to-text-card{padding:15px}}\n";
 
 // plugins/podplo-dsh/src/my-dna.css
-var my_dna_default = ".ppd-my-dna{display:grid;gap:18px}.ppd-dna-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.ppd-dna-heading h2{margin:3px 0 4px;font-size:22px}.ppd-dna-heading p{max-width:620px;margin:0;color:var(--ppd-muted);font-size:12px;line-height:1.6}\n.ppd-dna-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-dna-card{min-width:0;overflow:hidden;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-dna-cover{display:grid;place-items:center;aspect-ratio:4/3;background:var(--ppd-surface);color:var(--ppd-muted)}.ppd-dna-cover img{width:100%;height:100%;object-fit:contain}.ppd-dna-card-copy{display:grid;gap:3px;padding:10px 11px 8px}.ppd-dna-card-copy strong,.ppd-dna-card-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-dna-card-copy small{color:var(--ppd-muted);font-size:10px}.ppd-dna-card-actions{display:flex;gap:5px;padding:0 10px 10px}.ppd-dna-card-actions .ppd-button{min-width:0;padding:6px 8px}.ppd-dna-card-actions .ppd-button:first-child{margin-right:auto}\n.ppd-dna-create-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,.8fr);gap:16px;align-items:start}.ppd-dna-form-card{display:grid;gap:16px;padding:18px;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-dna-form-card>label,.ppd-dna-form-card>label>span:first-child{display:grid;gap:7px}.ppd-dna-form-card input,.ppd-dna-form-card select{width:100%;padding:10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-dna-form-card label>small{color:var(--ppd-muted);font-size:10px;line-height:1.5}.ppd-dna-upload{position:relative}.ppd-dna-upload>input{position:absolute;inset:28px 0 0;height:calc(100% - 28px);opacity:0;cursor:pointer}.ppd-dna-upload-empty,.ppd-dna-source{display:grid;place-items:center;align-content:center;min-height:220px;border:1px dashed var(--ppd-line);border-radius:10px;background:var(--ppd-surface);text-align:center}.ppd-dna-source{grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.ppd-dna-source img{width:100%;height:170px;object-fit:contain}.ppd-dna-source strong,.ppd-dna-source small{max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-dna-source small{padding-bottom:10px;color:var(--ppd-muted);font-size:10px}\n.ppd-dna-confirm h3{margin:0}.ppd-dna-confirm>p{margin:-8px 0 0;color:var(--ppd-muted);font-size:11px;line-height:1.6}.ppd-dna-quote{display:grid;gap:6px;padding:13px;border:1px solid #cbe0d2;border-radius:9px;background:#f4fbf6}.ppd-dna-quote.is-expired{border-color:#e6ddc6;background:#fffcf5}.ppd-dna-quote>div{display:flex;justify-content:space-between;gap:12px}.ppd-dna-quote p,.ppd-dna-quote small{margin:0;color:var(--ppd-muted);font-size:10px}.ppd-dna-uncertain{padding:12px;border:1px solid #ead8bd;border-radius:9px;background:#fffaf2}.ppd-dna-uncertain p{margin:4px 0 10px;color:var(--ppd-muted);font-size:10px}\n.ppd-dna-tasks{display:grid;gap:7px;padding:14px;border:1px solid var(--ppd-line);border-radius:11px;background:var(--ppd-surface)}.ppd-dna-tasks h3{margin:0 0 3px;font-size:13px}.ppd-dna-tasks article{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px;border-radius:8px;background:#fff}.ppd-dna-tasks article>div{display:grid;gap:2px}.ppd-dna-tasks small{color:var(--ppd-muted);font-size:10px}.ppd-dna-tasks .ppd-spinner{width:14px;height:14px}\n.ppd-dna-ledger .ppd-history-record-heading strong{display:flex;align-items:center;gap:7px}.ppd-dna-task-reason{margin:6px 0;color:var(--ppd-muted);font-size:11px;line-height:1.5}\n@media(max-width:980px){.ppd-dna-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:760px){.ppd-dna-heading{align-items:stretch;flex-direction:column}.ppd-dna-create-grid{grid-template-columns:1fr}.ppd-dna-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:460px){.ppd-dna-grid{grid-template-columns:1fr}}\n.ppd-dna-card-copy p{display:-webkit-box;min-height:3em;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}.ppd-my-dna .ppd-dialog textarea{width:100%;padding:10px;border:1px solid var(--ppd-line);border-radius:8px;resize:vertical;font:inherit}\n\n.ppd-dna-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}.ppd-dna-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}.ppd-dna-detail{display:grid;gap:16px;max-width:680px}.ppd-dna-detail>.ppd-dna-cover{max-width:520px;border-radius:12px;overflow:hidden}.ppd-dna-detail>[data-dna-description]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}\n";
+var my_dna_default = ".ppd-my-dna{display:grid;gap:18px}.ppd-dna-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.ppd-dna-heading h2{margin:3px 0 4px;font-size:22px}.ppd-dna-heading p{max-width:620px;margin:0;color:var(--ppd-muted);font-size:12px;line-height:1.6}\n.ppd-dna-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-dna-card{min-width:0;overflow:hidden;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-dna-cover{display:grid;place-items:center;aspect-ratio:4/3;background:var(--ppd-surface);color:var(--ppd-muted)}.ppd-dna-cover img{width:100%;height:100%;object-fit:contain}.ppd-dna-card-copy{display:grid;gap:3px;padding:10px 11px 8px}.ppd-dna-card-copy strong,.ppd-dna-card-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-dna-card-copy small{color:var(--ppd-muted);font-size:10px}.ppd-dna-card-actions{display:flex;gap:5px;padding:0 10px 10px}.ppd-dna-card-actions .ppd-button{min-width:0;padding:6px 8px}.ppd-dna-card-actions .ppd-button:first-child{margin-right:auto}\n.ppd-dna-create-grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(300px,.8fr);gap:16px;align-items:start}.ppd-dna-form-card{display:grid;gap:16px;padding:18px;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-dna-form-card>label,.ppd-dna-form-card>label>span:first-child{display:grid;gap:7px}.ppd-dna-form-card input,.ppd-dna-form-card select{width:100%;padding:10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-dna-form-card label>small{color:var(--ppd-muted);font-size:10px;line-height:1.5}.ppd-dna-upload{position:relative}.ppd-dna-upload>input{position:absolute;inset:28px 0 0;height:calc(100% - 28px);opacity:0;cursor:pointer}.ppd-dna-upload-empty,.ppd-dna-source{display:grid;place-items:center;align-content:center;min-height:220px;border:1px dashed var(--ppd-line);border-radius:10px;background:var(--ppd-surface);text-align:center}.ppd-dna-source{grid-template-rows:minmax(0,1fr) auto auto;overflow:hidden}.ppd-dna-source img{width:100%;height:170px;object-fit:contain}.ppd-dna-source strong,.ppd-dna-source small{max-width:90%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-dna-source small{padding-bottom:10px;color:var(--ppd-muted);font-size:10px}\n.ppd-dna-confirm h3{margin:0}.ppd-dna-confirm>p{margin:-8px 0 0;color:var(--ppd-muted);font-size:11px;line-height:1.6}.ppd-dna-quote{display:grid;gap:6px;padding:13px;border:1px solid #cbe0d2;border-radius:9px;background:#f4fbf6}.ppd-dna-quote.is-expired{border-color:#e6ddc6;background:#fffcf5}.ppd-dna-quote>div{display:flex;justify-content:space-between;gap:12px}.ppd-dna-quote p,.ppd-dna-quote small{margin:0;color:var(--ppd-muted);font-size:10px}.ppd-dna-uncertain{padding:12px;border:1px solid #ead8bd;border-radius:9px;background:#fffaf2}.ppd-dna-uncertain p{margin:4px 0 10px;color:var(--ppd-muted);font-size:10px}\n.ppd-dna-tasks{display:grid;gap:7px;padding:14px;border:1px solid var(--ppd-line);border-radius:11px;background:var(--ppd-surface)}.ppd-dna-tasks h3{margin:0 0 3px;font-size:13px}.ppd-dna-tasks article{display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:10px;padding:9px;border-radius:8px;background:#fff}.ppd-dna-tasks article>div{display:grid;gap:2px}.ppd-dna-tasks small{color:var(--ppd-muted);font-size:10px}.ppd-dna-tasks .ppd-spinner{width:14px;height:14px}\n.ppd-dna-ledger .ppd-history-record-heading strong{display:flex;align-items:center;gap:7px}.ppd-dna-task-reason{margin:6px 0;color:var(--ppd-muted);font-size:11px;line-height:1.5}\n@media(max-width:980px){.ppd-dna-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:760px){.ppd-dna-heading{align-items:stretch;flex-direction:column}.ppd-dna-create-grid{grid-template-columns:1fr}}\n@media(max-width:720px){.ppd-dna-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:460px){.ppd-dna-grid{grid-template-columns:1fr}}\n.ppd-dna-card-copy p{display:-webkit-box;min-height:3em;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}.ppd-my-dna .ppd-dialog textarea{width:100%;padding:10px;border:1px solid var(--ppd-line);border-radius:8px;resize:vertical;font:inherit}\n\n.ppd-dna-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}.ppd-dna-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}.ppd-dna-detail{display:grid;gap:16px;max-width:680px}.ppd-dna-detail>.ppd-dna-cover{max-width:520px;border-radius:12px;overflow:hidden}.ppd-dna-detail>[data-dna-description]{margin:0;white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.6}\n\n/* Personal DNA library layout */\n.ppd-dna-heading{align-items:center;margin-bottom:2px}\n.ppd-dna-heading h2{font-size:22px}\n.ppd-dna-toolbar{display:flex;align-items:center;gap:8px}\n.ppd-dna-toolbar label{position:relative;display:flex;align-items:center;width:min(250px,35vw)}\n.ppd-dna-toolbar label>svg{position:absolute;left:11px;width:14px;height:14px;fill:none;stroke:var(--ppd-muted);stroke-width:1.7}\n.ppd-dna-toolbar input{width:100%;height:36px;padding:7px 10px 7px 32px;border:1px solid var(--ppd-line);border-radius:8px;background:var(--ppd-surface);outline:none}\n.ppd-dna-toolbar input:focus{border-color:#aaa9a1;box-shadow:0 0 0 3px #2221}\n.ppd-dna-toolbar .ppd-icon-button svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}\n.ppd-dna-card{position:relative;display:flex;min-width:0;overflow:visible;flex-direction:column;border-radius:12px}\n.ppd-dna-open{display:flex;min-width:0;flex:1;flex-direction:column;border-radius:12px 12px 0 0}\n.ppd-dna-card .ppd-dna-cover{width:100%;min-height:0;grid-template-rows:minmax(0,1fr);aspect-ratio:16/9;overflow:hidden;flex:0 0 auto;border-radius:11px 11px 0 0}\n.ppd-dna-card .ppd-dna-cover img{min-width:0;min-height:0;max-width:100%;max-height:100%;align-self:center;justify-self:center}\n.ppd-dna-card-copy{min-height:48px;padding:11px 12px 5px}\n.ppd-dna-card-copy p{min-height:0;font-size:11px}\n.ppd-dna-card-actions{display:flex;min-height:48px;align-items:center;justify-content:flex-end;padding:5px 12px 11px}\n.ppd-dna-card-actions .ppd-button{min-width:64px;padding:6px 13px}\n.ppd-dna-card-actions .ppd-button:first-child{margin-right:0}\n.ppd-dna-cover-loading{display:flex;align-items:center;gap:7px;color:var(--ppd-muted);font-size:11px}\n.ppd-dna-cover-loading .ppd-spinner{width:14px;height:14px}\n.ppd-dna-detail.ppd-personal-detail{display:block;max-width:1000px}\n.ppd-dna-detail .ppd-personal-detail-grid{display:grid}\n.ppd-dna-detail-cover{width:100%;aspect-ratio:4/3;overflow:hidden;border-radius:12px;background:var(--ppd-surface)}\n.ppd-dna-detail-cover>.ppd-dna-cover{width:100%;height:100%;aspect-ratio:auto}\n.ppd-dna-detail .ppd-personal-detail-description{max-width:440px;color:#41473a;font-size:16px}\n@media(max-width:760px){.ppd-dna-heading{align-items:stretch}.ppd-dna-toolbar label{width:100%}.ppd-dna-toolbar{width:100%}}\n";
 
 // plugins/podplo-dsh/src/client.tsx
-var import_jsx_runtime20 = require("react/jsx-runtime");
+var import_jsx_runtime19 = require("react/jsx-runtime");
 var inject = ["slots", "connection", "layout", "uiWorkspace", "sessions"];
 var sectionLabels = { generation: "\u751F\u56FE", gallery: "\u56FE\u5E93", skills: "Skill \u5E93", assets: "\u6211\u7684\u6536\u85CF", results: "\u5904\u7406\u8BB0\u5F55", toolbox: "\u5DE5\u5177\u7BB1" };
 var referenceText = (selection) => `
@@ -26268,9 +26362,9 @@ ${my_dna_default}`;
     ctx.layout.selectPanel(null);
   };
   function Icon2({ size = 16 }) {
-    const expanded = (0, import_react21.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
-    const marker = (0, import_react21.useRef)(null);
-    (0, import_react21.useEffect)(() => {
+    const expanded = (0, import_react20.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
+    const marker = (0, import_react20.useRef)(null);
+    (0, import_react20.useEffect)(() => {
       const button = marker.current?.closest("button");
       if (!button) return;
       button.setAttribute("aria-expanded", String(expanded));
@@ -26285,38 +26379,38 @@ ${my_dna_default}`;
         button.removeAttribute("aria-expanded");
       };
     }, [expanded]);
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { ref: marker, className: "ppd-sidebar-root-marker ppd-sidebar-nav", "data-podplo-sidebar-root": true, "data-podplo-sidebar-expanded": expanded, "data-podplo-sidebar-wide": size === 16, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", "aria-hidden": "true", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M5 4.5h8.2a5.8 5.8 0 0 1 0 11.6H9v3.4H5z" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M9 8v4.6h4a2.3 2.3 0 0 0 0-4.6z" })
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { ref: marker, className: "ppd-sidebar-root-marker ppd-sidebar-nav", "data-podplo-sidebar-root": true, "data-podplo-sidebar-expanded": expanded, "data-podplo-sidebar-wide": size === 16, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", "aria-hidden": "true", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M5 4.5h8.2a5.8 5.8 0 0 1 0 11.6H9v3.4H5z" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M9 8v4.6h4a2.3 2.3 0 0 0 0-4.6z" })
     ] }) });
   }
   function SectionIcon({ section, size = 16 }) {
-    const expanded = (0, import_react21.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
+    const expanded = (0, import_react20.useSyncExternalStore)(sidebarDisclosure.subscribe, sidebarDisclosure.getSnapshot, sidebarDisclosure.getSnapshot);
     const paths = {
-      generation: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z" }),
-      gallery: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("rect", { x: "4", y: "5", width: "16", height: "14", rx: "2" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m7 16 3.5-4 2.5 2 2-2 2 4" })
+      generation: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m12 3 1.6 5.4L19 10l-5.4 1.6L12 17l-1.6-5.4L5 10l5.4-1.6z" }),
+      gallery: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("rect", { x: "4", y: "5", width: "16", height: "14", rx: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m7 16 3.5-4 2.5 2 2-2 2 4" })
       ] }),
-      skills: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M12 3 4.5 8 12 13l7.5-5z" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m6.5 11.5-2 1.5 7.5 5 7.5-5-2-1.5" })
+      skills: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M12 3 4.5 8 12 13l7.5-5z" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m6.5 11.5-2 1.5 7.5 5 7.5-5-2-1.5" })
       ] }),
-      assets: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M4 7h6l2 2h8v10H4z" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M4 7V5h6l2 2" })
+      assets: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M4 7h6l2 2h8v10H4z" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M4 7V5h6l2 2" })
       ] }),
-      results: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("rect", { x: "4", y: "4", width: "16", height: "16", rx: "2" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "m8 12 3 3 5-6" })
+      results: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("rect", { x: "4", y: "4", width: "16", height: "16", rx: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "m8 12 3 3 5-6" })
       ] }),
-      toolbox: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("path", { d: "M4 7h16M4 17h16" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("circle", { cx: "9", cy: "7", r: "2" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("circle", { cx: "15", cy: "17", r: "2" })
+      toolbox: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("path", { d: "M4 7h16M4 17h16" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("circle", { cx: "9", cy: "7", r: "2" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("circle", { cx: "15", cy: "17", r: "2" })
       ] })
     };
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       "span",
       {
         className: "ppd-sidebar-child-marker ppd-sidebar-nav",
@@ -26324,19 +26418,19 @@ ${my_dna_default}`;
         "data-podplo-nav-section": section,
         "data-podplo-sidebar-visible": expanded,
         "data-podplo-sidebar-wide": size === 16,
-        children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: paths[section] })
+        children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("svg", { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.6", strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": "true", children: paths[section] })
       }
     );
   }
   function NativeWorkspace() {
-    const nativeSessionId = (0, import_react21.useSyncExternalStore)(sessionStore.subscribe, sessionStore.getSnapshot, sessionStore.getSnapshot);
+    const nativeSessionId = (0, import_react20.useSyncExternalStore)(sessionStore.subscribe, sessionStore.getSnapshot, sessionStore.getSnapshot);
     const panelRequest = (action, args) => request(action, args, nativeSessionId ?? "");
     const composerRequest = (action, args) => request(
       action,
       action === "generation.prepare" ? { ...args, archiveSessionId: nativeSessionId } : args,
       ""
     );
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
       PodploWorkspace,
       {
         request: panelRequest,
@@ -26354,12 +26448,12 @@ ${my_dna_default}`;
   ctx.slots.inject("sidebar.panellist", () => ctx.slots.register({ name: "sidebar.panellist", id: "podplo", order: 30, label: "PodPlo" }, Icon2));
   for (const [index, section] of PODPLO_SECTIONS.entries()) {
     let SectionWorkspace2 = function() {
-      (0, import_react21.useLayoutEffect)(() => {
+      (0, import_react20.useLayoutEffect)(() => {
         navigator2.navigate(section);
       }, []);
-      return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(NativeWorkspace, {});
+      return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(NativeWorkspace, {});
     }, NativeSectionIcon2 = function({ size = 16 }) {
-      return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(SectionIcon, { section, size });
+      return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(SectionIcon, { section, size });
     };
     var SectionWorkspace = SectionWorkspace2, NativeSectionIcon = NativeSectionIcon2;
     const id = `podplo-${section}`;
@@ -26367,9 +26461,9 @@ ${my_dna_default}`;
     if (section !== "generation") ctx.slots.inject("sidebar.panellist", () => ctx.slots.register({ name: "sidebar.panellist", id, order: 30 + (index + 1) / 10, label: sectionLabels[section] }, NativeSectionIcon2));
   }
   function ComposerBridge({ sessionId, inputActions }) {
-    const [notice, setNotice] = (0, import_react21.useState)("");
-    const chatRequest = (0, import_react21.useCallback)((action, args) => request(action, args, sessionId), [sessionId]);
-    (0, import_react21.useEffect)(() => {
+    const [notice, setNotice] = (0, import_react20.useState)("");
+    const chatRequest = (0, import_react20.useCallback)((action, args) => request(action, args, sessionId), [sessionId]);
+    (0, import_react20.useEffect)(() => {
       lastSessionId = sessionId;
       sessionStore.set(sessionId);
       if (!sessionId) return;
@@ -26404,9 +26498,9 @@ ${my_dna_default}`;
         alive = false;
       };
     }, [sessionId, inputActions]);
-    return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ChatGenerationTasks, { request: chatRequest, sessionId }, sessionId ?? "draft"),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { className: "ppd-visually-hidden ppd-native-composer", role: "status", "data-podplo-session": sessionId, children: notice })
+    return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(ChatGenerationTasks, { request: chatRequest, sessionId }, sessionId ?? "draft"),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { className: "ppd-visually-hidden ppd-native-composer", role: "status", "data-podplo-session": sessionId, children: notice })
     ] });
   }
   ctx.slots.inject("conversation.input.dock", () => ctx.slots.register({ name: "conversation.input.dock", id: "podplo-selection-bridge", order: 30 }, ComposerBridge));

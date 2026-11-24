@@ -47026,7 +47026,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.38",
+  version: "0.1.39",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -53542,7 +53542,7 @@ var TaskArchiveManager = class {
       diagnostics: [...task.diagnostics ?? [], ...internalFiles.flatMap((file2) => file2.diagnostic ? [file2.diagnostic] : [])].slice(-20),
       id: task.id,
       archiveFormat: task.archiveFormat,
-      name: "\u56FE\u7247\u52A0\u5DE5",
+      name: task.name,
       projectId: task.projectId,
       projectName: this.store.snapshot().projects.find((row) => row.id === task.projectId && row.owner === task.owner).name,
       createdAt: task.createdAt,
@@ -53554,6 +53554,7 @@ var TaskArchiveManager = class {
       savedCount: audit.delivery.saved,
       operationIds: task.operationIds,
       files,
+      generationCalls: task.generationCalls,
       stageResults,
       processingResults,
       audit,
@@ -53604,6 +53605,7 @@ var TaskArchiveManager = class {
       savedCount: files.filter((file2) => file2.status === "saved").length,
       operationIds: task.operationIds,
       files,
+      generationCalls: task.generationCalls,
       audit,
       ...summary,
       ...["failed", "missing"].includes(saveStatus) ? { error: saveStatus === "failed" ? "\u90E8\u5206\u6587\u4EF6\u4FDD\u5B58\u5931\u8D25\uFF0C\u53EF\u91CD\u8BD5\u4FDD\u5B58\u3002" : available ? "\u90E8\u5206\u6210\u679C\u6587\u4EF6\u5DF2\u79FB\u52A8\u3001\u4FEE\u6539\u6216\u5220\u9664\uFF0C\u4ECD\u53EF\u6253\u5F00\u4EFB\u52A1\u6587\u4EF6\u5939\u67E5\u770B\u3002" : "\u4EFB\u52A1\u6587\u4EF6\u5939\u4E0D\u5B58\u5728\u6216\u4E0D\u53EF\u8BBF\u95EE\u3002" } : {}
@@ -53646,16 +53648,31 @@ var TaskArchiveManager = class {
     const headers = state.tasks.filter((row) => row.owner === identity2.owner).flatMap((task) => {
       const projectName = projectNames.get(task.projectId);
       if (!projectName || filters.project && filters.project !== task.projectId) return [];
-      const name2 = archiveLayout(task) ? "\u56FE\u7247\u52A0\u5DE5" : task.name;
+      const name2 = task.name;
+      const processingTypes = [...new Set(task.files.filter((file2) => file2.group === "result").map((file2) => resultSourceType(file2.source)))];
+      if (!processingTypes.length) processingTypes.push(task.localTask ? "tool" : "ai");
+      if (filters.processingType && filters.processingType !== "all" && !processingTypes.includes(filters.processingType)) return [];
       if (!`${name2} ${projectName}`.toLocaleLowerCase().includes(query)) return [];
       const createdAt = Date.parse(task.createdAt);
       if (!Number.isFinite(createdAt) || bounds.start !== void 0 && createdAt < bounds.start || bounds.end !== void 0 && createdAt >= bounds.end) return [];
-      return [{ verified: false, id: task.id, name: name2, projectId: task.projectId, projectName, createdAt: task.createdAt }];
+      return [{
+        verified: false,
+        id: task.id,
+        name: name2,
+        projectId: task.projectId,
+        projectName,
+        createdAt: task.createdAt,
+        operationIds: [...task.operationIds],
+        processingTypes,
+        status: task.status
+      }];
     }).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.id.localeCompare(b.id));
     const deletedAssetIds = state.deleted.filter((row) => row.owner === identity2.owner).flatMap((row) => row.assetIds);
     const knownAssetIds = [.../* @__PURE__ */ new Set([...state.tasks.filter((row) => row.owner === identity2.owner).flatMap((task) => task.files.filter((file2) => file2.group === "result" && file2.source.kind === "asset").map((file2) => file2.source.id)), ...deletedAssetIds])];
     await this.same(identity2);
-    return { headers, total: headers.length, projects, knownAssetIds, deletedAssetIds };
+    const deletedOperationIds = state.deleted.filter((row) => row.owner === identity2.owner).flatMap((row) => row.operationIds);
+    const deletedTaskIds = state.deleted.filter((row) => row.owner === identity2.owner).map((row) => row.id);
+    return { headers, total: headers.length, projects, knownAssetIds, deletedAssetIds, deletedOperationIds, deletedTaskIds };
   }
   async historyImagesForTask(task, projectName, fileIds) {
     try {
