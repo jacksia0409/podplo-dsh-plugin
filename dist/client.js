@@ -39711,7 +39711,7 @@ var import_react16 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.45",
+  version: "0.1.46",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -42292,6 +42292,33 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
   ] });
 }
 
+// packages/online/reusable-webp.ts
+var CHROMIUM_SRGB_SHA256 = "12afb4d9953adee0607d347daee5b78b18d6b3cab2d572b88970703f5edb37bc";
+async function canReuseWebp(bytes, losslessOnly = false) {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const tag = (offset) => String.fromCharCode(...bytes.subarray(offset, offset + 4));
+  if (bytes.length < 20 || tag(0) !== "RIFF" || tag(8) !== "WEBP" || view.getUint32(4, true) !== bytes.length - 8) return false;
+  let layout = "";
+  for (let offset = 12; offset < bytes.length; ) {
+    if (layout.length >= 16 || offset + 8 > bytes.length) return false;
+    const kind = tag(offset);
+    const size = view.getUint32(offset + 4, true);
+    const start = offset + 8;
+    offset = start + size + size % 2;
+    if (offset > bytes.length || size % 2 && bytes[offset - 1] !== 0) return false;
+    if (kind === "ICCP") {
+      if (size !== 456 || !globalThis.crypto?.subtle) return false;
+      const digest = await crypto.subtle.digest("SHA-256", new Uint8Array(bytes.subarray(start, start + size)));
+      if (Array.from(new Uint8Array(digest), (n) => n.toString(16).padStart(2, "0")).join("") !== CHROMIUM_SRGB_SHA256) return false;
+    } else if (kind === "VP8X") {
+      if (size !== 10 || view.getUint8(start) & ~48 || bytes[start + 1] || bytes[start + 2] || bytes[start + 3]) return false;
+    } else if (!["ALPH", "VP8 ", "VP8L"].includes(kind)) return false;
+    layout += kind;
+  }
+  if (losslessOnly && !layout.endsWith("VP8L")) return false;
+  return /^(?:VP8 |VP8L|VP8X(?:ICCP)?(?:ALPHVP8 |VP8 |VP8L))$/.test(layout);
+}
+
 // packages/online/reference-image.ts
 var MAX_REFERENCE_BYTES = 1e7;
 var MAX_REFERENCE_INPUT_BYTES = 5e7;
@@ -42309,6 +42336,7 @@ async function compressReferenceImage(file3) {
   }
   try {
     if (bitmap.width * bitmap.height > 4e7) throw new Error("Image dimensions exceed the pixel limit.");
+    if (file3.type === "image/webp" && file3.size <= MAX_REFERENCE_BYTES && Math.max(bitmap.width, bitmap.height) <= MAX_REFERENCE_EDGE && await canReuseWebp(new Uint8Array(await file3.arrayBuffer()))) return file3;
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d", { alpha: true });
     if (!context) throw new Error("Image compression is unavailable.");
@@ -42319,6 +42347,14 @@ async function compressReferenceImage(file3) {
       canvas.width = Math.max(1, Math.round(bitmap.width * scale));
       canvas.height = Math.max(1, Math.round(bitmap.height * scale));
       context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+      let lossless = await new Promise((resolve) => canvas.toBlob(resolve, "image/webp", 1));
+      if (!lossless || lossless.type !== "image/webp" || lossless.size <= MAX_REFERENCE_BYTES && !await canReuseWebp(new Uint8Array(await lossless.arrayBuffer()), true)) {
+        lossless = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+      }
+      if (lossless && lossless.size <= MAX_REFERENCE_BYTES) {
+        const ext = lossless.type === "image/webp" ? ".webp" : ".png";
+        return new File([lossless], file3.name.replace(/\.[^.]+$/, "") + ext, { type: lossless.type, lastModified: file3.lastModified });
+      }
       for (const quality of qualities) {
         const encoded = await new Promise((resolve, reject) => canvas.toBlob(
           (blob) => blob ? resolve(blob) : reject(new Error("Image compression failed.")),

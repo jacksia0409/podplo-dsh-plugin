@@ -61579,7 +61579,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.45",
+  version: "0.1.46",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -65816,6 +65816,35 @@ import { basename as basename13, extname as extname11 } from "node:path";
 import { createHash as createHash13 } from "node:crypto";
 import { basename as basename11, extname as extname9, join as join10 } from "node:path";
 import sharp13 from "sharp";
+
+// packages/online/reusable-webp.ts
+var CHROMIUM_SRGB_SHA256 = "12afb4d9953adee0607d347daee5b78b18d6b3cab2d572b88970703f5edb37bc";
+async function canReuseWebp(bytes, losslessOnly = false) {
+  const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+  const tag = (offset) => String.fromCharCode(...bytes.subarray(offset, offset + 4));
+  if (bytes.length < 20 || tag(0) !== "RIFF" || tag(8) !== "WEBP" || view.getUint32(4, true) !== bytes.length - 8) return false;
+  let layout = "";
+  for (let offset = 12; offset < bytes.length; ) {
+    if (layout.length >= 16 || offset + 8 > bytes.length) return false;
+    const kind = tag(offset);
+    const size2 = view.getUint32(offset + 4, true);
+    const start = offset + 8;
+    offset = start + size2 + size2 % 2;
+    if (offset > bytes.length || size2 % 2 && bytes[offset - 1] !== 0) return false;
+    if (kind === "ICCP") {
+      if (size2 !== 456 || !globalThis.crypto?.subtle) return false;
+      const digest4 = await crypto.subtle.digest("SHA-256", new Uint8Array(bytes.subarray(start, start + size2)));
+      if (Array.from(new Uint8Array(digest4), (n) => n.toString(16).padStart(2, "0")).join("") !== CHROMIUM_SRGB_SHA256) return false;
+    } else if (kind === "VP8X") {
+      if (size2 !== 10 || view.getUint8(start) & ~48 || bytes[start + 1] || bytes[start + 2] || bytes[start + 3]) return false;
+    } else if (!["ALPH", "VP8 ", "VP8L"].includes(kind)) return false;
+    layout += kind;
+  }
+  if (losslessOnly && !layout.endsWith("VP8L")) return false;
+  return /^(?:VP8 |VP8L|VP8X(?:ICCP)?(?:ALPHVP8 |VP8 |VP8L))$/.test(layout);
+}
+
+// plugins/podplo-dsh/src/native-reference-bridge.ts
 var MAX_INPUT_BYTES = 5e7;
 var MAX_OUTPUT_BYTES = 1e7;
 var MAX_INPUT_PIXELS = 4e7;
@@ -65857,14 +65886,18 @@ async function normalizeNativeReference(input) {
   const edgeScale = Math.min(1, MAX_EDGE / Math.max(orientedWidth, orientedHeight));
   const pixelScale = Math.min(1, Math.sqrt(MAX_INPUT_PIXELS / (orientedWidth * orientedHeight)));
   let scale = Math.min(edgeScale, pixelScale);
+  if (scale === 1 && source.length <= MAX_OUTPUT_BYTES && metadata.format === "webp" && await canReuseWebp(source)) {
+    await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).stats();
+    return { name: safeWebpName(input.name), bytes: source, fingerprint: hash3(source) };
+  }
   let output = Buffer.alloc(0);
   let best = Buffer.alloc(0);
-  const qualities = [90, 80, 70, 60, 50, 40];
+  const qualities = [100, 90, 80, 70, 60, 50, 40];
   for (let resizeAttempt = 0; resizeAttempt < 5; resizeAttempt++) {
     const width2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
     const height2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
     for (const quality of qualities) {
-      const encoded = await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
+      const encoded = await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ lossless: quality === 100, quality, alphaQuality: quality, effort: 3 }).toBuffer();
       if (!best.length || encoded.length < best.length) best = encoded;
       if (encoded.length <= MAX_OUTPUT_BYTES) {
         output = encoded;
