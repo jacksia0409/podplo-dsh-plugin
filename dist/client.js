@@ -38934,7 +38934,7 @@ var statusLabel = (status) => ({
   partial_cancelled: "\u90E8\u5206\u5B8C\u6210",
   unknown: "\u7ED3\u679C\u5F85\u6838\u5BF9"
 })[status] ?? status;
-var childStatus = (status) => status === "completed" || status === "succeeded" || status === "saved" ? "completed" : status === "failed" ? "failed" : status === "cancelled" ? "cancelled" : status.includes("unknown") || status === "needs_review" ? "unknown" : "loading";
+var childStatus = (status) => status === "completed" || status === "succeeded" || status === "saved" || status === "ready" ? "completed" : status === "failed" ? "failed" : status === "cancelled" ? "cancelled" : status.includes("unknown") || status === "needs_review" ? "unknown" : "loading";
 var dateLabel = (value2) => Number.isFinite(Date.parse(value2)) ? new Date(value2).toLocaleString(
   void 0,
   { year: "numeric", month: "numeric", day: "numeric", hour: "2-digit", minute: "2-digit" }
@@ -38956,9 +38956,35 @@ function RefreshIcon() {
 function ResultSlot({ status, text: text3 = false }) {
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: `ppd-result-slot ppd-result-slot-${status}`, "data-result-slot": status, children: status === "loading" ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-spinner", "aria-label": "\u7ED3\u679C\u751F\u6210\u4E2D" }) : text3 ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-result-document", children: "TXT" }) : status === "completed" ? "\u2713" : status === "failed" ? "\u5931\u8D25" : status === "cancelled" ? "\u5DF2\u505C\u6B62" : "\u5F85\u6838\u5BF9" });
 }
+function CloudResultPreview({ assetId, request, retryable = true }) {
+  const preview = useDeferredPreview({
+    requestIdentity: request,
+    resourceKey: `result-asset:${assetId}`,
+    revision: 0,
+    cachePolicy: "ttl",
+    ttlMs: 5 * 6e4,
+    load: async (signal) => {
+      const { data } = await request("assets.detail", { id: assetId });
+      if (signal.aborted) throw new DOMException("\u9884\u89C8\u5DF2\u53D6\u6D88", "AbortError");
+      if (typeof data?.previewUrl === "string" && data.previewUrl) return data.previewUrl;
+      throw new Error(data?.status === "processing" ? "\u7ED3\u679C\u56FE\u4ECD\u5728\u5904\u7406" : "\u7ED3\u679C\u56FE\u9884\u89C8\u6682\u4E0D\u53EF\u7528");
+    }
+  });
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { ref: preview.ref, className: "ppd-result-slot ppd-result-cloud-image", "data-result-asset": assetId, children: preview.status === "ready" && preview.value ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+    "img",
+    {
+      src: preview.value,
+      alt: "\u751F\u6210\u7ED3\u679C\u56FE",
+      loading: "lazy",
+      decoding: "async",
+      referrerPolicy: "no-referrer",
+      onError: () => preview.markError(new Error("\u7ED3\u679C\u56FE\u89E3\u7801\u5931\u8D25"))
+    }
+  ) : preview.status === "error" ? retryable ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => preview.retry(), children: "\u91CD\u8BD5\u9884\u89C8" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: "\u9884\u89C8\u6682\u4E0D\u53EF\u7528" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-spinner", "aria-label": "\u6B63\u5728\u52A0\u8F7D\u7ED3\u679C\u56FE" }) });
+}
 function LiveCover({ task, request }) {
   if (task.kind === "dna" && task.coverAssetId) return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-result-cover-grid ppd-result-dna-cover", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(DnaCover, { assetId: task.coverAssetId, request }) });
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-result-cover-grid", children: (task.children.length ? task.children : ["unknown"]).slice(0, 4).map((status, index) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ResultSlot, { status, text: task.kind === "imageToText" }, index)) });
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-result-cover-grid", children: (task.children.length ? task.children : ["unknown"]).slice(0, 4).map((status, index) => task.resultAssetIds?.[index] ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(CloudResultPreview, { assetId: task.resultAssetIds[index], request, retryable: false }, index) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ResultSlot, { status, text: task.kind === "imageToText" }, index)) });
 }
 function TextResultView({ result, label }) {
   const [copyStatus, setCopyStatus] = (0, import_react15.useState)("");
@@ -39141,12 +39167,12 @@ function LiveDetail({ task, request, busy, back, run, onDelete }) {
         /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: task.sourceNames?.[index] || `\u7ED3\u679C ${index + 1}` }),
         /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: status === "loading" ? "\u5904\u7406\u4E2D" : status === "failed" ? "\u672A\u5B8C\u6210" : status === "cancelled" ? "\u672A\u6267\u884C" : "\u9700\u8981\u6838\u5BF9\u539F\u4EFB\u52A1" })
       ] }, index)) : task.children.map((status, index) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("article", { className: `ppd-result-detail-slot ppd-result-slot-${status}`, "data-detail-result": status, children: [
-        task.kind === "dna" && task.coverAssetId ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-result-slot ppd-result-dna-cover", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(DnaCover, { assetId: task.coverAssetId, request }) }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ResultSlot, { status, text: task.kind === "imageToText" }),
+        task.resultAssetIds?.[index] ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(CloudResultPreview, { assetId: task.resultAssetIds[index], request }) : task.kind === "dna" && task.coverAssetId ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-result-slot ppd-result-dna-cover", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(DnaCover, { assetId: task.coverAssetId, request }) }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ResultSlot, { status, text: task.kind === "imageToText" }),
         /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("strong", { children: [
           "\u7ED3\u679C ",
           index + 1
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: status === "loading" ? "\u5904\u7406\u4E2D" : status === "completed" ? task.kind === "dna" ? "\u5DF2\u5B58\u5165\u6211\u7684 DNA" : "\u5DF2\u5B8C\u6210\uFF0C\u6682\u65E0\u53EF\u7528\u672C\u5730\u6210\u679C" : status === "failed" ? "\u672A\u5B8C\u6210" : status === "cancelled" ? "\u672A\u6267\u884C" : "\u9700\u8981\u6838\u5BF9\u539F\u4EFB\u52A1" })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { children: status === "loading" ? "\u5904\u7406\u4E2D" : status === "completed" ? task.kind === "dna" ? "\u5DF2\u5B58\u5165\u6211\u7684 DNA" : task.resultAssetIds?.[index] ? "\u5DF2\u5B8C\u6210" : "\u5DF2\u5B8C\u6210\uFF0C\u6682\u65E0\u53EF\u7528\u672C\u5730\u6210\u679C" : status === "failed" ? "\u672A\u5B8C\u6210" : status === "cancelled" ? "\u672A\u6267\u884C" : "\u9700\u8981\u6838\u5BF9\u539F\u4EFB\u52A1" })
       ] }, index)) })
     ] }),
     (task.actionLabel || task.secondaryLabel || onDelete) && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-actions", children: [
@@ -39212,6 +39238,9 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
   const [page, setPage] = (0, import_react15.useState)(cached3?.page ?? 1), [revision, setRevision] = (0, import_react15.useState)(0), [archiveTick, setArchiveTick] = (0, import_react15.useState)(0);
   const [headers, setHeaders] = (0, import_react15.useState)([]), [deletedOperationIds, setDeletedOperationIds] = (0, import_react15.useState)([]);
   const [deletedTaskIds, setDeletedTaskIds] = (0, import_react15.useState)([]);
+  const [knownAssetIds, setKnownAssetIds] = (0, import_react15.useState)([]), [deletedAssetIds, setDeletedAssetIds] = (0, import_react15.useState)([]);
+  const [catalogGrant, setCatalogGrant] = (0, import_react15.useState)();
+  const [archiveError, setArchiveError] = (0, import_react15.useState)("");
   const [archives, setArchives] = (0, import_react15.useState)([]), [generation, setGeneration] = (0, import_react15.useState)([]);
   const [texts, setTexts] = (0, import_react15.useState)([]), [dnas, setDnas] = (0, import_react15.useState)([]), [tools2, setTools] = (0, import_react15.useState)([]);
   const [dnaProfiles, setDnaProfiles] = (0, import_react15.useState)([]);
@@ -39220,6 +39249,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
   const [deleteTarget, setDeleteTarget] = (0, import_react15.useState)();
   const [deleteError, setDeleteError] = (0, import_react15.useState)("");
   const [exportingTexts, setExportingTexts] = (0, import_react15.useState)(false);
+  const [openingRoot, setOpeningRoot] = (0, import_react15.useState)(false);
   const deleteItemsRef = (0, import_react15.useRef)(/* @__PURE__ */ new Map());
   const deleteGuardRef = (0, import_react15.useRef)({ request, ownerId, uiLease, version: 0, mounted: true });
   if (deleteGuardRef.current.request !== request || deleteGuardRef.current.ownerId !== ownerId || deleteGuardRef.current.uiLease !== uiLease) {
@@ -39257,11 +39287,16 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         dnaRows.forEach((row) => resolveResultSubmission(ownerId, row.id));
         toolRows.forEach((row) => resolveResultSubmission(ownerId, row.id));
         if (catalog.status === "fulfilled") {
-          setHeaders(catalog.value.data?.headers ?? []);
-          setDeletedOperationIds(catalog.value.data?.deletedOperationIds ?? []);
-          setDeletedTaskIds(catalog.value.data?.deletedTaskIds ?? []);
+          const catalogData = catalog.value.data;
+          setHeaders(catalogData?.headers ?? []);
+          setDeletedOperationIds(catalogData?.deletedOperationIds ?? []);
+          setDeletedTaskIds(catalogData?.deletedTaskIds ?? []);
+          setKnownAssetIds(Array.isArray(catalogData?.knownAssetIds) ? catalogData.knownAssetIds : []);
+          setDeletedAssetIds(Array.isArray(catalogData?.deletedAssetIds) ? catalogData.deletedAssetIds : []);
+          setArchiveError(typeof catalogData?.error === "string" ? catalogData.error : "");
+          setCatalogGrant({ ownerId, request, uiLease });
           setArchiveTick((value2) => value2 + 1);
-        }
+        } else setCatalogGrant(void 0);
         if (generationResult.status === "fulfilled") setGeneration(generationRows.filter((row) => row.status !== "quoted" && (row.approvedAt || activeGeneration.has(row.status) || row.status === "submission_unknown" || row.status === "partial_unknown")));
         if (textResult.status === "fulfilled") setTexts(textRows);
         if (dnaResult.status === "fulfilled") setDnas(dnaRows);
@@ -39284,9 +39319,11 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       active = false;
       poll.stop();
     };
-  }, [request, ownerId, revision, filterKey]);
+  }, [request, ownerId, uiLease, revision, filterKey]);
   const liveTasks = (0, import_react15.useMemo)(() => {
     const rows2 = [];
+    const localAssets = new Set(knownAssetIds), removedAssets = new Set(deletedAssetIds);
+    const catalogAuthorized = catalogGrant?.ownerId === ownerId && catalogGrant.request === request && catalogGrant.uiLease === uiLease;
     for (const row of submissions) rows2.push({
       id: row.id,
       name: row.name,
@@ -39299,7 +39336,8 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
     });
     for (const row of generation) {
       const total = Math.max(1, row.summary?.itemCount ?? row.quote?.outputCount ?? row.items?.length ?? 1);
-      const children = row.items?.length ? row.items.map((item) => childStatus(item.status)) : Array.from({ length: total }, (_, index) => {
+      const outputSlots = row.items?.flatMap((item) => item.outputs?.length ? item.outputs.map((output) => ({ status: output.status, assetId: output.assetId })) : [{ status: item.status, assetId: void 0 }]) ?? [];
+      const children = outputSlots.length ? outputSlots.map((output) => childStatus(output.status)) : row.items?.length ? row.items.map((item) => childStatus(item.status)) : Array.from({ length: total }, (_, index) => {
         const completed = row.summary?.completedCount ?? 0, failed = row.summary?.failedCount ?? 0, cancelled = row.summary?.cancelledCount ?? 0;
         if (index < completed) return "completed";
         if (index < completed + failed) return "failed";
@@ -39308,6 +39346,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       });
       const canStop = row.items?.some((item) => item.status === "quoted") === true;
       const skills = unique((row.items ?? []).map((item) => visibleSkill(item.skillName)).filter(Boolean));
+      const resultAssetIds = outputSlots.map((output) => catalogAuthorized && typeof output.assetId === "string" && output.assetId && !localAssets.has(output.assetId) && !removedAssets.has(output.assetId) ? output.assetId : void 0);
       rows2.push({
         id: row.operationId,
         operationId: row.operationId,
@@ -39317,6 +39356,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         createdAt: row.createdAt ?? "",
         status: row.status,
         children,
+        ...resultAssetIds.some(Boolean) ? { resultAssetIds } : {},
         description: row.batchId ? `\u4E00\u6B21\u63D0\u4EA4\u5305\u542B ${total} \u4E2A\u751F\u6210\u4EFB\u52A1\u3002` : "\u4E00\u6B21\u63D0\u4EA4\u5305\u542B 1 \u4E2A\u751F\u6210\u4EFB\u52A1\u3002",
         requestInfo: skills.length ? skills.map((skill) => `Skill\uFF1A${skill}`) : ["\u4EFB\u52A1\u4FE1\u606F\u6682\u672A\u5305\u542B\u53EF\u663E\u793A\u7684\u63D0\u793A\u8BCD\u6216 Skill\u3002"],
         ...row.status.includes("unknown") ? { actionLabel: "\u6838\u5BF9\u539F\u4EFB\u52A1", action: async () => {
@@ -39417,18 +39457,18 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       requestInfo: [`\u5DE5\u5177\u4EFB\u52A1\uFF1A${row.name}`]
     });
     return rows2;
-  }, [submissions, generation, texts, dnas, dnaProfiles, tools2, request, onOpenDna]);
+  }, [submissions, generation, texts, dnas, dnaProfiles, tools2, request, onOpenDna, ownerId, uiLease, catalogGrant, knownAssetIds, deletedAssetIds]);
   const cards = (0, import_react15.useMemo)(() => {
     const archivedOperations = new Set(headers.flatMap((header) => header.operationIds));
     const batchedTextIds = new Set(texts.filter((row) => row.batchId).map((row) => row.id));
     const deleted = new Set(deletedOperationIds), deletedTasks = new Set(deletedTaskIds), archivedTaskIds = new Set(headers.map((header) => header.id));
-    const filteredLive = liveTasks.filter((row) => ![row.operationId ?? row.id, ...row.childIds ?? []].some((id) => archivedOperations.has(id) && row.kind !== "imageToText") && ![row.operationId ?? row.id, ...row.childIds ?? []].some((id) => deleted.has(id)) && (!row.archiveTaskId || !archivedTaskIds.has(row.archiveTaskId)) && (!row.archiveTaskId || !deletedTasks.has(row.archiveTaskId)) && matchesResultFilters(row, filters));
+    const filteredLive = liveTasks.filter((row) => ![row.operationId ?? row.id, ...row.childIds ?? []].some((id) => archivedOperations.has(id) && row.kind !== "imageToText") && ![row.operationId ?? row.id, ...row.childIds ?? []].some((id) => deleted.has(id)) && (!row.archiveTaskId || !archivedTaskIds.has(row.archiveTaskId)) && (!row.localArchiveTaskId || !archivedTaskIds.has(row.localArchiveTaskId)) && (!row.archiveTaskId || !deletedTasks.has(row.archiveTaskId)) && matchesResultFilters(row, filters));
     return [
-      ...headers.filter((header) => !deletedTasks.has(header.id) && !header.operationIds.some((id) => deleted.has(id) || batchedTextIds.has(id))).map((header) => ({
+      ...headers.filter((header) => !deletedTasks.has(header.id) && !header.operationIds.some((id) => deleted.has(id)) && (!header.operationIds.some((id) => batchedTextIds.has(id)) || liveTasks.some((row) => row.localArchiveTaskId === header.id))).map((header) => ({
         key: `archive:${header.id}`,
         createdAt: header.createdAt,
         header,
-        live: liveTasks.find((row) => header.operationIds.includes(row.operationId ?? row.id) || row.archiveTaskId === header.id)
+        live: liveTasks.find((row) => header.operationIds.includes(row.operationId ?? row.id) || row.archiveTaskId === header.id || row.localArchiveTaskId === header.id)
       })),
       ...filteredLive.map((live) => ({ key: `live:${live.kind}:${live.id}`, createdAt: live.createdAt, live }))
     ].sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt) || a.key.localeCompare(b.key));
@@ -39482,6 +39522,11 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
     setDeleteTarget(void 0);
     setDeleteError("");
     setBusy("");
+    setOpeningRoot(false);
+    setCatalogGrant(void 0);
+    setKnownAssetIds([]);
+    setDeletedAssetIds([]);
+    setArchiveError("");
   }, [ownerId, request, uiLease]);
   (0, import_react15.useEffect)(() => {
     deleteGuardRef.current.mounted = true;
@@ -39542,6 +39587,20 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       setError(cause instanceof Error ? cause.message : "\u6279\u91CF\u5BFC\u51FA\u5931\u8D25\u3002");
     } finally {
       setExportingTexts(false);
+    }
+  };
+  const openRoot = async () => {
+    if (openingRoot) return;
+    const guard = deleteGuardRef.current, guardVersion = guard.version;
+    const isCurrent = () => guard.mounted && deleteGuardRef.current === guard && guard.version === guardVersion;
+    setOpeningRoot(true);
+    setError("");
+    try {
+      await request("archive.openRoot", {});
+    } catch (cause) {
+      if (isCurrent()) setError(cause instanceof Error ? cause.message : "\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939\u6682\u65F6\u65E0\u6CD5\u6253\u5F00");
+    } finally {
+      if (isCurrent()) setOpeningRoot(false);
     }
   };
   const confirmDelete = () => {
@@ -39644,7 +39703,8 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         } : void 0
       }
     ),
-    error101 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", className: "ppd-button", disabled: openingRoot, onClick: () => void openRoot(), children: openingRoot ? "\u6B63\u5728\u6253\u5F00\u2026" : "\u6253\u5F00\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939" }) }),
+    (error101 || archiveError) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || archiveError }),
     deleteDialog
   ] });
   if (selected?.header && selectedArchive) return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
@@ -39696,6 +39756,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         }
       )
     ] }),
+    archiveError && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "alert", className: "ppd-archive-error", children: archiveError }),
     deleteDialog
   ] });
   const hasFilters = processingType !== "all" || !!query;
@@ -39705,6 +39766,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "\u5904\u7406\u8BB0\u5F55" }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-history-description", children: "\u6BCF\u6B21\u63D0\u4EA4\u663E\u793A\u4E3A\u4E00\u5F20\u5361\u7247\uFF1B\u6253\u5F00\u5361\u7247\u67E5\u770B\u4EFB\u52A1\u7B80\u4ECB\u548C\u5404\u9879\u7ED3\u679C\u3002" }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-library-toolbar ppd-archive-filters ppd-results-toolbar", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-archive-toolbar", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", disabled: openingRoot, onClick: () => void openRoot(), children: openingRoot ? "\u6B63\u5728\u6253\u5F00\u2026" : "\u6253\u5F00\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939" }),
         selectedKeys.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-results-bulk-actions", role: "group", "aria-label": "\u6279\u91CF\u5220\u9664\u5904\u7406\u8BB0\u5F55", children: [
           /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
             "\u5DF2\u9009 ",
@@ -39775,7 +39837,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         )
       ] }) })
     ] }),
-    (error101 || pageError) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || pageError }),
+    (error101 || pageError || archiveError) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || pageError || archiveError }),
     loading && !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026" }) : !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u5904\u7406\u8BB0\u5F55" : "\u6682\u65E0\u5904\u7406\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-result-task-grid", children: hydrated.map((card) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       ResultCard,
       {
@@ -39829,7 +39891,7 @@ var import_react16 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.47",
+  version: "0.1.48",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",

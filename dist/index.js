@@ -61579,7 +61579,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.47",
+  version: "0.1.48",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -67291,8 +67291,12 @@ var TaskArchiveManager = class {
   async project(identity2, input) {
     const id2 = hash5(input.key), existing = this.store.snapshot().projects.find((row) => row.owner === identity2.owner && row.id === id2);
     if (existing) {
-      await this.directory(existing.directory, existing.stamp);
-      return existing;
+      try {
+        await this.directory(existing.directory, existing.stamp);
+        return existing;
+      } catch (cause) {
+        if (cause.code !== "ENOENT" || this.store.snapshot().tasks.some((task) => task.owner === identity2.owner && task.projectId === id2)) throw cause;
+      }
     }
     const chosen = await this.options.outputDirectory();
     const base2 = chosen ? await realpath8(chosen) : this.root;
@@ -67302,11 +67306,15 @@ var TaskArchiveManager = class {
     const ownerDirectory = join13(collection, identity2.owner.slice(0, 16));
     await this.createDirectory(ownerDirectory);
     const name2 = safeLabel(input.name, "\u72EC\u7ACB\u4EFB\u52A1");
-    const directory = join13(ownerDirectory, `${name2}_${id2.slice(0, 8)}`), directoryStamp = await this.createDirectory(directory);
+    const allocated = existing ? await this.allocateDirectory(ownerDirectory, `${name2}_${id2.slice(0, 8)}-2`) : void 0;
+    const directory = allocated?.path ?? join13(ownerDirectory, `${name2}_${id2.slice(0, 8)}`);
+    const directoryStamp = allocated?.stamp ?? await this.createDirectory(directory);
     await this.same(identity2);
     const project = { id: id2, owner: identity2.owner, name: name2, directory, stamp: directoryStamp };
     await this.store.transaction((state) => {
-      state.projects.push(project);
+      const stale = state.projects.find((row) => row.owner === identity2.owner && row.id === id2);
+      if (stale) Object.assign(stale, project);
+      else state.projects.push(project);
     });
     return project;
   }
@@ -68600,6 +68608,21 @@ var TaskArchiveManager = class {
     await this.same(identity2);
     if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u672C\u5730\u6587\u4EF6\u5939");
     await this.options.openPath(task.directory);
+  }
+  async openRoot() {
+    await this.serial(async () => {
+      const identity2 = await this.identity();
+      const chosen = await this.options.outputDirectory();
+      const base2 = chosen ? await realpath8(chosen) : this.root;
+      await this.directory(base2);
+      const collection = join13(base2, "PodPlo\u6210\u679C");
+      await this.createDirectory(collection);
+      const ownerDirectory = join13(collection, identity2.owner.slice(0, 16));
+      await this.createDirectory(ownerDirectory);
+      await this.same(identity2);
+      if (!this.options.openPath) throw new Error("\u5F53\u524D\u73AF\u5883\u4E0D\u652F\u6301\u6253\u5F00\u672C\u5730\u6587\u4EF6\u5939");
+      await this.options.openPath(ownerDirectory);
+    });
   }
   async openProject(input) {
     await this.serial(async () => {
@@ -70416,6 +70439,11 @@ async function taskArchiveHost(options) {
         }
         if (action === "archive.openProject") {
           await manager.openProject(typeof input.projectId === "string" ? input.projectId : options.projectForSession(caller.sessionId) ?? standalone2);
+          return { ok: true, data: { opened: true } };
+        }
+        if (action === "archive.openRoot") {
+          archiveInputKeys(input, []);
+          await manager.openRoot();
           return { ok: true, data: { opened: true } };
         }
         const taskId = typeof input.taskId === "string" ? input.taskId : "";
