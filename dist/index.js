@@ -38408,6 +38408,19 @@ var DnaRenameSchema = external_exports.object({
 var DnaDeleteSchema = external_exports.object({ id: external_exports.string().uuid(), expectedUpdatedAt: external_exports.string().datetime(), confirmed: external_exports.literal(true) }).strict();
 var DnaPageInputSchema = external_exports.object({ cursor: external_exports.string().max(1e3).optional(), limit: external_exports.number().int().min(1).max(50).optional() }).strict();
 
+// packages/online/analysis-pricing.ts
+var creditPrice = external_exports.number().positive().refine(
+  (value2) => isCreditAmount(value2) && Math.round(value2 * 100) >= 1,
+  "\u79EF\u5206\u5355\u4EF7\u6700\u591A\u4E24\u4F4D\u5C0F\u6570\u4E14\u4E0D\u5F97\u4F4E\u4E8E 0.01"
+);
+var analysisRate = external_exports.object({ creditsPerRequest: creditPrice }).strict();
+var AnalysisPricingCatalogSchema = external_exports.object({
+  version: external_exports.literal(1),
+  expiresAt: external_exports.string().datetime(),
+  imageToText: analysisRate.nullable(),
+  dna: analysisRate.nullable()
+}).strict();
+
 // packages/online/service.ts
 function taskSkillDetails(skill) {
   const { slug: slug2, title, summary, description, inputs, keeps, changes, output, tags } = skill;
@@ -38471,6 +38484,8 @@ var OnlineService = class extends EventEmitter {
   textConfigVault;
   textConfig;
   textConfigRequest;
+  analysisPricingCache;
+  analysisPricingRequest;
   async init() {
     await this.plans.load();
     this.textConfig = await this.textConfigVault.load();
@@ -38780,15 +38795,29 @@ var OnlineService = class extends EventEmitter {
     if (revision !== this.revision || ownerId !== await this.workspaceIdentity(true)) throw new OnlineError("SESSION_CHANGED");
     return result;
   }
-  async analysisPreviewPrice(mode, raw) {
-    const base2 = external_exports.object({ model: ActiveAnalysisModelSchema, localReferenceCount: external_exports.number().int().min(1).max(100) });
-    const metadata = base2.extend({ referenceAssetIds: external_exports.array(external_exports.string().uuid()).max(100).default([]) }).parse(raw);
-    const inputCount = metadata.localReferenceCount + metadata.referenceAssetIds.length;
-    const input = mode === "dna" ? base2.extend({ skillId: external_exports.string().uuid(), localReferenceCount: external_exports.literal(1) }).parse(raw) : { ...base2.extend({ requestCount: external_exports.number().int().min(1).max(100).optional() }).parse(raw), localReferenceCount: inputCount };
-    const response = await this.imageToTextRequest(`/api/desktop/${mode}/preview`, input);
-    const result = external_exports.object({ totalCredits: external_exports.number().positive(), inputCount: external_exports.number().int(), expiresAt: external_exports.string().datetime() }).parse(response);
-    if (result.inputCount !== input.localReferenceCount || Date.parse(result.expiresAt) <= Date.now()) throw new OnlineError("INVALID_TOOL_RESPONSE");
-    return result;
+  async analysisPricing(raw = {}) {
+    const { refresh } = external_exports.object({ refresh: external_exports.boolean().optional() }).strict().parse(raw);
+    const ownerId = await this.workspaceIdentity(true), scope = this.uiAuthorizationScope();
+    if (!["mcp:generations:write", "mcp:assets:read"].every((required3) => this.auth.scope.includes(required3)))
+      throw new OnlineError("INSUFFICIENT_SCOPE");
+    const cached3 = this.analysisPricingCache;
+    if (!refresh && cached3?.ownerId === ownerId && cached3.scope === scope && Date.parse(cached3.catalog.expiresAt) > Date.now() + 5e3) return structuredClone(cached3.catalog);
+    if (this.analysisPricingRequest?.ownerId === ownerId && this.analysisPricingRequest.scope === scope)
+      return structuredClone(await this.analysisPricingRequest.promise);
+    const promise3 = (async () => {
+      const catalog = AnalysisPricingCatalogSchema.parse(await this.imageToTextRequest("/api/desktop/analysis-pricing"));
+      if (Date.parse(catalog.expiresAt) <= Date.now() + 5e3) throw new OnlineError("ANALYSIS_PRICING_UNAVAILABLE");
+      if (ownerId !== await this.workspaceIdentity(true) || scope !== this.uiAuthorizationScope()) throw new OnlineError("SESSION_CHANGED");
+      this.analysisPricingCache = { ownerId, scope, catalog };
+      return catalog;
+    })();
+    const request = { ownerId, scope, promise: promise3 };
+    this.analysisPricingRequest = request;
+    try {
+      return structuredClone(await promise3);
+    } finally {
+      if (this.analysisPricingRequest === request) this.analysisPricingRequest = void 0;
+    }
   }
   async imageToTextQuote(input) {
     return ActiveImageToTextQuoteSchema.parse(await this.imageToTextRequest("/api/desktop/image-to-text/quote", ImageToTextInputSchema.parse(input)));
@@ -61550,7 +61579,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.41",
+  version: "0.1.42",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -70076,9 +70105,9 @@ async function taskArchiveHost(options) {
       return result;
     },
     async dispatch(action, raw, caller) {
-      if (action === "dna.previewQuote" || action === "imageToText.previewQuote") {
+      if (action === "analysis.pricing") {
         if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u8F93\u5165\u6846\u6838\u4EF7\u3002");
-        return { ok: true, data: await online.analysisPreviewPrice(action === "dna.previewQuote" ? "dna" : "image-to-text", raw) };
+        return { ok: true, data: await online.analysisPricing(raw) };
       }
       if (action.startsWith("dna.")) {
         if (caller.source !== "ui") throw new PodploPluginError("UI_REQUIRED", "\u8BF7\u4ECE\u6211\u7684 DNA \u64CD\u4F5C\u3002");

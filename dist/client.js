@@ -398,7 +398,7 @@ function ChatGenerationProgress({ item, archive, busy, onAction }) {
 var import_react2 = require("react");
 
 // plugins/podplo-dsh/src/task-archive.css
-var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}.ppd-archive-browser-heading h2{flex:0 0 100%;font-size:22px;margin:0}\n.ppd-archive-view-switch{display:flex;flex:0 0 auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:2px;gap:2px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:4px 9px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-library-toolbar.ppd-archive-filters{flex:1 1 640px;margin:0}.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar{flex:1;flex-wrap:wrap;justify-content:flex-start}.ppd-archive-filters .ppd-archive-toolbar>select{width:112px;max-width:100%}\n.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar>input{flex:0 1 156px;width:156px;min-width:100px;max-width:100%;height:28px;padding:4px 9px;border-radius:6px}\n.ppd-archive-filters .ppd-archive-toolbar select,.ppd-archive-filters .ppd-archive-toolbar button{min-height:28px;height:28px;padding:4px 8px}\n.ppd-archive-date-toolbar{display:contents}.ppd-archive-date-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:28px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-filters .ppd-archive-date-toolbar input{flex:0 1 auto;width:132px;min-width:0;max-width:100%;height:28px;padding:4px 8px;border-radius:6px}.ppd-archive-date-toolbar>span{align-self:center}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-history-description{flex:0 0 100%;margin:0;color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7}.ppd-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:14px}.ppd-history-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:9px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}.ppd-history-preview{display:flex;width:100%;height:190px;padding:0;border:0;border-radius:6px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-history-preview .ppd-archive-placeholder{width:100%;height:100%}.ppd-history-preview img{width:100%;height:100%;object-fit:contain}.ppd-history-card>strong{margin:10px 0 5px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}.ppd-history-meta{display:flex;flex-direction:column;gap:2px;color:var(--muted-foreground,#6c6c63);font-size:11px;line-height:1.5}.ppd-history-meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-history-card .ppd-archive-actions{margin-top:auto;padding-top:8px}.ppd-archive-lightbox>.ppd-archive-placeholder{width:100%;height:calc(100% - 42px)}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n\n@media(max-width:1100px){.ppd-archive-browser-heading .ppd-archive-filters{flex-basis:100%}.ppd-archive-browser-heading .ppd-archive-view-switch{margin-left:auto}}\n\n.ppd-history-text{width:100%;height:100%;align-items:flex-start;justify-content:flex-start;overflow:hidden;background:#f6f6f3;text-align:left}.ppd-history-text pre{margin:0;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 ui-monospace,monospace;color:inherit}.ppd-archive-lightbox .ppd-history-text{overflow:auto;flex:1;min-height:0;flex-direction:column;align-items:stretch;color:var(--foreground,#272727)}.ppd-archive-lightbox .ppd-history-text pre{font-size:14px}.ppd-archive-lightbox .ppd-history-text>button{align-self:flex-start;flex-shrink:0;margin:10px 14px 0}.ppd-archive-lightbox .ppd-history-text>[role=status]{margin:8px 14px 0}\n.ppd-running-tasks{margin-bottom:24px}.ppd-running-label{margin:0 0 10px;color:var(--ppd-muted,#73736e);font-size:12px;font-weight:600}\n.ppd-running-tasks .ppd-history-list{display:grid;gap:12px}.ppd-running-tasks .ppd-history-record{padding:16px;border:1px solid var(--ppd-line,#e4e4e2);border-radius:10px;background:var(--ppd-bg,#fff);min-width:0}\n.ppd-running-tasks .ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.ppd-running-tasks strong[role=status]{display:flex;align-items:center;gap:8px;font-size:13px;overflow-wrap:anywhere}\n.ppd-running-tasks .ppd-history-record-heading>span,.ppd-running-tasks time,.ppd-running-tasks small{color:var(--ppd-muted,#73736e);font-size:12px}.ppd-running-tasks time{display:block;margin-top:8px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n.ppd-running-tasks progress{display:block;width:100%;height:6px;margin:12px 0 8px;accent-color:#656c49}.ppd-running-tasks p{overflow-wrap:anywhere}.ppd-running-tasks .ppd-spinner{display:inline-block;flex:0 0 14px;width:14px;height:14px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-results-spin .8s linear infinite}@keyframes ppd-results-spin{to{transform:rotate(360deg)}}\n\n.ppd-result-task-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-result-task-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:10px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}\n.ppd-result-card-open{display:block;width:100%;padding:0;border:0;border-radius:7px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-result-cover-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(66px,1fr);aspect-ratio:4/3;gap:2px;background:var(--border,#deded7)}\n.ppd-result-cover-grid>:only-child{grid-column:1/-1;grid-row:1/-1}.ppd-result-slot{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:#f4f4ef;color:var(--muted-foreground,#6c6c63);font-size:11px;overflow:hidden}.ppd-result-slot>.ppd-archive-placeholder,.ppd-result-slot img{width:100%!important;height:100%!important;object-fit:cover!important}\n.ppd-result-slot-loading{background:#f1f1ec}.ppd-result-slot-failed{background:#fbefed;color:#9b3a30}.ppd-result-slot-unknown{background:#f7f2e4;color:#7b6432}.ppd-result-slot-cancelled,.ppd-result-slot-empty{background:#f2f2ef;color:#777}.ppd-result-document{display:flex;align-items:center;justify-content:center;width:44px;height:54px;border:1px solid #c9c9c1;border-radius:5px;background:#fff;font:700 11px/1 ui-monospace,monospace;box-shadow:0 2px 6px #0001}\n.ppd-result-task-card .ppd-spinner,.ppd-result-task-detail .ppd-spinner{display:inline-block;width:19px;height:19px;border:2px solid #d6d6cf;border-top-color:#606853;border-radius:50%;animation:ppd-results-spin .8s linear infinite}.ppd-result-card-body{display:flex;flex-direction:column;gap:3px;padding:9px 1px 8px}.ppd-result-card-body strong{font-size:13px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-result-card-body span,.ppd-result-card-body time{font-size:11px;line-height:1.5;color:var(--muted-foreground,#6c6c63)}\n.ppd-result-detail-button{margin-top:auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px 9px;background:transparent;color:inherit;font:inherit;font-size:11px;cursor:pointer}.ppd-result-task-detail>header{margin:18px 0 22px;padding:18px;border:1px solid var(--border,#deded7);border-radius:10px}.ppd-result-task-detail>header>span,.ppd-result-task-detail time{font-size:11px;color:var(--muted-foreground,#6c6c63)}.ppd-result-task-detail h2{margin:7px 0 8px;font-size:20px}.ppd-result-task-detail header p{margin:0 0 9px;line-height:1.7;color:var(--muted-foreground,#6c6c63)}\n.ppd-result-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:12px}.ppd-result-detail-slot{display:flex;flex-direction:column;gap:5px;min-width:0;padding:10px;border:1px solid var(--border,#deded7);border-radius:9px}.ppd-result-detail-slot>.ppd-result-slot{height:128px;border-radius:6px}.ppd-result-detail-slot>strong{font-size:12px}.ppd-result-detail-slot>span:last-child{font-size:11px;color:var(--muted-foreground,#6c6c63)}\n@media(max-width:1000px){.ppd-result-task-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:720px){.ppd-result-task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){.ppd-result-task-grid{grid-template-columns:1fr}}\n.ppd-result-card-open{display:flex;flex:1;flex-direction:column;background:transparent;color:inherit;font:inherit;text-align:left}.ppd-result-card-open>.ppd-result-cover-grid{width:100%}.ppd-result-card-open>.ppd-result-detail-button{display:block;box-sizing:border-box;width:100%;text-align:center}\n.ppd-archive-detail .ppd-spinner{display:inline-block;width:19px;height:19px;border:2px solid #d6d6cf;border-top-color:#606853;border-radius:50%;animation:ppd-results-spin .8s linear infinite}\n.ppd-result-archive-intro{margin:16px 0 20px;padding:16px;border:1px solid var(--border,#deded7);border-radius:10px;background:var(--background,#fff)}.ppd-result-archive-intro>span,.ppd-result-archive-intro>time{font-size:11px;color:var(--muted-foreground,#6c6c63)}.ppd-result-archive-intro h2{margin:5px 0 3px;font-size:19px}.ppd-result-archive-intro>p{margin:7px 0;color:var(--muted-foreground,#6c6c63);font-size:12px}.ppd-result-archive-intro>.ppd-actions{margin-top:12px}.ppd-result-archive-intro>.ppd-archive-error{color:#9b3a30}\n.ppd-results-toolbar{flex:0 0 100%;width:100%}.ppd-library-toolbar.ppd-results-toolbar>.ppd-archive-toolbar{width:100%;justify-content:flex-end;margin-top:4px}.ppd-results-toolbar .ppd-icon-button{flex:0 0 28px;width:28px;min-width:28px;padding:0}.ppd-result-back{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border,#deded7);border-radius:8px;background:var(--background,#fff);color:inherit;cursor:pointer}.ppd-result-back:hover{background:var(--muted,#f5f5ef)}\n.ppd-task-request-summary{display:grid;gap:4px;margin:11px 0;padding:10px 12px;border-radius:7px;background:var(--muted,#f5f5ef)}.ppd-task-request-summary p,.ppd-result-task-detail header .ppd-task-request-summary p{margin:0;color:inherit;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}\n";
+var task_archive_default = ".ppd-archive-card{border:1px solid var(--border,#deded7);border-radius:9px;padding:14px;margin:12px 0;background:var(--background,#fff);min-width:0}\n.ppd-task-audit{padding:10px 12px;background:var(--muted,#f5f5ef);border-radius:6px;margin:10px 0;font-size:12px;line-height:1.65}.ppd-task-audit strong{font-size:12px}.ppd-task-audit p{margin:3px 0;overflow-wrap:anywhere}\n.ppd-archive-title{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-archive-title strong{overflow-wrap:anywhere}.ppd-archive-title small{margin-left:auto;color:var(--muted-foreground,#6c6c63)}\n.ppd-archive-meta,.ppd-archive-guidance{color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7;margin:7px 0}.ppd-archive-path{display:block;overflow-wrap:anywhere;white-space:normal;font-size:11px;margin:8px 0;color:var(--muted-foreground,#66665d)}\n.ppd-archive-actions,.ppd-archive-toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-top:10px}.ppd-archive-actions button,.ppd-archive-toolbar button,.ppd-archive-toolbar select{border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;background:transparent;font:inherit;font-size:12px;color:inherit;cursor:pointer}.ppd-archive-actions button:disabled{opacity:.45;cursor:default}\n.ppd-archive-toolbar input{min-width:120px;flex:1;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px;background:transparent;color:inherit}.ppd-archive-error{font-size:12px;color:#b54b30;overflow-wrap:anywhere}\n.ppd-archive-thumbnails{display:flex;gap:8px;border:0;background:transparent;padding:0;margin:10px 0;cursor:pointer}.ppd-archive-thumbnails img,.ppd-archive-thumbnails .ppd-archive-placeholder{width:72px;height:72px;object-fit:contain;border-radius:4px;background:#f4f4ef}\n.ppd-archive-placeholder{display:flex;align-items:center;justify-content:center;color:#777;font-size:12px}.ppd-archive-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,190px),1fr));gap:12px}.ppd-archive-file{min-width:0;border:1px solid var(--border,#deded7);border-radius:6px;padding:8px}.ppd-archive-file strong{display:block;font-size:12px;overflow-wrap:anywhere;margin:8px 0}.ppd-archive-file small{font-size:11px;color:var(--muted-foreground,#66665d)}\n.ppd-archive-image{display:flex;align-items:center;justify-content:center;width:100%;height:180px;padding:0;border:0;background:#f4f4ef;cursor:pointer}.ppd-archive-image img{width:100%;height:100%;object-fit:contain}.ppd-archive-detail h3{font-size:14px;margin:22px 0 12px}.ppd-archive-lightbox{position:fixed;inset:24px;z-index:1000;background:var(--background,#fff);border:1px solid var(--border,#ddd);box-shadow:0 8px 40px #0003;display:flex;flex-direction:column;padding:16px;gap:12px}.ppd-archive-lightbox>button{align-self:flex-end}.ppd-archive-lightbox img{width:100%;height:calc(100% - 42px);object-fit:contain}.ppd-chat-folders{max-width:760px;width:100%;margin:0 auto}\n.ppd-archive-browser-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin:6px 0 12px}.ppd-archive-browser-heading h2{flex:0 0 100%;font-size:22px;margin:0}\n.ppd-archive-view-switch{display:flex;flex:0 0 auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:2px;gap:2px}.ppd-archive-view-switch button{border:0;border-radius:4px;padding:4px 9px;background:transparent;color:inherit;font:inherit;font-size:12px;cursor:pointer}.ppd-archive-view-switch button[aria-pressed=true]{background:var(--foreground,#292925);color:var(--background,#fff)}\n.ppd-library-toolbar.ppd-archive-filters{flex:1 1 640px;margin:0}.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar{flex:1;flex-wrap:wrap;justify-content:flex-start}.ppd-archive-filters .ppd-archive-toolbar>select{width:112px;max-width:100%}\n.ppd-library-toolbar.ppd-archive-filters>.ppd-archive-toolbar>input{flex:0 1 156px;width:156px;min-width:100px;max-width:100%;height:28px;padding:4px 9px;border-radius:6px}\n.ppd-archive-filters .ppd-archive-toolbar select,.ppd-archive-filters .ppd-archive-toolbar button{min-height:28px;height:28px;padding:4px 8px}\n.ppd-archive-date-toolbar{display:contents}.ppd-archive-date-toolbar label{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-archive-date-toolbar input,.ppd-archive-date-toolbar select,.ppd-archive-date-toolbar button{box-sizing:border-box;min-height:28px;border:1px solid var(--border,#deded7);border-radius:6px;padding:5px 9px;color:var(--foreground,inherit);background:var(--background,#fff);font:inherit;font-size:12px;max-width:100%}.ppd-archive-filters .ppd-archive-date-toolbar input{flex:0 1 auto;width:132px;min-width:0;max-width:100%;height:28px;padding:4px 8px;border-radius:6px}.ppd-archive-date-toolbar>span{align-self:center}.ppd-archive-date-toolbar button{cursor:pointer}.ppd-archive-count{font-size:12px;color:var(--muted-foreground,#6c6c63);margin:18px 0 12px;line-height:1.6}\n.ppd-archive-batches{display:grid;gap:14px}.ppd-archive-batches[data-batch-layout=cards]{grid-template-columns:repeat(auto-fill,minmax(min(100%,280px),1fr))}.ppd-archive-batches>.ppd-archive-card{margin:0;padding:16px;display:flex;flex-direction:column}.ppd-archive-batch-kind{font-size:10px;letter-spacing:.06em;color:var(--muted-foreground,#6c6c63);margin-bottom:10px}.ppd-archive-batches .ppd-archive-title{align-items:start}.ppd-archive-batches .ppd-archive-title strong{font-size:14px;line-height:1.55}.ppd-archive-batches .ppd-archive-title small{font-size:11px;line-height:1.9}.ppd-archive-batch-audit{font-size:11px;line-height:1.6;color:var(--muted-foreground,#6c6c63);margin:2px 0 8px}.ppd-archive-batches .ppd-archive-actions{margin-top:auto;padding-top:12px}.ppd-archive-batches .ppd-archive-thumbnails{min-height:84px;align-items:center;margin:4px 0 12px}.ppd-archive-batches .ppd-archive-thumbnails img{max-width:calc((100% - 16px)/3);height:84px;flex:1}\n.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{position:relative;padding-left:104px;min-height:104px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:absolute;left:16px;top:28px;min-height:0;margin:0;width:70px;height:70px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails img{width:70px;height:70px;max-width:none}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-batch-kind{margin-bottom:5px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-meta{margin:4px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{padding-top:4px}\n.ppd-archive-batch-meta{display:flex;flex-wrap:wrap;gap:3px 10px}.ppd-archive-batch-meta span,.ppd-archive-batch-meta time{white-space:nowrap;max-width:100%;overflow:hidden;text-overflow:ellipsis}\n.ppd-history-description{flex:0 0 100%;margin:0;color:var(--muted-foreground,#6c6c63);font-size:12px;line-height:1.7}.ppd-history-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,210px),1fr));gap:14px}.ppd-history-card{min-width:0;border:1px solid var(--border,#deded7);border-radius:9px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}.ppd-history-preview{display:flex;width:100%;height:190px;padding:0;border:0;border-radius:6px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-history-preview .ppd-archive-placeholder{width:100%;height:100%}.ppd-history-preview img{width:100%;height:100%;object-fit:contain}.ppd-history-card>strong{margin:10px 0 5px;font-size:12px;line-height:1.5;overflow-wrap:anywhere}.ppd-history-meta{display:flex;flex-direction:column;gap:2px;color:var(--muted-foreground,#6c6c63);font-size:11px;line-height:1.5}.ppd-history-meta span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-history-card .ppd-archive-actions{margin-top:auto;padding-top:8px}.ppd-archive-lightbox>.ppd-archive-placeholder{width:100%;height:calc(100% - 42px)}\n.ppd-archive-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-archive-delete-backdrop{position:fixed;inset:0;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;background:#171a1d66}.ppd-archive-delete-dialog{width:440px;max-width:100%;padding:24px;background:var(--background,#fff);color:var(--foreground,#292925);border:1px solid var(--border,#ddd);border-radius:12px;box-shadow:0 16px 60px #0002}.ppd-archive-delete-dialog h3{margin:0 0 18px;font-size:18px}.ppd-archive-delete-dialog>strong{display:block;font-size:14px;overflow-wrap:anywhere}.ppd-archive-delete-dialog p{font-size:13px;line-height:1.8;color:var(--muted-foreground,#6c6c63)}.ppd-archive-delete-dialog .ppd-archive-actions{justify-content:flex-end;margin-top:22px}.ppd-archive-actions .ppd-archive-delete-confirm{background:#a9382c;color:#fff;border-color:#a9382c}\n@media(max-width:520px){.ppd-archive-browser-heading{align-items:start}.ppd-archive-batches[data-batch-layout=list]>.ppd-archive-card{padding-left:16px}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-thumbnails{position:static;order:3;margin:6px 0}.ppd-archive-batches[data-batch-layout=list] .ppd-archive-actions{order:4}.ppd-archive-date-toolbar label{max-width:100%}.ppd-archive-title small{margin-left:0}.ppd-archive-toolbar{min-width:0}.ppd-archive-toolbar input{min-width:0;width:100%}}\n\n@media(max-width:1100px){.ppd-archive-browser-heading .ppd-archive-filters{flex-basis:100%}.ppd-archive-browser-heading .ppd-archive-view-switch{margin-left:auto}}\n\n.ppd-history-text{width:100%;height:100%;align-items:flex-start;justify-content:flex-start;overflow:hidden;background:#f6f6f3;text-align:left}.ppd-history-text pre{margin:0;padding:14px;white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.7 ui-monospace,monospace;color:inherit}.ppd-archive-lightbox .ppd-history-text{overflow:auto;flex:1;min-height:0;flex-direction:column;align-items:stretch;color:var(--foreground,#272727)}.ppd-archive-lightbox .ppd-history-text pre{font-size:14px}.ppd-archive-lightbox .ppd-history-text>button{align-self:flex-start;flex-shrink:0;margin:10px 14px 0}.ppd-archive-lightbox .ppd-history-text>[role=status]{margin:8px 14px 0}\n.ppd-running-tasks{margin-bottom:24px}.ppd-running-label{margin:0 0 10px;color:var(--ppd-muted,#73736e);font-size:12px;font-weight:600}\n.ppd-running-tasks .ppd-history-list{display:grid;gap:12px}.ppd-running-tasks .ppd-history-record{padding:16px;border:1px solid var(--ppd-line,#e4e4e2);border-radius:10px;background:var(--ppd-bg,#fff);min-width:0}\n.ppd-running-tasks .ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}.ppd-running-tasks strong[role=status]{display:flex;align-items:center;gap:8px;font-size:13px;overflow-wrap:anywhere}\n.ppd-running-tasks .ppd-history-record-heading>span,.ppd-running-tasks time,.ppd-running-tasks small{color:var(--ppd-muted,#73736e);font-size:12px}.ppd-running-tasks time{display:block;margin-top:8px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n.ppd-running-tasks progress{display:block;width:100%;height:6px;margin:12px 0 8px;accent-color:#656c49}.ppd-running-tasks p{overflow-wrap:anywhere}.ppd-running-tasks .ppd-spinner{display:inline-block;flex:0 0 14px;width:14px;height:14px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-results-spin .8s linear infinite}@keyframes ppd-results-spin{to{transform:rotate(360deg)}}\n\n.ppd-result-task-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-result-task-card{position:relative;min-width:0;border:1px solid var(--border,#deded7);border-radius:10px;padding:10px;background:var(--background,#fff);display:flex;flex-direction:column}.ppd-result-task-card-selected{border-color:#6f795a;box-shadow:0 0 0 1px #6f795a}.ppd-result-card-select{position:absolute;z-index:2;top:16px;right:16px;display:grid;place-items:center;width:25px;height:25px;border:1px solid var(--border,#deded7);border-radius:7px;background:color-mix(in srgb,var(--background,#fff) 92%,transparent);box-shadow:0 1px 5px #0002;cursor:pointer}.ppd-result-card-select:has(input:disabled){cursor:not-allowed;opacity:.62}.ppd-result-card-select input{width:15px;height:15px;margin:0;accent-color:#626c4f;cursor:inherit}\n.ppd-result-card-open{display:block;width:100%;padding:0;border:0;border-radius:7px;overflow:hidden;background:#f4f4ef;cursor:pointer}.ppd-result-cover-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:minmax(66px,1fr);aspect-ratio:4/3;gap:2px;background:var(--border,#deded7)}\n.ppd-result-cover-grid>:only-child{grid-column:1/-1;grid-row:1/-1}.ppd-result-slot{display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;background:#f4f4ef;color:var(--muted-foreground,#6c6c63);font-size:11px;overflow:hidden}.ppd-result-slot>.ppd-archive-placeholder,.ppd-result-slot img{width:100%!important;height:100%!important;object-fit:cover!important}\n.ppd-result-slot-loading{background:#f1f1ec}.ppd-result-slot-failed{background:#fbefed;color:#9b3a30}.ppd-result-slot-unknown{background:#f7f2e4;color:#7b6432}.ppd-result-slot-cancelled,.ppd-result-slot-empty{background:#f2f2ef;color:#777}.ppd-result-document{display:flex;align-items:center;justify-content:center;width:44px;height:54px;border:1px solid #c9c9c1;border-radius:5px;background:#fff;font:700 11px/1 ui-monospace,monospace;box-shadow:0 2px 6px #0001}\n.ppd-result-task-card .ppd-spinner,.ppd-result-task-detail .ppd-spinner{display:inline-block;width:19px;height:19px;border:2px solid #d6d6cf;border-top-color:#606853;border-radius:50%;animation:ppd-results-spin .8s linear infinite}.ppd-result-card-body{display:flex;flex-direction:column;gap:3px;padding:9px 1px 8px}.ppd-result-card-body strong{font-size:13px;line-height:1.45;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-result-card-body span,.ppd-result-card-body time{font-size:11px;line-height:1.5;color:var(--muted-foreground,#6c6c63)}\n.ppd-result-detail-button{margin-top:auto;border:1px solid var(--border,#deded7);border-radius:6px;padding:6px 9px;background:transparent;color:inherit;font:inherit;font-size:11px;cursor:pointer}.ppd-result-task-detail>header{margin:18px 0 22px;padding:18px;border:1px solid var(--border,#deded7);border-radius:10px}.ppd-result-task-detail>header>span,.ppd-result-task-detail time{font-size:11px;color:var(--muted-foreground,#6c6c63)}.ppd-result-task-detail h2{margin:7px 0 8px;font-size:20px}.ppd-result-task-detail header p{margin:0 0 9px;line-height:1.7;color:var(--muted-foreground,#6c6c63)}\n.ppd-result-detail-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr));gap:12px}.ppd-result-detail-slot{display:flex;flex-direction:column;gap:5px;min-width:0;padding:10px;border:1px solid var(--border,#deded7);border-radius:9px}.ppd-result-detail-slot>.ppd-result-slot{height:128px;border-radius:6px}.ppd-result-detail-slot>strong{font-size:12px}.ppd-result-detail-slot>span:last-child{font-size:11px;color:var(--muted-foreground,#6c6c63)}\n@media(max-width:1000px){.ppd-result-task-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:720px){.ppd-result-task-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:440px){.ppd-result-task-grid{grid-template-columns:1fr}}\n.ppd-result-card-open{display:flex;flex:1;flex-direction:column;background:transparent;color:inherit;font:inherit;text-align:left}.ppd-result-card-open>.ppd-result-cover-grid{width:100%}.ppd-result-card-open>.ppd-result-detail-button{display:block;box-sizing:border-box;width:100%;text-align:center}\n.ppd-archive-detail .ppd-spinner{display:inline-block;width:19px;height:19px;border:2px solid #d6d6cf;border-top-color:#606853;border-radius:50%;animation:ppd-results-spin .8s linear infinite}\n.ppd-result-archive-intro{margin:16px 0 20px;padding:16px;border:1px solid var(--border,#deded7);border-radius:10px;background:var(--background,#fff)}.ppd-result-archive-intro>span,.ppd-result-archive-intro>time{font-size:11px;color:var(--muted-foreground,#6c6c63)}.ppd-result-archive-intro h2{margin:5px 0 3px;font-size:19px}.ppd-result-archive-intro>p{margin:7px 0;color:var(--muted-foreground,#6c6c63);font-size:12px}.ppd-result-archive-intro>.ppd-actions{margin-top:12px}.ppd-result-archive-intro>.ppd-archive-error{color:#9b3a30}\n.ppd-results-toolbar{flex:0 0 100%;width:100%}.ppd-library-toolbar.ppd-results-toolbar>.ppd-archive-toolbar{width:100%;justify-content:flex-end;margin-top:4px}.ppd-results-bulk-actions{display:flex;align-items:center;gap:7px;margin-right:auto}.ppd-results-bulk-actions>span{font-size:12px;color:var(--muted-foreground,#6c6c63);white-space:nowrap}.ppd-results-bulk-actions .ppd-archive-delete{color:#ad3d32;border-color:#e6c7c2}.ppd-results-toolbar .ppd-icon-button{flex:0 0 28px;width:28px;min-width:28px;padding:0}.ppd-result-back{display:inline-grid;place-items:center;width:34px;height:34px;padding:0;border:1px solid var(--border,#deded7);border-radius:8px;background:var(--background,#fff);color:inherit;cursor:pointer}.ppd-result-back:hover{background:var(--muted,#f5f5ef)}\n.ppd-task-request-summary{display:grid;gap:4px;margin:11px 0;padding:10px 12px;border-radius:7px;background:var(--muted,#f5f5ef)}.ppd-task-request-summary p,.ppd-result-task-detail header .ppd-task-request-summary p{margin:0;color:inherit;font-size:12px;line-height:1.65;white-space:pre-wrap;overflow-wrap:anywhere}\n";
 
 // plugins/podplo-dsh/src/task-result-audit.ts
 function auditLines(audit) {
@@ -16401,17 +16401,39 @@ var GenerationBootstrapCache = class {
   referenceUploadFile(ownerId, sessionId, id) {
     return this.referenceUploadFiles.get(this.draftKey(ownerId, sessionId))?.get(id);
   }
-  rememberReferenceUploadAsset(ownerId, sessionId, id, asset, revision) {
+  rememberReferenceUploadAsset(ownerId, sessionId, id, asset, revision, profile = "original") {
     if (revision !== this.epoch) return false;
     const key2 = this.draftKey(ownerId, sessionId);
     const assets = this.referenceUploadAssets.get(key2) ?? /* @__PURE__ */ new Map();
-    assets.set(id, structuredClone(asset));
+    const profiles = assets.get(id) ?? /* @__PURE__ */ new Map();
+    profiles.set(profile, structuredClone(asset));
+    assets.set(id, profiles);
     this.referenceUploadAssets.set(key2, assets);
     return true;
   }
-  referenceUploadAsset(ownerId, sessionId, id) {
-    const asset = this.referenceUploadAssets.get(this.draftKey(ownerId, sessionId))?.get(id);
-    return asset === void 0 ? void 0 : structuredClone(asset);
+  referenceUploadAsset(ownerId, sessionId, id, profile = "original") {
+    const cached3 = this.referenceUploadAssets.get(this.draftKey(ownerId, sessionId))?.get(id)?.get(profile);
+    return cached3 === void 0 ? void 0 : structuredClone(cached3);
+  }
+  effectiveGenerationReferenceIds(ownerId, sessionId, references, rows2, profile, preserveUploadSlots = false) {
+    const assets = this.referenceUploadAssets.get(this.draftKey(ownerId, sessionId));
+    const replaced = /* @__PURE__ */ new Map();
+    for (const row of rows2) for (const asset of assets?.get(row.id)?.values() ?? []) {
+      const id = String(asset?.id ?? "");
+      if (id) replaced.set(id, (replaced.get(id) ?? 0) + 1);
+    }
+    const base2 = references.filter((id) => {
+      const remaining = replaced.get(id) ?? 0;
+      if (!remaining) return true;
+      replaced.set(id, remaining - 1);
+      return false;
+    });
+    const staged = rows2.map((row) => {
+      const asset = assets?.get(row.id)?.get(profile);
+      return String(asset?.id ?? row.id);
+    });
+    const merged = [...base2, ...staged];
+    return preserveUploadSlots ? merged : [...new Set(merged)];
   }
   rememberComposerFeedback(ownerId, sessionId, feedback, revision) {
     if (revision !== this.epoch) return false;
@@ -16444,6 +16466,22 @@ var GenerationBootstrapCache = class {
       assets?.delete(id);
       if (assets && assets.size === 0) this.referenceUploadAssets.delete(key2);
     } else this.referenceUploads.set(key2, rows2.map((value2) => value2.id === id ? { ...value2, ...patch } : value2));
+    this.notifyDraft(key2);
+    return true;
+  }
+  clearReferenceUploads(ownerId, sessionId, ids2, revision, intentId, planVersion) {
+    if (revision !== this.epoch) return false;
+    const key2 = this.draftKey(ownerId, sessionId), draft = this.drafts.get(key2);
+    if (!draft || draft.intentId !== intentId || draft.planVersion !== planVersion) return false;
+    const selected = new Set(ids2), rows2 = this.referenceUploads.get(key2) ?? [];
+    for (const row of rows2) if (selected.has(row.id)) URL.revokeObjectURL(row.previewUrl);
+    this.referenceUploads.set(key2, rows2.filter((row) => !selected.has(row.id)));
+    const files = this.referenceUploadFiles.get(key2);
+    for (const id of selected) files?.delete(id);
+    if (files && files.size === 0) this.referenceUploadFiles.delete(key2);
+    const assets = this.referenceUploadAssets.get(key2);
+    for (const id of selected) assets?.delete(id);
+    if (assets && assets.size === 0) this.referenceUploadAssets.delete(key2);
     this.notifyDraft(key2);
     return true;
   }
@@ -31231,6 +31269,19 @@ var ImageToTextTaskSchema = external_exports2.object({
 // plugins/podplo-dsh/src/use-analysis-generation.ts
 var import_react4 = require("react");
 
+// packages/online/analysis-pricing.ts
+var creditPrice = external_exports2.number().positive().refine(
+  (value2) => isCreditAmount(value2) && Math.round(value2 * 100) >= 1,
+  "\u79EF\u5206\u5355\u4EF7\u6700\u591A\u4E24\u4F4D\u5C0F\u6570\u4E14\u4E0D\u5F97\u4F4E\u4E8E 0.01"
+);
+var analysisRate = external_exports2.object({ creditsPerRequest: creditPrice }).strict();
+var AnalysisPricingCatalogSchema = external_exports2.object({
+  version: external_exports2.literal(1),
+  expiresAt: external_exports2.string().datetime(),
+  imageToText: analysisRate.nullable(),
+  dna: analysisRate.nullable()
+}).strict();
+
 // plugins/podplo-dsh/src/result-submission-state.ts
 var rows = /* @__PURE__ */ new Map();
 var scopeVersions = /* @__PURE__ */ new Map();
@@ -31303,6 +31354,32 @@ function getResultSubmissions(ownerId) {
   return value2;
 }
 
+// plugins/podplo-dsh/src/analysis-local-pricing.ts
+var listLength = (value2) => Array.isArray(value2) ? value2.length : 0;
+function analysisRequestCount(mode, args) {
+  if (mode === "dna") return args.sourceAssetId || args.localReferenceCount === 1 ? 1 : void 0;
+  const itemCount = listLength(args.items);
+  const referenceCount2 = listLength(args.referenceAssetIds) + (Number.isSafeInteger(args.localReferenceCount) ? Number(args.localReferenceCount) : 0);
+  if (itemCount) return itemCount <= 100 ? itemCount : void 0;
+  const inputCount = referenceCount2;
+  if (!Number.isSafeInteger(inputCount) || inputCount < 1 || inputCount > 100) return void 0;
+  return inputCount <= 4 ? 1 : inputCount;
+}
+function calculateLocalAnalysisCredits(catalog, mode, args) {
+  const rate = mode === "dna" ? catalog.dna : catalog.imageToText;
+  const requestCount = analysisRequestCount(mode, args);
+  if (!rate || requestCount === void 0) return void 0;
+  const cents = Math.round(rate.creditsPerRequest * 100);
+  if (!Number.isSafeInteger(cents) || cents <= 0 || !Number.isSafeInteger(cents * requestCount)) return void 0;
+  return cents * requestCount / 100;
+}
+function isImageToTextBatch(args, referenceCount2) {
+  return Array.isArray(args.items) && args.items.length > 0 || referenceCount2 > 4;
+}
+function sameAnalysisCredits(left, right) {
+  return isCreditAmount(left) && left > 0 && isCreditAmount(right) && right > 0 && Math.round(left * 100) === Math.round(right * 100);
+}
+
 // plugins/podplo-dsh/src/use-analysis-generation.ts
 var quoteMessage = (error101) => {
   const code = error101 && typeof error101 === "object" && "code" in error101 ? error101.code : "";
@@ -31314,9 +31391,9 @@ var quoteMessage = (error101) => {
 function useAnalysisGeneration(input, owner, session, intent, plan, request, onText, onChanged) {
   const revision = generationBootstrapCache.revision();
   const key2 = JSON.stringify([revision, owner, session, intent, plan, input]);
-  const latest = (0, import_react4.useRef)({ key: key2, onText, onChanged });
-  latest.current = { key: key2, onText, onChanged };
-  const [quote, setQuote] = (0, import_react4.useState)();
+  const latest = (0, import_react4.useRef)({ key: key2, owner, onText, onChanged });
+  latest.current = { key: key2, owner, onText, onChanged };
+  const [catalog, setCatalog] = (0, import_react4.useState)();
   const [state, setState] = (0, import_react4.useState)({ busy: false, message: "", error: "" });
   const [retry, setRetry] = (0, import_react4.useState)(0);
   const [watch, setWatch] = (0, import_react4.useState)(0);
@@ -31325,8 +31402,6 @@ function useAnalysisGeneration(input, owner, session, intent, plan, request, onT
   const receipt = generationBootstrapCache.analysisReceipt(owner, session, intent, plan);
   const mode = input?.mode;
   const args = JSON.stringify(input?.args);
-  const batch = mode === "imageToText" && Array.isArray(input?.args.items);
-  const preview = !!mode && Number.isInteger(Number(input?.args.localReferenceCount));
   const current2 = (expected) => alive.current && latest.current.key === expected && generationBootstrapCache.isCurrent(revision);
   (0, import_react4.useEffect)(() => {
     alive.current = true;
@@ -31335,45 +31410,32 @@ function useAnalysisGeneration(input, owner, session, intent, plan, request, onT
     };
   }, []);
   (0, import_react4.useEffect)(() => {
-    let cancelled = false;
-    let expiration;
-    setQuote(void 0);
+    let cancelled = false, expiration;
+    setCatalog(void 0);
     setState({ busy: false, message: "", error: "" });
     if (!mode || !owner || !args || receipt) return;
-    const timer = setTimeout(async () => {
-      try {
-        const { data } = await request(preview ? mode + ".previewQuote" : batch ? "imageToText.batchQuote" : mode + ".quote", JSON.parse(args));
-        if (cancelled || !current2(key2)) return;
-        if (!preview && !batch && typeof data?.quoteId !== "string" || batch && typeof data?.batchId !== "string" || !preview && data.model !== (input?.args.model ?? DEFAULT_ANALYSIS_MODEL) || !Number.isFinite(data.totalCredits) || data.totalCredits <= 0 || !Number.isFinite(Date.parse(data.expiresAt)) || Date.parse(data.expiresAt) <= Date.now())
-          throw new Error("\u62A5\u4EF7\u5DF2\u8FC7\u671F\u6216\u65E0\u6548\u3002");
-        if (preview) {
-          const expectedCount = Number(input?.args.localReferenceCount ?? 0) + (Array.isArray(input?.args.referenceAssetIds) ? input.args.referenceAssetIds.length : 0);
-          if (!Number.isSafeInteger(data.inputCount) || data.inputCount !== expectedCount) throw new Error("\u62A5\u4EF7\u56FE\u7247\u6570\u91CF\u4E0D\u5339\u914D\u3002");
+    void request("analysis.pricing", { refresh: retry > 0 }).then(({ data }) => {
+      const next = AnalysisPricingCatalogSchema.parse(data);
+      if (Date.parse(next.expiresAt) <= Date.now()) throw new Error("\u4EF7\u76EE\u76EE\u5F55\u5DF2\u8FC7\u671F\u3002");
+      if (cancelled || !alive.current || !generationBootstrapCache.isCurrent(revision) || latest.current.owner !== owner) return;
+      setCatalog(next);
+      expiration = setTimeout(() => {
+        if (!cancelled && alive.current && generationBootstrapCache.isCurrent(revision)) {
+          setCatalog(void 0);
+          setState({ busy: false, error: "\u4EF7\u76EE\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002", message: "" });
         }
-        if (!batch && !preview) ActiveImageToTextQuoteSchema.parse(data);
-        if (batch && (typeof data.batchId !== "string" || !Array.isArray(data.items) || !data.items.length)) throw new Error("\u6279\u91CF\u62A5\u4EF7\u65E0\u6548\u3002");
-        setQuote({
-          key: key2,
-          id: preview ? "preview" : batch ? data.batchId : data.quoteId,
-          credits: data.totalCredits,
-          expires: Date.parse(data.expiresAt),
-          preview,
-          ...batch ? { batchId: data.batchId, items: data.items.map((item) => ({ quoteId: item.quoteId, approvedCredits: item.approvedCredits, clientRequestId: crypto.randomUUID() })) } : {}
-        });
-        expiration = setTimeout(() => {
-          setQuote(void 0);
-          setState({ busy: false, error: "\u62A5\u4EF7\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u6838\u4EF7\u3002", message: "" });
-        }, Date.parse(data.expiresAt) - Date.now());
-      } catch (error101) {
-        if (!cancelled && current2(key2)) setState({ busy: false, message: "", error: quoteMessage(error101) });
-      }
-    }, 350);
+      }, Date.parse(next.expiresAt) - Date.now());
+    }).catch((error101) => {
+      if (!cancelled && alive.current && generationBootstrapCache.isCurrent(revision)) setState({ busy: false, message: "", error: quoteMessage(error101) });
+    });
     return () => {
       cancelled = true;
-      clearTimeout(timer);
       clearTimeout(expiration);
     };
-  }, [key2, mode, args, retry, !!receipt, request]);
+  }, [revision, owner, !!mode, retry, !!receipt, request]);
+  (0, import_react4.useEffect)(() => {
+    if (!receipt) setState((currentState) => ({ ...currentState, message: "", error: "" }));
+  }, [key2, !!receipt]);
   (0, import_react4.useEffect)(() => {
     if (!receipt || !mode || receipt.mode !== mode || !owner) return;
     let cancelled = false;
@@ -31431,66 +31493,48 @@ function useAnalysisGeneration(input, owner, session, intent, plan, request, onT
       loop.stop();
     };
   }, [key2, receipt?.id, request, watch]);
-  const submit = () => {
-    if (lock.current || !mode || !current2(key2) || !quote || quote.preview || quote.key !== key2 || quote.expires <= Date.now()) return false;
-    const id = quote.batchId ?? crypto.randomUUID();
-    if (!generationBootstrapCache.startAnalysis(owner, session, intent, plan, { mode, id })) return false;
-    const values = JSON.parse(args);
-    const title = mode === "dna" ? String(values.name ?? "DNA \u63D0\u53D6\u4EFB\u52A1") : String(values.prompt ?? "").trim().slice(0, 40) || "\u56FE\u8F6C\u6587\u4EFB\u52A1";
-    const transition = startResultSubmission(owner, { id, name: title, processingType: "ai", taskKind: mode });
+  const price = mode && input?.args && catalog && Date.parse(catalog.expiresAt) > Date.now() ? calculateLocalAnalysisCredits(catalog, mode, input.args) : void 0;
+  const submitConfirmed = async (referenceAssetIds, sourceNames, expectedCredits, existingTransition) => {
+    const draftMatches = () => {
+      const draft = generationBootstrapCache.readDraft(owner, session);
+      return generationBootstrapCache.isCurrent(revision) && draft?.intentId === intent && draft.planVersion === plan;
+    };
+    if (lock.current || !mode || !(existingTransition ? draftMatches() : current2(key2)) || price === void 0 || !sameAnalysisCredits(price, expectedCredits)) return false;
+    generationBootstrapCache.clearComposerFeedback(owner, session, intent, plan);
+    const isBatch = mode === "imageToText" && isImageToTextBatch(input?.args ?? {}, referenceAssetIds.length);
+    const title = mode === "dna" ? String(input?.args.name ?? "DNA \u63D0\u53D6\u4EFB\u52A1") : isBatch ? `\u6279\u91CF\u56FE\u8F6C\u6587\uFF08${referenceAssetIds.length} \u5F20\uFF09` : String(input?.args.prompt ?? "").trim().slice(0, 40) || "\u56FE\u8F6C\u6587\u4EFB\u52A1";
+    const pendingId = `pending:${intent}:${plan}`;
+    const transition = existingTransition ?? startResultSubmission(owner, { id: pendingId, name: title, processingType: "ai", taskKind: mode });
     lock.current = true;
     setState({ busy: true, message: "\u6B63\u5728\u63D0\u4EA4\u2026", error: "" });
-    setQuote(void 0);
-    const submission = quote.batchId ? request("imageToText.batchSubmit", {
-      batchId: quote.batchId,
-      approvedCredits: quote.credits,
-      items: quote.items
-    }) : request(mode + ".submit", { quoteId: quote.id, approvedCredits: quote.credits, clientRequestId: id });
-    void request("panel.navigate", { section: "results" }).catch(() => void 0);
-    void submission.then(({ data }) => {
-      if (quote.batchId ? data?.batchId !== quote.batchId : data?.id !== id) throw new Error("\u4EFB\u52A1\u56DE\u6267\u5F85\u6838\u5BF9\u3002");
-      finishResultSubmission(transition);
-      if (current2(key2)) latest.current.onChanged?.();
-    }).catch((error101) => {
-      failResultSubmission(transition, error101 instanceof Error ? error101.message : "\u539F\u63D0\u4EA4\u72B6\u6001\u5F85\u6838\u5BF9\u3002");
-      if (current2(key2)) {
-        setState({ busy: false, error: error101 instanceof Error ? error101.message : "\u539F\u63D0\u4EA4\u72B6\u6001\u5F85\u6838\u5BF9\u3002", message: "" });
-        setWatch((n) => n + 1);
-      }
-    }).finally(() => {
-      lock.current = false;
-    });
-    return true;
-  };
-  const submitUploaded = async (referenceAssetIds, sourceNames, expectedCredits, existingTransition) => {
-    if (lock.current || !mode || !quote?.preview || quote.credits !== expectedCredits || quote.expires <= Date.now()) return false;
-    generationBootstrapCache.clearComposerFeedback(owner, session, intent, plan);
-    lock.current = true;
-    setState({ busy: true, message: "\u6B63\u5728\u6838\u5BF9\u4E0A\u4F20\u540E\u7684\u771F\u5B9E\u62A5\u4EF7\u2026", error: "" });
+    if (!existingTransition) void request("panel.navigate", { section: "results" }).catch(() => void 0);
+    let changedPrice = false;
     try {
-      const isBatch = mode === "imageToText" && referenceAssetIds.length > 4;
       const action = mode === "dna" ? "dna.quote" : isBatch ? "imageToText.batchQuote" : "imageToText.quote";
       const payload = mode === "dna" ? { model: input?.args.model, skillId: input?.args.skillId, name: input?.args.name, sourceAssetId: referenceAssetIds[0] } : isBatch ? { model: input?.args.model, prompt: input?.args.prompt, items: referenceAssetIds.map((referenceAssetId, index) => ({
         referenceAssetId,
         sourceName: sourceNames[index] || `\u56FE\u7247-${index + 1}`
       })) } : { model: input?.args.model, prompt: input?.args.prompt, referenceAssetIds };
       const { data: actual } = await request(action, payload);
-      if (!Number.isFinite(actual?.totalCredits) || actual.totalCredits !== expectedCredits)
-        throw new Error(`\u4E0A\u4F20\u540E\u771F\u5B9E\u62A5\u4EF7\u4E3A ${actual?.totalCredits ?? "\u4E0D\u53EF\u7528"} \u79EF\u5206\uFF0C\u672A\u63D0\u4EA4\uFF1B\u8BF7\u91CD\u65B0\u786E\u8BA4\u3002`);
+      if (!draftMatches()) throw new Error("\u8D26\u53F7\u6216\u5F53\u524D\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u672A\u63D0\u4EA4\u539F\u4EFB\u52A1\u3002");
+      if (!sameAnalysisCredits(actual?.totalCredits, expectedCredits)) {
+        changedPrice = true;
+        throw new Error(`\u670D\u52A1\u7AEF\u63D0\u4EA4\u9A8C\u4EF7\u4E3A ${actual?.totalCredits ?? "\u4E0D\u53EF\u7528"} \u79EF\u5206\uFF0C\u672A\u63D0\u4EA4\uFF1B\u8BF7\u6309\u65B0\u4EF7\u683C\u91CD\u65B0\u786E\u8BA4\u3002`);
+      }
+      if (isBatch && (typeof actual?.batchId !== "string" || !Array.isArray(actual.items) || actual.items.length !== referenceAssetIds.length) || !isBatch && typeof actual?.quoteId !== "string") throw new Error("\u670D\u52A1\u7AEF\u63D0\u4EA4\u9A8C\u4EF7\u56DE\u6267\u65E0\u6548\uFF0C\u672A\u63D0\u4EA4\u3002");
       const id = isBatch ? actual.batchId : crypto.randomUUID();
       if (typeof id !== "string" || !generationBootstrapCache.startAnalysis(owner, session, intent, plan, { mode, id }))
         throw new Error("\u65E0\u6CD5\u5EFA\u7ACB\u6279\u91CF\u4EFB\u52A1\u56DE\u6267\u3002");
-      retargetResultSubmission(existingTransition, id);
-      const title = mode === "dna" ? String(input?.args.name ?? "DNA \u63D0\u53D6\u4EFB\u52A1") : isBatch ? `\u6279\u91CF\u56FE\u8F6C\u6587\uFF08${referenceAssetIds.length} \u5F20\uFF09` : String(input?.args.prompt ?? "").trim().slice(0, 40) || "\u56FE\u8F6C\u6587\u4EFB\u52A1";
-      const transition = existingTransition ?? startResultSubmission(owner, { id, name: title, processingType: "ai", taskKind: mode });
+      if (alive.current) setWatch((value2) => value2 + 1);
+      retargetResultSubmission(transition, id);
       const submission = isBatch ? request("imageToText.batchSubmit", {
         batchId: actual.batchId,
         approvedCredits: actual.totalCredits,
         items: actual.items.map((item) => ({ quoteId: item.quoteId, approvedCredits: item.approvedCredits, clientRequestId: crypto.randomUUID() }))
       }) : request(mode + ".submit", { quoteId: actual.quoteId, approvedCredits: actual.totalCredits, clientRequestId: id });
-      if (!existingTransition) void request("panel.navigate", { section: "results" }).catch(() => void 0);
       try {
-        await submission;
+        const { data } = await submission;
+        if (isBatch ? data?.batchId !== id : data?.id !== id) throw new Error("\u4EFB\u52A1\u56DE\u6267\u5F85\u6838\u5BF9\u3002");
         finishResultSubmission(transition);
         latest.current.onChanged?.();
       } catch (cause) {
@@ -31499,22 +31543,40 @@ function useAnalysisGeneration(input, owner, session, intent, plan, request, onT
       }
       return true;
     } catch (error101) {
-      const failure = error101 instanceof Error ? error101.message : "\u6279\u91CF\u63D0\u4EA4\u5931\u8D25\u3002";
-      failResultSubmission(existingTransition, failure);
-      generationBootstrapCache.rememberComposerFeedback(owner, session, { intentId: intent, planVersion: plan, error: failure }, revision);
-      void request("panel.navigate", { section: "generation" }).catch(() => void 0);
-      setState({ busy: false, message: "", error: failure });
+      let failure = error101 instanceof Error ? error101.message : "\u63D0\u4EA4\u5931\u8D25\u3002";
+      if (changedPrice && draftMatches()) try {
+        const { data } = await request("analysis.pricing", { refresh: true });
+        const next = AnalysisPricingCatalogSchema.parse(data);
+        if (Date.parse(next.expiresAt) > Date.now()) setCatalog(next);
+      } catch (refreshError) {
+        failure += ` ${quoteMessage(refreshError)}`;
+      }
+      failResultSubmission(transition, failure);
+      if (draftMatches()) {
+        generationBootstrapCache.rememberComposerFeedback(owner, session, { intentId: intent, planVersion: plan, error: failure }, revision);
+        void request("panel.navigate", { section: "generation" }).catch(() => void 0);
+        if (alive.current) setState({ busy: false, message: "", error: failure });
+      }
       return false;
     } finally {
       lock.current = false;
     }
   };
+  const submit = () => {
+    if (!mode || !input?.args || price === void 0 || lock.current || !current2(key2)) return false;
+    const referenceAssetIds = mode === "dna" ? [input.args.sourceAssetId].filter((value2) => typeof value2 === "string") : Array.isArray(input.args.items) ? input.args.items.map((item) => item && typeof item === "object" && "referenceAssetId" in item ? String(item.referenceAssetId) : "") : Array.isArray(input.args.referenceAssetIds) ? input.args.referenceAssetIds.map(String) : [];
+    const sourceNames = Array.isArray(input.args.items) ? input.args.items.map((item, index) => item && typeof item === "object" && "sourceName" in item ? String(item.sourceName) : `\u56FE\u7247-${index + 1}`) : referenceAssetIds.map((_, index) => `\u56FE\u7247-${index + 1}`);
+    void submitConfirmed(referenceAssetIds, sourceNames, price);
+    return true;
+  };
+  const unavailable = mode && catalog && (mode === "dna" ? catalog.dna : catalog.imageToText) === null ? mode === "dna" ? "DNA \u53CD\u63A8\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4\u3002" : "\u56FE\u8F6C\u6587\u4EF7\u683C\u5C1A\u672A\u914D\u7F6E\uFF0C\u6682\u4E0D\u80FD\u63D0\u4EA4\u3002" : "";
   return {
     ...state,
-    price: quote?.key === key2 ? quote.credits : void 0,
+    error: state.error || unavailable,
+    price,
     submitted: !!receipt,
     submit,
-    submitUploaded,
+    submitUploaded: submitConfirmed,
     retry: () => receipt ? setWatch((n) => n + 1) : setRetry((n) => n + 1)
   };
 }
@@ -32936,6 +32998,7 @@ function SkillBrowser({ open, onClose, value: value2, choices, categories, favor
 // plugins/podplo-dsh/src/generation-panel.tsx
 var import_jsx_runtime7 = require("react/jsx-runtime");
 var imageTypes = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
+var pricingRuleMismatch = "\u5185\u7F6E\u4EF7\u76EE\u4E0E\u670D\u52A1\u7AEF\u6821\u9A8C\u89C4\u5219\u4E0D\u4E00\u81F4\uFF0C\u5DF2\u505C\u6B62\u63D0\u4EA4\u4E14\u672A\u6263\u8D39\u3002\u8BF7\u5237\u65B0\u6216\u66F4\u65B0\u63D2\u4EF6\u540E\u91CD\u65B0\u8BA1\u7B97\u3002";
 var errorText2 = (error101) => error101 instanceof Error ? error101.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
 var uuid8 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 var stringList = (value2) => Array.isArray(value2) ? value2.filter((item) => typeof item === "string" && !!item) : [];
@@ -33137,6 +33200,28 @@ var argsForCapabilities = (caps, selected, values) => {
   Object.assign(args, backgroundArgs(props, selected, values.transparent));
   return args;
 };
+var normalizedModelSelection = (caps, selected, current2, dnaDefaults = false) => {
+  const ratios = stringList(selected?.ratios), qualities = stringList(selected?.qualities);
+  const resolutions = stringList(selected?.resolutions), thinkingLevels = stringList(selected?.thinkingLevels);
+  const properties = caps?.quoteInputSchema?.properties ?? {};
+  const defaults = {};
+  for (const [key2, value2] of Object.entries(properties)) if (value2.type === "boolean" && !/transparent/i.test(key2)) defaults[key2] = value2.default === true;
+  const effectiveBooleans = { ...defaults, ...current2.booleans };
+  return {
+    model: modelId(selected ?? {}),
+    ratio: normalizedChoice(ratios, current2.ratio, ratios[0]),
+    quality: dnaDefaults && qualities.includes("low") ? "low" : normalizedChoice(qualities, current2.quality, selected?.defaultQuality),
+    resolution: dnaDefaults && resolutions.length ? lowestResolution(resolutions) : normalizedChoice(resolutions, current2.resolution, selected?.defaultResolution),
+    thinkingLevel: normalizedChoice(thinkingLevels, current2.thinkingLevel, selected?.defaultThinkingLevel),
+    booleans: {
+      ...effectiveBooleans,
+      webSearch: selected?.supportsWebSearch === true && effectiveBooleans.webSearch === true,
+      imageSearch: selected?.supportsImageSearch === true && effectiveBooleans.imageSearch === true,
+      ecoMode: Number.isInteger(Number(selected?.ecoMaximumReferenceImages)) && effectiveBooleans.ecoMode === true
+    },
+    transparent: !!selected && !!transparentControl(properties, selected) && current2.transparent
+  };
+};
 function GenerationPanel({ request, onChanged, onSubmission, onVerification, onOperationId, onSelectionConsumed, nativeSessionId, accountKey, placement = "inline", selection, revealSequence = 0 }) {
   const [capabilities, setCapabilities] = (0, import_react8.useState)();
   const [skills, setSkills] = (0, import_react8.useState)([]);
@@ -33237,15 +33322,27 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const extractId = skillId.startsWith("dna-extract:") ? skillId.slice("dna-extract:".length) : void 0;
   const analysisMode = extractId ? "dna" : isAnalysisModel(model) ? "imageToText" : void 0;
   const analysisModel = isAnalysisModel(model) ? model : DEFAULT_ANALYSIS_MODEL;
+  const referenceUploadProfile = !analysisMode && (selectedDna || booleans.ecoMode === true) ? "compact-128" : "original";
+  const effectiveGenerationReferences = (0, import_react8.useMemo)(
+    () => generationBootstrapCache.effectiveGenerationReferenceIds(
+      ownerId.current,
+      nativeSessionId ?? "podplo-manual",
+      references,
+      uploadPreviews,
+      referenceUploadProfile
+    ),
+    [accountKey, nativeSessionId, referenceUploadProfile, references, uploadPreviews]
+  );
   const analysisModelLabel = modelName(analysisModels.find((row) => row.id === analysisModel) ?? retiredAnalysisModel(analysisModel));
   const selectedModelLabel = analysisMode === "dna" ? analysisModelLabel : selectedModel ? modelName(selectedModel) : isAnalysisModel(model) ? analysisModelLabel : "\u9009\u62E9\u6A21\u578B";
-  const ordinaryPrice = (0, import_react8.useMemo)(() => analysisMode || selectedDna ? void 0 : calculateLocalGenerationQuote(selectedModel, {
+  const localQuote = (0, import_react8.useMemo)(() => analysisMode || selectedDna && !effectiveGenerationReferences.length ? void 0 : calculateLocalGenerationQuote(selectedModel, {
     prompt,
     quality,
     resolution,
     count,
-    referenceAssetIds: [...references, ...uploadPreviews.map((row) => row.id)],
+    referenceAssetIds: effectiveGenerationReferences,
     presetReferenceAssetIds: selectedSkill?.source === "personal" ? selectedSkill.detail?.referenceAssetIds : void 0,
+    referenceImageCount: selectedDna ? effectiveGenerationReferences.length : void 0,
     ecoMode: booleans.ecoMode === true,
     webSearch: booleans.webSearch === true,
     imageSearch: booleans.imageSearch === true
@@ -33256,58 +33353,14 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     count,
     prompt,
     quality,
-    references,
     resolution,
     analysisMode,
+    effectiveGenerationReferences,
     selectedDna,
     selectedModel,
     selectedSkill?.detail?.referenceAssetIds,
-    selectedSkill?.source,
-    uploadPreviews
+    selectedSkill?.source
   ]);
-  const dnaPriceArgs = selectedDna?.dnaId && selectedModel && (references.length || uploadPreviews.length) ? JSON.stringify({ ...argsForCapabilities(capabilities, selectedModel, {
-    prompt,
-    model,
-    ratio,
-    quality,
-    resolution,
-    thinkingLevel,
-    count,
-    references,
-    booleans,
-    transparent
-  }), dnaId: selectedDna.dnaId, localReferenceCount: uploadPreviews.length }) : "";
-  const dnaPriceKey = JSON.stringify([ownerId.current, intentId, planVersion, dnaPriceArgs, uploadPreviews.map((row) => row.id)]);
-  const [priceRetry, setPriceRetry] = (0, import_react8.useState)(0);
-  const [dnaPrice, setDnaPrice] = (0, import_react8.useState)();
-  (0, import_react8.useEffect)(() => {
-    if (!dnaPriceArgs) return;
-    let active = true;
-    let expires;
-    const timer = setTimeout(async () => {
-      try {
-        const { data } = await request("generation.dnaPreviewPrice", JSON.parse(dnaPriceArgs));
-        if (!Number.isSafeInteger(data?.totalCredits) || data.totalCredits < 0 || data.outputCount !== JSON.parse(dnaPriceArgs).count)
-          throw new Error("\u670D\u52A1\u7AEF\u672A\u8FD4\u56DE\u6709\u6548\u62A5\u4EF7");
-        if (active) {
-          setDnaPrice({ key: dnaPriceKey, totalCredits: data.totalCredits, outputCount: data.outputCount });
-          expires = setTimeout(() => {
-            setDnaPrice(void 0);
-            setPriceRetry((v) => v + 1);
-          }, Math.max(1e3, Date.parse(data.expiresAt) - Date.now() || 3e5));
-        }
-      } catch (cause) {
-        if (active) setDnaPrice({ key: dnaPriceKey, error: errorText2(cause) });
-      }
-    }, 180);
-    return () => {
-      active = false;
-      clearTimeout(timer);
-      clearTimeout(expires);
-    };
-  }, [dnaPriceArgs, dnaPriceKey, priceRetry, request]);
-  const currentDnaPrice = dnaPrice?.key === dnaPriceKey ? dnaPrice : void 0;
-  const localQuote = selectedDna ? currentDnaPrice?.totalCredits !== void 0 ? currentDnaPrice : void 0 : ordinaryPrice;
   const batchSnapshot = (0, import_react8.useMemo)(() => ({
     prompt,
     skill: !selectedDna && selectedSkill?.generationId ? {
@@ -33382,7 +33435,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       return void 0;
     });
   }, [intentId, nativeSessionId, planVersion, request]);
-  const stagedReferenceCount = references.length + uploadPreviews.length;
+  const stagedReferenceCount = analysisMode ? references.length + uploadPreviews.length : effectiveGenerationReferences.length;
   const inputError = analysisMode === "dna" ? !selectedSkill?.available ? "\u53CD\u63A8 Skill \u5C1A\u672A\u914D\u7F6E\u597D\u3002" : stagedReferenceCount !== 1 ? "\u8BF7\u9009\u62E9\u4E00\u5F20\u539F\u56FE\u3002" : "" : analysisMode === "imageToText" ? stagedReferenceCount < 1 || stagedReferenceCount > 100 ? "\u8BF7\u9009\u62E9 1\u2013100 \u5F20\u56FE\u7247\u3002" : !prompt.trim() || prompt.length > 8e3 ? "\u8BF7\u8F93\u5165 1\u20138000 \u5B57\u7684\u8BC6\u522B\u8981\u6C42\u3002" : "" : "";
   const localAnalysisFiles = uploadPreviews.map((row) => {
     const file3 = generationBootstrapCache.referenceUploadFile(ownerId.current, nativeSessionId ?? "podplo-manual", row.id);
@@ -33511,21 +33564,14 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setCapabilities(nextCapabilities);
     const current2 = selections.current;
     const nextModel = availableModel(nextCapabilities, current2.model);
-    setModel(modelId(nextModel ?? {}));
-    setRatio(normalizedChoice(stringList(nextModel?.ratios), current2.ratio, stringList(nextModel?.ratios)[0]));
-    setQuality(normalizedChoice(stringList(nextModel?.qualities), current2.quality, nextModel?.defaultQuality));
-    setResolution(normalizedChoice(stringList(nextModel?.resolutions), current2.resolution, nextModel?.defaultResolution));
-    setThinkingLevel(normalizedChoice(stringList(nextModel?.thinkingLevels), current2.thinkingLevel, nextModel?.defaultThinkingLevel));
-    const nextProperties = nextCapabilities.quoteInputSchema?.properties ?? {};
-    const defaults = {};
-    for (const [key2, value2] of Object.entries(nextProperties)) if (value2.type === "boolean" && !/transparent/i.test(key2)) defaults[key2] = value2.default === true;
-    setBooleans({
-      ...defaults,
-      ...current2.booleans,
-      webSearch: nextModel?.supportsWebSearch === true && current2.booleans.webSearch === true,
-      imageSearch: nextModel?.supportsImageSearch === true && current2.booleans.imageSearch === true,
-      ecoMode: Number.isInteger(Number(nextModel?.ecoMaximumReferenceImages)) && current2.booleans.ecoMode === true
-    });
+    const normalized = normalizedModelSelection(nextCapabilities, nextModel, current2);
+    setModel(normalized.model);
+    setRatio(normalized.ratio);
+    setQuality(normalized.quality);
+    setResolution(normalized.resolution);
+    setThinkingLevel(normalized.thinkingLevel);
+    setBooleans(normalized.booleans);
+    setTransparent(normalized.transparent);
   }, []);
   const applyBootstrap = (0, import_react8.useCallback)((value2) => {
     applyCapabilities(value2.capabilities);
@@ -33958,7 +34004,6 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const next = models.find((row) => modelId(row) === nextId);
     if (!next) return;
     invalidate();
-    setModel(nextId);
     if (isAnalysisModel(nextId) && !extractId && (skillId || selectedDna) || extractId && !isAnalysisModel(nextId)) {
       selectedSkillId.current = "";
       ++skillSequence.current;
@@ -33967,17 +34012,14 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       setSkillLoading("");
       setSkillError("");
     }
-    setRatio((current2) => normalizedChoice(stringList(next.ratios), current2, stringList(next.ratios)[0]));
-    setQuality((current2) => normalizedChoice(stringList(next.qualities), current2, next.defaultQuality));
-    setResolution((current2) => normalizedChoice(stringList(next.resolutions), current2, next.defaultResolution));
-    setThinkingLevel((current2) => normalizedChoice(stringList(next.thinkingLevels), current2, next.defaultThinkingLevel));
-    setBooleans((current2) => ({
-      ...current2,
-      webSearch: next.supportsWebSearch === true && current2.webSearch === true,
-      imageSearch: next.supportsImageSearch === true && current2.imageSearch === true,
-      ecoMode: Number.isInteger(Number(next.ecoMaximumReferenceImages)) && current2.ecoMode === true
-    }));
-    if (!transparentControl(properties, next)) setTransparent(false);
+    const normalized = normalizedModelSelection(capabilities, next, selections.current);
+    setModel(normalized.model);
+    setRatio(normalized.ratio);
+    setQuality(normalized.quality);
+    setResolution(normalized.resolution);
+    setThinkingLevel(normalized.thinkingLevel);
+    setBooleans(normalized.booleans);
+    setTransparent(normalized.transparent);
   }
   async function fetchSkillDetail(choice) {
     const { data } = choice.source === "personal" ? await request("mySkills.get", { id: choice.generationId, ...choice.version ? { expectedUpdatedAt: choice.version } : {} }) : await request("skills.detail", { slug: choice.slug, resolve: true });
@@ -34057,7 +34099,15 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   }
   function selectDna(choice) {
     if (!choice.dnaId) return;
-    if (isAnalysisModel(model)) setModel(modelId(availableModel(capabilities, "") ?? {}));
+    const targetModel = !isAnalysisModel(model) && selectedModel ? selectedModel : availableModel(capabilities, "");
+    const normalized = normalizedModelSelection(capabilities, targetModel, selections.current, true);
+    setModel(normalized.model);
+    setRatio(normalized.ratio);
+    setQuality(normalized.quality);
+    setResolution(normalized.resolution);
+    setThinkingLevel(normalized.thinkingLevel);
+    setBooleans(normalized.booleans);
+    setTransparent(normalized.transparent);
     invalidate();
     skillSequence.current += 1;
     selectedSkillId.current = "";
@@ -34067,9 +34117,6 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setError("");
     setNotice("");
     setSelectedDna(choice);
-    const qualities = stringList(selectedModel?.qualities), resolutions = stringList(selectedModel?.resolutions);
-    if (qualities.includes("low")) setQuality("low");
-    if (resolutions.length) setResolution(lowestResolution(resolutions));
     applyResourcePreset(choice.id);
   }
   async function fetchDnaChoice(id) {
@@ -34279,6 +34326,9 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   async function flushReferenceUploads() {
     const expectedOwner = ownerId.current;
     const expectedRevision = cacheRevision.current;
+    const expectedIntent = currentIntent.current;
+    const expectedPlan = currentPlanVersion.current;
+    const expectedContext = requestContext.current;
     const sessionId = nativeSessionId ?? "podplo-manual";
     const rows2 = generationBootstrapCache.readReferenceUploads(expectedOwner, sessionId);
     if (!rows2.length) return [...references];
@@ -34288,8 +34338,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setError("");
     setUploadWarning("");
     setUploadProgress(`\u6B63\u5728\u63D0\u4EA4\u53C2\u8003\u56FE 0 / ${rows2.length} \u5F20\u2026`);
-    const current2 = () => ownerId.current === expectedOwner && generationBootstrapCache.isCurrent(expectedRevision);
-    const results = rows2.map((row) => generationBootstrapCache.referenceUploadAsset(expectedOwner, sessionId, row.id));
+    const current2 = () => ownerId.current === expectedOwner && generationBootstrapCache.isCurrent(expectedRevision) && requestContext.current.request === expectedContext.request && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && requestContext.current.accountKey === expectedContext.accountKey && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan && (() => {
+      const draft = generationBootstrapCache.readDraft(expectedOwner, sessionId);
+      return !!draft && draft.intentId === expectedIntent && draft.planVersion === expectedPlan;
+    })();
+    const results = rows2.map((row) => generationBootstrapCache.referenceUploadAsset(expectedOwner, sessionId, row.id, referenceUploadProfile));
     let cursor = 0;
     let completed = 0;
     const worker = async () => {
@@ -34307,11 +34360,12 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         if (current2() && mounted.current) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, sessionId));
         try {
           if (!file3) throw new Error("\u672C\u5730\u56FE\u7247\u5DF2\u5931\u6548\uFF0C\u8BF7\u79FB\u9664\u540E\u91CD\u65B0\u9009\u62E9\u3002");
-          const uploadFile = !analysisMode && (selectedDna || booleans.ecoMode === true) ? await compactGenerationReference(file3) : file3;
+          const uploadFile = referenceUploadProfile === "compact-128" ? await compactGenerationReference(file3) : file3;
           const { data } = await request("assets.upload", { file: uploadFile });
+          if (!current2()) return;
           if (!data?.id || data.status !== "ready") throw new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u91CD\u8BD5\u3002");
           results[index] = data;
-          generationBootstrapCache.rememberReferenceUploadAsset(expectedOwner, sessionId, row.id, data, expectedRevision);
+          generationBootstrapCache.rememberReferenceUploadAsset(expectedOwner, sessionId, row.id, data, expectedRevision, referenceUploadProfile);
           generationBootstrapCache.updateReferenceUpload(expectedOwner, sessionId, row.id, { status: "queued", message: "\u5DF2\u4E0A\u4F20\uFF0C\u7B49\u5F85\u5176\u4F59\u56FE\u7247" }, expectedRevision);
         } catch (cause) {
           if (current2()) generationBootstrapCache.updateReferenceUpload(
@@ -34340,14 +34394,18 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         return void 0;
       }
       const uploaded = results;
-      const uploadedReferenceIds = uploaded.map((row) => row.id);
-      const nextReferences = analysisMode === "imageToText" && references.length + uploadedReferenceIds.length > 4 ? [...references, ...uploadedReferenceIds] : [.../* @__PURE__ */ new Set([...references, ...uploadedReferenceIds])];
+      const stagedReferences = generationBootstrapCache.effectiveGenerationReferenceIds(
+        expectedOwner,
+        sessionId,
+        references,
+        rows2,
+        referenceUploadProfile,
+        true
+      );
+      const nextReferences = analysisMode === "imageToText" && stagedReferences.length > 4 ? stagedReferences : [...new Set(stagedReferences)];
       if (mounted.current) setAssets((currentAssets) => [...new Map([...currentAssets, ...uploaded].map((row) => [row.id, row])).values()]);
       generationBootstrapCache.update(expectedOwner, { assets: uploaded });
-      rows2.forEach((row) => generationBootstrapCache.updateReferenceUpload(expectedOwner, sessionId, row.id, null, expectedRevision));
       if (mounted.current) {
-        setUploadPreviews([]);
-        setReferences(nextReferences);
         setUploadProgress("");
         setUploadWarning("");
       }
@@ -34364,7 +34422,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     if (selectedSkill && skillLoading === selectedSkill.id) return "\u6B63\u5728\u6838\u5BF9 Skill \u7684\u6700\u65B0\u8BE6\u60C5\u3002";
     if (selectedSkill && (!selectedSkill.detail || !selectedSkill.generationId)) return "\u8BF7\u7B49\u5F85 Skill \u5B8C\u6574\u8BE6\u60C5\u3001\u7248\u672C\u548C\u751F\u56FE\u7ED1\u5B9A\u8BFB\u53D6\u5B8C\u6210\u3002";
     if (selectedDna && !selectedDna.dnaId) return "\u6240\u9009 DNA \u8EAB\u4EFD\u65E0\u6548\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002";
-    if (selectedDna && references.length + uploadPreviews.length === 0) return "\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002";
+    if (selectedDna && effectiveGenerationReferences.length === 0) return "\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002";
     if (!skillId && !selectedDna && properties.prompt && !prompt.trim()) return "\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002";
     if (properties.modelId && !model) return "\u8BF7\u9009\u62E9\u670D\u52A1\u7AEF\u5F53\u524D\u63D0\u4F9B\u7684\u6A21\u578B\u3002";
     if (selectedModel?.availableForCurrentPlan === false) return "\u5F53\u524D\u8D26\u53F7\u5C1A\u672A\u5F00\u901A\u8FD9\u4E2A\u6A21\u578B\uFF0C\u8BF7\u9009\u62E9\u5176\u4ED6\u6A21\u578B\u3002";
@@ -34372,7 +34430,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const modelReferenceLimit = booleans.ecoMode === true && supportsEcoMode ? Number(selectedModel?.ecoMaximumReferenceImages) : Number(selectedModel?.maximumReferenceImages);
     const schemaReferenceLimit = Number(properties.referenceAssetIds?.maxItems);
     const maxRefs = Math.min(Number.isFinite(modelReferenceLimit) ? modelReferenceLimit : Infinity, Number.isFinite(schemaReferenceLimit) ? schemaReferenceLimit : Infinity);
-    if (Number.isFinite(maxRefs) && references.length + uploadPreviews.length > maxRefs) return `\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`;
+    if (Number.isFinite(maxRefs) && effectiveGenerationReferences.length > maxRefs) return `\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`;
     return "";
   }
   async function prepare(referenceOverride) {
@@ -34605,6 +34663,15 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       if (validationError()) return;
       if (uploadPreviews.length) {
         if (analysis.price === void 0) return;
+        const expectedOwner2 = ownerId.current, expectedRevision2 = cacheRevision.current;
+        const expectedIntent2 = currentIntent.current, expectedPlan2 = currentPlanVersion.current;
+        const expectedContext2 = requestContext.current;
+        const expectedSession = nativeSessionId ?? "podplo-manual";
+        const expectedUploadIds = uploadPreviews.map((row) => row.id);
+        const submissionCurrent = () => generationBootstrapCache.isCurrent(expectedRevision2) && ownerId.current === expectedOwner2 && requestContext.current.request === expectedContext2.request && requestContext.current.nativeSessionId === expectedContext2.nativeSessionId && requestContext.current.accountKey === expectedContext2.accountKey && currentIntent.current === expectedIntent2 && currentPlanVersion.current === expectedPlan2 && (() => {
+          const draft = generationBootstrapCache.readDraft(expectedOwner2, expectedSession);
+          return !!draft && draft.intentId === expectedIntent2 && draft.planVersion === expectedPlan2;
+        })();
         const expectedCredits = analysis.price;
         const transition2 = startResultSubmission(ownerId.current, {
           id: `pending:${intentId}:${planVersion}`,
@@ -34618,8 +34685,22 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           ...uploadPreviews.map((row) => row.filename)
         ];
         const uploaded = await flushReferenceUploads();
-        if (uploaded) await analysis.submitUploaded(uploaded, sourceNames, expectedCredits, transition2);
-        else {
+        if (!submissionCurrent()) {
+          failResultSubmission(transition2, "\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u65E7\u4E0A\u4F20\u672A\u7EE7\u7EED\u63D0\u4EA4\u3002");
+          return;
+        }
+        if (uploaded) {
+          const submitted = await analysis.submitUploaded(uploaded, sourceNames, expectedCredits, transition2);
+          if (submitted) generationBootstrapCache.clearReferenceUploads(
+            expectedOwner2,
+            expectedSession,
+            expectedUploadIds,
+            expectedRevision2,
+            expectedIntent2,
+            expectedPlan2
+          );
+          else if (!submissionCurrent()) failResultSubmission(transition2, "\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u65E7\u63D0\u4EA4\u5DF2\u505C\u6B62\u3002");
+        } else {
           failResultSubmission(transition2, "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
           void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         }
@@ -34630,6 +34711,13 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
     if (busy || preparing.current || approving.current || approvalAttempted) return;
     if (operation?.status === "quoted") {
+      if (!localQuote || operation.quote.totalCredits !== localQuote.totalCredits || operation.quote.outputCount !== localQuote.outputCount) {
+        void request("generation.cancel", { operationId: operation.operationId }).catch(() => void 0);
+        setOperation(void 0);
+        invalidate();
+        setPriceVerification(pricingRuleMismatch);
+        return;
+      }
       await approve(operation);
       return;
     }
@@ -34665,15 +34753,17 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       retargetResultSubmission(transition, verified.operationId);
       if (!generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan || verified.intentId !== expectedIntent || verified.planVersion !== expectedPlan) return;
       if (!expectedLocalQuote || verified.quote.totalCredits !== expectedLocalQuote.totalCredits || verified.quote.outputCount !== expectedLocalQuote.outputCount) {
-        const changed = expectedLocalQuote ? `\u670D\u52A1\u7AEF\u6838\u9A8C\u79EF\u5206\u5DF2\u66F4\u65B0\u4E3A ${verified.quote.totalCredits}\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002` : `\u670D\u52A1\u7AEF\u6838\u9A8C\u4E3A ${verified.quote.totalCredits} \u79EF\u5206\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002`;
-        if (mounted.current) setPriceVerification(changed);
+        void request("generation.cancel", { operationId: verified.operationId }).catch(() => void 0);
+        setOperation(void 0);
+        invalidate();
+        if (mounted.current) setPriceVerification(pricingRuleMismatch);
         if (expectedContext.nativeSessionId) generationBootstrapCache.rememberComposerFeedback(
           expectedOwner,
           expectedContext.nativeSessionId,
-          { intentId: expectedIntent, planVersion: expectedPlan, priceVerification: changed },
+          { intentId: expectedIntent, planVersion: currentPlanVersion.current, priceVerification: pricingRuleMismatch },
           expectedRevision
         );
-        failResultSubmission(transition, changed);
+        failResultSubmission(transition, pricingRuleMismatch);
         void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         return;
       }
@@ -34719,7 +34809,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setSkillError("");
     setReferences([]);
   }
-  const displayCredits = analysisMode ? analysis.price : operation?.status === "quoted" ? operation.quote.totalCredits : localQuote?.totalCredits;
+  const displayCredits = analysisMode ? analysis.price : localQuote?.totalCredits;
   const chevron = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "13", height: "13", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "m7 10 5 5 5-5" }) });
   const plus = /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("svg", { width: "22", height: "22", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("path", { d: "M12 5v14M5 12h14" }) });
   const imageIcon = /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: [
@@ -34749,13 +34839,6 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     analysisMode && (analysis.error || analysis.message || inputError) && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-price-verification", role: analysis.error ? "alert" : "status", children: [
       analysis.error || analysis.message || inputError,
       analysis.error && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", className: "ppd-link-button", onClick: analysis.retry, children: analysis.submitted ? "\u6838\u5BF9\u72B6\u6001" : "\u91CD\u65B0\u6838\u4EF7" })
-    ] }),
-    dnaPriceArgs && !localQuote && !operation && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { className: "ppd-price-verification", role: "status", children: [
-      currentDnaPrice?.error || "\u6B63\u5728\u6838\u9A8C DNA \u751F\u56FE\u79EF\u5206\u2026",
-      currentDnaPrice?.error && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("button", { type: "button", onClick: () => {
-        setDnaPrice(void 0);
-        setPriceRetry((v) => v + 1);
-      }, children: "\u91CD\u65B0\u6838\u4EF7" })
     ] }),
     priceVerification && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { className: "ppd-price-verification", "data-generation-price-verification": true, role: "status", children: priceVerification }),
     /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("fieldset", { className: "ppd-generation-form", disabled: busy === "upload" || busy === "approve" || busy === "cancel", children: [
@@ -38693,6 +38776,15 @@ var PAGE_SIZE2 = 20;
 var activeGeneration = /* @__PURE__ */ new Set(["submitting", "submitted"]);
 var pollableText = (row) => !row.errorCode && (["submitting", "queued", "running"].includes(row.status) || row.archiveStatus === "pending");
 var deletableLive = (task) => !task.deleteProtected && !["loading", "accepted", "submitting", "submitted", "queued", "running"].includes(task.status) && !task.children.some((status) => status === "loading");
+var deletableArchive = (task) => !["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status) && task.saveStatus !== "saving";
+var deleteItemForCard = (card) => card.archive ? deletableArchive(card.archive) && (!card.live || deletableLive(card.live)) ? { key: card.key, archive: card.archive, live: card.live } : void 0 : card.live && deletableLive(card.live) ? { key: card.key, live: card.live } : void 0;
+var localArchiveId = (item) => item.hideOnly ? void 0 : item.archive?.id ?? item.live?.localArchiveTaskId;
+var hiddenRecordIds = (item) => item.live ? unique([
+  item.live.id,
+  ...item.live.childIds ?? [],
+  item.live.operationId ?? "",
+  item.live.archiveTaskId ?? ""
+]) : [];
 var statusLabel = (status) => ({
   loading: "\u6B63\u5728\u63D0\u4EA4",
   accepted: "\u6B63\u5728\u8BFB\u53D6\u4EFB\u52A1",
@@ -38868,30 +38960,34 @@ function ArchiveCover({ task, request, live }) {
     !files.length && !pending && !unknown3 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-result-slot ppd-result-slot-empty", children: "\u6682\u65E0\u672C\u5730\u6210\u679C" })
   ] });
 }
-function ResultCard({ card, request, open }) {
+function ResultCard({ card, request, open, selected, selectable, toggle }) {
   const task = card.archive, live = card.live, title = task?.name ?? live.name;
   const count = task ? Math.max(task.resultCount, task.stageResults?.length ?? 0, live?.children.length ?? 0, 1) : Math.max(live.children.length, 1);
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
     "article",
     {
-      className: "ppd-result-task-card",
+      className: `ppd-result-task-card${selected ? " ppd-result-task-card-selected" : ""}`,
       "data-result-task": task?.id ?? live.id,
       "data-result-status": task?.status ?? live.status,
       "data-result-kind": live?.kind ?? "archive",
-      children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("button", { type: "button", className: "ppd-result-card-open", "aria-label": `\u67E5\u770B ${title}`, onClick: open, children: [
-        task ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ArchiveCover, { task, request, live }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(LiveCover, { task: live, request }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { className: "ppd-result-card-body", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { title, children: title }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
-            statusLabel(task?.status ?? live.status),
-            " \xB7 ",
-            count,
-            " \u9879\u7ED3\u679C"
+      "aria-selected": selected,
+      children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { className: "ppd-result-card-select", title: selectable ? `\u9009\u62E9 ${title}` : "\u4EFB\u52A1\u4ECD\u5728\u5904\u7406\u6216\u4FDD\u5B58\uFF0C\u6682\u4E0D\u80FD\u5220\u9664", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "checkbox", "aria-label": `\u9009\u62E9 ${title}`, checked: selected, disabled: !selectable, onChange: (event) => toggle(event.target.checked) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("button", { type: "button", className: "ppd-result-card-open", "aria-label": `\u67E5\u770B ${title}`, onClick: open, children: [
+          task ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ArchiveCover, { task, request, live }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(LiveCover, { task: live, request }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { className: "ppd-result-card-body", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { title, children: title }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
+              statusLabel(task?.status ?? live.status),
+              " \xB7 ",
+              count,
+              " \u9879\u7ED3\u679C"
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("time", { dateTime: card.createdAt, children: dateLabel(card.createdAt) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("time", { dateTime: card.createdAt, children: dateLabel(card.createdAt) })
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-result-detail-button", children: "\u67E5\u770B\u4EFB\u52A1" })
-      ] })
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { className: "ppd-result-detail-button", children: "\u67E5\u770B\u4EFB\u52A1" })
+        ] })
+      ]
     }
   );
 }
@@ -38954,15 +39050,28 @@ function LiveDetail({ task, request, busy, back, run, onDelete }) {
     ] })
   ] });
 }
-function ResultDeleteDialog({ title, archive, busy, error: error101, cancel, confirm }) {
+function ResultDeleteDialog({ target: target2, busy, error: error101, cancel, confirm }) {
+  const archiveCount = target2.items.filter((item) => !!localArchiveId(item)).length;
+  const hiddenCount = target2.items.length - archiveCount;
+  const single = target2.mode === "single", title = target2.items[0]?.archive?.name ?? target2.items[0]?.live?.name ?? "\u5904\u7406\u8BB0\u5F55";
   return /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-archive-delete-backdrop", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-archive-delete-dialog", role: "alertdialog", "aria-modal": "true", "aria-labelledby": "ppd-result-delete-title", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { id: "ppd-result-delete-title", children: archive ? "\u5220\u9664\u4EFB\u52A1\u548C\u672C\u5730\u6210\u679C\uFF1F" : "\u5220\u9664\u5904\u7406\u8BB0\u5F55\uFF1F" }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: title }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: archive ? "\u8BE5\u4EFB\u52A1\u7684\u5904\u7406\u8BB0\u5F55\u548C\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u4F1A\u4E00\u8D77\u5220\u9664\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u63D0\u4EA4\u4EFB\u52A1\u3002" : "\u4EC5\u4ECE\u5904\u7406\u8BB0\u5F55\u4E2D\u79FB\u9664\u8FD9\u5F20\u5361\u7247\uFF1B\u4E0D\u5220\u9664\u5DF2\u4FDD\u5B58\u7684 DNA\uFF0C\u4E5F\u4E0D\u5220\u9664\u5DF2\u6709\u672C\u5730\u6210\u679C\u3001\u6E90\u7D20\u6750\u3001\u4EFB\u52A1\u56DE\u6267\u6216\u8BA1\u8D39\u8BB0\u5F55\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { id: "ppd-result-delete-title", children: single ? archiveCount ? "\u5220\u9664\u4EFB\u52A1\u548C\u672C\u5730\u6210\u679C\uFF1F" : "\u5220\u9664\u5904\u7406\u8BB0\u5F55\uFF1F" : `\u5220\u9664\u5DF2\u9009\u7684 ${target2.items.length} \u6761\u8BB0\u5F55\uFF1F` }),
+    single ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: title }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("strong", { children: [
+      "\u5DF2\u9009\u62E9 ",
+      target2.items.length,
+      " \u6761\u5904\u7406\u8BB0\u5F55"
+    ] }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: single ? archiveCount ? "\u8BE5\u4EFB\u52A1\u7684\u5904\u7406\u8BB0\u5F55\u548C\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u4F1A\u4E00\u8D77\u5220\u9664\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u63D0\u4EA4\u4EFB\u52A1\u3002" : "\u4EC5\u4ECE\u5904\u7406\u8BB0\u5F55\u4E2D\u79FB\u9664\u8FD9\u5F20\u5361\u7247\uFF1B\u4E0D\u5220\u9664\u5DF2\u4FDD\u5B58\u7684 DNA\uFF0C\u4E5F\u4E0D\u5220\u9664\u5DF2\u6709\u672C\u5730\u6210\u679C\u3001\u6E90\u7D20\u6750\u3001\u4EFB\u52A1\u56DE\u6267\u6216\u8BA1\u8D39\u8BB0\u5F55\u3002" : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+      archiveCount ? `${archiveCount} \u6761\u5F52\u6863\u8BB0\u5F55\u4F1A\u8FDE\u540C\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u4E00\u8D77\u5220\u9664\u3002` : "",
+      archiveCount && hiddenCount ? " " : "",
+      hiddenCount ? `${hiddenCount} \u6761\u975E\u5F52\u6863\u8BB0\u5F55\u4EC5\u4ECE\u5904\u7406\u8BB0\u5F55\u4E2D\u79FB\u9664\u3002` : "",
+      " ",
+      "\u4E0D\u4F1A\u5220\u9664\u4E91\u7AEF DNA\u3001\u6E90\u7D20\u6750\u3001\u4EFB\u52A1\u56DE\u6267\u6216\u8BA1\u8D39\u8BB0\u5F55\uFF0C\u4E5F\u4E0D\u4F1A\u91CD\u65B0\u63D0\u4EA4\u4EFB\u52A1\u3002"
+    ] }) }),
     error101 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-archive-error", role: "alert", children: error101 }),
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-archive-actions", children: [
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", disabled: busy, onClick: cancel, children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", className: "ppd-archive-delete-confirm", disabled: busy, onClick: confirm, children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : archive ? "\u5220\u9664\u8BB0\u5F55\u548C\u672C\u5730\u6587\u4EF6" : "\u5220\u9664\u8BB0\u5F55" })
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", className: "ppd-archive-delete-confirm", disabled: busy, onClick: confirm, children: busy ? "\u6B63\u5728\u5220\u9664\u2026" : single ? archiveCount ? "\u5220\u9664\u8BB0\u5F55\u548C\u672C\u5730\u6587\u4EF6" : "\u5220\u9664\u8BB0\u5F55" : "\u5220\u9664\u5DF2\u9009\u8BB0\u5F55" })
     ] })
   ] }) });
 }
@@ -38976,10 +39085,15 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
   const [texts, setTexts] = (0, import_react15.useState)([]), [dnas, setDnas] = (0, import_react15.useState)([]), [tools2, setTools] = (0, import_react15.useState)([]);
   const [dnaProfiles, setDnaProfiles] = (0, import_react15.useState)([]);
   const [loading, setLoading] = (0, import_react15.useState)(true), [error101, setError] = (0, import_react15.useState)(""), [pageError, setPageError] = (0, import_react15.useState)("");
-  const [busy, setBusy] = (0, import_react15.useState)(""), [selectedKey, setSelectedKey] = (0, import_react15.useState)("");
+  const [busy, setBusy] = (0, import_react15.useState)(""), [selectedKey, setSelectedKey] = (0, import_react15.useState)(""), [selectedKeys, setSelectedKeys] = (0, import_react15.useState)([]);
   const [deleteTarget, setDeleteTarget] = (0, import_react15.useState)();
   const [deleteError, setDeleteError] = (0, import_react15.useState)("");
   const [exportingTexts, setExportingTexts] = (0, import_react15.useState)(false);
+  const deleteItemsRef = (0, import_react15.useRef)(/* @__PURE__ */ new Map());
+  const deleteGuardRef = (0, import_react15.useRef)({ request, ownerId, uiLease, version: 0, mounted: true });
+  if (deleteGuardRef.current.request !== request || deleteGuardRef.current.ownerId !== ownerId || deleteGuardRef.current.uiLease !== uiLease) {
+    deleteGuardRef.current = { request, ownerId, uiLease, version: deleteGuardRef.current.version + 1, mounted: true };
+  }
   const submissions = (0, import_react15.useSyncExternalStore)(subscribeResultSubmissions, () => getResultSubmissions(ownerId));
   const filters = (0, import_react15.useMemo)(() => ({ query, processingType, period: "all", from: "", to: "" }), [query, processingType]);
   const filterKey = (0, import_react15.useMemo)(() => JSON.stringify(filters), [filters]);
@@ -39215,8 +39329,36 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
   }, [request, archiveKey, revision, archiveTick]);
   const archiveMap = (0, import_react15.useMemo)(() => new Map(archives.map((task) => [task.id, task])), [archives]);
   const hydrated = visibleCards.flatMap((card) => card.header && archiveMap.has(card.header.id) ? [{ ...card, archive: archiveMap.get(card.header.id) }] : card.live ? [card] : []);
+  const deleteItems = hydrated.flatMap((card) => {
+    const item = deleteItemForCard(card);
+    return item ? [item] : [];
+  });
+  const deleteItemMap = new Map(deleteItems.map((item) => [item.key, item]));
+  const selectedItems = selectedKeys.flatMap((key2) => {
+    const item = deleteItemMap.get(key2);
+    return item ? [item] : [];
+  });
+  const allCurrentPageSelected = deleteItems.length > 0 && deleteItems.every((item) => selectedKeys.includes(item.key));
   const selected = cards.find((card) => card.key === selectedKey);
   const selectedArchive = selected?.header ? archiveMap.get(selected.header.id) : void 0;
+  const selectableKey = deleteItems.map((item) => item.key).join(":");
+  deleteItemsRef.current = deleteItemMap;
+  (0, import_react15.useEffect)(() => {
+    setSelectedKeys((keys2) => keys2.filter((key2) => deleteItemMap.has(key2)));
+  }, [selectableKey]);
+  (0, import_react15.useEffect)(() => {
+    setSelectedKeys([]);
+    setDeleteTarget(void 0);
+    setDeleteError("");
+    setBusy("");
+  }, [ownerId, request, uiLease]);
+  (0, import_react15.useEffect)(() => {
+    deleteGuardRef.current.mounted = true;
+    return () => {
+      deleteGuardRef.current.mounted = false;
+      deleteGuardRef.current.version += 1;
+    };
+  }, []);
   (0, import_react15.useEffect)(() => {
     if (!targetId) return;
     const index = cards.findIndex((card) => card.header?.id === targetId || card.header?.operationIds.includes(targetId) || card.live?.id === targetId);
@@ -39273,27 +39415,77 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
   };
   const confirmDelete = () => {
     if (!deleteTarget || busy) return;
-    const archive = deleteTarget.archive, live = deleteTarget.live;
-    const localArchiveTaskId = archive?.id ?? live?.localArchiveTaskId;
-    const key2 = localArchiveTaskId ? `delete:archive:${localArchiveTaskId}` : `delete:live:${live.id}`;
-    const action = localArchiveTaskId ? request("archive.delete", { taskId: localArchiveTaskId, confirmed: true }) : request("archive.hide", { recordIds: unique([live.id, ...live.childIds ?? [], live.operationId ?? "", live.archiveTaskId ?? ""]), confirmed: true });
-    setBusy(key2);
+    const target2 = deleteTarget;
+    const guard = deleteGuardRef.current, guardVersion = guard.version;
+    const isCurrent = () => guard.mounted && deleteGuardRef.current === guard && guard.version === guardVersion;
+    setBusy(target2.mode === "batch" ? "delete:batch" : `delete:${target2.items[0]?.key ?? "record"}`);
     setDeleteError("");
-    void action.then(
-      () => {
-        setDeleteTarget(void 0);
-        setSelectedKey("");
+    void (async () => {
+      const succeeded = /* @__PURE__ */ new Set(), failures = [];
+      for (const item of target2.items.filter((row) => !!localArchiveId(row))) {
+        if (!isCurrent()) return;
+        if (!deleteItemsRef.current.has(item.key)) {
+          failures.push({ item, message: "\u4EFB\u52A1\u72B6\u6001\u5DF2\u53D8\u5316\uFF0C\u8FD0\u884C\u4E2D\u6216\u4FDD\u5B58\u4E2D\u7684\u8BB0\u5F55\u672A\u5220\u9664" });
+          continue;
+        }
+        try {
+          await request("archive.delete", { taskId: localArchiveId(item), confirmed: true });
+          if (!isCurrent()) return;
+          const ids2 = hiddenRecordIds(item);
+          if (ids2.length) {
+            if (ids2.length > 200) throw new Error("\u8BE5\u8BB0\u5F55\u5173\u8054\u7F16\u53F7\u8D85\u8FC7\u6279\u91CF\u9690\u85CF\u4E0A\u9650");
+            try {
+              await request("archive.hide", { recordIds: ids2, confirmed: true });
+            } catch (cause) {
+              failures.push({ item: { key: item.key, live: item.live, hideOnly: true }, message: cause instanceof Error ? cause.message : "\u5904\u7406\u8BB0\u5F55\u9690\u85CF\u672A\u5B8C\u6210" });
+              continue;
+            }
+            if (!isCurrent()) return;
+          }
+          succeeded.add(item.key);
+        } catch (cause) {
+          failures.push({ item, message: cause instanceof Error ? cause.message : "\u5220\u9664\u64CD\u4F5C\u672A\u5B8C\u6210" });
+        }
+      }
+      const hidden = target2.items.filter((row) => !localArchiveId(row));
+      for (const item of hidden) {
+        if (!isCurrent()) return;
+        if (!item.hideOnly && !deleteItemsRef.current.has(item.key)) {
+          failures.push({ item, message: "\u4EFB\u52A1\u72B6\u6001\u5DF2\u53D8\u5316\uFF0C\u8FD0\u884C\u4E2D\u7684\u8BB0\u5F55\u672A\u5220\u9664" });
+          continue;
+        }
+        const ids2 = hiddenRecordIds(item);
+        try {
+          if (!ids2.length || ids2.length > 200) throw new Error("\u5904\u7406\u8BB0\u5F55\u7F16\u53F7\u65E0\u6548");
+          await request("archive.hide", { recordIds: ids2, confirmed: true });
+          if (!isCurrent()) return;
+          succeeded.add(item.key);
+        } catch (cause) {
+          failures.push({ item, message: cause instanceof Error ? cause.message : "\u5220\u9664\u64CD\u4F5C\u672A\u5B8C\u6210" });
+        }
+      }
+      if (!isCurrent()) return;
+      if (succeeded.size) {
+        setSelectedKeys((keys2) => keys2.filter((key2) => !succeeded.has(key2)));
+        setSelectedKey((key2) => succeeded.has(key2) ? "" : key2);
         setRevision((value2) => value2 + 1);
         notifyTaskChange();
-      },
-      (cause) => setDeleteError(cause instanceof Error ? cause.message : "\u5220\u9664\u64CD\u4F5C\u672A\u5B8C\u6210")
-    ).finally(() => setBusy(""));
+      }
+      if (failures.length) {
+        setDeleteTarget({ ...target2, items: failures.map((row) => row.item) });
+        setDeleteError(`\u5DF2\u5220\u9664 ${succeeded.size} \u6761\uFF0C${failures.length} \u6761\u672A\u5B8C\u6210\uFF1A${unique(failures.map((row) => row.message)).join("\uFF1B")}`);
+      } else {
+        setDeleteTarget(void 0);
+        setDeleteError("");
+      }
+    })().finally(() => {
+      if (isCurrent()) setBusy("");
+    });
   };
   const deleteDialog = deleteTarget ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
     ResultDeleteDialog,
     {
-      title: deleteTarget.archive?.name ?? deleteTarget.live.name,
-      archive: !!deleteTarget.archive || !!deleteTarget.live?.localArchiveTaskId,
+      target: deleteTarget,
       busy: busy.startsWith("delete:"),
       error: deleteError,
       cancel: () => {
@@ -39317,7 +39509,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         run: (action) => run(selected.key, action),
         onDelete: deletableLive(selected.live) ? () => {
           setDeleteError("");
-          setDeleteTarget({ live: selected.live });
+          setDeleteTarget({ mode: "single", items: [{ key: selected.key, live: selected.live }] });
         } : void 0
       }
     ),
@@ -39332,10 +39524,10 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         task: selectedArchive,
         request,
         onBack: () => setSelectedKey(""),
-        onDelete: (task) => {
+        onDelete: deleteItemForCard({ ...selected, archive: selectedArchive }) ? (task) => {
           setDeleteError("");
-          setDeleteTarget({ archive: task });
-        },
+          setDeleteTarget({ mode: "single", items: [{ key: selected.key, archive: task, live: selected.live }] });
+        } : void 0,
         compactIntro: true,
         requestInfo: selected.live?.requestInfo
       }
@@ -39382,6 +39574,28 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "\u5904\u7406\u8BB0\u5F55" }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-history-description", children: "\u6BCF\u6B21\u63D0\u4EA4\u663E\u793A\u4E3A\u4E00\u5F20\u5361\u7247\uFF1B\u6253\u5F00\u5361\u7247\u67E5\u770B\u4EFB\u52A1\u7B80\u4ECB\u548C\u5404\u9879\u7ED3\u679C\u3002" }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-library-toolbar ppd-archive-filters ppd-results-toolbar", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-archive-toolbar", children: [
+        selectedKeys.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-results-bulk-actions", role: "group", "aria-label": "\u6279\u91CF\u5220\u9664\u5904\u7406\u8BB0\u5F55", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
+            "\u5DF2\u9009 ",
+            selectedItems.length,
+            " \u6761"
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", disabled: allCurrentPageSelected || !!busy, onClick: () => setSelectedKeys(deleteItems.map((item) => item.key)), children: "\u5168\u9009\u5F53\u524D\u9875" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+            "button",
+            {
+              type: "button",
+              className: "ppd-archive-delete",
+              disabled: !selectedItems.length || !!busy,
+              onClick: () => {
+                setDeleteError("");
+                setDeleteTarget({ mode: "batch", items: selectedItems });
+              },
+              children: "\u5220\u9664\u5DF2\u9009"
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", disabled: !!busy, onClick: () => setSelectedKeys([]), children: "\u53D6\u6D88" })
+        ] }),
         texts.some((row) => row.status === "completed") && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { type: "button", disabled: exportingTexts, onClick: () => void exportTexts(), children: exportingTexts ? "\u6B63\u5728\u5BFC\u51FA\u2026" : "\u5BFC\u51FA\u6587\u5B57\u7ED3\u679C" }),
         /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
           "input",
@@ -39392,6 +39606,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
             onChange: (event) => {
               setQuery(event.target.value);
               setPage(1);
+              setSelectedKeys([]);
             }
           }
         ),
@@ -39403,6 +39618,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
             onChange: (event) => {
               setProcessingType(event.target.value);
               setPage(1);
+              setSelectedKeys([]);
             },
             children: [
               /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "all", children: "\u5168\u90E8\u7C7B\u578B" }),
@@ -39419,6 +39635,7 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
             "aria-label": "\u5237\u65B0\u8BB0\u5F55",
             title: "\u5237\u65B0\u8BB0\u5F55",
             onClick: () => {
+              setSelectedKeys([]);
               setRevision((value2) => value2 + 1);
               notifyTaskChange();
             },
@@ -39428,14 +39645,28 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
       ] }) })
     ] }),
     (error101 || pageError) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error101 || pageError }),
-    loading && !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026" }) : !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u5904\u7406\u8BB0\u5F55" : "\u6682\u65E0\u5904\u7406\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-result-task-grid", children: hydrated.map((card) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ResultCard, { card, request, open: () => setSelectedKey(card.key) }, card.key)) }),
+    loading && !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u5904\u7406\u8BB0\u5F55\u2026" }) : !cards.length ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-archive-empty", children: hasFilters ? "\u6CA1\u6709\u7B26\u5408\u7B5B\u9009\u6761\u4EF6\u7684\u5904\u7406\u8BB0\u5F55" : "\u6682\u65E0\u5904\u7406\u8BB0\u5F55" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { className: "ppd-result-task-grid", children: hydrated.map((card) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      ResultCard,
+      {
+        card,
+        request,
+        open: () => setSelectedKey(card.key),
+        selected: selectedKeys.includes(card.key),
+        selectable: deleteItemMap.has(card.key) && !busy,
+        toggle: (checked) => setSelectedKeys((keys2) => checked ? unique([...keys2, card.key]) : keys2.filter((key2) => key2 !== card.key))
+      },
+      card.key
+    )) }),
     cards.length > PAGE_SIZE2 && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-archive-actions", children: [
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         "button",
         {
           type: "button",
           disabled: visiblePage === 1,
-          onClick: () => setPage(visiblePage - 1),
+          onClick: () => {
+            setSelectedKeys([]);
+            setPage(visiblePage - 1);
+          },
           children: "\u4E0A\u4E00\u9875"
         }
       ),
@@ -39449,11 +39680,15 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
         {
           type: "button",
           disabled: visiblePage === pageCount,
-          onClick: () => setPage(visiblePage + 1),
+          onClick: () => {
+            setSelectedKeys([]);
+            setPage(visiblePage + 1);
+          },
           children: "\u4E0B\u4E00\u9875"
         }
       )
-    ] })
+    ] }),
+    deleteDialog
   ] });
 }
 
@@ -39463,7 +39698,7 @@ var import_react16 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.41",
+  version: "0.1.42",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
