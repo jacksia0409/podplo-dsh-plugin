@@ -39061,12 +39061,10 @@ function ResultDeleteDialog({ target: target2, busy, error: error101, cancel, co
       target2.items.length,
       " \u6761\u5904\u7406\u8BB0\u5F55"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: single ? archiveCount ? "\u8BE5\u4EFB\u52A1\u7684\u5904\u7406\u8BB0\u5F55\u548C\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u4F1A\u4E00\u8D77\u5220\u9664\uFF0C\u4E0D\u4F1A\u91CD\u65B0\u63D0\u4EA4\u4EFB\u52A1\u3002" : "\u4EC5\u4ECE\u5904\u7406\u8BB0\u5F55\u4E2D\u79FB\u9664\u8FD9\u5F20\u5361\u7247\uFF1B\u4E0D\u5220\u9664\u5DF2\u4FDD\u5B58\u7684 DNA\uFF0C\u4E5F\u4E0D\u5220\u9664\u5DF2\u6709\u672C\u5730\u6210\u679C\u3001\u6E90\u7D20\u6750\u3001\u4EFB\u52A1\u56DE\u6267\u6216\u8BA1\u8D39\u8BB0\u5F55\u3002" : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
-      archiveCount ? `${archiveCount} \u6761\u5F52\u6863\u8BB0\u5F55\u4F1A\u8FDE\u540C\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u4E00\u8D77\u5220\u9664\u3002` : "",
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: single ? archiveCount ? "\u5C06\u5220\u9664\u8BE5\u5904\u7406\u8BB0\u5F55\uFF0C\u5E76\u6C38\u4E45\u5220\u9664\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u53CA\u5176\u4E2D\u6240\u6709\u6587\u4EF6\uFF08\u5305\u62EC\u4F60\u653E\u5165\u7684\u6587\u4EF6\uFF09\u3002\u6B64\u64CD\u4F5C\u65E0\u6CD5\u64A4\u9500\u3002" : "\u8BE5\u8BB0\u5F55\u6CA1\u6709\u5173\u8054\u7684\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\uFF0C\u5C06\u5220\u9664\u6B64\u5904\u7406\u8BB0\u5F55\u3002\u5DF2\u4FDD\u5B58\u7684 DNA\u3001\u6E90\u7D20\u6750\u548C\u4EFB\u52A1\u56DE\u6267\u4FDD\u7559\u3002" : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+      archiveCount ? `${archiveCount} \u6761\u5F52\u6863\u8BB0\u5F55\u5C06\u8FDE\u540C\u5BF9\u5E94\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\u53CA\u5176\u4E2D\u6240\u6709\u6587\u4EF6\u6C38\u4E45\u5220\u9664\uFF08\u5305\u62EC\u4F60\u653E\u5165\u7684\u6587\u4EF6\uFF09\uFF0C\u65E0\u6CD5\u64A4\u9500\u3002` : "",
       archiveCount && hiddenCount ? " " : "",
-      hiddenCount ? `${hiddenCount} \u6761\u975E\u5F52\u6863\u8BB0\u5F55\u4EC5\u4ECE\u5904\u7406\u8BB0\u5F55\u4E2D\u79FB\u9664\u3002` : "",
-      " ",
-      "\u4E0D\u4F1A\u5220\u9664\u4E91\u7AEF DNA\u3001\u6E90\u7D20\u6750\u3001\u4EFB\u52A1\u56DE\u6267\u6216\u8BA1\u8D39\u8BB0\u5F55\uFF0C\u4E5F\u4E0D\u4F1A\u91CD\u65B0\u63D0\u4EA4\u4EFB\u52A1\u3002"
+      hiddenCount ? `${hiddenCount} \u6761\u975E\u5F52\u6863\u8BB0\u5F55\u6CA1\u6709\u5173\u8054\u7684\u672C\u5730\u4EFB\u52A1\u6587\u4EF6\u5939\uFF0C\u4EC5\u5220\u9664\u8BB0\u5F55\u3002` : ""
     ] }) }),
     error101 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { className: "ppd-archive-error", role: "alert", children: error101 }),
     /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { className: "ppd-archive-actions", children: [
@@ -39698,7 +39696,7 @@ var import_react16 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.42",
+  version: "0.1.43",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",

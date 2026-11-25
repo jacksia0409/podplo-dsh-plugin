@@ -61579,7 +61579,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.42",
+  version: "0.1.43",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -67816,12 +67816,12 @@ var TaskArchiveManager = class {
       if (this.jobs.has(id2) || ["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown"].includes(task.status))
         throw new Error("\u4EFB\u52A1\u4ECD\u5728\u751F\u6210\u6216\u4FDD\u5B58\uFF0C\u8BF7\u5148\u505C\u6B62\u5E76\u7B49\u5F85\u5904\u7406\u7ED3\u675F");
       const project = this.store.snapshot().projects.find((row) => row.owner === identity2.owner && row.id === task.projectId);
-      await this.directory(project.directory, project.stamp);
       const existing = await lstat7(task.directory).catch((error101) => {
         if (error101.code !== "ENOENT") throw error101;
         return void 0;
       });
       if (existing) {
+        await this.directory(project.directory, project.stamp);
         await this.taskDirectory(task);
         await this.same(identity2);
         const staged = join13(project.directory, `.delete-${task.id}-${randomUUID15()}`);

@@ -1,4 +1,4 @@
-# PodPlo Plugin v0.1.42
+# PodPlo Plugin v0.1.43
 
 适用于 DeepSeek Harness 的 PodPlo 插件，提供 Skill 库、我的收藏、AI 生图与本地图像工具。
 
@@ -17,7 +17,7 @@
 - 保留上一版提交结果卡片、20项分页、工具／AI类型筛选，以及我的Skill／DNA四列小卡片和更多菜单。
 
 安装／升级地址：
-`https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.42`
+`https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.43`
 
 发行不会自动安装或重启日常 DSH。附件 TGZ 与 ZIP 为同一版本；真实收费与Windows实机不在本轮验收范围。
 
