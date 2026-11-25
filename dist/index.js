@@ -61579,7 +61579,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.43",
+  version: "0.1.44",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -65857,18 +65857,24 @@ async function normalizeNativeReference(input) {
   const edgeScale = Math.min(1, MAX_EDGE / Math.max(orientedWidth, orientedHeight));
   const pixelScale = Math.min(1, Math.sqrt(MAX_INPUT_PIXELS / (orientedWidth * orientedHeight)));
   let scale = Math.min(edgeScale, pixelScale);
-  const targetBytes = Math.min(MAX_OUTPUT_BYTES, Math.max(1024, Math.floor(source.length * 0.3)));
-  let quality = 78;
   let output = Buffer.alloc(0);
-  for (let attempt = 0; attempt < 9; attempt++) {
+  let best = Buffer.alloc(0);
+  const qualities = [90, 80, 70, 60, 50, 40];
+  for (let resizeAttempt = 0; resizeAttempt < 5; resizeAttempt++) {
     const width2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedWidth * scale)));
     const height2 = Math.max(1, Math.min(MAX_EDGE, Math.floor(orientedHeight * scale)));
-    output = await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
-    if (output.length <= targetBytes) break;
-    const ratio = Math.sqrt(targetBytes / output.length) * 0.92;
-    scale *= Math.max(0.42, Math.min(0.88, ratio));
-    quality = Math.max(38, quality - 7);
+    for (const quality of qualities) {
+      const encoded = await sharp13(source, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).autoOrient().resize(width2, height2, { fit: "inside", withoutEnlargement: true }).webp({ quality, alphaQuality: quality, effort: 3 }).toBuffer();
+      if (!best.length || encoded.length < best.length) best = encoded;
+      if (encoded.length <= MAX_OUTPUT_BYTES) {
+        output = encoded;
+        break;
+      }
+    }
+    if (output.length) break;
+    scale *= Math.min(0.85, Math.max(0.35, Math.sqrt(MAX_OUTPUT_BYTES / best.length) * 0.92));
   }
+  if (!output.length) output = best;
   if (!output.length || output.length > MAX_OUTPUT_BYTES) fail6("REFERENCE_IMAGE_TOO_LARGE", "\u53C2\u8003\u56FE\u538B\u7F29\u540E\u4ECD\u8D85\u8FC7 10 MB\uFF0C\u8BF7\u5148\u7F29\u5C0F\u56FE\u7247\u3002");
   const verified = await sharp13(output, { limitInputPixels: MAX_INPUT_PIXELS, failOn: "error" }).metadata();
   if (!verified.width || !verified.height || verified.width > MAX_EDGE || verified.height > MAX_EDGE || verified.width * verified.height > MAX_INPUT_PIXELS)

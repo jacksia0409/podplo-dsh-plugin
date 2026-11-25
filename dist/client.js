@@ -1684,25 +1684,6 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
 // plugins/podplo-dsh/src/panels.tsx
 var import_react17 = require("react");
 
-// plugins/podplo-dsh/src/compact-generation-reference.ts
-async function compactGenerationReference(file3) {
-  const image = await createImageBitmap(file3);
-  try {
-    const scale = Math.min(1, 128 / Math.max(image.width, image.height));
-    const width2 = Math.max(1, Math.round(image.width * scale)), height2 = Math.max(1, Math.round(image.height * scale));
-    const canvas = document.createElement("canvas");
-    canvas.width = width2;
-    canvas.height = height2;
-    const context = canvas.getContext("2d");
-    if (!context) throw new Error("\u65E0\u6CD5\u538B\u7F29\u53C2\u8003\u56FE\u3002");
-    context.drawImage(image, 0, 0, width2, height2);
-    const blob = await new Promise((resolve, reject) => canvas.toBlob((value2) => value2 ? resolve(value2) : reject(new Error("\u65E0\u6CD5\u538B\u7F29\u53C2\u8003\u56FE\u3002")), "image/webp", 0.72));
-    return new File([blob], `${file3.name.replace(/\.[^.]+$/u, "") || "reference"}-128.webp`, { type: "image/webp", lastModified: file3.lastModified });
-  } finally {
-    image.close();
-  }
-}
-
 // ../../../plugins/podplo-dsh/node_modules/zod/v4/classic/external.js
 var external_exports = {};
 __export(external_exports, {
@@ -16401,24 +16382,30 @@ var GenerationBootstrapCache = class {
   referenceUploadFile(ownerId, sessionId, id) {
     return this.referenceUploadFiles.get(this.draftKey(ownerId, sessionId))?.get(id);
   }
-  rememberReferenceUploadAsset(ownerId, sessionId, id, asset, revision, profile = "original") {
+  rememberReferenceUploadAsset(ownerId, sessionId, id, asset, revision) {
     if (revision !== this.epoch) return false;
     const key2 = this.draftKey(ownerId, sessionId);
     const assets = this.referenceUploadAssets.get(key2) ?? /* @__PURE__ */ new Map();
-    const profiles = assets.get(id) ?? /* @__PURE__ */ new Map();
-    profiles.set(profile, structuredClone(asset));
-    assets.set(id, profiles);
+    assets.set(id, structuredClone(asset));
     this.referenceUploadAssets.set(key2, assets);
     return true;
   }
-  referenceUploadAsset(ownerId, sessionId, id, profile = "original") {
-    const cached3 = this.referenceUploadAssets.get(this.draftKey(ownerId, sessionId))?.get(id)?.get(profile);
+  referenceUploadAsset(ownerId, sessionId, id) {
+    const key2 = this.draftKey(ownerId, sessionId);
+    const assets = this.referenceUploadAssets.get(key2);
+    const cached3 = assets?.get(id);
+    if (cached3 instanceof Map) {
+      assets?.delete(id);
+      if (assets?.size === 0) this.referenceUploadAssets.delete(key2);
+      return void 0;
+    }
     return cached3 === void 0 ? void 0 : structuredClone(cached3);
   }
-  effectiveGenerationReferenceIds(ownerId, sessionId, references, rows2, profile, preserveUploadSlots = false) {
+  effectiveGenerationReferenceIds(ownerId, sessionId, references, rows2, preserveUploadSlots = false) {
     const assets = this.referenceUploadAssets.get(this.draftKey(ownerId, sessionId));
     const replaced = /* @__PURE__ */ new Map();
-    for (const row of rows2) for (const asset of assets?.get(row.id)?.values() ?? []) {
+    for (const row of rows2) {
+      const asset = assets?.get(row.id);
       const id = String(asset?.id ?? "");
       if (id) replaced.set(id, (replaced.get(id) ?? 0) + 1);
     }
@@ -16429,7 +16416,7 @@ var GenerationBootstrapCache = class {
       return false;
     });
     const staged = rows2.map((row) => {
-      const asset = assets?.get(row.id)?.get(profile);
+      const asset = assets?.get(row.id);
       return String(asset?.id ?? row.id);
     });
     const merged = [...base2, ...staged];
@@ -32092,11 +32079,10 @@ function BatchGenerationPanel({ request, snapshot, capabilities, skills, disable
     if (!current2(expectedEpoch)) return;
     await patchItems(itemIds, { skill });
   }
-  async function uploadFile(file3, compact = false) {
+  async function uploadFile(file3) {
     if (!["image/jpeg", "image/png", "image/webp"].includes(file3.type)) return { ok: false, error: "\u4EC5\u652F\u6301 JPEG\u3001PNG\u3001WebP" };
     try {
-      const payload = compact ? await compactGenerationReference(file3) : file3;
-      const { data } = await request("assets.upload", { file: payload });
+      const { data } = await request("assets.upload", { file: file3 });
       if (!data?.id || data.status !== "ready") throw new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA");
       return { ok: true, reference: { id: data.id, filename: data.filename ?? file3.name, previewUrl: data.previewUrl, thumbnailUrl: data.thumbnailUrl } };
     } catch (cause) {
@@ -32200,8 +32186,7 @@ function BatchGenerationPanel({ request, snapshot, capabilities, skills, disable
         if (index >= unique2.length || !current2(expectedEpoch)) return;
         const reference = unique2[index];
         const entry = pendingBatchUploads.get(reference.id);
-        const compact = value2.items.some((item) => item.selected && item.args.ecoMode === true && item.references.some((row) => row.id === reference.id));
-        results.set(reference.id, await uploadFile(entry.file, compact));
+        results.set(reference.id, await uploadFile(entry.file));
         completed += 1;
         if (current2(expectedEpoch)) setNotice(`\u6B63\u5728\u63D0\u4EA4\u53C2\u8003\u56FE ${completed} / ${unique2.length}\u2026`);
       }
@@ -33322,16 +33307,14 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const extractId = skillId.startsWith("dna-extract:") ? skillId.slice("dna-extract:".length) : void 0;
   const analysisMode = extractId ? "dna" : isAnalysisModel(model) ? "imageToText" : void 0;
   const analysisModel = isAnalysisModel(model) ? model : DEFAULT_ANALYSIS_MODEL;
-  const referenceUploadProfile = !analysisMode && (selectedDna || booleans.ecoMode === true) ? "compact-128" : "original";
   const effectiveGenerationReferences = (0, import_react8.useMemo)(
     () => generationBootstrapCache.effectiveGenerationReferenceIds(
       ownerId.current,
       nativeSessionId ?? "podplo-manual",
       references,
-      uploadPreviews,
-      referenceUploadProfile
+      uploadPreviews
     ),
-    [accountKey, nativeSessionId, referenceUploadProfile, references, uploadPreviews]
+    [accountKey, nativeSessionId, references, uploadPreviews]
   );
   const analysisModelLabel = modelName(analysisModels.find((row) => row.id === analysisModel) ?? retiredAnalysisModel(analysisModel));
   const selectedModelLabel = analysisMode === "dna" ? analysisModelLabel : selectedModel ? modelName(selectedModel) : isAnalysisModel(model) ? analysisModelLabel : "\u9009\u62E9\u6A21\u578B";
@@ -34342,7 +34325,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       const draft = generationBootstrapCache.readDraft(expectedOwner, sessionId);
       return !!draft && draft.intentId === expectedIntent && draft.planVersion === expectedPlan;
     })();
-    const results = rows2.map((row) => generationBootstrapCache.referenceUploadAsset(expectedOwner, sessionId, row.id, referenceUploadProfile));
+    const results = rows2.map((row) => generationBootstrapCache.referenceUploadAsset(expectedOwner, sessionId, row.id));
     let cursor = 0;
     let completed = 0;
     const worker = async () => {
@@ -34360,12 +34343,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         if (current2() && mounted.current) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, sessionId));
         try {
           if (!file3) throw new Error("\u672C\u5730\u56FE\u7247\u5DF2\u5931\u6548\uFF0C\u8BF7\u79FB\u9664\u540E\u91CD\u65B0\u9009\u62E9\u3002");
-          const uploadFile = referenceUploadProfile === "compact-128" ? await compactGenerationReference(file3) : file3;
-          const { data } = await request("assets.upload", { file: uploadFile });
+          const { data } = await request("assets.upload", { file: file3 });
           if (!current2()) return;
           if (!data?.id || data.status !== "ready") throw new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u91CD\u8BD5\u3002");
           results[index] = data;
-          generationBootstrapCache.rememberReferenceUploadAsset(expectedOwner, sessionId, row.id, data, expectedRevision, referenceUploadProfile);
+          generationBootstrapCache.rememberReferenceUploadAsset(expectedOwner, sessionId, row.id, data, expectedRevision);
           generationBootstrapCache.updateReferenceUpload(expectedOwner, sessionId, row.id, { status: "queued", message: "\u5DF2\u4E0A\u4F20\uFF0C\u7B49\u5F85\u5176\u4F59\u56FE\u7247" }, expectedRevision);
         } catch (cause) {
           if (current2()) generationBootstrapCache.updateReferenceUpload(
@@ -34399,7 +34381,6 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         sessionId,
         references,
         rows2,
-        referenceUploadProfile,
         true
       );
       const nextReferences = analysisMode === "imageToText" && stagedReferences.length > 4 ? stagedReferences : [...new Set(stagedReferences)];
@@ -39696,7 +39677,7 @@ var import_react16 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.43",
+  version: "0.1.44",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -42062,7 +42043,7 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
 // packages/online/reference-image.ts
 var MAX_REFERENCE_BYTES = 1e7;
 var MAX_REFERENCE_INPUT_BYTES = 5e7;
-var REFERENCE_REMAINING_RATIO = 0.3;
+var MAX_REFERENCE_EDGE = 4096;
 function validReferenceFile(file3) {
   return file3.size > 0 && file3.size <= MAX_REFERENCE_INPUT_BYTES && ["image/jpeg", "image/png", "image/webp"].includes(file3.type);
 }
@@ -42076,25 +42057,31 @@ async function compressReferenceImage(file3) {
   }
   try {
     if (bitmap.width * bitmap.height > 4e7) throw new Error("Image dimensions exceed the pixel limit.");
-    const target2 = Math.min(MAX_REFERENCE_BYTES, Math.max(1024, Math.floor(file3.size * REFERENCE_REMAINING_RATIO)));
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d", { alpha: true });
     if (!context) throw new Error("Image compression is unavailable.");
-    let scale = Math.min(1, 4096 / Math.max(bitmap.width, bitmap.height));
+    let scale = Math.min(1, MAX_REFERENCE_EDGE / Math.max(bitmap.width, bitmap.height));
     let best;
-    for (let attempt = 0; attempt < 9; attempt++) {
+    const qualities = [0.9, 0.8, 0.7, 0.6, 0.5, 0.4];
+    for (let resizeAttempt = 0; resizeAttempt < 5; resizeAttempt++) {
       canvas.width = Math.max(1, Math.round(bitmap.width * scale));
       canvas.height = Math.max(1, Math.round(bitmap.height * scale));
       context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-      const encoded = await new Promise((resolve, reject) => canvas.toBlob(
-        (blob) => blob ? resolve(blob) : reject(new Error("Image compression failed.")),
-        "image/webp",
-        attempt === 0 ? 0.88 : attempt === 1 ? 0.74 : 0.68
-      ));
-      if (encoded.type !== "image/webp") throw new Error("This browser cannot compress reference images to WebP.");
-      if (!best || encoded.size < best.size) best = encoded;
-      if (best.size <= target2) break;
-      if (attempt >= 1) scale *= Math.min(0.85, Math.max(0.35, Math.sqrt(target2 / best.size) * 0.92));
+      for (const quality of qualities) {
+        const encoded = await new Promise((resolve, reject) => canvas.toBlob(
+          (blob) => blob ? resolve(blob) : reject(new Error("Image compression failed.")),
+          "image/webp",
+          quality
+        ));
+        if (encoded.type !== "image/webp") throw new Error("This browser cannot compress reference images to WebP.");
+        if (!best || encoded.size < best.size) best = encoded;
+        if (encoded.size <= MAX_REFERENCE_BYTES) {
+          best = encoded;
+          break;
+        }
+      }
+      if (best && best.size <= MAX_REFERENCE_BYTES) break;
+      scale *= Math.min(0.85, Math.max(0.35, Math.sqrt(MAX_REFERENCE_BYTES / best.size) * 0.92));
     }
     if (!best || best.size > MAX_REFERENCE_BYTES) throw new Error("The compressed image exceeds 10 MB.");
     return new File([best], file3.name.replace(/\.[^.]+$/, "") + ".webp", { type: "image/webp", lastModified: file3.lastModified });
