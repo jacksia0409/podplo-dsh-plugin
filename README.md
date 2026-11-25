@@ -1,4 +1,4 @@
-# PodPlo Plugin v0.1.44
+# PodPlo Plugin v0.1.45
 
 适用于 DeepSeek Harness 的 PodPlo 插件，提供 Skill 库、我的收藏、AI 生图与本地图像工具。
 
@@ -6,8 +6,8 @@
 
 - DNA 加参考图先显示服务端报价，确认后才上传；变价时重新确认，提交后直接进入处理记录。
 - 参考图只上传一次清晰安全源；Eco 生图由服务端派生最长边 128px，图转文和 DNA 提取派生最长边 512px，不再重复按体积压缩。
-- 收藏 Skill、个人 Skill 与 DNA 共用生图预设。DNA 封面完整显示，处理结果可直达对应 DNA。
-- 图转文支持正文回填、文件下载和批量 TXT 打包。处理记录提供删除入口。
+- 收藏 Skill、个人 Skill 与 DNA 可独立编辑并保存下次生效的生图预设，不改变当前生图草稿。DNA 封面完整显示，处理结果可直达对应 DNA。
+- 生图框右上角集中显示批量任务与保存预设；参考图可逐张用 × 移除，也可用扫把清空当前草稿。图转文支持正文回填、文件下载和批量 TXT 打包。
 
 ## 更新与兼容
 
@@ -17,7 +17,7 @@
 - 保留上一版提交结果卡片、20项分页、工具／AI类型筛选，以及我的Skill／DNA四列小卡片和更多菜单。
 
 安装／升级地址：
-`https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.44`
+`https://github.com/jacksia0409/podplo-dsh-plugin#dsh-plugin-v0.1.45`
 
 发行不会自动安装或重启日常 DSH。附件 TGZ 与 ZIP 为同一版本；真实收费与Windows实机不在本轮验收范围。
 
