@@ -136,12 +136,12 @@ function chatGenerationQuotes(value2) {
     if (!object(row) || row.status !== "quoted" || typeof row.operationId !== "string" || !row.operationId || typeof row.approvalId !== "string" || !row.approvalId || !object(row.quote) || !object(row.summary) || typeof row.quote.expiresAt !== "string" || !Number.isFinite(Date.parse(row.quote.expiresAt)) || typeof row.quote.confirmationText !== "string" || !finiteInteger(row.quote.totalCredits) || !finiteInteger(row.quote.outputCount) || !finiteInteger(row.summary.itemCount) || row.summary.totalCredits !== row.quote.totalCredits || row.summary.outputCount !== row.quote.outputCount) return [];
     const items = Array.isArray(row.items) ? row.items.flatMap((item) => {
       if (!object(item) || typeof item.itemId !== "string" || !finiteInteger(item.totalCredits) || !finiteInteger(item.outputCount)) return [];
-      const stage = object(item.stage) && typeof item.stage.label === "string" && finiteInteger(item.stage.order) ? { label: item.stage.label, order: item.stage.order } : void 0;
+      const stage2 = object(item.stage) && typeof item.stage.label === "string" && finiteInteger(item.stage.order) ? { label: item.stage.label, order: item.stage.order } : void 0;
       return [{
         itemId: item.itemId,
         ...typeof item.skillName === "string" ? { skillName: item.skillName } : {},
         ...typeof item.sourceName === "string" ? { sourceName: item.sourceName } : {},
-        ...stage ? { stage } : {},
+        ...stage2 ? { stage: stage2 } : {},
         ...typeof item.modelName === "string" ? { modelName: item.modelName } : {},
         totalCredits: item.totalCredits,
         outputCount: item.outputCount,
@@ -150,14 +150,14 @@ function chatGenerationQuotes(value2) {
     }) : [];
     if (Array.isArray(row.items) && items.length !== row.summary.itemCount) return [];
     const processingPlan = Array.isArray(row.processingPlan) ? row.processingPlan.flatMap((step) => object(step) && typeof step.id === "string" && typeof step.label === "string" ? [{ id: step.id, label: step.label }] : []) : void 0;
-    const stages = Array.isArray(row.stages) ? row.stages.flatMap((stage) => object(stage) && typeof stage.id === "string" && typeof stage.label === "string" && typeof stage.skillSummary === "string" && finiteInteger(stage.aiOutputCount) && finiteInteger(stage.credits) && Array.isArray(stage.models) && stage.models.every((model) => typeof model === "string") && typeof stage.ecoMode === "boolean" ? [{
-      id: stage.id,
-      label: stage.label,
-      skillSummary: stage.skillSummary,
-      aiOutputCount: stage.aiOutputCount,
-      credits: stage.credits,
-      models: stage.models,
-      ecoMode: stage.ecoMode
+    const stages = Array.isArray(row.stages) ? row.stages.flatMap((stage2) => object(stage2) && typeof stage2.id === "string" && typeof stage2.label === "string" && typeof stage2.skillSummary === "string" && finiteInteger(stage2.aiOutputCount) && finiteInteger(stage2.credits) && Array.isArray(stage2.models) && stage2.models.every((model) => typeof model === "string") && typeof stage2.ecoMode === "boolean" ? [{
+      id: stage2.id,
+      label: stage2.label,
+      skillSummary: stage2.skillSummary,
+      aiOutputCount: stage2.aiOutputCount,
+      credits: stage2.credits,
+      models: stage2.models,
+      ecoMode: stage2.ecoMode
     }] : []) : [];
     const finalOutputCount = finiteInteger(row.finalOutputCount) ? row.finalOutputCount : row.summary.outputCount;
     return [{
@@ -274,9 +274,9 @@ function groupedStages(items) {
   const fallback = { id: "generation", label: "AI \u751F\u6210", order: 0 };
   const stages = /* @__PURE__ */ new Map();
   for (const row of items) {
-    const stage = row.stage ?? fallback, current2 = stages.get(stage.id);
+    const stage2 = row.stage ?? fallback, current2 = stages.get(stage2.id);
     if (current2) current2.rows.push(row);
-    else stages.set(stage.id, { stage, rows: [row] });
+    else stages.set(stage2.id, { stage: stage2, rows: [row] });
   }
   return [...stages.values()].sort((a, b) => a.stage.order - b.stage.order);
 }
@@ -343,7 +343,7 @@ function ChatGenerationProgress({ item, archive, busy, onAction }) {
       " \xB7 \u5DF2\u505C\u6B62 ",
       summary.cancelledCount
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "ppd-chat-stage-list", "data-stage-count": stages.length, children: stages.map(({ stage, rows: rows2 }, stageIndex) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("section", { className: "ppd-chat-stage", "data-stage-id": stage.id, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { className: "ppd-chat-stage-list", "data-stage-count": stages.length, children: stages.map(({ stage: stage2, rows: rows2 }, stageIndex) => /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("section", { className: "ppd-chat-stage", "data-stage-id": stage2.id, children: [
       showStageHeadings && /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("header", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("strong", { children: [
           "\u9636\u6BB5 ",
@@ -351,7 +351,7 @@ function ChatGenerationProgress({ item, archive, busy, onAction }) {
           "/",
           stages.length,
           " \xB7 ",
-          stage.label
+          stage2.label
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("span", { children: [
           stageStatus(rows2),
@@ -385,7 +385,7 @@ function ChatGenerationProgress({ item, archive, busy, onAction }) {
           error101 && /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("small", { className: "ppd-chat-progress-error", children: row.statusBlocked ? error101.action : `${error101.title}\u3002${error101.action}` })
         ] }, row.itemId);
       }) })
-    ] }, stage.id)) }),
+    ] }, stage2.id)) }),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(LocalPipeline, { item, archive }),
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("div", { className: "ppd-chat-progress-actions", children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("button", { type: "button", disabled: busy, onClick: () => onAction("generation.status"), children: "\u5237\u65B0\u8FDB\u5EA6" }),
@@ -1157,10 +1157,10 @@ function ArchiveDetail({ task, request, onBack, onDelete, compactIntro = false, 
   const [selected, setSelected] = (0, import_react2.useState)();
   const full = task.files.find((file3) => file3.id === selected);
   const stageArchive = task.archiveFormat === 2 || task.archiveFormat === 3;
-  const stageGroups = stageArchive && task.stageResults?.length ? [...new Map(task.stageResults.map((result) => [result.stage?.id ?? "generation", result.stage ?? { id: "generation", label: "AI \u751F\u6210", order: 0 }])).values()].sort((a, b) => a.order - b.order).map((stage) => ({
-    stage,
-    files: task.files.filter((file3) => (file3.stage?.id ?? "generation") === stage.id),
-    results: task.stageResults.filter((result) => (result.stage?.id ?? "generation") === stage.id)
+  const stageGroups = stageArchive && task.stageResults?.length ? [...new Map(task.stageResults.map((result) => [result.stage?.id ?? "generation", result.stage ?? { id: "generation", label: "AI \u751F\u6210", order: 0 }])).values()].sort((a, b) => a.order - b.order).map((stage2) => ({
+    stage: stage2,
+    files: task.files.filter((file3) => (file3.stage?.id ?? "generation") === stage2.id),
+    results: task.stageResults.filter((result) => (result.stage?.id ?? "generation") === stage2.id)
   })) : [];
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { className: "ppd-archive-detail", "data-archive-detail": task.id, children: [
     compactIntro ? /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-result-back", "aria-label": "\u8FD4\u56DE\u5904\u7406\u8BB0\u5F55", title: "\u8FD4\u56DE\u5904\u7406\u8BB0\u5F55", onClick: onBack, children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveBackArrow, {}) }) : /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("button", { type: "button", className: "ppd-button", onClick: onBack, children: "\u8FD4\u56DE\u4EFB\u52A1\u6587\u4EF6\u5939" }),
@@ -1179,14 +1179,14 @@ function ArchiveDetail({ task, request, onBack, onDelete, compactIntro = false, 
         }) })
       ] }, step.id))
     ] }),
-    stageArchive && stageGroups.length > 0 ? stageGroups.map(({ stage, files, results }, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-result-stage": stage.id, children: [
+    stageArchive && stageGroups.length > 0 ? stageGroups.map(({ stage: stage2, files, results }, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { "data-result-stage": stage2.id, children: [
       /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("h3", { children: [
         "\u9636\u6BB5 ",
         index + 1,
         "/",
         stageGroups.length,
         " \xB7 ",
-        stage.label
+        stage2.label
       ] }),
       !compactIntro && /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("ul", { className: "ppd-archive-stage-results", children: results.map((result) => /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("li", { "data-stage-result": result.status, children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("strong", { children: result.sourceName ?? `\u7B2C ${result.itemIndex + 1} \u9879` }),
@@ -1207,7 +1207,7 @@ function ArchiveDetail({ task, request, onBack, onDelete, compactIntro = false, 
         ] }, file3.id)),
         results.filter((result) => result.status !== "succeeded" && !files.some((file3) => result.fileIds.includes(file3.id))).map((result) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(ArchiveResultPlaceholder, { status: result.status, name: result.sourceName ?? `\u7ED3\u679C ${result.itemIndex + 1}` }, `result:${result.itemIndex}`))
       ] })
-    ] }, stage.id)) : (stageArchive ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
+    ] }, stage2.id)) : (stageArchive ? ["final"] : ["generated", "processed", "reference"]).map((group) => {
       const matches = (file3) => group === "final" ? file3.group === "result" : group === "reference" ? file3.group === "reference" : file3.group === "result" && (file3.variant ?? (file3.assetId ? "generated" : "processed")) === group;
       return /* @__PURE__ */ (0, import_jsx_runtime3.jsxs)("section", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("h3", { children: group === "final" ? "\u6210\u54C1" : group === "generated" ? "\u751F\u6210\u56FE" : group === "processed" ? "\u52A0\u5DE5\u540E\u7684\u6210\u54C1" : "\u53C2\u8003\u56FE" }),
@@ -1640,17 +1640,17 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
                     ]
                   }
                 ),
-                task.quote.stages.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("ol", { "data-podplo-order-stages": true, children: task.quote.stages.map((stage) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("strong", { children: stage.label }),
+                task.quote.stages.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("ol", { "data-podplo-order-stages": true, children: task.quote.stages.map((stage2) => /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("strong", { children: stage2.label }),
                   " \xB7 ",
-                  stage.skillSummary,
+                  stage2.skillSummary,
                   " \xB7 ",
-                  stage.aiOutputCount,
+                  stage2.aiOutputCount,
                   " \u5F20 / ",
-                  stage.credits,
+                  stage2.credits,
                   " \u79EF\u5206",
-                  (stage.models.length > 0 || stage.ecoMode) && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("small", { className: "ppd-chat-secondary", children: [...stage.models, ...stage.ecoMode ? ["Eco"] : []].join(" \xB7 ") })
-                ] }, stage.id)) }),
+                  (stage2.models.length > 0 || stage2.ecoMode) && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("small", { className: "ppd-chat-secondary", children: [...stage2.models, ...stage2.ecoMode ? ["Eco"] : []].join(" \xB7 ") })
+                ] }, stage2.id)) }),
                 !!task.quote.processingPlan?.length && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)("small", { className: "ppd-chat-secondary", "data-podplo-processing-plan": true, children: [
                   "\u540E\u7EED\u672C\u5730\u52A0\u5DE5\uFF1A",
                   task.quote.processingPlan.map((step) => step.label).join(" \u2192 "),
@@ -33005,6 +33005,73 @@ function SkillBrowser({ open, onClose, value: value2, choices, categories, favor
   );
 }
 
+// plugins/podplo-dsh/src/submission-diagnostic.ts
+var stage = external_exports.enum(["reference_upload", "capabilities", "quote", "approval"]);
+var reason = external_exports.enum([
+  "PANEL_UNMOUNTED",
+  "DRAFT_CHANGED",
+  "BUSY",
+  "INVALID_ARGUMENT",
+  "MODEL_CHANGED",
+  "REFERENCE_LIMIT_EXCEEDED",
+  "PRICE_CHANGED",
+  "QUOTE_EXPIRED",
+  "INVALID_TOOL_RESPONSE",
+  "NOT_CONFIGURED",
+  "INSUFFICIENT_CREDITS",
+  "SESSION_CHANGED",
+  "SIGN_IN_REQUIRED",
+  "INSUFFICIENT_SCOPE",
+  "LOCAL_PRICING_UNAVAILABLE",
+  "PRICING_VERSION_CHANGED",
+  "ORDER_PARAMETER_UNAVAILABLE",
+  "ORDINARY_ORDER_BACKEND_UNAVAILABLE",
+  "GENERATION_CAPABILITY_UNAVAILABLE",
+  "UPLOAD_NOT_READY",
+  "LOCAL_FILE_UNAVAILABLE",
+  "MCP_TOOL_REJECTED",
+  "NETWORK_UNAVAILABLE",
+  "MCP_INVALID_TOOL_ARGUMENTS",
+  "ORDER_RESERVATION_UNAVAILABLE",
+  "CONFIRMATION_MISMATCH",
+  "ORDER_QUOTE_CHANGED",
+  "INVALID_QUOTE_RESPONSE",
+  "QUOTE_RESPONSE_MISMATCH",
+  "PODPLO_REQUEST_FAILED",
+  "PLAN_VERSION_CONFLICT",
+  "PLAN_VERSION_OUTDATED",
+  "INTENT_ALREADY_SUBMITTED",
+  "UNKNOWN"
+]);
+var submissionEvent = external_exports.object({
+  stage,
+  status: external_exports.enum(["started", "passed", "failed", "unknown"]),
+  code: reason.optional(),
+  at: external_exports.string().datetime(),
+  planVersion: external_exports.number().int().min(1).max(1e6)
+}).strict();
+var submissionDiagnosticInput = external_exports.object({
+  ownerId: external_exports.string().min(1).max(180),
+  scope: external_exports.string().regex(/^[a-f0-9]{64}$/),
+  intentId: external_exports.union([external_exports.string().uuid(), external_exports.string().regex(/^\d{13}-[0-9a-f]{1,16}$/)]),
+  startedAt: external_exports.string().datetime(),
+  event: submissionEvent
+}).strict();
+function submissionReporter(request, ownerId, scope, intentId, planVersion) {
+  const startedAt = (/* @__PURE__ */ new Date()).toISOString();
+  let pending = Promise.resolve();
+  return (stage2, status, cause) => {
+    if (!scope || !ownerId) return;
+    const raw = typeof cause === "object" && cause !== null && "code" in cause ? cause.code : cause;
+    const parsed = reason.safeParse(raw);
+    const event = { stage: stage2, status, at: (/* @__PURE__ */ new Date()).toISOString(), planVersion };
+    if (status === "failed" || status === "unknown") event.code = parsed.success ? parsed.data : "UNKNOWN";
+    pending = pending.then(async () => {
+      await request("archive.submissionDiagnostic", { ownerId, scope, intentId, startedAt, event });
+    }).catch(() => void 0);
+  };
+}
+
 // plugins/podplo-dsh/src/generation-panel.tsx
 var import_jsx_runtime7 = require("react/jsx-runtime");
 var imageTypes = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
@@ -33232,7 +33299,7 @@ var normalizedModelSelection = (caps, selected, current2, dnaDefaults = false) =
     transparent: !!selected && !!transparentControl(properties, selected) && current2.transparent
   };
 };
-function GenerationPanel({ request, onChanged, onSubmission, onVerification, onOperationId, onSelectionConsumed, nativeSessionId, accountKey, placement = "inline", selection, revealSequence = 0 }) {
+function GenerationPanel({ request, onChanged, onSubmission, onVerification, onOperationId, onSelectionConsumed, nativeSessionId, accountKey, diagnosticScope, placement = "inline", selection, revealSequence = 0 }) {
   const [capabilities, setCapabilities] = (0, import_react8.useState)();
   const [skills, setSkills] = (0, import_react8.useState)([]);
   const [skillId, setSkillId] = (0, import_react8.useState)("");
@@ -34328,7 +34395,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
     onChanged?.();
   }
-  async function flushReferenceUploads() {
+  async function flushReferenceUploads(report) {
     const expectedOwner = ownerId.current;
     const expectedRevision = cacheRevision.current;
     const expectedIntent = currentIntent.current;
@@ -34364,14 +34431,15 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         generationBootstrapCache.updateReferenceUpload(expectedOwner, sessionId, row.id, { status: "uploading", message: void 0 }, expectedRevision);
         if (current2() && mounted.current) setUploadPreviews(generationBootstrapCache.readReferenceUploads(expectedOwner, sessionId));
         try {
-          if (!file3) throw new Error("\u672C\u5730\u56FE\u7247\u5DF2\u5931\u6548\uFF0C\u8BF7\u79FB\u9664\u540E\u91CD\u65B0\u9009\u62E9\u3002");
+          if (!file3) throw Object.assign(new Error("\u672C\u5730\u56FE\u7247\u5DF2\u5931\u6548\uFF0C\u8BF7\u79FB\u9664\u540E\u91CD\u65B0\u9009\u62E9\u3002"), { code: "LOCAL_FILE_UNAVAILABLE" });
           const { data } = await request("assets.upload", { file: file3 });
           if (!current2()) return;
-          if (!data?.id || data.status !== "ready") throw new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u91CD\u8BD5\u3002");
+          if (!data?.id || data.status !== "ready") throw Object.assign(new Error("\u4E91\u7AEF\u5C1A\u672A\u5C31\u7EEA\uFF0C\u8BF7\u91CD\u8BD5\u3002"), { code: "UPLOAD_NOT_READY" });
           results[index] = data;
           generationBootstrapCache.rememberReferenceUploadAsset(expectedOwner, sessionId, row.id, data, expectedRevision);
           generationBootstrapCache.updateReferenceUpload(expectedOwner, sessionId, row.id, { status: "queued", message: "\u5DF2\u4E0A\u4F20\uFF0C\u7B49\u5F85\u5176\u4F59\u56FE\u7247" }, expectedRevision);
         } catch (cause) {
+          report?.("reference_upload", "failed", cause);
           if (current2()) generationBootstrapCache.updateReferenceUpload(
             expectedOwner,
             sessionId,
@@ -34436,12 +34504,18 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     if (Number.isFinite(maxRefs) && effectiveGenerationReferences.length > maxRefs) return `\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`;
     return "";
   }
-  async function prepare(referenceOverride) {
-    if (preparing.current || busy) return void 0;
+  async function prepare(preparedReferences, report) {
+    let stage2 = "capabilities";
+    report(stage2, "started");
+    if (preparing.current || busy) {
+      report(stage2, "failed", "BUSY");
+      return;
+    }
     const problem = validationError();
     if (problem) {
+      report(stage2, "failed", "INVALID_ARGUMENT");
       setError(problem);
-      return void 0;
+      return;
     }
     const sequence = ++prepareSequence.current;
     const expectedOwner = ownerId.current;
@@ -34451,6 +34525,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const expectedContext = requestContext.current;
     const sameContext = () => generationBootstrapCache.isCurrent(expectedRevision) && sequence === prepareSequence.current && ownerId.current === expectedOwner && requestContext.current.request === expectedContext.request && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && requestContext.current.accountKey === expectedContext.accountKey;
     const current2 = () => sameContext() && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan;
+    const stillPreparing = () => {
+      if (current2()) return true;
+      report(stage2, "failed", mounted.current ? "DRAFT_CHANGED" : "PANEL_UNMOUNTED");
+      return false;
+    };
     preparing.current = true;
     setBusy("prepare");
     setError("");
@@ -34460,7 +34539,6 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       const chosen = selectedSkill;
       const chosenDna = selectedDna;
       const selectedValues = selections.current;
-      const preparedReferences = referenceOverride ?? references;
       const intendedArgs = argsForCapabilities(capabilities, selectedModel, {
         ...selectedValues,
         prompt,
@@ -34473,11 +34551,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         chosen ? fetchSkillDetail(chosen) : Promise.resolve(void 0),
         chosenDna?.dnaId ? fetchDnaChoice(chosenDna.dnaId) : Promise.resolve(void 0)
       ]);
-      if (!current2()) return;
+      if (!stillPreparing()) return;
       const latestCaps = capsResult.data;
-      if (latestCaps?.available !== true) throw new Error("\u5F53\u524D PodPlo \u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u751F\u56FE\u62A5\u4EF7\u80FD\u529B\u3002");
+      if (latestCaps?.available !== true) throw Object.assign(new Error("\u5F53\u524D PodPlo \u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u751F\u56FE\u62A5\u4EF7\u80FD\u529B\u3002"), { code: "GENERATION_CAPABILITY_UNAVAILABLE" });
       const latestModel = capabilityModels(latestCaps).find((row) => modelId(row) === selectedValues.model);
-      if (!latestModel || latestModel.availableForCurrentPlan === false) throw new Error("\u6A21\u578B\u6743\u9650\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u6A21\u578B\u540E\u518D\u62A5\u4EF7\u3002");
+      if (!latestModel || latestModel.availableForCurrentPlan === false) throw Object.assign(new Error("\u6A21\u578B\u6743\u9650\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u6A21\u578B\u540E\u518D\u62A5\u4EF7\u3002"), { code: "MODEL_CHANGED" });
       const latestValues = {
         prompt,
         model: selectedValues.model,
@@ -34496,13 +34574,13 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         transparent: selectedValues.transparent
       };
       const latestProperties = latestCaps.quoteInputSchema?.properties ?? {};
-      if (!skillId && !chosenDna && latestProperties.prompt && !latestValues.prompt.trim()) throw new Error("\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002");
-      if (chosenDna && latestValues.references.length === 0) throw new Error("\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002");
-      if (latestProperties.ratio && stringList(latestModel.ratios).length && !stringList(latestModel.ratios).includes(latestValues.ratio)) throw new Error("\u6A21\u578B\u652F\u6301\u7684\u6BD4\u4F8B\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002");
+      if (!skillId && !chosenDna && latestProperties.prompt && !latestValues.prompt.trim()) throw Object.assign(new Error("\u8BF7\u8F93\u5165\u751F\u56FE\u63CF\u8FF0\u3002"), { code: "INVALID_ARGUMENT" });
+      if (chosenDna && latestValues.references.length === 0) throw Object.assign(new Error("\u4F7F\u7528 DNA \u751F\u56FE\u65F6\uFF0C\u8BF7\u5148\u4E0A\u4F20\u6216\u9009\u62E9\u4E00\u5F20\u65B0\u56FE\u3002"), { code: "INVALID_ARGUMENT" });
+      if (latestProperties.ratio && stringList(latestModel.ratios).length && !stringList(latestModel.ratios).includes(latestValues.ratio)) throw Object.assign(new Error("\u6A21\u578B\u652F\u6301\u7684\u6BD4\u4F8B\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002"), { code: "MODEL_CHANGED" });
       const modelReferenceLimit = latestValues.booleans.ecoMode === true && Number.isInteger(Number(latestModel.ecoMaximumReferenceImages)) ? Number(latestModel.ecoMaximumReferenceImages) : Number(latestModel.maximumReferenceImages);
       const schemaReferenceLimit = Number(latestProperties.referenceAssetIds?.maxItems);
       const maxRefs = Math.min(Number.isFinite(modelReferenceLimit) ? modelReferenceLimit : Infinity, Number.isFinite(schemaReferenceLimit) ? schemaReferenceLimit : Infinity);
-      if (Number.isFinite(maxRefs) && preparedReferences.length > maxRefs) throw new Error(`\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`);
+      if (Number.isFinite(maxRefs) && preparedReferences.length > maxRefs) throw Object.assign(new Error(`\u53C2\u8003\u56FE\u6700\u591A ${maxRefs} \u5F20\u3002`), { code: "REFERENCE_LIMIT_EXCEEDED" });
       setCapabilities(latestCaps);
       if (chosen && latestSkill) setSkills((rows2) => rows2.map((row) => row.id === chosen.id ? latestSkill : row));
       if (chosenDna && latestDna) setSelectedDna(latestDna);
@@ -34512,18 +34590,22 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       setThinkingLevel(latestValues.thinkingLevel);
       setBooleans(latestValues.booleans);
       if (ownerId.current) generationBootstrapCache.update(ownerId.current, { capabilities: latestCaps });
-      if (!current2()) return;
+      if (!stillPreparing()) return;
       const verifiedArgs = argsForCapabilities(latestCaps, latestModel, latestValues);
       if (latestDna?.dnaId) verifiedArgs.dnaId = latestDna.dnaId;
       if (JSON.stringify(intendedArgs) !== JSON.stringify(verifiedArgs) || chosen && latestSkill && (chosen.generationId !== latestSkill.generationId || chosen.version !== latestSkill.version)) {
+        report(stage2, "failed", "MODEL_CHANGED");
         setPriceVerification("\u6A21\u578B\u53C2\u6570\u6216 Skill \u7248\u672C\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u6838\u5BF9\u540E\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002");
         return;
       }
+      report(stage2, "passed");
+      stage2 = "quote";
+      report(stage2, "started");
       const prepareRequest = async () => {
         const item = { ...!latestDna && latestSkill?.generationId ? { skillId: latestSkill.generationId } : {}, args: verifiedArgs };
         const { data } = await request("generation.prepare", { intentId: expectedIntent, planVersion: expectedPlan, items: [item], taskName: latestValues.prompt.trim().slice(0, 40) || latestDna?.title || "\u751F\u56FE\u4EFB\u52A1", processingPlan: [] });
         const exact = exactOperation(data, expectedIntent, expectedPlan);
-        if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u62A5\u4EF7\u4E0E\u5F53\u524D\u610F\u56FE\u4E0D\u5339\u914D\u3002");
+        if (!exact) throw Object.assign(new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u62A5\u4EF7\u4E0E\u5F53\u524D\u610F\u56FE\u4E0D\u5339\u914D\u3002"), { code: "QUOTE_RESPONSE_MISMATCH" });
         return exact;
       };
       let quote;
@@ -34548,13 +34630,15 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         });
         quote = await generationBootstrapCache.prepare(expectedOwner, expectedContext.nativeSessionId, expectedIntent, expectedPlan, prepareRequest);
       } else quote = await prepareRequest();
-      if (!current2()) return;
+      if (!stillPreparing()) return;
       setOperation(quote);
       setApprovalAttempted(false);
       onChanged?.();
       setNotice("\u670D\u52A1\u7AEF\u79EF\u5206\u5DF2\u6838\u9A8C\u3002");
+      report(stage2, "passed");
       return quote;
     } catch (error102) {
+      report(stage2, "failed", error102);
       const message2 = errorText2(error102);
       if (current2() && expectedContext.nativeSessionId) generationBootstrapCache.rememberComposerFeedback(
         expectedOwner,
@@ -34569,12 +34653,20 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
     return void 0;
   }
-  async function approve(candidate, navigate = true, existingTransition) {
+  async function approve(candidate, navigate = true, existingTransition, logAttempt) {
     const approvedOperation = candidate ?? operation;
-    if (!approvedOperation || approvedOperation.status !== "quoted" || approvalAttempted || busy || approving.current) return;
-    if (!generationBootstrapCache.isCurrent(cacheRevision.current) || approvedOperation.intentId !== currentIntent.current || approvedOperation.planVersion !== currentPlanVersion.current) return;
+    const report = logAttempt ?? submissionReporter(request, ownerId.current, diagnosticScope, intentId, planVersion);
+    if (!approvedOperation || approvedOperation.status !== "quoted" || approvalAttempted || busy || approving.current) {
+      report("approval", "failed", "BUSY");
+      return;
+    }
+    if (!generationBootstrapCache.isCurrent(cacheRevision.current) || approvedOperation.intentId !== currentIntent.current || approvedOperation.planVersion !== currentPlanVersion.current) {
+      report("approval", "failed", "DRAFT_CHANGED");
+      return;
+    }
     const expiresAt = Date.parse(approvedOperation.quote.expiresAt);
     if (!Number.isFinite(expiresAt) || expiresAt <= Date.now()) {
+      report("approval", "failed", "QUOTE_EXPIRED");
       invalidate();
       return;
     }
@@ -34597,12 +34689,14 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       taskKind: "generation"
     });
     try {
+      report("approval", "started");
       const approval = request("generation.approve", { operationId: expectedOperation.operationId, approvalId: expectedOperation.approvalId });
       if (navigate) void request("panel.navigate", { section: "results" }).catch(() => void 0);
       const { data } = await approval;
       const exact = exactOperation(data, expectedOperation.intentId, expectedOperation.planVersion);
       if (!exact) throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u6279\u6B21\u4E0E\u5F53\u524D\u62A5\u4EF7\u4E0D\u5339\u914D\u3002");
       if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, exact);
+      report("approval", "passed");
       finishResultSubmission(transition);
       const latestDraft = expectedContext.nativeSessionId ? generationBootstrapCache.readDraft(expectedOwner, expectedContext.nativeSessionId) : void 0;
       if (!expectedContext.nativeSessionId || latestDraft?.intentId === expectedOperation.intentId && latestDraft.planVersion === expectedOperation.planVersion) resetComposer();
@@ -34612,6 +34706,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       onSubmission?.(exact);
     } catch (error102) {
       const failure = generationApprovalFailure(error102);
+      report("approval", failure.outcome === "not_submitted" ? "failed" : "unknown", error102);
       failResultSubmission(transition, failure.message);
       const sameDraft = generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && currentIntent.current === expectedOperation.intentId && currentPlanVersion.current === expectedOperation.planVersion;
       const stored = expectedContext.nativeSessionId ? generationBootstrapCache.readDraft(expectedOwner, expectedContext.nativeSessionId) : void 0;
@@ -34730,8 +34825,15 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const expectedIntent = currentIntent.current;
     const expectedPlan = currentPlanVersion.current;
     const expectedLocalQuote = localQuote;
-    if (selectedDna && !expectedLocalQuote) return;
-    if (validationError()) return;
+    const report = submissionReporter(request, expectedOwner, diagnosticScope, expectedIntent, expectedPlan);
+    if (selectedDna && !expectedLocalQuote) {
+      report("quote", "failed", "LOCAL_PRICING_UNAVAILABLE");
+      return;
+    }
+    if (validationError()) {
+      report("capabilities", "failed", "INVALID_ARGUMENT");
+      return;
+    }
     if (expectedContext.nativeSessionId) generationBootstrapCache.clearComposerFeedback(expectedOwner, expectedContext.nativeSessionId, expectedIntent, expectedPlan);
     const transition = startResultSubmission(expectedOwner, {
       id: `pending:${expectedIntent}:${expectedPlan}`,
@@ -34741,20 +34843,35 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     });
     void request("panel.navigate", { section: "results" }).catch(() => void 0);
     try {
-      const uploadedReferences = await flushReferenceUploads();
+      const hasUploads = generationBootstrapCache.readReferenceUploads(expectedOwner, nativeSessionId ?? "podplo-manual").length > 0;
+      if (hasUploads) report("reference_upload", "started");
+      let uploadFailed = false;
+      const uploadedReferences = await flushReferenceUploads((stage2, status, cause) => {
+        uploadFailed = true;
+        report(stage2, status, cause);
+      });
       if (!uploadedReferences) {
+        if (!uploadFailed) report(
+          "reference_upload",
+          "failed",
+          generationBootstrapCache.isCurrent(expectedRevision) && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan ? "UNKNOWN" : "DRAFT_CHANGED"
+        );
         failResultSubmission(transition, "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
         void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         return;
       }
-      const verified = await prepare(uploadedReferences);
+      if (hasUploads) report("reference_upload", "passed");
+      const verified = await prepare(uploadedReferences, report);
       if (!verified) {
         failResultSubmission(transition, "\u751F\u56FE\u6838\u4EF7\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
         void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         return;
       }
       retargetResultSubmission(transition, verified.operationId);
-      if (!generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan || verified.intentId !== expectedIntent || verified.planVersion !== expectedPlan) return;
+      if (!generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan || verified.intentId !== expectedIntent || verified.planVersion !== expectedPlan) {
+        report("approval", "failed", "DRAFT_CHANGED");
+        return;
+      }
       if (!expectedLocalQuote || verified.quote.totalCredits !== expectedLocalQuote.totalCredits || verified.quote.outputCount !== expectedLocalQuote.outputCount) {
         void request("generation.cancel", { operationId: verified.operationId }).catch(() => void 0);
         setOperation(void 0);
@@ -34766,11 +34883,12 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           { intentId: expectedIntent, planVersion: currentPlanVersion.current, priceVerification: pricingRuleMismatch },
           expectedRevision
         );
+        report("quote", "failed", "PRICE_CHANGED");
         failResultSubmission(transition, pricingRuleMismatch);
         void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         return;
       }
-      await approve(verified, false, transition);
+      await approve(verified, false, transition, report);
     } catch (cause) {
       failResultSubmission(transition, errorText2(cause));
       void request("panel.navigate", { section: "generation" }).catch(() => void 0);
@@ -39711,7 +39829,7 @@ var import_react16 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.46",
+  version: "0.1.47",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -42285,9 +42403,9 @@ function PodploPanel({ section, request, composerRequest, onUse, onNavigate, nat
       /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(AccountBar, { snapshot, busy, onAccountAction: (action) => void accountAction(action), onRefresh: () => void refresh(), request: stableRequest }),
       error101 && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { className: "ppd-alert", role: "alert", children: error101 }),
       snapshot && section === "generation" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-history-shortcut", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", "data-generation-history-shortcut": true, onClick: () => void stableRequest("panel.navigate", { section: "results" }), children: "\u5904\u7406\u8BB0\u5F55" }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-content", children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: !error101, error: error101, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(LocalResults, { request: stableRequest, uiLease, ownerId: accountKey }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CollectionsPanel, { request: stableRequest, ownerId: accountKey, onUse: selectForComposer, onEditPreset: setPresetTarget, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, uiLease }, accountUiScope) })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-content", children: !snapshot ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(Status, { loading: !error101, error: error101, children: null }) : section === "gallery" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GalleryPanel, { request: stableRequest, onUse: selectForComposer, uiLease }, accountUiScope) : section === "skills" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkillsPanel, { request: stableRequest, onUse: selectForComposer, onChanged: () => void loadSnapshot(), uiLease }, accountUiScope) : section === "generation" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, diagnosticScope: snapshot.account.uiScope, placement: "inline", selection: composerSelection }, `${accountUiScope}:podplo-manual`) : section === "toolbox" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ToolboxPanel, { request: stableRequest, onUse: nativeSessionId ? stableOnUse : void 0, toolGroups: snapshot.toolGroups ?? [] }, accountUiScope) : section === "results" ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(LocalResults, { request: stableRequest, uiLease, ownerId: accountKey }, accountUiScope) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(CollectionsPanel, { request: stableRequest, ownerId: accountKey, onUse: selectForComposer, onEditPreset: setPresetTarget, onChanged: () => void loadSnapshot(), refreshKey: pendingCount, uiLease }, accountUiScope) })
     ] }),
-    snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) }),
+    snapshot && composerSection && section !== "generation" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPanel, { request: stableComposerRequest, onChanged: () => void loadSnapshot(), onSelectionConsumed: selectionConsumed, nativeSessionId: "podplo-manual", accountKey, diagnosticScope: snapshot.account.uiScope, placement: "floating", selection: composerSelection, revealSequence: composerReveal }, `${accountUiScope}:podplo-manual`) }),
     snapshot && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(GenerationPresetDialog, { request: stableComposerRequest, ownerId: accountKey, target: presetTarget, onClose: () => setPresetTarget(void 0) })
   ] });
 }

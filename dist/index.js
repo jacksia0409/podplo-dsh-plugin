@@ -37720,13 +37720,13 @@ var OAuthSession = class {
       this.refreshing = void 0;
     });
   }
-  async invalidate(reason, expectedNamespace) {
+  async invalidate(reason2, expectedNamespace) {
     if (!this.grant || this.grant.namespace !== expectedNamespace) return false;
     this.revision++;
     this.attempt?.cancel();
     this.grant = void 0;
     await this.vault.clear();
-    this.onInvalidated?.(reason);
+    this.onInvalidated?.(reason2);
     return true;
   }
   async logout() {
@@ -38435,7 +38435,7 @@ var OnlineService = class extends EventEmitter {
     this.uploadPollIntervalMs = timing.uploadPollIntervalMs ?? 2e3;
     this.uploadPollAttempts = timing.uploadPollAttempts ?? 30;
     if (!Number.isFinite(this.contextHeartbeatMs) || this.contextHeartbeatMs <= 0 || !Number.isFinite(this.contextLeaseMs) || this.contextLeaseMs <= 0) throw new Error("\u5728\u7EBF\u6743\u76CA\u6821\u9A8C\u95F4\u9694\u5FC5\u987B\u4E3A\u6B63\u6570");
-    this.auth = new OAuthSession(http, new GrantVault(join(directory, "oauth.enc"), cipher), (reason) => this.authorizationInvalidated(reason));
+    this.auth = new OAuthSession(http, new GrantVault(join(directory, "oauth.enc"), cipher), (reason2) => this.authorizationInvalidated(reason2));
     this.textConfigVault = new TextConfigVault(join(directory, "text-config.enc"), cipher);
     this.mcp = new PodploMcp(http, this.auth);
     this.publicDirectory = new PublicSkillDirectory(join(directory, "public-skills-v1.json"), http, () => this.publish());
@@ -38539,7 +38539,7 @@ var OnlineService = class extends EventEmitter {
     for (const skill of incoming) rows.set(skill.slug ? `slug:${skill.slug}` : `id:${skill.id}`, skill);
     return [...rows.values()];
   }
-  authorizationInvalidated(reason) {
+  authorizationInvalidated(reason2) {
     this.revision++;
     this.stopContextHeartbeat();
     this.syncing = void 0;
@@ -38559,7 +38559,7 @@ var OnlineService = class extends EventEmitter {
       models: [],
       balance: void 0,
       lastSync: void 0,
-      error: reason === "SESSION_REPLACED" ? "\u8D26\u53F7\u5DF2\u5728\u5176\u4ED6\u8BBE\u5907\u767B\u5F55\uFF0C\u5F53\u524D\u8BBE\u5907\u5DF2\u9000\u51FA\uFF0C\u8BF7\u91CD\u65B0\u767B\u5F55" : "\u4E3B\u7AD9\u6388\u6743\u5DF2\u5931\u6548\uFF0C\u53EF\u80FD\u5DF2\u5728\u5176\u4ED6\u8BBE\u5907\u91CD\u65B0\u767B\u5F55\uFF0C\u8BF7\u91CD\u65B0\u767B\u5F55"
+      error: reason2 === "SESSION_REPLACED" ? "\u8D26\u53F7\u5DF2\u5728\u5176\u4ED6\u8BBE\u5907\u767B\u5F55\uFF0C\u5F53\u524D\u8BBE\u5907\u5DF2\u9000\u51FA\uFF0C\u8BF7\u91CD\u65B0\u767B\u5F55" : "\u4E3B\u7AD9\u6388\u6743\u5DF2\u5931\u6548\uFF0C\u53EF\u80FD\u5DF2\u5728\u5176\u4ED6\u8BBE\u5907\u91CD\u65B0\u767B\u5F55\uFF0C\u8BF7\u91CD\u65B0\u767B\u5F55"
     };
     this.publish();
   }
@@ -58963,10 +58963,10 @@ function normalizeNativeTaskSourcePlan(raw) {
   }
   const prior = /* @__PURE__ */ new Set();
   const stages = task.stages.map((rawStage, index) => {
-    const stage = object4(rawStage, `task.stages[${index}]`);
-    const id2 = text2(stage.id, `task.stages[${index}].id`, 40, identifier);
+    const stage2 = object4(rawStage, `task.stages[${index}]`);
+    const id2 = text2(stage2.id, `task.stages[${index}].id`, 40, identifier);
     if (prior.has(id2)) fail3(`task.stages[${index}].id`, "\u91CD\u590D");
-    const source = isNativeTaskCompositeSource(stage.source) ? protocolVersion === 2 ? normalizeCompositeSource(stage.source, `task.stages[${index}].source`) : fail3(`task.stages[${index}].source`, "\u7EC4\u5408\u6765\u6E90\u9700\u8981 protocolVersion: 2") : normalizePool(stage.source, `task.stages[${index}].source`, true);
+    const source = isNativeTaskCompositeSource(stage2.source) ? protocolVersion === 2 ? normalizeCompositeSource(stage2.source, `task.stages[${index}].source`) : fail3(`task.stages[${index}].source`, "\u7EC4\u5408\u6765\u6E90\u9700\u8981 protocolVersion: 2") : normalizePool(stage2.source, `task.stages[${index}].source`, true);
     const references = isNativeTaskCompositeSource(source) ? source.inputs.flatMap((input) => input.fromStage ? [input.fromStage] : input.pool && Object.hasOwn(sources, input.pool) && sources[input.pool]?.fromStage ? [sources[input.pool].fromStage] : []) : source.fromStage ? [source.fromStage] : [];
     if (isNativeTaskCompositeSource(source)) {
       for (const [inputIndex, input] of source.inputs.entries()) if (input.pool && !Object.hasOwn(sources, input.pool))
@@ -58977,7 +58977,7 @@ function normalizeNativeTaskSourcePlan(raw) {
     return { id: id2, source };
   });
   if (protocolVersion === 2) {
-    const used = new Set(stages.flatMap((stage) => isNativeTaskCompositeSource(stage.source) ? stage.source.inputs.flatMap((input) => input.pool ? [input.pool] : []) : []));
+    const used = new Set(stages.flatMap((stage2) => isNativeTaskCompositeSource(stage2.source) ? stage2.source.inputs.flatMap((input) => input.pool ? [input.pool] : []) : []));
     const unused = Object.keys(sources).find((key) => !used.has(key));
     if (unused !== void 0) fail3(`task.sources.${unused}`, "\u6765\u6E90\u6C60\u5DF2\u58F0\u660E\u4F46\u672A\u88AB\u4EFB\u4F55\u9636\u6BB5\u5F15\u7528");
   }
@@ -59524,11 +59524,11 @@ function expandNativeTaskInput(raw) {
   const rawStages = raw.stages;
   const ids2 = /* @__PURE__ */ new Set();
   const stages = rawStages.map((value2, index) => {
-    const stage = record3(value2), id2 = text3(stage.id, `stages[${index}].id`, 40);
+    const stage2 = record3(value2), id2 = text3(stage2.id, `stages[${index}].id`, 40);
     if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || ids2.has(id2)) fail4("INVALID_ARGUMENT", "\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
-    rejectUnknownField(stage, /* @__PURE__ */ new Set(["id", "name", "source", "grouping", "skill", "generation", "local"]), `stages[${index}]`);
+    rejectUnknownField(stage2, /* @__PURE__ */ new Set(["id", "name", "source", "grouping", "skill", "generation", "local"]), `stages[${index}]`);
     ids2.add(id2);
-    const source = record3(stage.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
+    const source = record3(stage2.source), folderPath = source.folderPath, fromStage = source.fromStage, referenceIds = source.referenceIds;
     const sourceChoices = [typeof folderPath === "string", typeof fromStage === "string", Array.isArray(referenceIds)].filter(Boolean).length;
     rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "fromStage", "referenceIds", "scope", "indexes", "expectedImageCount"]), `stages[${index}].source`);
     if (sourceChoices !== 1 || Array.isArray(referenceIds) && (!referenceIds.length || referenceIds.length > 100 || new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3 || id3.length > 240 || /[/\\\x00\r\n]/u.test(id3))))
@@ -59537,13 +59537,13 @@ function expandNativeTaskInput(raw) {
     if (!["all", "first", "indexes"].includes(String(scope))) fail4("INVALID_ARGUMENT", "\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
     if (scope === "indexes" && (!Array.isArray(source.indexes) || !source.indexes.length) || scope !== "indexes" && source.indexes !== void 0) fail4("INVALID_ARGUMENT", "indexes \u53EA\u7528\u4E8E indexes \u8303\u56F4\u3002");
     const imageIndexes = scope === "first" ? [0] : scope === "indexes" ? source.indexes : void 0;
-    const skill = record3(stage.skill);
+    const skill = record3(stage2.skill);
     rejectUnknownField(skill, /* @__PURE__ */ new Set(["query", "source", "favoriteFolder", "strategy"]), `stages[${index}].skill`);
     const strategy = String(skill.strategy);
     if (!["single", "random-per-image", "random-per-image-reuse", "random-shared"].includes(strategy)) fail4("INVALID_ARGUMENT", "Skill \u5206\u914D\u7B56\u7565\u65E0\u6548\u3002");
-    const generation = stage.generation === void 0 ? {} : record3(stage.generation);
+    const generation = stage2.generation === void 0 ? {} : record3(stage2.generation);
     rejectUnknownField(generation, generationFieldSet, `stages[${index}].generation`);
-    const local = stage.local === void 0 ? void 0 : record3(stage.local);
+    const local = stage2.local === void 0 ? void 0 : record3(stage2.local);
     let processingPresetPath;
     const processingPlan = [];
     if (local) {
@@ -59578,10 +59578,10 @@ function expandNativeTaskInput(raw) {
     }
     return {
       id: id2,
-      ...stage.name === void 0 ? {} : { name: text3(stage.name, "stage.name", 80) },
+      ...stage2.name === void 0 ? {} : { name: text3(stage2.name, "stage.name", 80) },
       source: { ...typeof folderPath === "string" ? { folderPath: text3(folderPath, "source.folderPath", 4096) } : Array.isArray(referenceIds) ? { referenceAssetIds: referenceIds } : { stageId: text3(fromStage, "source.fromStage", 40) }, ...imageIndexes ? { imageIndexes } : {} },
       ...source.expectedImageCount === void 0 ? {} : { expectedImageCount: source.expectedImageCount },
-      ...stage.grouping === void 0 ? {} : { imageGrouping: parseImageGrouping(stage.grouping) },
+      ...stage2.grouping === void 0 ? {} : { imageGrouping: parseImageGrouping(stage2.grouping) },
       skillQuery: text3(skill.query, "skill.query", 160),
       skillStrategy: strategy,
       ...skill.source === void 0 ? {} : { skillSource: skill.source },
@@ -59771,7 +59771,7 @@ async function prepareWorkflowBatch(raw, deps) {
     fail4("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5\u65E0\u6548\u3002");
   const stageIds = /* @__PURE__ */ new Set();
   const parsed = rawStages.map((value2, index) => {
-    const stage = record3(value2), id2 = text3(stage.id, `workflow.stages[${index}].id`, 40);
+    const stage2 = record3(value2), id2 = text3(stage2.id, `workflow.stages[${index}].id`, 40);
     if (!/^[A-Za-z0-9_-]{1,40}$/u.test(id2) || stageIds.has(id2)) fail4("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     stageIds.add(id2);
     const workflowStageFields = /* @__PURE__ */ new Set([
@@ -59788,9 +59788,9 @@ async function prepareWorkflowBatch(raw, deps) {
       "processingPlan",
       ...generationFieldNames
     ]);
-    rejectUnknownField(stage, workflowStageFields, `workflow.stages[${index}]`);
-    const name2 = stage.name === void 0 ? id2 : text3(stage.name, `workflow.stages[${index}].name`, 80);
-    const source = record3(stage.source);
+    rejectUnknownField(stage2, workflowStageFields, `workflow.stages[${index}]`);
+    const name2 = stage2.name === void 0 ? id2 : text3(stage2.name, `workflow.stages[${index}].name`, 80);
+    const source = record3(stage2.source);
     rejectUnknownField(source, /* @__PURE__ */ new Set(["folderPath", "referenceAssetIds", "stageId", "imageIndexes"]), `workflow.stages[${index}].source`);
     const folderPath = source.folderPath === void 0 ? void 0 : text3(source.folderPath, `workflow.stages[${index}].source.folderPath`, 4096);
     const referenceAssetIds = source.referenceAssetIds;
@@ -59803,42 +59803,42 @@ async function prepareWorkflowBatch(raw, deps) {
       if (!Array.isArray(source.imageIndexes) || !source.imageIndexes.length || source.imageIndexes.length > 100 || new Set(source.imageIndexes).size !== source.imageIndexes.length || source.imageIndexes.some((value3) => !Number.isInteger(value3) || value3 < 0 || value3 > 99)) fail4("INVALID_ARGUMENT", "\u5DE5\u4F5C\u6D41\u56FE\u7247\u8303\u56F4\u65E0\u6548\u3002");
       imageIndexes = source.imageIndexes;
     }
-    const { id: _id, name: _name, source: _source, ...generationFields } = stage;
+    const { id: _id, name: _name, source: _source, ...generationFields } = stage2;
     const parsedGeneration = parseInput({ ...shared, ...generationFields, ...folderPath ? { folderPath } : referenceAssetIds ? { referenceAssetIds } : { referenceAssetIds: ["__deferred__"] } }, `workflow.stages[${index}]`);
     const { folderPath: _folderPath, referenceAssetIds: _referenceAssetIds, imageIndexes: _imageIndexes, ...generation } = parsedGeneration;
     return { id: id2, name: name2, folderPath, referenceAssetIds, sourceStageId, imageIndexes, generation };
   });
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
-  for (const stage of parsed) {
-    if (stage.folderPath && !deps.isFolderAuthorized(stage.folderPath))
+  for (const stage2 of parsed) {
+    if (stage2.folderPath && !deps.isFolderAuthorized(stage2.folderPath))
       fail4("LOCAL_FOLDER_NOT_AUTHORIZED", "\u8BF7\u5728\u62A5\u4EF7\u524D\u660E\u786E\u5DE5\u4F5C\u6D41\u4E2D\u7684\u6BCF\u4E2A\u672C\u5730\u56FE\u7247\u6587\u4EF6\u5939\u3002");
-    await presetProcessing(stage.generation, deps);
+    await presetProcessing(stage2.generation, deps);
     await assertOwner(deps, ownerId, namespace);
   }
-  const referencedStages = new Set(parsed.flatMap((stage) => stage.sourceStageId ? [stage.sourceStageId] : []));
+  const referencedStages = new Set(parsed.flatMap((stage2) => stage2.sourceStageId ? [stage2.sourceStageId] : []));
   const items = [], steps = [], stages = /* @__PURE__ */ new Map();
   const names = [];
-  for (const [stageIndex, stage] of parsed.entries()) {
+  for (const [stageIndex, stage2] of parsed.entries()) {
     let parent;
     let selectedParentPositions = [];
     let child;
-    if (stage.folderPath || stage.referenceAssetIds) {
+    if (stage2.folderPath || stage2.referenceAssetIds) {
       child = await prepareNativeSkillBatch({
         ...shared,
-        ...stage.generation,
-        ...stage.folderPath ? { folderPath: stage.folderPath } : { referenceAssetIds: stage.referenceAssetIds },
-        ...stage.imageIndexes ? { imageIndexes: stage.imageIndexes, expectedImageCount: stage.generation.expectedImageCount ?? stage.imageIndexes.length } : {}
+        ...stage2.generation,
+        ...stage2.folderPath ? { folderPath: stage2.folderPath } : { referenceAssetIds: stage2.referenceAssetIds },
+        ...stage2.imageIndexes ? { imageIndexes: stage2.imageIndexes, expectedImageCount: stage2.generation.expectedImageCount ?? stage2.imageIndexes.length } : {}
       }, deps);
     } else {
-      parent = stages.get(stage.sourceStageId) ?? fail4("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
-      selectedParentPositions = stage.imageIndexes ?? parent.itemIndexes.map((_, index) => index);
+      parent = stages.get(stage2.sourceStageId) ?? fail4("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u53EA\u80FD\u5F15\u7528\u4E00\u4E2A\u5DF2\u7ECF\u767B\u8BB0\u7684\u524D\u5E8F\u9636\u6BB5\u3002");
+      selectedParentPositions = stage2.imageIndexes ?? parent.itemIndexes.map((_, index) => index);
       if (selectedParentPositions.some((index) => index >= parent.itemIndexes.length)) fail4("INVALID_GENERATION_DEPENDENCY", "\u5DE5\u4F5C\u6D41\u5F15\u7528\u4E86\u4E0D\u5B58\u5728\u7684\u524D\u5E8F\u56FE\u7247\u3002");
       const pricingSources = selectedParentPositions.map((index) => parent.pricingSources[index]);
       child = await prepareNativeSkillBatch({
         ...shared,
-        ...stage.generation,
+        ...stage2.generation,
         referenceAssetIds: [...new Set(pricingSources.map((row) => row.id))],
-        expectedImageCount: stage.generation.expectedImageCount ?? pricingSources.length
+        expectedImageCount: stage2.generation.expectedImageCount ?? pricingSources.length
       }, { ...deps, sourceOccurrences: pricingSources });
     }
     await assertOwner(deps, ownerId, namespace);
@@ -59859,18 +59859,18 @@ async function prepareWorkflowBatch(raw, deps) {
           item.dependsOn = dependency;
         } else item.referenceDependencies = dependencies;
       }
-      item.stage = { id: stage.id, label: stage.name, order: stageIndex };
+      item.stage = { id: stage2.id, label: stage2.name, order: stageIndex };
       items.push(item);
     }
     const scope = selectedItems.map((_, index) => offset + index);
     const childSteps = child.processingPlan;
-    if (referencedStages.has(stage.id) && childSteps.length) fail4("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u72EC\u7ACB\u9636\u6BB5\u3002");
+    if (referencedStages.has(stage2.id) && childSteps.length) fail4("INVALID_PROCESSING_PLAN", "\u4F5C\u4E3A\u540E\u7EE7 AI \u8F93\u5165\u7684\u9636\u6BB5\u4E0D\u80FD\u540C\u65F6\u767B\u8BB0\u672C\u5730\u52A0\u5DE5\uFF1B\u8BF7\u628A\u52A0\u5DE5\u653E\u5728\u72EC\u7ACB\u9636\u6BB5\u3002");
     for (const step of childSteps) steps.push({
       ...step,
       id: `w${stageIndex}-${step.id}`,
       ...step.sourceStepId ? { sourceStepId: `w${stageIndex}-${step.sourceStepId}` } : { generationItemIndexes: scope }
     });
-    stages.set(stage.id, { id: stage.id, pricingSources: selectedItems.map((item) => ({
+    stages.set(stage2.id, { id: stage2.id, pricingSources: selectedItems.map((item) => ({
       id: item.args.referenceAssetIds[0],
       name: String(item.sourceName)
     })), itemIndexes: scope });
@@ -59967,8 +59967,8 @@ function digest(value2) {
 function archiveStepId(stageId, stepId) {
   return `local-${digest(`${stageId}\0${stepId}`).slice(0, 24)}`;
 }
-function archiveStepLabel(stage, step) {
-  return [...`${stage}\xB7${step}`].slice(0, 60).join("");
+function archiveStepLabel(stage2, step) {
+  return [...`${stage2}\xB7${step}`].slice(0, 60).join("");
 }
 function inputContent(inputs) {
   return digest(inputs.map((input) => ({
@@ -60048,27 +60048,27 @@ function parseNativeLocalTask(raw) {
   const sourcePlan = normalizeNativeTaskSourcePlan(input);
   const ids2 = /* @__PURE__ */ new Set();
   const stages = input.stages.map((value2, index) => {
-    const stage = record4(value2, `stages[${index}]`);
-    rejectUnknown(stage, ["id", "name", "source", "local"], `stages[${index}]`);
-    const id2 = cleanText(stage.id, `stages[${index}].id`, 60);
+    const stage2 = record4(value2, `stages[${index}]`);
+    rejectUnknown(stage2, ["id", "name", "source", "local"], `stages[${index}]`);
+    const id2 = cleanText(stage2.id, `stages[${index}].id`, 60);
     if (!identifier2.test(id2) || ids2.has(id2)) throw new Error(`stages[${index}].id\u65E0\u6548\u6216\u91CD\u590D`);
     const normalizedSource = sourcePlan.stages[index].source;
     const compositeSource = isNativeTaskCompositeSource(normalizedSource) ? normalizedSource : void 0;
-    const source = compositeSource ? { scope: "all" } : parseSource(stage.source, index);
+    const source = compositeSource ? { scope: "all" } : parseSource(stage2.source, index);
     if (source.fromStage && !ids2.has(source.fromStage)) throw new Error(`stage ${id2}\u53EA\u80FD\u5F15\u7528\u524D\u5E8F\u9636\u6BB5`);
     ids2.add(id2);
     return {
       id: id2,
-      name: stage.name === void 0 ? id2 : cleanText(stage.name, `stages[${index}].name`, 80),
+      name: stage2.name === void 0 ? id2 : cleanText(stage2.name, `stages[${index}].name`, 80),
       source,
       ...compositeSource ? { compositeSource } : {},
-      steps: parseLocal(stage.local, id2)
+      steps: parseLocal(stage2.local, id2)
     };
   });
   const requestedOperationId = input.operationId === void 0 ? void 0 : cleanText(input.operationId, "operationId", 100);
   if (requestedOperationId && !safeOperation.test(requestedOperationId)) throw new Error("operationId\u65E0\u6548");
   return {
-    taskName: input.taskName === void 0 ? stages.map((stage) => stage.name).join(" \u2192 ") : cleanText(input.taskName, "taskName", 120),
+    taskName: input.taskName === void 0 ? stages.map((stage2) => stage2.name).join(" \u2192 ") : cleanText(input.taskName, "taskName", 120),
     ...requestedOperationId ? { requestedOperationId } : {},
     sources: sourcePlan.sources,
     stages
@@ -60388,16 +60388,16 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
   }
   const identity2 = await deps.authorize();
   const resolvedPlans = /* @__PURE__ */ new Map();
-  for (const stage of parsed.stages) {
+  for (const stage2 of parsed.stages) {
     deps.signal?.throwIfAborted();
     const steps = [];
-    for (const step of stage.steps) {
+    for (const step of stage2.steps) {
       if (step.toolName === TOOLBOX_PIPELINE_NAME && "__presetPath" in step.options) {
         const plan = await readPreset(String(step.options.__presetPath), deps);
         steps.push({ ...step, options: ToolboxPlanSchema.parse(plan) });
       } else steps.push(step);
     }
-    resolvedPlans.set(stage.id, steps);
+    resolvedPlans.set(stage2.id, steps);
   }
   await assertSameIdentity(deps, identity2);
   const randomSeed = digest({ sessionId, raw }), randomCursor = { value: 0 };
@@ -60448,41 +60448,41 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
     sourcePoolCache.set(key, values);
     return values;
   };
-  const resolveComposite = async (stage) => {
+  const resolveComposite = async (stage2) => {
     const inputs = [];
-    for (const [inputIndex, input] of stage.compositeSource.inputs.entries()) {
+    for (const [inputIndex, input] of stage2.compositeSource.inputs.entries()) {
       const values = input.pool ? await resolvePool(parsed.sources[input.pool], input.pool) : stages.get(input.fromStage)?.outputs ?? [];
-      if (!values.length) throw new Error(`stage ${stage.id} \u7684\u7EC4\u5408\u6765\u6E90 ${inputIndex + 1} \u5C1A\u65E0\u53EF\u7528\u8F93\u51FA`);
+      if (!values.length) throw new Error(`stage ${stage2.id} \u7684\u7EC4\u5408\u6765\u6E90 ${inputIndex + 1} \u5C1A\u65E0\u53EF\u7528\u8F93\u51FA`);
       inputs.push(selected(values, input.selection));
     }
-    const combined = combineNativeSourceInputs(inputs, stage.compositeSource.pairing, choose, (value2) => value2.id);
+    const combined = combineNativeSourceInputs(inputs, stage2.compositeSource.pairing, choose, (value2) => value2.id);
     if (combined.groups.some((group) => group.length !== 1))
-      throw new Error(`stage ${stage.id} \u662F\u9010\u56FE\u672C\u5730\u5DE5\u5177\uFF0C\u4E0D\u80FD\u628A\u591A\u56FE pairing \u7EC4\u9690\u5F0F\u53D8\u6210\u62FC\u56FE\u6216\u591A\u8F93\u5165\u52A0\u5DE5`);
+      throw new Error(`stage ${stage2.id} \u662F\u9010\u56FE\u672C\u5730\u5DE5\u5177\uFF0C\u4E0D\u80FD\u628A\u591A\u56FE pairing \u7EC4\u9690\u5F0F\u53D8\u6210\u62FC\u56FE\u6216\u591A\u8F93\u5165\u52A0\u5DE5`);
     return combined.groups.map((group) => combined.occurrences[group[0]]);
   };
-  for (const stage of parsed.stages) {
+  for (const stage2 of parsed.stages) {
     let inputs = [];
-    const compositeDependsOnStage = stage.compositeSource?.inputs.some((input) => input.fromStage || input.pool && parsed.sources[input.pool]?.fromStage);
-    if (stage.compositeSource && !compositeDependsOnStage) {
-      inputs = await resolveComposite(stage);
-    } else if (stage.source.folderPath) {
-      inputs = await readAuthorizedLocalFolder(stage.source.folderPath, deps);
-    } else if (stage.source.referenceIds) {
-      for (const id2 of stage.source.referenceIds) inputs.push(await deps.toolkit.archiveInput(id2, sessionId));
+    const compositeDependsOnStage = stage2.compositeSource?.inputs.some((input) => input.fromStage || input.pool && parsed.sources[input.pool]?.fromStage);
+    if (stage2.compositeSource && !compositeDependsOnStage) {
+      inputs = await resolveComposite(stage2);
+    } else if (stage2.source.folderPath) {
+      inputs = await readAuthorizedLocalFolder(stage2.source.folderPath, deps);
+    } else if (stage2.source.referenceIds) {
+      for (const id2 of stage2.source.referenceIds) inputs.push(await deps.toolkit.archiveInput(id2, sessionId));
     }
-    if (!stage.source.fromStage && stage.source.expectedImageCount !== void 0 && inputs.length !== stage.source.expectedImageCount)
-      throw new Error(`stage ${stage.id}\u5B9E\u9645\u8F93\u5165 ${inputs.length} \u5F20\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${stage.source.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4`);
-    sourceCache.set(stage.id, stage.source.fromStage || compositeDependsOnStage ? [] : stage.compositeSource ? inputs : selectScope(inputs, stage.source));
-    stages.set(stage.id, { inputs: sourceCache.get(stage.id), outputs: [], resultIds: [] });
+    if (!stage2.source.fromStage && stage2.source.expectedImageCount !== void 0 && inputs.length !== stage2.source.expectedImageCount)
+      throw new Error(`stage ${stage2.id}\u5B9E\u9645\u8F93\u5165 ${inputs.length} \u5F20\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${stage2.source.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4`);
+    sourceCache.set(stage2.id, stage2.source.fromStage || compositeDependsOnStage ? [] : stage2.compositeSource ? inputs : selectScope(inputs, stage2.source));
+    stages.set(stage2.id, { inputs: sourceCache.get(stage2.id), outputs: [], resultIds: [] });
   }
-  const contentSignature = parsed.stages.map((stage) => ({
-    id: stage.id,
-    fromStage: stage.source.fromStage,
-    compositeSource: stage.compositeSource,
-    source: sourceCache.get(stage.id).map((input) => ({ name: input.name, digest: createHash8("sha256").update(input.bytes).digest("hex") })),
-    scope: stage.source.scope,
-    indexes: stage.source.indexes,
-    steps: resolvedPlans.get(stage.id)
+  const contentSignature = parsed.stages.map((stage2) => ({
+    id: stage2.id,
+    fromStage: stage2.source.fromStage,
+    compositeSource: stage2.compositeSource,
+    source: sourceCache.get(stage2.id).map((input) => ({ name: input.name, digest: createHash8("sha256").update(input.bytes).digest("hex") })),
+    scope: stage2.source.scope,
+    indexes: stage2.source.indexes,
+    steps: resolvedPlans.get(stage2.id)
   }));
   const rootOperationId = parsed.requestedOperationId ?? `local-${digest({ sessionId, taskName: parsed.taskName, contentSignature }).slice(0, 48)}`;
   const existing = new Map((await deps.toolkit.archiveOperations(sessionId)).items.filter((item) => item.sessionId === sessionId).map((item) => [item.operationId, item]));
@@ -60494,19 +60494,19 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
   const admittedRootInputs = /* @__PURE__ */ new Map();
   const boundInputs = /* @__PURE__ */ new Map();
   const createdAt = (deps.now ?? (() => /* @__PURE__ */ new Date()))().toISOString();
-  const archivePlan = () => parsed.stages.flatMap((stage) => resolvedPlans.get(stage.id).map((step) => {
-    const operationId2 = `${rootOperationId}:${stage.id}:${step.id}`;
+  const archivePlan = () => parsed.stages.flatMap((stage2) => resolvedPlans.get(stage2.id).map((step) => {
+    const operationId2 = `${rootOperationId}:${stage2.id}:${step.id}`;
     const receipt = receipts.find((row) => row.operationId === operationId2);
     const inputs = receipt?.inputIds ?? boundInputs.get(operationId2);
     return {
       ...step,
-      id: archiveStepId(stage.id, step.id),
-      label: archiveStepLabel(stage.name, step.label),
-      ...step.sourceStepId ? { sourceStepId: archiveStepId(stage.id, step.sourceStepId) } : {},
+      id: archiveStepId(stage2.id, step.id),
+      label: archiveStepLabel(stage2.name, step.label),
+      ...step.sourceStepId ? { sourceStepId: archiveStepId(stage2.id, step.sourceStepId) } : {},
       ...inputs ? { inputIds: [...inputs] } : {}
     };
   }));
-  const plannedOperationIds = parsed.stages.flatMap((stage) => resolvedPlans.get(stage.id).map((step) => `${rootOperationId}:${stage.id}:${step.id}`));
+  const plannedOperationIds = parsed.stages.flatMap((stage2) => resolvedPlans.get(stage2.id).map((step) => `${rootOperationId}:${stage2.id}:${step.id}`));
   const checkpoint = async (status2, allowAborted = false) => {
     if (!allowAborted) deps.signal?.throwIfAborted();
     await assertSameIdentity(deps, identity2);
@@ -60529,11 +60529,11 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
     await deps.archive.wait();
   };
   deps.onExecutionStarted?.();
-  for (const stage of parsed.stages.filter((value2) => !value2.source.fromStage && sourceCache.get(value2.id).length)) {
+  for (const stage2 of parsed.stages.filter((value2) => !value2.source.fromStage && sourceCache.get(value2.id).length)) {
     deps.signal?.throwIfAborted();
-    const state = stages.get(stage.id);
-    if (stage.source.folderPath || stage.compositeSource && state.inputs.some((input) => input.id.startsWith("folder-"))) {
-      const firstStep = resolvedPlans.get(stage.id)[0], prior = existing.get(`${rootOperationId}:${stage.id}:${firstStep.id}`);
+    const state = stages.get(stage2.id);
+    if (stage2.source.folderPath || stage2.compositeSource && state.inputs.some((input) => input.id.startsWith("folder-"))) {
+      const firstStep = resolvedPlans.get(stage2.id)[0], prior = existing.get(`${rootOperationId}:${stage2.id}:${firstStep.id}`);
       const imported = [];
       if (prior) {
         for (const id2 of prior.inputIds) imported.push(await deps.toolkit.archiveInput(id2, sessionId));
@@ -60558,7 +60558,7 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
       }
       state.inputs = imported;
     } else {
-      const firstStep = resolvedPlans.get(stage.id)[0], prior = existing.get(`${rootOperationId}:${stage.id}:${firstStep.id}`);
+      const firstStep = resolvedPlans.get(stage2.id)[0], prior = existing.get(`${rootOperationId}:${stage2.id}:${firstStep.id}`);
       if (prior && stable(prior.inputIds) !== stable(state.inputs.map((input) => input.id)))
         throw new Error("\u540C\u4E00\u672C\u5730\u4EFB\u52A1\u7F16\u53F7\u7684\u8F93\u5165\u6765\u6E90\u5DF2\u53D8\u5316");
     }
@@ -60567,12 +60567,12 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
   await checkpoint("processing");
   let active2;
   try {
-    for (const [stageIndex, stage] of parsed.stages.entries()) {
+    for (const [stageIndex, stage2] of parsed.stages.entries()) {
       deps.signal?.throwIfAborted();
-      const state = stages.get(stage.id);
-      if (stage.compositeSource && !state.inputs.length) {
-        state.inputs = await resolveComposite(stage);
-        const firstStep = resolvedPlans.get(stage.id)[0], prior = existing.get(`${rootOperationId}:${stage.id}:${firstStep.id}`);
+      const state = stages.get(stage2.id);
+      if (stage2.compositeSource && !state.inputs.length) {
+        state.inputs = await resolveComposite(stage2);
+        const firstStep = resolvedPlans.get(stage2.id)[0], prior = existing.get(`${rootOperationId}:${stage2.id}:${firstStep.id}`);
         if (prior) {
           const restored = [];
           for (const id2 of prior.inputIds) restored.push(await deps.toolkit.archiveInput(id2, sessionId));
@@ -60601,19 +60601,19 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
           state.inputs = admitted;
         }
         for (const input of state.inputs) referenceFiles.push({ source: { kind: "input", id: input.id, sessionId }, group: "reference", label: input.name });
-      } else if (stage.source.fromStage) {
-        const parent = stages.get(stage.source.fromStage);
-        if (stage.source.expectedImageCount !== void 0 && parent.outputs.length !== stage.source.expectedImageCount)
-          throw new Error(`stage ${stage.id}\u5B9E\u9645\u8F93\u5165 ${parent.outputs.length} \u5F20\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${stage.source.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4`);
-        state.inputs = selectScope(parent.outputs, stage.source);
+      } else if (stage2.source.fromStage) {
+        const parent = stages.get(stage2.source.fromStage);
+        if (stage2.source.expectedImageCount !== void 0 && parent.outputs.length !== stage2.source.expectedImageCount)
+          throw new Error(`stage ${stage2.id}\u5B9E\u9645\u8F93\u5165 ${parent.outputs.length} \u5F20\uFF0C\u4E0E\u7528\u6237\u6307\u5B9A\u7684 ${stage2.source.expectedImageCount} \u5F20\u4E0D\u4E00\u81F4`);
+        state.inputs = selectScope(parent.outputs, stage2.source);
       }
       const stepOutputs = /* @__PURE__ */ new Map();
-      for (const step of resolvedPlans.get(stage.id)) {
+      for (const step of resolvedPlans.get(stage2.id)) {
         deps.signal?.throwIfAborted();
         const stepInputs = step.sourceStepId ? stepOutputs.get(step.sourceStepId) ?? [] : state.inputs;
-        if (!stepInputs.length) throw new Error(`stage ${stage.id} \u7684\u6B65\u9AA4 ${step.id} \u6CA1\u6709\u8F93\u5165`);
-        active2 = { stage, step, inputs: stepInputs };
-        const operationId2 = `${rootOperationId}:${stage.id}:${step.id}`;
+        if (!stepInputs.length) throw new Error(`stage ${stage2.id} \u7684\u6B65\u9AA4 ${step.id} \u6CA1\u6709\u8F93\u5165`);
+        active2 = { stage: stage2, step, inputs: stepInputs };
+        const operationId2 = `${rootOperationId}:${stage2.id}:${step.id}`;
         boundInputs.set(operationId2, stepInputs.map((input) => input.id));
         let reply;
         const prior = existing.get(operationId2);
@@ -60638,22 +60638,22 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
         receipts.push({
           operationId: operationId2,
           toolName: step.toolName,
-          label: `${stage.name}\xB7${step.label}`,
+          label: `${stage2.name}\xB7${step.label}`,
           options: step.options,
           inputIds: stepInputs.map((input) => input.id),
           resultIds: visible.map((row) => row.id)
         });
-        if (taskId) await deps.archive.clearProcessingFailures(taskId, archiveStepId(stage.id, step.id), stepInputs.map((input) => input.id));
+        if (taskId) await deps.archive.clearProcessingFailures(taskId, archiveStepId(stage2.id, step.id), stepInputs.map((input) => input.id));
         active2 = void 0;
       }
-      const referencedSteps = new Set(resolvedPlans.get(stage.id).flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
-      state.outputs = resolvedPlans.get(stage.id).filter((step) => !referencedSteps.has(step.id)).flatMap((step) => stepOutputs.get(step.id) ?? []);
+      const referencedSteps = new Set(resolvedPlans.get(stage2.id).flatMap((step) => step.sourceStepId ? [step.sourceStepId] : []));
+      state.outputs = resolvedPlans.get(stage2.id).filter((step) => !referencedSteps.has(step.id)).flatMap((step) => stepOutputs.get(step.id) ?? []);
       state.resultIds = state.outputs.map((output) => output.id);
-      const finalStep = resolvedPlans.get(stage.id).at(-1);
+      const finalStep = resolvedPlans.get(stage2.id).at(-1);
       for (const output of state.outputs) resultFiles.push({
         source: { kind: "local", id: output.id, sessionId },
         group: "result",
-        label: `${stage.name}\xB7${finalStep.label}`
+        label: `${stage2.name}\xB7${finalStep.label}`
       });
       await checkpoint(stageIndex === parsed.stages.length - 1 ? "completed" : "processing");
     }
@@ -60695,12 +60695,12 @@ async function executeNativeLocalTask(raw, sessionId, deps) {
     status,
     archive: { saveStatus: archived.saveStatus, resultCount: archived.resultCount, savedCount: archived.savedCount },
     originalFilesPreserved: true,
-    stages: parsed.stages.map((stage) => ({
-      id: stage.id,
-      name: stage.name,
-      inputCount: stages.get(stage.id).inputs.length,
-      outputCount: stages.get(stage.id).outputs.length,
-      resultIds: stages.get(stage.id).resultIds
+    stages: parsed.stages.map((stage2) => ({
+      id: stage2.id,
+      name: stage2.name,
+      inputCount: stages.get(stage2.id).inputs.length,
+      outputCount: stages.get(stage2.id).outputs.length,
+      resultIds: stages.get(stage2.id).resultIds
     }))
   };
 }
@@ -60712,9 +60712,9 @@ function mixedBindingIdentity(binding) {
   return `local\0${binding.stageId}\0${binding.outputIndex}`;
 }
 function resolveMixedOutput(snapshot, stageId, index) {
-  const stage = snapshot.stages.find((row) => row.id === stageId), output = stage?.outputs.find((row) => row.index === index);
-  if (!stage || !output || output.status === "waiting") return { status: "waiting" };
-  if (output.status === "failed") return { status: "failed", errorCode: output.errorCode ?? stage.errorCode ?? "MIXED_STAGE_FAILED" };
+  const stage2 = snapshot.stages.find((row) => row.id === stageId), output = stage2?.outputs.find((row) => row.index === index);
+  if (!stage2 || !output || output.status === "waiting") return { status: "waiting" };
+  if (output.status === "failed") return { status: "failed", errorCode: output.errorCode ?? stage2.errorCode ?? "MIXED_STAGE_FAILED" };
   return output.assetId ? { status: "ready", assetId: output.assetId } : { status: "waiting" };
 }
 var canonical3 = (value2) => Array.isArray(value2) ? `[${value2.map(canonical3).join(",")}]` : value2 && typeof value2 === "object" ? `{${Object.entries(value2).filter(([, item]) => item !== void 0).sort(([a], [b]) => a.localeCompare(b)).map(([key, item]) => `${JSON.stringify(key)}:${canonical3(item)}`).join(",")}}` : JSON.stringify(value2) ?? "null";
@@ -60741,13 +60741,13 @@ function validateNativeMixedTaskPlan(raw) {
   const id2 = mixedText(value2.id, "plan.id", 100, /^[A-Za-z0-9_-]+$/u), taskName = mixedText(value2.taskName, "plan.taskName", 100);
   const seen = /* @__PURE__ */ new Map(), itemIndexes = /* @__PURE__ */ new Set();
   const stages = value2.stages.map((rawStage, order2) => {
-    const stage = object5(rawStage, `stages[${order2}]`), kind = stage.kind;
-    exactKeys(stage, kind === "ai" ? ["id", "label", "order", "kind", "sourceBindings", "sourceGroups", "itemIndexes", "outputCount"] : ["id", "label", "order", "kind", "sourceBindings", "processingSteps", "outputCount", "outputSources"], `stages[${order2}]`);
-    const stageId = mixedText(stage.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
-    if (seen.has(stageId) || stage.order !== order2 || kind !== "ai" && kind !== "local") mixedFail("\u6DF7\u5408\u9636\u6BB5\u987A\u5E8F\u3001ID \u6216\u7C7B\u578B\u65E0\u6548\u3002");
-    const label = mixedText(stage.label, `stages[${order2}].label`, 80);
-    if (!Array.isArray(stage.sourceBindings) || kind === "local" && !stage.sourceBindings.length || stage.sourceBindings.length > 100) mixedFail("\u6DF7\u5408\u9636\u6BB5\u6765\u6E90\u65E0\u6548\u3002");
-    const sourceBindings = stage.sourceBindings.map((rawBinding, bindingIndex) => {
+    const stage2 = object5(rawStage, `stages[${order2}]`), kind = stage2.kind;
+    exactKeys(stage2, kind === "ai" ? ["id", "label", "order", "kind", "sourceBindings", "sourceGroups", "itemIndexes", "outputCount"] : ["id", "label", "order", "kind", "sourceBindings", "processingSteps", "outputCount", "outputSources"], `stages[${order2}]`);
+    const stageId = mixedText(stage2.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
+    if (seen.has(stageId) || stage2.order !== order2 || kind !== "ai" && kind !== "local") mixedFail("\u6DF7\u5408\u9636\u6BB5\u987A\u5E8F\u3001ID \u6216\u7C7B\u578B\u65E0\u6548\u3002");
+    const label = mixedText(stage2.label, `stages[${order2}].label`, 80);
+    if (!Array.isArray(stage2.sourceBindings) || kind === "local" && !stage2.sourceBindings.length || stage2.sourceBindings.length > 100) mixedFail("\u6DF7\u5408\u9636\u6BB5\u6765\u6E90\u65E0\u6548\u3002");
+    const sourceBindings = stage2.sourceBindings.map((rawBinding, bindingIndex) => {
       const binding = object5(rawBinding, `stages[${order2}].sourceBindings[${bindingIndex}]`);
       if (binding.kind === "root") {
         exactKeys(binding, ["kind", "assetId", "name"], "\u6839\u56FE\u6765\u6E90");
@@ -60769,33 +60769,33 @@ function validateNativeMixedTaskPlan(raw) {
         mixedFail("PDF \u6216\u5176\u4ED6\u6587\u4EF6\u8F93\u51FA\u4E0D\u80FD\u4F5C\u4E3A\u540E\u7EED AI \u6216\u56FE\u7247\u5DE5\u5177\u8F93\u5165\u3002");
       return { kind: "local", stageId: parentId, outputIndex: Number(binding.outputIndex), name: name2 };
     });
-    if (!Number.isInteger(stage.outputCount) || Number(stage.outputCount) < 1 || Number(stage.outputCount) > NATIVE_TASK_MAX_LOCAL_OUTPUTS) mixedFail("\u9636\u6BB5\u8F93\u51FA\u6570\u65E0\u6548\u3002");
+    if (!Number.isInteger(stage2.outputCount) || Number(stage2.outputCount) < 1 || Number(stage2.outputCount) > NATIVE_TASK_MAX_LOCAL_OUTPUTS) mixedFail("\u9636\u6BB5\u8F93\u51FA\u6570\u65E0\u6548\u3002");
     let parsed;
     if (kind === "ai") {
-      const groups = stage.sourceGroups === void 0 ? sourceBindings.map((_, index) => [index]) : stage.sourceGroups;
+      const groups = stage2.sourceGroups === void 0 ? sourceBindings.map((_, index) => [index]) : stage2.sourceGroups;
       if (!Array.isArray(groups) || !groups.length || groups.length > 100 || groups.some((group) => !Array.isArray(group) || sourceBindings.length > 0 && !group.length || group.length > 14 || new Set(group).size !== group.length || group.some((index) => !Number.isSafeInteger(index) || index < 0 || index >= sourceBindings.length)) || groups.some((group) => new Set(group.map((index) => mixedBindingIdentity(sourceBindings[index]))).size !== group.length) || new Set(groups.flat()).size !== sourceBindings.length) mixedFail("AI \u9636\u6BB5\u56FE\u7247\u5206\u7EC4\u65E0\u6548\u3002");
-      if (!Array.isArray(stage.itemIndexes) || stage.itemIndexes.length !== groups.length || stage.outputCount !== groups.length || new Set(stage.itemIndexes).size !== stage.itemIndexes.length || stage.itemIndexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99 || itemIndexes.has(Number(index))))
+      if (!Array.isArray(stage2.itemIndexes) || stage2.itemIndexes.length !== groups.length || stage2.outputCount !== groups.length || new Set(stage2.itemIndexes).size !== stage2.itemIndexes.length || stage2.itemIndexes.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) > 99 || itemIndexes.has(Number(index))))
         mixedFail("AI \u9636\u6BB5\u751F\u6210\u9879\u7D22\u5F15\u65E0\u6548\u3002");
-      for (const index of stage.itemIndexes) itemIndexes.add(Number(index));
+      for (const index of stage2.itemIndexes) itemIndexes.add(Number(index));
       parsed = {
         id: stageId,
         label,
         order: order2,
         kind,
         sourceBindings,
-        itemIndexes: stage.itemIndexes.map(Number),
-        outputCount: Number(stage.outputCount),
-        ...stage.sourceGroups === void 0 ? {} : { sourceGroups: groups.map((group) => [...group]) }
+        itemIndexes: stage2.itemIndexes.map(Number),
+        outputCount: Number(stage2.outputCount),
+        ...stage2.sourceGroups === void 0 ? {} : { sourceGroups: groups.map((group) => [...group]) }
       };
     } else {
       let processingSteps;
       try {
-        processingSteps = parseProcessingPlan(stage.processingSteps, { allowHostInputs: true }) ?? [];
+        processingSteps = parseProcessingPlan(stage2.processingSteps, { allowHostInputs: true }) ?? [];
       } catch {
         return mixedFail("\u672C\u5730\u9636\u6BB5\u51BB\u7ED3\u52A0\u5DE5\u8BA1\u5212\u65E0\u6548\u3002");
       }
       if (!processingSteps.length || processingSteps.some((step) => step.inputIds || step.generationItemIndexes)) mixedFail("\u672C\u5730\u9636\u6BB5\u4E0D\u5F97\u643A\u5E26\u8FD0\u884C\u65F6\u8F93\u5165\u3002");
-      if (!Array.isArray(stage.outputSources) || stage.outputSources.length !== Number(stage.outputCount) || stage.outputSources.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) >= sourceBindings.length))
+      if (!Array.isArray(stage2.outputSources) || stage2.outputSources.length !== Number(stage2.outputCount) || stage2.outputSources.some((index) => !Number.isInteger(index) || Number(index) < 0 || Number(index) >= sourceBindings.length))
         mixedFail("\u672C\u5730\u9636\u6BB5\u8F93\u51FA\u6765\u6E90\u6620\u5C04\u65E0\u6548\u3002");
       parsed = {
         id: stageId,
@@ -60804,8 +60804,8 @@ function validateNativeMixedTaskPlan(raw) {
         kind,
         sourceBindings,
         processingSteps,
-        outputCount: Number(stage.outputCount),
-        outputSources: stage.outputSources.map(Number)
+        outputCount: Number(stage2.outputCount),
+        outputSources: stage2.outputSources.map(Number)
       };
     }
     seen.set(stageId, parsed);
@@ -60895,28 +60895,28 @@ async function inspectNativeLocalProcessing(raw, deps) {
     authorization: "unchecked"
   };
 }
-function localOutputKinds(stage) {
-  return localTerminalOutputs(stage.processingSteps).flatMap((output) => stage.sourceBindings.flatMap(() => Array.from({ length: output.factor }, () => output.mediaKind)));
+function localOutputKinds(stage2) {
+  return localTerminalOutputs(stage2.processingSteps).flatMap((output) => stage2.sourceBindings.flatMap(() => Array.from({ length: output.factor }, () => output.mediaKind)));
 }
 function normalizeMixedStages(rawStages) {
   const normalized2 = [], reserved = /* @__PURE__ */ new Set();
   for (const rawStage of rawStages) {
-    const stage = object5(rawStage, "\u6DF7\u5408\u9636\u6BB5"), id2 = mixedText(stage.id, "stage.id", 40, /^[A-Za-z0-9_-]+$/u);
+    const stage2 = object5(rawStage, "\u6DF7\u5408\u9636\u6BB5"), id2 = mixedText(stage2.id, "stage.id", 40, /^[A-Za-z0-9_-]+$/u);
     if (reserved.has(id2)) mixedFail("\u6DF7\u5408\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     reserved.add(id2);
   }
   for (const rawStage of rawStages) {
-    const stage = structuredClone(object5(rawStage, "\u6DF7\u5408\u9636\u6BB5")), id2 = String(stage.id);
-    if (stage.skill === void 0 && stage.generation === void 0 || stage.local === void 0) {
-      normalized2.push(stage);
+    const stage2 = structuredClone(object5(rawStage, "\u6DF7\u5408\u9636\u6BB5")), id2 = String(stage2.id);
+    if (stage2.skill === void 0 && stage2.generation === void 0 || stage2.local === void 0) {
+      normalized2.push(stage2);
       continue;
     }
     let aiId = `__mixed_ai_${digest2(id2).slice(0, 16)}`, suffix = 1;
     while (reserved.has(aiId)) aiId = `__mixed_ai_${digest2(`${id2}:${suffix++}`).slice(0, 16)}`;
     reserved.add(aiId);
-    const label = stage.name === void 0 ? id2 : mixedText(stage.name, `stage ${id2}.name`, 80);
-    const local = stage.local;
-    normalized2.push({ ...stage, id: aiId, name: [...`${label}\xB7AI`].slice(0, 80).join(""), local: void 0 });
+    const label = stage2.name === void 0 ? id2 : mixedText(stage2.name, `stage ${id2}.name`, 80);
+    const local = stage2.local;
+    normalized2.push({ ...stage2, id: aiId, name: [...`${label}\xB7AI`].slice(0, 80).join(""), local: void 0 });
     normalized2.push({ id: id2, name: [...`${label}\xB7\u52A0\u5DE5`].slice(0, 80).join(""), source: { fromStage: aiId, scope: "all" }, local });
   }
   return normalized2;
@@ -60932,19 +60932,19 @@ async function compileNativeMixedTask(raw, deps) {
   }
   const normalizedStages = normalizeMixedStages(raw.stages);
   const capabilityValue = await deps.generationCapabilities(), capabilityRecord = object5(capabilityValue, "\u751F\u56FE\u80FD\u529B");
-  if (normalizedStages.some((stage) => stage.skill === void 0 && stage.generation !== void 0) && capabilityRecord.supportsOrdinaryGenerationOrders !== true)
+  if (normalizedStages.some((stage2) => stage2.skill === void 0 && stage2.generation !== void 0) && capabilityRecord.supportsOrdinaryGenerationOrders !== true)
     throw new PodploPluginError("ORDINARY_ORDER_BACKEND_UNAVAILABLE", "\u4E3B\u7AD9\u5C1A\u672A\u5F00\u653E\u76F4\u63A5\u751F\u56FE\u6574\u5355\uFF0C\u672A\u5BFC\u5165\u3001\u62A5\u4EF7\u6216\u6267\u884C\u3002");
-  if (normalizedStages.some((stage) => stage.local !== void 0) && capabilityRecord.supportsLocalGenerationOrderReferences !== true)
+  if (normalizedStages.some((stage2) => stage2.local !== void 0) && capabilityRecord.supportsLocalGenerationOrderReferences !== true)
     throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u5F53\u524D\u540E\u7AEF\u5C1A\u4E0D\u652F\u6301\u672C\u5730\u5DE5\u5177\u4E0E AI \u751F\u56FE\u4E32\u8054\u6574\u5355\u3002");
   const compileDeps = { ...deps, generationCapabilities: async () => capabilityValue };
   const frozenPlans = /* @__PURE__ */ new Map();
   for (const [index, rawStage] of normalizedStages.entries()) {
-    const stage = object5(rawStage, `stages[${index}]`);
-    const ai = stage.skill !== void 0 || stage.generation !== void 0;
-    if (ai === (stage.local !== void 0)) mixedFail(`stages[${index}] \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI \u751F\u56FE\u6216\u672C\u5730\u5DE5\u5177\u3002`);
-    if (ai) parseImageGrouping(stage.grouping);
-    else if (parseImageGrouping(stage.grouping).mode !== "single") mixedFail("\u56FE\u7247\u5206\u7EC4\u7528\u4E8E AI \u591A\u53C2\u8003\u56FE\u8F93\u5165\uFF0C\u672C\u5730\u5DE5\u5177\u9010\u5F20\u5904\u7406\u3002");
-    if (stage.local !== void 0) frozenPlans.set(index, await frozenLocalPlan(stage.local, deps));
+    const stage2 = object5(rawStage, `stages[${index}]`);
+    const ai = stage2.skill !== void 0 || stage2.generation !== void 0;
+    if (ai === (stage2.local !== void 0)) mixedFail(`stages[${index}] \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI \u751F\u56FE\u6216\u672C\u5730\u5DE5\u5177\u3002`);
+    if (ai) parseImageGrouping(stage2.grouping);
+    else if (parseImageGrouping(stage2.grouping).mode !== "single") mixedFail("\u56FE\u7247\u5206\u7EC4\u7528\u4E8E AI \u591A\u53C2\u8003\u56FE\u8F93\u5165\uFF0C\u672C\u5730\u5DE5\u5177\u9010\u5F20\u5904\u7406\u3002");
+    if (stage2.local !== void 0) frozenPlans.set(index, await frozenLocalPlan(stage2.local, deps));
   }
   const taskName = raw.taskName === void 0 ? "\u56FE\u7247\u6DF7\u5408\u4EFB\u52A1" : mixedText(raw.taskName, "taskName", 100);
   const ownerId = await deps.online.workspaceIdentity(true), namespace = deps.online.auth.namespace;
@@ -61033,24 +61033,24 @@ async function compileNativeMixedTask(raw, deps) {
   };
   for (const [order2, rawStage] of normalizedStages.entries()) {
     deps.signal?.throwIfAborted();
-    const stage = object5(rawStage, `stages[${order2}]`);
-    exactKeys(stage, ["id", "name", "source", "grouping", "skill", "generation", "local"], `stages[${order2}]`);
-    const id3 = mixedText(stage.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
+    const stage2 = object5(rawStage, `stages[${order2}]`);
+    exactKeys(stage2, ["id", "name", "source", "grouping", "skill", "generation", "local"], `stages[${order2}]`);
+    const id3 = mixedText(stage2.id, `stages[${order2}].id`, 40, /^[A-Za-z0-9_-]+$/u);
     if (ids2.has(id3)) mixedFail("\u6DF7\u5408\u9636\u6BB5 ID \u5FC5\u987B\u552F\u4E00\u3002");
     ids2.add(id3);
-    const label = stage.name === void 0 ? id3 : mixedText(stage.name, `stages[${order2}].name`, 80);
-    const ai = stage.skill !== void 0 || stage.generation !== void 0;
-    if (ai === (stage.local !== void 0)) mixedFail(`\u9636\u6BB5 ${id3} \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI \u751F\u56FE\u6216\u672C\u5730\u5DE5\u5177\u3002`);
-    const source = object5(stage.source, `stages[${order2}].source`);
+    const label = stage2.name === void 0 ? id3 : mixedText(stage2.name, `stages[${order2}].name`, 80);
+    const ai = stage2.skill !== void 0 || stage2.generation !== void 0;
+    if (ai === (stage2.local !== void 0)) mixedFail(`\u9636\u6BB5 ${id3} \u5FC5\u987B\u4E14\u53EA\u80FD\u662F AI \u751F\u56FE\u6216\u672C\u5730\u5DE5\u5177\u3002`);
+    const source = object5(stage2.source, `stages[${order2}].source`);
     let selected, pairedGroups;
     let textCount;
     if (source.text === true) {
-      if (!ai || stage.skill !== void 0 || stage.grouping !== void 0) mixedFail("\u6587\u5B57\u6765\u6E90\u9700\u8981\u76F4\u63A5\u751F\u56FE\uFF0C\u4E0D\u80FD\u6307\u5B9A Skill \u6216\u56FE\u7247\u5206\u7EC4\u3002");
+      if (!ai || stage2.skill !== void 0 || stage2.grouping !== void 0) mixedFail("\u6587\u5B57\u6765\u6E90\u9700\u8981\u76F4\u63A5\u751F\u56FE\uFF0C\u4E0D\u80FD\u6307\u5B9A Skill \u6216\u56FE\u7247\u5206\u7EC4\u3002");
       textCount = Number(source.count ?? 1);
       selected = [];
     } else if (isNativeTaskCompositeSource(source)) {
       if (sourcePlan.protocolVersion !== 2) mixedFail(`\u9636\u6BB5 ${id3} \u7EC4\u5408\u6765\u6E90\u9700\u8981 protocolVersion: 2\u3002`);
-      if (stage.grouping !== void 0) mixedFail(`\u9636\u6BB5 ${id3} \u7684 source.pairing \u5DF2\u5B9A\u4E49\u53C2\u8003\u56FE\u7EC4\uFF0C\u4E0D\u80FD\u540C\u65F6\u518D\u58F0\u660E grouping\u3002`);
+      if (stage2.grouping !== void 0) mixedFail(`\u9636\u6BB5 ${id3} \u7684 source.pairing \u5DF2\u5B9A\u4E49\u53C2\u8003\u56FE\u7EC4\uFF0C\u4E0D\u80FD\u540C\u65F6\u518D\u58F0\u660E grouping\u3002`);
       const normalizedSource = source;
       const sourceInputs = [];
       for (const [inputIndex, input] of normalizedSource.inputs.entries()) {
@@ -61086,7 +61086,7 @@ async function compileNativeMixedTask(raw, deps) {
     }
     if (ai) {
       if (selected.some((row) => row.mediaKind === "file")) mixedFail(`\u9636\u6BB5 ${id3} \u4E0D\u80FD\u628A PDF \u6216\u5176\u4ED6\u6587\u4EF6\u4F5C\u4E3A AI \u751F\u56FE\u53C2\u8003\u3002`);
-      const skill = stage.skill === void 0 ? void 0 : object5(stage.skill, `stages[${order2}].skill`), generation = stage.generation === void 0 ? {} : object5(stage.generation, `stages[${order2}].generation`);
+      const skill = stage2.skill === void 0 ? void 0 : object5(stage2.skill, `stages[${order2}].skill`), generation = stage2.generation === void 0 ? {} : object5(stage2.generation, `stages[${order2}].generation`);
       if (skill) exactKeys(skill, ["query", "source", "favoriteFolder", "strategy"], `stages[${order2}].skill`);
       exactKeys(generation, ["model", "ratio", "quality", "ecoMode", "background", "instructions"], `stages[${order2}].generation`);
       const seeds = [...new Set(selected.map((row) => row.pricingAssetId))];
@@ -61097,13 +61097,13 @@ async function compileNativeMixedTask(raw, deps) {
         skillSource: skill.source,
         skillFolder: skill.favoriteFolder,
         skillStrategy: skill.strategy,
-        ...pairedGroups ? { imageGrouping: { mode: "explicit", groups: pairedGroups } } : { imageGrouping: parseImageGrouping(stage.grouping) },
+        ...pairedGroups ? { imageGrouping: { mode: "explicit", groups: pairedGroups } } : { imageGrouping: parseImageGrouping(stage2.grouping) },
         processingPlan: [],
         ...generation
       }, { ...compileDeps, sourceOccurrences: selected.map((row) => ({ id: row.pricingAssetId, name: row.name })) }) : await prepareNativeDirectBatch(
         generation,
         selected.map((row) => ({ id: row.pricingAssetId, name: row.name })),
-        pairedGroups ? { mode: "explicit", groups: pairedGroups } : stage.grouping,
+        pairedGroups ? { mode: "explicit", groups: pairedGroups } : stage2.grouping,
         textCount,
         compileDeps
       );
@@ -61133,7 +61133,7 @@ async function compileNativeMixedTask(raw, deps) {
         sourceBindings: selected.map((row) => row.binding),
         itemIndexes,
         outputCount: childItems.length,
-        ...stage.grouping === void 0 && !pairedGroups && textCount === void 0 ? {} : { sourceGroups: groups }
+        ...stage2.grouping === void 0 && !pairedGroups && textCount === void 0 ? {} : { sourceGroups: groups }
       };
       stages.push(planStage);
       occurrences.set(id3, childItems.map((item, position) => {
@@ -61150,7 +61150,7 @@ async function compileNativeMixedTask(raw, deps) {
     } else {
       if (pairedGroups && (pairedGroups.some((group) => group.length !== 1) || new Set(pairedGroups.flat()).size !== selected.length))
         mixedFail(`\u9636\u6BB5 ${id3} \u662F\u9010\u56FE\u672C\u5730\u5DE5\u5177\uFF0C\u4E0D\u80FD\u6D88\u8D39\u591A\u56FE pairing \u7EC4\u3002`);
-      if (parseImageGrouping(stage.grouping).mode !== "single") mixedFail("\u56FE\u7247\u5206\u7EC4\u7528\u4E8E AI \u591A\u53C2\u8003\u56FE\u8F93\u5165\uFF1B\u672C\u5730\u5DE5\u5177\u6309\u771F\u5B9E\u56FE\u7247\u9010\u5F20\u5904\u7406\u3002");
+      if (parseImageGrouping(stage2.grouping).mode !== "single") mixedFail("\u56FE\u7247\u5206\u7EC4\u7528\u4E8E AI \u591A\u53C2\u8003\u56FE\u8F93\u5165\uFF1B\u672C\u5730\u5DE5\u5177\u6309\u771F\u5B9E\u56FE\u7247\u9010\u5F20\u5904\u7406\u3002");
       if (selected.some((row) => row.mediaKind === "file")) mixedFail(`\u9636\u6BB5 ${id3} \u4E0D\u80FD\u628A PDF \u6216\u5176\u4ED6\u6587\u4EF6\u4F5C\u4E3A\u56FE\u7247\u5DE5\u5177\u8F93\u5165\u3002`);
       const processingSteps = frozenPlans.get(order2), terminalOutputs = localTerminalOutputs(processingSteps);
       const multiplier = terminalOutputs.reduce((sum, value2) => sum + value2.factor, 0);
@@ -61189,7 +61189,7 @@ async function compileNativeMixedTask(raw, deps) {
     if (resolved.length !== sourceIds.length || resolved.some((value2) => !external_exports2.string().uuid().safeParse(value2).success))
       throw new PodploPluginError("MIXED_SOURCE_IMPORT_FAILED", "\u6DF7\u5408\u4EFB\u52A1\u6839\u56FE\u672A\u80FD\u6309\u539F\u987A\u5E8F\u8F6C\u4E3A\u4E91\u7AEF\u7D20\u6750\u3002");
     const replacements = new Map(sourceIds.map((sourceId, index) => [sourceId, resolved[index]]));
-    for (const stage of stages) for (const binding of stage.sourceBindings) {
+    for (const stage2 of stages) for (const binding of stage2.sourceBindings) {
       if (binding.kind === "root" && replacements.has(binding.assetId)) binding.assetId = replacements.get(binding.assetId);
     }
     for (const item of items) {
@@ -61227,14 +61227,14 @@ async function advanceNativeMixedTask(_plan, _operation, _deps) {
     operationId: operation.operationId,
     planDigest: plan.digest,
     status: "pending",
-    stages: plan.stages.map((stage) => ({
-      id: stage.id,
-      kind: stage.kind,
+    stages: plan.stages.map((stage2) => ({
+      id: stage2.id,
+      kind: stage2.kind,
       status: "waiting",
-      outputs: Array.from({ length: stage.outputCount }, (_, index) => ({ index, status: "waiting" }))
+      outputs: Array.from({ length: stage2.outputCount }, (_, index) => ({ index, status: "waiting" }))
     }))
   };
-  const cloudOutputs = new Set(plan.stages.filter((stage) => stage.kind === "ai").flatMap((stage) => stage.sourceBindings.flatMap((binding) => binding.kind === "local" ? [`${binding.stageId}\0${binding.outputIndex}`] : [])));
+  const cloudOutputs = new Set(plan.stages.filter((stage2) => stage2.kind === "ai").flatMap((stage2) => stage2.sourceBindings.flatMap((binding) => binding.kind === "local" ? [`${binding.stageId}\0${binding.outputIndex}`] : [])));
   const persist = async () => {
     await assertRuntimeIdentity(deps, identity2);
     await store.transaction((state) => {
@@ -61245,11 +61245,11 @@ async function advanceNativeMixedTask(_plan, _operation, _deps) {
       } else state.records.push({ owner, session: session2, operationId: operation.operationId, planDigest: plan.digest, snapshot: structuredClone(snapshot) });
     });
   };
-  for (const stage of plan.stages) {
+  for (const stage2 of plan.stages) {
     deps.signal?.throwIfAborted();
-    const state = snapshot.stages.find((row) => row.id === stage.id);
-    if (stage.kind === "ai") {
-      const outputs2 = stage.itemIndexes.map((itemIndex, index) => {
+    const state = snapshot.stages.find((row) => row.id === stage2.id);
+    if (stage2.kind === "ai") {
+      const outputs2 = stage2.itemIndexes.map((itemIndex, index) => {
         const item = operation.items[itemIndex];
         if (!item) return { index, status: "failed", errorCode: "MIXED_AI_ITEM_MISSING" };
         const output = item.outputs?.find((row) => row.index === 0);
@@ -61264,36 +61264,36 @@ async function advanceNativeMixedTask(_plan, _operation, _deps) {
       continue;
     }
     if (state.outputs.some((row) => row.status === "ready") || state.status === "failed" && !state.outputs.some((row) => row.status === "waiting")) continue;
-    const sources = stage.sourceBindings.map((binding) => resolveBinding(binding, snapshot, operation, plan));
+    const sources = stage2.sourceBindings.map((binding) => resolveBinding(binding, snapshot, operation, plan));
     if (sources.some((row) => row.status === "waiting")) {
       state.status = "waiting";
       continue;
     }
     const healthy = sources.map((row, index) => ({ row, index })).filter((value2) => value2.row.status === "ready");
-    const outputs = stage.outputSources.map((sourceIndex, index) => sources[sourceIndex].status === "failed" ? { index, status: "failed", errorCode: "DEPENDENCY_FAILED" } : { index, status: "waiting" });
+    const outputs = stage2.outputSources.map((sourceIndex, index) => sources[sourceIndex].status === "failed" ? { index, status: "failed", errorCode: "DEPENDENCY_FAILED" } : { index, status: "waiting" });
     if (healthy.length) {
       state.status = "running";
       await persist();
       try {
         const local = await deps.runLocal({
-          operationId: `mixed-${digest2({ operationId: operation.operationId, stageId: stage.id }).slice(0, 48)}`,
-          taskName: `${plan.taskName}\xB7${stage.label}`.slice(0, 100),
-          stageId: stage.id,
-          stageLabel: stage.label,
+          operationId: `mixed-${digest2({ operationId: operation.operationId, stageId: stage2.id }).slice(0, 48)}`,
+          taskName: `${plan.taskName}\xB7${stage2.label}`.slice(0, 100),
+          stageId: stage2.id,
+          stageLabel: stage2.label,
           referenceIds: healthy.map((value2) => value2.row.referenceId),
-          processingSteps: stage.processingSteps,
-          expectedOutputCount: stage.outputCount,
+          processingSteps: stage2.processingSteps,
+          expectedOutputCount: stage2.outputCount,
           failedInputCount: sources.length - healthy.length,
           signal: deps.signal
         });
         const healthyIndexes = new Set(healthy.map((value2) => value2.index));
-        const healthyOutputSlots = stage.outputSources.map((sourceIndex, outputIndex) => ({ sourceIndex, outputIndex })).filter((value2) => healthyIndexes.has(value2.sourceIndex));
+        const healthyOutputSlots = stage2.outputSources.map((sourceIndex, outputIndex) => ({ sourceIndex, outputIndex })).filter((value2) => healthyIndexes.has(value2.sourceIndex));
         if (local.stages.length !== 1 || local.stages[0].resultIds.length !== healthyOutputSlots.length)
           throw new PodploPluginError("MIXED_LOCAL_OUTPUT_MISMATCH", "\u672C\u5730\u9636\u6BB5\u8F93\u51FA\u6570\u4E0E\u51BB\u7ED3\u8BA1\u5212\u4E0D\u4E00\u81F4\u3002");
         if (!local.complete) throw new PodploPluginError("MIXED_LOCAL_ARCHIVE_INCOMPLETE", "\u672C\u5730\u9636\u6BB5\u6210\u679C\u5C1A\u672A\u5B8C\u6574\u5F52\u6863\u3002");
         for (const [resultPosition, { outputIndex }] of healthyOutputSlots.entries()) {
           const resultId = local.stages[0].resultIds[resultPosition];
-          if (!cloudOutputs.has(`${stage.id}\0${outputIndex}`)) {
+          if (!cloudOutputs.has(`${stage2.id}\0${outputIndex}`)) {
             outputs[outputIndex] = { index: outputIndex, status: "ready", localResultId: resultId };
             continue;
           }
@@ -61301,7 +61301,7 @@ async function advanceNativeMixedTask(_plan, _operation, _deps) {
             const assetId = await deps.uploadLocalResult({
               resultId,
               sessionId: deps.sessionId,
-              idempotencyKey: `mixed-${digest2({ operationId: operation.operationId, stageId: stage.id, outputIndex }).slice(0, 48)}`
+              idempotencyKey: `mixed-${digest2({ operationId: operation.operationId, stageId: stage2.id, outputIndex }).slice(0, 48)}`
             });
             if (!opaqueAssetId(assetId)) throw new Error("\u672C\u5730\u7ED3\u679C\u4E0A\u4F20\u8FD4\u56DE\u4E86\u65E0\u6548\u7D20\u6750 ID");
             outputs[outputIndex] = { index: outputIndex, status: "ready", assetId, localResultId: resultId };
@@ -61322,21 +61322,21 @@ async function advanceNativeMixedTask(_plan, _operation, _deps) {
     state.errorCode = state.status === "failed" ? "MIXED_LOCAL_PARTIAL_FAILURE" : void 0;
     await persist();
   }
-  snapshot.status = snapshot.stages.some((stage) => stage.status === "waiting" || stage.status === "running") ? "pending" : snapshot.stages.some((stage) => stage.status === "failed") ? "failed" : "completed";
+  snapshot.status = snapshot.stages.some((stage2) => stage2.status === "waiting" || stage2.status === "running") ? "pending" : snapshot.stages.some((stage2) => stage2.status === "failed") ? "failed" : "completed";
   await persist();
   return snapshot;
 }
 function resolveBinding(binding, snapshot, operation, plan) {
   if (binding.kind === "root") return { status: "ready", referenceId: binding.assetId };
   if (binding.kind === "local") {
-    const stage2 = snapshot.stages.find((row) => row.id === binding.stageId), output2 = stage2?.outputs.find((row) => row.index === binding.outputIndex);
+    const stage3 = snapshot.stages.find((row) => row.id === binding.stageId), output2 = stage3?.outputs.find((row) => row.index === binding.outputIndex);
     if (!output2 || output2.status === "waiting") return { status: "waiting" };
-    if (output2.status === "failed") return { status: "failed", errorCode: output2.errorCode ?? stage2?.errorCode ?? "MIXED_STAGE_FAILED" };
+    if (output2.status === "failed") return { status: "failed", errorCode: output2.errorCode ?? stage3?.errorCode ?? "MIXED_STAGE_FAILED" };
     const referenceId = output2.localResultId ?? output2.assetId;
     return referenceId ? { status: "ready", referenceId } : { status: "failed", errorCode: "MIXED_LOCAL_RESULT_MISSING" };
   }
-  const stage = plan.stages.find((row) => row.id === binding.stageId);
-  if (!stage || stage.kind !== "ai" || !stage.itemIndexes.includes(binding.itemIndex)) return { status: "failed", errorCode: "MIXED_AI_BINDING_INVALID" };
+  const stage2 = plan.stages.find((row) => row.id === binding.stageId);
+  if (!stage2 || stage2.kind !== "ai" || !stage2.itemIndexes.includes(binding.itemIndex)) return { status: "failed", errorCode: "MIXED_AI_BINDING_INVALID" };
   const item = operation.items[binding.itemIndex], output = item?.outputs?.find((row) => row.index === binding.outputIndex);
   if (item?.status === "submission_unknown") return { status: "failed", errorCode: "DEPENDENCY_RESULT_UNKNOWN" };
   if (!item || item.status === "failed" || item.status === "cancelled") return { status: "failed", errorCode: item?.errorCode ?? output?.failureCode ?? "MIXED_AI_FAILED" };
@@ -61579,7 +61579,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.46",
+  version: "0.1.47",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -61659,7 +61659,7 @@ var TaskDiagnosticSchema = external_exports2.object({
   code: external_exports2.enum(Object.keys(advice)),
   at: external_exports2.string().datetime().optional()
 });
-function diagnose(stage, error101, at) {
+function diagnose(stage2, error101, at) {
   const raw = error101 && typeof error101 === "object" ? error101.code : void 0;
   const aliases = {
     SIGN_IN_REQUIRED: "AUTH_REQUIRED",
@@ -61679,8 +61679,8 @@ function diagnose(stage, error101, at) {
     archive: "ARCHIVE_FAILED",
     connection: "CONNECTION_FAILED"
   };
-  const code = typeof raw === "string" ? Object.hasOwn(advice, raw) ? raw : Object.hasOwn(aliases, raw) ? aliases[raw] : fallback[stage] : fallback[stage];
-  return { stage, code, ...at && Number.isFinite(Date.parse(at)) ? { at: new Date(at).toISOString() } : {} };
+  const code = typeof raw === "string" ? Object.hasOwn(advice, raw) ? raw : Object.hasOwn(aliases, raw) ? aliases[raw] : fallback[stage2] : fallback[stage2];
+  return { stage: stage2, code, ...at && Number.isFinite(Date.parse(at)) ? { at: new Date(at).toISOString() } : {} };
 }
 function taskDiagnostics(task) {
   const rows = [...task.diagnostics ?? [], ...task.files.flatMap((file3) => file3.diagnostic ? [file3.diagnostic] : [])];
@@ -61774,11 +61774,11 @@ function safeOperation2(row) {
       inputGroupSizes: items.map((item) => Array.isArray(item.args.referenceAssetIds) ? item.args.referenceAssetIds.length : 0)
     };
   });
-  const processingSummary = row.mixedPlan ? row.mixedPlan.stages.filter((stage) => stage.kind === "local").map((stage) => stage.label).join(" \u2192 ") : row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
-  const referenced = new Set(row.mixedPlan?.stages.flatMap((stage) => stage.sourceBindings.flatMap((source) => source.kind === "root" ? [] : [source.stageId])) ?? []);
-  const finalOutputCount = row.mixedPlan ? row.mixedPlan.stages.filter((stage) => !referenced.has(stage.id)).reduce((sum, stage) => sum + stage.outputCount, 0) : estimatedFinalOutputCount(row);
-  const stageText = stages.map((stage) => `${stage.label}\uFF1A${stage.skillSummary}\uFF0C${stage.aiOutputCount} \u5F20/${stage.credits} \u79EF\u5206` + (stage.inputGroupSizes.some((size2) => size2 > 1) ? `\uFF0C\u5206\u7EC4\u8F93\u5165 ${stage.inputGroupSizes.join("/")} \u5F20` : "") + (stage.models.length ? `\uFF0C${stage.models.join("/")}` : "") + (stage.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
-  const workflowText = row.mixedPlan ? row.mixedPlan.stages.map((stage) => stage.kind === "local" ? `${stage.label}\uFF1A\u672C\u5730\u52A0\u5DE5\uFF0C\u9884\u8BA1 ${stage.outputCount} \u4E2A\u4EA7\u7269` : stages.find((value2) => value2.id === stage.id) ? `${stage.label}\uFF1AAI ${stage.outputCount} \u5F20` : stage.label).join(" \u2192 ") + "\uFF1B" : "";
+  const processingSummary = row.mixedPlan ? row.mixedPlan.stages.filter((stage2) => stage2.kind === "local").map((stage2) => stage2.label).join(" \u2192 ") : row.processingPlan?.map((step) => step.label).join(" \u2192 ") ?? "";
+  const referenced = new Set(row.mixedPlan?.stages.flatMap((stage2) => stage2.sourceBindings.flatMap((source) => source.kind === "root" ? [] : [source.stageId])) ?? []);
+  const finalOutputCount = row.mixedPlan ? row.mixedPlan.stages.filter((stage2) => !referenced.has(stage2.id)).reduce((sum, stage2) => sum + stage2.outputCount, 0) : estimatedFinalOutputCount(row);
+  const stageText = stages.map((stage2) => `${stage2.label}\uFF1A${stage2.skillSummary}\uFF0C${stage2.aiOutputCount} \u5F20/${stage2.credits} \u79EF\u5206` + (stage2.inputGroupSizes.some((size2) => size2 > 1) ? `\uFF0C\u5206\u7EC4\u8F93\u5165 ${stage2.inputGroupSizes.join("/")} \u5F20` : "") + (stage2.models.length ? `\uFF0C${stage2.models.join("/")}` : "") + (stage2.ecoMode ? "\uFF0CEco" : "")).join("\uFF1B");
+  const workflowText = row.mixedPlan ? row.mixedPlan.stages.map((stage2) => stage2.kind === "local" ? `${stage2.label}\uFF1A\u672C\u5730\u52A0\u5DE5\uFF0C\u9884\u8BA1 ${stage2.outputCount} \u4E2A\u4EA7\u7269` : stages.find((value2) => value2.id === stage2.id) ? `${stage2.label}\uFF1AAI ${stage2.outputCount} \u5F20` : stage2.label).join(" \u2192 ") + "\uFF1B" : "";
   const confirmationText = `${workflowText}${stageText}\u3002\u6574\u5355\u5171 ${summary.totalCredits} \u79EF\u5206\uFF0CAI \u8F93\u51FA ${summary.outputCount} \u5F20` + (processingSummary ? `\uFF1B\u672C\u5730\u52A0\u5DE5 ${processingSummary}\uFF0C\u9884\u8BA1\u6210\u54C1 ${finalOutputCount} \u5F20\uFF08\u672C\u5730\u52A0\u5DE5\u4E0D\u8BA1\u79EF\u5206\uFF09` : "") + "\u3002";
   return {
     operationId: row.operationId,
@@ -61844,14 +61844,14 @@ function safeOperation2(row) {
     ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
     ...row.replacedBy ? { replacedBy: row.replacedBy } : {},
     ...row.stoppedAt ? { stoppedAt: row.stoppedAt } : {},
-    ...row.mixedPlan ? { localStages: row.mixedPlan.stages.filter((stage) => stage.kind === "local").map((stage) => ({
-      id: stage.id,
-      label: stage.label,
-      outputCount: stage.outputCount,
-      status: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.status ?? (row.mixedFailure ? "failed" : "waiting"),
-      succeededCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.outputs.filter((output) => output.status === "ready").length ?? 0,
-      failedCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.outputs.filter((output) => output.status === "failed" && output.errorCode !== "DEPENDENCY_FAILED").length ?? 0,
-      notExecutedCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage.id)?.outputs.filter((output) => output.status === "failed" && output.errorCode === "DEPENDENCY_FAILED").length ?? 0
+    ...row.mixedPlan ? { localStages: row.mixedPlan.stages.filter((stage2) => stage2.kind === "local").map((stage2) => ({
+      id: stage2.id,
+      label: stage2.label,
+      outputCount: stage2.outputCount,
+      status: row.mixedRuntime?.stages.find((saved) => saved.id === stage2.id)?.status ?? (row.mixedFailure ? "failed" : "waiting"),
+      succeededCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage2.id)?.outputs.filter((output) => output.status === "ready").length ?? 0,
+      failedCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage2.id)?.outputs.filter((output) => output.status === "failed" && output.errorCode !== "DEPENDENCY_FAILED").length ?? 0,
+      notExecutedCount: row.mixedRuntime?.stages.find((saved) => saved.id === stage2.id)?.outputs.filter((output) => output.status === "failed" && output.errorCode === "DEPENDENCY_FAILED").length ?? 0
     })) } : {},
     ...row.processingPlan ? { processingPlan: structuredClone(row.processingPlan) } : {}
   };
@@ -62071,9 +62071,9 @@ function buildGenerationOrder(input) {
       const key = `${stageId}:${outputIndex}`;
       if (seen.has(key)) throw new Error("Invalid local task dependency cycle");
       seen.add(key);
-      const stage = input.mixedPlan.stages.find((stage2) => stage2.id === stageId);
-      if (!stage || stage.kind !== "local") throw new Error("Invalid local task source");
-      const binding = stage.sourceBindings[stage.outputSources[outputIndex]];
+      const stage2 = input.mixedPlan.stages.find((stage3) => stage3.id === stageId);
+      if (!stage2 || stage2.kind !== "local") throw new Error("Invalid local task source");
+      const binding = stage2.sourceBindings[stage2.outputSources[outputIndex]];
       if (!binding) throw new Error("Invalid local output source");
       if (binding.kind === "root") sourceAssetIds.push(binding.assetId);
       else if (binding.kind === "ai") {
@@ -62394,8 +62394,8 @@ var PodploPluginService = class extends EventEmitter2 {
         createdAt: row.createdAt,
         ...row.mixedPlan ? { workflow: {
           status: row.stoppedAt ? "cancelled" : row.mixedFailure ? "failed" : row.mixedRuntime?.status ?? "pending",
-          failed: row.mixedRuntime?.stages.filter((stage) => stage.kind === "local").reduce((sum, stage) => sum + stage.outputs.filter((output) => output.status === "failed" && output.errorCode !== "DEPENDENCY_FAILED").length, 0) ?? (row.mixedFailure ? 1 : 0),
-          notExecuted: row.mixedRuntime?.stages.filter((stage) => stage.kind === "local").reduce((sum, stage) => sum + stage.outputs.filter((output) => output.status === "failed" && output.errorCode === "DEPENDENCY_FAILED").length, 0) ?? 0
+          failed: row.mixedRuntime?.stages.filter((stage2) => stage2.kind === "local").reduce((sum, stage2) => sum + stage2.outputs.filter((output) => output.status === "failed" && output.errorCode !== "DEPENDENCY_FAILED").length, 0) ?? (row.mixedFailure ? 1 : 0),
+          notExecuted: row.mixedRuntime?.stages.filter((stage2) => stage2.kind === "local").reduce((sum, stage2) => sum + stage2.outputs.filter((output) => output.status === "failed" && output.errorCode === "DEPENDENCY_FAILED").length, 0) ?? 0
         } } : {},
         status: operationStatus(row),
         ...row.approvedAt ? { approvedAt: row.approvedAt } : {},
@@ -63421,12 +63421,12 @@ var PodploPluginService = class extends EventEmitter2 {
       return;
     }
     const covered = /* @__PURE__ */ new Set();
-    for (const stage of plan.stages.filter((stage2) => stage2.kind === "ai")) {
-      if (stage.kind !== "ai") continue;
-      const groups = stage.sourceGroups ?? stage.sourceBindings.map((_, index) => [index]);
-      for (const [position, index] of stage.itemIndexes.entries()) {
-        const item = items[index], sources = groups[position].map((sourceIndex) => stage.sourceBindings[sourceIndex]);
-        if (!item || covered.has(index) || item.stage?.id !== stage.id || item.args.count !== 1 || !Array.isArray(item.args.referenceAssetIds) || item.args.referenceAssetIds.length !== sources.length)
+    for (const stage2 of plan.stages.filter((stage3) => stage3.kind === "ai")) {
+      if (stage2.kind !== "ai") continue;
+      const groups = stage2.sourceGroups ?? stage2.sourceBindings.map((_, index) => [index]);
+      for (const [position, index] of stage2.itemIndexes.entries()) {
+        const item = items[index], sources = groups[position].map((sourceIndex) => stage2.sourceBindings[sourceIndex]);
+        if (!item || covered.has(index) || item.stage?.id !== stage2.id || item.args.count !== 1 || !Array.isArray(item.args.referenceAssetIds) || item.args.referenceAssetIds.length !== sources.length)
           throw new PodploPluginError("INVALID_GENERATION_DEPENDENCY", "AI \u9636\u6BB5\u4E0E\u6574\u5355\u9879\u76EE\u6216\u53C2\u8003\u56FE\u6570\u91CF\u4E0D\u4E00\u81F4\u3002");
         covered.add(index);
         const expected = sources.flatMap((source, referenceIndex) => source.kind === "root" ? [] : source.kind === "ai" ? [{ kind: "ai", itemIndex: source.itemIndex, outputIndex: source.outputIndex, referenceIndex }] : [{ kind: "local", stageId: source.stageId, outputIndex: source.outputIndex, referenceIndex }]);
@@ -63458,7 +63458,7 @@ var PodploPluginService = class extends EventEmitter2 {
           if (operation.reservation && Date.parse(operation.reservation.expiresAt) <= this.now().getTime())
             throw new PodploPluginError("ORDER_EXPIRED", "\u6574\u5355\u9884\u7559\u5DF2\u8FC7\u671F\uFF0C\u672A\u7EE7\u7EED\u672C\u5730\u52A0\u5DE5\u6216\u4E0A\u4F20\u3002");
           await this.assertOwner(ownerId, true);
-          await this.assertProcessingPlanAuthorized(ownerId, operation.mixedPlan.stages.flatMap((stage) => stage.kind === "local" ? stage.processingSteps : []));
+          await this.assertProcessingPlanAuthorized(ownerId, operation.mixedPlan.stages.flatMap((stage2) => stage2.kind === "local" ? stage2.processingSteps : []));
           const runtime = await this.options.reconcileMixedTask(structuredClone(operation));
           await this.assertOwner(ownerId, true);
           await this.store.transaction((saved) => {
@@ -63498,7 +63498,7 @@ var PodploPluginService = class extends EventEmitter2 {
     const mixedPlan = input.mixedPlan === void 0 ? void 0 : validateNativeMixedTaskPlan(input.mixedPlan);
     this.assertMixedItems(mixedPlan, preparedItems);
     if (mixedPlan && !this.options.reconcileMixedTask) throw new PodploPluginError("MIXED_TASK_BACKEND_UNAVAILABLE", "\u5F53\u524D Host \u4E0D\u652F\u6301\u6DF7\u5408\u4EFB\u52A1\u6267\u884C\u3002");
-    if (mixedPlan) await this.assertProcessingPlanAuthorized(ownerId, mixedPlan.stages.flatMap((stage) => stage.kind === "local" ? stage.processingSteps : []));
+    if (mixedPlan) await this.assertProcessingPlanAuthorized(ownerId, mixedPlan.stages.flatMap((stage2) => stage2.kind === "local" ? stage2.processingSteps : []));
     const expectedOutputCount = this.expectedOutputCount(input);
     const wholeOrderRequired = input.wholeOrderRequired === true;
     this.assertPlannedOutputCount(preparedItems, expectedOutputCount);
@@ -63509,7 +63509,7 @@ var PodploPluginService = class extends EventEmitter2 {
       throw new PodploPluginError("INVALID_PROCESSING_PLAN", "\u52A0\u5DE5\u6B65\u9AA4\u65E0\u6548\uFF0C\u8BF7\u6838\u5BF9\u5DE5\u5177\u4E0E\u53C2\u6570\u3002");
     }
     await this.assertProcessingPlanAuthorized(ownerId, processingPlan);
-    const hasTextRoot = mixedPlan?.stages.some((stage) => stage.kind === "ai" && stage.sourceBindings.length === 0) === true;
+    const hasTextRoot = mixedPlan?.stages.some((stage2) => stage2.kind === "ai" && stage2.sourceBindings.length === 0) === true;
     const items = await this.resolvePreparedReferences(ownerId, nativeSessionId, preparedItems, wholeOrderRequired && hasTextRoot);
     const state = this.store.snapshot();
     if (operationId2) {
@@ -63579,7 +63579,7 @@ var PodploPluginService = class extends EventEmitter2 {
       const pricingReferenceCount = item.pricingReferenceCount === void 0 ? void 0 : Number(item.pricingReferenceCount);
       if (pricingReferenceCount !== void 0 && (!Number.isSafeInteger(pricingReferenceCount) || pricingReferenceCount < 0 || pricingReferenceCount > 14))
         throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].pricingReferenceCount \u65E0\u6548`);
-      let stage;
+      let stage2;
       if (item.stage !== void 0) {
         const rawStage = record6(item.stage, `items[${index}].stage`);
         if (Object.keys(rawStage).some((key) => !["id", "label", "order"].includes(key)) || !Number.isSafeInteger(rawStage.order) || Number(rawStage.order) < 0 || Number(rawStage.order) > 99) {
@@ -63587,7 +63587,7 @@ var PodploPluginService = class extends EventEmitter2 {
         }
         const id2 = text4(rawStage.id, "stage.id", 40);
         if (!/^[A-Za-z0-9_-]+$/u.test(id2)) throw new PodploPluginError("INVALID_ARGUMENT", `items[${index}].stage.id \u65E0\u6548`);
-        stage = { id: id2, label: text4(rawStage.label, "stage.label", 80), order: Number(rawStage.order) };
+        stage2 = { id: id2, label: text4(rawStage.label, "stage.label", 80), order: Number(rawStage.order) };
       }
       let referenceDependencies;
       if (item.referenceDependencies !== void 0) {
@@ -63630,7 +63630,7 @@ var PodploPluginService = class extends EventEmitter2 {
         return {
           ...sourceName,
           ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
-          ...stage ? { stage } : {},
+          ...stage2 ? { stage: stage2 } : {},
           ...referenceDependencies ? { referenceDependencies } : {},
           ...localDependency ? { localDependency } : {},
           ...dependsOn ? { dependsOn } : {},
@@ -63643,7 +63643,7 @@ var PodploPluginService = class extends EventEmitter2 {
         skillId,
         ...sourceName,
         ...pricingReferenceCount !== void 0 ? { pricingReferenceCount } : {},
-        ...stage ? { stage } : {},
+        ...stage2 ? { stage: stage2 } : {},
         ...referenceDependencies ? { referenceDependencies } : {},
         ...localDependency ? { localDependency } : {},
         ...dependsOn ? { dependsOn } : {},
@@ -63955,7 +63955,7 @@ var PodploPluginService = class extends EventEmitter2 {
       throw new PodploPluginError("INSUFFICIENT_CREDITS", "\u4F59\u989D\u4E0D\u8DB3\uFF0C\u6574\u5355\u672A\u9884\u7559\u4E5F\u672A\u63D0\u4EA4\u3002\u8BF7\u5145\u503C\u6216\u8C03\u6574\u65B9\u6848\u540E\u91CD\u65B0\u786E\u8BA4\u3002");
     }
     await this.assertProcessingPlanAuthorized(ownerId, operation.processingPlan);
-    if (operation.mixedPlan) await this.assertProcessingPlanAuthorized(ownerId, operation.mixedPlan.stages.flatMap((stage) => stage.kind === "local" ? stage.processingSteps : []));
+    if (operation.mixedPlan) await this.assertProcessingPlanAuthorized(ownerId, operation.mixedPlan.stages.flatMap((stage2) => stage2.kind === "local" ? stage2.processingSteps : []));
     let reservation = operation.reservation;
     if (operation.pricingVersion) {
       const gateway = this.gateway();
@@ -66748,6 +66748,61 @@ import { createHash as createHash15, randomUUID as randomUUID14 } from "node:cry
 import { constants as constants6 } from "node:fs";
 import { lstat as lstat6, mkdir as mkdir7, open as open7, realpath as realpath7, rename as rename4, unlink as unlink3 } from "node:fs/promises";
 import { isAbsolute as isAbsolute7, join as join12 } from "node:path";
+
+// plugins/podplo-dsh/src/submission-diagnostic.ts
+var stage = external_exports2.enum(["reference_upload", "capabilities", "quote", "approval"]);
+var reason = external_exports2.enum([
+  "PANEL_UNMOUNTED",
+  "DRAFT_CHANGED",
+  "BUSY",
+  "INVALID_ARGUMENT",
+  "MODEL_CHANGED",
+  "REFERENCE_LIMIT_EXCEEDED",
+  "PRICE_CHANGED",
+  "QUOTE_EXPIRED",
+  "INVALID_TOOL_RESPONSE",
+  "NOT_CONFIGURED",
+  "INSUFFICIENT_CREDITS",
+  "SESSION_CHANGED",
+  "SIGN_IN_REQUIRED",
+  "INSUFFICIENT_SCOPE",
+  "LOCAL_PRICING_UNAVAILABLE",
+  "PRICING_VERSION_CHANGED",
+  "ORDER_PARAMETER_UNAVAILABLE",
+  "ORDINARY_ORDER_BACKEND_UNAVAILABLE",
+  "GENERATION_CAPABILITY_UNAVAILABLE",
+  "UPLOAD_NOT_READY",
+  "LOCAL_FILE_UNAVAILABLE",
+  "MCP_TOOL_REJECTED",
+  "NETWORK_UNAVAILABLE",
+  "MCP_INVALID_TOOL_ARGUMENTS",
+  "ORDER_RESERVATION_UNAVAILABLE",
+  "CONFIRMATION_MISMATCH",
+  "ORDER_QUOTE_CHANGED",
+  "INVALID_QUOTE_RESPONSE",
+  "QUOTE_RESPONSE_MISMATCH",
+  "PODPLO_REQUEST_FAILED",
+  "PLAN_VERSION_CONFLICT",
+  "PLAN_VERSION_OUTDATED",
+  "INTENT_ALREADY_SUBMITTED",
+  "UNKNOWN"
+]);
+var submissionEvent = external_exports2.object({
+  stage,
+  status: external_exports2.enum(["started", "passed", "failed", "unknown"]),
+  code: reason.optional(),
+  at: external_exports2.string().datetime(),
+  planVersion: external_exports2.number().int().min(1).max(1e6)
+}).strict();
+var submissionDiagnosticInput = external_exports2.object({
+  ownerId: external_exports2.string().min(1).max(180),
+  scope: external_exports2.string().regex(/^[a-f0-9]{64}$/),
+  intentId: external_exports2.union([external_exports2.string().uuid(), external_exports2.string().regex(/^\d{13}-[0-9a-f]{1,16}$/)]),
+  startedAt: external_exports2.string().datetime(),
+  event: submissionEvent
+}).strict();
+
+// plugins/podplo-dsh/src/operation-log.ts
 var hash4 = (value2) => createHash15("sha256").update(value2).digest("hex");
 var archiveTaskKey = (ownerId, sessionId, key) => hash4(`${hash4(ownerId)}\0${sessionId}\0${key}`);
 var stageSchema = external_exports2.enum(["generation", "download", "processing", "archive", "connection"]);
@@ -66764,26 +66819,27 @@ var entrySchema = external_exports2.object({
   counts: countsSchema,
   durationMs: external_exports2.number().int().nonnegative().max(Number.MAX_SAFE_INTEGER).optional(),
   stages: external_exports2.array(external_exports2.object({ stage: stageSchema, status: statusSchema, at: external_exports2.string().datetime() })).max(5),
-  diagnostics: external_exports2.array(TaskDiagnosticSchema).max(20)
+  diagnostics: external_exports2.array(TaskDiagnosticSchema).max(20),
+  submission: external_exports2.array(submissionEvent).max(32).optional()
 });
 function archiveLogUpdate(key, task, at) {
   const audit = task.audit, diagnostics = taskDiagnostics(task);
-  let stage = "archive", status = "running";
-  if (audit?.generation.pending) stage = "generation";
+  let stage2 = "archive", status = "running";
+  if (audit?.generation.pending) stage2 = "generation";
   else if (audit?.generation.unknown) {
-    stage = "generation";
+    stage2 = "generation";
     status = "unknown";
   } else if (["cancelled", "partial_cancelled"].includes(task.status)) {
-    stage = "generation";
+    stage2 = "generation";
     status = "stopped";
   } else if (task.status === "failed" || task.saveStatus === "failed" || task.saveStatus === "missing" || audit?.generation.failed || audit?.processing.failed) {
-    stage = diagnostics.find((row) => row.code !== "SUMMARY_UPDATE_FAILED")?.stage ?? "archive";
+    stage2 = diagnostics.find((row) => row.code !== "SUMMARY_UPDATE_FAILED")?.stage ?? "archive";
     status = "failed";
-  } else if (audit?.download.remaining) stage = "download";
-  else if (audit?.processing.registered && audit.processing.remaining) stage = "processing";
+  } else if (audit?.download.remaining) stage2 = "download";
+  else if (audit?.processing.registered && audit.processing.remaining) stage2 = "processing";
   else if (task.saveStatus === "saved") status = "completed";
   if (diagnostics.some((row) => row.stage === "connection") && status === "running") {
-    stage = "connection";
+    stage2 = "connection";
     status = "unknown";
   }
   return {
@@ -66791,7 +66847,7 @@ function archiveLogUpdate(key, task, at) {
     create: false,
     startedAt: task.createdAt,
     at,
-    stage,
+    stage: stage2,
     status,
     diagnostics,
     counts: {
@@ -66858,15 +66914,21 @@ var OperationLog = class {
         if (!prior && update.create === false) continue;
         const startedAt = external_exports2.string().datetime().parse(prior?.startedAt ?? update.startedAt);
         const at = external_exports2.string().datetime().parse(update.at ?? (this.options.now?.() ?? /* @__PURE__ */ new Date()).toISOString());
-        if (prior && at < prior.updatedAt) continue;
+        const event = update.submission && submissionEvent.parse(update.submission);
+        if (prior && at < prior.updatedAt && !event) continue;
+        const submission = event ? [...prior?.submission ?? [], event].slice(-32) : prior?.submission;
+        if (prior && event && (prior.updatedAt > at || prior.stages.some((s) => s.stage !== "generation") || prior.counts.generated !== void 0 || !prior.submission || prior.status === "completed")) {
+          rows = rows.map((row2) => row2 === prior ? { ...prior, submission } : row2);
+          continue;
+        }
         const diagnostics = [...new Map([...prior?.diagnostics ?? [], ...update.diagnostics ?? []].flatMap((row2) => {
           const parsed = TaskDiagnosticSchema.safeParse(row2);
           return parsed.success ? [parsed.data] : [];
         }).map((row2) => [`${row2.stage}:${row2.code}`, row2])).values()].slice(-20);
         const counts = countsSchema.parse({ ...prior?.counts, ...update.counts });
         const type = prior?.type ?? update.type ?? "local";
-        const semantic = { type, stage: update.stage, status: update.status, counts, diagnostics };
-        if (prior && JSON.stringify(semantic) === JSON.stringify({ type: prior.type, stage: prior.stage, status: prior.status, counts: prior.counts, diagnostics: prior.diagnostics })) continue;
+        const semantic = { type, stage: update.stage, status: update.status, counts, diagnostics, submission };
+        if (prior && JSON.stringify(semantic) === JSON.stringify({ type: prior.type, stage: prior.stage, status: prior.status, counts: prior.counts, diagnostics: prior.diagnostics, submission: prior.submission })) continue;
         const stages = [...(prior?.stages ?? []).filter((row2) => row2.stage !== update.stage), { stage: update.stage, status: update.status, at }];
         const row = entrySchema.parse({
           id: id2,
@@ -67631,7 +67693,7 @@ var TaskArchiveManager = class {
     const initial = this.store.snapshot().tasks.find((row) => row.id === id2 && row.owner === identity2.owner);
     if (!initial || !archiveLayout(initial)) return;
     for (const file3 of initial.files.filter((row) => row.status === "pending")) {
-      let stage = "archive";
+      let stage2 = "archive";
       try {
         await this.same(identity2);
         await this.taskDirectory(initial);
@@ -67645,9 +67707,9 @@ var TaskArchiveManager = class {
           });
           continue;
         }
-        stage = file3.source.kind === "asset" ? "download" : "processing";
+        stage2 = file3.source.kind === "asset" ? "download" : "processing";
         const source = await this.options.read(file3.source);
-        stage = "archive";
+        stage2 = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
         let extension = extname12(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json", "txt"].includes(extension);
@@ -67681,7 +67743,7 @@ var TaskArchiveManager = class {
           const row = state.tasks.find((row2) => row2.id === id2 && row2.owner === identity2.owner)?.files.find((row2) => row2.id === file3.id);
           if (row) {
             row.status = "failed";
-            row.diagnostic = diagnose(stage, error101, (/* @__PURE__ */ new Date()).toISOString());
+            row.diagnostic = diagnose(stage2, error101, (/* @__PURE__ */ new Date()).toISOString());
           }
         });
       }
@@ -67697,13 +67759,13 @@ var TaskArchiveManager = class {
     }
     for (const file3 of task.files.filter((row) => row.status === "pending")) {
       let published;
-      let stage = "archive";
+      let stage2 = "archive";
       try {
         await this.same(identity2);
         await this.taskDirectory(task);
-        stage = file3.source.kind === "asset" ? "download" : "processing";
+        stage2 = file3.source.kind === "asset" ? "download" : "processing";
         const source = await this.options.read(file3.source);
-        stage = "archive";
+        stage2 = "archive";
         if (!source.bytes.length || source.bytes.length > 250 * 1024 * 1024) throw new Error("\u6587\u4EF6\u5927\u5C0F\u65E0\u6548");
         let extension = extname12(source.name).toLowerCase().slice(1);
         const image = !["pdf", "zip", "json", "txt"].includes(extension);
@@ -67757,7 +67819,7 @@ var TaskArchiveManager = class {
           const saved = state.tasks.find((row) => row.id === id2 && row.owner === identity2.owner)?.files.find((row) => row.id === file3.id);
           if (saved) {
             saved.status = "failed";
-            saved.diagnostic = diagnose(stage, error101, (/* @__PURE__ */ new Date()).toISOString());
+            saved.diagnostic = diagnose(stage2, error101, (/* @__PURE__ */ new Date()).toISOString());
           }
         });
       }
@@ -68107,7 +68169,7 @@ var TaskArchiveManager = class {
     const internalFiles = [];
     for (const file3 of task.files) {
       const itemIndex = this.generationItemIndex(task, file3), item = this.generationItem(task, file3), step = this.processingStep(task, file3);
-      const stage = step ? {
+      const stage2 = step ? {
         id: `processing:${step.id}`,
         label: step.label,
         order: 100 + Math.max(0, task.processingPlan?.findIndex((row) => row.id === step.id) ?? 0)
@@ -68133,7 +68195,7 @@ var TaskArchiveManager = class {
         sourceId: file3.sourceId,
         generationItemIndex: itemIndex,
         sourceName: item?.sourceName ?? file3.sourceName,
-        stage,
+        stage: stage2,
         ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
         ...file3.group === "result" ? { variant: file3.source.kind === "asset" ? "generated" : "processed" } : {}
       });
@@ -68142,7 +68204,7 @@ var TaskArchiveManager = class {
     const files = [];
     for (const file3 of task.files) {
       const itemIndex = this.generationItemIndex(task, file3), item = this.generationItem(task, file3), step = this.processingStep(task, file3);
-      const stage = step ? {
+      const stage2 = step ? {
         id: `processing:${step.id}`,
         label: step.label,
         order: 100 + Math.max(0, task.processingPlan?.findIndex((row) => row.id === step.id) ?? 0)
@@ -68163,7 +68225,7 @@ var TaskArchiveManager = class {
         sourceId: file3.sourceId,
         generationItemIndex: itemIndex,
         sourceName: item?.sourceName ?? file3.sourceName,
-        stage,
+        stage: stage2,
         ...file3.publishedName ? { relativePath: join13(this.outputFolder(task, file3), file3.publishedName) } : {},
         ...file3.source.kind === "asset" ? { assetId: file3.source.id } : {},
         variant: file3.source.kind === "asset" ? "generated" : "processed"
@@ -69756,13 +69818,13 @@ async function taskArchiveHost(options) {
       rerun = true;
       return pending;
     }
-    let stage = "generation";
+    let stage2 = "generation";
     let logTarget;
     const scope = `${online.snapshot().identity?.userId ?? ""}:${online.auth.namespace}`;
     pending = (async () => {
       do {
         rerun = false;
-        stage = "generation";
+        stage2 = "generation";
         logTarget = void 0;
         const generations = await service.archiveGenerations();
         const grant = `${generations.ownerId}:${online.auth.namespace}`;
@@ -69812,12 +69874,12 @@ async function taskArchiveHost(options) {
               }))
             ]
           };
-          stage = "archive";
+          stage2 = "archive";
           const taskId = await manager.upsert(input, generations.ownerId);
           if (taskId) scheduleProcessing(taskId);
           signatures.set(key, signature);
         }
-        stage = "processing";
+        stage2 = "processing";
         logTarget = void 0;
         const local = await toolkit.archiveOperations(sessionId);
         for (const row of local.items) {
@@ -69861,7 +69923,7 @@ async function taskArchiveHost(options) {
             }]);
           }
           for (const [id2, files] of groups) {
-            stage = "archive";
+            stage2 = "archive";
             if (groupKeys.has(id2)) logTarget.key = groupKeys.get(id2);
             const receipt = { operationId: row.operationId, toolName: row.toolName, label, options: row.options, inputIds: row.inputIds, resultIds: files.map((file3) => file3.source.id) };
             if (id2) await manager.append(id2, files, row.operationId, receipt);
@@ -69889,12 +69951,12 @@ async function taskArchiveHost(options) {
       } while (rerun && !closed);
     })().catch(async (cause) => {
       error101 = "\u6210\u679C\u5F52\u6863\u5C1A\u672A\u5B8C\u6210\uFF0C\u8BF7\u68C0\u67E5\u8F93\u51FA\u76EE\u5F55\u6216\u8FDE\u63A5\u540E\u91CD\u8BD5\u3002";
-      syncDiagnostic = { scope, value: diagnose(stage, cause, (/* @__PURE__ */ new Date()).toISOString()) };
+      syncDiagnostic = { scope, value: diagnose(stage2, cause, (/* @__PURE__ */ new Date()).toISOString()) };
       if (logTarget) await operationLog.record(logTarget.identity, {
         key: logTarget.key,
         create: false,
         startedAt: logTarget.startedAt,
-        stage,
+        stage: stage2,
         status: "failed",
         diagnostics: [syncDiagnostic.value]
       });
@@ -70232,6 +70294,23 @@ async function taskArchiveHost(options) {
           return { ok: true, data: { ...await toolTasks.list(), pending: localLogJobs.size > 0 } };
         }
         if (action === "archive.operationLog") return { ok: true, data: await operationLog.read() };
+        if (action === "archive.submissionDiagnostic") {
+          const { ownerId, scope, intentId, startedAt, event } = submissionDiagnosticInput.parse(input);
+          const namespace = online.auth.namespace;
+          if (scope !== online.uiAuthorizationScope() || ownerId !== online.snapshot().identity?.userId)
+            return { ok: true, data: false };
+          const key = archiveTaskKey(ownerId, caller.sessionId || "podplo-manual", `generation:${intentId}`);
+          const status = event.status === "failed" || event.status === "unknown" ? event.status : "running";
+          return { ok: true, data: await operationLog.record({ ownerId, namespace }, {
+            key,
+            type: "generation",
+            stage: "generation",
+            status,
+            startedAt,
+            at: event.at,
+            submission: event
+          }) };
+        }
         if (action === "archive.index") {
           archiveInputKeys(input, ["scope"]);
           if (input.scope !== void 0 && input.scope !== "session") throw new PodploPluginError("INVALID_ARCHIVE_QUERY", "\u5904\u7406\u7ED3\u679C\u7D22\u5F15\u8303\u56F4\u65E0\u6548\u3002");
@@ -70288,19 +70367,19 @@ async function taskArchiveHost(options) {
           const namespace = online.auth.namespace, ownerId = await online.workspaceIdentity(false);
           const log = { key: archiveTaskKey(ownerId, "podplo-cloud-history", `cloud:${assetId}`), startedAt: (/* @__PURE__ */ new Date()).toISOString() };
           let known = false, loggingStarted = false;
-          let stage = "archive";
+          let stage2 = "archive";
           try {
             known = (await manager.knownAssets()).has(assetId);
             if (!known) {
               await operationLog.record({ ownerId, namespace }, { ...log, type: "local", stage: "download", status: "running", counts: { planned: 1 } });
               loggingStarted = true;
             }
-            stage = "download";
+            stage2 = "download";
             const detail = await online.reference(assetId);
             if (detail.kind !== "generated" || detail.status !== "ready") throw new Error("\u751F\u6210\u56FE\u5C1A\u672A\u5C31\u7EEA");
             if (namespace !== online.auth.namespace || ownerId !== await online.workspaceIdentity(false)) throw new Error("\u8D26\u53F7\u5DF2\u53D8\u5316");
             if (known) return { ok: true, data: { saved: true } };
-            stage = "archive";
+            stage2 = "archive";
             const taskId2 = await manager.upsert({
               key: `cloud:${assetId}`,
               sessionId: "podplo-cloud-history",
@@ -70319,9 +70398,9 @@ async function taskArchiveHost(options) {
               ...log,
               type: "local",
               create: !loggingStarted,
-              stage,
+              stage: stage2,
               status: "failed",
-              diagnostics: [diagnose(stage, cause, (/* @__PURE__ */ new Date()).toISOString())]
+              diagnostics: [diagnose(stage2, cause, (/* @__PURE__ */ new Date()).toISOString())]
             });
             throw cause;
           }
@@ -70723,11 +70802,11 @@ function parse8(raw) {
     invalid("\u539F\u751F\u4EFB\u52A1\u9636\u6BB5\u5FC5\u987B\u4E3A 1-10 \u9879");
   const prior = /* @__PURE__ */ new Set();
   const stages = rawStages.map((value2, index) => {
-    const stage = record8(value2, `stages[${index}]`);
-    if (typeof stage.id !== "string" || !identifier3.test(stage.id) || prior.has(stage.id))
+    const stage2 = record8(value2, `stages[${index}]`);
+    if (typeof stage2.id !== "string" || !identifier3.test(stage2.id) || prior.has(stage2.id))
       invalid(`stages[${index}].id\u65E0\u6548\u6216\u91CD\u590D`);
-    const id2 = stage.id;
-    const source = record8(stage.source, `stages[${index}].source`);
+    const id2 = stage2.id;
+    const source = record8(stage2.source, `stages[${index}].source`);
     if (!isNativeTaskCompositeSource(source) && source.text !== true) {
       const folder = typeof source.folderPath === "string" && !!source.folderPath.trim();
       const referenceIds = Array.isArray(source.referenceIds) ? source.referenceIds : void 0;
@@ -70738,32 +70817,32 @@ function parse8(raw) {
       if (references && (new Set(referenceIds).size !== referenceIds.length || referenceIds.some((id3) => typeof id3 !== "string" || !id3))) invalid(`stages[${index}].source.referenceIds\u65E0\u6548`);
       if (parent && !prior.has(source.fromStage)) invalid(`stages[${index}]\u53EA\u80FD\u5F15\u7528\u524D\u5E8F\u9636\u6BB5`);
     }
-    const hasSkill = owns(stage, "skill");
-    const hasLocal = owns(stage, "local");
-    const hasGeneration = owns(stage, "generation");
+    const hasSkill = owns(stage2, "skill");
+    const hasLocal = owns(stage2, "local");
+    const hasGeneration = owns(stage2, "generation");
     if (!hasSkill && !hasLocal && !hasGeneration) invalid(`stages[${index}]\u5FC5\u987B\u6307\u5B9A generation\u3001skill \u6216 local`);
-    if (hasSkill) record8(stage.skill, `stages[${index}].skill`);
-    if (hasLocal) record8(stage.local, `stages[${index}].local`);
-    if (hasGeneration) record8(stage.generation, `stages[${index}].generation`);
-    if (source.text === true && (!hasGeneration || hasSkill || stage.grouping !== void 0))
+    if (hasSkill) record8(stage2.skill, `stages[${index}].skill`);
+    if (hasLocal) record8(stage2.local, `stages[${index}].local`);
+    if (hasGeneration) record8(stage2.generation, `stages[${index}].generation`);
+    if (source.text === true && (!hasGeneration || hasSkill || stage2.grouping !== void 0))
       invalid(`stages[${index}]\u7684\u6587\u5B57\u6765\u6E90\u9700\u8981\u76F4\u63A5 generation\uFF0C\u4E0D\u80FD\u6307\u5B9A Skill \u6216\u56FE\u7247\u5206\u7EC4`);
     prior.add(id2);
-    return { id: id2, raw: stage, source, kind: hasSkill || hasGeneration ? "ai" : "local" };
+    return { id: id2, raw: stage2, source, kind: hasSkill || hasGeneration ? "ai" : "local" };
   });
   return { input, stages, advancedSources: sourcePlan.protocolVersion === 2 };
 }
 async function runNativeTask(raw, deps) {
   const parsed = parse8(raw);
-  if (parsed.stages.every((stage) => stage.kind === "local")) {
+  if (parsed.stages.every((stage2) => stage2.kind === "local")) {
     return deps.local(parsed.input);
   }
-  if (parsed.advancedSources || parsed.stages.some((stage) => stage.kind === "ai" && !owns(stage.raw, "skill"))) {
+  if (parsed.advancedSources || parsed.stages.some((stage2) => stage2.kind === "ai" && !owns(stage2.raw, "skill"))) {
     if (deps.mixed) return deps.mixed(parsed.input);
     throw new PodploPluginError("UNSUPPORTED_MIXED_TASK", "\u5F53\u524D Host \u5C1A\u672A\u6CE8\u518C\u53EF\u7EC4\u5408\u6765\u6E90\u7F16\u8BD1\u5668\uFF1B\u4EFB\u52A1\u672A\u6267\u884C\u3002");
   }
-  const referenced = new Set(parsed.stages.flatMap((stage) => typeof stage.source.fromStage === "string" ? [stage.source.fromStage] : []));
-  const consumesLocalPostprocessing = parsed.stages.some((stage) => stage.kind === "ai" && owns(stage.raw, "local") && referenced.has(stage.id));
-  if (parsed.stages.every((stage) => stage.kind === "ai") && !consumesLocalPostprocessing) return deps.ai(parsed.input);
+  const referenced = new Set(parsed.stages.flatMap((stage2) => typeof stage2.source.fromStage === "string" ? [stage2.source.fromStage] : []));
+  const consumesLocalPostprocessing = parsed.stages.some((stage2) => stage2.kind === "ai" && owns(stage2.raw, "local") && referenced.has(stage2.id));
+  if (parsed.stages.every((stage2) => stage2.kind === "ai") && !consumesLocalPostprocessing) return deps.ai(parsed.input);
   if (deps.mixed) return deps.mixed(parsed.input);
   throw new PodploPluginError(
     "UNSUPPORTED_MIXED_TASK",
@@ -71432,34 +71511,34 @@ function preservesRequest(before, after, code) {
     if (digest3(before[key] ?? null) !== digest3(after[key] ?? null)) return false;
   const object9 = (value2) => value2 && typeof value2 === "object" && !Array.isArray(value2) ? value2 : {};
   return before.stages.every((raw, index) => {
-    const stage = object9(raw), next = object9(after.stages[index]);
-    if (stage.id !== next.id) return false;
-    const source = object9(stage.source), nextSource = object9(next.source);
+    const stage2 = object9(raw), next = object9(after.stages[index]);
+    if (stage2.id !== next.id) return false;
+    const source = object9(stage2.source), nextSource = object9(next.source);
     const legacySourceKeys = /* @__PURE__ */ new Set(["folderPath", "referenceIds", "fromStage", "scope", "indexes", "expectedImageCount"]);
     if ([...Object.keys(source), ...Object.keys(nextSource)].some((key) => !legacySourceKeys.has(key)) && digest3(source) !== digest3(nextSource)) return false;
     for (const key of ["folderPath", "referenceIds", "fromStage", "indexes", "expectedImageCount"])
       if (source[key] !== void 0 && digest3(source[key]) !== digest3(nextSource[key])) return false;
     if (["all", "first", "indexes"].includes(String(source.scope)) && source.scope !== nextSource.scope) return false;
     if (source.scope === void 0 && nextSource.scope !== void 0 && nextSource.scope !== "all") return false;
-    for (const key of ["skill", "local", "grouping"]) if (stage[key] !== void 0 && next[key] === void 0) return false;
-    const generation = object9(stage.generation), changed = object9(next.generation);
+    for (const key of ["skill", "local", "grouping"]) if (stage2[key] !== void 0 && next[key] === void 0) return false;
+    const generation = object9(stage2.generation), changed = object9(next.generation);
     for (const [key, value2] of Object.entries(generation)) {
       if (changed[key] === void 0) return false;
       const repairable = key === "model" && ["MODEL_NOT_FOUND", "MODEL_QUERY_AMBIGUOUS"].includes(code) || key === "ratio" && code === "MODEL_RATIO_UNAVAILABLE" || key === "quality" && code === "MODEL_QUALITY_UNAVAILABLE";
       if (!repairable && digest3(value2) !== digest3(changed[key])) return false;
     }
-    const skill = object9(stage.skill), newSkill = object9(next.skill);
+    const skill = object9(stage2.skill), newSkill = object9(next.skill);
     if (skill.source !== void 0 && skill.source !== newSkill.source) return false;
     if (skill.favoriteFolder !== void 0 && skill.favoriteFolder !== newSkill.favoriteFolder) return false;
     if (code !== "SKILL_STRATEGY_MISMATCH" && skill.strategy !== newSkill.strategy) return false;
     if (!["SKILL_NOT_FOUND", "SKILL_QUERY_AMBIGUOUS"].includes(code) && skill.query !== newSkill.query) return false;
-    const grouping = object9(stage.grouping), newGrouping = object9(next.grouping);
-    if (stage.grouping === void 0 && next.grouping !== void 0 && newGrouping.mode !== "single" && code !== "SKILL_STRATEGY_MISMATCH") return false;
+    const grouping = object9(stage2.grouping), newGrouping = object9(next.grouping);
+    if (stage2.grouping === void 0 && next.grouping !== void 0 && newGrouping.mode !== "single" && code !== "SKILL_STRATEGY_MISMATCH") return false;
     if (["single", "all", "random", "sequential", "explicit"].includes(String(grouping.mode)) && grouping.mode !== newGrouping.mode) return false;
     if (Number.isSafeInteger(grouping.size) && Number(grouping.size) >= 2 && Number(grouping.size) <= 14 && grouping.size !== newGrouping.size) return false;
     if (grouping.groups !== void 0 && digest3(grouping.groups) !== digest3(newGrouping.groups)) return false;
     if (["random", "sequential"].includes(String(grouping.mode)) && (grouping.remainder ?? "reject") !== (newGrouping.remainder ?? "reject")) return false;
-    const local = object9(stage.local), nextLocal = object9(next.local);
+    const local = object9(stage2.local), nextLocal = object9(next.local);
     if (local.presetPath !== void 0 && local.presetPath !== nextLocal.presetPath) return false;
     for (const key of ["actions", "exactPlan"]) if (Array.isArray(local[key])) {
       const steps = local[key], nextSteps = nextLocal[key];
@@ -71650,8 +71729,8 @@ function schemaFacts() {
   const taskSchema2 = cloneSchema();
   const taskProperties = object8(taskSchema2.properties);
   const stages = object8(taskProperties.stages);
-  const stage = object8(stages.items);
-  const stageProperties = object8(stage.properties);
+  const stage2 = object8(stages.items);
+  const stageProperties = object8(stage2.properties);
   const source = object8(stageProperties.source);
   const sourceVariants = schemaVariants(source);
   const poolSource = sourceVariants.find((candidate2) => "folderPath" in object8(candidate2.properties)) ?? sourceVariants[0] ?? {};
@@ -71693,8 +71772,8 @@ function schemaFacts() {
     selectionFilters: Object.keys(object8(object8(object8(nativeTaskSourceSelectionSchema.properties).filter).properties)),
     pairingModes,
     groupingModes,
-    skillSources: enumAt(stage, "skill", "source"),
-    skillStrategies: enumAt(stage, "skill", "strategy"),
+    skillSources: enumAt(stage2, "skill", "source"),
+    skillStrategies: enumAt(stage2, "skill", "strategy"),
     generationFields: Object.keys(object8(object8(stageProperties.generation).properties)),
     localForms: object8(stageProperties.local).oneOf ? ["presetPath", "actions", "exactPlan"] : []
   };
@@ -71893,14 +71972,14 @@ function normalizeDiagnostic(value2) {
   };
 }
 function normalizeAnalysis(value2) {
-  const stages = Array.isArray(value2.stages) ? value2.stages.map((stage) => ({
-    ...stage,
-    sourceInputs: Array.isArray(stage.sourceInputs) ? stage.sourceInputs : [],
-    sourceGroups: Array.isArray(stage.sourceGroups) ? stage.sourceGroups : [],
-    selectedInputCount: safeInteger(stage.selectedInputCount),
-    expectedItemCount: safeInteger(stage.expectedItemCount),
-    expectedOutputCount: stage.expectedOutputCount === null ? null : safeInteger(stage.expectedOutputCount),
-    ...stage.diagnostics ? { diagnostics: stage.diagnostics.map(normalizeDiagnostic) } : {}
+  const stages = Array.isArray(value2.stages) ? value2.stages.map((stage2) => ({
+    ...stage2,
+    sourceInputs: Array.isArray(stage2.sourceInputs) ? stage2.sourceInputs : [],
+    sourceGroups: Array.isArray(stage2.sourceGroups) ? stage2.sourceGroups : [],
+    selectedInputCount: safeInteger(stage2.selectedInputCount),
+    expectedItemCount: safeInteger(stage2.expectedItemCount),
+    expectedOutputCount: stage2.expectedOutputCount === null ? null : safeInteger(stage2.expectedOutputCount),
+    ...stage2.diagnostics ? { diagnostics: stage2.diagnostics.map(normalizeDiagnostic) } : {}
   })) : [];
   const diagnostics = Array.isArray(value2.diagnostics) ? value2.diagnostics.map(normalizeDiagnostic) : [];
   return {
@@ -71931,17 +72010,17 @@ function combinedAuthorization(states) {
   if (states.includes("unknown")) return "unknown";
   return states.includes("unchecked") ? "unchecked" : "unknown";
 }
-function validateStageShell(stage, index) {
+function validateStageShell(stage2, index) {
   const path = `stages[${index}]`;
   for (const field of ["skill", "local", "generation"]) {
-    const value2 = stage[field];
+    const value2 = stage2[field];
     if (value2 !== void 0 && (!value2 || typeof value2 !== "object" || Array.isArray(value2)))
       throw new PodploPluginError("INVALID_TASK_STAGE", `${path}.${field} \u5FC5\u987B\u662F\u5BF9\u8C61\u3002`, {
         fieldPath: `${path}.${field}`,
         correctable: true
       });
   }
-  if (stage.skill === void 0 && stage.local === void 0 && stage.generation === void 0)
+  if (stage2.skill === void 0 && stage2.local === void 0 && stage2.generation === void 0)
     throw new PodploPluginError("INVALID_TASK_STAGE_KIND", "\u9636\u6BB5\u5FC5\u987B\u5305\u542B generation\u3001skill \u6216 local\u3002", {
       fieldPath: path,
       correctable: true
@@ -72186,7 +72265,7 @@ async function analyzeNativeTaskReadOnly(raw, normalized2, deps) {
     stages,
     totals: {
       sourceCount: sourceSummaries.size,
-      selectedInputCount: stages.reduce((sum, stage) => sum + stage.selectedInputCount, 0),
+      selectedInputCount: stages.reduce((sum, stage2) => sum + stage2.selectedInputCount, 0),
       expectedAiItemCount,
       expectedLocalInputCount,
       expectedOutputCount: allOutputsKnown ? knownOutputTotal : null
@@ -72322,7 +72401,7 @@ async function inspectNativeTask(raw, deps) {
       localPlan: "unchecked"
     });
   }
-  const diagnosticBlocked = analysis.diagnostics.some((diagnostic) => diagnostic.severity === "error") || analysis.stages.some((stage) => stage.diagnostics?.some((diagnostic) => diagnostic.severity === "error"));
+  const diagnosticBlocked = analysis.diagnostics.some((diagnostic) => diagnostic.severity === "error") || analysis.stages.some((stage2) => stage2.diagnostics?.some((diagnostic) => diagnostic.severity === "error"));
   const blocked = analysis.authorization === "blocked" || diagnosticBlocked;
   return {
     version: nativeTaskInspectionVersion,
