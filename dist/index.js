@@ -44686,11 +44686,14 @@ var nativeTaskSourcePoolsSchema = {
 
 // plugins/podplo-dsh/src/generation-model-policy.ts
 var FLARE_MODEL_KEY = "gpt-image-2-5-flare";
+var SUNBURST_MODEL_KEY = "gpt-image-2-5-sunburst";
 var KREA_MODEL_KEY = "krea-2-turbo";
 var aliases = /* @__PURE__ */ new Map([
   [FLARE_MODEL_KEY, FLARE_MODEL_KEY],
   // Older public capability snapshots used the provider spelling as their id.
   ["gpt-image-2.5-flare", FLARE_MODEL_KEY],
+  [SUNBURST_MODEL_KEY, SUNBURST_MODEL_KEY],
+  ["gpt-image-2.5-sunburst", SUNBURST_MODEL_KEY],
   [KREA_MODEL_KEY, KREA_MODEL_KEY]
 ]);
 var kreaRatios = /* @__PURE__ */ new Set(["1:1", "4:3", "3:4", "5:4", "4:5", "2:3", "3:2", "9:16", "16:9", "1:2", "2:1"]);
@@ -44715,6 +44718,11 @@ function generationModelKey(model) {
 function isKreaGenerationModel(model) {
   return generationModelKey(model) === KREA_MODEL_KEY;
 }
+function supportsAutomaticGenerationSize(model) {
+  const key = generationModelKey(model);
+  return key === FLARE_MODEL_KEY || key === SUNBURST_MODEL_KEY;
+}
+var AUTOMATIC_SIZE_PRICING_RESOLUTION = "2K";
 function generationModelMaximumOutputs(model, fallback) {
   if (!model) return fallback;
   const schema2 = model.parameterSchema && typeof model.parameterSchema === "object" && !Array.isArray(model.parameterSchema) ? model.parameterSchema : void 0;
@@ -44729,7 +44737,7 @@ function generationModelMaximumOutputs(model, fallback) {
 function isNewGenerationModel(model) {
   const key = generationModelKey(model);
   if (!model || !key || model.availableForCurrentPlan === false) return false;
-  if (key !== KREA_MODEL_KEY) return key === FLARE_MODEL_KEY;
+  if (key !== KREA_MODEL_KEY) return key === FLARE_MODEL_KEY || key === SUNBURST_MODEL_KEY;
   const resolutions = Array.isArray(model.resolutions) ? model.resolutions.map(text3) : [];
   const ratios = Array.isArray(model.ratios) ? model.ratios.filter((value2) => typeof value2 === "string" && value2).map(String) : [];
   return typeof model.maximumReferenceImages === "number" && model.maximumReferenceImages === 0 && model.maxOutputs === 1 && Array.isArray(model.qualities) && model.qualities.length === 0 && resolutions.includes("1k") && resolutions.includes("2k") && ratios.length === kreaRatios.size && new Set(ratios).size === kreaRatios.size && ratios.every((value2) => kreaRatios.has(value2));
@@ -44749,6 +44757,7 @@ function generationModelQueryMatches(model, query) {
   const key = generationModelKey(model);
   if (key !== void 0 && aliases.get(target) === key) return true;
   if (key === FLARE_MODEL_KEY && ["image v2.5", "gpt image 2.5 flare", "gpt 2.5 flare", "2.5 flare", "flare"].includes(target)) return true;
+  if (key === SUNBURST_MODEL_KEY && ["image v2.5 sunburst", "gpt image 2.5 sunburst", "gpt 2.5 sunburst", "2.5 sunburst", "sunburst"].includes(target)) return true;
   if (key === KREA_MODEL_KEY && ["k2 \u6587\u751F\u56FE", "krea 2 turbo"].includes(target)) return true;
   return false;
 }
@@ -47169,7 +47178,7 @@ import { EventEmitter as EventEmitter2 } from "node:events";
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.52",
+  version: "0.1.53",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -47597,7 +47606,7 @@ var generation_credit_pricing_source_default = {
 };
 
 // plugins/podplo-dsh/src/generation-local-pricing.ts
-function referenceCount(userReferences, presetReferences) {
+function countGenerationReferences(userReferences, presetReferences) {
   const ids2 = [...userReferences ?? [], ...Array.isArray(presetReferences) ? presetReferences : []].filter((value2) => typeof value2 === "string" && !!value2);
   return new Set(ids2).size;
 }
@@ -47608,7 +47617,7 @@ function calculateLocalGenerationQuote(model, input) {
   const bundled = model && [model.id, model.modelId, model.key, model.name, model.label, model.modelName].map((value2) => bundledModels.get(identity(value2))).find(Boolean);
   const rule = bundled?.rule;
   const count3 = input.count;
-  const resolution = input.resolution || (typeof model?.defaultResolution === "string" ? model.defaultResolution : bundled?.defaultResolution ?? "");
+  const resolution = supportsAutomaticGenerationSize(model) && input.ratio === "auto" ? AUTOMATIC_SIZE_PRICING_RESOLUTION : input.resolution || (typeof model?.defaultResolution === "string" ? model.defaultResolution : bundled?.defaultResolution ?? "");
   const quality = input.quality || (typeof model?.defaultQuality === "string" ? model.defaultQuality : bundled?.defaultQuality ?? void 0);
   if (!isGenerationCreditPricingRule(rule) || !resolution || !Number.isSafeInteger(count3) || count3 < 1) return void 0;
   try {
@@ -47616,7 +47625,7 @@ function calculateLocalGenerationQuote(model, input) {
       quality: quality ?? null,
       resolution,
       prompt: input.prompt,
-      referenceImageCount: input.referenceImageCount ?? referenceCount(input.referenceAssetIds, input.presetReferenceAssetIds),
+      referenceImageCount: input.referenceImageCount ?? countGenerationReferences(input.referenceAssetIds, input.presetReferenceAssetIds),
       ecoMode: input.ecoMode,
       webSearch: input.webSearch,
       imageSearch: input.imageSearch
@@ -49625,6 +49634,7 @@ var PodploPluginService = class extends EventEmitter2 {
         const model = selectedModel ?? (modelId ? { id: modelId } : void 0);
         const local = calculateLocalGenerationQuote(model, {
           count: typeof item2.args.count === "number" ? item2.args.count : 1,
+          ...typeof item2.args.ratio === "string" ? { ratio: item2.args.ratio } : {},
           ...typeof item2.args.quality === "string" ? { quality: item2.args.quality } : {},
           ...typeof item2.args.resolution === "string" ? { resolution: item2.args.resolution } : {},
           ...typeof item2.args.prompt === "string" ? { prompt: item2.args.prompt } : {},
@@ -52173,7 +52183,7 @@ var OutputDirectoryManager = class {
     const requested = safeName(external_exports.string().min(1).max(255).parse(suggestedName));
     assertAllowedFileName(requested);
     const extension = extname10(requested), stem = basename12(requested, extension);
-    let published, publishedName = "", publishedFingerprint = "";
+    let published, publishedName = "", publishedFingerprint2 = "";
     try {
       for (let index = 1; index <= 1e4; index++) {
         const name2 = index === 1 ? requested : `${stem}-${index}${extension}`;
@@ -52190,7 +52200,7 @@ var OutputDirectoryManager = class {
           await handle.sync();
           const stat = await handle.stat();
           if (!stat.isFile() || stat.size !== bytes.length) throw new Error("\u8F93\u51FA\u6587\u4EF6\u5199\u5165\u4E0D\u5B8C\u6574");
-          publishedFingerprint = fingerprint(stat);
+          publishedFingerprint2 = fingerprint(stat);
         } finally {
           await handle.close();
         }
@@ -52212,7 +52222,7 @@ var OutputDirectoryManager = class {
         session: sha2562(session2),
         path: published,
         name: publishedName,
-        fingerprint: publishedFingerprint,
+        fingerprint: publishedFingerprint2,
         reviewRequired
       });
       return { exportId, name: publishedName, path: published };
@@ -52973,6 +52983,11 @@ var fitFolderComponent = (base2, suffix = "") => {
   return `${fitted || "\u56FE\u7247\u4EFB\u52A1"}${suffix}`;
 };
 var stamp = (stat) => `${stat.dev}:${stat.ino}`;
+var publishedFingerprint = (stat) => `${stamp(stat)}:${stat.size}:${stat.mtimeMs}`;
+var publishedFingerprintMatches = (stat, stored) => {
+  const current = publishedFingerprint(stat);
+  return stored === current || stored.startsWith(`${current}:`);
+};
 var finalTimestamp = (value2) => {
   const date5 = new Date(value2);
   return `${date5.getFullYear()}-${String(date5.getMonth() + 1).padStart(2, "0")}-${String(date5.getDate()).padStart(2, "0")}_${String(date5.getHours()).padStart(2, "0")}-${String(date5.getMinutes()).padStart(2, "0")}`;
@@ -53576,7 +53591,7 @@ var TaskArchiveManager = class {
       const output = this.publishedDirectory(task, file2);
       await this.directory(output);
       const path = join13(output, file2.publishedName), stat = await lstat7(path).catch(() => void 0);
-      return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath8(path).catch(() => "") === path && `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` === file2.publishedFingerprint && (!verifyDigest || hash4(await this.readPath(path)) === file2.digest);
+      return !!stat?.isFile() && !stat.isSymbolicLink() && await realpath8(path).catch(() => "") === path && publishedFingerprintMatches(stat, file2.publishedFingerprint) && (!verifyDigest || hash4(await this.readPath(path)) === file2.digest);
     } catch {
       return false;
     }
@@ -53619,7 +53634,7 @@ var TaskArchiveManager = class {
         await this.store.transaction((state) => {
           const row = state.tasks.find((t) => t.id === id3).files.find((f) => f.id === file2.id);
           row.publishedName = name2;
-          row.publishedFingerprint = `${stamp(saved.stat)}:${saved.stat.size}:${saved.stat.mtimeMs}:${saved.stat.ctimeMs}`;
+          row.publishedFingerprint = publishedFingerprint(saved.stat);
         });
       } catch (error51) {
         const current2 = await lstat7(saved.path).catch(() => void 0);
@@ -53662,7 +53677,7 @@ var TaskArchiveManager = class {
       await this.store.transaction((state) => {
         const row = state.tasks.find((t) => t.id === id3).files.find((f) => f.id === leaf.id);
         row.publishedName = preferred;
-        row.publishedFingerprint = `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}`;
+        row.publishedFingerprint = publishedFingerprint(stat);
       });
     }
   }
@@ -54385,7 +54400,7 @@ var TaskArchiveManager = class {
       }
       if (!directories.get(directory)) continue;
       const path = join13(directory, name2), stat = await lstat7(path).catch(() => void 0);
-      if (!stat?.isFile() || stat.isSymbolicLink() || await realpath8(path).catch(() => "") !== path || `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== fingerprint4) continue;
+      if (!stat?.isFile() || stat.isSymbolicLink() || await realpath8(path).catch(() => "") !== path || (archiveLayout(task) ? !publishedFingerprintMatches(stat, fingerprint4) : `${stamp(stat)}:${stat.size}:${stat.mtimeMs}:${stat.ctimeMs}` !== fingerprint4)) continue;
       const fileTime = new Date(stat.mtimeMs);
       const createdAt = Number.isFinite(fileTime.getTime()) ? fileTime.toISOString() : task.createdAt;
       items.push({

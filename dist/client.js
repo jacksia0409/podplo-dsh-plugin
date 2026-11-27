@@ -1863,6 +1863,16 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
   ] });
 }
 
+// plugins/podplo-dsh/src/renderer-uuid.ts
+function randomUuid() {
+  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
+  const bytes = crypto.getRandomValues(new Uint8Array(16));
+  bytes[6] = bytes[6] & 15 | 64;
+  bytes[8] = bytes[8] & 63 | 128;
+  const hex3 = [...bytes].map((value2) => value2.toString(16).padStart(2, "0")).join("");
+  return `${hex3.slice(0, 8)}-${hex3.slice(8, 12)}-${hex3.slice(12, 16)}-${hex3.slice(16, 20)}-${hex3.slice(20)}`;
+}
+
 // plugins/podplo-dsh/src/panels.tsx
 var import_react22 = require("react");
 
@@ -16456,11 +16466,14 @@ var ImageToTextTaskSchema = external_exports.object({
 
 // plugins/podplo-dsh/src/generation-model-policy.ts
 var FLARE_MODEL_KEY = "gpt-image-2-5-flare";
+var SUNBURST_MODEL_KEY = "gpt-image-2-5-sunburst";
 var KREA_MODEL_KEY = "krea-2-turbo";
 var aliases = /* @__PURE__ */ new Map([
   [FLARE_MODEL_KEY, FLARE_MODEL_KEY],
   // Older public capability snapshots used the provider spelling as their id.
   ["gpt-image-2.5-flare", FLARE_MODEL_KEY],
+  [SUNBURST_MODEL_KEY, SUNBURST_MODEL_KEY],
+  ["gpt-image-2.5-sunburst", SUNBURST_MODEL_KEY],
   [KREA_MODEL_KEY, KREA_MODEL_KEY]
 ]);
 var kreaRatios = /* @__PURE__ */ new Set(["1:1", "4:3", "3:4", "5:4", "4:5", "2:3", "3:2", "9:16", "16:9", "1:2", "2:1"]);
@@ -16488,12 +16501,18 @@ function generationModelId(model) {
 function generationModelDisplayName(model) {
   const key2 = generationModelKey(model);
   if (key2 === FLARE_MODEL_KEY) return "image v2.5";
+  if (key2 === SUNBURST_MODEL_KEY) return "image v2.5 sunburst";
   if (key2 === KREA_MODEL_KEY) return "K2 \u6587\u751F\u56FE";
   return String(model?.name ?? model?.label ?? model?.modelName ?? generationModelId(model));
 }
 function isKreaGenerationModel(model) {
   return generationModelKey(model) === KREA_MODEL_KEY;
 }
+function supportsAutomaticGenerationSize(model) {
+  const key2 = generationModelKey(model);
+  return key2 === FLARE_MODEL_KEY || key2 === SUNBURST_MODEL_KEY;
+}
+var AUTOMATIC_SIZE_PRICING_RESOLUTION = "2K";
 function generationModelMaximumOutputs(model, fallback) {
   if (!model) return fallback;
   const schema = model.parameterSchema && typeof model.parameterSchema === "object" && !Array.isArray(model.parameterSchema) ? model.parameterSchema : void 0;
@@ -16508,7 +16527,7 @@ function generationModelMaximumOutputs(model, fallback) {
 function isNewGenerationModel(model) {
   const key2 = generationModelKey(model);
   if (!model || !key2 || model.availableForCurrentPlan === false) return false;
-  if (key2 !== KREA_MODEL_KEY) return key2 === FLARE_MODEL_KEY;
+  if (key2 !== KREA_MODEL_KEY) return key2 === FLARE_MODEL_KEY || key2 === SUNBURST_MODEL_KEY;
   const resolutions = Array.isArray(model.resolutions) ? model.resolutions.map(text) : [];
   const ratios = Array.isArray(model.ratios) ? model.ratios.filter((value2) => typeof value2 === "string" && value2).map(String) : [];
   return typeof model.maximumReferenceImages === "number" && model.maximumReferenceImages === 0 && model.maxOutputs === 1 && Array.isArray(model.qualities) && model.qualities.length === 0 && resolutions.includes("1k") && resolutions.includes("2k") && ratios.length === kreaRatios.size && new Set(ratios).size === kreaRatios.size && ratios.every((value2) => kreaRatios.has(value2));
@@ -16516,10 +16535,10 @@ function isNewGenerationModel(model) {
 function newGenerationModels(models) {
   return models.filter(isNewGenerationModel);
 }
-function generationDraftModelError(model, referenceCount2 = 0, outputCount = 1) {
-  if (!model || !isNewGenerationModel(model)) return "\u539F\u6A21\u578B\u5DF2\u505C\u7528\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9 image v2.5 \u6216 K2 \u6587\u751F\u56FE\u3002";
-  if (isKreaGenerationModel(model) && referenceCount2 > 0) {
-    return `K2 \u6587\u751F\u56FE\u4EC5\u652F\u6301\u7EAF\u6587\u5B57\uFF1B\u5F53\u524D ${referenceCount2} \u5F20\u53C2\u8003\u56FE\u4ECD\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u79FB\u9664\u53C2\u8003\u56FE\u6216\u5207\u6362\u6A21\u578B\u3002`;
+function generationDraftModelError(model, referenceCount = 0, outputCount = 1) {
+  if (!model || !isNewGenerationModel(model)) return "\u539F\u6A21\u578B\u5DF2\u505C\u7528\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9 image v2.5\u3001image v2.5 sunburst \u6216 K2 \u6587\u751F\u56FE\u3002";
+  if (isKreaGenerationModel(model) && referenceCount > 0) {
+    return `K2 \u6587\u751F\u56FE\u4EC5\u652F\u6301\u7EAF\u6587\u5B57\uFF1B\u5F53\u524D ${referenceCount} \u5F20\u53C2\u8003\u56FE\u4ECD\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u79FB\u9664\u53C2\u8003\u56FE\u6216\u5207\u6362\u6A21\u578B\u3002`;
   }
   const maximum = generationModelMaximumOutputs(model, Number.MAX_SAFE_INTEGER);
   if (Number.isSafeInteger(outputCount) && outputCount > maximum) {
@@ -16880,7 +16899,7 @@ var GenerationBootstrapCache = class {
     this.inpaintDrafts.delete(key2);
     this.drafts.set(key2, {
       ...draft,
-      intentId: crypto.randomUUID(),
+      intentId: randomUuid(),
       planVersion: 1,
       operation: void 0,
       approvalAttempted: false,
@@ -16919,7 +16938,7 @@ var GenerationBootstrapCache = class {
     const draft = this.drafts.get(key2);
     if (!draft || draft.intentId !== intentId || draft.planVersion !== planVersion) return void 0;
     if (draft.clientOperationId) return draft.clientOperationId;
-    const clientOperationId = crypto.randomUUID();
+    const clientOperationId = randomUuid();
     this.drafts.set(key2, { ...draft, clientOperationId });
     return clientOperationId;
   }
@@ -17092,7 +17111,7 @@ var generation_credit_pricing_source_default = {
 };
 
 // plugins/podplo-dsh/src/generation-local-pricing.ts
-function referenceCount(userReferences, presetReferences) {
+function countGenerationReferences(userReferences, presetReferences) {
   const ids2 = [...userReferences ?? [], ...Array.isArray(presetReferences) ? presetReferences : []].filter((value2) => typeof value2 === "string" && !!value2);
   return new Set(ids2).size;
 }
@@ -17103,7 +17122,7 @@ function calculateLocalGenerationQuote(model, input) {
   const bundled = model && [model.id, model.modelId, model.key, model.name, model.label, model.modelName].map((value2) => bundledModels.get(identity(value2))).find(Boolean);
   const rule = bundled?.rule;
   const count = input.count;
-  const resolution = input.resolution || (typeof model?.defaultResolution === "string" ? model.defaultResolution : bundled?.defaultResolution ?? "");
+  const resolution = supportsAutomaticGenerationSize(model) && input.ratio === "auto" ? AUTOMATIC_SIZE_PRICING_RESOLUTION : input.resolution || (typeof model?.defaultResolution === "string" ? model.defaultResolution : bundled?.defaultResolution ?? "");
   const quality = input.quality || (typeof model?.defaultQuality === "string" ? model.defaultQuality : bundled?.defaultQuality ?? void 0);
   if (!isGenerationCreditPricingRule(rule) || !resolution || !Number.isSafeInteger(count) || count < 1) return void 0;
   try {
@@ -17111,7 +17130,7 @@ function calculateLocalGenerationQuote(model, input) {
       quality: quality ?? null,
       resolution,
       prompt: input.prompt,
-      referenceImageCount: input.referenceImageCount ?? referenceCount(input.referenceAssetIds, input.presetReferenceAssetIds),
+      referenceImageCount: input.referenceImageCount ?? countGenerationReferences(input.referenceAssetIds, input.presetReferenceAssetIds),
       ecoMode: input.ecoMode,
       webSearch: input.webSearch,
       imageSearch: input.imageSearch
@@ -17165,7 +17184,7 @@ var current = (handle) => scopeVersion(handle.ownerId) === handle.scopeVersion &
 function startResultSubmission(ownerId, input) {
   if (!ownerId || !input.id || !input.name) return void 0;
   for (const [existingToken, row] of rows) if (row.ownerId === ownerId && row.id === input.id && row.status === "failed") rows.delete(existingToken);
-  const token = crypto.randomUUID();
+  const token = randomUuid();
   const handle = { ownerId, token, scopeVersion: scopeVersion(ownerId) };
   rows.set(token, { ...input, ownerId, token, status: "loading", createdAt: input.createdAt ?? (/* @__PURE__ */ new Date()).toISOString() });
   notify();
@@ -17228,9 +17247,9 @@ var listLength = (value2) => Array.isArray(value2) ? value2.length : 0;
 function analysisRequestCount(mode, args) {
   if (mode === "dna") return args.sourceAssetId || args.localReferenceCount === 1 ? 1 : void 0;
   const itemCount = listLength(args.items);
-  const referenceCount2 = listLength(args.referenceAssetIds) + (Number.isSafeInteger(args.localReferenceCount) ? Number(args.localReferenceCount) : 0);
+  const referenceCount = listLength(args.referenceAssetIds) + (Number.isSafeInteger(args.localReferenceCount) ? Number(args.localReferenceCount) : 0);
   if (itemCount) return itemCount <= 100 ? itemCount : void 0;
-  const inputCount = referenceCount2;
+  const inputCount = referenceCount;
   if (!Number.isSafeInteger(inputCount) || inputCount < 1 || inputCount > 100) return void 0;
   return inputCount <= 4 ? 1 : inputCount;
 }
@@ -17242,8 +17261,8 @@ function calculateLocalAnalysisCredits(catalog, mode, args) {
   if (!Number.isSafeInteger(cents) || cents <= 0 || !Number.isSafeInteger(cents * requestCount)) return void 0;
   return cents * requestCount / 100;
 }
-function isImageToTextBatch(args, referenceCount2) {
-  return Array.isArray(args.items) && args.items.length > 0 || referenceCount2 > 4;
+function isImageToTextBatch(args, referenceCount) {
+  return Array.isArray(args.items) && args.items.length > 0 || referenceCount > 4;
 }
 function sameAnalysisCredits(left, right) {
   return isCreditAmount(left) && left > 0 && isCreditAmount(right) && right > 0 && Math.round(left * 100) === Math.round(right * 100);
@@ -19471,6 +19490,7 @@ var analysisNames = {
 var pluginAnalysisModelName = (modelId2, fallback = modelId2) => analysisNames[modelId2] ?? fallback;
 var generationSlots = [
   { key: FLARE_MODEL_KEY, name: "image v2.5" },
+  { key: SUNBURST_MODEL_KEY, name: "image v2.5 sunburst" },
   { key: KREA_MODEL_KEY, name: "K2 \u6587\u751F\u56FE" }
 ];
 function pluginGenerationMenuSlots(models, loading) {
@@ -19516,7 +19536,6 @@ var pricingRuleMismatch = "\u5185\u7F6E\u4EF7\u76EE\u4E0E\u670D\u52A1\u7AEF\u682
 var errorText2 = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
 var errorCode2 = (error51) => error51 && typeof error51 === "object" && typeof error51.code === "string" ? String(error51.code) : "";
 var skillDefinitelyUnavailable = (error51) => ["SKILL_NOT_FOUND", "SKILL_DISABLED", "SKILL_INACTIVE"].includes(errorCode2(error51));
-var uuid5 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 var stringList = (value2) => Array.isArray(value2) ? value2.filter((item) => typeof item === "string" && !!item) : [];
 var modelId = (model) => generationModelId(model);
 var modelName = (model) => isAnalysisModel(modelId(model)) ? pluginAnalysisModelName(modelId(model), String(model.name ?? model.label ?? model.modelName ?? modelId(model))) : generationModelDisplayName(model);
@@ -19760,7 +19779,7 @@ var argsForCapabilities = (caps, selected, values2) => {
   put("ratio", values2.ratio.trim());
   put("count", values2.count);
   if (stringList(selected?.qualities).length) put("quality", values2.quality);
-  if (stringList(selected?.resolutions).length) put("resolution", values2.resolution);
+  if (stringList(selected?.resolutions).length && !(supportsAutomaticGenerationSize(selected) && values2.ratio === "auto")) put("resolution", values2.resolution);
   if (stringList(selected?.thinkingLevels).length) put("thinkingLevel", values2.thinkingLevel);
   if (selected?.supportsWebSearch === true) put("webSearch", values2.booleans.webSearch === true);
   if (selected?.supportsImageSearch === true) put("imageSearch", values2.booleans.imageSearch === true);
@@ -19836,7 +19855,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const [count, setCount] = (0, import_react11.useState)(1);
   const [transparent, setTransparent] = (0, import_react11.useState)(false);
   const [booleans, setBooleans] = (0, import_react11.useState)({});
-  const [intentId, setIntentId] = (0, import_react11.useState)(uuid5);
+  const [intentId, setIntentId] = (0, import_react11.useState)(randomUuid);
   const [planVersion, setPlanVersion] = (0, import_react11.useState)(1);
   const [operation, setOperation] = (0, import_react11.useState)();
   const [busy, setBusy] = (0, import_react11.useState)("");
@@ -19856,6 +19875,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const [floatingOpen, setFloatingOpen] = (0, import_react11.useState)(false);
   const addMenu = useUpwardPopover(160);
   const settingsMenu = useUpwardPopover(330);
+  const lastManualSize = (0, import_react11.useRef)({ ratio: "1:1", resolution: "" });
   const uploadInput = (0, import_react11.useRef)(null);
   const preparing = (0, import_react11.useRef)(false);
   const mounted = (0, import_react11.useRef)(true);
@@ -19889,6 +19909,9 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const modelRatios = stringList(selectedModel?.ratios);
   const modelQualities = stringList(selectedModel?.qualities);
   const modelResolutions = stringList(selectedModel?.resolutions);
+  const automaticSizeAvailable = supportsAutomaticGenerationSize(selectedModel) && modelRatios.includes("auto");
+  const automaticSize = automaticSizeAvailable && ratio === "auto";
+  if (automaticSizeAvailable && !automaticSize && ratio) lastManualSize.current = { ratio, resolution };
   const modelThinkingLevels = stringList(selectedModel?.thinkingLevels);
   const supportsWebSearch = properties.webSearch?.type === "boolean" && selectedModel?.supportsWebSearch === true;
   const supportsImageSearch = properties.imageSearch?.type === "boolean" && selectedModel?.supportsImageSearch === true;
@@ -19909,8 +19932,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     ),
     [accountKey, nativeSessionId, references, uploadPreviews]
   );
-  const presetReferenceCount = Array.isArray(selectedSkill?.detail?.referenceAssetIds) ? selectedSkill.detail.referenceAssetIds.length : 0;
-  const effectiveReferenceCount = effectiveGenerationReferences.length + presetReferenceCount;
+  const effectiveReferenceCount = countGenerationReferences(effectiveGenerationReferences, selectedSkill?.detail?.referenceAssetIds);
   const generationCapabilitiesLoading = loading;
   const generationModelsUnavailable = !generationCapabilitiesLoading && !models.some((row) => !isAnalysisModel(modelId(row)));
   const generationModelError = analysisMode || generationCapabilitiesLoading ? "" : generationModelsUnavailable ? "\u6682\u672A\u8BFB\u53D6\u5230\u53EF\u7528\u751F\u56FE\u6A21\u578B\uFF0C\u8BF7\u5237\u65B0\u6216\u7A0D\u540E\u91CD\u8BD5\u3002" : generationDraftModelError(selectedModel, effectiveReferenceCount, count);
@@ -19918,6 +19940,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const selectedModelLabel = analysisMode === "dna" ? analysisModelLabel : selectedModel ? modelName(selectedModel) : isAnalysisModel(model) ? analysisModelLabel : generationCapabilitiesLoading ? "\u6B63\u5728\u6838\u5BF9\u6A21\u578B\u80FD\u529B" : generationModelsUnavailable ? "\u751F\u56FE\u6A21\u578B\u6682\u4E0D\u53EF\u7528" : model ? "\u539F\u6A21\u578B\u5DF2\u505C\u7528" : "\u9009\u62E9\u6A21\u578B";
   const localQuote = (0, import_react11.useMemo)(() => analysisMode || selectedDna && !selectedKrea && !effectiveGenerationReferences.length ? void 0 : calculateLocalGenerationQuote(selectedModel, {
     prompt,
+    ratio,
     quality,
     resolution,
     count,
@@ -19934,6 +19957,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     count,
     prompt,
     quality,
+    ratio,
     resolution,
     analysisMode,
     effectiveGenerationReferences,
@@ -20079,6 +20103,20 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     invalidate();
     setBooleans((current2) => ({ ...current2, [key2]: value2 }));
   };
+  const selectAutomaticSize = () => {
+    if (!automaticSizeAvailable || submittingDraft.current) return;
+    if (ratio !== "auto") lastManualSize.current = { ratio, resolution };
+    change(setRatio, "auto");
+  };
+  const selectRatioSize = () => {
+    if (submittingDraft.current) return;
+    const fallbackRatio = modelRatios.find((value2) => value2 !== "auto") ?? "1:1";
+    const restoredRatio = modelRatios.includes(lastManualSize.current.ratio) && lastManualSize.current.ratio !== "auto" ? lastManualSize.current.ratio : fallbackRatio;
+    const restoredResolution = modelResolutions.includes(lastManualSize.current.resolution) ? lastManualSize.current.resolution : String(selectedModel?.defaultResolution ?? modelResolutions[0] ?? "");
+    invalidate();
+    setRatio(restoredRatio);
+    if (restoredResolution) setResolution(restoredResolution);
+  };
   const saveInpaintDraft = (0, import_react11.useCallback)(async (next) => {
     const owner = ownerId.current, session = nativeSessionId ?? "podplo-manual", revision = cacheRevision.current;
     if (!owner || submittingDraft.current || approvalAttempted || ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(operation?.status ?? "") || !generationBootstrapCache.isCurrent(revision)) throw new Error("\u5DF2\u6709\u4EFB\u52A1\u6B63\u5728\u63D0\u4EA4\u6216\u7B49\u5F85\u6838\u5BF9\uFF0C\u5F53\u524D\u7F16\u8F91\u672A\u8986\u76D6\u539F\u4EFB\u52A1\u3002");
@@ -20116,7 +20154,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const properties2 = capabilities?.quoteInputSchema?.properties ?? {};
     const defaults = {};
     for (const [key2, value2] of Object.entries(properties2)) if (value2.type === "boolean" && !/transparent/i.test(key2)) defaults[key2] = value2.default === true;
-    const nextIntent = uuid5();
+    const nextIntent = randomUuid();
     const nextModelId = modelId(nextModel ?? {});
     const nextRatio = normalizedChoice(stringList(nextModel?.ratios), "", stringList(nextModel?.ratios)[0]);
     const nextQuality = normalizedChoice(stringList(nextModel?.qualities), "", nextModel?.defaultQuality);
@@ -20691,7 +20729,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const { data } = choice2.source === "personal" ? await request("mySkills.get", { id: choice2.generationId, ...choice2.version ? { expectedUpdatedAt: choice2.version } : {} }) : await request("skills.detail", { slug: choice2.slug, resolve: true });
     const generationId = choice2.source === "personal" ? choice2.generationId : data?.binding?.id;
     if (typeof generationId !== "string" || !generationId) throw new Error("Skill \u8BE6\u60C5\u672A\u8FD4\u56DE\u53EF\u6838\u5BF9\u7684\u751F\u56FE\u7ED1\u5B9A ID");
-    if (choice2.source === "library" && data?.binding?.availableForCurrentPlan === false) throw new Error("\u8BE5 Skill \u5F53\u524D\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u6743\u9650\u540E\u91CD\u8BD5");
+    if (choice2.source === "library" && data?.binding?.availableForCurrentPlan !== true) throw new Error("\u8BE5 Skill \u5F53\u524D\u4E0D\u53EF\u7528\uFF0C\u8BF7\u5237\u65B0\u6743\u9650\u540E\u91CD\u8BD5");
     return {
       ...choice2,
       note: void 0,
@@ -20980,7 +21018,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const supported = files.filter((file2) => imageTypes.has(file2.type));
     const invalid = files.length - supported.length;
     const previewSession = nativeSessionId ?? "podplo-manual";
-    const previewRows = supported.map((file2) => ({ id: uuid5(), filename: file2.name, previewUrl: URL.createObjectURL(file2), status: "queued" }));
+    const previewRows = supported.map((file2) => ({ id: randomUuid(), filename: file2.name, previewUrl: URL.createObjectURL(file2), status: "queued" }));
     generationBootstrapCache.addReferenceUploads(expectedOwner, previewSession, previewRows, expectedRevision);
     generationBootstrapCache.rememberReferenceUploadFiles(
       expectedOwner,
@@ -21401,10 +21439,10 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const chosen = selectedSkill;
     const selectedValues = selections.current;
     const args = argsForCapabilities(capabilities, selectedModel, { ...selectedValues, prompt, count, references: [...preparedReferences] });
-    const presetReferences = chosen?.source === "personal" && Array.isArray(chosen.detail?.referenceAssetIds) ? chosen.detail.referenceAssetIds.length : 0;
+    const presetReferences = chosen?.source === "personal" ? chosen.detail?.referenceAssetIds : void 0;
     const item = {
       ...!chosen?.extractionSkillId && chosen?.generationId ? { skillId: chosen.generationId } : {},
-      pricingReferenceCount: preparedReferences.length + presetReferences,
+      pricingReferenceCount: countGenerationReferences(preparedReferences, presetReferences),
       args
     };
     const clientOperationId = generationBootstrapCache.ensureClientOperationId(
@@ -21789,8 +21827,9 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     const expectedPlan = currentPlanVersion.current;
     const expectedLocalQuote = localQuote;
     const report = submissionReporter(request, expectedOwner, diagnosticScope, expectedIntent, expectedPlan);
-    if (selectedDna && !expectedLocalQuote) {
+    if (!expectedLocalQuote) {
       report("quote", "failed", "LOCAL_PRICING_UNAVAILABLE");
+      setError("\u5F53\u524D\u751F\u56FE\u65B9\u6848\u65E0\u6CD5\u8BA1\u7B97\u79EF\u5206\uFF0C\u8BF7\u68C0\u67E5\u6A21\u578B\u548C\u53C2\u6570\u540E\u91CD\u8BD5\u3002");
       return;
     }
     if (validationError()) {
@@ -22095,26 +22134,34 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
             !analysisMode && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "ppd-settings-menu", children: [
               /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("button", { type: "button", ref: settingsMenu.trigger, popoverTarget: settingsMenu.id, className: "ppd-toolbar-button", children: [
                 imageIcon,
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: ratio || "\u6BD4\u4F8B" }),
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: ratio === "auto" ? "\u81EA\u52A8" : ratio || "\u6BD4\u4F8B" }),
                 /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("i", {}),
                 /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("span", { children: [
                   count,
                   " \u5F20"
                 ] }),
                 /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("i", {}),
-                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: [resolution, quality].filter(Boolean).join(" \xB7 ") || "\u9ED8\u8BA4" }),
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: [automaticSize ? "\u81EA\u52A8 \xB7 2K\u8BA1\u8D39" : resolution, quality].filter(Boolean).join(" \xB7 ") || "\u9ED8\u8BA4" }),
                 chevron
               ] }),
               /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { ref: settingsMenu.menu, id: settingsMenu.id, popover: "auto", className: "ppd-settings-popover", onBeforeToggle: (event) => {
                 if (event.newState === "open") settingsMenu.position();
               }, children: [
+                automaticSizeAvailable && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("section", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("label", { children: "\u5C3A\u5BF8" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { className: "ppd-segmented", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { type: "button", className: automaticSize ? "is-selected" : "", "aria-pressed": automaticSize, onClick: selectAutomaticSize, children: "\u81EA\u52A8" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { type: "button", className: !automaticSize ? "is-selected" : "", "aria-pressed": !automaticSize, onClick: selectRatioSize, children: "\u6BD4\u4F8B" })
+                  ] }),
+                  automaticSize && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("small", { children: "\u7531\u6A21\u578B\u51B3\u5B9A\u8F93\u51FA\u5C3A\u5BF8\uFF1B\u79EF\u5206\u6309 2K \u8BA1\u7B97\uFF0C\u6BD4\u4F8B\u548C\u5206\u8FA8\u7387\u5DF2\u9501\u5B9A\u3002" })
+                ] }),
                 properties.ratio && modelRatios.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("section", { children: [
                   /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("label", { children: "\u6BD4\u4F8B" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "ratio", "aria-hidden": "true", tabIndex: -1, value: ratio, onChange: (event) => {
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "ratio", "aria-hidden": "true", tabIndex: -1, disabled: automaticSize, value: ratio, onChange: (event) => {
                     change(setRatio, event.target.value);
                     settingsMenu.close();
                   }, children: modelRatios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("option", { children: value2 }, value2)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "ppd-ratio-grid", children: modelRatios.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("button", { type: "button", className: ratio === value2 ? "is-selected" : "", "aria-pressed": ratio === value2, onClick: () => {
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "ppd-ratio-grid", children: modelRatios.filter((value2) => value2 !== "auto").map((value2) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("button", { type: "button", disabled: automaticSize, className: ratio === value2 ? "is-selected" : "", "aria-pressed": ratio === value2, onClick: () => {
                     change(setRatio, value2);
                     settingsMenu.close();
                   }, children: [
@@ -22135,11 +22182,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
                 ] }),
                 properties.resolution && modelResolutions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("section", { children: [
                   /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("label", { children: "\u5206\u8FA8\u7387" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "resolution", "aria-hidden": "true", tabIndex: -1, value: resolution, onChange: (event) => {
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("select", { className: "ppd-contract-control", "data-generation-parameter": "resolution", "aria-hidden": "true", tabIndex: -1, disabled: automaticSize, value: resolution, onChange: (event) => {
                     change(setResolution, event.target.value);
                     settingsMenu.close();
                   }, children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("option", { children: value2 }, value2)) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "ppd-segmented", children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { type: "button", className: resolution === value2 ? "is-selected" : "", "aria-pressed": resolution === value2, onClick: () => {
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { className: "ppd-segmented", children: modelResolutions.map((value2) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("button", { type: "button", disabled: automaticSize, className: resolution === value2 ? "is-selected" : "", "aria-pressed": resolution === value2, onClick: () => {
                     change(setResolution, value2);
                     settingsMenu.close();
                   }, children: value2 }, value2)) })
@@ -27506,7 +27553,7 @@ var import_react20 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.52",
+  version: "0.1.53",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -28096,6 +28143,17 @@ var panelSnapshotCache;
 function clearPodploPanelSnapshotCache() {
   panelSnapshotCache = void 0;
 }
+function publicSkillSelection(slug, title, previewUrl) {
+  return {
+    version: 1,
+    kind: "skill",
+    id: slug,
+    label: title,
+    locator: { skillSlug: slug },
+    private: false,
+    previewUrl: previewUrl ?? void 0
+  };
+}
 var PAGE_SIZE3 = 18;
 var USER_SKILL_REFERENCE_LIMIT2 = 12;
 var CARD_TITLE_LIMIT = 24;
@@ -28123,14 +28181,6 @@ var connectionLabel = (snapshot) => {
   if (snapshot.connection.phase === "verified" || snapshot.connection.phase === "ready") return "\u5DF2\u8FDE\u63A5";
   return "\u8FDE\u63A5\u4E2D";
 };
-function randomUuid() {
-  if (typeof crypto.randomUUID === "function") return crypto.randomUUID();
-  const bytes = crypto.getRandomValues(new Uint8Array(16));
-  bytes[6] = bytes[6] & 15 | 64;
-  bytes[8] = bytes[8] & 63 | 128;
-  const hex3 = [...bytes].map((value2) => value2.toString(16).padStart(2, "0")).join("");
-  return `${hex3.slice(0, 8)}-${hex3.slice(8, 12)}-${hex3.slice(12, 16)}-${hex3.slice(16, 20)}-${hex3.slice(20)}`;
-}
 function Icon({ name }) {
   const values2 = {
     back: "\u2190",
@@ -28827,8 +28877,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
     setBusy(skill.slug);
     setError("");
     try {
-      const { data } = await request("selection.resolve", { kind: "skill", id: skill.executionSlug || skill.slug });
-      await onUse({ ...data, previewUrl: skill.coverImage });
+      await onUse(publicSkillSelection(skill.executionSlug || skill.slug, skill.title, skill.coverImage));
       setNotice(`\u5DF2\u5728\u751F\u56FE\u6846\u4E2D\u9009\u62E9\u201C${skill.title}\u201D\u3002`);
     } catch (error52) {
       setError(displayError2(error52));
@@ -29108,7 +29157,7 @@ function SkillEditor({ value: value2, mode, choices, busy, error: error51, notic
     ] })
   ] });
 }
-function MySkills({ request, onUse, onEditPreset, onChanged, navigation }) {
+function MySkills({ request, ownerId, onUse, onEditPreset, onChanged, navigation }) {
   const [query, setQuery] = (0, import_react22.useState)("");
   const [items, setItems] = (0, import_react22.useState)([]);
   const [cursor, setCursor] = (0, import_react22.useState)(null);
@@ -29305,8 +29354,7 @@ function MySkills({ request, onUse, onEditPreset, onChanged, navigation }) {
     setBusy(row.id);
     setError("");
     try {
-      const { data } = await request("selection.resolve", { kind: "skill", id: row.id });
-      await onUse(data);
+      await onUse({ version: 1, kind: "skill", id: row.id, label: row.name, locator: {}, ownerId, private: true });
       setNotice(`\u5DF2\u5728\u751F\u56FE\u6846\u4E2D\u9009\u62E9\u201C${row.name}\u201D\u3002`);
     } catch (error52) {
       setError(displayError2(error52));
@@ -29428,7 +29476,7 @@ function CollectionsPanel({ request, ownerId, onUse, onEditPreset, onChanged, re
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("button", { type: "button", className: tab === "mine" ? "is-active" : "", "aria-current": tab === "mine" ? "page" : void 0, onClick: () => selectTab("mine"), children: "\u6211\u7684 Skill" }),
       /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("button", { type: "button", className: tab === "dna" ? "is-active" : "", "aria-current": tab === "dna" ? "page" : void 0, onClick: () => selectTab("dna"), children: "\u6211\u7684 DNA" })
     ] }),
-    tab === "mine" ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(MySkills, { request, onUse, onEditPreset, onChanged, navigation: void 0 }) : tab === "dna" ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(MyDnaPanel, { request, targetId: targetDnaId, onTargetOpened: () => {
+    tab === "mine" ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(MySkills, { request, ownerId, onUse, onEditPreset, onChanged, navigation: void 0 }) : tab === "dna" ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(MyDnaPanel, { request, targetId: targetDnaId, onTargetOpened: () => {
       writePanelUiState(uiLease, "collections-dna-target", "");
       setTargetDnaId("");
     }, onEditPreset: (row) => onEditPreset({ resource: `dna:${row.id}`, label: row.description.slice(0, 80) || "\u6211\u7684 DNA" }), onUseDna: (row) => onUse({
@@ -29653,8 +29701,7 @@ function AssetsPanel({ request, onUse, onEditPreset, refreshKey, uiLease }) {
     setBusy(skill.slug);
     setError("");
     try {
-      const { data } = await request("selection.resolve", { kind: "skill", id: skill.executionSlug || skill.slug });
-      await onUse({ ...data, previewUrl: skill.coverImage });
+      await onUse(publicSkillSelection(skill.executionSlug || skill.slug, skill.title, skill.coverImage));
       setNotice(`\u5DF2\u5728\u751F\u56FE\u6846\u4E2D\u9009\u62E9\u201C${skill.title}\u201D\u3002`);
     } catch (error52) {
       setError(displayError2(error52));
@@ -29667,8 +29714,12 @@ function AssetsPanel({ request, onUse, onEditPreset, refreshKey, uiLease }) {
     setError("");
     try {
       const selectionKind = row.type === "skill" ? "skill" : "gallery";
-      const { data } = await request("selection.resolve", { kind: selectionKind, id: row.id });
-      await onUse({ ...data, previewUrl: row.imageUrl });
+      if (selectionKind === "skill") {
+        await onUse(publicSkillSelection(row.id, row.label || row.id, row.imageUrl));
+      } else {
+        const { data } = await request("selection.resolve", { kind: "gallery", id: row.id });
+        await onUse({ ...data, previewUrl: row.imageUrl });
+      }
       setNotice(selectionKind === "skill" ? "\u5DF2\u5728\u751F\u56FE\u6846\u4E2D\u66F4\u6362 Skill\u3002" : "\u5DF2\u5C06\u7D20\u6750\u52A0\u5165\u751F\u56FE\u6846\u3002");
     } catch (error52) {
       setError(displayError2(error52));
