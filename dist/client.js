@@ -1866,7 +1866,7 @@ function SessionTasks({ request, sessionId, pollMs = ACTIVE_POLL_MS }) {
 // plugins/podplo-dsh/src/panels.tsx
 var import_react21 = require("react");
 
-// ../../../node_modules/zod/v4/classic/external.js
+// node_modules/zod/v4/classic/external.js
 var external_exports = {};
 __export(external_exports, {
   $brand: () => $brand,
@@ -2109,7 +2109,7 @@ __export(external_exports, {
   xor: () => xor
 });
 
-// ../../../node_modules/zod/v4/core/index.js
+// node_modules/zod/v4/core/index.js
 var core_exports2 = {};
 __export(core_exports2, {
   $ZodAny: () => $ZodAny,
@@ -2388,7 +2388,7 @@ __export(core_exports2, {
   version: () => version
 });
 
-// ../../../node_modules/zod/v4/core/core.js
+// node_modules/zod/v4/core/core.js
 var _a;
 var NEVER = /* @__PURE__ */ Object.freeze({
   status: "aborted"
@@ -2465,7 +2465,7 @@ function config(newConfig) {
   return globalConfig;
 }
 
-// ../../../node_modules/zod/v4/core/util.js
+// node_modules/zod/v4/core/util.js
 var util_exports = {};
 __export(util_exports, {
   BIGINT_FORMAT_RANGES: () => BIGINT_FORMAT_RANGES,
@@ -3161,7 +3161,7 @@ var Class = class {
   }
 };
 
-// ../../../node_modules/zod/v4/core/errors.js
+// node_modules/zod/v4/core/errors.js
 var initializer = (inst, def) => {
   inst.name = "$ZodError";
   Object.defineProperty(inst, "_zod", {
@@ -3300,7 +3300,7 @@ function prettifyError(error51) {
   return lines.join("\n");
 }
 
-// ../../../node_modules/zod/v4/core/parse.js
+// node_modules/zod/v4/core/parse.js
 var _parse = (_Err) => (schema, value2, _ctx, _params) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
   const result = schema._zod.run({ value: value2, issues: [] }, ctx);
@@ -3388,7 +3388,7 @@ var _safeDecodeAsync = (_Err) => async (schema, value2, _ctx) => {
 };
 var safeDecodeAsync = /* @__PURE__ */ _safeDecodeAsync($ZodRealError);
 
-// ../../../node_modules/zod/v4/core/regexes.js
+// node_modules/zod/v4/core/regexes.js
 var regexes_exports = {};
 __export(regexes_exports, {
   base64: () => base64,
@@ -3547,7 +3547,7 @@ var sha512_hex = /^[0-9a-fA-F]{128}$/;
 var sha512_base64 = /* @__PURE__ */ fixedBase64(86, "==");
 var sha512_base64url = /* @__PURE__ */ fixedBase64url(86);
 
-// ../../../node_modules/zod/v4/core/checks.js
+// node_modules/zod/v4/core/checks.js
 var $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
   var _a4;
   inst._zod ?? (inst._zod = {});
@@ -4095,7 +4095,7 @@ var $ZodCheckOverwrite = /* @__PURE__ */ $constructor("$ZodCheckOverwrite", (ins
   };
 });
 
-// ../../../node_modules/zod/v4/core/doc.js
+// node_modules/zod/v4/core/doc.js
 var Doc = class {
   constructor(args = []) {
     this.content = [];
@@ -4131,14 +4131,14 @@ var Doc = class {
   }
 };
 
-// ../../../node_modules/zod/v4/core/versions.js
+// node_modules/zod/v4/core/versions.js
 var version = {
   major: 4,
   minor: 4,
   patch: 3
 };
 
-// ../../../node_modules/zod/v4/core/schemas.js
+// node_modules/zod/v4/core/schemas.js
 var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
   var _a4;
   inst ?? (inst = {});
@@ -6231,7 +6231,7 @@ function handleRefineResult(result, payload, input, inst) {
   }
 }
 
-// ../../../node_modules/zod/v4/locales/index.js
+// node_modules/zod/v4/locales/index.js
 var locales_exports = {};
 __export(locales_exports, {
   ar: () => ar_default,
@@ -6288,7 +6288,7 @@ __export(locales_exports, {
   zhTW: () => zh_TW_default
 });
 
-// ../../../node_modules/zod/v4/locales/ar.js
+// node_modules/zod/v4/locales/ar.js
 var error = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0641", verb: "\u0623\u0646 \u064A\u062D\u0648\u064A" },
@@ -6395,7 +6395,7 @@ function ar_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/az.js
+// node_modules/zod/v4/locales/az.js
 var error2 = () => {
   const Sizable = {
     string: { unit: "simvol", verb: "olmal\u0131d\u0131r" },
@@ -6501,7 +6501,7 @@ function az_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/be.js
+// node_modules/zod/v4/locales/be.js
 function getBelarusianPlural(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -6658,7 +6658,7 @@ function be_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/bg.js
+// node_modules/zod/v4/locales/bg.js
 var error4 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0430", verb: "\u0434\u0430 \u0441\u044A\u0434\u044A\u0440\u0436\u0430" },
@@ -6779,7 +6779,7 @@ function bg_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ca.js
+// node_modules/zod/v4/locales/ca.js
 var error5 = () => {
   const Sizable = {
     string: { unit: "car\xE0cters", verb: "contenir" },
@@ -6888,7 +6888,7 @@ function ca_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/cs.js
+// node_modules/zod/v4/locales/cs.js
 var error6 = () => {
   const Sizable = {
     string: { unit: "znak\u016F", verb: "m\xEDt" },
@@ -7000,7 +7000,7 @@ function cs_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/da.js
+// node_modules/zod/v4/locales/da.js
 var error7 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "havde" },
@@ -7116,7 +7116,7 @@ function da_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/de.js
+// node_modules/zod/v4/locales/de.js
 var error8 = () => {
   const Sizable = {
     string: { unit: "Zeichen", verb: "zu haben" },
@@ -7225,7 +7225,7 @@ function de_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/el.js
+// node_modules/zod/v4/locales/el.js
 var error9 = () => {
   const Sizable = {
     string: { unit: "\u03C7\u03B1\u03C1\u03B1\u03BA\u03C4\u03AE\u03C1\u03B5\u03C2", verb: "\u03BD\u03B1 \u03AD\u03C7\u03B5\u03B9" },
@@ -7335,7 +7335,7 @@ function el_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/en.js
+// node_modules/zod/v4/locales/en.js
 var error10 = () => {
   const Sizable = {
     string: { unit: "characters", verb: "to have" },
@@ -7448,7 +7448,7 @@ function en_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/eo.js
+// node_modules/zod/v4/locales/eo.js
 var error11 = () => {
   const Sizable = {
     string: { unit: "karaktrojn", verb: "havi" },
@@ -7558,7 +7558,7 @@ function eo_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/es.js
+// node_modules/zod/v4/locales/es.js
 var error12 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "tener" },
@@ -7691,7 +7691,7 @@ function es_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fa.js
+// node_modules/zod/v4/locales/fa.js
 var error13 = () => {
   const Sizable = {
     string: { unit: "\u06A9\u0627\u0631\u0627\u06A9\u062A\u0631", verb: "\u062F\u0627\u0634\u062A\u0647 \u0628\u0627\u0634\u062F" },
@@ -7806,7 +7806,7 @@ function fa_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fi.js
+// node_modules/zod/v4/locales/fi.js
 var error14 = () => {
   const Sizable = {
     string: { unit: "merkki\xE4", subject: "merkkijonon" },
@@ -7919,7 +7919,7 @@ function fi_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fr.js
+// node_modules/zod/v4/locales/fr.js
 var error15 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -8045,7 +8045,7 @@ function fr_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/fr-CA.js
+// node_modules/zod/v4/locales/fr-CA.js
 var error16 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -8153,7 +8153,7 @@ function fr_CA_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/he.js
+// node_modules/zod/v4/locales/he.js
 var error17 = () => {
   const TypeNames = {
     string: { label: "\u05DE\u05D7\u05E8\u05D5\u05D6\u05EA", gender: "f" },
@@ -8348,7 +8348,7 @@ function he_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/hr.js
+// node_modules/zod/v4/locales/hr.js
 var error18 = () => {
   const Sizable = {
     string: { unit: "znakova", verb: "imati" },
@@ -8471,7 +8471,7 @@ function hr_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/hu.js
+// node_modules/zod/v4/locales/hu.js
 var error19 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "legyen" },
@@ -8580,7 +8580,7 @@ function hu_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/hy.js
+// node_modules/zod/v4/locales/hy.js
 function getArmenianPlural(count, one, many) {
   return Math.abs(count) === 1 ? one : many;
 }
@@ -8728,7 +8728,7 @@ function hy_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/id.js
+// node_modules/zod/v4/locales/id.js
 var error21 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "memiliki" },
@@ -8835,7 +8835,7 @@ function id_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/is.js
+// node_modules/zod/v4/locales/is.js
 var error22 = () => {
   const Sizable = {
     string: { unit: "stafi", verb: "a\xF0 hafa" },
@@ -8945,7 +8945,7 @@ function is_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/it.js
+// node_modules/zod/v4/locales/it.js
 var error23 = () => {
   const Sizable = {
     string: { unit: "caratteri", verb: "avere" },
@@ -9054,7 +9054,7 @@ function it_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ja.js
+// node_modules/zod/v4/locales/ja.js
 var error24 = () => {
   const Sizable = {
     string: { unit: "\u6587\u5B57", verb: "\u3067\u3042\u308B" },
@@ -9162,7 +9162,7 @@ function ja_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ka.js
+// node_modules/zod/v4/locales/ka.js
 var error25 = () => {
   const Sizable = {
     string: { unit: "\u10E1\u10D8\u10DB\u10D1\u10DD\u10DA\u10DD", verb: "\u10E3\u10DC\u10D3\u10D0 \u10E8\u10D4\u10D8\u10EA\u10D0\u10D5\u10D3\u10D4\u10E1" },
@@ -9275,7 +9275,7 @@ function ka_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/km.js
+// node_modules/zod/v4/locales/km.js
 var error26 = () => {
   const Sizable = {
     string: { unit: "\u178F\u17BD\u17A2\u1780\u17D2\u179F\u179A", verb: "\u1782\u17BD\u179A\u1798\u17B6\u1793" },
@@ -9386,12 +9386,12 @@ function km_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/kh.js
+// node_modules/zod/v4/locales/kh.js
 function kh_default() {
   return km_default();
 }
 
-// ../../../node_modules/zod/v4/locales/ko.js
+// node_modules/zod/v4/locales/ko.js
 var error27 = () => {
   const Sizable = {
     string: { unit: "\uBB38\uC790", verb: "to have" },
@@ -9503,7 +9503,7 @@ function ko_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/lt.js
+// node_modules/zod/v4/locales/lt.js
 var capitalizeFirstCharacter = (text4) => {
   return text4.charAt(0).toUpperCase() + text4.slice(1);
 };
@@ -9707,7 +9707,7 @@ function lt_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/mk.js
+// node_modules/zod/v4/locales/mk.js
 var error29 = () => {
   const Sizable = {
     string: { unit: "\u0437\u043D\u0430\u0446\u0438", verb: "\u0434\u0430 \u0438\u043C\u0430\u0430\u0442" },
@@ -9817,7 +9817,7 @@ function mk_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ms.js
+// node_modules/zod/v4/locales/ms.js
 var error30 = () => {
   const Sizable = {
     string: { unit: "aksara", verb: "mempunyai" },
@@ -9925,7 +9925,7 @@ function ms_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/nl.js
+// node_modules/zod/v4/locales/nl.js
 var error31 = () => {
   const Sizable = {
     string: { unit: "tekens", verb: "heeft" },
@@ -10036,7 +10036,7 @@ function nl_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/no.js
+// node_modules/zod/v4/locales/no.js
 var error32 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "\xE5 ha" },
@@ -10145,7 +10145,7 @@ function no_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ota.js
+// node_modules/zod/v4/locales/ota.js
 var error33 = () => {
   const Sizable = {
     string: { unit: "harf", verb: "olmal\u0131d\u0131r" },
@@ -10255,7 +10255,7 @@ function ota_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ps.js
+// node_modules/zod/v4/locales/ps.js
 var error34 = () => {
   const Sizable = {
     string: { unit: "\u062A\u0648\u06A9\u064A", verb: "\u0648\u0644\u0631\u064A" },
@@ -10370,7 +10370,7 @@ function ps_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/pl.js
+// node_modules/zod/v4/locales/pl.js
 var error35 = () => {
   const Sizable = {
     string: { unit: "znak\xF3w", verb: "mie\u0107" },
@@ -10480,7 +10480,7 @@ function pl_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/pt.js
+// node_modules/zod/v4/locales/pt.js
 var error36 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "ter" },
@@ -10589,7 +10589,7 @@ function pt_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ro.js
+// node_modules/zod/v4/locales/ro.js
 var error37 = () => {
   const Sizable = {
     string: { unit: "caractere", verb: "s\u0103 aib\u0103" },
@@ -10709,7 +10709,7 @@ function ro_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ru.js
+// node_modules/zod/v4/locales/ru.js
 function getRussianPlural(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -10866,7 +10866,7 @@ function ru_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/sl.js
+// node_modules/zod/v4/locales/sl.js
 var error39 = () => {
   const Sizable = {
     string: { unit: "znakov", verb: "imeti" },
@@ -10976,7 +10976,7 @@ function sl_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/sv.js
+// node_modules/zod/v4/locales/sv.js
 var error40 = () => {
   const Sizable = {
     string: { unit: "tecken", verb: "att ha" },
@@ -11087,7 +11087,7 @@ function sv_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ta.js
+// node_modules/zod/v4/locales/ta.js
 var error41 = () => {
   const Sizable = {
     string: { unit: "\u0B8E\u0BB4\u0BC1\u0BA4\u0BCD\u0BA4\u0BC1\u0B95\u0BCD\u0B95\u0BB3\u0BCD", verb: "\u0B95\u0BCA\u0BA3\u0BCD\u0B9F\u0BBF\u0BB0\u0BC1\u0B95\u0BCD\u0B95 \u0BB5\u0BC7\u0BA3\u0BCD\u0B9F\u0BC1\u0BAE\u0BCD" },
@@ -11198,7 +11198,7 @@ function ta_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/th.js
+// node_modules/zod/v4/locales/th.js
 var error42 = () => {
   const Sizable = {
     string: { unit: "\u0E15\u0E31\u0E27\u0E2D\u0E31\u0E01\u0E29\u0E23", verb: "\u0E04\u0E27\u0E23\u0E21\u0E35" },
@@ -11309,7 +11309,7 @@ function th_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/tr.js
+// node_modules/zod/v4/locales/tr.js
 var error43 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "olmal\u0131" },
@@ -11415,7 +11415,7 @@ function tr_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/uk.js
+// node_modules/zod/v4/locales/uk.js
 var error44 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0456\u0432", verb: "\u043C\u0430\u0442\u0438\u043C\u0435" },
@@ -11524,12 +11524,12 @@ function uk_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/ua.js
+// node_modules/zod/v4/locales/ua.js
 function ua_default() {
   return uk_default();
 }
 
-// ../../../node_modules/zod/v4/locales/ur.js
+// node_modules/zod/v4/locales/ur.js
 var error45 = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0648\u0641", verb: "\u06C1\u0648\u0646\u0627" },
@@ -11640,7 +11640,7 @@ function ur_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/uz.js
+// node_modules/zod/v4/locales/uz.js
 var error46 = () => {
   const Sizable = {
     string: { unit: "belgi", verb: "bo\u2018lishi kerak" },
@@ -11751,7 +11751,7 @@ function uz_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/vi.js
+// node_modules/zod/v4/locales/vi.js
 var error47 = () => {
   const Sizable = {
     string: { unit: "k\xFD t\u1EF1", verb: "c\xF3" },
@@ -11860,7 +11860,7 @@ function vi_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/zh-CN.js
+// node_modules/zod/v4/locales/zh-CN.js
 var error48 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u7B26", verb: "\u5305\u542B" },
@@ -11970,7 +11970,7 @@ function zh_CN_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/zh-TW.js
+// node_modules/zod/v4/locales/zh-TW.js
 var error49 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u5143", verb: "\u64C1\u6709" },
@@ -12078,7 +12078,7 @@ function zh_TW_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/locales/yo.js
+// node_modules/zod/v4/locales/yo.js
 var error50 = () => {
   const Sizable = {
     string: { unit: "\xE0mi", verb: "n\xED" },
@@ -12186,7 +12186,7 @@ function yo_default() {
   };
 }
 
-// ../../../node_modules/zod/v4/core/registries.js
+// node_modules/zod/v4/core/registries.js
 var _a2;
 var $output = /* @__PURE__ */ Symbol("ZodOutput");
 var $input = /* @__PURE__ */ Symbol("ZodInput");
@@ -12236,7 +12236,7 @@ function registry() {
 (_a2 = globalThis).__zod_globalRegistry ?? (_a2.__zod_globalRegistry = registry());
 var globalRegistry = globalThis.__zod_globalRegistry;
 
-// ../../../node_modules/zod/v4/core/api.js
+// node_modules/zod/v4/core/api.js
 // @__NO_SIDE_EFFECTS__
 function _string(Class2, params) {
   return new Class2({
@@ -13275,7 +13275,7 @@ function _stringFormat(Class2, format, fnOrRegex, _params = {}) {
   return inst;
 }
 
-// ../../../node_modules/zod/v4/core/to-json-schema.js
+// node_modules/zod/v4/core/to-json-schema.js
 function initializeContext(params) {
   let target2 = params?.target ?? "draft-2020-12";
   if (target2 === "draft-4")
@@ -13634,7 +13634,7 @@ var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) =
   return finalize(ctx, schema);
 };
 
-// ../../../node_modules/zod/v4/core/json-schema-processors.js
+// node_modules/zod/v4/core/json-schema-processors.js
 var formatMap = {
   guid: "uuid",
   url: "uri",
@@ -14178,7 +14178,7 @@ function toJSONSchema(input, params) {
   return finalize(ctx, input);
 }
 
-// ../../../node_modules/zod/v4/core/json-schema-generator.js
+// node_modules/zod/v4/core/json-schema-generator.js
 var JSONSchemaGenerator = class {
   /** @deprecated Access via ctx instead */
   get metadataRegistry() {
@@ -14253,10 +14253,10 @@ var JSONSchemaGenerator = class {
   }
 };
 
-// ../../../node_modules/zod/v4/core/json-schema.js
+// node_modules/zod/v4/core/json-schema.js
 var json_schema_exports = {};
 
-// ../../../node_modules/zod/v4/classic/schemas.js
+// node_modules/zod/v4/classic/schemas.js
 var schemas_exports2 = {};
 __export(schemas_exports2, {
   ZodAny: () => ZodAny,
@@ -14427,7 +14427,7 @@ __export(schemas_exports2, {
   xor: () => xor
 });
 
-// ../../../node_modules/zod/v4/classic/checks.js
+// node_modules/zod/v4/classic/checks.js
 var checks_exports2 = {};
 __export(checks_exports2, {
   endsWith: () => _endsWith,
@@ -14461,7 +14461,7 @@ __export(checks_exports2, {
   uppercase: () => _uppercase
 });
 
-// ../../../node_modules/zod/v4/classic/iso.js
+// node_modules/zod/v4/classic/iso.js
 var iso_exports = {};
 __export(iso_exports, {
   ZodISODate: () => ZodISODate,
@@ -14502,7 +14502,7 @@ function duration2(params) {
   return _isoDuration(ZodISODuration, params);
 }
 
-// ../../../node_modules/zod/v4/classic/errors.js
+// node_modules/zod/v4/classic/errors.js
 var initializer2 = (inst, issues) => {
   $ZodError.init(inst, issues);
   inst.name = "ZodError";
@@ -14542,7 +14542,7 @@ var ZodRealError = /* @__PURE__ */ $constructor("ZodError", initializer2, {
   Parent: Error
 });
 
-// ../../../node_modules/zod/v4/classic/parse.js
+// node_modules/zod/v4/classic/parse.js
 var parse2 = /* @__PURE__ */ _parse(ZodRealError);
 var parseAsync2 = /* @__PURE__ */ _parseAsync(ZodRealError);
 var safeParse2 = /* @__PURE__ */ _safeParse(ZodRealError);
@@ -14556,7 +14556,7 @@ var safeDecode2 = /* @__PURE__ */ _safeDecode(ZodRealError);
 var safeEncodeAsync2 = /* @__PURE__ */ _safeEncodeAsync(ZodRealError);
 var safeDecodeAsync2 = /* @__PURE__ */ _safeDecodeAsync(ZodRealError);
 
-// ../../../node_modules/zod/v4/classic/schemas.js
+// node_modules/zod/v4/classic/schemas.js
 var _installedGroups = /* @__PURE__ */ new WeakMap();
 function _installLazyMethods(inst, group, methods) {
   const proto = Object.getPrototypeOf(inst);
@@ -15846,7 +15846,7 @@ function preprocess(fn, schema) {
   });
 }
 
-// ../../../node_modules/zod/v4/classic/compat.js
+// node_modules/zod/v4/classic/compat.js
 var ZodIssueCode = {
   invalid_type: "invalid_type",
   too_big: "too_big",
@@ -15872,7 +15872,7 @@ var ZodFirstPartyTypeKind;
 /* @__PURE__ */ (function(ZodFirstPartyTypeKind2) {
 })(ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {}));
 
-// ../../../node_modules/zod/v4/classic/from-json-schema.js
+// node_modules/zod/v4/classic/from-json-schema.js
 var z = {
   ...schemas_exports2,
   ...checks_exports2,
@@ -16352,7 +16352,7 @@ function fromJSONSchema(schema, params) {
   return convertSchema(normalized, ctx);
 }
 
-// ../../../node_modules/zod/v4/classic/coerce.js
+// node_modules/zod/v4/classic/coerce.js
 var coerce_exports = {};
 __export(coerce_exports, {
   bigint: () => bigint3,
@@ -16377,7 +16377,7 @@ function date4(params) {
   return _coercedDate(ZodDate, params);
 }
 
-// ../../../node_modules/zod/v4/classic/external.js
+// node_modules/zod/v4/classic/external.js
 config(en_default());
 
 // plugins/podplo-dsh/src/generation-background.ts
@@ -16603,6 +16603,7 @@ function saveGenerationPreset(owner, resource, preset) {
 var import_react10 = __toESM(require("react"), 1);
 
 // plugins/podplo-dsh/src/generation-cache.ts
+var cacheError = (code, message3) => Object.assign(new Error(message3), { code });
 var GenerationBootstrapCache = class {
   values = /* @__PURE__ */ new Map();
   jobs = /* @__PURE__ */ new Map();
@@ -16616,6 +16617,7 @@ var GenerationBootstrapCache = class {
   referenceUploadAssets = /* @__PURE__ */ new Map();
   composerFeedback = /* @__PURE__ */ new Map();
   analyses = /* @__PURE__ */ new Map();
+  inpaintDrafts = /* @__PURE__ */ new Map();
   epoch = 0;
   analysisReceipt(owner, session, intent, plan) {
     const entry = this.analyses.get(this.draftKey(owner, session));
@@ -16676,7 +16678,8 @@ var GenerationBootstrapCache = class {
       selectedAssets.set(id, { ...selectedAssets.get(id), ...value2 });
     }
     const assets = patch.assets ? [...selectedAssets.values()] : current2.assets;
-    const next = { ...current2, ...patch, ownerId, assets };
+    const families = patch.publicRows ? {} : current2.families;
+    const next = { ...current2, ...patch, ownerId, assets, families };
     this.values.set(ownerId, next);
     return next;
   }
@@ -16824,10 +16827,74 @@ var GenerationBootstrapCache = class {
     const value2 = this.drafts.get(this.draftKey(ownerId, sessionId));
     return value2 ? structuredClone(value2) : void 0;
   }
+  readInpaintDraft(ownerId, sessionId) {
+    const value2 = this.inpaintDrafts.get(this.draftKey(ownerId, sessionId));
+    return value2 ? structuredClone(value2) : void 0;
+  }
+  activateInpaintDraft(ownerId, sessionId, value2, revision) {
+    if (revision !== this.epoch) return void 0;
+    const key2 = this.draftKey(ownerId, sessionId), current2 = this.drafts.get(key2);
+    const displaced = current2?.operation ? structuredClone(current2.operation) : void 0;
+    if (current2?.approvalAttempted || current2?.clientOperationId || current2?.operation && ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(current2.operation.status)) return displaced;
+    this.inpaintDrafts.set(key2, structuredClone(value2));
+    if (current2) this.drafts.set(key2, {
+      ...current2,
+      planVersion: Math.min(1e6, current2.planVersion + 1),
+      operation: void 0,
+      approvalAttempted: false,
+      clientOperationId: void 0
+    });
+    this.composerFeedback.delete(key2);
+    this.notifyDraft(key2);
+    return displaced;
+  }
+  rememberInpaintPrepared(ownerId, sessionId, expectedId, expectedDraftRevision, prepared, revision) {
+    if (revision !== this.epoch) return false;
+    const key2 = this.draftKey(ownerId, sessionId), current2 = this.inpaintDrafts.get(key2);
+    if (!current2 || current2.id !== expectedId || current2.revision !== expectedDraftRevision) return false;
+    this.inpaintDrafts.set(key2, { ...current2, prepared: structuredClone(prepared) });
+    return true;
+  }
+  clearInpaintDraft(ownerId, sessionId, revision) {
+    if (revision !== this.epoch) return void 0;
+    const key2 = this.draftKey(ownerId, sessionId), current2 = this.inpaintDrafts.get(key2);
+    if (!current2) return void 0;
+    const draft = this.drafts.get(key2);
+    if (draft?.approvalAttempted || draft?.clientOperationId || draft?.operation && ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(draft.operation.status)) return void 0;
+    this.inpaintDrafts.delete(key2);
+    if (draft) this.drafts.set(key2, {
+      ...draft,
+      planVersion: Math.min(1e6, draft.planVersion + 1),
+      operation: void 0,
+      approvalAttempted: false,
+      clientOperationId: void 0
+    });
+    this.composerFeedback.delete(key2);
+    this.notifyDraft(key2);
+    return structuredClone(current2);
+  }
+  completeInpaintDraft(ownerId, sessionId, expectedId, intentId, planVersion, revision) {
+    if (revision !== this.epoch) return false;
+    const key2 = this.draftKey(ownerId, sessionId), inpaint = this.inpaintDrafts.get(key2), draft = this.drafts.get(key2);
+    if (!inpaint || inpaint.id !== expectedId || !draft || draft.intentId !== intentId || draft.planVersion !== planVersion) return false;
+    this.inpaintDrafts.delete(key2);
+    this.drafts.set(key2, {
+      ...draft,
+      intentId: crypto.randomUUID(),
+      planVersion: 1,
+      operation: void 0,
+      approvalAttempted: false,
+      clientOperationId: void 0
+    });
+    this.composerFeedback.delete(key2);
+    this.notifyDraft(key2);
+    return true;
+  }
   writeDraft(ownerId, sessionId, draft) {
     const key2 = this.draftKey(ownerId, sessionId);
     const existing = this.drafts.get(key2);
     let next = structuredClone(draft);
+    if (existing?.intentId === next.intentId && existing.planVersion === next.planVersion && existing.clientOperationId && !next.clientOperationId) next.clientOperationId = existing.clientOperationId;
     if (existing?.intentId === next.intentId && existing.planVersion > next.planVersion) {
       next = {
         ...next,
@@ -16846,6 +16913,15 @@ var GenerationBootstrapCache = class {
     this.drafts.set(key2, next);
     if (next.operation) this.operations.set(this.operationKey(ownerId, sessionId, next.intentId, next.planVersion), structuredClone(next.operation));
     if (pending) this.notifyDraft(key2);
+  }
+  ensureClientOperationId(ownerId, sessionId, intentId, planVersion) {
+    const key2 = this.draftKey(ownerId, sessionId);
+    const draft = this.drafts.get(key2);
+    if (!draft || draft.intentId !== intentId || draft.planVersion !== planVersion) return void 0;
+    if (draft.clientOperationId) return draft.clientOperationId;
+    const clientOperationId = crypto.randomUUID();
+    this.drafts.set(key2, { ...draft, clientOperationId });
+    return clientOperationId;
   }
   subscribeDraft(ownerId, sessionId, listener) {
     const key2 = this.draftKey(ownerId, sessionId);
@@ -16874,7 +16950,14 @@ var GenerationBootstrapCache = class {
     }
     if (draft.references.includes(row.id)) return true;
     const nextPlanVersion = Math.min(1e6, draft.planVersion + 1);
-    this.drafts.set(key2, { ...draft, references: [...draft.references, row.id], planVersion: nextPlanVersion, operation: void 0, approvalAttempted: false });
+    this.drafts.set(key2, {
+      ...draft,
+      references: [...draft.references, row.id],
+      planVersion: nextPlanVersion,
+      operation: void 0,
+      approvalAttempted: false,
+      clientOperationId: void 0
+    });
     this.notifyDraft(key2);
     return true;
   }
@@ -16912,7 +16995,7 @@ var GenerationBootstrapCache = class {
     const key2 = this.draftKey(ownerId, sessionId);
     const draft = this.drafts.get(key2);
     if (!draft || draft.intentId !== intentId || draft.planVersion !== planVersion) return false;
-    this.drafts.set(key2, { ...draft, planVersion: nextPlanVersion, operation: void 0, approvalAttempted: false });
+    this.drafts.set(key2, { ...draft, planVersion: nextPlanVersion, operation: void 0, approvalAttempted: false, clientOperationId: void 0 });
     return true;
   }
   readPendingPrepare(ownerId, sessionId, intentId, planVersion) {
@@ -16927,9 +17010,12 @@ var GenerationBootstrapCache = class {
     const epoch2 = this.epoch;
     let job;
     job = Promise.resolve().then(loader).then((operation) => {
-      if (operation.intentId !== intentId || operation.planVersion !== planVersion) throw new Error("\u751F\u56FE\u62A5\u4EF7\u4E0E\u5F53\u524D\u8BA1\u5212\u4E0D\u5339\u914D");
-      if (epoch2 !== this.epoch || this.prepareJobs.get(key2) !== job) throw new Error("\u751F\u56FE\u62A5\u4EF7\u8D26\u53F7\u4E0A\u4E0B\u6587\u5DF2\u5931\u6548");
-      if (!this.rememberOperation(ownerId, sessionId, operation)) throw new Error("\u751F\u56FE\u62A5\u4EF7\u8BA1\u5212\u5DF2\u53D8\u66F4");
+      if (operation.intentId !== intentId || operation.planVersion !== planVersion)
+        throw cacheError("QUOTE_RESPONSE_MISMATCH", "\u751F\u56FE\u62A5\u4EF7\u4E0E\u5F53\u524D\u8BA1\u5212\u4E0D\u5339\u914D");
+      if (epoch2 !== this.epoch || this.prepareJobs.get(key2) !== job)
+        throw cacheError("SESSION_CHANGED", "\u751F\u56FE\u62A5\u4EF7\u8D26\u53F7\u4E0A\u4E0B\u6587\u5DF2\u5931\u6548");
+      if (!this.rememberOperation(ownerId, sessionId, operation))
+        throw cacheError("DRAFT_CHANGED", "\u751F\u56FE\u62A5\u4EF7\u671F\u95F4\u8349\u7A3F\u5DF2\u53D8\u66F4");
       return structuredClone(operation);
     }).finally(() => {
       if (this.prepareJobs.get(key2) === job) this.prepareJobs.delete(key2);
@@ -16951,6 +17037,7 @@ var GenerationBootstrapCache = class {
     this.prepareJobs.clear();
     this.pendingReferences.clear();
     this.composerFeedback.clear();
+    this.inpaintDrafts.clear();
     for (const listeners3 of this.draftListeners.values()) for (const listener of listeners3) listener();
     this.draftListeners.clear();
   }
@@ -18403,6 +18490,57 @@ function publicSkillDisplayCover(row) {
   return isSkillDisplayCoverImage(row.displayCoverImage) ? row.displayCoverImage : void 0;
 }
 
+// packages/online/dna.ts
+var DnaSkillCoverSchema = external_exports.string().url().max(2048).refine((value2) => {
+  try {
+    const url2 = new URL(value2);
+    return url2.origin === "https://images.podplo.app" && !url2.username && !url2.password && !url2.search && !url2.hash && /^\/official\/(?:skills|skill-covers)\/[A-Za-z0-9._/-]+$/u.test(url2.pathname) && !url2.pathname.includes("..") && !url2.pathname.includes("//");
+  } catch {
+    return false;
+  }
+}, "Invalid public DNA Skill cover");
+var DnaSkillSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  name: external_exports.string().min(1).max(160),
+  description: external_exports.string().max(3e3).optional(),
+  available: external_exports.boolean().optional(),
+  updatedAt: external_exports.string().datetime(),
+  coverImage: DnaSkillCoverSchema.nullable().optional()
+}).strict();
+var DnaSkillsSchema = external_exports.object({ items: external_exports.array(DnaSkillSchema) }).strict();
+var DnaProfileSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  name: external_exports.string().min(1).max(80),
+  description: external_exports.string().max(1e3).default(""),
+  coverAssetId: external_exports.string().uuid(),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime()
+}).strict();
+var DnaPageSchema = external_exports.object({ items: external_exports.array(DnaProfileSchema), nextCursor: external_exports.string().nullable() }).strict();
+var DnaQuoteInputSchema = external_exports.object({ model: ActiveAnalysisModelSchema.optional(), skillId: external_exports.string().uuid(), sourceAssetId: external_exports.string().uuid(), name: external_exports.string().trim().min(1).max(80) }).strict();
+var DnaTaskSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  status: external_exports.enum(["queued", "running", "completed", "failed", "submission_unknown"]),
+  model: ImageToTextModelSchema,
+  totalCredits: external_exports.number().positive(),
+  inputCount: external_exports.literal(1),
+  createdAt: external_exports.string().datetime(),
+  updatedAt: external_exports.string().datetime(),
+  dnaId: external_exports.string().uuid().optional(),
+  failureCode: external_exports.string().regex(/^[A-Z0-9_]{1,80}$/).nullable().optional()
+}).strict().superRefine((row, ctx) => {
+  if (row.status === "completed" && !row.dnaId || row.status !== "completed" && row.dnaId)
+    ctx.addIssue({ code: "custom", message: "DNA \u72B6\u6001\u4E0E\u4FDD\u5B58\u56DE\u6267\u4E0D\u4E00\u81F4" });
+});
+var DnaRenameSchema = external_exports.object({
+  id: external_exports.string().uuid(),
+  name: external_exports.string().trim().min(1).max(80),
+  description: external_exports.string().trim().max(1e3).optional(),
+  expectedUpdatedAt: external_exports.string().datetime()
+}).strict();
+var DnaDeleteSchema = external_exports.object({ id: external_exports.string().uuid(), expectedUpdatedAt: external_exports.string().datetime(), confirmed: external_exports.literal(true) }).strict();
+var DnaPageInputSchema = external_exports.object({ cursor: external_exports.string().max(1e3).optional(), limit: external_exports.number().int().min(1).max(50).optional() }).strict();
+
 // plugins/podplo-dsh/src/skill-browser-state.ts
 var text2 = (value2) => typeof value2 === "string" ? value2 : "";
 var strings2 = (value2) => Array.isArray(value2) ? value2.filter((row) => typeof row === "string" && !!row) : [];
@@ -18509,7 +18647,8 @@ function extractionChoices(rows2) {
       source: "library",
       kind: "skill",
       description: text2(row.description),
-      available: row.available !== false
+      available: row.available !== false,
+      ...DnaSkillCoverSchema.safeParse(row.coverImage).success ? { coverUrl: text2(row.coverImage) } : {}
     }];
   });
 }
@@ -19075,24 +19214,15 @@ function InpaintCanvas({ src, width: width2, height: height2, strokes, onChange,
 // plugins/podplo-dsh/src/InpaintDialog.tsx
 var import_jsx_runtime8 = require("react/jsx-runtime");
 var message2 = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u672A\u5B8C\u6210\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-function historyRows(value2) {
-  if (!Array.isArray(value2)) throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
-  const statuses = /* @__PURE__ */ new Set(["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown", "completed", "failed", "partial_failure", "partial_cancelled", "cancelled"]);
-  return value2.map((row) => {
-    if (!row || typeof row !== "object") throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
-    const item = row;
-    if (typeof item.operationId !== "string" || !item.operationId || typeof item.status !== "string" || !statuses.has(item.status) || !Array.isArray(item.items) || item.items.some((entry) => {
-      if (!entry || typeof entry !== "object" || Array.isArray(entry)) return true;
-      const inpaint = entry.inpaint;
-      return inpaint !== void 0 && (!inpaint || typeof inpaint !== "object" || Array.isArray(inpaint) || inpaint.mode !== "inpaint" || typeof inpaint.preserveOutside !== "boolean");
-    })) {
-      throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
-    }
-    return row;
-  });
+var uuid3 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+function inpaintSourceKey(source) {
+  return source.kind === "asset" ? `asset:${source.assetId}` : source.kind === "archive" ? `archive:${source.taskId}:${source.fileId}` : `file:${source.file.name}:${source.file.size}:${source.file.lastModified}`;
 }
 async function imageBlob(source, request) {
-  if (source.kind === "file") return { blob: source.file, previewUrl: source.previewUrl };
+  if (source.kind === "file") {
+    const previewUrl = URL.createObjectURL(source.file);
+    return { blob: source.file, previewUrl, ownedPreview: true };
+  }
   if (source.kind === "archive") {
     const { data: data2 } = await request("archive.preview", { taskId: source.taskId, fileId: source.fileId });
     if (typeof data2?.dataUrl !== "string" || !data2.dataUrl) throw new Error("\u672C\u5730\u6210\u679C\u5DF2\u4E0D\u53EF\u7528\uFF0C\u65E0\u6CD5\u5C40\u90E8\u91CD\u7ED8\u3002");
@@ -19120,14 +19250,37 @@ async function loadSource(source, request) {
     bitmap.close();
   }
 }
-function InpaintDialog({ source, request, onClose }) {
+async function materializeInpaintDraft(draft, request) {
+  const loaded = await loadSource(draft.source, request);
+  try {
+    const maskState = inspectInpaintMask(rasterizeInpaintMask(draft.strokes, loaded.width, loaded.height));
+    if (!maskState.valid) throw new Error("\u8BF7\u91CD\u65B0\u7F16\u8F91\u91CD\u7ED8\u533A\u57DF\uFF0C\u5E76\u540C\u65F6\u4FDD\u7559\u4E00\u90E8\u5206\u539F\u56FE\u3002");
+    const maskBlob = await exportInpaintMask(draft.strokes, loaded.width, loaded.height);
+    if (maskBlob.size > 4e6) throw new Error("\u91CD\u7ED8\u533A\u57DF\u6587\u4EF6\u8D85\u8FC7 4 MB\uFF0C\u8BF7\u51CF\u5C0F\u539F\u56FE\u5C3A\u5BF8\u540E\u91CD\u8BD5\u3002");
+    const base2 = draft.source.filename.replace(/\.[^.]+$/u, "") || "image";
+    return {
+      ...draft.source.kind === "asset" ? { sourceAssetId: draft.source.assetId } : { sourceFile: loaded.file },
+      maskFile: new File([maskBlob], `${base2}-inpaint-mask.png`, { type: "image/png" })
+    };
+  } finally {
+    if (loaded.ownedPreview) URL.revokeObjectURL(loaded.previewUrl);
+  }
+}
+async function deletePreparedInpaintAssets(draft, request) {
+  if (!draft?.prepared) return;
+  const ids2 = [draft.prepared.maskAssetId, ...draft.prepared.sourceOwned ? [draft.prepared.sourceAssetId] : []].filter(Boolean);
+  if (!ids2.length) return;
+  const prepared = await request("assets.delete", { ids: ids2 });
+  if (prepared.data?.confirmationId) await request("assets.delete", { confirmationId: prepared.data.confirmationId });
+}
+function InpaintDialog({ source, request, initialDraft, onSave, onClose }) {
+  const initial = initialDraft && inpaintSourceKey(initialDraft.source) === inpaintSourceKey(source) ? initialDraft : void 0;
   const [loaded, setLoaded] = (0, import_react9.useState)();
-  const [strokes, setStrokes] = (0, import_react9.useState)([]), [prompt, setPrompt] = (0, import_react9.useState)("");
-  const [preserveOutside, setPreserveOutside] = (0, import_react9.useState)(true), [operation, setOperation] = (0, import_react9.useState)();
-  const [localReview, setLocalReview] = (0, import_react9.useState)();
-  const [maskAssetId, setMaskAssetId] = (0, import_react9.useState)("");
-  const [busy, setBusy] = (0, import_react9.useState)("load"), [error51, setError] = (0, import_react9.useState)(""), [notice, setNotice] = (0, import_react9.useState)("");
-  const [ownerId, setOwnerId] = (0, import_react9.useState)(""), [authScope, setAuthScope] = (0, import_react9.useState)(""), [recoveryReady, setRecoveryReady] = (0, import_react9.useState)(false);
+  const [strokes, setStrokes] = (0, import_react9.useState)(() => structuredClone(initial?.strokes ?? []));
+  const [prompt, setPrompt] = (0, import_react9.useState)(initial?.prompt ?? "");
+  const [preserveOutside, setPreserveOutside] = (0, import_react9.useState)(initial?.preserveOutside ?? true);
+  const [busy, setBusy] = (0, import_react9.useState)("load"), [error51, setError] = (0, import_react9.useState)("");
+  const [ownerId, setOwnerId] = (0, import_react9.useState)(""), [authScope, setAuthScope] = (0, import_react9.useState)("");
   const alive = (0, import_react9.useRef)(true);
   (0, import_react9.useEffect)(() => {
     alive.current = true;
@@ -19141,31 +19294,28 @@ function InpaintDialog({ source, request, onClose }) {
   (0, import_react9.useEffect)(() => {
     let current2 = true;
     setLoaded(void 0);
-    setStrokes([]);
-    setOperation(void 0);
-    setLocalReview(void 0);
+    setStrokes(structuredClone(initial?.strokes ?? []));
+    setPrompt(initial?.prompt ?? "");
+    setPreserveOutside(initial?.preserveOutside ?? true);
     setBusy("load");
     setError("");
-    setRecoveryReady(false);
     void (async () => {
       try {
         const snapshot = await request("snapshot", {}), expectedOwner = snapshot.data?.account?.userId, expectedScope = String(snapshot.data?.account?.uiScope ?? "legacy");
         if (typeof expectedOwner !== "string" || !expectedOwner) throw new Error("\u8BF7\u5148\u767B\u5F55 PodPlo\u3002");
-        const [next, history] = await Promise.all([loadSource(source, request), request("generation.list", { scope: "results" })]);
-        const pending = historyRows(history.data?.items).find((row) => ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(row.status) && row.items?.some((item) => item.inpaint?.mode === "inpaint"));
+        const next = await loadSource(source, request);
         const confirmed = await request("snapshot", {});
         if (confirmed.data?.account?.userId !== expectedOwner || String(confirmed.data?.account?.uiScope ?? "legacy") !== expectedScope) {
+          if (next.ownedPreview) URL.revokeObjectURL(next.previewUrl);
           throw new Error("\u8D26\u53F7\u6216\u6388\u6743\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u5C40\u90E8\u91CD\u7ED8\u3002");
         }
-        if (!current2) return;
+        if (!current2) {
+          if (next.ownedPreview) URL.revokeObjectURL(next.previewUrl);
+          return;
+        }
         setOwnerId(expectedOwner);
         setAuthScope(expectedScope);
         setLoaded(next);
-        setRecoveryReady(!pending);
-        if (pending) {
-          setOperation(pending);
-          setError("\u5DF2\u6709\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u5C1A\u9700\u6838\u5BF9\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002");
-        }
       } catch (cause) {
         if (current2) setError(message2(cause));
       } finally {
@@ -19175,215 +19325,33 @@ function InpaintDialog({ source, request, onClose }) {
     return () => {
       current2 = false;
     };
-  }, [source, request]);
+  }, [source, request, initial?.id, initial?.revision]);
   const maskState = (0, import_react9.useMemo)(() => {
     if (!loaded) return void 0;
     const scale = Math.min(1, 512 / Math.max(loaded.width, loaded.height));
     return inspectInpaintMask(rasterizeInpaintMask(strokes, Math.max(1, Math.round(loaded.width * scale)), Math.max(1, Math.round(loaded.height * scale))));
   }, [loaded, strokes]);
-  const editorLocked = !!busy || !!operation;
-  async function assertOwner() {
-    const snapshot = await request("snapshot", {});
-    if (!ownerId || snapshot.data?.account?.userId !== ownerId || String(snapshot.data?.account?.uiScope ?? "legacy") !== authScope) {
-      throw new Error("\u8D26\u53F7\u6216\u6388\u6743\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u5C40\u90E8\u91CD\u7ED8\u3002");
-    }
-  }
-  async function deleteMask(id = maskAssetId) {
-    if (!id) return;
-    const prepared = await request("assets.delete", { ids: [id] });
-    if (prepared.data?.confirmationId) await request("assets.delete", { confirmationId: prepared.data.confirmationId });
-    if (alive.current && id === maskAssetId) setMaskAssetId("");
-  }
-  async function closeDialog() {
-    if (busy || operation) return;
-    setBusy("discard");
+  async function save() {
+    if (!loaded || busy || !prompt.trim() || !maskState?.valid) return;
+    setBusy("save");
     setError("");
     try {
-      await deleteMask();
+      const snapshot = await request("snapshot", {});
+      if (!ownerId || snapshot.data?.account?.userId !== ownerId || String(snapshot.data?.account?.uiScope ?? "legacy") !== authScope) {
+        throw new Error("\u8D26\u53F7\u6216\u6388\u6743\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u5C40\u90E8\u91CD\u7ED8\u3002");
+      }
+      if (!alive.current) return;
+      await onSave({
+        id: initial?.id ?? uuid3(),
+        revision: (initial?.revision ?? 0) + 1,
+        source: structuredClone(source),
+        strokes: structuredClone(strokes),
+        prompt: prompt.trim(),
+        preserveOutside
+      });
       if (alive.current) onClose();
     } catch (cause) {
       if (alive.current) setError(message2(cause));
-    } finally {
-      if (alive.current) setBusy("");
-    }
-  }
-  async function review() {
-    if (!loaded || editorLocked || !recoveryReady || !prompt.trim()) return;
-    setBusy("review");
-    setError("");
-    setNotice("");
-    try {
-      await assertOwner();
-      if (!maskState?.valid) throw new Error("\u8BF7\u5148\u6D82\u62B9\u9700\u8981\u91CD\u7ED8\u7684\u5C40\u90E8\u533A\u57DF\uFF0C\u5E76\u4FDD\u7559\u4E00\u90E8\u5206\u539F\u56FE\u3002");
-      const capabilities = (await request("generation.capabilities", { refresh: true })).data;
-      if (capabilities?.available !== true || capabilities.supportsInpaint !== true) throw new Error("\u5C40\u90E8\u91CD\u7ED8\u670D\u52A1\u6682\u672A\u5F00\u653E\uFF0C\u672A\u6838\u4EF7\u6216\u63D0\u4EA4\u3002");
-      if (capabilities.pricingVersion !== localGenerationPricingVersion) throw new Error("\u79EF\u5206\u89C4\u5219\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u66F4\u65B0\u63D2\u4EF6\u540E\u91CD\u65B0\u6838\u9A8C\u3002");
-      const model = capabilities.models?.find((row) => row.supportsInpaint === true && row.availableForCurrentPlan !== false);
-      if (!model || typeof model.id !== "string") throw new Error("\u5F53\u524D\u8D26\u53F7\u6682\u65E0\u53EF\u7528\u7684 image v2.5 \u5C40\u90E8\u91CD\u7ED8\u6A21\u578B\u3002");
-      const localQuote = calculateLocalGenerationQuote(model, {
-        prompt: prompt.trim(),
-        quality: "low",
-        resolution: "1K",
-        referenceImageCount: 2,
-        count: 1,
-        ecoMode: false,
-        webSearch: false,
-        imageSearch: false
-      });
-      if (!localQuote || localQuote.pricingVersion !== capabilities.pricingVersion) throw new Error("\u5F53\u524D\u79EF\u5206\u89C4\u5219\u65E0\u6CD5\u6838\u9A8C\u3002");
-      if (alive.current) {
-        setLocalReview({ totalCredits: localQuote.totalCredits, modelId: model.id, pricingVersion: localQuote.pricingVersion });
-        setNotice("\u5DF2\u6309\u5F53\u524D\u516C\u5F00\u89C4\u5219\u8BA1\u7B97\uFF1B\u786E\u8BA4\u540E\u624D\u4F1A\u4E0A\u4F20\u539F\u56FE\u548C\u91CD\u7ED8\u533A\u57DF\u3002");
-      }
-    } catch (cause) {
-      if (alive.current) setError(message2(cause));
-    } finally {
-      if (alive.current) setBusy("");
-    }
-  }
-  async function submitReviewed() {
-    if (!loaded || !localReview || busy || operation || !recoveryReady || !prompt.trim() || !maskState?.valid) return;
-    setBusy("submit");
-    setError("");
-    setNotice("");
-    try {
-      await assertOwner();
-      const capabilities = (await request("generation.capabilities", { refresh: true })).data;
-      const model = capabilities?.models?.find((row) => row.id === localReview.modelId && row.supportsInpaint === true && row.availableForCurrentPlan !== false);
-      const refreshedQuote = model && calculateLocalGenerationQuote(model, {
-        prompt: prompt.trim(),
-        quality: "low",
-        resolution: "1K",
-        referenceImageCount: 2,
-        count: 1,
-        ecoMode: false,
-        webSearch: false,
-        imageSearch: false
-      });
-      if (capabilities?.available !== true || capabilities.supportsInpaint !== true || capabilities.pricingVersion !== localReview.pricingVersion || !refreshedQuote || refreshedQuote.totalCredits !== localReview.totalCredits) {
-        setLocalReview(void 0);
-        throw new Error("\u79EF\u5206\u89C4\u5219\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u91CD\u65B0\u6838\u9A8C\u540E\u786E\u8BA4\u3002");
-      }
-      const maskBlob = await exportInpaintMask(strokes, loaded.width, loaded.height);
-      if (maskBlob.size > 4e6) throw new Error("\u91CD\u7ED8\u533A\u57DF\u6587\u4EF6\u8D85\u8FC7 4 MB\uFF0C\u8BF7\u51CF\u5C0F\u539F\u56FE\u5C3A\u5BF8\u540E\u91CD\u8BD5\u3002");
-      let sourceAssetId = source.kind === "asset" ? source.assetId : "";
-      if (!sourceAssetId) {
-        const uploaded = (await request("assets.upload", { file: loaded.file, purpose: "inpaint-source-v1" })).data;
-        if (!uploaded?.id || uploaded.status !== "ready") throw new Error("\u539F\u56FE\u5C1A\u672A\u51C6\u5907\u5B8C\u6210\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
-        sourceAssetId = uploaded.id;
-      }
-      const mask = new File([maskBlob], `${source.filename.replace(/\.[^.]+$/u, "")}-inpaint-mask.png`, { type: "image/png" });
-      const maskUploaded = (await request("assets.upload", { file: mask, purpose: "inpaint-mask-v1" })).data;
-      if (!maskUploaded?.id || maskUploaded.status !== "ready") throw new Error("\u7F16\u8F91\u533A\u57DF\u5C1A\u672A\u51C6\u5907\u5B8C\u6210\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
-      setMaskAssetId(maskUploaded.id);
-      await assertOwner();
-      const intentId = crypto.randomUUID();
-      const args = {
-        prompt: prompt.trim(),
-        modelId: localReview.modelId,
-        referenceAssetIds: [sourceAssetId],
-        ratio: "1:1",
-        quality: "low",
-        resolution: "1K",
-        webSearch: false,
-        imageSearch: false,
-        ecoMode: false,
-        background: "opaque",
-        output_format: "png",
-        count: 1,
-        inpaint: { mode: "inpaint", maskAssetId: maskUploaded.id, preserveOutside }
-      };
-      const result = (await request("generation.prepare", {
-        intentId,
-        planVersion: 1,
-        items: [{ args }],
-        expectedOutputCount: 1,
-        taskName: `${source.filename.replace(/\.[^.]+$/u, "")}-\u5C40\u90E8\u91CD\u7ED8`,
-        processingPlan: []
-      })).data;
-      if (result?.status !== "quoted" || !result.quote || result.quote.outputCount !== 1) {
-        if (result?.operationId) void request("generation.cancel", { operationId: result.operationId }).catch(() => void 0);
-        await deleteMask(maskUploaded.id).catch(() => void 0);
-        if (alive.current) setMaskAssetId("");
-        throw new Error("\u6682\u65F6\u65E0\u6CD5\u5B8C\u6210\u670D\u52A1\u7AEF\u9A8C\u4EF7\uFF0C\u672A\u63D0\u4EA4\u751F\u6210\u3002");
-      }
-      if (result.quote.totalCredits !== localReview.totalCredits) {
-        if (alive.current) {
-          setLocalReview(void 0);
-          setOperation(result);
-          setNotice("\u670D\u52A1\u7AEF\u8FD4\u56DE\u4E86\u65B0\u4EF7\u683C\uFF0C\u8BF7\u91CD\u65B0\u786E\u8BA4\uFF1B\u672A\u81EA\u52A8\u63D0\u4EA4\u3002");
-        }
-        return;
-      }
-      if (alive.current) {
-        setLocalReview(void 0);
-        setOperation(result);
-      }
-      await approvePrepared(result);
-    } catch (cause) {
-      if (alive.current) setError(message2(cause));
-    } finally {
-      if (alive.current) setBusy("");
-    }
-  }
-  async function approvePrepared(target2) {
-    const pending = { ...target2, status: "submitting" };
-    setOperation(pending);
-    setBusy("approve");
-    setError("");
-    const transition = startResultSubmission(ownerId, { id: pending.operationId, name: `${source.filename.replace(/\.[^.]+$/u, "")}-\u5C40\u90E8\u91CD\u7ED8`, processingType: "ai", taskKind: "generation" });
-    try {
-      await assertOwner();
-      const approval = request("generation.approve", { operationId: pending.operationId, approvalId: pending.approvalId });
-      void request("panel.navigate", { section: "results" }).catch(() => void 0);
-      await approval;
-      finishResultSubmission(transition);
-      if (alive.current) {
-        setMaskAssetId("");
-        setNotice("\u5DF2\u63D0\u4EA4\uFF0C\u8BF7\u5728\u5904\u7406\u8BB0\u5F55\u4E2D\u67E5\u770B\u3002");
-        setOperation(void 0);
-      }
-    } catch {
-      failResultSubmission(transition, "\u63D0\u4EA4\u7ED3\u679C\u6682\u672A\u786E\u8BA4\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1\u3002");
-      if (alive.current) {
-        setOperation({ ...pending, status: "submission_unknown" });
-        setError("\u63D0\u4EA4\u7ED3\u679C\u6682\u672A\u786E\u8BA4\uFF0C\u8BF7\u6838\u5BF9\u539F\u4EFB\u52A1\uFF1B\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002");
-      }
-    } finally {
-      if (alive.current) setBusy("");
-    }
-  }
-  async function approve() {
-    if (!operation || operation.status !== "quoted" || busy) return;
-    await approvePrepared(operation);
-  }
-  async function cancelQuote() {
-    if (!operation || operation.status !== "quoted" || busy) return;
-    setBusy("cancel");
-    setError("");
-    try {
-      await request("generation.cancel", { operationId: operation.operationId });
-      await deleteMask();
-      if (alive.current) {
-        setMaskAssetId("");
-        setOperation(void 0);
-        setNotice("\u5DF2\u53D6\u6D88\u672C\u6B21\u786E\u8BA4\uFF0C\u6D82\u62B9\u548C\u6587\u5B57\u4ECD\u4FDD\u7559\u3002");
-      }
-    } catch (cause) {
-      if (alive.current) setError(message2(cause));
-    } finally {
-      if (alive.current) setBusy("");
-    }
-  }
-  async function checkStatus() {
-    if (!operation || busy) return;
-    setBusy("status");
-    setError("");
-    try {
-      await request("generation.status", { operationId: operation.operationId, refresh: true });
-      void request("panel.navigate", { section: "results" });
-    } catch {
-      if (alive.current) setError("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u539F\u4EFB\u52A1\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002");
     } finally {
       if (alive.current) setBusy("");
     }
@@ -19394,23 +19362,10 @@ function InpaintDialog({ source, request, onClose }) {
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { id: "ppd-inpaint-title", children: "\u5C40\u90E8\u91CD\u7ED8" }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: source.filename })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-        "button",
-        {
-          type: "button",
-          "aria-label": "\u5173\u95ED\u5C40\u90E8\u91CD\u7ED8",
-          disabled: !!busy || operation?.status === "quoted",
-          onClick: () => operation && operation.status !== "quoted" ? onClose() : void closeDialog(),
-          children: "\xD7"
-        }
-      )
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", "aria-label": "\u5173\u95ED\u5C40\u90E8\u91CD\u7ED8", disabled: !!busy, onClick: onClose, children: "\xD7" })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { className: "ppd-inpaint-dialog__body", children: [
-      loaded ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(InpaintCanvas, { src: loaded.previewUrl, width: loaded.width, height: loaded.height, strokes, onChange: (next) => {
-        setStrokes(next);
-        setLocalReview(void 0);
-        setOperation(void 0);
-      }, disabled: editorLocked }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u539F\u56FE\u2026" }),
+      loaded ? /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(InpaintCanvas, { src: loaded.previewUrl, width: loaded.width, height: loaded.height, strokes, onChange: setStrokes, disabled: !!busy }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { role: "status", children: "\u6B63\u5728\u8BFB\u53D6\u539F\u56FE\u2026" }),
       /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { className: "ppd-inpaint-prompt", children: [
         "\u60F3\u8981\u6539\u6210\u4EC0\u4E48\uFF1F",
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
@@ -19418,13 +19373,9 @@ function InpaintDialog({ source, request, onClose }) {
           {
             value: prompt,
             maxLength: 4e3,
-            disabled: editorLocked,
+            disabled: !!busy,
             placeholder: "\u4F8B\u5982\uFF1A\u628A\u684C\u4E0A\u7684\u82B1\u74F6\u6539\u6210\u767D\u8272\u9676\u74F7\u676F",
-            onChange: (event) => {
-              setPrompt(event.target.value);
-              setLocalReview(void 0);
-              setOperation(void 0);
-            }
+            onChange: (event) => setPrompt(event.target.value)
           }
         )
       ] }),
@@ -19434,12 +19385,8 @@ function InpaintDialog({ source, request, onClose }) {
           {
             type: "checkbox",
             checked: preserveOutside,
-            disabled: editorLocked,
-            onChange: (event) => {
-              setPreserveOutside(event.target.checked);
-              setLocalReview(void 0);
-              setOperation(void 0);
-            }
+            disabled: !!busy,
+            onChange: (event) => setPreserveOutside(event.target.checked)
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
@@ -19447,44 +19394,13 @@ function InpaintDialog({ source, request, onClose }) {
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("small", { children: "\u9ED8\u8BA4\u5F00\u542F\uFF0C\u672A\u6D82\u62B9\u7684\u539F\u56FE\u50CF\u7D20\u4F1A\u4E25\u683C\u4FDD\u7559" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-muted", children: "\u56FA\u5B9A image v2.5 \xB7 low \xB7 1K \xB7 PNG \xB7 1 \u5F20\uFF1B\u4EF7\u683C\u5305\u542B\u539F\u56FE\u548C\u7F16\u8F91\u533A\u57DF\u4E24\u4E2A\u56FE\u50CF\u8F93\u5165\u3002" }),
-      notice && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-notice", role: "status", children: notice }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-muted", children: "\u56FA\u5B9A image v2.5 \xB7 low \xB7 1K \xB7 PNG \xB7 1 \u5F20\uFF1B\u4FDD\u5B58\u540E\u56DE\u5230\u516C\u5171\u751F\u56FE\u6846\uFF0C\u70B9\u51FB\u751F\u6210\u65F6\u624D\u4F1A\u63D0\u4EA4\u539F\u56FE\u548C\u7F16\u8F91\u533A\u57DF\u3002" }),
       error51 && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { className: "ppd-error", role: "alert", children: error51 })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("footer", { children: operation?.status === "quoted" ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("strong", { children: [
-        "\u672C\u6B21\u5C06\u4F7F\u7528 ",
-        operation.quote.totalCredits,
-        " \u79EF\u5206"
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void cancelQuote(), children: "\u53D6\u6D88\u672C\u6B21\u786E\u8BA4" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void approve(), children: "\u786E\u8BA4\u5E76\u751F\u6210" })
-    ] }) : operation && operation.status !== "quoted" ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: onClose, children: "\u5173\u95ED" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void checkStatus(), children: busy === "status" ? "\u6B63\u5728\u6838\u5BF9\u2026" : "\u53BB\u5904\u7406\u8BB0\u5F55" })
-    ] }) : localReview ? /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("strong", { children: [
-        "\u672C\u6B21\u5C06\u4F7F\u7528 ",
-        localReview.totalCredits,
-        " \u79EF\u5206"
-      ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: () => {
-        setLocalReview(void 0);
-        setNotice("");
-      }, children: "\u8FD4\u56DE\u7F16\u8F91" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void submitReviewed(), children: busy === "submit" ? "\u6B63\u5728\u63D0\u4EA4\u2026" : "\u786E\u8BA4\u5E76\u751F\u6210" })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_jsx_runtime8.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: () => void closeDialog(), children: "\u53D6\u6D88" }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-        "button",
-        {
-          type: "button",
-          disabled: !!busy || !loaded || !prompt.trim() || !maskState?.valid || !recoveryReady,
-          onClick: () => void review(),
-          children: busy === "review" ? "\u6B63\u5728\u6838\u4EF7\u2026" : "\u6838\u9A8C\u79EF\u5206"
-        }
-      )
-    ] }) })
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("footer", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy, onClick: onClose, children: "\u53D6\u6D88" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("button", { type: "button", disabled: !!busy || !loaded || !prompt.trim() || !maskState?.valid, onClick: () => void save(), children: busy === "save" ? "\u6B63\u5728\u4FDD\u5B58\u2026" : "\u4FDD\u5B58" })
+    ] })
   ] }) }), document.body);
 }
 
@@ -19540,7 +19456,9 @@ function ReferenceMenu({ label, children }) {
 var imageTypes = /* @__PURE__ */ new Set(["image/jpeg", "image/png", "image/webp"]);
 var pricingRuleMismatch = "\u5185\u7F6E\u4EF7\u76EE\u4E0E\u670D\u52A1\u7AEF\u6821\u9A8C\u89C4\u5219\u4E0D\u4E00\u81F4\uFF0C\u5DF2\u505C\u6B62\u63D0\u4EA4\u4E14\u672A\u6263\u8D39\u3002\u8BF7\u5237\u65B0\u6216\u66F4\u65B0\u63D2\u4EF6\u540E\u91CD\u65B0\u8BA1\u7B97\u3002";
 var errorText2 = (error51) => error51 instanceof Error ? error51.message : "\u64CD\u4F5C\u5931\u8D25\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
-var uuid3 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+var errorCode2 = (error51) => error51 && typeof error51 === "object" && typeof error51.code === "string" ? String(error51.code) : "";
+var skillDefinitelyUnavailable = (error51) => ["SKILL_NOT_FOUND", "SKILL_DISABLED", "SKILL_INACTIVE"].includes(errorCode2(error51));
+var uuid5 = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
 var stringList = (value2) => Array.isArray(value2) ? value2.filter((item) => typeof item === "string" && !!item) : [];
 var modelId = (model) => generationModelId(model);
 var modelName = (model) => isAnalysisModel(modelId(model)) ? pluginAnalysisModelName(modelId(model), String(model.name ?? model.label ?? model.modelName ?? modelId(model))) : generationModelDisplayName(model);
@@ -19734,6 +19652,24 @@ var lowestResolution2 = (values2) => {
   return [...values2].sort((left, right) => size(left) - size(right))[0] ?? "";
 };
 var exactOperation = (value2, intentId, planVersion) => value2 && typeof value2.operationId === "string" && typeof value2.approvalId === "string" && value2.intentId === intentId && value2.planVersion === planVersion && typeof value2.status === "string" && value2.quote && Number.isFinite(Number(value2.quote.totalCredits)) && Number.isFinite(Number(value2.quote.outputCount)) && typeof value2.quote.confirmationText === "string" && typeof value2.quote.expiresAt === "string" ? value2 : void 0;
+var pendingInpaintOperation = (value2) => {
+  if (!Array.isArray(value2)) throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
+  const statuses = /* @__PURE__ */ new Set(["quoted", "submitting", "submitted", "submission_unknown", "partial_unknown", "completed", "failed", "partial_failure", "partial_cancelled", "cancelled"]);
+  const pending = /* @__PURE__ */ new Set(["submitting", "submitted", "submission_unknown", "partial_unknown"]);
+  for (const row of value2) {
+    if (!row || typeof row !== "object" || Array.isArray(row)) throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
+    const item = row, entries = item.items;
+    if (typeof item.operationId !== "string" || !item.operationId || typeof item.status !== "string" || !statuses.has(item.status) || !Array.isArray(entries)) throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
+    const hasInpaint = entries.some((entry) => !!entry && typeof entry === "object" && !Array.isArray(entry) && !!entry.inpaint);
+    if (entries.some((entry) => {
+      const inpaint = entry && typeof entry === "object" && !Array.isArray(entry) ? entry.inpaint : void 0;
+      return !entry || typeof entry !== "object" || Array.isArray(entry) || inpaint !== void 0 && (!inpaint || typeof inpaint !== "object" || Array.isArray(inpaint) || inpaint.mode !== "inpaint" || typeof inpaint.preserveOutside !== "boolean");
+    })) throw new Error("\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u5386\u53F2\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u3002");
+    if (!hasInpaint) continue;
+    if (pending.has(item.status)) return { operationId: item.operationId, status: item.status };
+  }
+  return void 0;
+};
 var ratioGlyphStyle = (value2) => {
   if (!value2.includes(":")) return void 0;
   const [wide, tall] = value2.split(":").map(Number);
@@ -19829,6 +19765,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const [references, setReferences] = (0, import_react10.useState)([]);
   const [uploadPreviews, setUploadPreviews] = (0, import_react10.useState)([]);
   const [inpaintSource, setInpaintSource] = (0, import_react10.useState)();
+  const [inpaintDraft, setInpaintDraft] = (0, import_react10.useState)();
   const [prompt, setPrompt] = (0, import_react10.useState)("");
   const [model, setModel] = (0, import_react10.useState)("");
   const [ratio, setRatio] = (0, import_react10.useState)("1:1");
@@ -19838,7 +19775,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const [count, setCount] = (0, import_react10.useState)(1);
   const [transparent, setTransparent] = (0, import_react10.useState)(false);
   const [booleans, setBooleans] = (0, import_react10.useState)({});
-  const [intentId, setIntentId] = (0, import_react10.useState)(uuid3);
+  const [intentId, setIntentId] = (0, import_react10.useState)(uuid5);
   const [planVersion, setPlanVersion] = (0, import_react10.useState)(1);
   const [operation, setOperation] = (0, import_react10.useState)();
   const [busy, setBusy] = (0, import_react10.useState)("");
@@ -19848,6 +19785,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const [priceVerification, setPriceVerification] = (0, import_react10.useState)("");
   const approving = (0, import_react10.useRef)(false);
   const submittingDraft = (0, import_react10.useRef)(false);
+  const [submissionLocked, setSubmissionLocked] = (0, import_react10.useState)(false);
   const [approvalAttempted, setApprovalAttempted] = (0, import_react10.useState)(false);
   const [uploadWarning, setUploadWarning] = (0, import_react10.useState)("");
   const [uploadProgress, setUploadProgress] = (0, import_react10.useState)("");
@@ -19862,6 +19800,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   const mounted = (0, import_react10.useRef)(true);
   const ownerId = (0, import_react10.useRef)("");
   const loadSequence = (0, import_react10.useRef)(0);
+  const catalogSequence = (0, import_react10.useRef)(0);
   const skillSequence = (0, import_react10.useRef)(0);
   const prepareSequence = (0, import_react10.useRef)(0);
   const draftReady = (0, import_react10.useRef)(false);
@@ -19875,6 +19814,8 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   requestContext.current = { request, nativeSessionId, accountKey };
   const selectedSkillId = (0, import_react10.useRef)(skillId);
   selectedSkillId.current = skillId;
+  const skillsRef = (0, import_react10.useRef)(skills);
+  skillsRef.current = skills;
   const selections = (0, import_react10.useRef)({ model, ratio, quality, resolution, thinkingLevel, booleans, transparent });
   selections.current = { model, ratio, quality, resolution, thinkingLevel, booleans, transparent };
   const floatingShell = (0, import_react10.useRef)(null);
@@ -19941,6 +19882,17 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     selectedSkill?.detail?.referenceAssetIds,
     selectedSkill?.source
   ]);
+  const inpaintModel = (0, import_react10.useMemo)(() => capabilityModels(capabilities).find((row) => row.supportsInpaint === true && row.availableForCurrentPlan !== false), [capabilities]);
+  const inpaintLocalQuote = (0, import_react10.useMemo)(() => !inpaintDraft ? void 0 : calculateLocalGenerationQuote(inpaintModel, {
+    prompt: inpaintDraft.prompt,
+    quality: "low",
+    resolution: "1K",
+    count: 1,
+    referenceImageCount: 2,
+    ecoMode: false,
+    webSearch: false,
+    imageSearch: false
+  }), [inpaintDraft, inpaintModel]);
   const batchSnapshot = (0, import_react10.useMemo)(() => ({
     prompt,
     skill: !selectedDna && selectedSkill?.generationId ? {
@@ -20057,19 +20009,53 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     onChanged
   );
   const change = (setter, value2) => {
+    if (submittingDraft.current) return;
     invalidate();
     setter(value2);
   };
   const changeBoolean = (key2, value2) => {
+    if (submittingDraft.current) return;
     invalidate();
     setBooleans((current2) => ({ ...current2, [key2]: value2 }));
   };
+  const saveInpaintDraft = (0, import_react10.useCallback)(async (next) => {
+    const owner = ownerId.current, session = nativeSessionId ?? "podplo-manual", revision = cacheRevision.current;
+    if (!owner || submittingDraft.current || approvalAttempted || ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(operation?.status ?? "") || !generationBootstrapCache.isCurrent(revision)) throw new Error("\u5DF2\u6709\u4EFB\u52A1\u6B63\u5728\u63D0\u4EA4\u6216\u7B49\u5F85\u6838\u5BF9\uFF0C\u5F53\u524D\u7F16\u8F91\u672A\u8986\u76D6\u539F\u4EFB\u52A1\u3002");
+    const expectedContext = requestContext.current;
+    const snapshot = await request("snapshot", {});
+    if (!mounted.current || ownerId.current !== owner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || snapshot.data?.account?.userId !== owner || String(snapshot.data?.account?.uiScope ?? "legacy") !== String(diagnosticScope ?? "legacy") || !generationBootstrapCache.isCurrent(revision)) throw new Error("\u8D26\u53F7\u6216\u6388\u6743\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u5C40\u90E8\u91CD\u7ED8\u3002");
+    const previous = generationBootstrapCache.readInpaintDraft(owner, session);
+    const displaced = generationBootstrapCache.activateInpaintDraft(owner, session, next, revision);
+    const stored = generationBootstrapCache.readInpaintDraft(owner, session);
+    if (!stored || stored.id !== next.id || stored.revision !== next.revision) throw new Error("\u8D26\u53F7\u6216\u751F\u56FE\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u4FDD\u5B58\u3002");
+    if (displaced?.status === "quoted") void request("generation.cancel", { operationId: displaced.operationId }).catch(() => void 0);
+    if (previous?.prepared) void deletePreparedInpaintAssets(previous, request).catch(() => void 0);
+    setInpaintDraft(stored);
+    setNotice("\u5C40\u90E8\u91CD\u7ED8\u5DF2\u4FDD\u5B58\uFF1B\u70B9\u51FB\u751F\u6210\u65F6\u624D\u4F1A\u63D0\u4EA4\u539F\u56FE\u548C\u7F16\u8F91\u533A\u57DF\u3002");
+    setError("");
+    setPriceVerification("");
+    setFloatingOpen(true);
+  }, [approvalAttempted, diagnosticScope, nativeSessionId, operation?.status, request]);
+  const removeInpaintDraft = (0, import_react10.useCallback)(() => {
+    if (submittingDraft.current || approvalAttempted || ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(operation?.status ?? "")) return;
+    const owner = ownerId.current, session = nativeSessionId ?? "podplo-manual", revision = cacheRevision.current;
+    const displaced = generationBootstrapCache.readDraft(owner, session)?.operation;
+    const removed = generationBootstrapCache.clearInpaintDraft(owner, session, revision);
+    if (!removed) return;
+    if (displaced?.status === "quoted") void request("generation.cancel", { operationId: displaced.operationId }).catch(() => void 0);
+    if (removed.prepared) void deletePreparedInpaintAssets(removed, request).catch(() => void 0);
+    setInpaintDraft(void 0);
+    setOperation(void 0);
+    setApprovalAttempted(false);
+    setPriceVerification("");
+    setNotice("\u5DF2\u9000\u51FA\u5C40\u90E8\u91CD\u7ED8\uFF0C\u539F\u751F\u56FE\u8349\u7A3F\u4FDD\u6301\u4E0D\u53D8\u3002");
+  }, [approvalAttempted, nativeSessionId, operation?.status, request]);
   const resetComposer = (0, import_react10.useCallback)(() => {
     const nextModel = availableModel(capabilities, "");
     const properties2 = capabilities?.quoteInputSchema?.properties ?? {};
     const defaults = {};
     for (const [key2, value2] of Object.entries(properties2)) if (value2.type === "boolean" && !/transparent/i.test(key2)) defaults[key2] = value2.default === true;
-    const nextIntent = uuid3();
+    const nextIntent = uuid5();
     const nextModelId = modelId(nextModel ?? {});
     const nextRatio = normalizedChoice(stringList(nextModel?.ratios), "", stringList(nextModel?.ratios)[0]);
     const nextQuality = normalizedChoice(stringList(nextModel?.qualities), "", nextModel?.defaultQuality);
@@ -20190,6 +20176,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       if (!generationBootstrapCache.isCurrent(expectedRevision)) return;
       ownerId.current = nextOwner2;
       setUploadPreviews(generationBootstrapCache.readReferenceUploads(nextOwner2, nativeSessionId ?? "podplo-manual"));
+      setInpaintDraft(generationBootstrapCache.readInpaintDraft(nextOwner2, nativeSessionId ?? "podplo-manual"));
       let restoredDraft;
       if (!draftReady.current && nativeSessionId) {
         const savedDraft = generationBootstrapCache.readDraft(nextOwner2, nativeSessionId);
@@ -20302,7 +20289,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
             if (data?.available !== true) warnings.push("\u751F\u56FE\u80FD\u529B\uFF1A\u5F53\u524D\u670D\u52A1\u672A\u63D0\u4F9B\u53EF\u9A8C\u8BC1\u7684\u62A5\u4EF7\u80FD\u529B");
             publish2({ capabilities: data });
           }),
-          settle("Skill \u5E93", request("skills.list", { query: "" }), (data) => publish2({
+          settle("Skill \u5E93", request("skills.list", { query: "", refresh: true, forceRefresh: force }), (data) => publish2({
             publicRows: Array.isArray(data?.items) ? data.items : [],
             skillCategories: normalizeSkillCategories(data?.categories)
           })),
@@ -20339,6 +20326,42 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       if (sequence === loadSequence.current && generationBootstrapCache.isCurrent(expectedRevision)) setLoading(false);
     }
   }, [accountKey, applyBootstrap, nativeSessionId, request]);
+  const refreshPublicCatalog = (0, import_react10.useCallback)(async (forceRefresh = true) => {
+    const sequence = ++catalogSequence.current, owner = ownerId.current, revision = cacheRevision.current;
+    if (!owner || !generationBootstrapCache.isCurrent(revision)) return;
+    try {
+      const { data } = await request("skills.list", { query: "", refresh: true, forceRefresh });
+      if (!mounted.current || sequence !== catalogSequence.current || ownerId.current !== owner || !generationBootstrapCache.isCurrent(revision)) return;
+      const next = generationBootstrapCache.update(owner, {
+        publicRows: Array.isArray(data?.items) ? data.items : [],
+        skillCategories: normalizeSkillCategories(data?.categories)
+      });
+      if (next) applyBootstrap(next);
+      setFavoriteSkills(void 0);
+      setFavoriteSkillCursor(null);
+      setFavoriteSkillError("");
+      const selected = skillsRef.current.find((row) => row.id === selectedSkillId.current);
+      if (!selected || selected.source !== "library" || selected.kind === "family" || selected.extractionSkillId) return;
+      const selectionSequence = skillSequence.current;
+      const selectionCurrent = () => mounted.current && sequence === catalogSequence.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision) && skillSequence.current === selectionSequence && selectedSkillId.current === selected.id;
+      try {
+        const latest = await fetchSkillDetail(selected);
+        if (!selectionCurrent()) return;
+        if (selected.generationId !== latest.generationId || selected.version !== latest.version) invalidate();
+        setSkills((rows2) => rows2.map((row) => row.id === selected.id ? latest : row));
+        setSkillError("");
+      } catch (error52) {
+        if (!selectionCurrent()) return;
+        const unavailable = skillDefinitelyUnavailable(error52);
+        setSkills((rows2) => rows2.map((row) => row.id === selected.id ? unavailable ? { ...row, available: false, detail: void 0, generationId: void 0 } : { ...row, available: false } : row));
+        setSkillError(unavailable ? "\u8BE5 Skill \u5DF2\u505C\u7528\u6216\u6E05\u9664\uFF0C\u5F53\u524D\u8349\u7A3F\u5DF2\u4FDD\u7559\uFF0C\u8BF7\u91CD\u65B0\u9009\u62E9\u3002" : `\u6682\u65F6\u65E0\u6CD5\u6838\u5BF9\u8BE5 Skill\uFF0C\u5DF2\u4FDD\u7559\u8349\u7A3F\u5E76\u6682\u505C\u63D0\u4EA4\uFF1A${errorText2(error52)} \u8BF7\u91CD\u8BD5\u3002`);
+      }
+    } catch (error52) {
+      if (mounted.current && sequence === catalogSequence.current && ownerId.current === owner && generationBootstrapCache.isCurrent(revision)) {
+        setSkillError(`Skill \u76EE\u5F55\u5237\u65B0\u5931\u8D25\uFF1A${errorText2(error52)} \u5DF2\u4FDD\u7559\u5F53\u524D\u5185\u5BB9\uFF0C\u53EF\u7A0D\u540E\u91CD\u8BD5\u3002`);
+      }
+    }
+  }, [applyBootstrap, invalidate, request]);
   (0, import_react10.useEffect)(() => {
     mounted.current = true;
     void load(false);
@@ -20356,9 +20379,12 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       if (!mounted.current || !generationBootstrapCache.isCurrent(cacheRevision.current)) return;
       setUploadPreviews(generationBootstrapCache.readReferenceUploads(owner, nativeSessionId));
       const draft = generationBootstrapCache.readDraft(owner, nativeSessionId);
+      setInpaintDraft(generationBootstrapCache.readInpaintDraft(owner, nativeSessionId));
       if (!draft) return;
+      currentIntent.current = draft.intentId;
       currentPlanVersion.current = draft.planVersion;
       setReferences(draft.references);
+      setIntentId(draft.intentId);
       setPlanVersion(draft.planVersion);
       setOperation(draft.operation);
       setApprovalAttempted(draft.approvalAttempted === true);
@@ -20440,7 +20466,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     });
   }, [selectedSkill?.detail, selectedSkill?.id, selectedSkill?.kind, selectedSkill?.version, skillLoading]);
   (0, import_react10.useEffect)(() => {
-    if (!selection || consumedSelection.current === selection.sequence || !draftHydrated) return;
+    if (!selection || consumedSelection.current === selection.sequence || !draftHydrated || submissionLocked) return;
     if (selection.kind === "dna-extract") {
       consumedSelection.current = selection.sequence;
       onSelectionConsumed?.(selection.sequence);
@@ -20510,7 +20536,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       setAssets((current2) => current2.some((row) => row.id === id) ? current2 : [...current2, { id, filename: selection.label, status: "ready", previewUrl: selection.previewUrl }]);
       addReference(id);
     }
-  }, [draftHydrated, onSelectionConsumed, selection, skills]);
+  }, [draftHydrated, onSelectionConsumed, selection, skills, submissionLocked]);
   (0, import_react10.useEffect)(() => {
     if (placement === "floating" && revealSequence > 0) setFloatingOpen(true);
   }, [placement, revealSequence]);
@@ -20579,6 +20605,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setBooleans({ ecoMode: next.ecoMode, webSearch: next.webSearch, imageSearch: next.imageSearch });
   }
   function selectModel(nextId) {
+    if (submittingDraft.current) return;
     const next = models.find((row) => modelId(row) === nextId);
     if (!next) return;
     invalidate();
@@ -20618,6 +20645,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     };
   }
   async function selectSkill(nextId, suppliedChoice) {
+    if (submittingDraft.current) return;
     const sequence = ++skillSequence.current;
     const expectedOwner = ownerId.current;
     const expectedRevision = cacheRevision.current;
@@ -20677,7 +20705,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
   }
   function selectDna(choice2) {
-    if (!choice2.dnaId) return;
+    if (submittingDraft.current || !choice2.dnaId) return;
     const targetModel = !isAnalysisModel(model) && selectedModel ? selectedModel : availableModel(capabilities, "");
     const normalized = normalizedModelSelection(capabilities, targetModel, selections.current, true);
     setModel(normalized.model);
@@ -20879,13 +20907,13 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     change(setReferences, next);
   }
   async function upload(files) {
-    if (!files.length || busy || uploading.current || !draftReady.current || !ownerId.current) return;
+    if (!files.length || submittingDraft.current || busy || uploading.current || !draftReady.current || !ownerId.current) return;
     const expectedOwner = ownerId.current;
     const expectedRevision = cacheRevision.current;
     const supported = files.filter((file2) => imageTypes.has(file2.type));
     const invalid = files.length - supported.length;
     const previewSession = nativeSessionId ?? "podplo-manual";
-    const previewRows = supported.map((file2) => ({ id: uuid3(), filename: file2.name, previewUrl: URL.createObjectURL(file2), status: "queued" }));
+    const previewRows = supported.map((file2) => ({ id: uuid5(), filename: file2.name, previewUrl: URL.createObjectURL(file2), status: "queued" }));
     generationBootstrapCache.addReferenceUploads(expectedOwner, previewSession, previewRows, expectedRevision);
     generationBootstrapCache.rememberReferenceUploadFiles(
       expectedOwner,
@@ -20994,6 +21022,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
   }
   function validationError() {
+    if (inpaintDraft) {
+      if (!inpaintDraft.prompt.trim()) return "\u8BF7\u7F16\u8F91\u5C40\u90E8\u91CD\u7ED8\u7684\u4FEE\u6539\u8981\u6C42\u3002";
+      if (!inpaintModel || !inpaintLocalQuote) return "\u5F53\u524D\u8D26\u53F7\u6682\u65E0\u53EF\u6838\u9A8C\u7684\u5C40\u90E8\u91CD\u7ED8\u6A21\u578B\u6216\u79EF\u5206\u3002";
+      return "";
+    }
     if (analysisMode) return inputError;
     if (generationModelError) return generationModelError;
     if (selectedSkill?.kind === "family") return "\u8BF7\u7B49\u5F85\u65CF\u6210\u5458\u52A0\u8F7D\u540E\u9009\u62E9\u4E00\u4E2A\u5177\u4F53 Skill\u3002";
@@ -21161,7 +21194,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
     return void 0;
   }
-  async function approve(candidate, navigate = true, existingTransition, logAttempt) {
+  async function approve(candidate, navigate = true, existingTransition, logAttempt, inpaintId) {
     const approvedOperation = candidate ?? operation;
     const report = logAttempt ?? submissionReporter(request, ownerId.current, diagnosticScope, intentId, planVersion);
     if (!approvedOperation || approvedOperation.status !== "quoted" || approvalAttempted || busy || approving.current) {
@@ -21190,9 +21223,10 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setPriceVerification("");
     if (expectedContext.nativeSessionId) generationBootstrapCache.rememberApprovalAttempt(expectedOwner, expectedContext.nativeSessionId, expectedOperation.intentId, expectedOperation.planVersion);
     onSubmission?.({ ...expectedOperation, status: "submitting", createdAt: (/* @__PURE__ */ new Date()).toISOString() }, void 0, navigate);
+    const inpaintName = inpaintId && inpaintDraft?.id === inpaintId ? inpaintDraft.prompt.trim().slice(0, 40) : "";
     const transition = existingTransition ?? startResultSubmission(expectedOwner, {
       id: expectedOperation.operationId,
-      name: prompt.trim().slice(0, 40) || selectedDna?.title || "\u751F\u56FE\u4EFB\u52A1",
+      name: inpaintName || prompt.trim().slice(0, 40) || selectedDna?.title || "\u751F\u56FE\u4EFB\u52A1",
       processingType: "ai",
       taskKind: "generation"
     });
@@ -21207,7 +21241,16 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       report("approval", "passed");
       finishResultSubmission(transition);
       const latestDraft = expectedContext.nativeSessionId ? generationBootstrapCache.readDraft(expectedOwner, expectedContext.nativeSessionId) : void 0;
-      if (!expectedContext.nativeSessionId || latestDraft?.intentId === expectedOperation.intentId && latestDraft.planVersion === expectedOperation.planVersion) resetComposer();
+      if (inpaintId && expectedContext.nativeSessionId) {
+        generationBootstrapCache.completeInpaintDraft(
+          expectedOwner,
+          expectedContext.nativeSessionId,
+          inpaintId,
+          expectedOperation.intentId,
+          expectedOperation.planVersion,
+          expectedRevision
+        );
+      } else if (!expectedContext.nativeSessionId || latestDraft?.intentId === expectedOperation.intentId && latestDraft.planVersion === expectedOperation.planVersion) resetComposer();
       if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || currentIntent.current !== expectedOperation.intentId || currentPlanVersion.current !== expectedOperation.planVersion) return;
       setOperation(exact);
       onChanged?.();
@@ -21258,13 +21301,351 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
   async function generate() {
     if (submittingDraft.current) return;
     submittingDraft.current = true;
+    addMenu.close();
+    settingsMenu.close();
+    setSkillBrowserOpen(false);
+    setSubmissionLocked(true);
     try {
       await submitDraft();
     } finally {
       submittingDraft.current = false;
+      if (mounted.current) setSubmissionLocked(false);
+    }
+  }
+  async function acceptDirectSubmission(exact, expectedOwner, expectedContext, expectedRevision, expectedIntent, expectedPlan, report) {
+    if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, exact);
+    report("approval", "passed");
+    const transition = startResultSubmission(expectedOwner, {
+      id: exact.operationId,
+      name: prompt.trim().slice(0, 40) || selectedSkill?.title || "\u751F\u56FE\u4EFB\u52A1",
+      processingType: "ai",
+      taskKind: "generation"
+    });
+    finishResultSubmission(transition);
+    void request("panel.navigate", { section: "results" }).catch(() => void 0);
+    const latestDraft = expectedContext.nativeSessionId ? generationBootstrapCache.readDraft(expectedOwner, expectedContext.nativeSessionId) : void 0;
+    if (!expectedContext.nativeSessionId || latestDraft?.intentId === expectedIntent && latestDraft.planVersion === expectedPlan) resetComposer();
+    if (!mounted.current || !generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan) return;
+    setOperation(exact);
+    onChanged?.();
+    onSubmission?.(exact);
+  }
+  async function submitDirect(preparedReferences, expectedLocalQuote, expectedOwner, expectedContext, expectedRevision, expectedIntent, expectedPlan, report) {
+    const chosen = selectedSkill;
+    const selectedValues = selections.current;
+    const args = argsForCapabilities(capabilities, selectedModel, { ...selectedValues, prompt, count, references: [...preparedReferences] });
+    const presetReferences = chosen?.source === "personal" && Array.isArray(chosen.detail?.referenceAssetIds) ? chosen.detail.referenceAssetIds.length : 0;
+    const item = {
+      ...!chosen?.extractionSkillId && chosen?.generationId ? { skillId: chosen.generationId } : {},
+      pricingReferenceCount: preparedReferences.length + presetReferences,
+      args
+    };
+    const clientOperationId = generationBootstrapCache.ensureClientOperationId(
+      expectedOwner,
+      expectedContext.nativeSessionId ?? "podplo-manual",
+      expectedIntent,
+      expectedPlan
+    );
+    if (!clientOperationId) {
+      report("approval", "failed", "DRAFT_CHANGED");
+      if (mounted.current) setError("\u751F\u56FE\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u8BF7\u6838\u5BF9\u540E\u91CD\u8BD5\u3002");
+      return;
+    }
+    report("approval", "started");
+    try {
+      const { data } = await request("generation.submit", {
+        clientOperationId,
+        intentId: expectedIntent,
+        planVersion: expectedPlan,
+        approvedCredits: expectedLocalQuote.totalCredits,
+        expectedOutputCount: expectedLocalQuote.outputCount,
+        items: [item],
+        taskName: prompt.trim().slice(0, 40) || chosen?.title || "\u751F\u56FE\u4EFB\u52A1",
+        processingPlan: []
+      });
+      const exact = exactOperation(data, expectedIntent, expectedPlan);
+      if (!exact || exact.operationId !== clientOperationId || exact.quote.totalCredits !== expectedLocalQuote.totalCredits || exact.quote.outputCount !== expectedLocalQuote.outputCount) {
+        throw Object.assign(new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u76F4\u63A5\u63D0\u4EA4\u4E0E\u5DF2\u786E\u8BA4\u65B9\u6848\u4E0D\u5339\u914D\u3002"), { code: "SUBMISSION_RESPONSE_MISMATCH" });
+      }
+      await acceptDirectSubmission(exact, expectedOwner, expectedContext, expectedRevision, expectedIntent, expectedPlan, report);
+    } catch (error52) {
+      const code = error52 && typeof error52 === "object" && typeof error52.code === "string" ? String(error52.code) : "";
+      if (code === "PRICE_CHANGED") {
+        report("approval", "failed", error52);
+        try {
+          const refreshed = await request("generation.capabilities", { refresh: true });
+          if (refreshed.data?.available === true && mounted.current && generationBootstrapCache.isCurrent(expectedRevision)) {
+            setCapabilities(refreshed.data);
+            generationBootstrapCache.update(expectedOwner, { capabilities: refreshed.data });
+          }
+        } catch {
+        }
+        if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) {
+          invalidate();
+          setPriceVerification("\u540E\u53F0\u4EF7\u76EE\u5DF2\u53D8\u5316\uFF0C\u672C\u6B21\u672A\u6263\u79EF\u5206\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u663E\u793A\u91D1\u989D\u540E\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002");
+        }
+        return;
+      }
+      const failure = generationApprovalFailure(error52);
+      if (failure.outcome === "not_submitted") {
+        report("approval", "failed", error52);
+        if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) {
+          setError(failure.message);
+          onVerification?.();
+          onChanged?.();
+        }
+        return;
+      }
+      let recovered;
+      try {
+        const status = await request("generation.status", { operationId: clientOperationId, refresh: true });
+        recovered = exactOperation(status.data, expectedIntent, expectedPlan);
+      } catch {
+      }
+      if (recovered && recovered.operationId === clientOperationId && ["submitting", "submitted", "completed", "partial_unknown"].includes(recovered.status)) {
+        await acceptDirectSubmission(recovered, expectedOwner, expectedContext, expectedRevision, expectedIntent, expectedPlan, report);
+        return;
+      }
+      if (recovered && ["cancelled", "failed"].includes(recovered.status)) {
+        const terminalMessage = "\u539F\u76F4\u63A5\u63D0\u4EA4\u8BA2\u5355\u5DF2\u53D6\u6D88\u6216\u5931\u6548\uFF0C\u672A\u7EE7\u7EED\u6267\u884C\u3002";
+        report("approval", "failed", recovered.status);
+        const transition2 = startResultSubmission(expectedOwner, {
+          id: clientOperationId,
+          name: prompt.trim().slice(0, 40) || chosen?.title || "\u751F\u56FE\u4EFB\u52A1",
+          processingType: "ai",
+          taskKind: "generation"
+        });
+        failResultSubmission(transition2, terminalMessage);
+        if (expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, recovered);
+        if (mounted.current) {
+          setApprovalAttempted(true);
+          setOperation(recovered);
+          setError(terminalMessage);
+          onSubmission?.(recovered, terminalMessage);
+        }
+        return;
+      }
+      report("approval", "unknown", error52);
+      const transition = startResultSubmission(expectedOwner, {
+        id: clientOperationId,
+        name: prompt.trim().slice(0, 40) || chosen?.title || "\u751F\u56FE\u4EFB\u52A1",
+        processingType: "ai",
+        taskKind: "generation"
+      });
+      failResultSubmission(transition, failure.message);
+      if (recovered && expectedContext.nativeSessionId) generationBootstrapCache.rememberOperation(expectedOwner, expectedContext.nativeSessionId, recovered);
+      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) {
+        setApprovalAttempted(true);
+        setError(failure.message);
+        if (recovered) {
+          setOperation(recovered);
+          onSubmission?.(recovered, failure.message);
+        }
+        onChanged?.();
+        void request("panel.navigate", { section: "results" }).catch(() => void 0);
+      }
+    }
+  }
+  async function submitInpaintDraft() {
+    const saved = inpaintDraft;
+    if (!saved || busy || preparing.current || approving.current || approvalAttempted) return;
+    if (operation?.status === "quoted") {
+      const belongsToInpaint = Array.isArray(operation.items) && operation.items.some((item) => item?.inpaint?.mode === "inpaint");
+      if (!belongsToInpaint) {
+        await request("generation.cancel", { operationId: operation.operationId }).catch(() => void 0);
+        setOperation(void 0);
+        invalidate();
+        setError("\u65E7\u62A5\u4EF7\u4E0D\u5C5E\u4E8E\u5F53\u524D\u5C40\u90E8\u91CD\u7ED8\uFF0C\u8BF7\u91CD\u65B0\u70B9\u51FB\u751F\u6210\u3002");
+        return;
+      }
+      await approve(operation, true, void 0, void 0, saved.id);
+      return;
+    }
+    const expectedOwner = ownerId.current, expectedContext = requestContext.current, expectedRevision = cacheRevision.current;
+    const expectedIntent = currentIntent.current, expectedPlan = currentPlanVersion.current;
+    const expectedSession = nativeSessionId ?? "podplo-manual", expectedQuote = inpaintLocalQuote;
+    const report = submissionReporter(request, expectedOwner, diagnosticScope, expectedIntent, expectedPlan);
+    const current2 = () => generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner && requestContext.current.request === expectedContext.request && requestContext.current.nativeSessionId === expectedContext.nativeSessionId && requestContext.current.accountKey === expectedContext.accountKey && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan && (() => {
+      const draft = generationBootstrapCache.readDraft(expectedOwner, expectedSession);
+      const inpaint = generationBootstrapCache.readInpaintDraft(expectedOwner, expectedSession);
+      return !!draft && draft.intentId === expectedIntent && draft.planVersion === expectedPlan && inpaint?.id === saved.id && inpaint.revision === saved.revision;
+    })();
+    const scopeCurrent = async () => {
+      const snapshot = await request("snapshot", {});
+      return current2() && snapshot.data?.account?.userId === expectedOwner && String(snapshot.data?.account?.uiScope ?? "legacy") === String(diagnosticScope ?? "legacy");
+    };
+    if (!saved.prompt.trim() || !expectedQuote || !inpaintModel) {
+      setError("\u5F53\u524D\u5C40\u90E8\u91CD\u7ED8\u53C2\u6570\u6216\u79EF\u5206\u65E0\u6CD5\u6838\u9A8C\uFF0C\u8BF7\u5237\u65B0\u540E\u91CD\u8BD5\u3002");
+      return;
+    }
+    preparing.current = true;
+    setBusy("prepare");
+    setError("");
+    setNotice("");
+    setPriceVerification("");
+    try {
+      report("capabilities", "started");
+      const history = await request("generation.list", { scope: "results" });
+      let pending = pendingInpaintOperation(history.data?.items);
+      if (pending && pending.operationId !== operation?.operationId && ["submission_unknown", "partial_unknown"].includes(pending.status)) {
+        try {
+          const refreshed = await request("generation.status", { operationId: pending.operationId, refresh: true });
+          const refreshedId = refreshed.data?.operationId, status = refreshed.data?.status;
+          const terminal = /* @__PURE__ */ new Set(["completed", "failed", "partial_failure", "partial_cancelled", "cancelled"]);
+          if (refreshedId === pending.operationId && typeof status === "string" && terminal.has(status)) pending = void 0;
+          else if (refreshedId === pending.operationId && typeof status === "string" && ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(status)) pending = { ...pending, status };
+        } catch {
+        }
+      }
+      if (pending && pending.operationId !== operation?.operationId) {
+        setError("\u5DF2\u6709\u5C40\u90E8\u91CD\u7ED8\u4EFB\u52A1\u5C1A\u9700\u6838\u5BF9\uFF0C\u4E0D\u4F1A\u81EA\u52A8\u91CD\u63D0\u3002");
+        void request("panel.navigate", { section: "results" }).catch(() => void 0);
+        report("capabilities", "failed", "SUBMISSION_UNKNOWN");
+        return;
+      }
+      if (!current2()) {
+        report("capabilities", "failed", "DRAFT_CHANGED");
+        return;
+      }
+      const latest = (await request("generation.capabilities", { refresh: true })).data;
+      if (!current2()) {
+        report("capabilities", "failed", "DRAFT_CHANGED");
+        return;
+      }
+      const latestModel = capabilityModels(latest).find((row) => row.supportsInpaint === true && row.availableForCurrentPlan !== false);
+      if (latest?.available !== true || latest.supportsInpaint !== true || !latestModel || typeof modelId(latestModel) !== "string") {
+        throw new Error("\u5F53\u524D\u8D26\u53F7\u6682\u65E0\u53EF\u7528\u7684 image v2.5 \u5C40\u90E8\u91CD\u7ED8\u6A21\u578B\u3002");
+      }
+      const refreshedQuote = calculateLocalGenerationQuote(latestModel, {
+        prompt: saved.prompt,
+        quality: "low",
+        resolution: "1K",
+        count: 1,
+        referenceImageCount: 2,
+        ecoMode: false,
+        webSearch: false,
+        imageSearch: false
+      });
+      if (!refreshedQuote || latest.pricingVersion !== refreshedQuote.pricingVersion) throw new Error("\u79EF\u5206\u89C4\u5219\u5DF2\u66F4\u65B0\uFF0C\u8BF7\u66F4\u65B0\u63D2\u4EF6\u540E\u91CD\u8BD5\u3002");
+      setCapabilities(latest);
+      generationBootstrapCache.update(expectedOwner, { capabilities: latest });
+      if (refreshedQuote.totalCredits !== expectedQuote.totalCredits || refreshedQuote.outputCount !== expectedQuote.outputCount || modelId(latestModel) !== modelId(inpaintModel)) {
+        setPriceVerification("\u5C40\u90E8\u91CD\u7ED8\u79EF\u5206\u6216\u6A21\u578B\u5DF2\u66F4\u65B0\uFF0C\u672C\u6B21\u672A\u4E0A\u4F20\u6216\u63D0\u4EA4\u3002\u8BF7\u6838\u5BF9\u5F53\u524D\u91D1\u989D\u540E\u518D\u6B21\u70B9\u51FB\u751F\u6210\u3002");
+        report("capabilities", "failed", "PRICE_CHANGED");
+        return;
+      }
+      if (!await scopeCurrent()) {
+        report("capabilities", "failed", "SESSION_CHANGED");
+        return;
+      }
+      report("capabilities", "passed");
+      report("reference_upload", "started");
+      let prepared = saved.prepared;
+      if (!prepared) {
+        const materialized = await materializeInpaintDraft(saved, request);
+        if (!current2()) {
+          report("reference_upload", "failed", "DRAFT_CHANGED");
+          return;
+        }
+        let sourceAssetId = materialized.sourceAssetId ?? "", sourceOwned = false;
+        if (!sourceAssetId) {
+          const uploaded = (await request("assets.upload", { file: materialized.sourceFile, purpose: "inpaint-source-v1" })).data;
+          if (!uploaded?.id || uploaded.status !== "ready") throw new Error("\u539F\u56FE\u5C1A\u672A\u51C6\u5907\u5B8C\u6210\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+          sourceAssetId = uploaded.id;
+          sourceOwned = true;
+        }
+        if (!await scopeCurrent()) {
+          if (sourceOwned) void deletePreparedInpaintAssets({ ...saved, prepared: { sourceAssetId, sourceOwned, maskAssetId: "" } }, request).catch(() => void 0);
+          report("reference_upload", "failed", "SESSION_CHANGED");
+          return;
+        }
+        const mask = (await request("assets.upload", { file: materialized.maskFile, purpose: "inpaint-mask-v1" })).data;
+        if (!mask?.id || mask.status !== "ready") {
+          if (sourceOwned) void deletePreparedInpaintAssets({ ...saved, prepared: { sourceAssetId, sourceOwned, maskAssetId: "" } }, request).catch(() => void 0);
+          throw new Error("\u7F16\u8F91\u533A\u57DF\u5C1A\u672A\u51C6\u5907\u5B8C\u6210\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002");
+        }
+        prepared = { sourceAssetId, sourceOwned, maskAssetId: mask.id };
+        if (!await scopeCurrent()) {
+          void deletePreparedInpaintAssets({ ...saved, prepared }, request).catch(() => void 0);
+          report("reference_upload", "failed", "SESSION_CHANGED");
+          return;
+        }
+        if (!generationBootstrapCache.rememberInpaintPrepared(expectedOwner, expectedSession, saved.id, saved.revision, prepared, expectedRevision) || !current2()) {
+          void deletePreparedInpaintAssets({ ...saved, prepared }, request).catch(() => void 0);
+          report("reference_upload", "failed", "DRAFT_CHANGED");
+          return;
+        }
+        setInpaintDraft((currentDraft) => currentDraft?.id === saved.id && currentDraft.revision === saved.revision ? { ...currentDraft, prepared } : currentDraft);
+      }
+      report("reference_upload", "passed");
+      report("quote", "started");
+      if (!await scopeCurrent()) {
+        report("quote", "failed", "SESSION_CHANGED");
+        return;
+      }
+      const args = {
+        prompt: saved.prompt.trim(),
+        modelId: modelId(latestModel),
+        referenceAssetIds: [prepared.sourceAssetId],
+        ratio: "1:1",
+        quality: "low",
+        resolution: "1K",
+        webSearch: false,
+        imageSearch: false,
+        ecoMode: false,
+        background: "opaque",
+        output_format: "png",
+        count: 1,
+        inpaint: { mode: "inpaint", maskAssetId: prepared.maskAssetId, preserveOutside: saved.preserveOutside }
+      };
+      const prepareRequest = async () => {
+        const { data } = await request("generation.prepare", {
+          intentId: expectedIntent,
+          planVersion: expectedPlan,
+          items: [{ args }],
+          expectedOutputCount: 1,
+          taskName: `${saved.source.filename.replace(/\.[^.]+$/u, "")}-\u5C40\u90E8\u91CD\u7ED8`,
+          processingPlan: []
+        });
+        const exact = exactOperation(data, expectedIntent, expectedPlan);
+        if (!exact || exact.quote.outputCount !== 1 || !Array.isArray(exact.items) || !exact.items.some((item) => item?.inpaint?.mode === "inpaint")) {
+          if (data?.operationId) void request("generation.cancel", { operationId: data.operationId }).catch(() => void 0);
+          throw new Error("\u670D\u52A1\u7AEF\u8FD4\u56DE\u7684\u5C40\u90E8\u91CD\u7ED8\u62A5\u4EF7\u4E0E\u5F53\u524D\u8BA1\u5212\u4E0D\u5339\u914D\u3002");
+        }
+        return exact;
+      };
+      const quote = expectedContext.nativeSessionId ? await generationBootstrapCache.prepare(expectedOwner, expectedContext.nativeSessionId, expectedIntent, expectedPlan, prepareRequest) : await prepareRequest();
+      if (!current2()) {
+        report("quote", "failed", "DRAFT_CHANGED");
+        return;
+      }
+      setOperation(quote);
+      setApprovalAttempted(false);
+      report("quote", "passed");
+      if (quote.quote.totalCredits !== refreshedQuote.totalCredits || quote.quote.outputCount !== refreshedQuote.outputCount) {
+        setPriceVerification(`\u670D\u52A1\u7AEF\u4EF7\u683C\u5DF2\u66F4\u65B0\u4E3A ${quote.quote.totalCredits} \u79EF\u5206\uFF1B\u672C\u6B21\u672A\u81EA\u52A8\u63D0\u4EA4\uFF0C\u8BF7\u518D\u6B21\u70B9\u51FB\u751F\u6210\u786E\u8BA4\u3002`);
+        return;
+      }
+      const transition = startResultSubmission(expectedOwner, {
+        id: quote.operationId,
+        name: saved.prompt.trim().slice(0, 40) || "\u5C40\u90E8\u91CD\u7ED8",
+        processingType: "ai",
+        taskKind: "generation"
+      });
+      await approve(quote, true, transition, report, saved.id);
+    } catch (cause) {
+      report("quote", "failed", cause);
+      if (current2()) setError(errorText2(cause));
+    } finally {
+      preparing.current = false;
+      if (mounted.current && generationBootstrapCache.isCurrent(expectedRevision) && ownerId.current === expectedOwner) setBusy("");
     }
   }
   async function submitDraft() {
+    if (inpaintDraft) {
+      await submitInpaintDraft();
+      return;
+    }
     if (analysisMode) {
       if (validationError()) return;
       if (uploadPreviews.length) {
@@ -21279,7 +21660,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           return !!draft && draft.intentId === expectedIntent2 && draft.planVersion === expectedPlan2;
         })();
         const expectedCredits = analysis.price;
-        const transition2 = startResultSubmission(ownerId.current, {
+        const transition = startResultSubmission(ownerId.current, {
           id: `pending:${intentId}:${planVersion}`,
           name: analysisMode === "dna" ? uploadPreviews[0]?.filename.replace(/\.[^.]+$/u, "") || "DNA \u63D0\u53D6\u4EFB\u52A1" : prompt.trim().slice(0, 40) || "\u56FE\u8F6C\u6587\u4EFB\u52A1",
           processingType: "ai",
@@ -21292,11 +21673,11 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         ];
         const uploaded = await flushReferenceUploads();
         if (!submissionCurrent()) {
-          failResultSubmission(transition2, "\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u65E7\u4E0A\u4F20\u672A\u7EE7\u7EED\u63D0\u4EA4\u3002");
+          failResultSubmission(transition, "\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u65E7\u4E0A\u4F20\u672A\u7EE7\u7EED\u63D0\u4EA4\u3002");
           return;
         }
         if (uploaded) {
-          const submitted = await analysis.submitUploaded(uploaded, sourceNames, expectedCredits, transition2);
+          const submitted = await analysis.submitUploaded(uploaded, sourceNames, expectedCredits, transition);
           if (submitted) generationBootstrapCache.clearReferenceUploads(
             expectedOwner2,
             expectedSession,
@@ -21305,9 +21686,9 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
             expectedIntent2,
             expectedPlan2
           );
-          else if (!submissionCurrent()) failResultSubmission(transition2, "\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u65E7\u63D0\u4EA4\u5DF2\u505C\u6B62\u3002");
+          else if (!submissionCurrent()) failResultSubmission(transition, "\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u65E7\u63D0\u4EA4\u5DF2\u505C\u6B62\u3002");
         } else {
-          failResultSubmission(transition2, "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
+          failResultSubmission(transition, "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
           void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         }
         return;
@@ -21316,6 +21697,13 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       return;
     }
     if (busy || preparing.current || approving.current || approvalAttempted) return;
+    if (operation?.status === "quoted" && !selectedDna) {
+      await request("generation.cancel", { operationId: operation.operationId }).catch(() => void 0);
+      setOperation(void 0);
+      invalidate();
+      setNotice("\u65E7\u7248\u72EC\u7ACB\u62A5\u4EF7\u5DF2\u53D6\u6D88\uFF0C\u8BF7\u6838\u5BF9\u5F53\u524D\u91D1\u989D\u540E\u76F4\u63A5\u751F\u6210\u3002");
+      return;
+    }
     if (operation?.status === "quoted") {
       if (!localQuote || operation.quote.totalCredits !== localQuote.totalCredits || operation.quote.outputCount !== localQuote.outputCount) {
         void request("generation.cancel", { operationId: operation.operationId }).catch(() => void 0);
@@ -21343,13 +21731,6 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       return;
     }
     if (expectedContext.nativeSessionId) generationBootstrapCache.clearComposerFeedback(expectedOwner, expectedContext.nativeSessionId, expectedIntent, expectedPlan);
-    const transition = startResultSubmission(expectedOwner, {
-      id: `pending:${expectedIntent}:${expectedPlan}`,
-      name: prompt.trim().slice(0, 40) || selectedDna?.title || "\u751F\u56FE\u4EFB\u52A1",
-      processingType: "ai",
-      taskKind: "generation"
-    });
-    void request("panel.navigate", { section: "results" }).catch(() => void 0);
     try {
       const hasUploads = generationBootstrapCache.readReferenceUploads(expectedOwner, nativeSessionId ?? "podplo-manual").length > 0;
       if (hasUploads) report("reference_upload", "started");
@@ -21364,18 +21745,30 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           "failed",
           generationBootstrapCache.isCurrent(expectedRevision) && currentIntent.current === expectedIntent && currentPlanVersion.current === expectedPlan ? "UNKNOWN" : "DRAFT_CHANGED"
         );
-        failResultSubmission(transition, "\u53C2\u8003\u56FE\u4E0A\u4F20\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
-        void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         return;
       }
       if (hasUploads) report("reference_upload", "passed");
-      const verified = await prepare(uploadedReferences, report);
-      if (!verified) {
-        failResultSubmission(transition, "\u751F\u56FE\u6838\u4EF7\u672A\u5B8C\u6210\uFF0C\u8BF7\u8FD4\u56DE\u751F\u56FE\u6846\u91CD\u8BD5\u3002");
-        void request("panel.navigate", { section: "generation" }).catch(() => void 0);
+      if (!selectedDna) {
+        if (!generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan) {
+          report("approval", "failed", "DRAFT_CHANGED");
+          return;
+        }
+        await submitDirect(
+          uploadedReferences,
+          expectedLocalQuote,
+          expectedOwner,
+          expectedContext,
+          expectedRevision,
+          expectedIntent,
+          expectedPlan,
+          report
+        );
         return;
       }
-      retargetResultSubmission(transition, verified.operationId);
+      const verified = await prepare(uploadedReferences, report);
+      if (!verified) {
+        return;
+      }
       if (!generationBootstrapCache.isCurrent(expectedRevision) || ownerId.current !== expectedOwner || requestContext.current.request !== expectedContext.request || requestContext.current.nativeSessionId !== expectedContext.nativeSessionId || requestContext.current.accountKey !== expectedContext.accountKey || currentIntent.current !== expectedIntent || currentPlanVersion.current !== expectedPlan || verified.intentId !== expectedIntent || verified.planVersion !== expectedPlan) {
         report("approval", "failed", "DRAFT_CHANGED");
         return;
@@ -21392,14 +21785,18 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           expectedRevision
         );
         report("quote", "failed", "PRICE_CHANGED");
-        failResultSubmission(transition, pricingRuleMismatch);
-        void request("panel.navigate", { section: "generation" }).catch(() => void 0);
         return;
       }
+      const transition = startResultSubmission(expectedOwner, {
+        id: verified.operationId,
+        name: prompt.trim().slice(0, 40) || selectedDna?.title || "\u751F\u56FE\u4EFB\u52A1",
+        processingType: "ai",
+        taskKind: "generation"
+      });
+      void request("panel.navigate", { section: "results" }).catch(() => void 0);
       await approve(verified, false, transition, report);
     } catch (cause) {
-      failResultSubmission(transition, errorText2(cause));
-      void request("panel.navigate", { section: "generation" }).catch(() => void 0);
+      if (mounted.current) setError(errorText2(cause));
     }
   }
   async function cancelQuote() {
@@ -21428,8 +21825,9 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     }
   }
   function clearComposer() {
-    if (!draftReady.current || !ownerId.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || uploading.current || busy === "approve" || busy === "cancel") return;
-    if (!prompt && !skillId && !selectedDna && references.length === 0 && uploadPreviews.length === 0 && !uploadWarning && !uploadProgress) return;
+    if (!draftReady.current || !ownerId.current || !generationBootstrapCache.isCurrent(cacheRevision.current) || submittingDraft.current || uploading.current || busy === "approve" || busy === "cancel") return;
+    if (!prompt && !skillId && !selectedDna && references.length === 0 && uploadPreviews.length === 0 && !uploadWarning && !uploadProgress && !inpaintDraft) return;
+    if (inpaintDraft) removeInpaintDraft();
     invalidate();
     skillSequence.current += 1;
     const sessionId = nativeSessionId ?? "podplo-manual";
@@ -21448,7 +21846,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     setReferences([]);
     setError("");
   }
-  const displayCredits = analysisMode ? analysis.price : localQuote?.totalCredits;
+  const displayCredits = inpaintDraft ? operation?.status === "quoted" ? operation.quote.totalCredits : inpaintLocalQuote?.totalCredits : analysisMode ? analysis.price : localQuote?.totalCredits;
   const chevron = /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "13", height: "13", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "m7 10 5 5 5-5" }) });
   const plus = /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "22", height: "22", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "M12 5v14M5 12h14" }) });
   const imageIcon = /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("svg", { width: "14", height: "14", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.8", "aria-hidden": "true", children: [
@@ -21463,13 +21861,15 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "m7.699 10.7 5.602 5.601" })
   ] });
   const openSkillBrowser = (event) => {
+    if (submittingDraft.current) return;
     event?.currentTarget.closest("details")?.removeAttribute("open");
     setSkillBrowserOpen(true);
+    void refreshPublicCatalog(true);
   };
   if (placement === "floating" && !floatingOpen) return /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { ref: floatingShell, className: "ppd-generation-shell is-floating is-collapsed", "data-generation-composer": "floating", "data-generation-composer-collapsed": true, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("button", { type: "button", className: "ppd-generation-collapsed", "aria-expanded": "false", onClick: () => setFloatingOpen(true), children: [
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-collapsed-add", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "17", height: "17", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "1.9", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "M12 5v14M5 12h14" }) }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-collapsed-placeholder", children: "Create image" }),
-    (references.length > 0 || uploadPreviews.length > 0 || uploadProgress || uploadWarning) && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { "data-generation-reference-count": true, title: uploadFeedback || void 0, children: uploadPreviews.length ? `${uploadPreviews.length} \u5F20\u5F85\u63D0\u4EA4` : uploadWarning ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : `${references.length} \u5F20\u53C2\u8003\u56FE` }),
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-collapsed-placeholder", children: inpaintDraft ? "\u5C40\u90E8\u91CD\u7ED8\u5DF2\u4FDD\u5B58" : "Create image" }),
+    (inpaintDraft || references.length > 0 || uploadPreviews.length > 0 || uploadProgress || uploadWarning) && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { "data-generation-reference-count": true, title: uploadFeedback || void 0, children: inpaintDraft ? inpaintDraft.source.filename : uploadPreviews.length ? `${uploadPreviews.length} \u5F20\u5F85\u63D0\u4EA4` : uploadWarning ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : `${references.length} \u5F20\u53C2\u8003\u56FE` }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-collapsed-expand", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "16", height: "16", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "m12 19V5m-6 6 6-6 6 6" }) }) })
   ] }) });
   return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("section", { ref: floatingShell, className: `ppd-generation ppd-generation-shell is-${placement}`, "data-generation-composer": placement, "data-generation-composer-expanded": true, "aria-busy": loading, children: [
@@ -21480,14 +21880,14 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       analysis.error && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-link-button", onClick: analysis.retry, children: analysis.submitted ? "\u6838\u5BF9\u72B6\u6001" : "\u91CD\u65B0\u6838\u4EF7" })
     ] }),
     priceVerification && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { className: "ppd-price-verification", "data-generation-price-verification": true, role: "status", children: priceVerification }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("fieldset", { className: "ppd-generation-form", disabled: busy === "upload" || busy === "approve" || busy === "cancel", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("fieldset", { className: "ppd-generation-form", disabled: submissionLocked || busy === "upload" || busy === "approve" || busy === "cancel", children: [
       /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("legend", { className: "ppd-visually-hidden", children: "\u672C\u6279\u8BBE\u7F6E" }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: `ppd-web-composer ${composerFocused ? "is-focused" : ""}`, "data-ui": "podplo-web-composer", children: [
         /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-composer-actions", children: [
           placement === "floating" && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", "aria-label": "\u6536\u8D77\u751F\u56FE\u6846", onClick: () => setFloatingOpen(false), children: "\u2014" }),
           /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", "aria-label": "\u6E05\u7A7A\u8F93\u5165", title: "\u6E05\u7A7A", onClick: clearComposer, children: broomIcon })
         ] }),
-        !analysisMode && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-composer-top-actions", children: [
+        !analysisMode && !inpaintDraft && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-composer-top-actions", children: [
           /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
             BatchGenerationPanel,
             {
@@ -21504,85 +21904,99 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
           presetResource && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-composer-top-button", "data-save-resource-preset": true, onClick: saveCurrentPreset, children: presetFeedback || "\u4FDD\u5B58\u9884\u8BBE" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-composer-media-row", children: [
-          selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedSkill.title, children: [
-            selectedSkill?.coverUrl ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("img", { className: "ppd-skill-cover", src: selectedSkill.coverUrl, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-token-mark", children: "\u2726" }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: "ppd-skill-copy", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: skillLoading === selectedSkill.id ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "Skill" }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: selectedSkill?.title || "\u9009\u62E9 Skill" })
+          inpaintDraft && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-inpaint-mode-token", "data-generation-inpaint-mode": true, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-token-mark", children: "\u270E" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: "\u5C40\u90E8\u91CD\u7ED8" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: inpaintDraft.source.filename })
             ] }),
-            chevron,
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: () => setInpaintSource(inpaintDraft.source), children: "\u7F16\u8F91" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", "aria-label": "\u79FB\u9664\u5C40\u90E8\u91CD\u7ED8", onClick: removeInpaintDraft, children: "\xD7" })
           ] }),
-          selectedDna && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedDna.description || "\u6211\u7684 DNA", "data-generation-dna": selectedDna.dnaId, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-token-mark", children: "\u25C8" }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: "ppd-skill-copy", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: "DNA" }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: selectedDna.title })
+          !inpaintDraft && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_jsx_runtime9.Fragment, { children: [
+            selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedSkill.title, children: [
+              selectedSkill?.coverUrl ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("img", { className: "ppd-skill-cover", src: selectedSkill.coverUrl, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-token-mark", children: "\u2726" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: "ppd-skill-copy", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: skillLoading === selectedSkill.id ? "\u6B63\u5728\u8BFB\u53D6\u2026" : "Skill" }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: selectedSkill?.title || "\u9009\u62E9 Skill" })
+              ] }),
+              chevron,
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
             ] }),
-            chevron,
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill \u6216 DNA", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
-          ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: `ppd-reference-tray ${references.length || uploadPreviews.length ? "has-references" : ""}`, "aria-label": references.length ? `${references.length} \u5F20\u53C2\u8003\u7D20\u6750` : "\u6DFB\u52A0\u53C2\u8003\u7D20\u6750", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-upload-tile", "data-generation-upload": true, "aria-label": selectedKrea ? "K2 \u6587\u751F\u56FE\u4E0D\u652F\u6301\u53C2\u8003\u56FE" : "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", title: selectedKrea ? "K2 \u6587\u751F\u56FE\u4EC5\u652F\u6301\u7EAF\u6587\u5B57" : "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", disabled: selectedKrea, onClick: () => uploadInput.current?.click(), children: plus }),
-            references.map((id, index) => {
-              const asset = assets.find((row) => row.id === id);
-              const preview = asset?.thumbnailUrl || asset?.previewUrl;
-              return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-reference-token", title: asset?.filename || id, children: [
-                preview ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("img", { src: preview, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { children: index + 1 }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: index + 1 }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(ReferenceMenu, { label: `\u66F4\u591A\u53C2\u8003\u56FE\u64CD\u4F5C ${index + 1}`, children: [
-                  !selectedKrea && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: (event) => {
-                    setInpaintSource({ kind: "asset", assetId: id, previewUrl: preview ?? void 0, filename: asset?.filename || `\u53C2\u8003\u56FE-${index + 1}.png` });
-                  }, children: "\u5C40\u90E8\u91CD\u7ED8" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", disabled: index === 0, onClick: () => moveReference(index, -1), children: "\u4E0A\u79FB" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", disabled: index === references.length - 1, onClick: () => moveReference(index, 1), children: "\u4E0B\u79FB" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: () => change(setReferences, references.filter((value2) => value2 !== id)), children: "\u79FB\u9664" })
-                ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-                  "button",
-                  {
-                    type: "button",
-                    className: "ppd-upload-preview-remove",
-                    "aria-label": `\u79FB\u9664\u5DF2\u4E0A\u4F20\u56FE\u7247 ${asset?.filename || index + 1}`,
-                    onClick: () => change(setReferences, references.filter((value2) => value2 !== id)),
-                    children: "\xD7"
-                  }
-                )
-              ] }, id);
-            }),
-            uploadPreviews.map((row) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: `ppd-reference-token ppd-upload-preview is-${row.status}`, "data-generation-upload-preview": row.status, title: `${row.filename}\uFF1A${row.message || (row.status === "queued" ? "\u5C06\u5728\u786E\u8BA4\u63D0\u4EA4\u65F6\u4E0A\u4F20" : "\u4E0A\u4F20\u4E2D")}`, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("img", { src: row.previewUrl, alt: row.filename }),
-              row.status !== "queued" && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-upload-preview-status", role: row.status === "failed" ? "alert" : "status", children: row.status === "failed" ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : "\u4E0A\u4F20\u4E2D\u2026" }),
-              row.status !== "uploading" && !selectedKrea && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ReferenceMenu, { label: `\u66F4\u591A\u53C2\u8003\u56FE\u64CD\u4F5C ${row.filename}`, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: (event) => {
-                const file2 = generationBootstrapCache.referenceUploadFile(ownerId.current, nativeSessionId ?? "podplo-manual", row.id);
-                if (file2) setInpaintSource({ kind: "file", file: file2, previewUrl: row.previewUrl, filename: row.filename });
-                else setUploadWarning("\u8BE5\u672C\u5730\u56FE\u7247\u5DF2\u4E0D\u53EF\u7528\uFF0C\u8BF7\u91CD\u65B0\u6DFB\u52A0\u3002");
-              }, children: "\u5C40\u90E8\u91CD\u7ED8" }) }),
-              row.status !== "uploading" && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-upload-preview-remove", "aria-label": `\u79FB\u9664\u672A\u4E0A\u4F20\u56FE\u7247 ${row.filename}`, onClick: () => {
-                invalidate();
-                setUploadWarning("");
-                generationBootstrapCache.updateReferenceUpload(ownerId.current, nativeSessionId ?? "podplo-manual", row.id, null, cacheRevision.current);
-                setUploadPreviews(generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId ?? "podplo-manual"));
-              }, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "10", height: "10", viewBox: "0 0 12 12", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "m3 3 6 6m0-6-6 6" }) }) })
-            ] }, row.id)),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { ref: uploadInput, className: "ppd-file-input", type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", disabled: selectedKrea, onChange: (event) => void upload(Array.from(event.target.files ?? [])) })
+            selectedDna && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-skill-token has-value", title: selectedDna.description || "\u6211\u7684 DNA", "data-generation-dna": selectedDna.dnaId, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-token-mark", children: "\u25C8" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { className: "ppd-skill-copy", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("small", { children: "DNA" }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: selectedDna.title })
+              ] }),
+              chevron,
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-skill-open", "aria-label": "\u9009\u62E9 Skill \u6216 DNA", "aria-haspopup": "dialog", "aria-expanded": skillBrowserOpen, onClick: openSkillBrowser })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: `ppd-reference-tray ${references.length || uploadPreviews.length ? "has-references" : ""}`, "aria-label": references.length ? `${references.length} \u5F20\u53C2\u8003\u7D20\u6750` : "\u6DFB\u52A0\u53C2\u8003\u7D20\u6750", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-upload-tile", "data-generation-upload": true, "aria-label": selectedKrea ? "K2 \u6587\u751F\u56FE\u4E0D\u652F\u6301\u53C2\u8003\u56FE" : "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", title: selectedKrea ? "K2 \u6587\u751F\u56FE\u4EC5\u652F\u6301\u7EAF\u6587\u5B57" : "\u4E0A\u4F20\u672C\u5730\u56FE\u7247", disabled: selectedKrea, onClick: () => uploadInput.current?.click(), children: plus }),
+              references.map((id, index) => {
+                const asset = assets.find((row) => row.id === id);
+                const preview = asset?.thumbnailUrl || asset?.previewUrl;
+                return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-reference-token", title: asset?.filename || id, children: [
+                  preview ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("img", { src: preview, alt: "" }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { children: index + 1 }),
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", { children: index + 1 }),
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(ReferenceMenu, { label: `\u66F4\u591A\u53C2\u8003\u56FE\u64CD\u4F5C ${index + 1}`, children: [
+                    !selectedKrea && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: (event) => {
+                      setInpaintSource({ kind: "asset", assetId: id, previewUrl: preview ?? void 0, filename: asset?.filename || `\u53C2\u8003\u56FE-${index + 1}.png` });
+                    }, children: "\u5C40\u90E8\u91CD\u7ED8" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", disabled: index === 0, onClick: () => moveReference(index, -1), children: "\u4E0A\u79FB" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", disabled: index === references.length - 1, onClick: () => moveReference(index, 1), children: "\u4E0B\u79FB" }),
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: () => change(setReferences, references.filter((value2) => value2 !== id)), children: "\u79FB\u9664" })
+                  ] }),
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                    "button",
+                    {
+                      type: "button",
+                      className: "ppd-upload-preview-remove",
+                      "aria-label": `\u79FB\u9664\u5DF2\u4E0A\u4F20\u56FE\u7247 ${asset?.filename || index + 1}`,
+                      onClick: () => change(setReferences, references.filter((value2) => value2 !== id)),
+                      children: "\xD7"
+                    }
+                  )
+                ] }, id);
+              }),
+              uploadPreviews.map((row) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: `ppd-reference-token ppd-upload-preview is-${row.status}`, "data-generation-upload-preview": row.status, title: `${row.filename}\uFF1A${row.message || (row.status === "queued" ? "\u5C06\u5728\u786E\u8BA4\u63D0\u4EA4\u65F6\u4E0A\u4F20" : "\u4E0A\u4F20\u4E2D")}`, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("img", { src: row.previewUrl, alt: row.filename }),
+                row.status !== "queued" && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-upload-preview-status", role: row.status === "failed" ? "alert" : "status", children: row.status === "failed" ? "\u4E0A\u4F20\u672A\u5B8C\u6210" : "\u4E0A\u4F20\u4E2D\u2026" }),
+                row.status !== "uploading" && !selectedKrea && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(ReferenceMenu, { label: `\u66F4\u591A\u53C2\u8003\u56FE\u64CD\u4F5C ${row.filename}`, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", onClick: (event) => {
+                  const file2 = generationBootstrapCache.referenceUploadFile(ownerId.current, nativeSessionId ?? "podplo-manual", row.id);
+                  if (file2) setInpaintSource({ kind: "file", file: file2, previewUrl: row.previewUrl, filename: row.filename });
+                  else setUploadWarning("\u8BE5\u672C\u5730\u56FE\u7247\u5DF2\u4E0D\u53EF\u7528\uFF0C\u8BF7\u91CD\u65B0\u6DFB\u52A0\u3002");
+                }, children: "\u5C40\u90E8\u91CD\u7ED8" }) }),
+                row.status !== "uploading" && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-upload-preview-remove", "aria-label": `\u79FB\u9664\u672A\u4E0A\u4F20\u56FE\u7247 ${row.filename}`, onClick: () => {
+                  invalidate();
+                  setUploadWarning("");
+                  generationBootstrapCache.updateReferenceUpload(ownerId.current, nativeSessionId ?? "podplo-manual", row.id, null, cacheRevision.current);
+                  setUploadPreviews(generationBootstrapCache.readReferenceUploads(ownerId.current, nativeSessionId ?? "podplo-manual"));
+                }, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "10", height: "10", viewBox: "0 0 12 12", fill: "none", stroke: "currentColor", strokeWidth: "1.5", strokeLinecap: "round", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "m3 3 6 6m0-6-6 6" }) }) })
+              ] }, row.id)),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { ref: uploadInput, className: "ppd-file-input", type: "file", multiple: true, accept: "image/jpeg,image/png,image/webp", disabled: selectedKrea, onChange: (event) => void upload(Array.from(event.target.files ?? [])) })
+            ] })
           ] })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
           "textarea",
           {
-            value: prompt,
-            disabled: analysisMode === "dna",
+            value: inpaintDraft?.prompt ?? prompt,
+            readOnly: !!inpaintDraft,
+            disabled: !inpaintDraft && analysisMode === "dna",
             maxLength: analysisMode === "imageToText" ? 8e3 : Number(properties.prompt?.maxLength) || 4e3,
-            "aria-label": analysisMode === "imageToText" ? "\u8BC6\u522B\u8981\u6C42" : "\u751F\u56FE\u63CF\u8FF0",
+            "aria-label": inpaintDraft ? "\u5C40\u90E8\u91CD\u7ED8\u4FEE\u6539\u8981\u6C42" : analysisMode === "imageToText" ? "\u8BC6\u522B\u8981\u6C42" : "\u751F\u56FE\u63CF\u8FF0",
             placeholder: analysisMode === "dna" ? "\u6DFB\u52A0\u539F\u56FE\u540E\u70B9\u51FB\u751F\u6210" : analysisMode === "imageToText" ? "\u8F93\u5165\u8BC6\u522B\u8981\u6C42\u2026" : "\u63CF\u8FF0\u4F60\u60F3\u751F\u6210\u7684\u753B\u9762\u2026",
             onFocus: () => setComposerFocused(true),
             onBlur: () => setComposerFocused(false),
-            onChange: (event) => change(setPrompt, event.target.value)
+            onChange: (event) => {
+              if (!inpaintDraft) change(setPrompt, event.target.value);
+            }
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-composer-toolbar", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-toolbar-left", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { className: "ppd-toolbar-left", children: inpaintDraft ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-inpaint-fixed-contract", children: "image v2.5 \xB7 1:1 \xB7 1 \u5F20 \xB7 1K \xB7 low" }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_jsx_runtime9.Fragment, { children: [
             /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-add-menu", children: [
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", ref: addMenu.trigger, popoverTarget: addMenu.id, className: "ppd-toolbar-icon", "aria-label": "\u6DFB\u52A0\u7D20\u6750\u3001Skill \u6216 DNA", children: plus }),
               /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { ref: addMenu.menu, id: addMenu.id, popover: "auto", className: "ppd-add-popover", onBeforeToggle: (event) => {
@@ -21708,9 +22122,9 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { type: "checkbox", "data-generation-parameter": "imageSearch", checked: booleans.imageSearch === true, onChange: (event) => changeBoolean("imageSearch", event.target.checked) }),
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", {}) })
             ] })
-          ] }),
+          ] }) }),
           /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-toolbar-right", children: [
-            !analysisMode && supportsEcoMode && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { className: `ppd-eco-control ${booleans.ecoMode ? "is-selected" : ""}`, children: [
+            !inpaintDraft && !analysisMode && supportsEcoMode && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { className: `ppd-eco-control ${booleans.ecoMode ? "is-selected" : ""}`, children: [
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { type: "checkbox", "data-generation-parameter": "ecoMode", checked: booleans.ecoMode === true, onChange: (event) => changeBoolean("ecoMode", event.target.checked) }),
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("i", { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("b", {}) }),
               /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { children: "Eco" })
@@ -21726,7 +22140,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
                 className: "ppd-generate-button",
                 "data-generation-submit": true,
                 "aria-label": displayCredits !== void 0 ? "\u751F\u6210 \xB7 " + displayCredits + " \u79EF\u5206" : "\u751F\u6210 \xB7 \u70B9\u51FB\u6838\u9A8C\u79EF\u5206",
-                disabled: !!selectedDna && operation?.status !== "quoted" && !localQuote || busy === "prepare" || busy === "approve" || busy === "upload" || approvalAttempted || !!validationError() || !!analysisMode && (analysis.submitted || analysis.price === void 0),
+                disabled: !inpaintDraft && !!selectedDna && operation?.status !== "quoted" && !localQuote || busy === "prepare" || busy === "approve" || busy === "upload" || approvalAttempted || !!validationError() || !inpaintDraft && !!analysisMode && (analysis.submitted || analysis.price === void 0),
                 onClick: () => void generate(),
                 children: busy === "prepare" || busy === "approve" || !!analysisMode && analysis.busy ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-spinner" }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("svg", { width: "18", height: "18", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", "aria-hidden": "true", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("path", { d: "m12 19V5m-6 6 6-6 6 6" }) })
               }
@@ -21735,6 +22149,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { className: "ppd-composer-meta", children: [
+        inpaintDraft && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { role: "status", children: "\u5C40\u90E8\u91CD\u7ED8\u6A21\u5F0F\uFF1A\u672C\u6B21\u53EA\u63D0\u4EA4\u539F\u56FE\u548C\u8499\u7248\uFF1B\u73B0\u6709 Skill\u3001DNA\u3001\u53C2\u8003\u56FE\u4E0E\u666E\u901A\u63D0\u793A\u8BCD\u5747\u5DF2\u4FDD\u7559\u3002" }),
         selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-skill-proof", role: "status", children: skillLoading === selectedSkill.id ? selectedSkill.kind === "family" ? "\u6B63\u5728\u52A0\u8F7D\u65CF\u6210\u5458\u2026" : "\u6B63\u5728\u8BFB\u53D6\u5B8C\u6574\u8BE6\u60C5\u2026" : selectedSkill.extractionSkillId ? "\u53CD\u63A8 DNA" : selectedSkill.detail ? `\u8BE6\u60C5\u5DF2\u6838\u5BF9 \xB7 \u7248\u672C ${selectedSkill.version}` : selectedSkill.kind === "family" ? "\u8BF7\u9009\u62E9\u65CF\u6210\u5458" : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-link-button", onClick: () => void selectSkill(selectedSkill.id), children: "\u91CD\u8BD5 Skill \u8BE6\u60C5" }) }),
         selectedDna && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("span", { className: "ppd-skill-proof", role: "status", children: selectedKrea ? "DNA \u6A21\u5F0F \xB7 \u7EAF\u6587\u5B57\u751F\u56FE" : "DNA \u6A21\u5F0F \xB7 \u8BF7\u6DFB\u52A0\u4E00\u5F20\u65B0\u56FE" }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("span", { children: [
@@ -21749,7 +22164,7 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
       skillError,
       selectedSkill && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-link-button", disabled: !!skillLoading, onClick: () => void selectSkill(selectedSkill.id), children: "\u91CD\u8BD5" })
     ] }),
-    generationModelError && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { className: "ppd-skill-feedback", "data-generation-model-feedback": true, role: "alert", children: [
+    !inpaintDraft && generationModelError && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { className: "ppd-skill-feedback", "data-generation-model-feedback": true, role: "alert", children: [
       generationModelError,
       generationModelsUnavailable && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("button", { type: "button", className: "ppd-link-button", disabled: loading, onClick: () => void load(true), children: loading ? "\u6B63\u5728\u91CD\u65B0\u8BFB\u53D6\u2026" : "\u91CD\u65B0\u8BFB\u53D6\u6A21\u578B" })
     ] }),
@@ -21780,7 +22195,16 @@ function GenerationPanel({ request, onChanged, onSubmission, onVerification, onO
         }
       }
     ),
-    inpaintSource && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(InpaintDialog, { source: inpaintSource, request, onClose: () => setInpaintSource(void 0) })
+    inpaintSource && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      InpaintDialog,
+      {
+        source: inpaintSource,
+        request,
+        initialDraft: inpaintDraft && inpaintSourceKey(inpaintDraft.source) === inpaintSourceKey(inpaintSource) ? inpaintDraft : void 0,
+        onSave: saveInpaintDraft,
+        onClose: () => setInpaintSource(void 0)
+      }
+    )
   ] });
 }
 
@@ -24293,9 +24717,44 @@ var MAX_SOURCES3 = 100;
 var MAX_BATCH_BYTES4 = 250 * 1024 * 1024;
 var safeMessage = (value2) => value2 instanceof Error ? value2.message : "\u64CD\u4F5C\u672A\u5B8C\u6210\uFF0C\u8BF7\u7A0D\u540E\u91CD\u8BD5\u3002";
 var createId = () => typeof crypto.randomUUID === "function" ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+function readChunkType(bytes, offset) {
+  return String.fromCharCode(bytes[offset], bytes[offset + 1], bytes[offset + 2], bytes[offset + 3]);
+}
+function matchesImageSignature(bytes, contentType) {
+  if (contentType === "image/jpeg") return bytes.length >= 3 && bytes[0] === 255 && bytes[1] === 216 && bytes[2] === 255;
+  if (contentType === "image/png") return bytes.length >= 8 && bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71 && bytes[4] === 13 && bytes[5] === 10 && bytes[6] === 26 && bytes[7] === 10;
+  return contentType === "image/webp" && bytes.length >= 12 && readChunkType(bytes, 0) === "RIFF" && readChunkType(bytes, 8) === "WEBP";
+}
+function hasAnimatedImageContainer(bytes, contentType) {
+  if (contentType === "image/png" && bytes.length >= 20 && bytes[0] === 137 && bytes[1] === 80 && bytes[2] === 78 && bytes[3] === 71 && bytes[4] === 13 && bytes[5] === 10 && bytes[6] === 26 && bytes[7] === 10) {
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    for (let offset = 8; offset + 12 <= bytes.length; ) {
+      const length = view.getUint32(offset, false);
+      if (length > bytes.length - offset - 12) break;
+      if (readChunkType(bytes, offset + 4) === "acTL") return true;
+      offset += length + 12;
+    }
+  }
+  if (contentType === "image/webp" && bytes.length >= 20 && readChunkType(bytes, 0) === "RIFF" && readChunkType(bytes, 8) === "WEBP") {
+    const view = new DataView(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    for (let offset = 12; offset + 8 <= bytes.length; ) {
+      const type = readChunkType(bytes, offset), length = view.getUint32(offset + 4, true);
+      if (length > bytes.length - offset - 8) break;
+      if (type === "ANIM" || type === "ANMF" || type === "VP8X" && length >= 1 && (bytes[offset + 8] & 2) !== 0) return true;
+      offset += 8 + length + (length & 1);
+    }
+  }
+  return false;
+}
+function pngName(filename) {
+  return filename.replace(/\.[^.]*$/u, "") + ".png";
+}
 async function inspectFile(file2) {
   if (!["image/png", "image/jpeg", "image/webp"].includes(file2.type) || file2.size < 1 || file2.size > 1e7)
     throw new Error("\u8BF7\u9009\u62E9 10 MB \u4EE5\u5185\u7684\u9759\u6001 PNG\u3001JPEG \u6216 WebP \u56FE\u7247\u3002");
+  const originalBytes = new Uint8Array(await file2.arrayBuffer());
+  if (!matchesImageSignature(originalBytes, file2.type)) throw new Error("\u56FE\u7247\u5185\u5BB9\u4E0E\u6587\u4EF6\u683C\u5F0F\u4E0D\u4E00\u81F4\uFF0C\u8BF7\u91CD\u65B0\u5BFC\u51FA PNG\u3001JPEG \u6216 WebP\u3002");
+  if (hasAnimatedImageContainer(originalBytes, file2.type)) throw new Error("\u8BF7\u9009\u62E9\u9759\u6001 PNG\u3001JPEG \u6216 WebP \u56FE\u7247\u3002");
   const bitmap = await createImageBitmap(file2);
   try {
     if (bitmap.width < 64 || bitmap.height < 64 || bitmap.width > 8192 || bitmap.height > 8192 || bitmap.width * bitmap.height > 16777216) throw new Error("\u56FE\u7247\u5C3A\u5BF8\u9700\u5728 64\uFF5E8192px \u4E14\u4E0D\u8D85\u8FC7 1600 \u4E07\u50CF\u7D20\u3002");
@@ -24305,11 +24764,22 @@ async function inspectFile(file2) {
     const pixels = context.getImageData(0, 0, bitmap.width, bitmap.height).data;
     for (let index = 3; index < pixels.length; index += 4) if (pixels[index] !== 255)
       throw new Error("\u56DB\u65B9\u8FDE\u7EED\u56FE\u4FEE\u590D\u5F53\u524D\u53EA\u652F\u6301\u4E0D\u900F\u660E\u56FE\u7247\uFF0C\u8BF7\u5148\u6DFB\u52A0\u80CC\u666F\u3002");
-    const offsetX = Math.floor(bitmap.width / 2), offsetY = Math.floor(bitmap.height / 2);
-    context.clearRect(0, 0, bitmap.width, bitmap.height);
-    for (const x2 of [offsetX - bitmap.width, offsetX]) for (const y of [offsetY - bitmap.height, offsetY]) context.drawImage(bitmap, x2, y);
-    const preview = await canvas.convertToBlob({ type: "image/png" });
-    return { id: createId(), file: file2, url: URL.createObjectURL(preview), width: bitmap.width, height: bitmap.height };
+    const size = Math.min(bitmap.width, bitmap.height), offsetX = Math.floor((bitmap.width - size) / 2), offsetY = Math.floor((bitmap.height - size) / 2);
+    const croppedCanvas = new OffscreenCanvas(size, size), croppedContext = croppedCanvas.getContext("2d");
+    if (!croppedContext) throw new Error("\u65E0\u6CD5\u88C1\u526A\u56FE\u7247\u3002");
+    croppedContext.drawImage(bitmap, offsetX, offsetY, size, size, 0, 0, size, size);
+    const croppedBlob = await croppedCanvas.convertToBlob({ type: "image/png" });
+    if (croppedBlob.size > 1e7) throw new Error("\u5C45\u4E2D\u88C1\u526A\u540E\u7684\u65E0\u635F PNG \u8D85\u8FC7 10 MB\uFF0C\u8BF7\u4F7F\u7528\u66F4\u5C0F\u7684\u56FE\u7247\u3002");
+    const croppedFile = new File([croppedBlob], pngName(file2.name), { type: "image/png", lastModified: file2.lastModified });
+    return {
+      id: createId(),
+      file: croppedFile,
+      displayName: file2.name,
+      url: URL.createObjectURL(croppedFile),
+      width: size,
+      height: size,
+      cropped: bitmap.width !== bitmap.height
+    };
   } finally {
     bitmap.close();
   }
@@ -24380,16 +24850,12 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
       setError(`\u6BCF\u6279\u6700\u591A ${MAX_SOURCES3} \u5F20\u56FE\u7247\u3002`);
       return;
     }
-    const eligibleBytes = incoming.filter((file2) => ["image/png", "image/jpeg", "image/webp"].includes(file2.type) && file2.size >= 1 && file2.size <= 1e7).reduce((sum, file2) => sum + file2.size, 0);
-    if (sources.reduce((sum, source) => sum + source.file.size, 0) + eligibleBytes > MAX_BATCH_BYTES4) {
-      setError("\u5F53\u524D\u6279\u6B21\u56FE\u7247\u5408\u8BA1\u4E0D\u80FD\u8D85\u8FC7 250 MB\uFF0C\u672C\u6B21\u672A\u6DFB\u52A0\u4EFB\u4F55\u56FE\u7247\u3002");
-      return;
-    }
     const epoch2 = ++actionEpoch.current;
     setBusy("inspect");
     setError("");
     setNotice("");
     const accepted = [], failures = [];
+    let acceptedBytes = sources.reduce((sum, source) => sum + source.file.size, 0), batchTooLarge = false;
     for (const file2 of incoming) {
       try {
         const inspected = await inspectFile(file2);
@@ -24397,6 +24863,12 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
           URL.revokeObjectURL(inspected.url);
           break;
         }
+        if (acceptedBytes + inspected.file.size > MAX_BATCH_BYTES4) {
+          URL.revokeObjectURL(inspected.url);
+          batchTooLarge = true;
+          break;
+        }
+        acceptedBytes += inspected.file.size;
         accepted.push(inspected);
       } catch (value2) {
         failures.push(`${file2.name}\uFF1A${safeMessage(value2)}`);
@@ -24404,6 +24876,13 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
     }
     if (!mounted.current || epoch2 !== actionEpoch.current) {
       for (const source of accepted) URL.revokeObjectURL(source.url);
+      return;
+    }
+    if (batchTooLarge) {
+      for (const source of accepted) URL.revokeObjectURL(source.url);
+      setError("\u5F53\u524D\u6279\u6B21\u88C1\u526A\u540E\u7684 PNG \u5408\u8BA1\u4E0D\u80FD\u8D85\u8FC7 250 MB\uFF0C\u672C\u6B21\u672A\u6DFB\u52A0\u4EFB\u4F55\u56FE\u7247\u3002");
+      setBusy("");
+      if (input.current) input.current.value = "";
       return;
     }
     setSources((current2) => [...current2, ...accepted]);
@@ -24436,7 +24915,7 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
         }
         const result = (await request("assets.upload", { file: source.file, purpose: "seamless-source-v1" })).data;
         if (!mounted.current || epoch2 !== actionEpoch.current) throw new DOMException("\u64CD\u4F5C\u5DF2\u53D6\u6D88", "AbortError");
-        if (!result?.id || result.status !== "ready") throw new Error(`${source.file.name} \u7684\u539F\u56FE\u5C1A\u672A\u51C6\u5907\u5B8C\u6210\u3002`);
+        if (!result?.id || result.status !== "ready") throw new Error(`${source.displayName} \u7684\u88C1\u526A\u56FE\u5C1A\u672A\u51C6\u5907\u5B8C\u6210\u3002`);
         uploaded.set(source.id, result.id);
         setSources((current2) => current2.map((row) => row.id === source.id ? { ...row, uploadedAssetId: result.id } : row));
       }));
@@ -24491,7 +24970,7 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
       const result = (await request("generation.batch.prepare", {
         batchId: currentDraft.batchId,
         expectedRevision: currentDraft.revision,
-        taskName: selectedSources.length === 1 ? `${selectedSources[0].file.name.replace(/\.[^.]+$/u, "")}-\u56DB\u65B9\u8FDE\u7EED\u56FE\u4FEE\u590D` : `\u6279\u91CF\u56DB\u65B9\u8FDE\u7EED\u56FE\u4FEE\u590D\uFF08${selectedSources.length}\u5F20\uFF09`
+        taskName: selectedSources.length === 1 ? `${selectedSources[0].displayName.replace(/\.[^.]+$/u, "")}-\u56DB\u65B9\u8FDE\u7EED\u56FE\u4FEE\u590D` : `\u6279\u91CF\u56DB\u65B9\u8FDE\u7EED\u56FE\u4FEE\u590D\uFF08${selectedSources.length}\u5F20\uFF09`
       })).data;
       if (!mounted.current || epoch2 !== actionEpoch.current) return;
       if (result?.batchId && Number.isSafeInteger(result.revision)) setDraft(result);
@@ -24565,7 +25044,7 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
   }
   return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-seamless", "data-seamless-pattern-panel": true, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { className: "ppd-tool-card", children: [
     /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "\u56DB\u65B9\u8FDE\u7EED\u56FE\u4FEE\u590D" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "\u5BFC\u5165\u4E00\u5F20\u6216\u591A\u5F20\u56FE\u7247\uFF0C\u7CFB\u7EDF\u4F1A\u6309\u5217\u8868\u987A\u5E8F\u9010\u5F20\u4FEE\u590D\u5FAA\u73AF\u63A5\u7F1D\u3002\u6A2A\u56FE\u3001\u7AD6\u56FE\u548C\u65B9\u56FE\u5747\u4FDD\u7559\u539F\u6BD4\u4F8B\u4E0E\u539F\u5C3A\u5BF8\u3002" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "\u5BFC\u5165\u56FE\u7247\u540E\uFF0C\u975E\u6B63\u65B9\u5F62\u4F1A\u81EA\u52A8\u5C45\u4E2D\u88C1\u526A\u4E3A 1:1\uFF0C\u7CFB\u7EDF\u518D\u6309\u5217\u8868\u987A\u5E8F\u9010\u5F20\u4FEE\u590D\u5FAA\u73AF\u63A5\u7F1D\u3002" }),
     access.status !== "active" && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { className: "ppd-error", children: [
       "\u5F53\u524D\u8D26\u53F7\u6CA1\u6709\u300C",
       access.name,
@@ -24592,7 +25071,7 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
         }
       )
     ] }),
-    !!sources.length && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-seamless__sources", "data-seamless-source-count": sources.length, children: sources.map((source, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("article", { className: "ppd-seamless__source", "data-seamless-source": source.file.name, children: [
+    !!sources.length && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-seamless__sources", "data-seamless-source-count": sources.length, children: sources.map((source, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("article", { className: "ppd-seamless__source", "data-seamless-source": source.displayName, children: [
       /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("label", { className: "ppd-seamless__select", children: [
         /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           "input",
@@ -24605,22 +25084,22 @@ function SeamlessPatternBatchPanel({ request, access, accountKey = "" }) {
         ),
         /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { className: "ppd-sr-only", children: [
           "\u9009\u62E9 ",
-          source.file.name
+          source.displayName
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-seamless__preview", style: { aspectRatio: `${source.width} / ${source.height}`, maxWidth: `${Math.min(360, 180 * source.width / source.height)}px` }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("img", { src: source.url, alt: `${source.file.name} \u5FAA\u73AF\u504F\u79FB\u9884\u89C8` }) }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { className: "ppd-seamless__preview", style: { aspectRatio: "1 / 1", maxWidth: "180px" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("img", { src: source.url, alt: `${source.displayName} \u5C45\u4E2D\u88C1\u526A\u9884\u89C8` }) }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("strong", { children: [
           index + 1,
           ". ",
-          source.file.name
+          source.displayName
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { children: [
           source.width,
           " \xD7 ",
           source.height,
           "px \xB7 ",
-          source.width > source.height ? "\u6A2A\u56FE" : source.height > source.width ? "\u7AD6\u56FE" : "\u65B9\u56FE"
+          source.cropped ? "\u5DF2\u81EA\u52A8\u5C45\u4E2D\u88C1\u526A" : "\u65B9\u56FE"
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { type: "button", disabled: disabled || taskLocked, onClick: () => removeSource(source.id), children: "\u79FB\u9664" })
@@ -24750,7 +25229,7 @@ function matchesResultFilters(row, filters) {
   return filterArchiveTasks([{ name: row.name, projectName: row.projectName ?? "", createdAt: row.createdAt }], dates).length > 0;
 }
 
-// ../../../node_modules/fflate/esm/browser.js
+// node_modules/fflate/esm/browser.js
 var u8 = Uint8Array;
 var u16 = Uint16Array;
 var i32 = Int32Array;
@@ -26273,6 +26752,33 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
   const submissions = (0, import_react18.useSyncExternalStore)(subscribeResultSubmissions, () => getResultSubmissions(ownerId));
   const filters = (0, import_react18.useMemo)(() => ({ query, processingType, period: "all", from: "", to: "" }), [query, processingType]);
   const filterKey = (0, import_react18.useMemo)(() => JSON.stringify(filters), [filters]);
+  const saveInpaint = async (draft) => {
+    const guard = deleteGuardRef.current, guardVersion = guard.version;
+    const isCurrent = () => guard.mounted && deleteGuardRef.current === guard && guard.version === guardVersion && guard.ownerId === ownerId && guard.request === request && guard.uiLease === uiLease;
+    const revision2 = generationBootstrapCache.revision();
+    const composerDraft = generationBootstrapCache.readDraft(ownerId, "podplo-manual"), active = composerDraft?.operation;
+    if (composerDraft?.approvalAttempted || composerDraft?.clientOperationId || active && ["submitting", "submitted", "submission_unknown", "partial_unknown"].includes(active.status)) {
+      throw new Error("\u5DF2\u6709\u4EFB\u52A1\u6B63\u5728\u63D0\u4EA4\u6216\u7B49\u5F85\u6838\u5BF9\uFF0C\u5F53\u524D\u7F16\u8F91\u672A\u8986\u76D6\u539F\u4EFB\u52A1\u3002");
+    }
+    const snapshot = await request("snapshot", {});
+    let expectedScope = "legacy";
+    try {
+      expectedScope = String(JSON.parse(uiLease?.scope ?? "[]")?.[1] ?? "legacy");
+    } catch {
+    }
+    if (!isCurrent() || snapshot.data?.account?.userId !== ownerId || String(snapshot.data?.account?.uiScope ?? "legacy") !== expectedScope || !generationBootstrapCache.isCurrent(revision2)) {
+      throw new Error("\u8D26\u53F7\u6216\u6388\u6743\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u6253\u5F00\u5C40\u90E8\u91CD\u7ED8\u3002");
+    }
+    const previous = generationBootstrapCache.readInpaintDraft(ownerId, "podplo-manual");
+    const displaced = generationBootstrapCache.activateInpaintDraft(ownerId, "podplo-manual", draft, revision2);
+    const stored = generationBootstrapCache.readInpaintDraft(ownerId, "podplo-manual");
+    if (!isCurrent() || stored?.id !== draft.id || stored.revision !== draft.revision || !generationBootstrapCache.isCurrent(revision2)) {
+      throw new Error("\u8D26\u53F7\u6216\u751F\u56FE\u8349\u7A3F\u5DF2\u53D8\u5316\uFF0C\u8BF7\u91CD\u65B0\u4FDD\u5B58\u3002");
+    }
+    if (previous?.prepared) void deletePreparedInpaintAssets(previous, request).catch(() => void 0);
+    if (displaced?.status === "quoted") void request("generation.cancel", { operationId: displaced.operationId }).catch(() => void 0);
+    await request("panel.navigate", { section: "generation" });
+  };
   (0, import_react18.useEffect)(() => {
     let active = true;
     const poll = startVisiblePolling(async () => {
@@ -26726,7 +27232,16 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
     /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { className: "ppd-actions", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("button", { type: "button", className: "ppd-button", disabled: openingRoot, onClick: () => void openRoot(), children: openingRoot ? "\u6B63\u5728\u6253\u5F00\u2026" : "\u6253\u5F00\u672C\u5730\u6210\u679C\u6587\u4EF6\u5939" }) }),
     (error51 || archiveError) && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "alert", className: "ppd-archive-error", children: error51 || archiveError }),
     deleteDialog,
-    inpaintSource && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(InpaintDialog, { source: inpaintSource, request, onClose: () => setInpaintSource(void 0) })
+    inpaintSource && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+      InpaintDialog,
+      {
+        source: inpaintSource,
+        request,
+        initialDraft: generationBootstrapCache.readInpaintDraft(ownerId, "podplo-manual"),
+        onSave: saveInpaint,
+        onClose: () => setInpaintSource(void 0)
+      }
+    )
   ] });
   if (selected?.header && selectedArchive) return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
     /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(ArchiveStyles, {}),
@@ -26781,7 +27296,16 @@ function UnifiedResultsBrowser({ request, ownerId, targetId, uiLease, onOpenDna 
     ] }),
     archiveError && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { role: "alert", className: "ppd-archive-error", children: archiveError }),
     deleteDialog,
-    inpaintSource && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(InpaintDialog, { source: inpaintSource, request, onClose: () => setInpaintSource(void 0) })
+    inpaintSource && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+      InpaintDialog,
+      {
+        source: inpaintSource,
+        request,
+        initialDraft: generationBootstrapCache.readInpaintDraft(ownerId, "podplo-manual"),
+        onSave: saveInpaint,
+        onClose: () => setInpaintSource(void 0)
+      }
+    )
   ] });
   const hasFilters = processingType !== "all" || !!query;
   return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("section", { "data-unified-results-browser": true, children: [
@@ -26915,7 +27439,7 @@ var import_react19 = require("react");
 // plugins/podplo-dsh/package.json
 var package_default = {
   name: "@podplo/dsh-plugin",
-  version: "0.1.50",
+  version: "0.1.51",
   private: true,
   license: "UNLICENSED",
   description: "PodPlo libraries, personal Skills and generation tools for native DeepSeek Harness",
@@ -28125,8 +28649,9 @@ function SkillFacts({ skill }) {
   ] });
 }
 function PublicSkills({ request, onUse, navigation, uiLease }) {
-  const extraction = useExtractionSkills(request, true);
   const cached2 = (0, import_react21.useMemo)(() => readPanelUiState(uiLease, "public-skills"), [uiLease]);
+  const [extractions, setExtractions] = (0, import_react21.useState)(cached2?.extractions ?? []);
+  const [catalogReady, setCatalogReady] = (0, import_react21.useState)(cached2?.extractions !== void 0);
   const [query, setQuery] = (0, import_react21.useState)(cached2?.query ?? "");
   const [appliedQuery, setAppliedQuery] = (0, import_react21.useState)(cached2?.appliedQuery ?? "");
   const [items, setItems] = (0, import_react21.useState)(cached2?.items ?? []);
@@ -28148,22 +28673,22 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
     const token = ++sequence.current;
     setLoading(true);
     setError("");
-    const apply2 = (data) => {
+    const apply2 = (data, extractionData) => {
       setItems(Array.isArray(data?.items) ? data.items : []);
       setCategories(Array.isArray(data?.categories) ? data.categories : []);
+      setExtractions(extractionChoices(Array.isArray(extractionData?.items) ? extractionData.items : []));
+      setCatalogReady(true);
     };
     try {
       const args = { query: nextQuery.trim() };
-      const { data } = await request("skills.list", args);
+      const [{ data }, { data: extractionData }] = await Promise.all([
+        request("skills.list", { ...args, refresh: true, forceRefresh }),
+        request("dna.skills.list", {}).catch(() => ({ ok: true, data: { items: [] } }))
+      ]);
       if (token !== sequence.current) return;
-      apply2(data);
+      apply2(data, extractionData);
       if (resetPage) setPage(1);
       setLoading(false);
-      void request("skills.list", { ...args, refresh: true, forceRefresh }).then(({ data: data2 }) => {
-        if (token === sequence.current) apply2(data2);
-      }).catch((error52) => {
-        if (token === sequence.current && forceRefresh) setError(displayError2(error52));
-      });
     } catch (error52) {
       if (token === sequence.current) setError(displayError2(error52));
     } finally {
@@ -28171,7 +28696,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
     }
   }, [appliedQuery, request]);
   (0, import_react21.useEffect)(() => {
-    void load(appliedQuery, false, false);
+    void load(appliedQuery, true, false);
     if (cached2?.family) void loadFamily(cached2.family);
     return () => {
       sequence.current++;
@@ -28179,10 +28704,10 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
     };
   }, []);
   (0, import_react21.useEffect)(() => {
-    writePanelUiState(uiLease, "public-skills", { query, appliedQuery, items, categories, category, page, detail, family });
-  }, [uiLease, query, appliedQuery, items, categories, category, page, detail, family]);
+    writePanelUiState(uiLease, "public-skills", { query, appliedQuery, items, extractions: catalogReady ? extractions : void 0, categories, category, page, detail, family });
+  }, [uiLease, query, appliedQuery, items, extractions, catalogReady, categories, category, page, detail, family]);
   const filtered = (0, import_react21.useMemo)(() => !category || category === "all" ? items : items.filter((item) => item.primaryCategory === category), [category, items]);
-  const extractRows = !category || category === "all" ? extraction.rows.filter((row) => row.title.toLocaleLowerCase().includes(appliedQuery.trim().toLocaleLowerCase())) : [];
+  const extractRows = !category || category === "all" ? extractions.filter((row) => row.title.toLocaleLowerCase().includes(appliedQuery.trim().toLocaleLowerCase())) : [];
   const total = filtered.length + extractRows.length;
   const start = (page - 1) * PAGE_SIZE3, end = page * PAGE_SIZE3;
   const visibleExtractions = extractRows.slice(start, end);
@@ -28295,7 +28820,6 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
       setAppliedQuery(next);
       void load(next, false, true);
     }, onRefresh: () => {
-      extraction.reload();
       void load(appliedQuery, true, false);
     }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("select", { "aria-label": "Skill \u5206\u7C7B", value: category, onChange: (event) => {
       setCategory(event.target.value);
@@ -28308,7 +28832,7 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
         return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: id, children: label }, id);
       })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Status, { loading: loading && !filtered.length && !extractRows.length, error: !filtered.length && !extractRows.length ? error51 : "", empty: !loading && !filtered.length && !extractRows.length ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(Status, { loading: loading && !catalogReady, error: !filtered.length && !extractRows.length ? error51 : "", empty: !loading && !filtered.length && !extractRows.length ? "\u6CA1\u6709\u5339\u914D\u7684 Skill\u3002" : "", children: [
       /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { className: "ppd-grid", children: [
         visibleExtractions.map((skill) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("article", { className: "ppd-card", "data-extraction-skill": skill.extractionSkillId, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
           "button",
@@ -28328,9 +28852,9 @@ function PublicSkills({ request, onUse, navigation, uiLease }) {
               }).catch((cause) => setError(displayError2(cause)));
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ImageFrame, { alt: skill.title }),
+              /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ImageFrame, { src: skill.coverUrl, alt: skill.title }),
               /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { className: "ppd-card-copy", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: skill.title }),
+                /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { title: skill.title, children: cardTitle(skill.title) }),
                 !skill.available && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("small", { children: "\u5F85\u914D\u7F6E" })
               ] })
             ]
@@ -29737,7 +30261,7 @@ function PodploWorkspace({ request, composerRequest = request, onUse, nativeSess
 var style_default = '.ppd-panel{--ppd-bg:#fff;--ppd-surface:#f7f7f5;--ppd-line:#e5e5e1;--ppd-text:#252522;--ppd-muted:#74746d;--ppd-accent:#252522;--ppd-soft:#efefeb;--ppd-danger:#a53a31;box-sizing:border-box;min-height:100%;background:var(--ppd-bg);color:var(--ppd-text);font:14px/1.55 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-panel *{box-sizing:border-box}.ppd-panel button,.ppd-panel input,.ppd-panel textarea,.ppd-panel select{font:inherit;color:inherit}.ppd-panel button{cursor:pointer}.ppd-panel button:disabled{cursor:not-allowed;opacity:.48}.ppd-content{max-width:1180px;margin:0 auto;padding:28px 30px 64px}.ppd-account{position:sticky;z-index:20;top:0;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:10px 22px;border-bottom:1px solid var(--ppd-line);background:#ffffffef;backdrop-filter:blur(14px)}.ppd-connection,.ppd-account-meta,.ppd-actions,.ppd-toolbar-row{display:flex;align-items:center;gap:10px}.ppd-connection>div{display:grid;line-height:1.3}.ppd-connection strong{font-size:12px;font-weight:650}.ppd-connection small{font-size:10px;color:var(--ppd-muted)}.ppd-dot{width:8px;height:8px;border-radius:50%;background:#b7b7b1;box-shadow:0 0 0 3px #b7b7b11c}.ppd-dot.is-online{background:#45a06b;box-shadow:0 0 0 3px #45a06b1c}.ppd-account-meta{font-size:11px;color:var(--ppd-muted)}.ppd-phase{padding:3px 7px;border-radius:999px;background:var(--ppd-soft)}.ppd-button,.ppd-icon-button,.ppd-back{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:7px 12px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;text-decoration:none;white-space:nowrap}.ppd-button:hover,.ppd-icon-button:hover,.ppd-back:hover{border-color:#cacac3;background:#fafaf8}.ppd-button-primary{border-color:var(--ppd-accent);background:var(--ppd-accent);color:#fff}.ppd-button-primary:hover{border-color:#000;background:#000}.ppd-button-quiet{min-height:29px;padding:5px 9px;background:transparent}.ppd-button-danger{border-color:#dec0bb;color:var(--ppd-danger);background:#fff9f8}.ppd-button-danger:hover{border-color:var(--ppd-danger);background:#fff4f2}.ppd-icon-button{width:32px;min-height:32px;padding:0}.ppd-icon{display:inline-grid;place-items:center;min-width:1em;font-size:15px;line-height:1}.ppd-danger{color:var(--ppd-danger)}.ppd-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;clip:rect(0,0,0,0);overflow:hidden;white-space:nowrap;border:0}.ppd-alert,.ppd-notice{max-width:1180px;margin:12px auto 0;padding:10px 12px;border-radius:8px;font-size:12px}.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}.ppd-notice{border:1px solid #cbe0d2;background:#f4fbf6;color:#326f48}.ppd-pending{max-width:1180px;margin:12px auto 0;border:1px solid #e6ddc6;border-radius:10px;background:#fffcf5;overflow:hidden}.ppd-pending-toggle{display:flex;width:100%;align-items:center;justify-content:space-between;padding:11px 14px;border:0;background:transparent;text-align:left}.ppd-pending-toggle span{font-weight:620}.ppd-pending-toggle small{color:var(--ppd-muted)}.ppd-pending-list{display:grid;gap:8px;padding:0 12px 12px}.ppd-pending-list>article{display:grid;grid-template-columns:minmax(180px,1fr) auto auto;align-items:center;gap:16px;padding:12px;border-top:1px solid #ece4d2}.ppd-pending-list>article>div:first-child{display:grid}.ppd-pending-list span{font-size:12px;color:var(--ppd-muted)}.ppd-pending-list dl{display:flex;gap:14px;margin:0}.ppd-pending-list dl div{display:grid}.ppd-pending-list dt{font-size:10px;color:var(--ppd-muted)}.ppd-pending-list dd{margin:0;font-weight:650}.ppd-section-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin:0 0 22px}.ppd-section-heading h1,.ppd-detail h2,.ppd-editor h2{margin:1px 0 4px;font-size:25px;line-height:1.2;letter-spacing:-.025em}.ppd-section-heading p{margin:0;color:var(--ppd-muted)}.ppd-section-heading>span{font-size:12px;color:var(--ppd-muted)}.ppd-eyebrow{text-transform:uppercase;letter-spacing:.12em;font-size:10px;font-weight:700;color:#8b8b84}.ppd-tabs{display:flex;gap:3px;width:max-content;margin:0 0 20px;padding:3px;border-radius:9px;background:var(--ppd-soft)}.ppd-tabs button{min-width:96px;padding:7px 12px;border:0;border-radius:7px;background:transparent;color:var(--ppd-muted)}.ppd-tabs button.is-active{background:#fff;color:var(--ppd-text);box-shadow:0 1px 4px #1111}.ppd-search{display:flex;align-items:center;gap:8px;margin:0 0 20px}.ppd-search label{position:relative;display:flex;align-items:center;flex:1;min-width:180px}.ppd-search label>.ppd-icon{position:absolute;left:11px;color:#8f8f88}.ppd-search input,.ppd-search select,.ppd-inline-input input,.ppd-editor input,.ppd-editor textarea{width:100%;border:1px solid var(--ppd-line);border-radius:8px;background:#fff;outline:none}.ppd-search input{height:38px;padding:8px 12px 8px 34px}.ppd-search select{width:auto;height:38px;padding:7px 31px 7px 10px}.ppd-search input:focus,.ppd-search select:focus,.ppd-inline-input input:focus,.ppd-editor input:focus,.ppd-editor textarea:focus{border-color:#aaa9a1;box-shadow:0 0 0 3px #2221}.ppd-toolbar-row{align-items:flex-start;justify-content:space-between}.ppd-toolbar-row>.ppd-search{flex:1}.ppd-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:22px 13px}.ppd-card{position:relative;min-width:0}.ppd-card-open{display:block;width:100%;padding:0;border:0;background:none;text-align:left}.ppd-card-open:hover .ppd-image img{transform:scale(1.02)}.ppd-image{display:grid;place-items:center;width:100%;aspect-ratio:1;overflow:hidden;border-radius:9px;background:var(--ppd-surface);color:#aaa}.ppd-image img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .18s ease}.ppd-image-pair{grid-template-columns:1fr 1fr}.ppd-image-pair img{min-width:0;object-fit:cover}.ppd-card-copy{display:grid;gap:3px;margin-top:8px;padding-right:28px}.ppd-card-copy strong,.ppd-card-copy span,.ppd-card-copy small{overflow:hidden;text-overflow:ellipsis}.ppd-card-copy strong{white-space:nowrap;font-size:12px;font-weight:650}.ppd-card-copy span{display:-webkit-box;min-height:34px;color:var(--ppd-muted);font-size:11px;-webkit-line-clamp:2;-webkit-box-orient:vertical}.ppd-card-copy small{white-space:nowrap;color:#989891;font-size:10px}.ppd-favorite{position:absolute;top:7px;right:7px;display:grid;place-items:center;width:27px;height:27px;padding:0;border:1px solid #ffffff80;border-radius:50%;background:#ffffffed;color:#666;box-shadow:0 1px 6px #1112}.ppd-favorite.is-active{color:#b14657;background:#fff4f5}.ppd-favorite.is-active .ppd-icon{font-size:0}.ppd-favorite.is-active .ppd-icon::after{content:"\u2665";font-size:15px}.ppd-card-use{position:absolute;right:0;bottom:0;padding:2px 0;border:0;background:none;color:#5e6e91;font-size:10px}.ppd-card-delete{position:absolute;left:0;bottom:0;padding:2px;border:0;background:none;color:var(--ppd-danger)}.ppd-load-more{display:flex;justify-content:center;margin-top:28px}.ppd-pagination{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:28px;color:var(--ppd-muted);font-size:11px}.ppd-pagination button{padding:5px 10px;border:1px solid var(--ppd-line);border-radius:7px;background:#fff}.ppd-state{display:grid;place-items:center;gap:6px;min-height:220px;padding:30px;border:1px dashed var(--ppd-line);border-radius:10px;text-align:center;color:var(--ppd-muted)}.ppd-state strong{color:var(--ppd-text)}.ppd-state.ppd-error{color:var(--ppd-danger)}.ppd-spinner{width:18px;height:18px;border:2px solid #ddd;border-top-color:#555;border-radius:50%;animation:ppd-spin .75s linear infinite}@keyframes ppd-spin{to{transform:rotate(360deg)}}.ppd-detail-header{display:grid;grid-template-columns:90px minmax(0,1fr) auto;align-items:start;gap:15px;margin-bottom:25px}.ppd-back{justify-self:start;border-color:transparent;background:transparent;padding-left:0}.ppd-detail-grid{display:grid;grid-template-columns:minmax(320px,1.1fr) minmax(280px,.9fr);gap:30px}.ppd-detail-grid>.ppd-image{aspect-ratio:auto;min-height:360px;max-height:70vh}.ppd-detail-copy{min-width:0}.ppd-detail-copy h3{margin:0 0 10px;font-size:13px}.ppd-detail-copy dl{display:grid;margin:0 0 20px}.ppd-detail-copy dl>div{display:grid;grid-template-columns:90px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--ppd-line)}.ppd-detail-copy dt{color:var(--ppd-muted)}.ppd-detail-copy dd{margin:0}.ppd-lead{margin-top:0;white-space:pre-wrap;color:#55554f}.ppd-tags{display:flex;flex-wrap:wrap;gap:5px;margin:14px 0}.ppd-tags span{padding:3px 7px;border-radius:999px;background:var(--ppd-soft);font-size:10px;color:#676761}.ppd-skill-facts{display:grid;gap:16px;margin-top:24px}.ppd-skill-facts section{border-top:1px solid var(--ppd-line);padding-top:12px}.ppd-skill-facts ul{margin:0;padding-left:18px;color:#575751}.ppd-family-intro{margin:-8px 0 24px}.ppd-family-intro p{max-width:760px;color:var(--ppd-muted)}.ppd-family-grid .ppd-card-copy{padding-right:0}.ppd-list{display:grid;gap:8px}.ppd-list>article{display:grid;grid-template-columns:minmax(0,1fr) auto auto auto;align-items:center;gap:8px;padding:12px 13px;border:1px solid var(--ppd-line);border-radius:10px}.ppd-list-open{display:grid;gap:2px;min-width:0;padding:0;border:0;background:none;text-align:left}.ppd-list-open strong,.ppd-list-open span,.ppd-list-open small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-list-open span{color:var(--ppd-muted)}.ppd-list-open small{font-size:10px;color:#999}.ppd-editor{max-width:900px;margin:0 auto}.ppd-editor>header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}.ppd-editor fieldset{display:grid;gap:18px;margin:0;padding:0;border:0}.ppd-editor label{display:grid;gap:6px}.ppd-editor label>span{font-weight:620}.ppd-editor label small{font-weight:400;color:var(--ppd-muted)}.ppd-editor input,.ppd-editor textarea{padding:9px 11px;resize:vertical}.ppd-editor .ppd-prompt{min-height:180px;line-height:1.65}.ppd-editor>footer{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-top:22px;padding-top:16px;border-top:1px solid var(--ppd-line)}.ppd-editor>footer span{font-size:11px;color:var(--ppd-muted)}.ppd-form-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}.ppd-form-heading h3{margin:0;font-size:13px}.ppd-form-heading p{margin:2px 0;color:var(--ppd-muted);font-size:11px}.ppd-form-heading>span{font-size:11px;color:var(--ppd-muted)}.ppd-reference-editor>ol{display:grid;gap:6px;margin:0;padding:0;list-style:none}.ppd-reference-editor>ol li{display:grid;grid-template-columns:24px minmax(0,1fr) auto auto auto;align-items:center;gap:7px;padding:8px;border:1px solid var(--ppd-line);border-radius:8px}.ppd-reference-editor>ol li>span{display:grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ppd-soft);font-size:10px}.ppd-reference-editor>ol li>div{display:grid;min-width:0}.ppd-reference-editor>ol strong{font-size:11px}.ppd-reference-editor>ol small{overflow:hidden;text-overflow:ellipsis;color:var(--ppd-muted);font-size:9px}.ppd-reference-choices{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}.ppd-reference-choices button{max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:5px 8px;border:1px solid var(--ppd-line);border-radius:7px;background:var(--ppd-surface);font-size:10px}.ppd-inline-input{display:flex;gap:7px}.ppd-inline-input input{min-width:0;padding:8px 10px}.ppd-conflict{display:grid;gap:4px;margin-bottom:16px;padding:12px;border:1px solid #e8c9a8;border-radius:9px;background:#fff9f1;color:#7d4e24}.ppd-conflict .ppd-button{justify-self:start;margin-top:6px}.ppd-user-skill-detail{display:grid;gap:18px;max-width:850px;margin-left:105px}.ppd-user-skill-detail>p{color:var(--ppd-muted)}.ppd-user-skill-detail section{padding:15px;border-radius:10px;background:var(--ppd-surface)}.ppd-user-skill-detail h3{margin:0 0 8px;font-size:12px}.ppd-user-skill-detail pre{max-height:300px;margin:0;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.ppd-user-skill-detail ol{margin:0;padding-left:22px;font-size:11px;color:var(--ppd-muted)}.ppd-file-input{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none}.ppd-break{overflow-wrap:anywhere}.ppd-dialog-backdrop{position:fixed;z-index:100;inset:0;display:grid;place-items:center;padding:24px;background:#16161355;backdrop-filter:blur(2px)}.ppd-dialog{width:min(440px,100%);padding:24px;border:1px solid var(--ppd-line);border-radius:13px;background:#fff;box-shadow:0 24px 80px #1114}.ppd-dialog h2{margin:0 0 9px;font-size:18px}.ppd-dialog p{margin:0 0 22px;color:var(--ppd-muted)}.ppd-dialog .ppd-actions{justify-content:flex-end}\n@media(max-width:980px){.ppd-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.ppd-detail-grid{grid-template-columns:1fr}.ppd-detail-grid>.ppd-image{min-height:300px}.ppd-pending-list>article{grid-template-columns:1fr}.ppd-user-skill-detail{margin-left:0}}\n@media(max-width:720px){.ppd-content{padding:20px 16px 48px}.ppd-account{align-items:flex-start;padding:10px 14px}.ppd-connection small,.ppd-phase,.ppd-account-meta>span:first-child{display:none}.ppd-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 10px}.ppd-search,.ppd-toolbar-row,.ppd-section-heading{align-items:stretch;flex-wrap:wrap}.ppd-search label{flex-basis:100%}.ppd-search select{flex:1}.ppd-toolbar-row>.ppd-search{flex-basis:100%}.ppd-detail-header{grid-template-columns:1fr}.ppd-detail-header>.ppd-actions{flex-wrap:wrap}.ppd-detail-grid>.ppd-image{min-height:240px}.ppd-list>article{grid-template-columns:minmax(0,1fr) auto auto}.ppd-list>article>.ppd-button{grid-column:1/-1}.ppd-editor>footer{align-items:stretch;flex-direction:column}.ppd-user-skill-detail{margin-left:0}.ppd-pending{margin-inline:12px}}\n.ppd-pending-list>article{grid-template-columns:minmax(180px,.8fr) auto minmax(240px,1fr) auto}.ppd-batch-copy{display:grid;min-width:0}.ppd-batch-copy small{font-size:10px;color:#9a693c}.ppd-batch-summary{align-self:start}.ppd-batch-progress{display:grid;gap:5px;min-width:0}.ppd-batch-progress progress{width:100%;height:6px;border:0;border-radius:999px;overflow:hidden;background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-bar{background:#ece8dc}.ppd-batch-progress progress::-webkit-progress-value{background:#6b826d}.ppd-batch-progress>span{font-size:10px;color:var(--ppd-muted)}.ppd-batch-progress details{font-size:10px}.ppd-batch-progress summary{cursor:pointer;color:#5d6680}.ppd-batch-progress ol{display:grid;gap:4px;max-height:180px;margin:7px 0 0;padding:0;overflow:auto;list-style:none}.ppd-batch-progress li{display:grid;grid-template-columns:20px minmax(70px,1fr) auto;gap:5px;align-items:center;padding:5px 6px;border-radius:6px;background:#fff}.ppd-batch-progress li>span{display:grid;place-items:center;width:17px;height:17px;border-radius:50%;background:var(--ppd-soft);font-size:9px}.ppd-batch-progress code{overflow:hidden;text-overflow:ellipsis;font:9px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace;color:var(--ppd-muted)}.ppd-batch-progress li>strong{font-size:10px}.ppd-batch-progress li>small{grid-column:2/-1;color:var(--ppd-muted);font-size:9px}.ppd-batch-progress li[data-status="submission_unknown"]>strong,.ppd-batch-progress li[data-status="failed"]>strong{color:var(--ppd-danger)}\n.ppd-native-composer{display:flex;align-items:center;gap:5px;flex-wrap:wrap;padding:6px 8px;border-top:1px solid #e5e5e1;color:#686862;font:11px/1.4 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.ppd-native-composer>span{margin-right:3px;font-weight:700;color:#343431}.ppd-native-composer button{min-height:25px;padding:3px 8px;border:1px solid #e1e1dc;border-radius:7px;background:#fff;color:#50504b;font:inherit;cursor:pointer}.ppd-native-composer button:hover{border-color:#c9c9c2;background:#f8f8f5}.ppd-native-composer small{flex-basis:100%;padding:3px 7px;border-radius:6px;background:#f3f6ef;color:#52705a}\n@media(max-width:1180px){.ppd-pending-list>article{grid-template-columns:1fr auto}.ppd-batch-progress{grid-column:1/-1}.ppd-pending-list>article>.ppd-actions{justify-self:end}}@media(max-width:620px){.ppd-pending-list>article{grid-template-columns:1fr}.ppd-pending-list>article>.ppd-actions{justify-self:start}.ppd-batch-progress{grid-column:auto}}\n.ppd-pending-list>article[data-terminal=true]{background:#fafaf7;opacity:.92}.ppd-favorites-import{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:-8px 0 14px}.ppd-favorites-import>small{color:var(--ppd-muted);font-size:10px}.ppd-favorites-import>p{flex-basis:100%;margin:0;padding:7px 9px;border-radius:7px;background:var(--ppd-surface);font-size:11px}.ppd-favorites-import>section{flex-basis:100%;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-favorites-import>section ul{max-height:160px;margin:8px 0;padding-left:20px;overflow:auto}.ppd-favorites-import>section .ppd-button{margin-right:7px}\n.ppd-button-stop{border-color:#dec9a8;background:#fffaf1;color:#81591f}.ppd-button-stop:hover{border-color:#b98b45;background:#fff5e4}\n.ppd-panel .ppd-button-primary,.ppd-panel .ppd-button-primary:hover{color:#fff}\n.ppd-dialog p.ppd-alert{margin:0 0 14px;color:#92352d}.ppd-favorites-import>p.ppd-alert{border:1px solid #edcbc6;background:#fff6f4;color:#92352d}\n.ppd-panel{width:100%;height:100%;min-width:0;min-height:0;overflow-x:hidden;overflow-y:auto;overscroll-behavior:contain}\n.ppd-card-copy>span,.ppd-card-copy>small{display:none}\n.ppd-export-result{display:grid;gap:8px;margin-top:14px;padding:12px;border:1px solid var(--ppd-line);border-radius:9px;background:var(--ppd-surface)}.ppd-export-result code{font-size:10px;color:var(--ppd-muted)}\n/* Keep Skill previews inside their frame, including tall originals and before/after pairs. */\n.ppd-panel-skills .ppd-image{grid-template-rows:minmax(0,1fr)}\n.ppd-panel-skills .ppd-image img{min-width:0;min-height:0;object-fit:contain}\n.ppd-panel-skills .ppd-card-open:hover .ppd-image img{transform:none}\n\n/* Public Skill card titles use the full card width. */\n.ppd-panel-skills .ppd-grid:not(.ppd-family-grid) .ppd-card-copy{padding-right:0;text-align:center}\n.ppd-personal-skill-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.ppd-personal-skill-card{min-width:0;overflow:hidden;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}.ppd-personal-skill-open{display:block;width:100%;padding:0;border:0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}.ppd-personal-skill-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}.ppd-personal-skill-cover>.ppd-image{aspect-ratio:4/3;border-radius:0}.ppd-personal-skill-copy{display:grid;gap:3px;padding:10px 11px 8px}.ppd-personal-skill-copy strong,.ppd-personal-skill-copy small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-personal-skill-copy strong{font-size:12px}.ppd-personal-skill-copy p{display:-webkit-box;min-height:3em;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}.ppd-personal-skill-copy small{color:var(--ppd-muted);font-size:10px}.ppd-personal-skill-actions{display:flex;gap:5px;padding:0 10px 10px}.ppd-personal-skill-actions .ppd-button{min-width:0;padding:6px 8px}.ppd-personal-skill-actions .ppd-button:first-child{margin-right:auto}\n@media(max-width:980px){.ppd-personal-skill-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}\n@media(max-width:720px){.ppd-personal-skill-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}\n@media(max-width:460px){.ppd-personal-skill-grid{grid-template-columns:1fr}}\n\n/* Personal Skill references: local upload and visual browsing. */\n.ppd-skill-reference-actions{margin:14px 0;flex-wrap:wrap}\n.ppd-reference-editor>ol li{grid-template-columns:24px 52px minmax(0,1fr) auto auto auto}\n.ppd-reference-editor>ol li>.ppd-image{width:52px;height:52px;aspect-ratio:1;border-radius:5px}\n.ppd-reference-editor>ol strong{overflow-wrap:anywhere}\n.ppd-reference-editor .ppd-image span{padding:3px;font-size:10px;text-align:center}\n.ppd-upload-picker{padding:14px;border:1px solid var(--ppd-line);border-radius:9px}\n.ppd-upload-picker .ppd-search{margin-bottom:14px}\n.ppd-upload-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:10px}\n.ppd-upload-grid>button{display:grid;min-width:0;gap:4px;padding:6px;border:1px solid var(--ppd-line);border-radius:8px;background:var(--ppd-surface);text-align:left;cursor:pointer}\n.ppd-upload-grid>button[aria-pressed=true]{border-color:var(--ppd-text)}\n.ppd-upload-grid>button:disabled{cursor:default;opacity:.6}\n.ppd-upload-grid .ppd-image{width:100%;aspect-ratio:1;border-radius:4px}\n.ppd-upload-grid strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}\n.ppd-upload-grid small{color:var(--ppd-muted);font-size:10px}\n.ppd-user-skill-detail .ppd-skill-reference-detail{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:12px;padding:0;list-style:none}\n.ppd-skill-reference-detail li{min-width:0;overflow-wrap:anywhere}\n.ppd-skill-reference-detail .ppd-image{aspect-ratio:1;margin-bottom:5px}\n@media(max-width:600px){.ppd-upload-picker{padding:10px}.ppd-reference-editor>ol li{grid-template-columns:20px 40px minmax(0,1fr) auto auto auto;gap:4px;padding:6px}.ppd-reference-editor>ol li>.ppd-image{width:40px;height:40px}.ppd-reference-editor>ol .ppd-icon-button{padding:3px}}\n\n/* Library controls share one baseline; group navigation belongs only to lists. */\n.ppd-library-toolbar{display:flex;align-items:center;gap:16px;min-width:0;margin:0 0 24px}\n.ppd-library-toolbar>.ppd-tabs{flex:0 0 auto;margin:0}\n.ppd-tabs{max-width:100%;padding:3px;border-radius:999px;background:#f1f1ee;gap:2px}\n.ppd-panel .ppd-tabs button{font-size:12px;line-height:1.4;min-width:64px;min-height:28px;padding:5px 12px;border-radius:999px;white-space:nowrap;transition:background-color .15s ease,color .15s ease}\n.ppd-tabs button.is-active{background:var(--ppd-text);color:#fff;box-shadow:none}\n.ppd-tabs button:not(.is-active){color:#686861}\n.ppd-tabs button:not(.is-active):hover{background:#e7e7e2;color:var(--ppd-text)}\n.ppd-library-toolbar>.ppd-search{flex:0 1 auto;min-width:0;max-width:100%;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar .ppd-search label{min-width:120px;width:224px;max-width:224px;flex:0 1 224px}\n.ppd-library-toolbar .ppd-search input{height:34px;border-radius:999px}\n.ppd-library-toolbar .ppd-search select{max-width:150px;height:32px}\n.ppd-library-toolbar .ppd-search>.ppd-button{min-height:32px;padding-block:5px}\n.ppd-panel .ppd-library-toolbar input,.ppd-panel .ppd-library-toolbar select,.ppd-panel .ppd-library-toolbar button{font-size:12px}\n.ppd-toolbar-row:has(.ppd-library-toolbar){align-items:center;gap:12px;margin-bottom:24px}\n.ppd-toolbar-row>.ppd-library-toolbar{flex:1;margin-bottom:0}\n.ppd-panel button:focus-visible{outline:2px solid var(--ppd-text);outline-offset:3px}\n.ppd-upload-area{display:flex;align-items:center;flex:none}\n.ppd-upload-area>.ppd-icon-button{width:32px;height:32px;border-radius:50%}\n.ppd-upload-area .ppd-icon{font-size:20px}\n.ppd-library-toolbar>.ppd-archive-toolbar{flex:0 1 auto;min-width:0;margin:0;margin-inline-start:auto;justify-content:flex-end;flex-wrap:nowrap}\n.ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;min-width:120px;width:224px;max-width:224px;height:34px;padding-inline:14px;border-radius:999px;font:inherit}\n.ppd-library-toolbar>.ppd-archive-toolbar select,.ppd-library-toolbar>.ppd-archive-toolbar button{min-height:32px;white-space:nowrap}\n\n/* Web detail hierarchy: full result on the left, reference and information on the right. */\n.ppd-resource-detail>.ppd-back{position:sticky;top:64px;z-index:5;margin-bottom:20px;padding-inline:12px;border-radius:999px;background:var(--ppd-bg)}\n.ppd-resource-detail-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);gap:40px;align-items:start}\n.ppd-resource-visual,.ppd-resource-info{min-width:0}\n.ppd-resource-info>h2{margin:0 0 28px;font-size:28px;font-weight:650;line-height:1.2;overflow-wrap:anywhere}\n.ppd-detail-artwork,.ppd-detail-reference{margin:0}\n.ppd-detail-artwork>figcaption,.ppd-detail-reference>figcaption{margin-bottom:10px;font-size:12px;color:var(--ppd-muted)}\n.ppd-detail-artwork>button{display:flex;align-items:center;justify-content:center;width:100%;height:clamp(360px,56vw,660px);padding:24px;border:0;border-radius:14px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-artwork>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-detail-reference{margin-bottom:28px}\n.ppd-detail-reference>button{display:block;width:88px;height:88px;padding:0;overflow:hidden;border:0;border-radius:10px;background:var(--ppd-surface);cursor:zoom-in}\n.ppd-detail-reference>button>img{display:block;width:100%;height:100%;object-fit:contain}\n.ppd-resource-about{margin-bottom:28px}\n.ppd-resource-info h3{margin:0 0 10px;font-size:13px;font-weight:550;color:var(--ppd-muted)}\n.ppd-resource-about p{margin:0;font-size:14px;line-height:1.75;white-space:pre-wrap;overflow-wrap:anywhere}\n.ppd-resource-info .ppd-skill-facts{margin:0;gap:20px}\n.ppd-resource-info .ppd-skill-facts section{padding:0;border:0}\n.ppd-resource-info .ppd-skill-facts ul{margin:0;padding-left:18px;line-height:1.7}\n.ppd-resource-info .ppd-skill-facts p{margin:0;line-height:1.7}\n.ppd-resource-info .ppd-tags{gap:6px;margin:20px 0}\n.ppd-resource-info .ppd-tags span{padding:5px 10px;font-size:12px}\n.ppd-resource-facts{margin:0}\n.ppd-resource-facts>div{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--ppd-line)}\n.ppd-resource-facts dt{color:var(--ppd-muted)}\n.ppd-resource-facts dd{margin:0;text-align:right;overflow-wrap:anywhere}\n.ppd-resource-detail-actions{display:flex;align-items:center;gap:12px;margin-top:28px}\n.ppd-resource-detail-actions>.ppd-button-primary{flex:1;min-height:44px;border-radius:999px}\n.ppd-resource-detail-actions>.ppd-favorite{position:static;flex:0 0 44px;width:44px;height:44px;border:1px solid var(--ppd-line);box-shadow:none}\n.ppd-media-dialog{position:fixed;inset:0;width:min(980px,92vw);max-width:92vw;height:min(900px,90vh);max-height:90vh;margin:auto;padding:16px;border:0;border-radius:14px;background:var(--ppd-bg);color:var(--ppd-text)}\n.ppd-media-dialog[open]{display:flex;flex-direction:column;gap:12px}\n.ppd-media-dialog::backdrop{background:#0009}\n.ppd-media-dialog>.ppd-button{align-self:flex-end;flex:none}\n.ppd-media-dialog>img{display:block;min-height:0;width:100%;height:100%;flex:1;object-fit:contain}\n@media(max-width:960px){\n .ppd-library-toolbar{gap:12px}\n .ppd-library-toolbar .ppd-search select{max-width:110px}\n .ppd-panel .ppd-tabs button{padding-inline:10px;min-width:60px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1.1fr) minmax(260px,.9fr);gap:28px}\n .ppd-resource-info>h2{font-size:24px}\n .ppd-toolbar-row:has(.ppd-library-toolbar){flex-wrap:wrap;justify-content:flex-end}\n .ppd-toolbar-row>.ppd-library-toolbar{flex-basis:100%}\n}\n@media(max-width:700px){\n .ppd-library-toolbar{flex-wrap:wrap;gap:14px}\n .ppd-library-toolbar>.ppd-search,.ppd-library-toolbar>.ppd-archive-toolbar{flex-basis:100%;flex-wrap:wrap}\n .ppd-library-toolbar .ppd-search label{flex:0 1 224px;width:224px;max-width:224px}\n .ppd-library-toolbar .ppd-search select{max-width:none}\n .ppd-library-toolbar>.ppd-archive-toolbar input{flex:0 1 224px;width:224px}\n .ppd-resource-detail-grid{grid-template-columns:minmax(0,1fr);gap:28px}\n .ppd-detail-artwork>button{height:clamp(300px,85vw,520px);padding:18px}\n .ppd-resource-info>h2{font-size:24px;margin-bottom:22px}\n .ppd-resource-detail-actions{margin-top:24px}\n .ppd-media-dialog{padding:12px}\n}\n@media(prefers-reduced-motion:reduce){.ppd-tabs button{transition:none}}\n\n.ppd-archive-empty{margin:24px 0;color:var(--ppd-muted);font-size:12px}\n\n.ppd-account{display:block}.ppd-account-row{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0}.ppd-plugin-update{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;margin-top:7px;font-size:11px;color:var(--ppd-muted)}.ppd-plugin-version{min-width:0;max-width:100%;overflow-wrap:anywhere}.ppd-plugin-update-message{flex-basis:100%;line-height:1.5}.ppd-plugin-update-message.is-error{color:#9b3030}.ppd-plugin-update .ppd-button{padding:4px 9px;font-size:11px}.ppd-account-row .ppd-connection{min-width:0}.ppd-account-row .ppd-connection strong{overflow-wrap:anywhere}\n\n/* A single compact account row; secondary account and update actions live in the disclosure. */\n.ppd-account{padding:6px 20px;background:var(--ppd-bg);backdrop-filter:none}\n.ppd-account-row{min-height:28px;gap:12px}\n.ppd-account-row .ppd-connection{flex:1;gap:8px;overflow:hidden}\n.ppd-account-row .ppd-connection>div{min-width:0}\n.ppd-account-row .ppd-connection strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px;font-weight:550}\n.ppd-account-row .ppd-dot{flex:0 0 7px;width:7px;height:7px;box-shadow:none}\n.ppd-account .ppd-account-meta{flex:0 0 auto;gap:8px;font-size:12px;color:#62625c;white-space:nowrap}\n.ppd-account .ppd-account-balance{display:inline-flex;font-variant-numeric:tabular-nums}\n.ppd-account .ppd-phase{display:inline-flex;padding:0;background:none;color:inherit}\n.ppd-account-meta>.ppd-icon-button,.ppd-account-menu>summary{width:28px;height:28px;min-height:28px;border:0;border-radius:6px;background:transparent}\n.ppd-account-menu{flex:none}\n.ppd-account-menu>summary{display:flex;align-items:center;justify-content:center;cursor:pointer;list-style:none;color:#62625c}\n.ppd-account-menu>summary::-webkit-details-marker{display:none}\n.ppd-account-menu>summary:hover,.ppd-account-menu[open]>summary{background:var(--ppd-soft)}\n.ppd-account-menu>summary:focus-visible{outline:2px solid #66665f;outline-offset:2px}\n.ppd-account-menu-panel{position:absolute;z-index:30;top:calc(100% + 6px);right:12px;width:min(300px,calc(100% - 24px));padding:16px;border:1px solid var(--ppd-line);border-radius:10px;background:var(--ppd-bg);box-shadow:0 8px 24px #00000014;color:var(--ppd-text);white-space:normal}\n.ppd-account-menu-heading{display:grid;gap:5px;font-size:13px}\n.ppd-account-menu-heading>span{overflow-wrap:anywhere;font-size:12px;color:#62625c}\n.ppd-account-menu-panel .ppd-plugin-update{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--ppd-line);gap:8px}\n.ppd-account-menu-panel .ppd-plugin-version:first-child{flex-basis:100%;margin-bottom:2px;font-size:12px}\n.ppd-account-menu-panel .ppd-plugin-update .ppd-button{min-height:30px;font-size:12px}\n.ppd-account-menu-panel .ppd-account-logout{margin-top:12px;width:100%;justify-content:flex-start;border:0;border-top:1px solid var(--ppd-line);border-radius:0;padding:12px 0 0;color:#62625c}\n.ppd-account-warning{margin:5px 0 0;color:#92352d;font-size:12px;line-height:1.5;overflow-wrap:anywhere}\n@media(max-width:720px){.ppd-account{padding:6px 12px}.ppd-account-row{gap:8px}.ppd-account .ppd-account-meta{gap:6px}.ppd-account .ppd-account-meta>.ppd-account-balance{display:inline-flex}}\n\n/* Favorite collections: image covers and quiet, contextual controls. */\n.ppd-collection-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:8px 0 26px}\n.ppd-collection-location{display:flex;align-items:center;gap:12px;min-width:0}.ppd-collection-location>div{min-width:0}.ppd-collection-heading h2{margin:0;font-size:21px;line-height:1.3;font-weight:650;letter-spacing:-.5px;overflow-wrap:anywhere}.ppd-collection-heading small{display:block;margin-top:4px;color:var(--ppd-muted);font-size:12px}\n.ppd-collection-back{border:1px solid var(--ppd-line);background:white;border-radius:50%;width:32px;height:32px;flex-shrink:0}.ppd-collection-heading>.ppd-actions{flex-shrink:0;gap:18px}.ppd-collection-heading .ppd-new-folder,.ppd-collection-heading .ppd-new-folder:hover{padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;font-size:12px;color:var(--ppd-muted)}.ppd-collection-heading .ppd-new-folder:hover{color:var(--ppd-text)}.ppd-collection-heading .ppd-link-button{padding:0;border:0;background:transparent;font-size:12px;color:var(--ppd-muted)}\n.ppd-collection-status{color:var(--ppd-muted);font-size:12px;margin:0 0 18px}\n.ppd-collection-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,190px));gap:26px 22px;padding-top:9px}\n.ppd-collection-card{position:relative;min-width:0}.ppd-collection-open{display:block;width:100%;padding:0;border:0;background:transparent;text-align:left}\n.ppd-collection-cover{position:relative;display:block;width:100%;aspect-ratio:1.45;border:1px solid #e5e5e0;border-radius:4px 14px 14px 14px;background:#efefeb;isolation:isolate}\n.ppd-collection-cover:before{content:"";position:absolute;top:-9px;left:-1px;width:38%;height:15px;border:1px solid #e0e0da;border-bottom:0;border-radius:8px 12px 0 0;background:#e8e8e2;z-index:-1}\n.ppd-collection-cover>img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit;transition:filter .18s ease}.ppd-collection-open:hover img{filter:brightness(.96)}\n.ppd-collection-mark{position:absolute;left:14px;bottom:14px;width:30px;height:26px;display:grid;place-items:center;border-radius:6px;background:#fffffff0;color:#58584f}.ppd-collection-mark svg{width:19px;height:19px}.ppd-collection-cover.is-empty{display:grid;place-items:center;background:#f4f4f0}.ppd-collection-cover.is-empty .ppd-collection-mark{position:static;width:56px;height:48px;background:transparent;color:#b3b3a8}.ppd-collection-cover.is-empty svg{width:48px;height:48px}\n.ppd-collection-copy{display:grid;gap:4px;padding:11px 24px 0;text-align:center}.ppd-collection-copy strong{font-size:14px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ppd-collection-copy small{color:var(--ppd-muted);font-size:11px}\n.ppd-favorite-menu{position:absolute;right:4px;bottom:16px;z-index:3}.ppd-favorite-menu.is-open{z-index:12}.ppd-favorite-more{width:28px;height:28px;display:grid;place-items:center;padding:5px;border:0;border-radius:6px;background:transparent;color:var(--ppd-muted)}.ppd-favorite-more svg{width:18px;height:18px;fill:currentColor}.ppd-favorite-more:hover,.ppd-favorite-more[aria-expanded=true]{background:var(--ppd-soft)}\n.ppd-favorite-popover{position:absolute;right:0;top:calc(100% + 5px);display:grid;min-width:156px;padding:5px;background:white;border:1px solid var(--ppd-line);border-radius:10px;box-shadow:0 8px 24px #20201814}.ppd-favorite-popover button{border:0;background:transparent;text-align:left;white-space:nowrap;padding:9px 12px;border-radius:5px;font-size:12px}.ppd-favorite-popover button:hover,.ppd-favorite-popover button:focus-visible{background:var(--ppd-surface)}.ppd-favorite-popover .is-danger{color:var(--ppd-danger)}\n.ppd-collection-heading .ppd-favorite-menu{position:relative;right:auto;bottom:auto}\n.ppd-favorite-skill-card .ppd-card-copy{padding-right:4px;padding-bottom:31px}.ppd-favorite-skill-card .ppd-card-copy>small{display:block;font-size:10px;color:var(--ppd-muted)}.ppd-favorite-skill-card .ppd-favorite-menu{bottom:0;right:0}.ppd-favorite-skill-card .ppd-card-use{left:0;right:auto;bottom:3px;font-size:11px;color:var(--ppd-text)}\n@media(max-width:720px){.ppd-collection-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 14px}.ppd-collection-heading{align-items:flex-start;margin-bottom:24px}.ppd-collection-heading h2{font-size:18px}.ppd-collection-heading>.ppd-actions{gap:10px;flex-wrap:wrap;justify-content:flex-end}.ppd-collection-heading .ppd-link-button{font-size:11px}.ppd-collection-mark{left:9px;bottom:9px;width:25px;height:23px}.ppd-collection-copy{padding-inline:22px}.ppd-collection-copy strong{font-size:13px}}\n\n/* Personal Skill and DNA library */\n.ppd-personal-tabs{width:100%;margin-bottom:26px;padding:0;border-bottom:1px solid var(--ppd-line);border-radius:0;background:transparent;gap:26px}\n.ppd-panel .ppd-personal-tabs button{min-width:0;padding:9px 0 12px;border-radius:0;background:transparent;color:var(--ppd-muted);box-shadow:none}\n.ppd-panel .ppd-personal-tabs button.is-active{position:relative;background:transparent;color:var(--ppd-text);font-weight:650}\n.ppd-panel .ppd-personal-tabs button.is-active::after{content:"";position:absolute;right:0;bottom:-1px;left:0;height:2px;border-radius:2px;background:var(--ppd-text)}\n.ppd-panel .ppd-personal-tabs button:not(.is-active):hover{background:transparent;color:var(--ppd-text)}\n.ppd-personal-list-heading{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}.ppd-personal-list-heading h2{margin:0;font-size:22px;white-space:nowrap}.ppd-personal-list-heading small{color:var(--ppd-muted);font-size:11px;font-weight:400}.ppd-personal-list-heading>.ppd-toolbar-row{width:min(500px,62%);align-items:center}.ppd-personal-list-heading .ppd-search{margin:0}.ppd-personal-list-heading .ppd-search>button[type="submit"]{display:none}.ppd-personal-list-heading>.ppd-toolbar-row>.ppd-search{min-width:190px;flex:1}.ppd-personal-list-heading .ppd-search label{min-width:150px}\n.ppd-personal-skill-card{position:relative;display:flex;min-width:0;overflow:visible;flex-direction:column;border:1px solid var(--ppd-line);border-radius:12px;background:#fff}\n.ppd-personal-skill-open{display:flex;width:100%;min-width:0;flex:1;flex-direction:column;padding:0;border:0;border-radius:12px 12px 0 0;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}\n.ppd-personal-skill-open:focus-visible{outline:2px solid currentColor;outline-offset:-3px}\n.ppd-personal-skill-cover{width:100%;min-height:0;aspect-ratio:16/9;overflow:hidden;flex:0 0 auto;border-radius:11px 11px 0 0;background:var(--ppd-surface)}\n.ppd-personal-skill-cover>.ppd-image{width:100%;height:100%;min-height:0;grid-template-rows:minmax(0,1fr);aspect-ratio:auto;border-radius:0}\n.ppd-personal-skill-cover>.ppd-image img{min-width:0;min-height:0;max-width:100%;max-height:100%;object-fit:contain}\n.ppd-personal-skill-text-cover{display:flex;width:100%;height:100%;align-items:flex-start;justify-content:center;flex-direction:column;padding:22px;background:#efeee8;color:#626859}\n.ppd-personal-skill-text-cover strong{display:-webkit-box;max-width:85%;overflow:hidden;font-size:22px;line-height:1.3;letter-spacing:.02em;-webkit-box-orient:vertical;-webkit-line-clamp:2}\n.ppd-personal-skill-text-cover span{margin-top:10px;color:#929789;font-size:9px;font-weight:650;letter-spacing:.18em;text-transform:uppercase}\n.ppd-personal-cover-loading{display:flex;align-items:center;gap:7px;color:var(--ppd-muted);font-size:11px}\n.ppd-personal-cover-loading .ppd-spinner{width:14px;height:14px}\n.ppd-personal-skill-copy{display:grid;gap:5px;min-height:62px;padding:12px 13px 7px}\n.ppd-personal-skill-copy strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}\n.ppd-personal-skill-copy p{display:-webkit-box;margin:0;overflow:hidden;color:var(--ppd-muted);font-size:11px;line-height:1.5;-webkit-box-orient:vertical;-webkit-line-clamp:2}\n.ppd-personal-skill-actions{display:flex;min-height:48px;align-items:center;justify-content:flex-end;gap:8px;padding:5px 12px 11px}\n.ppd-personal-skill-actions small{margin-right:auto;color:var(--ppd-muted);font-size:10px}\n.ppd-personal-skill-actions .ppd-button{min-width:64px;padding:6px 13px}\n.ppd-personal-skill-actions .ppd-button:first-child{margin-right:0}\n.ppd-personal-menu{position:relative;display:inline-flex;z-index:3}\n.ppd-personal-skill-card>.ppd-personal-menu,.ppd-dna-card>.ppd-personal-menu{position:absolute;top:9px;right:9px}\n.ppd-personal-menu-trigger{display:grid;width:30px;height:30px;place-items:center;padding:0;border:1px solid #ffffffb8;border-radius:8px;background:#fffffff2;color:#555a50;box-shadow:0 1px 5px #2222}\n.ppd-personal-menu-trigger:hover,.ppd-personal-menu-trigger[aria-expanded="true"]{border-color:#d7d9d1;background:#fff}\n.ppd-personal-menu-trigger:focus-visible{outline:2px solid var(--ppd-text);outline-offset:2px}\n.ppd-personal-menu-trigger svg{width:17px;height:17px;fill:currentColor}\n.ppd-personal-menu-popover{position:fixed;z-index:140;display:grid;width:154px;padding:6px;border:1px solid var(--ppd-line,#e5e5e1);border-radius:10px;background:var(--ppd-bg,#fff);box-shadow:0 12px 36px #15171124;color:var(--ppd-text,#252522);font:12px/1.45 ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}\n.ppd-personal-menu-popover button{width:100%;min-height:34px;padding:7px 10px;border:0;border-radius:6px;background:transparent;color:inherit;text-align:left;font:inherit;cursor:pointer}\n.ppd-personal-menu-popover button:hover,.ppd-personal-menu-popover button:focus-visible{outline:0;background:var(--ppd-soft,#efefeb)}\n.ppd-personal-menu-popover button.is-danger{margin-top:3px;border-top:1px solid var(--ppd-line,#e5e5e1);border-radius:0 0 6px 6px;color:var(--ppd-danger,#a53a31)}\n.ppd-personal-detail{max-width:1000px;margin:0 auto}\n.ppd-personal-back{margin-bottom:18px;color:var(--ppd-muted)}\n.ppd-personal-detail>.ppd-alert,.ppd-personal-detail>.ppd-notice{margin:0 0 16px}\n.ppd-personal-detail-grid{display:grid;grid-template-columns:minmax(250px,340px) minmax(0,1fr);align-items:start;gap:38px}\n.ppd-personal-detail-grid>.ppd-personal-skill-cover{aspect-ratio:4/3;border-radius:12px}\n.ppd-personal-detail-grid>.ppd-personal-skill-cover>.ppd-personal-skill-text-cover{padding:30px}\n.ppd-personal-detail-grid>.ppd-personal-skill-cover .ppd-personal-skill-text-cover strong{font-size:27px}\n.ppd-personal-detail-copy{min-width:0;padding-top:8px}\n.ppd-personal-detail-copy h2{margin:5px 0 10px;font-size:25px}\n.ppd-personal-detail-description{max-width:560px;margin:0 0 20px;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--ppd-muted);line-height:1.65}\n.ppd-personal-detail-copy h3{margin:0 0 9px;color:var(--ppd-muted);font-size:11px;font-weight:600}\n.ppd-personal-prompt,.ppd-personal-references{margin-top:18px;padding-top:15px;border-top:1px solid var(--ppd-line)}\n.ppd-personal-prompt pre{max-width:620px;margin:0;white-space:pre-wrap;overflow-wrap:anywhere;color:#41413b;font:inherit;line-height:1.7}\n.ppd-personal-detail-actions{margin-top:24px}\n.ppd-personal-references .ppd-skill-reference-detail{grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}\n.ppd-personal-references .ppd-skill-reference-detail li{min-width:0}\n.ppd-personal-references .ppd-skill-reference-detail .ppd-image{aspect-ratio:1;border-radius:8px}\n.ppd-personal-references .ppd-skill-reference-detail span{display:block;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:9px}\n@media(max-width:980px){.ppd-personal-detail-grid{grid-template-columns:minmax(220px,300px) minmax(0,1fr);gap:28px}}\n@media(max-width:720px){.ppd-personal-tabs{gap:20px}.ppd-personal-list-heading{align-items:stretch;flex-direction:column}.ppd-personal-list-heading>.ppd-toolbar-row{width:100%}.ppd-personal-detail-grid{grid-template-columns:1fr}.ppd-personal-detail-grid>.ppd-personal-skill-cover{width:min(100%,420px)}.ppd-personal-detail-copy{padding-top:0}}\n@media(max-width:460px){.ppd-personal-skill-text-cover{padding:18px}.ppd-personal-skill-text-cover strong{font-size:20px}.ppd-personal-menu-popover{width:146px}}\n.ppd-favorite-editor{display:grid;gap:16px}.ppd-favorite-editor>p{margin:0}.ppd-favorite-editor>label{display:grid;gap:6px}.ppd-favorite-editor>label>span{font-weight:620}.ppd-favorite-editor>label>small{font-size:11px;color:var(--ppd-muted)}.ppd-favorite-editor input,.ppd-favorite-editor select{width:100%;min-height:38px;padding:8px 10px;border:1px solid var(--ppd-line);border-radius:8px;background:#fff}.ppd-favorite-editor-actions{display:grid;grid-template-columns:auto 1fr auto auto;align-items:center;gap:8px}@media(max-width:600px){.ppd-favorite-editor-actions{grid-template-columns:1fr 1fr}.ppd-favorite-editor-actions>span{display:none}.ppd-favorite-editor-actions>.ppd-button-danger{grid-column:1/-1}}\n';
 
 // plugins/podplo-dsh/src/generation-panel.css
-var generation_panel_default = '.ppd-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-skill-feedback{margin:6px 0 0;display:flex;align-items:center;gap:8px;color:#a13d31;font-size:12px;line-height:18px}.ppd-skill-feedback .ppd-link-button{flex:none}\n.ppd-generation-shell.is-floating:has(>.ppd-skill-feedback){height:auto}\n.ppd-generation{min-width:0}.ppd-generation-loading{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--ppd-muted)}.ppd-generation-loading .ppd-spinner{width:12px;height:12px}.ppd-generation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:start}.ppd-generation-form{min-width:0;margin:0;border:0;padding:0;display:grid;gap:9px}.ppd-generation-form:disabled{opacity:1}.ppd-generation-form:disabled .ppd-web-composer{opacity:.72}.ppd-link-button{width:max-content;border:0;background:none;color:var(--ppd-accent);padding:0;font:inherit;cursor:pointer}.ppd-form-hint,.ppd-generation-quote small,.ppd-muted{color:var(--ppd-muted);font-size:12px}\n\n.ppd-web-composer{--composer-line:#e0e4eb;--composer-soft:#f0f2f5;--composer-muted:#676f7e;--composer-faint:#a8afbd;--composer-ink:#0b0d12;position:relative;box-sizing:border-box;width:100%;max-width:720px;height:178px;border:1px solid var(--composer-line);border-radius:16px;background:#fff;box-shadow:0 2px 5px rgba(15,20,28,.04);padding:12px 12px 8px;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}.ppd-web-composer.is-focused{border-color:var(--composer-line);box-shadow:0 2px 5px rgba(15,20,28,.04)}.ppd-composer-media-row{height:64px;display:flex;align-items:flex-start;gap:8px;padding-right:38px;min-width:0}.ppd-composer-clear{position:absolute;z-index:7;top:14px;right:14px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#8b929d;cursor:pointer;font-size:21px;line-height:1;transform:rotate(-20deg);transition:background-color .18s,color .18s,transform .18s}.ppd-composer-clear:hover{background:var(--composer-soft);color:#3f4752;transform:translateY(-1px) rotate(-20deg)}.ppd-web-composer>textarea{flex:1;min-height:0;resize:none;border:0;outline:0;background:transparent;color:var(--composer-ink);font-family:inherit;font-size:12px;line-height:18px;font-weight:500;padding:0 2px}.ppd-web-composer>textarea::placeholder{color:var(--composer-faint)}\n.ppd-skill-token{position:relative;box-sizing:border-box;width:max-content;min-width:170px;max-width:min(300px,calc(100% - 64px));height:56px;flex:0 1 auto;padding:0 13px;display:flex;align-items:center;justify-content:flex-start;gap:10px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-skill-token.has-value{padding-right:12px;border:0;background:#121418;color:#fff}.ppd-skill-copy{position:static;min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:2px}.ppd-skill-token small{color:#7b8290;font-size:9px;line-height:11px;font-weight:700;letter-spacing:.04em}.ppd-skill-token strong{max-width:220px;overflow:hidden;color:inherit;font-size:12px;line-height:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.ppd-token-mark{width:28px;height:28px;display:grid;place-items:center;flex:0 0 28px;border-radius:8px;background:#fff;color:#1a1d24;font-size:16px}.ppd-skill-cover{width:42px;height:42px;flex:0 0 42px;border-radius:8px;object-fit:cover}.ppd-skill-token>select,.ppd-upload-tile>select,.ppd-toolbar-select>select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-reference-tray{position:relative;height:56px;min-width:0;display:flex;flex:0 1 auto;align-items:flex-start;gap:8px;isolation:isolate}.ppd-upload-tile,.ppd-reference-token{position:relative;box-sizing:border-box;width:56px;height:56px;flex:0 0 56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;display:grid;place-items:center;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-upload-tile:hover{border-color:#1597e5;background:#eaf6fd;color:#086eba}.ppd-local-upload{border-style:solid;font-size:22px}.ppd-reference-token{border:0;background:#242830;color:#fff}.ppd-reference-token>img{width:100%;height:100%;object-fit:cover}.ppd-reference-token>span{font-size:17px;font-weight:800}.ppd-reference-token>b{position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.72);display:grid;place-items:center;font-size:10px}.ppd-reference-actions{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;gap:2px;padding:3px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 54%);opacity:0;transition:opacity .14s}.ppd-reference-token:hover .ppd-reference-actions,.ppd-reference-token:focus-within .ppd-reference-actions{opacity:1}.ppd-reference-actions button{width:15px;height:15px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center;font-size:9px;line-height:1;cursor:pointer}.ppd-reference-actions button:disabled{opacity:.35}.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:absolute;z-index:6;left:38px;top:22px;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#242830;color:#fff;box-shadow:0 4px 10px rgba(12,16,22,.24)}.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:-40px}.ppd-reference-tray.has-references>.ppd-reference-token{border:2px solid #fff;border-radius:15px;clip-path:polygon(10% 12%,35% 3%,68% 8%,93% 2%,98% 36%,90% 68%,96% 92%,58% 97%,28% 91%,3% 98%,7% 61%,2% 31%);box-shadow:0 3px 9px rgba(19,24,31,.18);transition:margin-left .24s cubic-bezier(.2,.72,.2,1),clip-path .2s ease,border-radius .2s ease,transform .2s ease}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(2n){transform:rotate(4deg)}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(3n){transform:rotate(-4deg)}.ppd-reference-tray.has-references:is(:hover,:focus-within){z-index:8}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-tray.has-references:not(:hover):not(:focus-within)>.ppd-local-upload{display:none}\n.ppd-composer-toolbar{height:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.ppd-toolbar-left,.ppd-toolbar-right{display:flex;align-items:center;gap:2px;min-width:0}.ppd-toolbar-left{flex:1}.ppd-toolbar-right{flex:none}.ppd-toolbar-divider{width:1px;height:22px;flex:0 0 1px;background:var(--composer-line);margin:0 6px 5px 5px}.ppd-toolbar-icon,.ppd-toolbar-button,.ppd-toolbar-select{position:relative;box-sizing:border-box;height:32px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--composer-muted);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;white-space:nowrap}.ppd-toolbar-icon{width:32px;flex:0 0 32px;padding:0}.ppd-toolbar-button,.ppd-toolbar-select{padding:0 8px;font-size:12px;font-weight:500}.ppd-toolbar-icon:hover,.ppd-toolbar-button:hover,.ppd-toolbar-select:hover{background:var(--composer-soft);color:var(--composer-ink)}.ppd-toolbar-select strong{max-width:118px;overflow:hidden;font-size:12px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.ppd-model-dot{width:14px;height:14px;flex:0 0 14px;border-radius:4px;background:linear-gradient(145deg,#7b8cff,#7557d8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.ppd-model-dot.is-gpt{background:linear-gradient(145deg,#49c970,#138f7e)}\n.ppd-contract-control{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;opacity:.001!important;pointer-events:none!important}.ppd-model-menu,.ppd-settings-menu{position:relative}.ppd-model-menu>summary,.ppd-settings-menu>summary{list-style:none}.ppd-model-menu>summary::-webkit-details-marker,.ppd-settings-menu>summary::-webkit-details-marker{display:none}.ppd-model-menu[open]>summary,.ppd-settings-menu[open]>summary{background:var(--composer-soft);color:var(--composer-ink)}.ppd-settings-menu summary>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu summary>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover,.ppd-settings-popover{position:absolute;z-index:30;left:0;bottom:38px;box-sizing:border-box;border:1px solid #e3e6ea;border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(20,27,38,.14)}.ppd-model-popover{width:390px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px;display:grid;gap:7px}.ppd-model-popover>header{display:flex;flex-direction:column;gap:2px;padding:7px 9px 5px}.ppd-model-popover>header strong{color:#202630;font-size:12px}.ppd-model-popover>header small{color:#959daa;font-size:9px}.ppd-model-popover>button{position:relative;min-height:74px;border:1px solid #e2e6eb;border-radius:12px;padding:9px 38px 9px 9px;background:#fff;display:flex;align-items:center;gap:11px;color:#171b22;text-align:left;cursor:pointer}.ppd-model-popover>button:hover,.ppd-model-popover>button.is-selected{border-color:#b5bdc8;background:#eef1f5}.ppd-model-popover>button:disabled{opacity:.55;cursor:not-allowed}.ppd-model-popover>button>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;gap:4px}.ppd-model-popover>button strong{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover>button small{color:#697383;font-size:10px}.ppd-model-popover>button>b{position:absolute;right:15px}.ppd-model-brand{width:42px;height:42px;flex:0 0 42px;border-radius:11px;background:linear-gradient(145deg,#8798ff,#7053d4);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}.ppd-model-brand.is-gpt{background:linear-gradient(145deg,#58cf78,#168e7e)}.ppd-settings-popover{width:330px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px}.ppd-settings-popover section+section{margin-top:5px}.ppd-settings-popover section>label:first-child{display:block;margin:0 3px 3px;color:#8a929e;font-size:9px;font-weight:650}.ppd-ratio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:4px;border-radius:12px;background:#f6f7f9}.ppd-ratio-grid button{min-height:40px;border:0;border-radius:8px;background:transparent;color:#77808c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}.ppd-ratio-grid button:hover,.ppd-ratio-grid button.is-selected,.ppd-segmented button:hover,.ppd-segmented button.is-selected{background:#fff;color:#202630;box-shadow:0 1px 4px rgba(18,25,35,.08)}.ppd-ratio-grid b{font-size:10px}.ppd-ratio-glyph{width:15px;height:11px;border:1.5px solid currentColor;border-radius:3px}.ppd-segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;border-radius:10px;background:#f6f7f9}.ppd-segmented button{min-width:0;height:28px;border:0;border-radius:7px;background:transparent;color:#74808d;cursor:pointer;font-size:10px;text-transform:capitalize}.ppd-settings-check{position:relative;height:30px;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;color:#687281!important;cursor:pointer}.ppd-settings-check>input{position:absolute;opacity:0}.ppd-settings-check>i{position:relative;width:30px;height:18px;border-radius:999px;background:#dfe3e8}.ppd-settings-check>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-settings-check>input:checked+i{background:#1d2734}.ppd-settings-check>input:checked+i>b{transform:translateX(12px)}\n.ppd-search-chip{position:relative;height:32px;border:1px solid transparent;border-radius:8px;background:#f6f7f9;color:#737d8a;display:flex;align-items:center;gap:8px;padding:0 7px 0 9px;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-search-chip>input,.ppd-eco-control>input{position:absolute;opacity:0;pointer-events:none}.ppd-search-chip>i,.ppd-eco-control>i{position:relative;width:30px;height:18px;flex:0 0 30px;border-radius:999px;background:#dfe3e8;transition:background-color .18s}.ppd-search-chip>i>b,.ppd-eco-control>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-search-chip.is-selected{background:#f0efff;color:#514aab}.ppd-search-chip.is-selected>i{background:#625abd}.ppd-search-chip.is-selected>i>b,.ppd-eco-control.is-selected>i>b{transform:translateX(12px)}.ppd-eco-control{position:relative;height:30px;display:flex;align-items:center;gap:5px;padding:0 4px;color:#7d8794;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-eco-control.is-selected>i{background:#1d2734}.ppd-generation-cost{height:32px;display:flex;align-items:center;gap:4px;padding:0 2px;color:#6f7782;white-space:nowrap}.ppd-generation-cost>strong{min-width:14px;color:#4d5560;font-size:13px;font-weight:700}.ppd-generate-button{width:34px;height:32px;flex:0 0 34px;border:1px solid transparent;border-radius:7px;background:var(--composer-ink);color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .18s,background-color .3s}.ppd-generate-button:hover:not(:disabled){transform:translateY(-1px);background:#232832}.ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint);cursor:not-allowed}.ppd-generate-button .ppd-spinner{width:14px;height:14px}.ppd-composer-meta{min-height:18px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;color:var(--ppd-muted);font-size:11px}.ppd-composer-meta>span+span:before{content:"\xB7";margin-right:12px}.ppd-file-input{display:none}\n.ppd-web-composer .ppd-model-popover,.ppd-web-composer .ppd-settings-popover{top:38px;bottom:auto}\n.ppd-generation-quote{position:sticky;top:0;display:grid;gap:12px;border:1px solid var(--ppd-line);border-radius:16px;background:var(--ppd-bg);padding:18px}.ppd-generation-quote h2{font-size:16px;margin:0}.ppd-generation-quote>strong{font-size:30px;line-height:1}.ppd-generation-quote>span{font-size:13px}.ppd-generation-quote p{margin:0;line-height:1.55}.ppd-generation-state{border-radius:9px;background:var(--ppd-surface);padding:8px 10px;font-weight:650}\n@media(hover:none),(pointer:coarse){.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references>.ppd-reference-token,.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-actions{opacity:1}.ppd-reference-tray.has-references>.ppd-local-upload{display:grid}}\n@media(max-width:1050px){.ppd-generation-grid{grid-template-columns:1fr}.ppd-generation-quote{position:static;max-width:720px}.ppd-web-composer{max-width:none}}\n@media(max-width:720px){.ppd-web-composer{height:auto;min-height:214px}.ppd-composer-media-row{overflow-x:auto}.ppd-composer-toolbar{height:auto;min-height:72px;align-items:stretch;flex-direction:column}.ppd-toolbar-left{flex-wrap:wrap}.ppd-toolbar-right{justify-content:flex-end}.ppd-model-popover{left:0;right:auto;width:min(390px,calc(100vw - 52px))}.ppd-settings-popover{left:auto;right:0;width:min(330px,calc(100vw - 52px))}.ppd-search-chip>span{display:none}}\n@media(max-width:480px){.ppd-skill-token{min-width:138px}.ppd-skill-token strong{max-width:130px}.ppd-model-select strong{max-width:80px}.ppd-eco-control>span{display:none}}\n.ppd-generation-shell.is-inline{position:relative;width:min(720px,100%);margin:0 auto}.ppd-generation-shell.is-floating{position:absolute;z-index:45;left:50%;bottom:18px;width:min(720px,calc(100% - 40px));transform:translateX(-50%)}.ppd-generation-shell.is-floating:before{content:"";position:absolute;z-index:-1;inset:-24px -34px -22px;background:radial-gradient(ellipse at center,rgba(247,248,249,.98) 38%,rgba(247,248,249,.78) 64%,transparent 78%);pointer-events:none}.ppd-generation-shell.is-floating>.ppd-alert,.ppd-generation-shell.is-floating>.ppd-notice{margin:0 0 7px}.ppd-generation-shell.is-collapsed{width:min(620px,calc(100% - 40px))}.ppd-generation-collapsed{width:100%;height:54px;border:1px solid #dde1e6;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 15px 45px rgba(23,30,42,.16);padding:0 12px;display:flex;align-items:center;gap:10px;color:#1d222b;text-align:left}.ppd-generation-collapsed>span:nth-child(2){min-width:0;display:grid;flex:1;gap:2px}.ppd-generation-collapsed strong,.ppd-generation-collapsed small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-generation-collapsed strong{font-size:12px}.ppd-generation-collapsed small{color:#8a929e;font-size:9px}.ppd-generation-collapsed>b{color:#596270;font-size:10px}.ppd-composer-actions{position:absolute;z-index:9;top:9px;right:9px;display:flex;gap:2px}.ppd-composer-actions button{width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#8b929d;display:grid;place-items:center}.ppd-composer-actions button:hover{background:var(--composer-soft);color:#3f4752}.ppd-composer-actions button svg{transform:rotate(-20deg)}.ppd-generation-shell.is-floating .ppd-composer-media-row{padding-right:70px}.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:38px}.ppd-generation-shell.is-inline .ppd-model-popover,.ppd-generation-shell.is-inline .ppd-settings-popover{top:38px;bottom:auto}.ppd-generation-shell.is-floating .ppd-model-popover,.ppd-generation-shell.is-floating .ppd-settings-popover{top:auto;bottom:38px}.ppd-generate-button{width:auto;min-width:104px;padding:0 7px 0 11px;display:flex;gap:8px}.ppd-generate-button>span:not(.ppd-spinner){white-space:nowrap;font-size:11px;font-weight:700}.ppd-generation-shell .ppd-composer-meta{display:none}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-inline{width:100%}}\n\n/* The native resource pages use the same Web dock geometry: a 480\xD740 trigger\n   opens into the 820\xD7200 shell, while the generation page keeps the composer inline. */\n.ppd-generation-shell.is-floating{bottom:76px;width:min(820px,calc(100% - 64px));height:200px;padding:10px;border:1px solid #d8dad5;border-radius:18px;background:rgba(255,255,255,.98);box-shadow:0 22px 64px rgba(16,24,38,.2),0 4px 12px rgba(16,24,38,.08);backdrop-filter:blur(12px);transform-origin:center bottom;animation:ppd-composer-open .28s cubic-bezier(.2,.82,.2,1)}\n@keyframes ppd-composer-open{from{opacity:0;transform:translateX(-50%) scale(.58,.18)}to{opacity:1;transform:translateX(-50%) scale(1)}}\n.ppd-generation-shell.is-floating:before{display:none}.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:none;border-color:transparent;box-shadow:none}.ppd-generation-shell.is-floating .ppd-composer-actions{right:19px;top:19px}\n.ppd-generation-shell.is-collapsed{bottom:24px;width:min(480px,calc(100% - 40px));height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}\n.ppd-generation-collapsed{height:40px;border-color:#d5dbe3;border-radius:16px;padding:4px 5px;gap:9px;box-shadow:0 10px 32px rgba(16,24,38,.18),0 2px 6px rgba(16,24,38,.06)}\n.ppd-collapsed-add,.ppd-collapsed-expand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px}.ppd-collapsed-add{color:#485260}.ppd-collapsed-placeholder{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#737b89;font-size:13px;font-weight:500}.ppd-generation-collapsed>small{color:#8a929e;font-size:9px;white-space:nowrap}.ppd-collapsed-expand{border-radius:50%;background:#e9edf2;color:#7d8998;font-size:16px}\n.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-notice,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{position:absolute;z-index:3;right:12px;bottom:calc(100% + 8px);left:12px;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;text-align:center}.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{color:#a13e3e}\n.ppd-generation-shell.is-floating>.ppd-price-verification,.ppd-generation-shell.is-floating>.ppd-upload-feedback,.ppd-generation-shell.is-floating>.ppd-skill-feedback{position:absolute;z-index:4;right:12px;bottom:calc(100% + 8px);left:12px;box-sizing:border-box;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.98);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;line-height:16px;text-align:center}\n.ppd-generation-shell.is-floating>.ppd-price-verification{color:#866218}.ppd-generation-shell.is-floating:has(>.ppd-price-verification)>.ppd-upload-feedback,.ppd-generation-shell.is-floating:has(>.ppd-price-verification)>.ppd-skill-feedback{bottom:calc(100% + 42px)}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-collapsed{width:calc(100% - 24px)}}\n.ppd-generation .ppd-generate-button{background:var(--composer-ink);color:#fff}.ppd-generation .ppd-generate-button>span,.ppd-generation .ppd-generate-button>svg{color:#fff;stroke:currentColor}.ppd-generation .ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint)}.ppd-generation .ppd-generate-button:disabled>span,.ppd-generation .ppd-generate-button:disabled>svg{color:var(--composer-faint)}\n.ppd-generation .ppd-local-upload{display:none!important}\n\n/* Match Web product-mode selected Skill and empty floating reference tile. */\n.ppd-generation .ppd-skill-token.has-value{background:#eef0f4;color:#252a34}.ppd-generation-shell.is-floating .ppd-reference-tray:not(.has-references)>.ppd-upload-tile{border:0;border-radius:0;background:transparent}\n.ppd-add-menu{position:relative}.ppd-add-menu>summary{list-style:none}.ppd-add-menu>summary::-webkit-details-marker{display:none}.ppd-add-popover{position:absolute;z-index:30;left:0;top:38px;width:160px;padding:5px;border:1px solid var(--composer-line);border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,27,38,.14)}.ppd-generation-shell.is-floating .ppd-add-popover{top:auto;bottom:38px}.ppd-add-popover>label,.ppd-add-popover>button{position:relative;box-sizing:border-box;display:block;width:100%;padding:9px;border:0;border-radius:6px;background:transparent;color:var(--composer-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}.ppd-add-popover>label:hover,.ppd-add-popover>button:hover{background:var(--composer-soft)}.ppd-add-popover select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.ppd-generation .ppd-generate-button{width:34px;min-width:34px;padding:0;justify-content:center}.ppd-generation-cost{margin:0 10px 0 6px}\n.ppd-model-popover:not(:popover-open),.ppd-settings-popover:not(:popover-open),.ppd-add-popover:not(:popover-open){display:none}.ppd-settings-menu .ppd-toolbar-button>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu .ppd-toolbar-button>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}\n\n/* Manual generation history shares the account bar and keeps the draft mounted. */\n.ppd-panel [hidden]{display:none!important}\n.ppd-price-verification{margin:0 12px 10px;color:#866218;font-size:12px;line-height:1.5}\n.ppd-history-shortcut{display:flex;justify-content:flex-end;padding:12px 28px 0}\n.ppd-panel-generation .ppd-content.ppd-history-content{display:block;min-height:0;padding:24px 28px}\n.ppd-history{width:100%;max-width:1120px;margin:0 auto}\n.ppd-history-heading,.ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}\n.ppd-history-heading{margin-bottom:20px}.ppd-history-heading h2{font-size:20px;margin:0}\n.ppd-history-list{display:grid;gap:16px}.ppd-history-record{padding:20px;border:1px solid #e4e4e2;border-radius:12px;background:#fff}\n.ppd-history-record-heading strong{display:flex;align-items:center;gap:8px}.ppd-history-record-heading>span,.ppd-history-record time,.ppd-history-record>small{color:#73736e;font-size:12px}\n.ppd-history-record time{display:block;margin-top:8px}.ppd-history-record progress{display:block;width:100%;height:6px;margin:16px 0 8px;accent-color:#656c49}\n.ppd-history-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}.ppd-history-results .ppd-image{aspect-ratio:1;background:#f5f5f3;border-radius:8px;overflow:hidden}.ppd-history-results img{width:100%;height:100%;object-fit:contain}\n@media(max-width:720px){.ppd-history-shortcut{padding-inline:16px}.ppd-panel-generation .ppd-content.ppd-history-content{padding:20px 16px}.ppd-history-heading,.ppd-history-record-heading{flex-wrap:wrap}.ppd-history-results{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}\n\n/* Confirmed tasks keep running after the composer clears; their progress sits above the saved results. */\n.ppd-running-tasks{margin-bottom:28px}.ppd-running-label{margin:0 0 12px;color:#73736e;font-size:12px;font-weight:600;letter-spacing:.04em}\n.ppd-running-tasks .ppd-history-record progress{margin-top:12px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n@media(max-width:720px){.ppd-running-tasks{margin-bottom:20px}}\n\n/* Local reference previews appear before cloud upload; only ready asset IDs can generate. */\n.ppd-upload-preview{clip-path:none!important;transform:none!important;margin-left:0!important;border-radius:10px!important;outline:1px solid #c8cdd5}\n.ppd-upload-preview>img{opacity:.65}\n.ppd-upload-preview.is-failed{outline-color:#a13e3e}\n.ppd-upload-preview .ppd-upload-preview-status{position:absolute;right:0;bottom:0;left:0;padding:4px 1px;background:rgba(24,28,34,.8);color:#fff;font-size:9px;line-height:12px;text-align:center}\n.ppd-upload-preview.is-failed .ppd-upload-preview-status{background:rgba(139,39,39,.9)}\n.ppd-reference-token>.ppd-upload-preview-remove{position:absolute;top:2px;right:2px;display:grid;place-items:center;width:16px;height:16px;padding:0;border:0;border-radius:4px;background:rgba(255,255,255,.9);color:#343b45;cursor:pointer}\n.ppd-reference-token>.ppd-upload-preview-remove:hover{background:#fff;color:#a13e3e}\n\n/* Manual batch generation stays in the plugin UI and keeps each row compact. */\n.ppd-batch-launchers{display:flex;align-items:center;gap:3px}.ppd-batch-launchers>button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#fff;padding:0 8px;color:#5d6672;font-size:10px;white-space:nowrap;cursor:pointer}.ppd-batch-launchers>button:hover:not(:disabled){border-color:#b8c0ca;background:#f6f7f9;color:#222a34}.ppd-batch-launchers>button:disabled{opacity:.45;cursor:not-allowed}\n.ppd-batch-backdrop{position:fixed;z-index:120;inset:0;display:grid;place-items:center;padding:28px;background:rgba(20,26,34,.36);backdrop-filter:blur(3px)}\n.ppd-batch-dialog{box-sizing:border-box;width:min(1180px,100%);height:min(780px,calc(100vh - 56px));display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.28);color:#252b34;text-align:left}\n.ppd-batch-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:18px 20px 13px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-batch-dialog h2{margin:0;font-size:18px}.ppd-batch-dialog header p{margin:4px 0 0;color:#7c8591;font-size:11px}.ppd-batch-dialog header>button{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;cursor:pointer}\n.ppd-batch-tools{min-height:44px;display:flex;align-items:center;gap:7px;padding:7px 16px;border-bottom:1px solid #e4e7eb;background:#fff}.ppd-batch-tools>button,.ppd-batch-dialog footer button,.ppd-batch-bulk>button{height:30px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 10px;color:#59636f;font-size:11px;cursor:pointer}.ppd-batch-tools>button:disabled,.ppd-batch-dialog footer button:disabled,.ppd-batch-bulk>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-state{margin-left:auto;border-radius:999px;background:#eef1f4;padding:4px 9px;color:#697381;font-size:10px}.ppd-batch-state.is-running{background:#edf4ff;color:#38649a}.ppd-batch-state.is-blocked,.ppd-batch-state.is-partial{background:#fff3dc;color:#8b651d}.ppd-batch-state.is-completed{background:#eaf7ee;color:#33714a}\n.ppd-batch-bulk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:7px;padding:9px 16px;border-bottom:1px solid #e1e5e9;background:#f1f3f5}.ppd-batch-bulk>label{min-width:0;display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:5px;color:#6d7580;font-size:10px}.ppd-batch-bulk input:not([type=checkbox]),.ppd-batch-bulk select{box-sizing:border-box;min-width:0;height:28px;border:1px solid #d8dde3;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font:inherit}.ppd-batch-feedback{margin:0;padding:7px 16px;border-bottom:1px solid #e1e5e9;background:#edf5ff;color:#416a98;font-size:11px}.ppd-batch-feedback.is-error{background:#fff0f0;color:#9a3f3f}\n.ppd-batch-table{min-height:0;overflow:auto;padding:10px 12px;display:grid;align-content:start;gap:8px}.ppd-batch-row{display:grid;grid-template-columns:38px 94px minmax(260px,1fr) 105px;align-items:center;gap:10px;min-height:108px;border:1px solid #e0e4e8;border-radius:12px;background:#fff;padding:9px}.ppd-batch-select{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-right:1px solid #edf0f2;color:#8a929d;font-size:11px}.ppd-batch-select input{width:15px;height:15px;accent-color:#252b34}\n.ppd-batch-reference-grid{width:88px;height:88px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:4px}.ppd-batch-reference{position:relative;overflow:hidden;border:1px dashed #d5dae0;border-radius:7px;background:#f7f8fa;display:grid;place-items:center;color:#a0a7b0}.ppd-batch-reference.has-image{border-style:solid;background:#eceff2}.ppd-batch-reference img{width:100%;height:100%;object-fit:cover}.ppd-batch-reference>label{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer}.ppd-batch-reference.has-image>label{right:18px;bottom:1px;top:auto;left:auto;width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.9);color:#52606f;font-size:10px}.ppd-batch-reference input{display:none}.ppd-batch-reference>button{position:absolute;right:1px;top:1px;width:17px;height:17px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#9a4141;font-size:11px;line-height:17px;cursor:pointer}.ppd-batch-reference b{font-size:17px;font-weight:400}\n.ppd-batch-reference b.ppd-batch-reference-pending{position:absolute;left:2px;bottom:2px;padding:0 3px;border-radius:3px;background:rgba(24,30,38,.72);color:#fff;font-size:9px;line-height:13px;font-weight:500;pointer-events:none}\n.ppd-batch-main{min-width:0;display:grid;gap:7px}.ppd-batch-main>textarea{box-sizing:border-box;width:100%;height:48px;resize:vertical;border:1px solid #dce1e6;border-radius:8px;padding:8px;color:#303741;font:inherit;font-size:11px;line-height:1.4}.ppd-batch-row-controls{display:flex;align-items:center;gap:7px}.ppd-batch-row-controls>select{min-width:140px;max-width:240px;height:28px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px}.ppd-batch-parameters{position:relative;min-width:0;flex:1}.ppd-batch-parameters>summary{overflow:hidden;height:28px;display:flex;align-items:center;border:1px solid #dce1e6;border-radius:7px;padding:0 8px;color:#66707c;font-size:10px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-parameter-grid{position:absolute;z-index:4;left:0;top:34px;width:min(520px,70vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #dce1e6;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:10px}.ppd-batch-parameter-grid label{display:grid;gap:3px;color:#7c8490;font-size:9px}.ppd-batch-parameter-grid select,.ppd-batch-parameter-grid input[type=number]{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font-size:10px}.ppd-batch-parameter-grid .ppd-batch-check{display:flex;align-items:center;gap:6px}.ppd-batch-row-error{color:#a34747;font-size:10px}\n.ppd-batch-skill{position:relative;flex:0 0 auto}.ppd-batch-skill-toggle{min-width:140px;max-width:240px;height:28px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px;cursor:pointer}.ppd-batch-skill-toggle>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-batch-skill-toggle:disabled{opacity:.5;cursor:not-allowed}.ppd-batch-skill-menu{position:absolute;z-index:6;left:0;top:32px;width:260px;display:grid;gap:5px;border:1px solid #dce1e6;border-radius:9px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:7px}.ppd-batch-skill-menu>input{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;padding:0 7px;color:#343b45;font:inherit;font-size:10px}.ppd-batch-skill-list{max-height:220px;display:grid;gap:2px;overflow:auto}.ppd-batch-skill-list>button{height:26px;display:flex;align-items:center;overflow:hidden;border:0;border-radius:6px;background:transparent;padding:0 7px;color:#4d5662;font-size:10px;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-skill-list>button:hover:not(:disabled){background:#f1f3f5}.ppd-batch-skill-list>button[aria-selected=true]{background:#eef1f4;color:#252b34;font-weight:600}.ppd-batch-skill-list>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-skill-list>small{padding:3px 7px;color:#8a929d;font-size:10px}.ppd-batch-bulk .ppd-batch-skill{min-width:0}.ppd-batch-bulk .ppd-batch-skill-toggle{width:100%;max-width:none;min-width:0}.ppd-batch-tools>button.is-danger{color:#a34444}\n.ppd-batch-result{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px;border-left:1px solid #edf0f2;padding-left:9px}.ppd-batch-result>span{border-radius:999px;background:#eef1f4;padding:3px 7px;color:#66717e;font-size:9px}.ppd-batch-result>span.is-generating,.ppd-batch-result>span.is-submitting{background:#edf4ff;color:#3d6695}.ppd-batch-result>span.is-completed{background:#eaf7ee;color:#33714a}.ppd-batch-result>span.is-failed,.ppd-batch-result>span.is-unknown{background:#fff0e7;color:#9a5738}.ppd-batch-result>strong{font-size:11px}.ppd-batch-result>button{border:0;background:transparent;color:#9299a2;font-size:9px;cursor:pointer}.ppd-batch-empty{min-height:210px;display:grid;place-content:center;gap:5px;color:#858e99;text-align:center}.ppd-batch-empty strong{color:#4d5662;font-size:14px}.ppd-batch-empty span{font-size:11px}\n.ppd-batch-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-top:1px solid #dfe3e8;background:#fff}.ppd-batch-dialog>footer>div{display:flex;align-items:center;gap:12px}.ppd-batch-dialog>footer>div:first-child{display:grid;gap:2px}.ppd-batch-dialog>footer strong{font-size:12px}.ppd-batch-dialog>footer span{color:#7b8490;font-size:10px}.ppd-batch-dialog footer .is-primary{border-color:#252b34;background:#252b34;color:#fff}.ppd-batch-dialog footer .is-danger{color:#a34444}\n@media(max-width:900px){.ppd-batch-backdrop{padding:12px}.ppd-batch-dialog{height:calc(100vh - 24px)}.ppd-batch-bulk{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-batch-row{grid-template-columns:32px 82px minmax(180px,1fr)}.ppd-batch-reference-grid{width:78px;height:78px}.ppd-batch-result{grid-column:3;flex-direction:row;justify-content:flex-end;border-left:0;border-top:1px solid #edf0f2;padding:7px 0 0}.ppd-batch-dialog>footer{align-items:flex-start;flex-direction:column}.ppd-batch-dialog>footer>div:last-child{align-self:flex-end}}\n.ppd-skill-open{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:transparent;cursor:pointer}\n.ppd-skill-browser-backdrop{position:fixed;z-index:140;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.4);backdrop-filter:blur(3px)}\n.ppd-skill-browser{box-sizing:border-box;width:min(920px,100%);max-height:min(680px,calc(100vh - 48px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.3);color:#252b34;text-align:left}\n.ppd-skill-browser-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-skill-browser-head>strong{font-size:15px}.ppd-skill-browser-close{width:28px;height:28px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:18px;line-height:1;cursor:pointer}\n.ppd-skill-browser-search{flex:none;padding:10px 18px 0}.ppd-skill-browser-search>input{box-sizing:border-box;width:100%;height:34px;border:1px solid #dce1e6;border-radius:9px;background:#fff;padding:0 11px;color:#262c35;font:inherit;font-size:12px}.ppd-skill-browser-search>input:focus{outline:none;border-color:#b9c0ca;box-shadow:0 0 0 3px rgba(37,43,52,.07)}\n.ppd-skill-browser-tabs{flex:none;display:flex;gap:4px;padding:10px 18px 0}.ppd-skill-browser-tabs>button{height:28px;border:0;border-radius:8px;background:transparent;padding:0 10px;color:#7b8490;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.ppd-skill-browser-tabs>button:hover{background:#eef0f3;color:#3a4250}.ppd-skill-browser-tabs>button.is-active{background:#252b34;color:#fff}\n.ppd-skill-browser-categories{flex:none;display:flex;flex-wrap:wrap;gap:5px;padding:8px 18px 0}.ppd-skill-browser-categories>button{height:24px;border:1px solid #e1e5ea;border-radius:999px;background:#fff;padding:0 9px;color:#69737f;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-categories>button.is-selected{border-color:#252b34;background:#eef0f3;color:#252b34;font-weight:600}\n.ppd-skill-browser-list{flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));align-content:start;gap:8px;overflow:auto;padding:12px 18px 16px}\n.ppd-skill-browser-status{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;padding:18px 4px;color:#7b8490;font-size:12px}\n.ppd-skill-card{box-sizing:border-box;display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #e3e6ea;border-radius:12px;background:#fff;padding:8px;color:#252b34;font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}.ppd-skill-card:hover:not(:disabled){border-color:#c9ced6;box-shadow:0 6px 18px rgba(20,27,38,.08);transform:translateY(-1px)}.ppd-skill-card.is-selected{border-color:#252b34;box-shadow:inset 0 0 0 1px #252b34}.ppd-skill-card:disabled{opacity:.5;cursor:not-allowed}\n.ppd-skill-card-cover{position:relative;width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:linear-gradient(145deg,#eef0f4,#e2e6ec);color:#98a1ac}.ppd-skill-card-cover[data-image-pair]{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-skill-card-cover>img{display:block;width:100%;height:100%;object-fit:cover}.ppd-skill-card-fallback{font-size:20px}\n.ppd-skill-card-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.ppd-skill-card-copy>strong,.ppd-skill-card-copy>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-skill-card-copy>strong{font-size:12px;font-weight:650}.ppd-skill-card-copy>small{color:#7b8490;font-size:10px}\n.ppd-skill-browser-more{flex:none;align-self:center;margin:0 0 14px;height:30px;border:1px solid #dce1e6;border-radius:999px;background:#fff;padding:0 14px;color:#4d5662;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-more:disabled{opacity:.6;cursor:default}\n.ppd-skill-browser-family{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 18px 0}.ppd-skill-browser-back{align-self:flex-start;height:26px;border:0;border-radius:7px;background:transparent;padding:0 6px;color:#5b6470;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-family>.ppd-skill-browser-list{padding:8px 0 14px}\n@media(max-width:640px){.ppd-skill-browser-backdrop{padding:0}.ppd-skill-browser{width:100%;height:100%;border:0;border-radius:0}.ppd-skill-browser-list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:10px 12px 14px}.ppd-skill-browser-search,.ppd-skill-browser-tabs,.ppd-skill-browser-categories{padding-left:12px;padding-right:12px}}\n\n.ppd-model-popover[popover]{position:fixed;margin:0;overscroll-behavior:contain}\n.ppd-model-popover[popover]:not(:popover-open){display:none}\n.ppd-model-popover[popover]>button{min-height:54px}\n.ppd-model-popover[popover] .ppd-model-brand{width:32px;height:32px;flex-basis:32px}\n\n/* Resource actions stay visible in the upper-right, separate from the generation controls. */\n.ppd-composer-top-actions{position:absolute;z-index:8;top:10px;right:76px;display:flex;align-items:center;gap:7px}.ppd-generation-shell.is-floating .ppd-composer-top-actions{top:20px;right:86px}.ppd-composer-top-button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#f5f6f7;padding:0 10px;color:#343b45;font-size:10px;font-weight:600;white-space:nowrap;cursor:pointer}.ppd-composer-top-button:hover{border-color:#b8c0ca;background:#eceff2}.ppd-generation-shell.is-floating .ppd-composer-media-row,.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:270px}\n@media(max-width:560px){.ppd-generation-shell.is-floating{box-sizing:border-box;width:calc(100% - 24px)}.ppd-generation-shell.is-floating .ppd-generation-form,.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:100%;min-width:0}.ppd-composer-top-actions{right:48px;gap:2px}.ppd-generation-shell.is-floating .ppd-composer-top-actions{right:82px}.ppd-composer-top-button,.ppd-composer-top-actions .ppd-batch-launchers>button{padding-inline:3px;font-size:8px}.ppd-generation-shell.is-floating .ppd-composer-media-row,.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:220px}}\n\n/* Standalone resource preset editor: never shares mutable composer state. */\n.ppd-generation-preset-backdrop{--ppd-accent:#252522;--ppd-line:#e5e5e1;--ppd-muted:#74746d;position:fixed;z-index:160;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.42);backdrop-filter:blur(3px)}\n.ppd-generation-preset-dialog{box-sizing:border-box;width:min(620px,100%);max-height:calc(100vh - 48px);overflow:auto;border:1px solid #dfe3e8;border-radius:18px;background:#fff;box-shadow:0 28px 80px rgba(17,24,36,.3);padding:20px;color:#252b34;text-align:left;outline:none}\n.ppd-generation-preset-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.ppd-generation-preset-dialog h2{margin:2px 0 0;font-size:20px}.ppd-generation-preset-close{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;line-height:1;cursor:pointer}.ppd-generation-preset-guide{margin:10px 0 18px;color:#697381;font-size:12px;line-height:1.55}.ppd-generation-preset-state{margin:20px 0;color:#7b8490;font-size:12px}.ppd-generation-preset-warning{margin:0 0 14px;border-radius:8px;background:#fff8e8;padding:9px 11px;color:#84611d;font-size:11px}.ppd-generation-preset-dialog fieldset{margin:0;padding:0;border:0}.ppd-generation-preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.ppd-generation-preset-grid>label{display:grid;gap:5px;color:#626c78;font-size:11px}.ppd-generation-preset-grid select,.ppd-generation-preset-grid input{box-sizing:border-box;width:100%;height:36px;border:1px solid #dce1e6;border-radius:8px;background:#fff;padding:0 10px;color:#303741;font:inherit}.ppd-generation-preset-grid select:focus,.ppd-generation-preset-grid input:focus{outline:none;border-color:#aeb7c2;box-shadow:0 0 0 3px rgba(37,43,52,.07)}.ppd-generation-preset-toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:15px;border-top:1px solid #eceff2}.ppd-generation-preset-toggles>label{display:flex;align-items:center;gap:7px;border:1px solid #e1e5e9;border-radius:999px;background:#f7f8f9;padding:7px 10px;color:#59636f;font-size:11px}.ppd-generation-preset-toggles input{accent-color:#252b34}.ppd-generation-preset-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:20px;padding-top:16px;border-top:1px solid #e7eaee}.ppd-generation-preset-dialog>footer>span{color:#7b8490;font-size:10px}.ppd-generation-preset-dialog>footer>span.is-dirty{color:#8a651f}.ppd-generation-preset-dialog>footer>div{display:flex;gap:8px}.ppd-generation-preset-dialog .ppd-alert{margin:0 0 14px}\n.ppd-generation-preset-dialog [data-generation-preset-save]{border-color:#252b34;background:#252b34;color:#fff}.ppd-generation-preset-dialog [data-generation-preset-save]:hover:not(:disabled){border-color:#101318;background:#101318}.ppd-generation-preset-dialog [data-generation-preset-save]:disabled{opacity:.48}\n@media(max-width:560px){.ppd-generation-preset-backdrop{padding:10px}.ppd-generation-preset-dialog{max-height:calc(100vh - 20px);padding:16px}.ppd-generation-preset-grid{grid-template-columns:1fr}.ppd-generation-preset-dialog>footer{align-items:stretch;flex-direction:column}.ppd-generation-preset-dialog>footer>div{justify-content:flex-end}}\n\n.ppd-reference-more{position:absolute;right:3px;top:3px;z-index:3}.ppd-reference-more summary{display:grid;place-items:center;width:22px;height:22px;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:rgba(18,18,18,.72);color:#fff;cursor:pointer;list-style:none;line-height:1}.ppd-reference-more summary::-webkit-details-marker{display:none}.ppd-reference-more>div{position:absolute;right:0;top:26px;min-width:112px;padding:5px;border:1px solid #dedede;border-radius:10px;background:#fff;color:#252b34;box-shadow:0 12px 28px rgba(0,0,0,.18)}.ppd-reference-more button{display:block;width:100%;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:inherit;text-align:left;white-space:nowrap}.ppd-reference-more button:hover{background:#f0f1f2}.ppd-reference-more button:disabled{opacity:.4}.ppd-result-image-more{position:absolute;right:10px;top:10px;z-index:4}.ppd-result-image-more summary{display:grid;place-items:center;width:28px;height:28px;border:1px solid #ddd;border-radius:999px;background:rgba(255,255,255,.94);color:#222;cursor:pointer;list-style:none}.ppd-result-image-more summary::-webkit-details-marker{display:none}.ppd-result-image-more>button{position:absolute;right:0;top:32px;min-width:108px;padding:8px 10px;border:1px solid #ddd;border-radius:9px;background:#fff;color:#222;box-shadow:0 10px 26px rgba(0,0,0,.16);white-space:nowrap}.ppd-result-image-actions{display:flex;gap:8px;margin-top:8px}.ppd-result-image-actions>button{padding:7px 10px;border:1px solid #ddd;border-radius:8px;background:#fff}\n.ppd-inpaint-backdrop{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:20px;background:rgba(12,12,14,.68);backdrop-filter:blur(6px)}.ppd-inpaint-dialog{box-sizing:border-box;width:min(920px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:18px;border:1px solid #ddd;border-radius:18px;background:#fff;color:#171717;box-shadow:0 28px 90px rgba(0,0,0,.34)}.ppd-inpaint-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.ppd-inpaint-dialog h2,.ppd-inpaint-dialog header p{margin:0}.ppd-inpaint-dialog header p{margin-top:3px;color:#777;font-size:12px}.ppd-inpaint-dialog header>button{width:34px;height:34px;border:0;border-radius:999px;font-size:23px;background:#f1f1f1}.ppd-inpaint-canvas__toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}.ppd-inpaint-canvas__toolbar button{padding:7px 12px;border:1px solid #ddd;border-radius:9px;background:transparent;color:inherit}.ppd-inpaint-canvas__toolbar button[aria-pressed="true"]{background:#181818;color:#fff}.ppd-inpaint-canvas__toolbar label{display:flex;align-items:center;gap:7px;margin-left:auto}.ppd-inpaint-canvas__frame{display:flex;align-items:center;justify-content:center;width:100%;max-height:min(58vh,620px);overflow:hidden;border-radius:13px;background:#e9e9e9}.ppd-inpaint-canvas__stage{position:relative;flex:0 0 auto;max-width:100%;overflow:hidden;background:#e9e9e9;touch-action:none;user-select:none}.ppd-inpaint-canvas__stage img,.ppd-inpaint-canvas__stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.ppd-inpaint-canvas__stage canvas{cursor:crosshair}.ppd-inpaint-prompt{display:grid;gap:7px;margin-top:14px;font-weight:650}.ppd-inpaint-prompt textarea{min-height:82px;resize:vertical;padding:11px 12px;border:1px solid #ddd;border-radius:10px;background:transparent;color:inherit;font:inherit}.ppd-inpaint-preserve{display:flex;align-items:flex-start;gap:9px;margin-top:12px}.ppd-inpaint-preserve span{display:grid;gap:2px}.ppd-inpaint-preserve small{color:#777;font-weight:400}.ppd-inpaint-dialog>footer{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:9px;margin-top:15px}.ppd-inpaint-dialog>footer strong{margin-right:auto}.ppd-inpaint-dialog>footer button{padding:9px 15px;border:1px solid #ddd;border-radius:10px;background:transparent;color:inherit}.ppd-inpaint-dialog>footer button:last-child{border-color:#191919;background:#191919;color:#fff}@media(max-width:600px){.ppd-inpaint-backdrop{padding:0}.ppd-inpaint-dialog{max-height:100vh;min-height:100vh;border-radius:0}.ppd-inpaint-canvas__toolbar label{width:100%;margin-left:0}.ppd-inpaint-dialog>footer strong{width:100%}}\n\n/* Reference actions use the browser top layer, outside thumbnail clipping. */\n.ppd-reference-more{left:3px;right:auto}\n.ppd-reference-more>button{display:grid;place-items:center;width:22px;height:22px;padding:0;border:1px solid rgba(255,255,255,.55);border-radius:7px;background:rgba(18,18,18,.72);color:#fff;cursor:pointer;line-height:1}\n.ppd-reference-popover{position:fixed;box-sizing:border-box;inset:auto;border:1px solid #dedede;border-radius:10px;padding:5px;background:#fff;color:#252b34;box-shadow:0 12px 28px rgba(0,0,0,.18);overflow:auto}\n.ppd-reference-popover:not(:popover-open){display:none}\n.ppd-reference-popover button{display:block;width:100%;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:inherit;text-align:left;white-space:nowrap;cursor:pointer}\n.ppd-reference-popover button:hover{background:#f0f1f2}.ppd-reference-popover button:disabled{opacity:.4}\n.ppd-reference-token>.ppd-upload-preview-remove{z-index:4;width:22px;height:22px;font-size:18px;line-height:1}\n/* The body scrolls independently; header and submit actions stay in the viewport. */\n.ppd-inpaint-backdrop{box-sizing:border-box;font:14px/1.5 system-ui,sans-serif}\n.ppd-inpaint-dialog{display:flex;flex-direction:column;min-height:0;max-height:calc(100dvh - 40px);overflow:hidden}\n.ppd-inpaint-dialog>header,.ppd-inpaint-dialog>footer{flex-shrink:0}\n.ppd-inpaint-dialog>header>div{min-width:0}.ppd-inpaint-dialog header p{overflow-wrap:anywhere}\n.ppd-inpaint-dialog__body{min-height:0;overflow:auto;overscroll-behavior:contain}\n.ppd-inpaint-dialog>footer{padding-top:10px;border-top:1px solid #eee}\n.ppd-inpaint-prompt textarea{box-sizing:border-box;width:100%}\n@media(max-width:600px){.ppd-inpaint-dialog{height:100dvh;min-height:0;max-height:100dvh}.ppd-inpaint-canvas__toolbar input{max-width:55vw}}\n';
+var generation_panel_default = '.ppd-visually-hidden{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-skill-feedback{margin:6px 0 0;display:flex;align-items:center;gap:8px;color:#a13d31;font-size:12px;line-height:18px}.ppd-skill-feedback .ppd-link-button{flex:none}\n.ppd-generation-shell.is-floating:has(>.ppd-skill-feedback){height:auto}\n.ppd-generation{min-width:0}.ppd-generation-loading{display:flex;align-items:center;gap:6px;margin-top:7px;color:var(--ppd-muted)}.ppd-generation-loading .ppd-spinner{width:12px;height:12px}.ppd-generation-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,300px);gap:18px;align-items:start}.ppd-generation-form{min-width:0;margin:0;border:0;padding:0;display:grid;gap:9px}.ppd-generation-form:disabled{opacity:1}.ppd-generation-form:disabled .ppd-web-composer{opacity:.72}.ppd-link-button{width:max-content;border:0;background:none;color:var(--ppd-accent);padding:0;font:inherit;cursor:pointer}.ppd-form-hint,.ppd-generation-quote small,.ppd-muted{color:var(--ppd-muted);font-size:12px}\n\n.ppd-web-composer{--composer-line:#e0e4eb;--composer-soft:#f0f2f5;--composer-muted:#676f7e;--composer-faint:#a8afbd;--composer-ink:#0b0d12;position:relative;box-sizing:border-box;width:100%;max-width:720px;height:178px;border:1px solid var(--composer-line);border-radius:16px;background:#fff;box-shadow:0 2px 5px rgba(15,20,28,.04);padding:12px 12px 8px;display:flex;flex-direction:column;transition:box-shadow .18s,border-color .18s}.ppd-web-composer.is-focused{border-color:var(--composer-line);box-shadow:0 2px 5px rgba(15,20,28,.04)}.ppd-composer-media-row{height:64px;display:flex;align-items:flex-start;gap:8px;padding-right:38px;min-width:0}.ppd-composer-clear{position:absolute;z-index:7;top:14px;right:14px;width:30px;height:30px;display:grid;place-items:center;border:0;border-radius:8px;background:transparent;color:#8b929d;cursor:pointer;font-size:21px;line-height:1;transform:rotate(-20deg);transition:background-color .18s,color .18s,transform .18s}.ppd-composer-clear:hover{background:var(--composer-soft);color:#3f4752;transform:translateY(-1px) rotate(-20deg)}.ppd-web-composer>textarea{flex:1;min-height:0;resize:none;border:0;outline:0;background:transparent;color:var(--composer-ink);font-family:inherit;font-size:12px;line-height:18px;font-weight:500;padding:0 2px}.ppd-web-composer>textarea::placeholder{color:var(--composer-faint)}\n.ppd-skill-token{position:relative;box-sizing:border-box;width:max-content;min-width:170px;max-width:min(300px,calc(100% - 64px));height:56px;flex:0 1 auto;padding:0 13px;display:flex;align-items:center;justify-content:flex-start;gap:10px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-skill-token.has-value{padding-right:12px;border:0;background:#121418;color:#fff}.ppd-skill-copy{position:static;min-width:0;display:flex;flex:1;flex-direction:column;align-items:flex-start;gap:2px}.ppd-skill-token small{color:#7b8290;font-size:9px;line-height:11px;font-weight:700;letter-spacing:.04em}.ppd-skill-token strong{max-width:220px;overflow:hidden;color:inherit;font-size:12px;line-height:14px;font-weight:700;text-overflow:ellipsis;white-space:nowrap}.ppd-token-mark{width:28px;height:28px;display:grid;place-items:center;flex:0 0 28px;border-radius:8px;background:#fff;color:#1a1d24;font-size:16px}.ppd-skill-cover{width:42px;height:42px;flex:0 0 42px;border-radius:8px;object-fit:cover}.ppd-skill-token>select,.ppd-upload-tile>select,.ppd-toolbar-select>select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}\n.ppd-inpaint-mode-token{box-sizing:border-box;min-width:240px;max-width:100%;height:56px;display:flex;align-items:center;gap:9px;padding:7px 9px;border:1px solid #d8dce3;border-radius:10px;background:#f2f4f7;color:#252a34}.ppd-inpaint-mode-token>span:nth-child(2){min-width:0;display:grid;flex:1}.ppd-inpaint-mode-token small{color:#777f8c;font-size:9px}.ppd-inpaint-mode-token strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.ppd-inpaint-mode-token>button{border:0;border-radius:7px;background:#fff;padding:5px 7px;color:#333;font-size:11px}.ppd-inpaint-mode-token>button:last-child{width:25px;height:25px;padding:0;border-radius:50%;font-size:16px}\n.ppd-inpaint-fixed-contract{height:32px;display:flex;align-items:center;padding:0 9px;border-radius:8px;background:#f2f4f7;color:#4f5866;font-size:11px;font-weight:650;white-space:nowrap}\n.ppd-reference-tray{position:relative;height:56px;min-width:0;display:flex;flex:0 1 auto;align-items:flex-start;gap:8px;isolation:isolate}.ppd-upload-tile,.ppd-reference-token{position:relative;box-sizing:border-box;width:56px;height:56px;flex:0 0 56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;display:grid;place-items:center;color:#6f7783;cursor:pointer;overflow:hidden}.ppd-upload-tile:hover{border-color:#1597e5;background:#eaf6fd;color:#086eba}.ppd-local-upload{border-style:solid;font-size:22px}.ppd-reference-token{border:0;background:#242830;color:#fff}.ppd-reference-token>img{width:100%;height:100%;object-fit:cover}.ppd-reference-token>span{font-size:17px;font-weight:800}.ppd-reference-token>b{position:absolute;right:4px;bottom:4px;width:17px;height:17px;border-radius:50%;background:rgba(0,0,0,.72);display:grid;place-items:center;font-size:10px}.ppd-reference-actions{position:absolute;inset:0;display:flex;align-items:flex-start;justify-content:flex-end;gap:2px;padding:3px;background:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 54%);opacity:0;transition:opacity .14s}.ppd-reference-token:hover .ppd-reference-actions,.ppd-reference-token:focus-within .ppd-reference-actions{opacity:1}.ppd-reference-actions button{width:15px;height:15px;border:0;border-radius:50%;padding:0;background:rgba(0,0,0,.72);color:#fff;display:grid;place-items:center;font-size:9px;line-height:1;cursor:pointer}.ppd-reference-actions button:disabled{opacity:.35}.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:absolute;z-index:6;left:38px;top:22px;width:36px;height:36px;border:2px solid #fff;border-radius:50%;background:#242830;color:#fff;box-shadow:0 4px 10px rgba(12,16,22,.24)}.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:-40px}.ppd-reference-tray.has-references>.ppd-reference-token{border:2px solid #fff;border-radius:15px;clip-path:polygon(10% 12%,35% 3%,68% 8%,93% 2%,98% 36%,90% 68%,96% 92%,58% 97%,28% 91%,3% 98%,7% 61%,2% 31%);box-shadow:0 3px 9px rgba(19,24,31,.18);transition:margin-left .24s cubic-bezier(.2,.72,.2,1),clip-path .2s ease,border-radius .2s ease,transform .2s ease}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(2n){transform:rotate(4deg)}.ppd-reference-tray.has-references>.ppd-reference-token:nth-of-type(3n){transform:rotate(-4deg)}.ppd-reference-tray.has-references:is(:hover,:focus-within){z-index:8}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references:is(:hover,:focus-within)>.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-tray.has-references:not(:hover):not(:focus-within)>.ppd-local-upload{display:none}\n.ppd-composer-toolbar{height:38px;display:flex;align-items:flex-end;justify-content:space-between;gap:8px}.ppd-toolbar-left,.ppd-toolbar-right{display:flex;align-items:center;gap:2px;min-width:0}.ppd-toolbar-left{flex:1}.ppd-toolbar-right{flex:none}.ppd-toolbar-divider{width:1px;height:22px;flex:0 0 1px;background:var(--composer-line);margin:0 6px 5px 5px}.ppd-toolbar-icon,.ppd-toolbar-button,.ppd-toolbar-select{position:relative;box-sizing:border-box;height:32px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--composer-muted);display:flex;align-items:center;justify-content:center;gap:5px;cursor:pointer;white-space:nowrap}.ppd-toolbar-icon{width:32px;flex:0 0 32px;padding:0}.ppd-toolbar-button,.ppd-toolbar-select{padding:0 8px;font-size:12px;font-weight:500}.ppd-toolbar-icon:hover,.ppd-toolbar-button:hover,.ppd-toolbar-select:hover{background:var(--composer-soft);color:var(--composer-ink)}.ppd-toolbar-select strong{max-width:118px;overflow:hidden;font-size:12px;font-weight:500;text-overflow:ellipsis;white-space:nowrap}.ppd-model-dot{width:14px;height:14px;flex:0 0 14px;border-radius:4px;background:linear-gradient(145deg,#7b8cff,#7557d8);box-shadow:inset 0 0 0 1px rgba(255,255,255,.3)}.ppd-model-dot.is-gpt{background:linear-gradient(145deg,#49c970,#138f7e)}\n.ppd-contract-control{position:absolute!important;width:1px!important;height:1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;opacity:.001!important;pointer-events:none!important}.ppd-model-menu,.ppd-settings-menu{position:relative}.ppd-model-menu>summary,.ppd-settings-menu>summary{list-style:none}.ppd-model-menu>summary::-webkit-details-marker,.ppd-settings-menu>summary::-webkit-details-marker{display:none}.ppd-model-menu[open]>summary,.ppd-settings-menu[open]>summary{background:var(--composer-soft);color:var(--composer-ink)}.ppd-settings-menu summary>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu summary>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover,.ppd-settings-popover{position:absolute;z-index:30;left:0;bottom:38px;box-sizing:border-box;border:1px solid #e3e6ea;border-radius:12px;background:#fff;box-shadow:0 12px 30px rgba(20,27,38,.14)}.ppd-model-popover{width:390px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px;display:grid;gap:7px}.ppd-model-popover>header{display:flex;flex-direction:column;gap:2px;padding:7px 9px 5px}.ppd-model-popover>header strong{color:#202630;font-size:12px}.ppd-model-popover>header small{color:#959daa;font-size:9px}.ppd-model-popover>button{position:relative;min-height:74px;border:1px solid #e2e6eb;border-radius:12px;padding:9px 38px 9px 9px;background:#fff;display:flex;align-items:center;gap:11px;color:#171b22;text-align:left;cursor:pointer}.ppd-model-popover>button:hover,.ppd-model-popover>button.is-selected{border-color:#b5bdc8;background:#eef1f5}.ppd-model-popover>button:disabled{opacity:.55;cursor:not-allowed}.ppd-model-popover>button>span:nth-child(2){min-width:0;display:flex;flex:1;flex-direction:column;gap:4px}.ppd-model-popover>button strong{overflow:hidden;font-size:13px;text-overflow:ellipsis;white-space:nowrap}.ppd-model-popover>button small{color:#697383;font-size:10px}.ppd-model-popover>button>b{position:absolute;right:15px}.ppd-model-brand{width:42px;height:42px;flex:0 0 42px;border-radius:11px;background:linear-gradient(145deg,#8798ff,#7053d4);display:grid;place-items:center;color:#fff;font-size:10px;font-weight:800}.ppd-model-brand.is-gpt{background:linear-gradient(145deg,#58cf78,#168e7e)}.ppd-settings-popover{width:330px;max-height:min(440px,calc(100vh - 40px));overflow:auto;padding:7px}.ppd-settings-popover section+section{margin-top:5px}.ppd-settings-popover section>label:first-child{display:block;margin:0 3px 3px;color:#8a929e;font-size:9px;font-weight:650}.ppd-ratio-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;padding:4px;border-radius:12px;background:#f6f7f9}.ppd-ratio-grid button{min-height:40px;border:0;border-radius:8px;background:transparent;color:#77808c;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer}.ppd-ratio-grid button:hover,.ppd-ratio-grid button.is-selected,.ppd-segmented button:hover,.ppd-segmented button.is-selected{background:#fff;color:#202630;box-shadow:0 1px 4px rgba(18,25,35,.08)}.ppd-ratio-grid b{font-size:10px}.ppd-ratio-glyph{width:15px;height:11px;border:1.5px solid currentColor;border-radius:3px}.ppd-segmented{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:2px;padding:3px;border-radius:10px;background:#f6f7f9}.ppd-segmented button{min-width:0;height:28px;border:0;border-radius:7px;background:transparent;color:#74808d;cursor:pointer;font-size:10px;text-transform:capitalize}.ppd-settings-check{position:relative;height:30px;display:flex!important;align-items:center!important;gap:7px!important;margin:0!important;color:#687281!important;cursor:pointer}.ppd-settings-check>input{position:absolute;opacity:0}.ppd-settings-check>i{position:relative;width:30px;height:18px;border-radius:999px;background:#dfe3e8}.ppd-settings-check>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-settings-check>input:checked+i{background:#1d2734}.ppd-settings-check>input:checked+i>b{transform:translateX(12px)}\n.ppd-search-chip{position:relative;height:32px;border:1px solid transparent;border-radius:8px;background:#f6f7f9;color:#737d8a;display:flex;align-items:center;gap:8px;padding:0 7px 0 9px;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-search-chip>input,.ppd-eco-control>input{position:absolute;opacity:0;pointer-events:none}.ppd-search-chip>i,.ppd-eco-control>i{position:relative;width:30px;height:18px;flex:0 0 30px;border-radius:999px;background:#dfe3e8;transition:background-color .18s}.ppd-search-chip>i>b,.ppd-eco-control>i>b{position:absolute;top:3px;left:3px;width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(18,25,35,.18);transition:transform .18s}.ppd-search-chip.is-selected{background:#f0efff;color:#514aab}.ppd-search-chip.is-selected>i{background:#625abd}.ppd-search-chip.is-selected>i>b,.ppd-eco-control.is-selected>i>b{transform:translateX(12px)}.ppd-eco-control{position:relative;height:30px;display:flex;align-items:center;gap:5px;padding:0 4px;color:#7d8794;cursor:pointer;white-space:nowrap;font-size:11px;font-weight:550}.ppd-eco-control.is-selected>i{background:#1d2734}.ppd-generation-cost{height:32px;display:flex;align-items:center;gap:4px;padding:0 2px;color:#6f7782;white-space:nowrap}.ppd-generation-cost>strong{min-width:14px;color:#4d5560;font-size:13px;font-weight:700}.ppd-generate-button{width:34px;height:32px;flex:0 0 34px;border:1px solid transparent;border-radius:7px;background:var(--composer-ink);color:#fff;display:grid;place-items:center;cursor:pointer;transition:transform .18s,background-color .3s}.ppd-generate-button:hover:not(:disabled){transform:translateY(-1px);background:#232832}.ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint);cursor:not-allowed}.ppd-generate-button .ppd-spinner{width:14px;height:14px}.ppd-composer-meta{min-height:18px;display:flex;align-items:center;flex-wrap:wrap;gap:6px 12px;color:var(--ppd-muted);font-size:11px}.ppd-composer-meta>span+span:before{content:"\xB7";margin-right:12px}.ppd-file-input{display:none}\n.ppd-web-composer .ppd-model-popover,.ppd-web-composer .ppd-settings-popover{top:38px;bottom:auto}\n.ppd-generation-quote{position:sticky;top:0;display:grid;gap:12px;border:1px solid var(--ppd-line);border-radius:16px;background:var(--ppd-bg);padding:18px}.ppd-generation-quote h2{font-size:16px;margin:0}.ppd-generation-quote>strong{font-size:30px;line-height:1}.ppd-generation-quote>span{font-size:13px}.ppd-generation-quote p{margin:0;line-height:1.55}.ppd-generation-state{border-radius:9px;background:var(--ppd-surface);padding:8px 10px;font-weight:650}\n@media(hover:none),(pointer:coarse){.ppd-reference-tray.has-references>.ppd-upload-tile:first-child{position:relative;left:0;top:0;width:56px;height:56px;flex-basis:56px;border:1px dashed #c8cdd5;border-radius:10px;background:#f7f8f9;color:#6f7783;box-shadow:none}.ppd-reference-tray.has-references>.ppd-reference-token,.ppd-reference-tray.has-references>.ppd-reference-token+.ppd-reference-token{margin-left:0;border:0;border-radius:10px;clip-path:none;box-shadow:none;transform:none}.ppd-reference-actions{opacity:1}.ppd-reference-tray.has-references>.ppd-local-upload{display:grid}}\n@media(max-width:1050px){.ppd-generation-grid{grid-template-columns:1fr}.ppd-generation-quote{position:static;max-width:720px}.ppd-web-composer{max-width:none}}\n@media(max-width:720px){.ppd-web-composer{height:auto;min-height:214px}.ppd-composer-media-row{overflow-x:auto}.ppd-composer-toolbar{height:auto;min-height:72px;align-items:stretch;flex-direction:column}.ppd-toolbar-left{flex-wrap:wrap}.ppd-toolbar-right{justify-content:flex-end}.ppd-model-popover{left:0;right:auto;width:min(390px,calc(100vw - 52px))}.ppd-settings-popover{left:auto;right:0;width:min(330px,calc(100vw - 52px))}.ppd-search-chip>span{display:none}}\n@media(max-width:480px){.ppd-skill-token{min-width:138px}.ppd-skill-token strong{max-width:130px}.ppd-model-select strong{max-width:80px}.ppd-eco-control>span{display:none}}\n.ppd-generation-shell.is-inline{position:relative;width:min(720px,100%);margin:0 auto}.ppd-generation-shell.is-floating{position:absolute;z-index:45;left:50%;bottom:18px;width:min(720px,calc(100% - 40px));transform:translateX(-50%)}.ppd-generation-shell.is-floating:before{content:"";position:absolute;z-index:-1;inset:-24px -34px -22px;background:radial-gradient(ellipse at center,rgba(247,248,249,.98) 38%,rgba(247,248,249,.78) 64%,transparent 78%);pointer-events:none}.ppd-generation-shell.is-floating>.ppd-alert,.ppd-generation-shell.is-floating>.ppd-notice{margin:0 0 7px}.ppd-generation-shell.is-collapsed{width:min(620px,calc(100% - 40px))}.ppd-generation-collapsed{width:100%;height:54px;border:1px solid #dde1e6;border-radius:15px;background:rgba(255,255,255,.97);box-shadow:0 15px 45px rgba(23,30,42,.16);padding:0 12px;display:flex;align-items:center;gap:10px;color:#1d222b;text-align:left}.ppd-generation-collapsed>span:nth-child(2){min-width:0;display:grid;flex:1;gap:2px}.ppd-generation-collapsed strong,.ppd-generation-collapsed small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-generation-collapsed strong{font-size:12px}.ppd-generation-collapsed small{color:#8a929e;font-size:9px}.ppd-generation-collapsed>b{color:#596270;font-size:10px}.ppd-composer-actions{position:absolute;z-index:9;top:9px;right:9px;display:flex;gap:2px}.ppd-composer-actions button{width:29px;height:29px;border:0;border-radius:8px;background:transparent;color:#8b929d;display:grid;place-items:center}.ppd-composer-actions button:hover{background:var(--composer-soft);color:#3f4752}.ppd-composer-actions button svg{transform:rotate(-20deg)}.ppd-generation-shell.is-floating .ppd-composer-media-row{padding-right:70px}.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:38px}.ppd-generation-shell.is-inline .ppd-model-popover,.ppd-generation-shell.is-inline .ppd-settings-popover{top:38px;bottom:auto}.ppd-generation-shell.is-floating .ppd-model-popover,.ppd-generation-shell.is-floating .ppd-settings-popover{top:auto;bottom:38px}.ppd-generate-button{width:auto;min-width:104px;padding:0 7px 0 11px;display:flex;gap:8px}.ppd-generate-button>span:not(.ppd-spinner){white-space:nowrap;font-size:11px;font-weight:700}.ppd-generation-shell .ppd-composer-meta{display:none}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-inline{width:100%}}\n\n/* The native resource pages use the same Web dock geometry: a 480\xD740 trigger\n   opens into the 820\xD7200 shell, while the generation page keeps the composer inline. */\n.ppd-generation-shell.is-floating{bottom:76px;width:min(820px,calc(100% - 64px));height:200px;padding:10px;border:1px solid #d8dad5;border-radius:18px;background:rgba(255,255,255,.98);box-shadow:0 22px 64px rgba(16,24,38,.2),0 4px 12px rgba(16,24,38,.08);backdrop-filter:blur(12px);transform-origin:center bottom;animation:ppd-composer-open .28s cubic-bezier(.2,.82,.2,1)}\n@keyframes ppd-composer-open{from{opacity:0;transform:translateX(-50%) scale(.58,.18)}to{opacity:1;transform:translateX(-50%) scale(1)}}\n.ppd-generation-shell.is-floating:before{display:none}.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:none;border-color:transparent;box-shadow:none}.ppd-generation-shell.is-floating .ppd-composer-actions{right:19px;top:19px}\n.ppd-generation-shell.is-collapsed{bottom:24px;width:min(480px,calc(100% - 40px));height:40px;padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;backdrop-filter:none}\n.ppd-generation-collapsed{height:40px;border-color:#d5dbe3;border-radius:16px;padding:4px 5px;gap:9px;box-shadow:0 10px 32px rgba(16,24,38,.18),0 2px 6px rgba(16,24,38,.06)}\n.ppd-collapsed-add,.ppd-collapsed-expand{display:grid;place-items:center;flex:0 0 30px;width:30px;height:30px}.ppd-collapsed-add{color:#485260}.ppd-collapsed-placeholder{min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#737b89;font-size:13px;font-weight:500}.ppd-generation-collapsed>small{color:#8a929e;font-size:9px;white-space:nowrap}.ppd-collapsed-expand{border-radius:50%;background:#e9edf2;color:#7d8998;font-size:16px}\n.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-notice,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{position:absolute;z-index:3;right:12px;bottom:calc(100% + 8px);left:12px;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.96);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;text-align:center}.ppd-generation-shell:is(.is-floating,.is-inline)>.ppd-alert,.ppd-generation-shell:is(.is-floating,.is-inline) .ppd-form-hint{color:#a13e3e}\n.ppd-generation-shell.is-floating>.ppd-price-verification,.ppd-generation-shell.is-floating>.ppd-upload-feedback,.ppd-generation-shell.is-floating>.ppd-skill-feedback{position:absolute;z-index:4;right:12px;bottom:calc(100% + 8px);left:12px;box-sizing:border-box;width:auto;margin:0;border:1px solid rgba(208,214,222,.9);border-radius:999px;background:rgba(255,255,255,.98);box-shadow:0 6px 22px rgba(21,28,39,.1);padding:6px 12px;color:#66707e;font-size:10px;line-height:16px;text-align:center}\n.ppd-generation-shell.is-floating>.ppd-price-verification{color:#866218}.ppd-generation-shell.is-floating:has(>.ppd-price-verification)>.ppd-upload-feedback,.ppd-generation-shell.is-floating:has(>.ppd-price-verification)>.ppd-skill-feedback{bottom:calc(100% + 42px)}\n@media(max-width:720px){.ppd-generation-shell.is-floating{width:calc(100% - 24px)}.ppd-generation-shell.is-collapsed{width:calc(100% - 24px)}}\n.ppd-generation .ppd-generate-button{background:var(--composer-ink);color:#fff}.ppd-generation .ppd-generate-button>span,.ppd-generation .ppd-generate-button>svg{color:#fff;stroke:currentColor}.ppd-generation .ppd-generate-button:disabled{background:var(--composer-soft);color:var(--composer-faint)}.ppd-generation .ppd-generate-button:disabled>span,.ppd-generation .ppd-generate-button:disabled>svg{color:var(--composer-faint)}\n.ppd-generation .ppd-local-upload{display:none!important}\n\n/* Match Web product-mode selected Skill and empty floating reference tile. */\n.ppd-generation .ppd-skill-token.has-value{background:#eef0f4;color:#252a34}.ppd-generation-shell.is-floating .ppd-reference-tray:not(.has-references)>.ppd-upload-tile{border:0;border-radius:0;background:transparent}\n.ppd-add-menu{position:relative}.ppd-add-menu>summary{list-style:none}.ppd-add-menu>summary::-webkit-details-marker{display:none}.ppd-add-popover{position:absolute;z-index:30;left:0;top:38px;width:160px;padding:5px;border:1px solid var(--composer-line);border-radius:10px;background:#fff;box-shadow:0 8px 24px rgba(20,27,38,.14)}.ppd-generation-shell.is-floating .ppd-add-popover{top:auto;bottom:38px}.ppd-add-popover>label,.ppd-add-popover>button{position:relative;box-sizing:border-box;display:block;width:100%;padding:9px;border:0;border-radius:6px;background:transparent;color:var(--composer-muted);font:inherit;font-size:12px;text-align:left;cursor:pointer}.ppd-add-popover>label:hover,.ppd-add-popover>button:hover{background:var(--composer-soft)}.ppd-add-popover select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.ppd-generation .ppd-generate-button{width:34px;min-width:34px;padding:0;justify-content:center}.ppd-generation-cost{margin:0 10px 0 6px}\n.ppd-model-popover:not(:popover-open),.ppd-settings-popover:not(:popover-open),.ppd-add-popover:not(:popover-open){display:none}.ppd-settings-menu .ppd-toolbar-button>i{width:1px;height:16px;background:#dfe3e8}.ppd-settings-menu .ppd-toolbar-button>strong{max-width:88px;overflow:hidden;color:#535d6b;font-size:11px;font-weight:650;text-overflow:ellipsis;white-space:nowrap}\n\n/* Manual generation history shares the account bar and keeps the draft mounted. */\n.ppd-panel [hidden]{display:none!important}\n.ppd-price-verification{margin:0 12px 10px;color:#866218;font-size:12px;line-height:1.5}\n.ppd-history-shortcut{display:flex;justify-content:flex-end;padding:12px 28px 0}\n.ppd-panel-generation .ppd-content.ppd-history-content{display:block;min-height:0;padding:24px 28px}\n.ppd-history{width:100%;max-width:1120px;margin:0 auto}\n.ppd-history-heading,.ppd-history-record-heading{display:flex;align-items:center;justify-content:space-between;gap:16px}\n.ppd-history-heading{margin-bottom:20px}.ppd-history-heading h2{font-size:20px;margin:0}\n.ppd-history-list{display:grid;gap:16px}.ppd-history-record{padding:20px;border:1px solid #e4e4e2;border-radius:12px;background:#fff}\n.ppd-history-record-heading strong{display:flex;align-items:center;gap:8px}.ppd-history-record-heading>span,.ppd-history-record time,.ppd-history-record>small{color:#73736e;font-size:12px}\n.ppd-history-record time{display:block;margin-top:8px}.ppd-history-record progress{display:block;width:100%;height:6px;margin:16px 0 8px;accent-color:#656c49}\n.ppd-history-results{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px;margin-top:16px}.ppd-history-results .ppd-image{aspect-ratio:1;background:#f5f5f3;border-radius:8px;overflow:hidden}.ppd-history-results img{width:100%;height:100%;object-fit:contain}\n@media(max-width:720px){.ppd-history-shortcut{padding-inline:16px}.ppd-panel-generation .ppd-content.ppd-history-content{padding:20px 16px}.ppd-history-heading,.ppd-history-record-heading{flex-wrap:wrap}.ppd-history-results{grid-template-columns:repeat(auto-fill,minmax(140px,1fr))}}\n\n/* Confirmed tasks keep running after the composer clears; their progress sits above the saved results. */\n.ppd-running-tasks{margin-bottom:28px}.ppd-running-label{margin:0 0 12px;color:#73736e;font-size:12px;font-weight:600;letter-spacing:.04em}\n.ppd-running-tasks .ppd-history-record progress{margin-top:12px}.ppd-running-tasks .ppd-actions{margin-top:12px}\n@media(max-width:720px){.ppd-running-tasks{margin-bottom:20px}}\n\n/* Local reference previews appear before cloud upload; only ready asset IDs can generate. */\n.ppd-upload-preview{clip-path:none!important;transform:none!important;margin-left:0!important;border-radius:10px!important;outline:1px solid #c8cdd5}\n.ppd-upload-preview>img{opacity:.65}\n.ppd-upload-preview.is-failed{outline-color:#a13e3e}\n.ppd-upload-preview .ppd-upload-preview-status{position:absolute;right:0;bottom:0;left:0;padding:4px 1px;background:rgba(24,28,34,.8);color:#fff;font-size:9px;line-height:12px;text-align:center}\n.ppd-upload-preview.is-failed .ppd-upload-preview-status{background:rgba(139,39,39,.9)}\n.ppd-reference-token>.ppd-upload-preview-remove{position:absolute;top:2px;right:2px;display:grid;place-items:center;width:16px;height:16px;padding:0;border:0;border-radius:4px;background:rgba(255,255,255,.9);color:#343b45;cursor:pointer}\n.ppd-reference-token>.ppd-upload-preview-remove:hover{background:#fff;color:#a13e3e}\n\n/* Manual batch generation stays in the plugin UI and keeps each row compact. */\n.ppd-batch-launchers{display:flex;align-items:center;gap:3px}.ppd-batch-launchers>button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#fff;padding:0 8px;color:#5d6672;font-size:10px;white-space:nowrap;cursor:pointer}.ppd-batch-launchers>button:hover:not(:disabled){border-color:#b8c0ca;background:#f6f7f9;color:#222a34}.ppd-batch-launchers>button:disabled{opacity:.45;cursor:not-allowed}\n.ppd-batch-backdrop{position:fixed;z-index:120;inset:0;display:grid;place-items:center;padding:28px;background:rgba(20,26,34,.36);backdrop-filter:blur(3px)}\n.ppd-batch-dialog{box-sizing:border-box;width:min(1180px,100%);height:min(780px,calc(100vh - 56px));display:grid;grid-template-rows:auto auto auto minmax(0,1fr) auto;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.28);color:#252b34;text-align:left}\n.ppd-batch-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:18px 20px 13px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-batch-dialog h2{margin:0;font-size:18px}.ppd-batch-dialog header p{margin:4px 0 0;color:#7c8591;font-size:11px}.ppd-batch-dialog header>button{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;cursor:pointer}\n.ppd-batch-tools{min-height:44px;display:flex;align-items:center;gap:7px;padding:7px 16px;border-bottom:1px solid #e4e7eb;background:#fff}.ppd-batch-tools>button,.ppd-batch-dialog footer button,.ppd-batch-bulk>button{height:30px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 10px;color:#59636f;font-size:11px;cursor:pointer}.ppd-batch-tools>button:disabled,.ppd-batch-dialog footer button:disabled,.ppd-batch-bulk>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-state{margin-left:auto;border-radius:999px;background:#eef1f4;padding:4px 9px;color:#697381;font-size:10px}.ppd-batch-state.is-running{background:#edf4ff;color:#38649a}.ppd-batch-state.is-blocked,.ppd-batch-state.is-partial{background:#fff3dc;color:#8b651d}.ppd-batch-state.is-completed{background:#eaf7ee;color:#33714a}\n.ppd-batch-bulk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:7px;padding:9px 16px;border-bottom:1px solid #e1e5e9;background:#f1f3f5}.ppd-batch-bulk>label{min-width:0;display:grid;grid-template-columns:auto auto minmax(0,1fr);align-items:center;gap:5px;color:#6d7580;font-size:10px}.ppd-batch-bulk input:not([type=checkbox]),.ppd-batch-bulk select{box-sizing:border-box;min-width:0;height:28px;border:1px solid #d8dde3;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font:inherit}.ppd-batch-feedback{margin:0;padding:7px 16px;border-bottom:1px solid #e1e5e9;background:#edf5ff;color:#416a98;font-size:11px}.ppd-batch-feedback.is-error{background:#fff0f0;color:#9a3f3f}\n.ppd-batch-table{min-height:0;overflow:auto;padding:10px 12px;display:grid;align-content:start;gap:8px}.ppd-batch-row{display:grid;grid-template-columns:38px 94px minmax(260px,1fr) 105px;align-items:center;gap:10px;min-height:108px;border:1px solid #e0e4e8;border-radius:12px;background:#fff;padding:9px}.ppd-batch-select{align-self:stretch;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;border-right:1px solid #edf0f2;color:#8a929d;font-size:11px}.ppd-batch-select input{width:15px;height:15px;accent-color:#252b34}\n.ppd-batch-reference-grid{width:88px;height:88px;display:grid;grid-template-columns:repeat(2,1fr);grid-template-rows:repeat(2,1fr);gap:4px}.ppd-batch-reference{position:relative;overflow:hidden;border:1px dashed #d5dae0;border-radius:7px;background:#f7f8fa;display:grid;place-items:center;color:#a0a7b0}.ppd-batch-reference.has-image{border-style:solid;background:#eceff2}.ppd-batch-reference img{width:100%;height:100%;object-fit:cover}.ppd-batch-reference>label{position:absolute;inset:0;display:grid;place-items:center;cursor:pointer}.ppd-batch-reference.has-image>label{right:18px;bottom:1px;top:auto;left:auto;width:17px;height:17px;border-radius:50%;background:rgba(255,255,255,.9);color:#52606f;font-size:10px}.ppd-batch-reference input{display:none}.ppd-batch-reference>button{position:absolute;right:1px;top:1px;width:17px;height:17px;border:0;border-radius:50%;background:rgba(255,255,255,.92);color:#9a4141;font-size:11px;line-height:17px;cursor:pointer}.ppd-batch-reference b{font-size:17px;font-weight:400}\n.ppd-batch-reference b.ppd-batch-reference-pending{position:absolute;left:2px;bottom:2px;padding:0 3px;border-radius:3px;background:rgba(24,30,38,.72);color:#fff;font-size:9px;line-height:13px;font-weight:500;pointer-events:none}\n.ppd-batch-main{min-width:0;display:grid;gap:7px}.ppd-batch-main>textarea{box-sizing:border-box;width:100%;height:48px;resize:vertical;border:1px solid #dce1e6;border-radius:8px;padding:8px;color:#303741;font:inherit;font-size:11px;line-height:1.4}.ppd-batch-row-controls{display:flex;align-items:center;gap:7px}.ppd-batch-row-controls>select{min-width:140px;max-width:240px;height:28px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px}.ppd-batch-parameters{position:relative;min-width:0;flex:1}.ppd-batch-parameters>summary{overflow:hidden;height:28px;display:flex;align-items:center;border:1px solid #dce1e6;border-radius:7px;padding:0 8px;color:#66707c;font-size:10px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-parameter-grid{position:absolute;z-index:4;left:0;top:34px;width:min(520px,70vw);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;border:1px solid #dce1e6;border-radius:10px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:10px}.ppd-batch-parameter-grid label{display:grid;gap:3px;color:#7c8490;font-size:9px}.ppd-batch-parameter-grid select,.ppd-batch-parameter-grid input[type=number]{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;background:#fff;padding:0 6px;color:#343b45;font-size:10px}.ppd-batch-parameter-grid .ppd-batch-check{display:flex;align-items:center;gap:6px}.ppd-batch-row-error{color:#a34747;font-size:10px}\n.ppd-batch-skill{position:relative;flex:0 0 auto}.ppd-batch-skill-toggle{min-width:140px;max-width:240px;height:28px;display:flex;align-items:center;justify-content:space-between;gap:8px;border:1px solid #dce1e6;border-radius:7px;background:#fff;padding:0 7px;color:#59636f;font-size:10px;cursor:pointer}.ppd-batch-skill-toggle>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-batch-skill-toggle:disabled{opacity:.5;cursor:not-allowed}.ppd-batch-skill-menu{position:absolute;z-index:6;left:0;top:32px;width:260px;display:grid;gap:5px;border:1px solid #dce1e6;border-radius:9px;background:#fff;box-shadow:0 10px 28px rgba(19,27,39,.15);padding:7px}.ppd-batch-skill-menu>input{box-sizing:border-box;width:100%;height:28px;border:1px solid #dce1e6;border-radius:6px;padding:0 7px;color:#343b45;font:inherit;font-size:10px}.ppd-batch-skill-list{max-height:220px;display:grid;gap:2px;overflow:auto}.ppd-batch-skill-list>button{height:26px;display:flex;align-items:center;overflow:hidden;border:0;border-radius:6px;background:transparent;padding:0 7px;color:#4d5662;font-size:10px;text-align:left;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.ppd-batch-skill-list>button:hover:not(:disabled){background:#f1f3f5}.ppd-batch-skill-list>button[aria-selected=true]{background:#eef1f4;color:#252b34;font-weight:600}.ppd-batch-skill-list>button:disabled{opacity:.45;cursor:not-allowed}.ppd-batch-skill-list>small{padding:3px 7px;color:#8a929d;font-size:10px}.ppd-batch-bulk .ppd-batch-skill{min-width:0}.ppd-batch-bulk .ppd-batch-skill-toggle{width:100%;max-width:none;min-width:0}.ppd-batch-tools>button.is-danger{color:#a34444}\n.ppd-batch-result{align-self:stretch;display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:7px;border-left:1px solid #edf0f2;padding-left:9px}.ppd-batch-result>span{border-radius:999px;background:#eef1f4;padding:3px 7px;color:#66717e;font-size:9px}.ppd-batch-result>span.is-generating,.ppd-batch-result>span.is-submitting{background:#edf4ff;color:#3d6695}.ppd-batch-result>span.is-completed{background:#eaf7ee;color:#33714a}.ppd-batch-result>span.is-failed,.ppd-batch-result>span.is-unknown{background:#fff0e7;color:#9a5738}.ppd-batch-result>strong{font-size:11px}.ppd-batch-result>button{border:0;background:transparent;color:#9299a2;font-size:9px;cursor:pointer}.ppd-batch-empty{min-height:210px;display:grid;place-content:center;gap:5px;color:#858e99;text-align:center}.ppd-batch-empty strong{color:#4d5662;font-size:14px}.ppd-batch-empty span{font-size:11px}\n.ppd-batch-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 18px;border-top:1px solid #dfe3e8;background:#fff}.ppd-batch-dialog>footer>div{display:flex;align-items:center;gap:12px}.ppd-batch-dialog>footer>div:first-child{display:grid;gap:2px}.ppd-batch-dialog>footer strong{font-size:12px}.ppd-batch-dialog>footer span{color:#7b8490;font-size:10px}.ppd-batch-dialog footer .is-primary{border-color:#252b34;background:#252b34;color:#fff}.ppd-batch-dialog footer .is-danger{color:#a34444}\n@media(max-width:900px){.ppd-batch-backdrop{padding:12px}.ppd-batch-dialog{height:calc(100vh - 24px)}.ppd-batch-bulk{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-batch-row{grid-template-columns:32px 82px minmax(180px,1fr)}.ppd-batch-reference-grid{width:78px;height:78px}.ppd-batch-result{grid-column:3;flex-direction:row;justify-content:flex-end;border-left:0;border-top:1px solid #edf0f2;padding:7px 0 0}.ppd-batch-dialog>footer{align-items:flex-start;flex-direction:column}.ppd-batch-dialog>footer>div:last-child{align-self:flex-end}}\n.ppd-skill-open{position:absolute;inset:0;width:100%;height:100%;border:0;border-radius:inherit;background:transparent;cursor:pointer}\n.ppd-skill-browser-backdrop{position:fixed;z-index:140;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.4);backdrop-filter:blur(3px)}\n.ppd-skill-browser{box-sizing:border-box;width:min(920px,100%);max-height:min(680px,calc(100vh - 48px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #dfe3e8;border-radius:18px;background:#f7f8f9;box-shadow:0 28px 80px rgba(17,24,36,.3);color:#252b34;text-align:left}\n.ppd-skill-browser-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-bottom:1px solid #e3e6ea;background:#fff}.ppd-skill-browser-head>strong{font-size:15px}.ppd-skill-browser-close{width:28px;height:28px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:18px;line-height:1;cursor:pointer}\n.ppd-skill-browser-search{flex:none;padding:10px 18px 0}.ppd-skill-browser-search>input{box-sizing:border-box;width:100%;height:34px;border:1px solid #dce1e6;border-radius:9px;background:#fff;padding:0 11px;color:#262c35;font:inherit;font-size:12px}.ppd-skill-browser-search>input:focus{outline:none;border-color:#b9c0ca;box-shadow:0 0 0 3px rgba(37,43,52,.07)}\n.ppd-skill-browser-tabs{flex:none;display:flex;gap:4px;padding:10px 18px 0}.ppd-skill-browser-tabs>button{height:28px;border:0;border-radius:8px;background:transparent;padding:0 10px;color:#7b8490;font:inherit;font-size:12px;font-weight:600;cursor:pointer}.ppd-skill-browser-tabs>button:hover{background:#eef0f3;color:#3a4250}.ppd-skill-browser-tabs>button.is-active{background:#252b34;color:#fff}\n.ppd-skill-browser-categories{flex:none;display:flex;flex-wrap:wrap;gap:5px;padding:8px 18px 0}.ppd-skill-browser-categories>button{height:24px;border:1px solid #e1e5ea;border-radius:999px;background:#fff;padding:0 9px;color:#69737f;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-categories>button.is-selected{border-color:#252b34;background:#eef0f3;color:#252b34;font-weight:600}\n.ppd-skill-browser-list{flex:1;min-height:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));align-content:start;gap:8px;overflow:auto;padding:12px 18px 16px}\n.ppd-skill-browser-status{grid-column:1/-1;display:flex;align-items:center;gap:8px;margin:0;padding:18px 4px;color:#7b8490;font-size:12px}\n.ppd-skill-card{box-sizing:border-box;display:flex;align-items:center;gap:10px;min-width:0;border:1px solid #e3e6ea;border-radius:12px;background:#fff;padding:8px;color:#252b34;font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,box-shadow .15s,transform .15s}.ppd-skill-card:hover:not(:disabled){border-color:#c9ced6;box-shadow:0 6px 18px rgba(20,27,38,.08);transform:translateY(-1px)}.ppd-skill-card.is-selected{border-color:#252b34;box-shadow:inset 0 0 0 1px #252b34}.ppd-skill-card:disabled{opacity:.5;cursor:not-allowed}\n.ppd-skill-card-cover{position:relative;width:64px;height:64px;flex:0 0 64px;display:grid;place-items:center;overflow:hidden;border-radius:9px;background:linear-gradient(145deg,#eef0f4,#e2e6ec);color:#98a1ac}.ppd-skill-card-cover[data-image-pair]{grid-template-columns:repeat(2,minmax(0,1fr))}.ppd-skill-card-cover>img{display:block;width:100%;height:100%;object-fit:cover}.ppd-skill-card-fallback{font-size:20px}\n.ppd-skill-card-copy{min-width:0;display:flex;flex-direction:column;gap:3px}.ppd-skill-card-copy>strong,.ppd-skill-card-copy>small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-skill-card-copy>strong{font-size:12px;font-weight:650}.ppd-skill-card-copy>small{color:#7b8490;font-size:10px}\n.ppd-skill-browser-more{flex:none;align-self:center;margin:0 0 14px;height:30px;border:1px solid #dce1e6;border-radius:999px;background:#fff;padding:0 14px;color:#4d5662;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-more:disabled{opacity:.6;cursor:default}\n.ppd-skill-browser-family{flex:1;min-height:0;display:flex;flex-direction:column;padding:10px 18px 0}.ppd-skill-browser-back{align-self:flex-start;height:26px;border:0;border-radius:7px;background:transparent;padding:0 6px;color:#5b6470;font:inherit;font-size:11px;cursor:pointer}.ppd-skill-browser-family>.ppd-skill-browser-list{padding:8px 0 14px}\n@media(max-width:640px){.ppd-skill-browser-backdrop{padding:0}.ppd-skill-browser{width:100%;height:100%;border:0;border-radius:0}.ppd-skill-browser-list{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));padding:10px 12px 14px}.ppd-skill-browser-search,.ppd-skill-browser-tabs,.ppd-skill-browser-categories{padding-left:12px;padding-right:12px}}\n\n.ppd-model-popover[popover]{position:fixed;margin:0;overscroll-behavior:contain}\n.ppd-model-popover[popover]:not(:popover-open){display:none}\n.ppd-model-popover[popover]>button{min-height:54px}\n.ppd-model-popover[popover] .ppd-model-brand{width:32px;height:32px;flex-basis:32px}\n\n/* Resource actions stay visible in the upper-right, separate from the generation controls. */\n.ppd-composer-top-actions{position:absolute;z-index:8;top:10px;right:76px;display:flex;align-items:center;gap:7px}.ppd-generation-shell.is-floating .ppd-composer-top-actions{top:20px;right:86px}.ppd-composer-top-button{height:30px;border:1px solid #dfe3e8;border-radius:7px;background:#f5f6f7;padding:0 10px;color:#343b45;font-size:10px;font-weight:600;white-space:nowrap;cursor:pointer}.ppd-composer-top-button:hover{border-color:#b8c0ca;background:#eceff2}.ppd-generation-shell.is-floating .ppd-composer-media-row,.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:270px}\n@media(max-width:560px){.ppd-generation-shell.is-floating{box-sizing:border-box;width:calc(100% - 24px)}.ppd-generation-shell.is-floating .ppd-generation-form,.ppd-generation-shell.is-floating .ppd-web-composer{width:100%;max-width:100%;min-width:0}.ppd-composer-top-actions{right:48px;gap:2px}.ppd-generation-shell.is-floating .ppd-composer-top-actions{right:82px}.ppd-composer-top-button,.ppd-composer-top-actions .ppd-batch-launchers>button{padding-inline:3px;font-size:8px}.ppd-generation-shell.is-floating .ppd-composer-media-row,.ppd-generation-shell.is-inline .ppd-composer-media-row{padding-right:220px}}\n\n/* Standalone resource preset editor: never shares mutable composer state. */\n.ppd-generation-preset-backdrop{--ppd-accent:#252522;--ppd-line:#e5e5e1;--ppd-muted:#74746d;position:fixed;z-index:160;inset:0;display:grid;place-items:center;padding:24px;background:rgba(20,26,34,.42);backdrop-filter:blur(3px)}\n.ppd-generation-preset-dialog{box-sizing:border-box;width:min(620px,100%);max-height:calc(100vh - 48px);overflow:auto;border:1px solid #dfe3e8;border-radius:18px;background:#fff;box-shadow:0 28px 80px rgba(17,24,36,.3);padding:20px;color:#252b34;text-align:left;outline:none}\n.ppd-generation-preset-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.ppd-generation-preset-dialog h2{margin:2px 0 0;font-size:20px}.ppd-generation-preset-close{width:30px;height:30px;border:0;border-radius:8px;background:#f1f3f5;color:#66707d;font-size:20px;line-height:1;cursor:pointer}.ppd-generation-preset-guide{margin:10px 0 18px;color:#697381;font-size:12px;line-height:1.55}.ppd-generation-preset-state{margin:20px 0;color:#7b8490;font-size:12px}.ppd-generation-preset-warning{margin:0 0 14px;border-radius:8px;background:#fff8e8;padding:9px 11px;color:#84611d;font-size:11px}.ppd-generation-preset-dialog fieldset{margin:0;padding:0;border:0}.ppd-generation-preset-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.ppd-generation-preset-grid>label{display:grid;gap:5px;color:#626c78;font-size:11px}.ppd-generation-preset-grid select,.ppd-generation-preset-grid input{box-sizing:border-box;width:100%;height:36px;border:1px solid #dce1e6;border-radius:8px;background:#fff;padding:0 10px;color:#303741;font:inherit}.ppd-generation-preset-grid select:focus,.ppd-generation-preset-grid input:focus{outline:none;border-color:#aeb7c2;box-shadow:0 0 0 3px rgba(37,43,52,.07)}.ppd-generation-preset-toggles{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;padding-top:15px;border-top:1px solid #eceff2}.ppd-generation-preset-toggles>label{display:flex;align-items:center;gap:7px;border:1px solid #e1e5e9;border-radius:999px;background:#f7f8f9;padding:7px 10px;color:#59636f;font-size:11px}.ppd-generation-preset-toggles input{accent-color:#252b34}.ppd-generation-preset-dialog>footer{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:20px;padding-top:16px;border-top:1px solid #e7eaee}.ppd-generation-preset-dialog>footer>span{color:#7b8490;font-size:10px}.ppd-generation-preset-dialog>footer>span.is-dirty{color:#8a651f}.ppd-generation-preset-dialog>footer>div{display:flex;gap:8px}.ppd-generation-preset-dialog .ppd-alert{margin:0 0 14px}\n.ppd-generation-preset-dialog [data-generation-preset-save]{border-color:#252b34;background:#252b34;color:#fff}.ppd-generation-preset-dialog [data-generation-preset-save]:hover:not(:disabled){border-color:#101318;background:#101318}.ppd-generation-preset-dialog [data-generation-preset-save]:disabled{opacity:.48}\n@media(max-width:560px){.ppd-generation-preset-backdrop{padding:10px}.ppd-generation-preset-dialog{max-height:calc(100vh - 20px);padding:16px}.ppd-generation-preset-grid{grid-template-columns:1fr}.ppd-generation-preset-dialog>footer{align-items:stretch;flex-direction:column}.ppd-generation-preset-dialog>footer>div{justify-content:flex-end}}\n\n.ppd-reference-more{position:absolute;right:3px;top:3px;z-index:3}.ppd-reference-more summary{display:grid;place-items:center;width:22px;height:22px;border:1px solid rgba(255,255,255,.55);border-radius:999px;background:rgba(18,18,18,.72);color:#fff;cursor:pointer;list-style:none;line-height:1}.ppd-reference-more summary::-webkit-details-marker{display:none}.ppd-reference-more>div{position:absolute;right:0;top:26px;min-width:112px;padding:5px;border:1px solid #dedede;border-radius:10px;background:#fff;color:#252b34;box-shadow:0 12px 28px rgba(0,0,0,.18)}.ppd-reference-more button{display:block;width:100%;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:inherit;text-align:left;white-space:nowrap}.ppd-reference-more button:hover{background:#f0f1f2}.ppd-reference-more button:disabled{opacity:.4}.ppd-result-image-more{position:absolute;right:10px;top:10px;z-index:4}.ppd-result-image-more summary{display:grid;place-items:center;width:28px;height:28px;border:1px solid #ddd;border-radius:999px;background:rgba(255,255,255,.94);color:#222;cursor:pointer;list-style:none}.ppd-result-image-more summary::-webkit-details-marker{display:none}.ppd-result-image-more>button{position:absolute;right:0;top:32px;min-width:108px;padding:8px 10px;border:1px solid #ddd;border-radius:9px;background:#fff;color:#222;box-shadow:0 10px 26px rgba(0,0,0,.16);white-space:nowrap}.ppd-result-image-actions{display:flex;gap:8px;margin-top:8px}.ppd-result-image-actions>button{padding:7px 10px;border:1px solid #ddd;border-radius:8px;background:#fff}\n.ppd-inpaint-backdrop{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:20px;background:rgba(12,12,14,.68);backdrop-filter:blur(6px)}.ppd-inpaint-dialog{box-sizing:border-box;width:min(920px,100%);max-height:calc(100vh - 40px);overflow:auto;padding:18px;border:1px solid #ddd;border-radius:18px;background:#fff;color:#171717;box-shadow:0 28px 90px rgba(0,0,0,.34)}.ppd-inpaint-dialog>header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px}.ppd-inpaint-dialog h2,.ppd-inpaint-dialog header p{margin:0}.ppd-inpaint-dialog header p{margin-top:3px;color:#777;font-size:12px}.ppd-inpaint-dialog header>button{width:34px;height:34px;border:0;border-radius:999px;font-size:23px;background:#f1f1f1}.ppd-inpaint-canvas__toolbar{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}.ppd-inpaint-canvas__toolbar button{padding:7px 12px;border:1px solid #ddd;border-radius:9px;background:transparent;color:inherit}.ppd-inpaint-canvas__toolbar button[aria-pressed="true"]{background:#181818;color:#fff}.ppd-inpaint-canvas__toolbar label{display:flex;align-items:center;gap:7px;margin-left:auto}.ppd-inpaint-canvas__frame{display:flex;align-items:center;justify-content:center;width:100%;max-height:min(58vh,620px);overflow:hidden;border-radius:13px;background:#e9e9e9}.ppd-inpaint-canvas__stage{position:relative;flex:0 0 auto;max-width:100%;overflow:hidden;background:#e9e9e9;touch-action:none;user-select:none}.ppd-inpaint-canvas__stage img,.ppd-inpaint-canvas__stage canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:fill}.ppd-inpaint-canvas__stage canvas{cursor:crosshair}.ppd-inpaint-prompt{display:grid;gap:7px;margin-top:14px;font-weight:650}.ppd-inpaint-prompt textarea{min-height:82px;resize:vertical;padding:11px 12px;border:1px solid #ddd;border-radius:10px;background:transparent;color:inherit;font:inherit}.ppd-inpaint-preserve{display:flex;align-items:flex-start;gap:9px;margin-top:12px}.ppd-inpaint-preserve span{display:grid;gap:2px}.ppd-inpaint-preserve small{color:#777;font-weight:400}.ppd-inpaint-dialog>footer{display:flex;align-items:center;justify-content:flex-end;flex-wrap:wrap;gap:9px;margin-top:15px}.ppd-inpaint-dialog>footer strong{margin-right:auto}.ppd-inpaint-dialog>footer button{padding:9px 15px;border:1px solid #ddd;border-radius:10px;background:transparent;color:inherit}.ppd-inpaint-dialog>footer button:last-child{border-color:#191919;background:#191919;color:#fff}@media(max-width:600px){.ppd-inpaint-backdrop{padding:0}.ppd-inpaint-dialog{max-height:100vh;min-height:100vh;border-radius:0}.ppd-inpaint-canvas__toolbar label{width:100%;margin-left:0}.ppd-inpaint-dialog>footer strong{width:100%}}\n\n/* Reference actions use the browser top layer, outside thumbnail clipping. */\n.ppd-reference-more{left:3px;right:auto}\n.ppd-reference-more>button{display:grid;place-items:center;width:22px;height:22px;padding:0;border:1px solid rgba(255,255,255,.55);border-radius:7px;background:rgba(18,18,18,.72);color:#fff;cursor:pointer;line-height:1}\n.ppd-reference-popover{position:fixed;box-sizing:border-box;inset:auto;border:1px solid #dedede;border-radius:10px;padding:5px;background:#fff;color:#252b34;box-shadow:0 12px 28px rgba(0,0,0,.18);overflow:auto}\n.ppd-reference-popover:not(:popover-open){display:none}\n.ppd-reference-popover button{display:block;width:100%;padding:7px 9px;border:0;border-radius:7px;background:transparent;color:inherit;text-align:left;white-space:nowrap;cursor:pointer}\n.ppd-reference-popover button:hover{background:#f0f1f2}.ppd-reference-popover button:disabled{opacity:.4}\n.ppd-reference-token>.ppd-upload-preview-remove{z-index:4;width:22px;height:22px;font-size:18px;line-height:1}\n/* The body scrolls independently; header and submit actions stay in the viewport. */\n.ppd-inpaint-backdrop{box-sizing:border-box;font:14px/1.5 system-ui,sans-serif}\n.ppd-inpaint-dialog{display:flex;flex-direction:column;min-height:0;max-height:calc(100dvh - 40px);overflow:hidden}\n.ppd-inpaint-dialog>header,.ppd-inpaint-dialog>footer{flex-shrink:0}\n.ppd-inpaint-dialog>header>div{min-width:0}.ppd-inpaint-dialog header p{overflow-wrap:anywhere}\n.ppd-inpaint-dialog__body{min-height:0;overflow:auto;overscroll-behavior:contain}\n.ppd-inpaint-dialog>footer{padding-top:10px;border-top:1px solid #eee}\n.ppd-inpaint-prompt textarea{box-sizing:border-box;width:100%}\n@media(max-width:600px){.ppd-inpaint-dialog{height:100dvh;min-height:0;max-height:100dvh}.ppd-inpaint-canvas__toolbar input{max-width:55vw}}\n';
 
 // plugins/podplo-dsh/src/manual-toolbox.css
 var manual_toolbox_default = '.ppd-toolbox{position:relative;height:100%;overflow:hidden;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-toolbox *{box-sizing:border-box}.ppd-toolbox button{cursor:pointer}.ppd-toolbox button:disabled{cursor:default;opacity:.55}\n.ppd-toolbox button,.ppd-toolbox input,.ppd-toolbox select{font:inherit}\n.ppd-toolbox__header,.ppd-toolbox__result,.ppd-toolbox__exported{display:flex;align-items:center;justify-content:space-between;gap:12px}\n.ppd-toolbox__header h2{margin:0 0 8px;font-size:24px;line-height:1.2}.ppd-toolbox__header p,.ppd-toolbox__output p{margin:4px 0 0;color:#777;font-size:12px;line-height:1.6}\n.ppd-toolbox__upload{position:relative;padding:8px 12px;border:1px solid #ddd;border-radius:10px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-toolbox__tabs{display:grid;gap:14px}.ppd-toolbox__tool-group>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.ppd-toolbox__tool-group h3{font-size:11px;color:#777;margin:0 0 7px}\n.ppd-toolbox__tabs button{display:flex;flex-direction:column;gap:3px;text-align:left;padding:9px;border:1px solid #ddd;border-radius:11px;background:#fff;color:inherit}\n.ppd-toolbox__tabs button.is-active{border-color:#222;background:#f4f4f1}.ppd-toolbox__tabs small{color:#888;font-size:10px}\n.ppd-toolbox__body{display:grid;height:100%;min-height:0;grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:20px;align-items:start}.ppd-toolbox__workspace{min-width:0;min-height:0;height:100%;overflow:auto;padding-bottom:48px}\n.ppd-toolbox__parameters{display:grid;align-content:start;gap:12px;min-width:0;min-height:0;height:100%;overflow:auto;padding-right:4px;padding-bottom:48px}.ppd-toolbox__source-list{max-height:160px;overflow:auto}\n.ppd-toolbox__sources,.ppd-toolbox__controls,.ppd-toolbox__preview-panel,.ppd-toolbox__results,.ppd-toolbox__output{min-width:0;border:1px solid #e4e4df;border-radius:14px;padding:14px;background:#fff}\n.ppd-toolbox__controls fieldset{border:0;min-width:0;padding:0;margin:0}\n.ppd-toolbox h3{margin:0 0 11px;font-size:14px}.ppd-toolbox__source{display:flex;gap:9px;padding:8px 0;border-bottom:1px solid #eee}\n.ppd-toolbox__source span,.ppd-toolbox__result span,.ppd-toolbox__exported span{display:flex;min-width:0;flex-direction:column;gap:3px}.ppd-toolbox__source b,.ppd-toolbox__result b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}\n.ppd-toolbox__source small,.ppd-toolbox__result small,.ppd-toolbox__exported small{color:#888;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}\n.ppd-toolbox__fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px 9px}.ppd-toolbox__fields label{display:flex;min-width:0;flex-direction:column;gap:5px;font-size:12px;color:#666}\n.ppd-toolbox__fields input,.ppd-toolbox__fields select,.ppd-toolbox__directory>input{min-width:0;padding:7px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-toolbox__fields input[readonly]{background:#f4f4f1;color:#777}\n.ppd-toolbox__join-option{display:flex;align-items:flex-end;padding-bottom:8px}.ppd-toolbox__join-option .ppd-toolbox__check{white-space:nowrap}.ppd-toolbox__join-option:has(input:disabled){opacity:.5;cursor:default}\n.ppd-toolbox__edge-group{grid-column:1/-1;display:grid;gap:10px;border-top:1px solid #eee;padding-top:12px}.ppd-toolbox__edge-group h4{font-size:12px;margin:0;color:#333}\n.ppd-toolbox__range-field{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:7px 10px;align-items:center}.ppd-toolbox__range-field label{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:10px}.ppd-toolbox__range-field input[type=number]{width:70px}.ppd-toolbox__range-field .ppd-toolbox__pixel-input{grid-column:1/-1;font-variant-numeric:tabular-nums}.ppd-toolbox__pixel-input>span{display:flex;align-items:center;gap:4px}.ppd-toolbox__pixel-input input[type=number]{width:104px}.ppd-toolbox__pixel-input input:disabled{background:#f4f4f1;color:#777}\n.ppd-toolbox__fields .ppd-toolbox__range-field input[type=range]{grid-column:1/-1;width:100%;height:20px;margin:0;padding:0;border:0;background:transparent;accent-color:#333;cursor:ew-resize}.ppd-toolbox__pixel-basis{grid-column:1/-1;margin:0;font-size:11px;line-height:1.5;color:#777}\n.ppd-toolbox__fields .ppd-toolbox__check{flex-direction:row;align-items:center;grid-column:1/-1}.ppd-toolbox .ppd-toolbox__primary{margin-top:16px;width:100%;padding:11px 13px;border:0;border-radius:10px;background:#20201f;color:#fff}\n.ppd-toolbox__preview-heading{display:flex;justify-content:space-between;gap:8px;align-items:baseline}.ppd-toolbox__preview-heading>span{font-size:12px;color:#777}\n.ppd-toolbox__preview-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px}.ppd-toolbox__preview-toolbar .ppd-toolbox__upload{margin-left:auto}.ppd-toolbox__preview-tabs{display:flex;gap:6px}.ppd-toolbox__preview-tabs button{border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;padding:6px 14px}.ppd-toolbox__preview-tabs button[aria-pressed=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-toolbox__source-batch{display:grid;gap:8px;margin-bottom:12px;padding:10px;border:1px solid #e4e4df;border-radius:10px;background:#fafaf8}.ppd-toolbox__source-batch-heading{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.ppd-toolbox__source-batch-heading strong{font-size:12px}.ppd-toolbox__source-batch-heading span{margin-right:auto;color:#777;font-size:11px}.ppd-toolbox__source-batch-heading button,.ppd-toolbox__source-row>button{padding:4px 7px;border:1px solid #ddd;border-radius:7px;background:#fff;color:inherit;font-size:11px}.ppd-toolbox__source-list{display:grid;gap:3px;max-height:180px;overflow:auto}.ppd-toolbox__source-row{display:flex;align-items:center;gap:6px;padding:4px;border-radius:7px}.ppd-toolbox__source-row[data-preview-source=true]{background:#eeeeea}.ppd-toolbox__source-row>label{display:flex;min-width:0;flex:1;align-items:flex-start;gap:7px;cursor:pointer}.ppd-toolbox__source-row>label span{display:flex;min-width:0;flex-direction:column;gap:2px}.ppd-toolbox__source-row b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:11px}.ppd-toolbox__source-row small,.ppd-toolbox__source-batch>small,.ppd-toolbox__source-batch>p{margin:0;color:#777;font-size:10px;line-height:1.5}.ppd-toolbox__source-row>button[aria-pressed=true]{border-color:#292927;background:#292927;color:#fff}\n.ppd-toolbox__previews{position:relative}.ppd-toolbox__previews figure{margin:0;min-width:0}.ppd-toolbox__previews figcaption{position:absolute;inline-size:1px;block-size:1px;overflow:hidden;clip-path:inset(50%)}\n.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{display:block;width:100%;height:clamp(300px,52vh,620px);object-fit:contain;border-radius:9px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-toolbox__preview-empty{display:grid;place-items:center;color:#777;font-size:12px;text-align:center}.ppd-toolbox__previews small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-top:9px;color:#666;font-size:12px}\n.ppd-toolbox__preview-retained{position:absolute;top:10px;left:50%;translate:-50% 0;z-index:1;max-width:calc(100% - 20px);padding:7px 11px;border-radius:999px;background:rgba(32,32,31,.82);color:#fff;font-size:12px;line-height:1.3;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.12);pointer-events:none}\n.ppd-toolbox__preview-note{font-size:12px;color:#666;line-height:1.5;margin:12px 0 0}.ppd-toolbox__preview-error{color:#9d2c23;font-size:12px;line-height:1.5;margin:12px 0 0}\n.ppd-toolbox__preview-files{margin:12px 0 0;padding-left:18px;font-size:12px;overflow-wrap:anywhere}.ppd-toolbox__preview-files li+li{margin-top:8px}.ppd-toolbox__preview-files small{display:block;color:#666;margin-top:3px}\n.ppd-toolbox__results,.ppd-toolbox__output{margin-top:14px}.ppd-toolbox__result{padding:8px 0;border-bottom:1px solid #eee}.ppd-toolbox__result>div{display:flex;gap:6px}.ppd-toolbox__result button,.ppd-toolbox__output button{padding:6px 8px;border:1px solid #ddd;border-radius:8px;background:#fafafa;color:inherit}\n.ppd-toolbox__result>span{flex:1}.ppd-toolbox__result-thumbnail{width:56px;height:56px;object-fit:contain;border-radius:6px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/12px 12px;flex-shrink:0}\n.ppd-toolbox__directory{display:grid;grid-template-columns:minmax(240px,1fr) auto auto;gap:8px;align-items:center;margin-top:10px}.ppd-toolbox__directory label{grid-column:1/-1;font-size:11px;color:#666}.ppd-toolbox__output code{display:block;margin-top:8px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:#666}\n.ppd-toolbox__exported{margin-top:10px;padding:9px;background:#f6f6f3;border-radius:10px}.ppd-toolbox__notice,.ppd-toolbox__error{position:absolute;left:18px;right:18px;bottom:8px;margin:0;z-index:2;padding:9px 11px;border-radius:9px;font-size:12px}.ppd-toolbox__notice{background:#e9f6ee;color:#246c3b}.ppd-toolbox__error{background:#fff0ef;color:#9d2c23}.ppd-toolbox__empty{color:#999;font-size:11px}\n@media(max-width:900px){.ppd-toolbox__body{grid-template-columns:minmax(230px,290px) minmax(0,1fr);gap:14px}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__result{align-items:flex-start;flex-wrap:wrap}}\n@media(max-width:620px){.ppd-toolbox{padding:12px;overflow:auto}.ppd-toolbox__header{align-items:flex-start;flex-wrap:wrap}.ppd-toolbox__body{height:auto;grid-template-columns:1fr}.ppd-toolbox__parameters,.ppd-toolbox__workspace{height:auto;overflow:visible;padding:0}.ppd-toolbox__directory{grid-template-columns:1fr}.ppd-toolbox__directory label{grid-column:auto}.ppd-toolbox__preview-tabs button{flex:1}.ppd-toolbox__previews img,.ppd-toolbox__preview-empty{height:320px}.ppd-toolbox__notice,.ppd-toolbox__error{position:sticky;left:auto;right:auto;margin-top:12px}}\n\n/* Vertical independent modules; only the left pane scrolls while adjusting parameters. */\n.ppd-toolbox__modules{min-width:0}.ppd-toolbox__module{padding:16px 0;border-top:1px solid #e4e4df}\n.ppd-toolbox__module h3{margin:0 0 14px;font-size:16px}.ppd-toolbox__module h3 label{display:flex;align-items:center;gap:10px;cursor:pointer}\n.ppd-toolbox__module h3 input{width:17px;height:17px;margin:0;accent-color:#292927}\n.ppd-toolbox__module fieldset{border:0;min-width:0;margin:0;padding:0}\n.ppd-toolbox__save-bar{position:sticky;bottom:-48px;background:#fff;padding:8px 0 14px;margin-top:0;z-index:1}\n.ppd-toolbox__save-bar .ppd-toolbox__primary{margin-top:0}.ppd-toolbox__save-bar>small{display:block;margin-top:8px;color:#888;font-size:11px;line-height:1.5}\n.ppd-toolbox__actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}\n.ppd-toolbox__actions>button{padding:10px 13px;border:1px solid #ddd;border-radius:10px;background:#fff;color:inherit}\n.ppd-toolbox__actions>button:last-child{grid-column:1/-1}\n.ppd-toolbox__preview-tabs{flex-wrap:wrap}.ppd-toolbox__result-name{display:flex;flex:1;min-width:0;text-align:left;flex-direction:column;gap:4px;background:none!important;border:0!important}\n@media(max-width:620px){.ppd-toolbox__save-bar{position:static}.ppd-toolbox__module{padding:14px 0}}\n\n/* Bound the toolbox to the native DSH panel, including its account header. */\n.ppd-panel-toolbox{height:100%;min-height:0}\n.ppd-panel-toolbox .ppd-panel-scroll{display:flex;flex-direction:column;min-height:0;overflow:hidden}\n.ppd-panel-toolbox .ppd-account{flex:0 0 auto}\n.ppd-panel-toolbox .ppd-content{flex:1 1 0;min-height:0;width:100%;max-width:none;margin:0;padding:0;overflow:hidden}\n\n.ppd-toolbox-hub{display:flex;flex-direction:column;height:100%;min-height:0}\n.ppd-toolbox-hub__tabs{display:flex;flex:0 0 auto;gap:20px;padding:0 20px;border-bottom:1px solid #e5e5e1;overflow-x:auto}\n.ppd-toolbox-hub__tabs button{flex:0 0 auto;border:0;border-bottom:2px solid transparent;padding:12px 0 10px;background:transparent;color:#64645e;font:inherit;font-size:13px;cursor:pointer;white-space:nowrap}\n.ppd-toolbox-hub__tabs button[aria-selected=true]{border-bottom-color:#292927;color:#292927;font-weight:600}\n.ppd-toolbox-hub__tabs button:focus-visible{outline:2px solid #64645e;outline-offset:-3px}\n.ppd-toolbox-hub__panel{flex:1 1 0;min-height:0;overflow:auto}\n.ppd-toolbox-hub__panel[hidden]{display:none!important}\n.ppd-toolbox-hub__panel[id$="-processing"]{display:flex;flex-direction:column;overflow:hidden}\n.ppd-processing-tools{display:flex;flex:0 0 auto;gap:6px;padding:10px 18px;border-bottom:1px solid #e5e5e1}\n.ppd-processing-tools button{border:1px solid #ddd;border-radius:7px;padding:6px 14px;background:#fff;color:#64645e;font:inherit;font-size:12px;cursor:pointer}\n.ppd-processing-tools button[aria-selected=true]{background:#292927;color:#fff;border-color:#292927}\n.ppd-processing-tools__panel{flex:1 1 0;min-height:0;overflow:auto}.ppd-processing-tools__panel[hidden]{display:none!important}\n.ppd-contour{height:100%;overflow:auto;padding:18px;box-sizing:border-box;color:var(--text-primary,#292927);background:var(--background,#fff)}\n.ppd-contour *{box-sizing:border-box}.ppd-contour__header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:18px}\n.ppd-contour h2{font-size:22px;margin:0 0 7px}.ppd-contour__header p{margin:0;color:#777;font-size:12px;line-height:1.6}\n.ppd-contour__upload{position:relative;flex-shrink:0;padding:8px 12px;border:1px solid #ddd;border-radius:9px;cursor:pointer;font-size:12px}\n.ppd-contour__upload:has(input:disabled){opacity:.55;cursor:default}.ppd-contour__upload input{position:absolute;inline-size:1px;block-size:1px;opacity:0}\n.ppd-contour__upload:focus-within{outline:2px solid #64645e;outline-offset:2px}\n.ppd-contour__layout{display:grid;grid-template-columns:minmax(240px,300px) minmax(0,1fr);gap:20px;align-items:start}\n.ppd-contour__settings{min-width:0}.ppd-contour fieldset{display:grid;gap:12px;border:0;margin:0;padding:0;min-width:0}\n.ppd-contour fieldset>label,.ppd-contour__dimensions label{display:flex;flex-direction:column;gap:6px;min-width:0;font-size:12px;color:#666}\n.ppd-contour input,.ppd-contour select{width:100%;min-width:0;font:inherit;font-size:13px;padding:8px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#292927}\n.ppd-contour fieldset:disabled{opacity:.55}.ppd-contour__dimensions{display:grid;grid-template-columns:1fr 1fr;gap:10px}\n.ppd-contour__hint{font-size:12px;line-height:1.7;color:#777;margin:4px 0 10px}.ppd-contour__error,.ppd-contour__notice{font-size:12px;line-height:1.6;margin:12px 0;overflow-wrap:anywhere}.ppd-contour__error{color:#9d2c23}.ppd-contour__notice{color:#246c3b}\n.ppd-contour__sources{display:grid;gap:3px;max-height:150px;overflow:auto;padding:6px;border:1px solid #e4e4df;border-radius:9px}.ppd-contour__sources>div{display:flex;gap:5px;border-radius:7px;padding:3px}.ppd-contour__sources>div[data-current=true]{background:#eeeeea}.ppd-contour__sources button{border:0;background:transparent;color:inherit;font-size:11px;cursor:pointer}.ppd-contour__sources button:first-child{display:flex;min-width:0;flex:1;flex-direction:column;align-items:flex-start;overflow:hidden;text-align:left}.ppd-contour__sources button:first-child:not(:only-child){white-space:nowrap;text-overflow:ellipsis}.ppd-contour__sources button:last-child{color:#777}.ppd-contour__sources small{color:#777;font-size:10px}\n.ppd-contour__result{display:grid;gap:7px;border:1px solid #e4e4df;border-radius:12px;padding:16px;margin-top:16px;background:#f7f7f4;font-size:12px;color:#666}\n.ppd-contour__result strong{color:#292927;font-size:28px;font-weight:600;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}\n.ppd-contour__result p{margin:2px 0;line-height:1.6}.ppd-contour__warning{color:#8a5a18}\n.ppd-contour__preview{min-width:0;border:1px solid #e4e4df;border-radius:12px;padding:12px;background:#fff}\n.ppd-contour__preview svg,.ppd-contour__empty{display:block;width:100%;height:clamp(280px,56vh,620px);border-radius:8px;background:conic-gradient(#eee 25%,#fafafa 0 50%,#eee 0 75%,#fafafa 0) 0 0/16px 16px}\n.ppd-contour__empty{display:grid;place-items:center;padding:20px;text-align:center;color:#777;font-size:12px}\n.ppd-contour__preview p{font-size:12px;line-height:1.6;margin:10px 0 0;color:#666;overflow-wrap:anywhere}\n@media(max-width:800px){.ppd-contour__layout{grid-template-columns:minmax(220px,260px) minmax(0,1fr);gap:14px}}\n@media(max-width:620px){.ppd-contour{padding:12px}.ppd-contour__header{align-items:flex-start;flex-wrap:wrap}.ppd-contour__layout{grid-template-columns:1fr}.ppd-contour__preview svg,.ppd-contour__empty{height:320px}.ppd-processing-tools{padding:8px 12px}}\n\n.ppd-contour__current{display:grid;gap:6px;padding:10px 0;font-size:12px;min-width:0}.ppd-contour__current strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-contour__current small{color:#777}.ppd-contour__current>div{display:flex;gap:8px}.ppd-contour__current button,.ppd-contour__export{padding:8px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:inherit;font:inherit;cursor:pointer}.ppd-contour__export{width:100%;margin-top:12px;background:#292927;color:#fff}.ppd-contour__export:disabled,.ppd-contour__current button:disabled{opacity:.45;cursor:default}\n.ppd-seamless{padding:18px;max-width:860px;margin:0 auto}.ppd-seamless .ppd-tool-card{display:grid;gap:14px;padding:18px;border:1px solid #e2e2dc;border-radius:12px;background:#fff}.ppd-seamless h3,.ppd-seamless p{margin:0}.ppd-seamless>div>p{font-size:12px;line-height:1.7;color:#666}.ppd-seamless__source{display:grid;grid-template-columns:minmax(180px,1fr) minmax(150px,.7fr) auto;align-items:center;gap:14px;min-width:0}.ppd-seamless__source>div:not(.ppd-seamless__preview){display:grid;gap:4px;min-width:0}.ppd-seamless__source strong,.ppd-seamless__source span,.ppd-seamless__source small{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-seamless__source span,.ppd-seamless__source small{color:#777;font-size:11px}.ppd-seamless__preview{position:relative;display:block;width:100%;max-height:360px;overflow:hidden;border:1px solid #ddd;border-radius:9px;background:#f0f0ec}.ppd-seamless__preview img{display:block;width:100%;height:100%;object-fit:contain}.ppd-seamless__band{position:absolute;z-index:1;left:50%;top:50%;transform:translate(-50%,-50%);background:#e7ab3e59;outline:1px solid #c57b1a80;pointer-events:none}.ppd-seamless__band--vertical{height:100%}.ppd-seamless__band--horizontal{width:100%}.ppd-seamless__guard{position:absolute;z-index:2;inset:clamp(4px,1.6%,16px);border:1px dashed #fff9;box-shadow:0 0 0 999px #1c1c1c1c;pointer-events:none}.ppd-seamless label{display:grid;grid-template-columns:max-content minmax(0,1fr);align-items:center;gap:8px;font-size:12px}.ppd-seamless label>strong{min-width:32px}.ppd-seamless label>input{grid-column:1/-1;width:100%}.ppd-seamless select{justify-self:start}.ppd-seamless button,.ppd-seamless select{padding:8px 12px;border:1px solid #ddd;border-radius:8px;background:#fff;color:inherit;font:inherit;cursor:pointer}.ppd-seamless button:disabled,.ppd-seamless select:disabled,.ppd-seamless input:disabled{opacity:.5;cursor:default}.ppd-seamless__confirmation{display:flex;align-items:center;gap:9px;flex-wrap:wrap;padding:12px;border-radius:9px;background:#f5f5ef}.ppd-seamless__confirmation strong{margin-right:auto;font-size:13px}.ppd-seamless .ppd-muted{font-size:11px;color:#777}.ppd-seamless .ppd-notice{color:#246c3b}.ppd-seamless .ppd-error{color:#a83c31}.ppd-file-input{display:none!important}\n@media(max-width:620px){.ppd-seamless{padding:12px}.ppd-seamless__source{grid-template-columns:1fr}.ppd-seamless__preview{max-height:320px}}\n.ppd-seamless__toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap}.ppd-seamless__toolbar span{font-size:12px;color:#777}\n.ppd-seamless .ppd-sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}\n.ppd-seamless__sources{display:grid;gap:10px;max-height:520px;overflow:auto;padding-right:4px}.ppd-seamless__sources .ppd-seamless__source{grid-template-columns:auto minmax(120px,180px) minmax(0,1fr) auto;padding:10px;border:1px solid #e7e7e1;border-radius:10px;background:#fafaf7}.ppd-seamless__select{display:block!important}.ppd-seamless__sources .ppd-seamless__preview{width:auto;max-height:180px;justify-self:center}.ppd-seamless__range{display:flex;align-items:center;gap:8px;min-width:0;padding:0;border:0}.ppd-seamless__range legend{float:left;margin-right:4px;font-size:12px}.ppd-seamless__range button{min-width:72px}.ppd-seamless__range button[aria-pressed=true]{border-color:#292927;background:#292927;color:#fff}.ppd-seamless__submit{display:flex;gap:9px;align-items:center;flex-wrap:wrap}\n.ppd-contour__batch-selection{display:grid;gap:6px;max-height:240px;overflow:auto;padding:8px;border:1px solid #e4e4de;border-radius:8px;background:#fafaf7}.ppd-contour__batch-selection>div{display:flex;align-items:center;gap:8px;min-width:0}.ppd-contour__batch-selection>div:first-child{flex-wrap:wrap}.ppd-contour__batch-selection>div:first-child span{margin-right:auto;color:#777}.ppd-contour__batch-selection label{display:flex!important;grid-template-columns:none!important;align-items:center;gap:7px;min-width:0;flex:1}.ppd-contour__batch-selection label span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ppd-contour__batch-selection button{padding:5px 8px!important}\n@media(max-width:620px){.ppd-seamless__sources .ppd-seamless__source{grid-template-columns:auto minmax(0,1fr)}.ppd-seamless__sources .ppd-seamless__preview{grid-column:1/-1;max-width:100%!important}.ppd-seamless__range{flex-wrap:wrap}.ppd-seamless__range legend{width:100%}}\n';
@@ -29969,7 +30493,7 @@ ${my_dna_default}`;
     const panelRequest = (action, args) => request(action, args, nativeSessionId ?? "");
     const composerRequest = (action, args) => request(
       action,
-      action === "generation.prepare" ? { ...args, archiveSessionId: nativeSessionId } : args,
+      action === "generation.prepare" || action === "generation.submit" ? { ...args, archiveSessionId: nativeSessionId } : args,
       ""
     );
     return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
